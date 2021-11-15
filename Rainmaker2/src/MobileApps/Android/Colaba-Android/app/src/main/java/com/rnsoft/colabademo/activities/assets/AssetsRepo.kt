@@ -13,6 +13,24 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
         return dataSource.getBankAccountDetails(token = token, loanApplicationId,borrowerId,borrowerAssetId)
     }
 
+    suspend fun addUpdateBankDetails(token: String, bankAddUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateBankDetails(token = token, bankAddUpdateParams)
+    }
+
+    suspend fun addUpdateOtherAsset(token: String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateOtherAsset(token = token, otherAssetAddUpdateParams)
+    }
+
+
+    suspend fun addUpdateRetirement(token: String,  retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateRetirement(token = token, retirementAddUpdateParams)
+    }
+
+    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams)
+    }
+
+
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int): Result<ArrayList<GetAssetTypesByCategoryItem>> {
         return dataSource.fetchAssetTypesByCategoryItemList(token = token , categoryId, loanPurposeId)
     }

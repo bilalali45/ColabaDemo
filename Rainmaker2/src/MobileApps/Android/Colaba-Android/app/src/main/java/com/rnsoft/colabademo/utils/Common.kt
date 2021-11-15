@@ -13,5 +13,9 @@ class Common {
             return convertedString
         }
 
+        fun removeCommas(value:String):String{
+            return value.replace(",","")
+        }
+
     }
 }

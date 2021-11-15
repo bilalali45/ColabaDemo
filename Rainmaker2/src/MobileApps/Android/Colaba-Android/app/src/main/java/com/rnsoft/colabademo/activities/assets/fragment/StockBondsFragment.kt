@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.fragment.model.BankAddUpdateParams
+import com.rnsoft.colabademo.activities.assets.fragment.model.StocksBondsAddUpdateParams
 import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -31,8 +33,9 @@ class StockBondsFragment:BaseFragment() {
     private var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
-    private var borrowerAssetId:Int? = null
+    private var borrowerAssetId:Int = -1
     private var assetTypeID:Int? = null
+    private var id:Int? = null
 
     private var dataArray: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
     private var bankAccounts: ArrayList<DropDownResponse> = arrayListOf()
@@ -55,7 +58,7 @@ class StockBondsFragment:BaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeStockBondsData()
         }
@@ -88,12 +91,8 @@ class StockBondsFragment:BaseFragment() {
 
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
 
-        binding.phoneFab.setOnClickListener {
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                clearFocusFromFields()
-                findNavController().popBackStack()
-            }
+        binding.saveBtn.setOnClickListener {
+           saveStockBonds()
         }
 
         addFocusOutListenerToFields()
@@ -104,18 +103,56 @@ class StockBondsFragment:BaseFragment() {
         setUpEndIcon()
     }
 
-    private fun setUpEndIcon(){
-        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
-            if (binding.accountNumberEdittext.getTransformationMethod()
-                    .equals(PasswordTransformationMethod.getInstance())
-            ) { //  hide password
-                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
-                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
-            } else {
-                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
-                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
+
+
+
+    private fun saveStockBonds(){
+        val fieldsValidated = checkEmptyFields()
+        if(fieldsValidated) {
+            clearFocusFromFields()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    var accountTypeId:Int?=null
+                    for(item in bankAccounts){
+                        if(item.name == binding.accountTypeCompleteView.text.toString())
+                            accountTypeId = item.id
+                    }
+                    accountTypeId?.let { notNullAccountTypeId->
+                        loanApplicationId?.let { notNullLoanApplicationId->
+                            borrowerId?.let { notNullBorrowerId ->
+                                val stocksBondsAddUpdateParams =
+                                    StocksBondsAddUpdateParams(
+                                        AssetTypeId = notNullAccountTypeId,
+                                        LoanApplicationId = notNullLoanApplicationId,
+                                        BorrowerId = notNullBorrowerId,
+                                        Id = id,
+                                        AccountNumber = binding.accountNumberEdittext.text.toString(),
+                                        Balance = binding.annualBaseEditText.text.toString().toInt(),
+                                        InstitutionName = binding.financialEditText.text.toString()
+                                    )
+                                viewModel.addUpdateStockBonds(authToken , stocksBondsAddUpdateParams)
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+            if(genericAddUpdateAssetResponse.status == "OK"){
+                val codeString = genericAddUpdateAssetResponse.code.toString()
+                if(codeString == "200"){
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            findNavController().popBackStack()
+                        }
+                    }
+                }
             }
         })
+
     }
 
     private fun clearFocusFromFields(){
@@ -189,9 +226,9 @@ class StockBondsFragment:BaseFragment() {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
                     viewModel
-                        .getFinancialAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId!!)
+                        .getFinancialAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
                 }
             }
             viewModel.financialAssetDetail.observe(viewLifecycleOwner, { financialAssetDetail ->
@@ -200,6 +237,7 @@ class StockBondsFragment:BaseFragment() {
                         binding.financialEditText.setText(financialAssetData.institutionName)
                         binding.accountNumberEdittext.setText(financialAssetData.accountNumber)
                         binding.annualBaseEditText.setText(financialAssetData.balance.toString())
+                        financialAssetData.id?.let { id = it }
                         financialAssetData.assetTypeId?.let { assetTypeId->
                             for(item in bankAccounts){
                                 if(assetTypeId == item.id){
@@ -215,5 +253,19 @@ class StockBondsFragment:BaseFragment() {
             })
         }
 
+    }
+
+    private fun setUpEndIcon(){
+        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
+            if (binding.accountNumberEdittext.getTransformationMethod()
+                    .equals(PasswordTransformationMethod.getInstance())
+            ) { //  hide password
+                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
+            } else {
+                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
+            }
+        })
     }
 }

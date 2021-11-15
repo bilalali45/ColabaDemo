@@ -154,6 +154,29 @@ interface ServerApi{
         @Query("borrowerId") borrowerId:Int,
         @Query("borrowerAssetId") borrowerAssetId:Int): BankAccountResponse
 
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateBankAccount")
+    suspend fun addUpdateBankDetails(
+        @Header("Authorization") Authorization:String,
+        @Body addUpdateParams:BankAddUpdateParams): GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherAssetsInfo")
+    suspend fun addUpdateOtherAsset(
+        @Header("Authorization") Authorization:String,
+        @Body ootherAssetAddUpdateParams: OtherAssetAddUpdateParams): GenericAddUpdateAssetResponse
+
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateFinancialAsset")
+    suspend fun addUpdateStockBonds(
+        @Header("Authorization") Authorization:String,
+        @Body stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): GenericAddUpdateAssetResponse
+
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateRetirementAccount")
+    suspend fun addUpdateRetirement(
+        @Header("Authorization") Authorization:String,
+        @Body retirementAddUpdateParams: RetirementAddUpdateParams): GenericAddUpdateAssetResponse
+
+
     @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
     suspend fun getBankAccountType(
         @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>

@@ -77,12 +77,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     }
 
 
-    suspend fun getBankAccountDetails(
-        token : String,
-        loanApplicationId : Int,
-        borrowerId : Int,
-        borrowerAssetId : Int
-    ): Result<BankAccountResponse> {
+    suspend fun getBankAccountDetails(token : String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBankAccountDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
@@ -95,6 +90,67 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun addUpdateBankDetails(token : String, addUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateBankDetails(newToken, addUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun addUpdateOtherAsset(token : String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateOtherAsset(newToken, otherAssetAddUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addUpdateStockBonds(token : String, stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateStockBonds(newToken, stocksBondsAddUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+
+    suspend fun addUpdateRetirement(token : String, retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateRetirement(newToken, retirementAddUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
 
     suspend fun getBankAccountType(token: String) : Result<ArrayList<DropDownResponse>> {
         return try {

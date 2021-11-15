@@ -31,6 +31,9 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _bankAccountDetails: MutableLiveData<BankAccountResponse> = MutableLiveData()
     val bankAccountDetails: LiveData<BankAccountResponse> get() = _bankAccountDetails
 
+    private val _genericAddUpdateAssetResponse: MutableLiveData<GenericAddUpdateAssetResponse> = MutableLiveData()
+    val genericAddUpdateAssetResponse: LiveData<GenericAddUpdateAssetResponse> get() = _genericAddUpdateAssetResponse
+
     private val _retirementAccountDetail: MutableLiveData<RetirementAccountResponse> = MutableLiveData()
     val retirementAccountDetail: LiveData<RetirementAccountResponse> get() = _retirementAccountDetail
 
@@ -125,6 +128,7 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _bankAccountDetails.value = (responseResult.data)
+
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
@@ -132,6 +136,66 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
             }
         }
     }
+
+
+    suspend fun addUpdateBankDetails(token: String,  bankAddUpdateParams: BankAddUpdateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateBankDetails(token = token, bankAddUpdateParams = bankAddUpdateParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun addUpdateOtherAsset(token: String,  otherAssetAddUpdateParams: OtherAssetAddUpdateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateOtherAsset(token = token, otherAssetAddUpdateParams = otherAssetAddUpdateParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+
+    suspend fun addUpdateRetirement(token: String, retirementAddUpdateParams: RetirementAddUpdateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateRetirement(token = token, retirementAddUpdateParams )
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+
+    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams = stocksBondsAddUpdateParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
 
     suspend fun getRetirementAccountDetails(token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
