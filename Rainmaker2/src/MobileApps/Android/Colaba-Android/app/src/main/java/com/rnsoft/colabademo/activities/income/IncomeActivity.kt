@@ -36,11 +36,10 @@ class IncomeActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-            borrowerTabList =
-                it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-            for (item in borrowerTabList!!) {
+            borrowerTabList = it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
+            //for (item in borrowerTabList!!) {
                 //Timber.d("item size " + item)
-            }
+            //}
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

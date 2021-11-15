@@ -157,10 +157,11 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         loanApplicationId: Int,
         borrowerId:Int
     ): Result<IncomeDetailsResponse> {
+        Log.e("DATA SOURCE-INCOME","loanApplicationId: " + loanApplicationId + " borrowerId: " + borrowerId)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerIncomeDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            //Timber.e("IncomeResponse-", response.toString())
+            Timber.e("IncomeResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -169,8 +170,6 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
                 Result.Error(IOException("Error notification -", e))
         }
     }
-
-
 
     suspend fun getGovernmentQuestions(
         token: String,

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.assets_middle_cell.view.content_amount
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_desc
 import kotlinx.android.synthetic.main.assets_middle_cell.view.content_title
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
+import kotlinx.android.synthetic.main.income_middle_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -76,10 +77,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         val modelData = sampleIncome[m]
                         //Timber.e("header", modelData.headerTitle)
                         //Timber.e("h-amount", modelData.headerAmount)
-                        val mainCell: LinearLayoutCompat =
-                            layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
-                        val topCell: View =
-                            layoutInflater.inflate(R.layout.income_top_cell, null)
+                        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
+                        val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)
                         topCell.header_title.text = modelData.headerTitle
                         topCell.header_amount.setText(modelData.headerAmount)
                         topCell.tag = R.string.asset_top_cell
@@ -96,10 +95,20 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                         for (j in 0 until it.size) {
                                             val contentCell: View = layoutInflater.inflate(R.layout.income_middle_cell, null)
                                             val contentData = webModelData.incomes[j]
-                                            contentCell.content_title.text =
-                                                contentData.incomeTypeDisplayName
-                                            contentCell.content_desc.text =
-                                                contentData.incomeName
+                                            contentCell.content_title.text = contentData.incomeTypeDisplayName
+                                            contentCell.content_desc.text = contentData.incomeName
+                                            var startDate : String = ""
+                                            var endDate : String = ""
+                                            contentData.startDate?.let{
+                                                startDate = "From ".plus(AppSetting.getMonthAndYearValue(it))
+                                                contentCell.tenureTextView.setText(startDate)
+                                            }
+                                            contentData.endDate?.let {
+                                                endDate = AppSetting.getMonthAndYearValue(it)
+                                                contentCell.tenureTextView.setText(startDate.plus(" To " + endDate))
+                                            }
+
+
 
                                             contentData.incomeValue?.let{ incomeValue->
                                                 totalAmount += incomeValue
