@@ -301,7 +301,7 @@ class DemographicInformationViewController: BaseViewController {
             DispatchQueue.main.async {
                 Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
-                    self.getDemographicInformation()
+                    self.getRaces()
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
