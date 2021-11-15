@@ -263,6 +263,7 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
+
     suspend fun sendSelfEmploymentData(token: String,selfEmploymentData: SelfEmploymentData) {
         //Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
@@ -280,24 +281,30 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun sendCurrentEmploymentData(token: String,EmploymentData: EmploymentData) {
-        Log.e("ViewModel", "inside-SendData")
+    suspend fun sendCurrentEmploymentData(token: String,EmploymentData: AddCurrentEmploymentModel) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendCurrentEmploymentData(token = token, EmploymentData)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
                     Log.e("Viewmodel", "${responseResult.data}")
                     Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
-                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-                else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG){
+                    //EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+                    Log.e("DATA SOURCE1", "SEND Data error")
+
+                } else if (responseResult is Result.Error){
+                    //EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    Log.e("DATA SOURCE2", "SEND Data error")
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+                }
             }
         }
     }
 
-    suspend fun sendPrevEmploymentData(token: String,employmentData: PreviousEmploymentResponse) {
+
+    suspend fun sendPrevEmploymentData(token: String,employmentData: PreviousEmploymentData) {
         Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendPrevEmploymentData(token = token, employmentData)
@@ -305,11 +312,12 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 if (responseResult is Result.Success) {
                     Log.e("Viewmodel", "${responseResult.data}")
                     Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+
             }
         }
     }
@@ -322,11 +330,13 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 if (responseResult is Result.Success) {
                     Log.e("Viewmodel", "${responseResult.data}")
                     Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+
             }
         }
     }
@@ -348,7 +358,7 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         }
     }
 
-    suspend fun sendOtherIncome(token: String,data: OtherIncomeData){
+    suspend fun sendOtherIncome(token: String,data: AddOtherIncomeInfo){
         Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendOtherIncomeData(token = token, data)
@@ -364,4 +374,5 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             }
         }
     }
+
 }

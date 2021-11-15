@@ -59,8 +59,15 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     private fun addObserver(){
         viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
             purchaseAddress = it
-            binding.tvSubPropertyAddress.text =
-                it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+            //binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it) }
+            it.city?.let {builder.append("\n").append(it).append(" ") }
+            it.stateName?.let{ builder.append(it).append(" ")}
+            it.zipCode?.let { builder.append(it) }
+            it.countryName.let { builder.append(" ").append(it)}
+            binding.tvSubPropertyAddress.text = builder
 
             EventBus.getDefault().post(AddressUpdateEvent(it))
         })
@@ -319,14 +326,14 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val activity = (activity as? SubjectPropertyActivity)
                     activity?.loanApplicationId?.let {
-                    Log.e("Loan Application Id", ""+ it)
+                    //Log.e("Loan Application Id", ""+ it)
 
                     val propertyData = SubPropertyData(loanApplicationId = it,propertyTypeId = propertyId,occupancyTypeId = occupancyId,
                         appraisedPropertyValue = newAppraisedValue?.toDouble(),propertyTax = newPropertyTax?.toDouble(),homeOwnerInsurance=newHomeInsurance?.toDouble(),
                         floodInsurance = newFloodInsurance?.toDouble(),
                         addressData = addressForApi ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
                     showLoader()
-                    Log.e("PropertyData", ""+propertyData)
+                   // Log.e("PropertyData", ""+propertyData)
                     viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
                 }
             }
@@ -366,12 +373,12 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
 
         // radio mixed use property click
         binding.radioMixedPropertyYes.setOnClickListener {
-            findNavController().navigate(R.id.action_mixed_property)
+            gotoMixedUseProperty()
             binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
         }
         // mixed property detail
         binding.layoutMixedPropertyDetail.setOnClickListener{
-            findNavController().navigate(R.id.action_mixed_property)
+            gotoMixedUseProperty()
         }
 
         // radio btn mixed use property Yes
@@ -406,6 +413,17 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             HideSoftkeyboard.hide(requireActivity(),binding.subpropertyParentLayout)
             super.removeFocusFromAllFields(binding.subpropertyParentLayout)
         }
+    }
+
+    private fun gotoMixedUseProperty(){
+        var mixedUsePropertyDesc : String? = ""
+        mixedUsePropertyDesc = binding.mixedPropertyExplanation.text.toString()
+        val fragment = MixedUsePropertyFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.MIXED_USE_PROPERTY_DESC,mixedUsePropertyDesc)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_mixed_property, fragment.arguments)
+
     }
 
     override fun onResume() {

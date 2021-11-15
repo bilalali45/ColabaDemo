@@ -62,7 +62,7 @@
 
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                    android:id="@+id/tv_retirement_type"
+                    android:id="@+id/tv_income_type"
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

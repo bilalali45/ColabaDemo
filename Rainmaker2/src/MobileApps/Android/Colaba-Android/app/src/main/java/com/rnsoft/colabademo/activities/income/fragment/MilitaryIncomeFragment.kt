@@ -34,42 +34,43 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    private var savedViewInstance: View? = null
+    //private var savedViewInstance: View? = null
     private val viewModel : IncomeViewModel by activityViewModels()
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
     private var loanApplicationId: Int? = null
-    var addressList :  ArrayList<CommonAddressModel> = ArrayList()
+    private var militaryAddress = AddressData()
 
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = IncomeMilitaryPayBinding.inflate(inflater, container, false)
-            toolbarBinding = binding.headerIncome
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
-            // set Header title
-            toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
+    ): View {
+        binding = IncomeMilitaryPayBinding.inflate(inflater, container, false)
+        toolbarBinding = binding.headerIncome
+        super.addListeners(binding.root)
+        // set Header title
+        toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
 
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-                borrowerId = arguments.getInt(AppConstant.borrowerId)
-                incomeInfoId = arguments.getInt(AppConstant.incomeId)
-                //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-                //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
-            }
-
-            initViews()
-            getData()
-            savedViewInstance
-
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            incomeInfoId = arguments.getInt(AppConstant.incomeId)
+            //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+            //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result ->
+            militaryAddress = result
+            displayAddress(result)
+        }
+
+        initViews()
+        getData()
+
+        return binding.root
     }
 
     private fun getData(){
@@ -110,27 +111,8 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                                 CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
                             }
                             info.address?.let {
-
-                                addressList.add(CommonAddressModel(
-                                    street = it.street,
-                                    unit = it.unit,
-                                    city = it.city,
-                                    stateName = it.stateName,
-                                    countryName = it.countryName,
-                                    countyName = it.countyName,
-                                    countyId = it.countyId,
-                                    stateId = it.stateId,
-                                    countryId = it.countryId,
-                                    zipCode = it.zipCode
-                                ))
-
-                                val builder = StringBuilder()
-                                it.street?.let { builder.append(it).append(" ") }
-                                it.unit?.let { builder.append(it).append("\n") }
-                                it.city?.let { builder.append(it).append(" ") }
-                                it.stateName?.let{ builder.append(it).append(" ")}
-                                it.zipCode?.let { builder.append(it) }
-                                binding.textviewMilitaryAddress.text = builder
+                                militaryAddress = it
+                                displayAddress(it)
                             }
                         }
                         binding.loaderMilitary.visibility = View.GONE
@@ -166,20 +148,29 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
         val addressFragment = AddressMilitaryService()
         val bundle = Bundle()
         bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.service_location_add))
-        bundle.putParcelableArrayList(AppConstant.address,addressList)
+        bundle.putParcelable(AppConstant.address,militaryAddress)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_military_address, addressFragment.arguments)
     }
 
-    private fun setInputFields() {
+    private fun displayAddress(it: AddressData){
+        val builder = StringBuilder()
+        it.street?.let { builder.append(it).append(" ") }
+        it.unit?.let { builder.append(it).append("\n") }
+        it.city?.let { builder.append(it).append(" ") }
+        it.stateName?.let{ builder.append(it).append(" ")}
+        it.zipCode?.let { builder.append(it) }
+        it.countryName?.let { builder.append(" ").append(it)}
+        binding.textviewMilitaryAddress.text = builder
+    }
 
+    private fun setInputFields() {
         // set lable focus
         binding.editTextEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextEmpName, binding.layoutEmpName, requireContext()))
         binding.edJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edJobTitle, binding.layoutJobTitle, requireContext()))
         binding.edProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edProfYears, binding.layoutYearsProfession, requireContext()))
         binding.editTextBaseSalary.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextBaseSalary, binding.layoutBaseSalary, requireContext()))
         binding.editTextEntitlement.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextEntitlement, binding.layoutEntitlement, requireContext()))
-
 
         // set input format
         binding.editTextBaseSalary.addTextChangedListener(NumberTextFormat(binding.editTextBaseSalary))

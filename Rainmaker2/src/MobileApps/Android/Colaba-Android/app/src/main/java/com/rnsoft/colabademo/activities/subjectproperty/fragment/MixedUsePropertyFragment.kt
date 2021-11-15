@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MixedUsePropertyFragment : BaseFragment() {
 
     private lateinit var binding : MixedUsePropertyBinding
+    var mixedPropertyDesc : String? =""
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +29,13 @@ class MixedUsePropertyFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = MixedUsePropertyBinding.inflate(inflater, container, false)
+
+
+        mixedPropertyDesc = arguments?.getString(AppConstant.MIXED_USE_PROPERTY_DESC)
+        mixedPropertyDesc?.let {
+            binding.editTextDesc.setText(it)
+        }
+
 
         binding.backButton.setOnClickListener {
             //  findNavController().popBackStack(R.id.action_back_from_mixedproperty_toPurchase,false)
@@ -39,7 +47,7 @@ class MixedUsePropertyFragment : BaseFragment() {
         }
 
         binding.btnSave.setOnClickListener {
-            val details: String = binding.edDetails.text.toString().trim()
+            val details: String = binding.editTextDesc.text.toString().trim()
             if (details.isEmpty() || details.length == 0) {
                 CustomMaterialFields.setError(binding.layoutDetail,getString(R.string.error_field_required),requireActivity())
             } else{
@@ -48,7 +56,7 @@ class MixedUsePropertyFragment : BaseFragment() {
                 findNavController().popBackStack()
             }
         }
-        binding.edDetails.doAfterTextChanged {
+        binding.editTextDesc.doAfterTextChanged {
             it.let {
                 CustomMaterialFields.clearError(binding.layoutDetail,requireActivity())
             }

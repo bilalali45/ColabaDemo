@@ -316,10 +316,10 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
-    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: EmploymentData) : AddUpdateDataResponse
+    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: AddCurrentEmploymentModel) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdatePreviousEmploymentDetail")
-    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentResponse) : AddUpdateDataResponse
+    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentData) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
     suspend fun getSelfEmploymentContractor(
@@ -382,9 +382,7 @@ interface ServerApi{
     suspend fun addUpdateRetirement(@Header("Authorization")  Authorization:String, @Body data: RetirementIncomeData) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherIncome")
-    suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: OtherIncomeData) : AddUpdateDataResponse
-
-
+    suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: AddOtherIncomeInfo) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeInfo")
     suspend fun getOtherIncomeInfo(

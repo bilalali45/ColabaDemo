@@ -128,11 +128,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             addressList[0].stateName?.let {
                 binding.tvState.setText(it)
                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_color_two
-                    )
-                )
+                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
             addressList[0].countyName?.let {
                 binding.tvCounty.setText(it)
@@ -390,7 +386,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             }
 
         }
-
         if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0){
             val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
 

@@ -29,7 +29,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : IncomeViewModel by activityViewModels()
@@ -39,7 +38,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     var incomeInfoId :Int? = null
     var borrowerId :Int? = null
     private var businessAddress = AddressData()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,11 +58,16 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
         }
 
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result ->
+            businessAddress = result
+            displayAddress(result)
+        }
+
         initViews()
         getData()
 
         return binding.root
-
     }
 
     private fun initViews() {
@@ -230,6 +233,18 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             }
         }
     }
+
+    private fun displayAddress(it: AddressData){
+        val builder = StringBuilder()
+        it.street?.let { builder.append(it).append(" ") }
+        it.unit?.let { builder.append(it).append("\n") }
+        it.city?.let { builder.append(it).append(" ") }
+        it.stateName?.let{ builder.append(it).append(" ")}
+        it.zipCode?.let { builder.append(it) }
+        it.countryName?.let { builder.append(" ").append(it)}
+        binding.textviewBusinessAddress.text = builder
+    }
+
 
     private fun openCalendar() {
         val c = Calendar.getInstance()

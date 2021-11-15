@@ -162,7 +162,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun sendCurrentEmploymentData(token: String, data: EmploymentData): Result<AddUpdateDataResponse> {
+    suspend fun sendCurrentEmploymentData(token: String, data: AddCurrentEmploymentModel): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addCurrentEmployment(newToken,data)
@@ -179,7 +179,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun sendPrevEmploymentData(token: String, data: PreviousEmploymentResponse): Result<AddUpdateDataResponse> {
+    suspend fun sendPrevEmploymentData(token: String, data: PreviousEmploymentData): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addPreviousEmployment(newToken,data)
@@ -229,7 +229,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun sendOtherIncomeData(token: String, data: OtherIncomeData): Result<AddUpdateDataResponse> {
+    suspend fun sendOtherIncomeData(token: String, data: AddOtherIncomeInfo): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateOtherIncome(newToken,data)
@@ -245,4 +245,5 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
             }
         }
     }
+
 }

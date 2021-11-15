@@ -12,7 +12,6 @@ data class EmploymentDetailResponse(
     val status: String?
 )
 
-
 data class EmploymentData(
     val loanApplicationId: Int?,
     val borrowerId: Int?,
@@ -57,10 +56,10 @@ data class EmploymentInfo(
 )
 
 data class EmploymentOtherIncome(
-    val annualIncome: Double?,
-    val displayName: String?,
     val incomeTypeId: Int?,
-    val name: String?
+    val name: String?,
+    val displayName: String?,
+    val annualIncome: Double?
 )
 
 
