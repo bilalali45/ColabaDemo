@@ -11,7 +11,8 @@ data class SelfEmploymentResponse(
 )
 
 data class SelfEmploymentData(
-    val address: SelfEmploymentAddress?,
+    @SerializedName("address")
+    val businessAddress: AddressData?,
     val annualIncome: Double?,
     val borrowerId: Int?,
     val businessName: String?,

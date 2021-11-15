@@ -27,4 +27,14 @@ class SubjectPropertyRepo @Inject constructor(private val dataSource: SubjectPro
         return sendDataResponse
     }
 
+    suspend fun addCoBorrowerOccupancy(token: String, data: AddCoBorrowerOccupancy): Result<AddUpdateDataResponse> {
+        val sendDataResponse = dataSource.addCoBorrowerOccupancy(token,data)
+        return sendDataResponse
+    }
+
+    suspend fun getCoBorrowerOccupancyStatus(token:String ,loanApplicationId:Int):Result<CoBorrowerOccupancyStatus>{
+        return dataSource.getCoBorrowerOccupancyStatus(token = token , loanApplicationId = loanApplicationId)
+    }
+
+
 }

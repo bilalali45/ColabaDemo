@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,7 +47,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
         super.addListeners(binding.root)
         // set Header title
@@ -90,9 +91,12 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && incomeInfoId != null) {
+                if (loanApplicationId != null && incomeInfoId != null && borrowerId != null) {
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+                }
+                else{
+                    Timber.e(" some id is null")
                 }
             }
         }
@@ -132,7 +136,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             }
 
             data.employmentData?.employerAddress?.let {
-                addressList.add(EmployerAddress(
+               /* addressList.add(EmployerAddress(
                     streetAddress = it.streetAddress,
                     unitNo = it.unitNo,
                     cityName = it.cityName,
@@ -155,7 +159,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                 it.cityName?.let { builder.append(it).append(" ") }
                 it.stateName?.let{ builder.append(it).append(" ")}
                 it.zipCode?.let { builder.append(it) }
-                binding.tvPrevEmploymentAddress.text = builder
+                binding.tvPrevEmploymentAddress.text = builder */
             }
 
             binding.loaderEmployment.visibility = View.GONE
@@ -232,7 +236,66 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             CustomMaterialFields.clearError(binding.layoutYearsProfession,requireActivity())
         }
         if (empName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && endDate.length > 0 && profYears.length > 0 && netIncome.length > 0){
-            findNavController().popBackStack()
+
+            lifecycleScope.launchWhenStarted{
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if(loanApplicationId != null && borrowerId !=null && incomeInfoId != null) {
+                        Log.e("Loan Application Id", "" +loanApplicationId + " borrowerId:  " + borrowerId)
+
+                        val phoneNum = if(binding.editTextEmpPhnum.text.toString().length > 0) binding.editTextEmpPhnum.text.toString() else null
+                        var isOwnershipInterest : Boolean ? = null
+                        if(binding.rbOwnershipYes.isChecked)
+                            isOwnershipInterest = true
+
+                        if(binding.rbOwnershipNo.isChecked)
+                            isOwnershipInterest = false
+
+
+                        val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
+
+//                        val employerInfo = EmploymentInfo(
+//                            borrowerId = borrowerId,incomeInfoId= incomeInfoId, employerName=empName, employerPhoneNumber=phoneNum, jobTitle=jobTitle,startDate=startDate,endDate =null, yearsInProfession = profYears.toInt(),
+//                            hasOwnershipInterest = isOwnershipInterest, ownershipInterest = ownershipPercentage?.toDouble())
+
+                        // chekc values for wasys of income
+                        var isPaidByMonthlySalary : Boolean? = null
+                        var annualSalary : String = "0"
+                        var hourlyRate : String = "0"
+                        var avgHourWeeks : String= "0"
+
+
+
+                        val wayOfIncome = WayOfIncome(isPaidByMonthlySalary=isPaidByMonthlySalary,employerAnnualSalary=annualSalary?.toDouble(),hourlyRate= hourlyRate?.toDouble(),hoursPerWeek=avgHourWeeks.toInt())
+
+                        // get other income types
+                        val otherIncomeList :  ArrayList<EmploymentOtherIncome> = ArrayList()
+
+                        /*otherIncomeList.add(EmploymentOtherIncome(
+
+                        )) */
+
+//                        val employmentData = EmploymentData(
+//                            loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome,employmentOtherIncome = otherIncomeList)
+//                        Log.e("employmentData-snding to API", "" + employmentData)
+//
+//                        binding.loaderEmployment.visibility = View.VISIBLE
+//                        viewModel.sendCurrentEmploymentData(authToken, employmentData)
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
     }
 

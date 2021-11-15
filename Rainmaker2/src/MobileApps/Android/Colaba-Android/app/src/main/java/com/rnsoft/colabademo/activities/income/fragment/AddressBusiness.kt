@@ -53,7 +53,10 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
     private val viewModel : CommonViewModel by activityViewModels()
-    private var addressList : ArrayList<BusinessIncomeAddress> = ArrayList()
+    private val incomeViewModel : IncomeViewModel by activityViewModels()
+    private var businessAddress = AddressData()
+
+    //private var addressList : ArrayList<BusinessIncomeAddress> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,7 +90,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
         }
 
         binding.btnSave.setOnClickListener {
-            checkValidations()
+            saveAddress()
         }
 
         toolbar.backButton.setOnClickListener {
@@ -173,7 +176,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.edZipcode, binding.layoutZipCode)
     }
 
-    private fun checkValidations() {
+    private fun saveAddress() {
         val searchBar: String = binding.tvSearch.text.toString()
         val country: String = binding.tvCountry.text.toString()
         val state: String = binding.tvState.text.toString()
@@ -181,7 +184,6 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
         val city = binding.edCity.text.toString()
         val county = binding.tvCounty.text.toString()
         val zipCode = binding.edZipcode.text.toString()
-
 
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
@@ -226,8 +228,14 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
                 CustomMaterialFields.clearError(binding.layoutState,requireActivity())
             }
         }
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
-            //removeError()
+
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0){
+            val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+
+            businessAddress = AddressData(street = street, unit = unit, city = city, stateName = state, countryName = country,
+                countyName = county,countyId = 1, stateId = 1, countryId = 1, zipCode = zipCode)
+
+            incomeViewModel.saveIncomeAddress(businessAddress)
             findNavController().popBackStack()
         }
     }
@@ -376,65 +384,31 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
     }
 
     private fun setData() {
-        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
-        if (addressList.size > 0) {
-            addressList[0].street?.let {
+
+        businessAddress = arguments?.getParcelable(AppConstant.address)!!
+        businessAddress.let { data->
+            data.street.let {
                 binding.tvSearch.setText(it)
-                CustomMaterialFields.setColor(
-                    binding.layoutSearchAddress,
-                    R.color.grey_color_two,
-                    requireActivity()
-                )
+                binding.edStreetAddress.setText(it)
+                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
             }
-            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
-            addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let {
+            data.city.let { binding.edCity.setText(it) }
+            data.countryName?.let {
                 binding.tvCountry.setText(it)
                 binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
-            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let {
-                binding.tvState.setText(it)
+            data.zipCode?.let { binding.edZipcode.setText(it) }
+            data.stateName?.let { binding.tvState.setText(it)
                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
-            /*addressList[0].countyName?.let {
+            data.countyName?.let {
                 binding.tvCounty.setText(it)
                 binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            } */
-            addressList[0].unit?.let { binding.edUnitAtpNo.setText(it) }
+            }
+            data.unit.let { binding.edUnitAtpNo.setText(it) }
+
             visibleAllFields()
         }
-    }
-
-    private fun setStateAndCountyDropDown() {
-
-        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
-        binding.tvCountry.setAdapter(countryAdapter)
-        binding.tvCountry.addTextChangedListener(countryTextWatcher)
-        binding.tvCountry.setOnClickListener {
-            binding.tvCountry.showDropDown()
-        }
-
-        binding.tvCountry.onItemClickListener =
-            object : AdapterView.OnItemClickListener { override fun onItemClick(p0: AdapterView<*>?,p1: View?,position: Int, id: Long) {
-                    binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                }
-            }
-
-
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
-        binding.tvState.setAdapter(stateAdapter)
-        binding.tvState.addTextChangedListener(stateTextWatcher)
-        binding.tvState.setOnClickListener {
-            binding.tvState.showDropDown()
-        }
-        binding.tvState.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                }
-            }
-
     }
 
     private fun setUpCompleteViewForPlaces() {

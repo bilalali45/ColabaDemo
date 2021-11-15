@@ -98,13 +98,13 @@
 
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/chineese_checkbox"
+            android:id="@+id/guamanian_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/rubik_regular"
             android:paddingStart="14dp"
-            android:text="Chinese"
+            android:text="Guamanian or Chamorro"
             android:textColor="@color/grey_color_one"
             android:textSize="14sp"
             app:buttonCompat="@drawable/cb_selector"
@@ -125,7 +125,7 @@
             android:textSize="14sp"
             app:buttonCompat="@drawable/cb_selector"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chineese_checkbox" />
+            app:layout_constraintTop_toBottomOf="@+id/guamanian_checkbox" />
 
 
         <androidx.appcompat.widget.AppCompatCheckBox

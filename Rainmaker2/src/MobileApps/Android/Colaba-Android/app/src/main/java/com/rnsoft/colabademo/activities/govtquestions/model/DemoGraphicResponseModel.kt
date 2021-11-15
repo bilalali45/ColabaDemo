@@ -48,4 +48,3 @@ data class DemoGraphicRaceDetail(
     var otherRace: String?
 ):Parcelable
 
-

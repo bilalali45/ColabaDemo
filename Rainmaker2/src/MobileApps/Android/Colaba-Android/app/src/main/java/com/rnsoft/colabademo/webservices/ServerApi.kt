@@ -80,10 +80,10 @@ interface ServerApi{
     ) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail")
-    suspend fun addOrUpdateRefinanceDetail(
-        @Header("Authorization")  Authorization:String,
-        @Body data: SubPropertyRefinanceData
-    ) :AddUpdateDataResponse
+    suspend fun addOrUpdateRefinanceDetail(@Header("Authorization")  Authorization:String, @Body data: SubPropertyRefinanceData) :AddUpdateDataResponse
+
+    @POST("api/mcu/mobile/loanapplication/SubjectProperty/AddOrUpdateCoBorrowerOccupancyStatus")
+    suspend fun addCoBorrowerOccupancy(@Header("Authorization")  Authorization:String, @Body data: AddCoBorrowerOccupancy) : AddUpdateDataResponse
 
 
     @GET("api/mcu/mobile/loanapplication/SubjectProperty/GetRefinanceSubjectPropertyDetail")
@@ -292,8 +292,11 @@ interface ServerApi{
         @Query("borrowerId") borrowerId:Int,
         @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
 
-    //AddOrUpdateCurrentEmploymentDetail
-    //AddOrUpdatePreviousEmploymentDetail
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
+    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: EmploymentData) : AddUpdateDataResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdatePreviousEmploymentDetail")
+    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentResponse) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
     suspend fun getSelfEmploymentContractor(
@@ -301,7 +304,12 @@ interface ServerApi{
         @Query("borrowerId") borrowerId:Int,
         @Query("incomeInfoId") incomeInfoId:Int): SelfEmploymentResponse
 
-    // AddOrUpdateSelfBusiness
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateSelfBusiness")
+    suspend fun addOrUpdateSelfBusiness(
+        @Header("Authorization")  Authorization:String,
+        @Body selfBusinessData: SelfEmploymentData
+    ) : AddUpdateDataResponse
+
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetBusinessIncome")
     suspend fun getBusinessIncome(
@@ -315,6 +323,11 @@ interface ServerApi{
         @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
 
     //AddOrUpdateBusiness
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateBusiness")
+    suspend fun addUpdateBusiness(
+        @Header("Authorization")  Authorization:String,
+        @Body data: BusinessData
+    ) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetMilitaryIncome")
     suspend fun getMilitaryIncome(
@@ -323,6 +336,13 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int): MilitaryIncomeResponse
 
     // AddOrUpdateMilitaryIncome
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateMilitaryIncome")
+    suspend fun addUpdateMilitaryIncome(
+        @Header("Authorization")  Authorization:String,
+        @Body data: MilitaryIncomeData
+    ) : AddUpdateDataResponse
+
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetRetirementIncomeInfo")
     suspend fun getRetirementIncome(
@@ -335,6 +355,13 @@ interface ServerApi{
         @Header("Authorization") Authorization : String): ArrayList<DropDownResponse>
 
     //AddOrUpdateRetirementIncomeInfo
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateRetirementIncomeInfo")
+    suspend fun addUpdateRetirement(@Header("Authorization")  Authorization:String, @Body data: RetirementIncomeData) : AddUpdateDataResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherIncome")
+    suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: OtherIncomeData) : AddUpdateDataResponse
+
+
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeInfo")
     suspend fun getOtherIncomeInfo(
@@ -344,9 +371,6 @@ interface ServerApi{
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeTypes")
     suspend fun getOtherIncomeTypes(
         @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
-
-
-    //AddOrUpdateRetirementIncomeInfo
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")

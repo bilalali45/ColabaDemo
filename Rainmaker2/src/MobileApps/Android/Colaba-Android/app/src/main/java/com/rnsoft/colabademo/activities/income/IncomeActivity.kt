@@ -85,7 +85,7 @@ class IncomeActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(webEvent: WebServiceErrorEvent) {
         binding.incomeDataLoader.visibility = View.INVISIBLE
-        finish()
+        //finish()
     }
 
 }

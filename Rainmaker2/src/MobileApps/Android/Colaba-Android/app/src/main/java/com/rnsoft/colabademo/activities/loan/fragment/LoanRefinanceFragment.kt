@@ -49,7 +49,6 @@ class LoanRefinanceFragment : BaseFragment() {
         bindingToolbar = binding.headerLoanPurchase
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_refinance))
-        Timber.e("oncREate")
 
 
         initViews()

@@ -11,10 +11,11 @@ data class RetirementIncomeResponse(
 )
 
 data class RetirementIncomeData(
+   // val loanApplicationId: Int?,
     val borrowerId: Int?,
-    val description: String?,
-    val employerName: String?,
     val incomeInfoId: Int?,
     val incomeTypeId: Int?,
+    val description: String?,
+    val employerName: String?,
     val monthlyBaseIncome: Double?
 )
