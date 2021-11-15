@@ -23,7 +23,7 @@ class DeleteAddressPopupViewController: BaseViewController {
     @IBOutlet weak var btnNo: UIButton!
     
     var popupTitle = ""
-    var screenType = 1 // 1 for main Screen, 2 for Address Screen, 3 for Mailing Screen
+    var screenType = 1 // 1 for main Screen, 2 for Address Screen, 3 for Mailing Screen // 4 for Asset Income Real Estate
     var indexPath = IndexPath()
     weak var delegate: DeleteAddressPopupViewControllerDelegate?
     
@@ -82,6 +82,9 @@ class DeleteAddressPopupViewController: BaseViewController {
             }
             else if (self.screenType == 3){
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
+            }
+            else if (self.screenType == 4){
+                self.delegate?.deleteAddress(indexPath: self.indexPath)
             }
         }
     }

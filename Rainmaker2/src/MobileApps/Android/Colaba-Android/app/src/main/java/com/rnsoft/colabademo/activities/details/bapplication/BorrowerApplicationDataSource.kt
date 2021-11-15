@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -157,11 +158,10 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         loanApplicationId: Int,
         borrowerId:Int
     ): Result<IncomeDetailsResponse> {
-        Log.e("DATA SOURCE-INCOME","loanApplicationId: " + loanApplicationId + " borrowerId: " + borrowerId)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerIncomeDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            Timber.e("IncomeResponse-", response.toString())
+            //Timber.e("IncomeResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -170,6 +170,37 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+
+    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<GovernmentAddUpdateDataResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  updateGovernmentQuestions )
+            Timber.e("updateGovernmentQuestions - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addOrUpdateDemoGraphic( token:String, demoGraphicData:DemoGraphicData):Result<AddUpdateDemoGraphicResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addOrUpdateDemoGraphic( newToken,  demoGraphicData )
+            Timber.e("addOrUpdateDemoGraphic - $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
 
     suspend fun getGovernmentQuestions(
         token: String,

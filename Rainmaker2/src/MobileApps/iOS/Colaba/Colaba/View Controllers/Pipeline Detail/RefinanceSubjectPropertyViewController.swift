@@ -49,15 +49,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var txtfieldTax: ColabaTextField!
     @IBOutlet weak var txtfieldHomeOwnerInsurance: ColabaTextField!
     @IBOutlet weak var txtfieldFloodInsurance: ColabaTextField!
-    @IBOutlet weak var occupancyStatusView: UIView!
-    @IBOutlet weak var lblCoBorrowerName: UILabel!
-    @IBOutlet weak var occupyingStackView: UIStackView!
-    @IBOutlet weak var btnOccupying: UIButton!
-    @IBOutlet weak var lblOccupying: UILabel!
-    @IBOutlet weak var nonOccupyingStackView: UIStackView!
-    @IBOutlet weak var btnNonOccupying: UIButton!
-    @IBOutlet weak var lblNonOccupying: UILabel!
+    @IBOutlet weak var tableViewOccupancyStatus: UITableView!
+    @IBOutlet weak var tableViewOccupancyStatusHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var firstMortgageMainView: UIView!
+    @IBOutlet weak var firstMortgageMainViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var firstMortgageMainViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var firstMortgageYesStackView: UIStackView!
     @IBOutlet weak var btnFirstMortgageYes: UIButton!
@@ -84,7 +79,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     var isTBDProperty = true
     var isMixedUseProperty: Bool?
-    var isOccupying: Bool?
     var isFirstMortgage = false
     var isSecondMortgage = false
     
@@ -114,8 +108,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         propertyDetailView.isHidden = true
         propertyViewHeightConstraint.constant = 203
-        btnOccupying.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-        lblOccupying.font = Theme.getRubikRegularFont(size: 14)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
@@ -140,9 +132,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
-        occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
-        nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
-        
         firstMortgageYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageYesStackViewTapped)))
         firstMortgageNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageNoStackViewTapped)))
         firstMortgageView.layer.cornerRadius = 6
@@ -158,6 +147,8 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         secondMortgageView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         secondMortgageView.dropShadowToCollectionViewCell()
         secondMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageViewTapped)))
+        
+        tableViewOccupancyStatus.register(UINib(nibName: "OccupancyStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "OccupancyStatusTableViewCell")
         
     }
     
@@ -225,8 +216,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         txtfieldTax.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.propertyTax.rounded()))
         txtfieldHomeOwnerInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.homeOwnerInsurance.rounded()))
         txtfieldFloodInsurance.setTextField(text: String(format: "%.0f", self.subjectPropertyDetail.floodInsurance.rounded()))
-        isOccupying = self.coBorrowerOccupancyArray.count > 0
-        lblCoBorrowerName.text = self.coBorrowerOccupancyArray.map{$0.borrowerFullName}.joined(separator: ", ")
+        tableViewOccupancyStatus.reloadData()
+        if (coBorrowerOccupancyArray.count == 0){
+            firstMortgageMainViewTopConstraint.constant = 0
+        }
         isFirstMortgage = self.subjectPropertyDetail.hasFirstMortgage
         isSecondMortgage = self.subjectPropertyDetail.hasSecondMortgage
         
@@ -242,7 +235,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         
         changeMortgageStatus()
         showHideRentalIncome()
-        changeOccupyingStatus()
         changeMixedUseProperty()
         changedSubjectPropertyType()
     }
@@ -250,8 +242,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     func setScreenHeight(){
         let firstMortgageViewHeight = self.firstMortgageMainView.frame.height
         let secondMortgageViewHeight = self.secondMortgageMainView.frame.height
-        
-        self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + 1600
+        let occupancyStatusTableViewHeight = self.tableViewOccupancyStatus.contentSize.height
+        self.tableViewOccupancyStatusHeightConstraint.constant = occupancyStatusTableViewHeight
+        self.mainViewHeightConstraint.constant = firstMortgageViewHeight + secondMortgageViewHeight + occupancyStatusTableViewHeight + 1500
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
@@ -344,25 +337,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         vc.detail = lblPropertyUseDetail.text!
         vc.delegate = self
         self.presentVC(vc: vc)
-    }
-    
-    @objc func occupyingStackViewTapped(){
-        isOccupying = true
-        changeOccupyingStatus()
-    }
-    
-    @objc func nonOccupyingStackViewTapped(){
-        isOccupying = false
-        changeOccupyingStatus()
-    }
-    
-    @objc func changeOccupyingStatus(){
-        if let occupying = isOccupying{
-            btnOccupying.setImage(UIImage(named: occupying ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblOccupying.font = occupying ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            btnNonOccupying.setImage(UIImage(named: occupying ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-            lblNonOccupying.font = occupying ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
-        }
     }
     
     @objc func firstMortgageYesStackViewTapped(){
@@ -598,6 +572,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     }
     
     func getCoBorrowersOccupancyStatus(){
+        
         let extraData = "loanApplicationId=\(loanApplicationId)"
         
         APIRouter.sharedInstance.executeAPI(type: .getCoBorrowersOccupancyStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
@@ -722,7 +697,6 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
                     self.showPopup(message: "Subject property updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
                         self.goBack()
                     }
-                    self.getRefinanceSubjectProperty()
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
@@ -806,5 +780,28 @@ extension RefinanceSubjectPropertyViewController: SecondMortgageFollowupQuestion
         
         lblSecondMortgagePayment.text = Int(mortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
         lblSecondMortgageBalance.text = Int(unpaidMortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
+    }
+}
+
+extension RefinanceSubjectPropertyViewController: UITableViewDataSource, UITableViewDelegate{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return coBorrowerOccupancyArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "OccupancyStatusTableViewCell", for: indexPath) as! OccupancyStatusTableViewCell
+        cell.borrower = coBorrowerOccupancyArray[indexPath.row]
+        cell.setData()
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if (indexPath.row == coBorrowerOccupancyArray.count - 1){
+            return 130
+        }
+        else{
+            return 160
+        }
     }
 }

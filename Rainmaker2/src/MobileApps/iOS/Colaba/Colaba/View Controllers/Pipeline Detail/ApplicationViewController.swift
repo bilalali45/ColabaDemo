@@ -234,6 +234,10 @@ class ApplicationViewController: BaseViewController {
     
     @objc func addRealStateOwnedViewTapped(){
         let vc = Utility.getRealEstateVC()
+        vc.borrowerFullName = loanApplicationDetail.borrowersInformation.first!.borrowerFullName
+        vc.borrowerId = loanApplicationDetail.borrowersInformation.first!.borrowerId
+        vc.loanApplicationId = self.loanApplicationId
+        vc.isForAdd = true
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
@@ -818,16 +822,20 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         }
         else if (collectionView == realEstateCollectionView){
             let vc = Utility.getRealEstateVC()
-            if (loanApplicationDetail.realEstatesOwned.count > 0){
+            if (indexPath.row == loanApplicationDetail.realEstatesOwned.count){
+                vc.borrowerFullName = loanApplicationDetail.borrowersInformation.first!.borrowerFullName
+                vc.borrowerId = loanApplicationDetail.borrowersInformation.first!.borrowerId
+                vc.loanApplicationId = self.loanApplicationId
+                vc.isForAdd = true
+            }
+            else{
                 vc.loanApplicationId = self.loanApplicationId
                 vc.borrowerPropertyId = self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerPropertyId
                 if let borrower = self.loanApplicationDetail.borrowersInformation.filter({$0.borrowerId == self.loanApplicationDetail.realEstatesOwned[indexPath.row].borrowerId}).first{
                     vc.borrowerFullName = borrower.borrowerFullName
+                    vc.borrowerId = borrower.borrowerId
                 }
             }
-//            else{
-//                vc.borrowerFullName = loanApplicationDetail.borrowersInformation.first?.borrowerFullName
-//            }
             let navVC = UINavigationController(rootViewController: vc)
             navVC.navigationBar.isHidden = true
             navVC.modalPresentationStyle = .fullScreen

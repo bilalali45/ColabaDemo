@@ -5038,87 +5038,21 @@ Birmingham AL 35235</string>
                                                     <constraint firstItem="2rb-mk-Bhw" firstAttribute="top" secondItem="Aac-kA-SlB" secondAttribute="bottom" constant="30" id="wXs-jl-c53"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFP-38-LC7">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="3YL-Qe-BoQ">
                                                 <rect key="frame" x="0.0" y="1056" width="375" height="120"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Co-Borrower Occupancy Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tZg-fD-z3m">
-                                                        <rect key="frame" x="20" y="0.0" width="199" height="15.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maria Randall" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ib9-7z-MJb">
-                                                        <rect key="frame" x="20" y="19.5" width="335" height="15.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
-                                                        <color key="textColor" name="ButtonGreyTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="1sk-IY-mJm">
-                                                        <rect key="frame" x="20" y="57" width="335" height="40"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JqN-Rc-aP9">
-                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="height" constant="40" id="Jt6-EU-8Ow"/>
-                                                                    <constraint firstAttribute="width" constant="18" id="Uck-jy-0LE"/>
-                                                                </constraints>
-                                                                <state key="normal" image="RadioButtonSelected"/>
-                                                                <connections>
-                                                                    <action selector="btnUnMarriedTapped:" destination="uq2-fN-Er5" eventType="touchUpInside" id="OEs-et-W6J"/>
-                                                                </connections>
-                                                            </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Occupying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Twf-uN-fBS">
-                                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
-                                                                <color key="textColor" name="AppBlackColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9q9-Xz-qXP">
-                                                        <rect key="frame" x="20" y="97" width="335" height="40"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ls4-xY-21p">
-                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
-                                                                <constraints>
-                                                                    <constraint firstAttribute="width" constant="18" id="SLt-4G-ZG3"/>
-                                                                    <constraint firstAttribute="height" constant="40" id="tF2-Nx-v1p"/>
-                                                                </constraints>
-                                                                <state key="normal" image="RadioButtonUnselected"/>
-                                                                <connections>
-                                                                    <action selector="btnMarriedTapped:" destination="uq2-fN-Er5" eventType="touchUpInside" id="7Ck-pD-k9c"/>
-                                                                </connections>
-                                                            </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Non-Occupying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l2f-4H-6am">
-                                                                <rect key="frame" x="34" y="0.0" width="301" height="40"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                                <color key="textColor" name="AppBlackColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="1sk-IY-mJm" firstAttribute="leading" secondItem="LFP-38-LC7" secondAttribute="leading" constant="20" id="3Dl-Va-WZI"/>
-                                                    <constraint firstAttribute="trailing" secondItem="Ib9-7z-MJb" secondAttribute="trailing" constant="20" id="8Fi-Ca-6ra"/>
-                                                    <constraint firstItem="tZg-fD-z3m" firstAttribute="top" secondItem="LFP-38-LC7" secondAttribute="top" id="MTx-St-HRO"/>
-                                                    <constraint firstItem="9q9-Xz-qXP" firstAttribute="leading" secondItem="LFP-38-LC7" secondAttribute="leading" constant="20" id="MvL-Zz-UYr"/>
-                                                    <constraint firstAttribute="trailing" secondItem="1sk-IY-mJm" secondAttribute="trailing" constant="20" id="SC0-YO-ZIx"/>
-                                                    <constraint firstItem="1sk-IY-mJm" firstAttribute="top" secondItem="Ib9-7z-MJb" secondAttribute="bottom" constant="22" id="WWd-qP-CSz"/>
-                                                    <constraint firstItem="Ib9-7z-MJb" firstAttribute="leading" secondItem="LFP-38-LC7" secondAttribute="leading" constant="20" id="X2d-X4-92P"/>
-                                                    <constraint firstAttribute="height" constant="120" id="Z9q-7o-NMs"/>
-                                                    <constraint firstItem="tZg-fD-z3m" firstAttribute="leading" secondItem="LFP-38-LC7" secondAttribute="leading" constant="20" id="hqh-c7-Tfj"/>
-                                                    <constraint firstAttribute="trailing" secondItem="9q9-Xz-qXP" secondAttribute="trailing" constant="20" id="pSi-X8-wNt"/>
-                                                    <constraint firstItem="Ib9-7z-MJb" firstAttribute="top" secondItem="tZg-fD-z3m" secondAttribute="bottom" constant="4" id="xwQ-Iy-lCb"/>
-                                                    <constraint firstItem="9q9-Xz-qXP" firstAttribute="top" secondItem="1sk-IY-mJm" secondAttribute="bottom" id="ykR-TF-Uf2"/>
+                                                    <constraint firstAttribute="height" constant="120" id="L8g-Ww-ky3"/>
                                                 </constraints>
-                                            </view>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="vbw-pl-Xce" id="juW-a7-po1"/>
+                                                    <outlet property="delegate" destination="vbw-pl-Xce" id="7iS-WE-Pg3"/>
+                                                </connections>
+                                            </tableView>
                                         </subviews>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstItem="LFP-38-LC7" firstAttribute="top" secondItem="gyw-xJ-GcV" secondAttribute="bottom" id="0Oq-Md-P3o"/>
-                                            <constraint firstAttribute="trailing" secondItem="LFP-38-LC7" secondAttribute="trailing" id="2ku-q7-NIQ"/>
+                                            <constraint firstItem="3YL-Qe-BoQ" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" id="0dZ-iJ-XZB"/>
                                             <constraint firstItem="YEE-KR-6dJ" firstAttribute="top" secondItem="ERd-64-dxx" secondAttribute="bottom" constant="15" id="2sF-re-ebK"/>
                                             <constraint firstItem="1h0-gr-qtU" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="7ka-8f-ocH"/>
                                             <constraint firstItem="gyw-xJ-GcV" firstAttribute="top" secondItem="Y6M-VE-TWf" secondAttribute="bottom" constant="60" id="7kn-JI-Z4V"/>
@@ -5126,16 +5060,17 @@ Birmingham AL 35235</string>
                                             <constraint firstAttribute="height" constant="1350" id="Ah9-hX-t8z"/>
                                             <constraint firstAttribute="trailing" secondItem="Y6M-VE-TWf" secondAttribute="trailing" id="Coj-eg-vvK"/>
                                             <constraint firstItem="1h0-gr-qtU" firstAttribute="top" secondItem="oVV-eu-VNr" secondAttribute="bottom" constant="30" id="Dqn-se-rhw"/>
+                                            <constraint firstItem="3YL-Qe-BoQ" firstAttribute="top" secondItem="gyw-xJ-GcV" secondAttribute="bottom" id="GJC-Km-LYD"/>
                                             <constraint firstAttribute="trailing" secondItem="YEE-KR-6dJ" secondAttribute="trailing" constant="20" id="Ia1-1G-21W"/>
                                             <constraint firstItem="Y6M-VE-TWf" firstAttribute="top" secondItem="1h0-gr-qtU" secondAttribute="bottom" constant="50" id="JnO-BY-UV8"/>
                                             <constraint firstAttribute="trailing" secondItem="1h0-gr-qtU" secondAttribute="trailing" constant="20" id="OcU-ZM-TPN"/>
                                             <constraint firstItem="oVV-eu-VNr" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="QIl-z1-OED"/>
                                             <constraint firstItem="Y6M-VE-TWf" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" id="V51-1B-suA"/>
-                                            <constraint firstItem="LFP-38-LC7" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" id="X5h-Kl-5B9"/>
                                             <constraint firstItem="ERd-64-dxx" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="a9B-4U-Rpf"/>
                                             <constraint firstItem="ERd-64-dxx" firstAttribute="top" secondItem="Ddm-7e-LpO" secondAttribute="top" constant="20" id="cQ8-ij-udj"/>
                                             <constraint firstItem="gyw-xJ-GcV" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" id="duk-0H-xlb"/>
                                             <constraint firstAttribute="trailing" secondItem="gyw-xJ-GcV" secondAttribute="trailing" id="iW5-g4-FYz"/>
+                                            <constraint firstAttribute="trailing" secondItem="3YL-Qe-BoQ" secondAttribute="trailing" id="jRw-Y8-I16"/>
                                             <constraint firstItem="oVV-eu-VNr" firstAttribute="top" secondItem="YEE-KR-6dJ" secondAttribute="bottom" constant="70" id="mMa-k5-MzK"/>
                                             <constraint firstItem="YEE-KR-6dJ" firstAttribute="leading" secondItem="Ddm-7e-LpO" secondAttribute="leading" constant="20" id="mRJ-JF-TbN"/>
                                             <constraint firstAttribute="trailing" secondItem="ERd-64-dxx" secondAttribute="trailing" constant="20" id="o8N-Hy-HOc"/>
@@ -5187,18 +5122,13 @@ Birmingham AL 35235</string>
                     <connections>
                         <outlet property="btnBack" destination="hir-7t-4kI" id="biE-5F-jTS"/>
                         <outlet property="btnNo" destination="QS1-ZS-c1m" id="5kG-1Z-iOa"/>
-                        <outlet property="btnNonOccupying" destination="ls4-xY-21p" id="zJb-8M-nmd"/>
-                        <outlet property="btnOccupying" destination="JqN-Rc-aP9" id="ZrK-ZM-QMC"/>
                         <outlet property="btnSaveChanges" destination="2qA-dK-y6h" id="6EC-Cf-fsd"/>
                         <outlet property="btnSubjectPropertyAddress" destination="B3C-CG-Yu6" id="Uay-bw-Avu"/>
                         <outlet property="btnSubjectPropertyTBD" destination="Me5-Er-xED" id="nt1-Jd-qhx"/>
                         <outlet property="btnYes" destination="zdJ-zd-XKm" id="aHU-25-Qcp"/>
                         <outlet property="lblAddress" destination="TdB-I6-pZE" id="0XX-jN-Rb7"/>
-                        <outlet property="lblCoBorrowerName" destination="Ib9-7z-MJb" id="KQ6-5z-E48"/>
                         <outlet property="lblNavTitle" destination="THa-hI-gfM" id="Aua-WV-e1A"/>
                         <outlet property="lblNo" destination="V11-mJ-2bf" id="uJk-kc-CMp"/>
-                        <outlet property="lblNonOccupying" destination="l2f-4H-6am" id="EnC-Py-rnJ"/>
-                        <outlet property="lblOccupying" destination="Twf-uN-fBS" id="Q2a-7y-piM"/>
                         <outlet property="lblPropertyUseDetail" destination="os7-8a-pEb" id="Q7H-3L-CGl"/>
                         <outlet property="lblSubjectPropertyAddress" destination="f5e-sA-gwA" id="YqU-x2-jEZ"/>
                         <outlet property="lblSubjectPropertyTBD" destination="LK7-ex-sTd" id="fRF-O9-sZE"/>
@@ -5206,10 +5136,8 @@ Birmingham AL 35235</string>
                         <outlet property="lblYes" destination="PKK-8x-dve" id="e4J-wL-OQV"/>
                         <outlet property="mainScrollView" destination="3Se-Qr-OzJ" id="wNP-rn-xHG"/>
                         <outlet property="mainView" destination="Ddm-7e-LpO" id="8Y3-MK-E4W"/>
+                        <outlet property="mainViewHeightConstraint" destination="Ah9-hX-t8z" id="tMO-aq-4QF"/>
                         <outlet property="noStackView" destination="qyV-yd-cPp" id="chT-hv-1kJ"/>
-                        <outlet property="nonOccupyingStackView" destination="9q9-Xz-qXP" id="VFo-0i-u30"/>
-                        <outlet property="occupancyStatusView" destination="LFP-38-LC7" id="mnd-Qg-vHQ"/>
-                        <outlet property="occupyingStackView" destination="1sk-IY-mJm" id="do2-d5-gXo"/>
                         <outlet property="propertyDetailView" destination="bju-oY-kdf" id="DV7-ne-L2F"/>
                         <outlet property="propertyView" destination="Y6M-VE-TWf" id="BI0-og-h4g"/>
                         <outlet property="propertyViewHeightConstraint" destination="aJx-d9-rfB" id="Vy9-tP-NcK"/>
@@ -5217,6 +5145,8 @@ Birmingham AL 35235</string>
                         <outlet property="subjectPropertyAddressView" destination="YEE-KR-6dJ" id="niJ-c7-L5N"/>
                         <outlet property="subjectPropertyAddressViewHeightConstraint" destination="RJb-22-ysC" id="C3C-2O-Jmu"/>
                         <outlet property="subjectPropertyTBDView" destination="ERd-64-dxx" id="Tuk-lW-92t"/>
+                        <outlet property="tableViewOccupancyStatus" destination="3YL-Qe-BoQ" id="wN6-0q-BeJ"/>
+                        <outlet property="tableViewOccupancyStatusHeightConstraint" destination="L8g-Ww-ky3" id="vq7-za-0gw"/>
                         <outlet property="txtfieldAppraisedPropertyValue" destination="9ab-bp-gOn" id="zqG-7v-lcm"/>
                         <outlet property="txtfieldFloodInsurance" destination="2rb-mk-Bhw" id="BqN-aE-BZ7"/>
                         <outlet property="txtfieldHomeOwnerInsurance" destination="Aac-kA-SlB" id="hVI-Kb-Sq1"/>
@@ -5977,72 +5907,17 @@ Birmingham AL 35235</string>
                                                     <constraint firstItem="cSp-rI-49x" firstAttribute="leading" secondItem="pDL-cr-efO" secondAttribute="leading" constant="20" id="xBP-j9-ZAM"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p7v-Hc-Nqa">
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="6oN-U0-dEW">
                                                 <rect key="frame" x="0.0" y="1184" width="375" height="120"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Co-Borrower Occupancy Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L92-y9-Ww0">
-                                                        <rect key="frame" x="20" y="0.0" width="199" height="15.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
-                                                        <color key="textColor" name="AppGreyColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Maria Randall" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hFK-v5-rtV">
-                                                        <rect key="frame" x="20" y="19.5" width="335" height="15.5"/>
-                                                        <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
-                                                        <color key="textColor" name="ButtonGreyTextColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="PV7-ZO-CgO">
-                                                        <rect key="frame" x="20" y="57" width="106" height="22"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eD6-rX-Ir4">
-                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
-                                                                <state key="normal" image="RadioButtonSelected"/>
-                                                                <connections>
-                                                                    <action selector="btnUnMarriedTapped:" destination="uq2-fN-Er5" eventType="touchUpInside" id="7vL-Ml-JGR"/>
-                                                                </connections>
-                                                            </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Occupying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FjN-OE-mcw">
-                                                                <rect key="frame" x="34" y="0.0" width="72" height="22"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="14"/>
-                                                                <color key="textColor" name="AppBlackColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="nww-0N-jRh">
-                                                        <rect key="frame" x="20" y="97" width="136.5" height="22"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJE-lF-ETk">
-                                                                <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
-                                                                <state key="normal" image="RadioButtonUnselected"/>
-                                                                <connections>
-                                                                    <action selector="btnMarriedTapped:" destination="uq2-fN-Er5" eventType="touchUpInside" id="Pf0-ZK-oik"/>
-                                                                </connections>
-                                                            </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Non-Occupying" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t1N-gm-bTA">
-                                                                <rect key="frame" x="34" y="0.0" width="102.5" height="22"/>
-                                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
-                                                                <color key="textColor" name="AppBlackColor"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
-                                                </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="hFK-v5-rtV" firstAttribute="leading" secondItem="p7v-Hc-Nqa" secondAttribute="leading" constant="20" id="97O-U3-8yz"/>
-                                                    <constraint firstItem="L92-y9-Ww0" firstAttribute="leading" secondItem="p7v-Hc-Nqa" secondAttribute="leading" constant="20" id="BBK-hX-7TG"/>
-                                                    <constraint firstItem="PV7-ZO-CgO" firstAttribute="leading" secondItem="p7v-Hc-Nqa" secondAttribute="leading" constant="20" id="K49-7n-5O2"/>
-                                                    <constraint firstItem="nww-0N-jRh" firstAttribute="top" secondItem="PV7-ZO-CgO" secondAttribute="bottom" constant="18" id="Tco-F3-tRl"/>
-                                                    <constraint firstAttribute="trailing" secondItem="hFK-v5-rtV" secondAttribute="trailing" constant="20" id="XkF-eC-Mv1"/>
-                                                    <constraint firstItem="PV7-ZO-CgO" firstAttribute="top" secondItem="hFK-v5-rtV" secondAttribute="bottom" constant="22" id="Zia-QO-XBC"/>
-                                                    <constraint firstItem="L92-y9-Ww0" firstAttribute="top" secondItem="p7v-Hc-Nqa" secondAttribute="top" id="lpY-cM-X5q"/>
-                                                    <constraint firstItem="nww-0N-jRh" firstAttribute="leading" secondItem="p7v-Hc-Nqa" secondAttribute="leading" constant="20" id="uQD-He-1CL"/>
-                                                    <constraint firstItem="hFK-v5-rtV" firstAttribute="top" secondItem="L92-y9-Ww0" secondAttribute="bottom" constant="4" id="wwj-gE-RX9"/>
-                                                    <constraint firstAttribute="height" constant="120" id="zOK-Sm-78I"/>
+                                                    <constraint firstAttribute="height" constant="120" id="mbv-N3-mp1"/>
                                                 </constraints>
-                                            </view>
+                                                <connections>
+                                                    <outlet property="dataSource" destination="JEk-4K-7r5" id="WDQ-Ge-k1c"/>
+                                                    <outlet property="delegate" destination="JEk-4K-7r5" id="x1D-IX-qs1"/>
+                                                </connections>
+                                            </tableView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EdP-bu-26h">
                                                 <rect key="frame" x="0.0" y="1346" width="375" height="145"/>
                                                 <subviews>
@@ -6319,11 +6194,12 @@ Birmingham AL 35235</string>
                                             <constraint firstItem="xSR-IC-9hd" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="5aO-cQ-1PA"/>
                                             <constraint firstItem="ooj-6t-Kqv" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="Bpi-sQ-oPG"/>
                                             <constraint firstItem="xSR-IC-9hd" firstAttribute="top" secondItem="EdP-bu-26h" secondAttribute="bottom" constant="40" id="Fcv-fJ-FG3"/>
+                                            <constraint firstItem="EdP-bu-26h" firstAttribute="top" secondItem="6oN-U0-dEW" secondAttribute="bottom" constant="42" id="GBW-ll-rAR"/>
+                                            <constraint firstAttribute="trailing" secondItem="6oN-U0-dEW" secondAttribute="trailing" id="IEW-R1-tm0"/>
                                             <constraint firstItem="pDL-cr-efO" firstAttribute="top" secondItem="doA-Qp-h4f" secondAttribute="bottom" constant="50" id="Jr8-L4-Yhx"/>
                                             <constraint firstAttribute="height" constant="1600" id="K6B-LJ-fNn"/>
                                             <constraint firstItem="NZ9-h6-BpU" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="KAf-q1-SQE"/>
                                             <constraint firstItem="M9O-fN-pcK" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="L0Z-Od-o84"/>
-                                            <constraint firstItem="p7v-Hc-Nqa" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="MaM-do-3iK"/>
                                             <constraint firstAttribute="trailing" secondItem="NZ9-h6-BpU" secondAttribute="trailing" constant="20" id="PNG-OW-edI"/>
                                             <constraint firstItem="doA-Qp-h4f" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="QUd-SG-jIE"/>
                                             <constraint firstItem="NZ9-h6-BpU" firstAttribute="top" secondItem="M9O-fN-pcK" secondAttribute="bottom" constant="70" id="Tru-qh-1Zj"/>
@@ -6331,18 +6207,17 @@ Birmingham AL 35235</string>
                                             <constraint firstAttribute="trailing" secondItem="ooj-6t-Kqv" secondAttribute="trailing" constant="20" id="WuZ-Cv-HBB"/>
                                             <constraint firstAttribute="trailing" secondItem="EdP-bu-26h" secondAttribute="trailing" id="btu-OW-wKD"/>
                                             <constraint firstItem="pDL-cr-efO" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="dIR-Um-Ink"/>
-                                            <constraint firstItem="EdP-bu-26h" firstAttribute="top" secondItem="p7v-Hc-Nqa" secondAttribute="bottom" constant="42" id="eJL-Z9-9qE"/>
                                             <constraint firstAttribute="trailing" secondItem="M9O-fN-pcK" secondAttribute="trailing" constant="20" id="h8h-Xe-1cn"/>
+                                            <constraint firstItem="6oN-U0-dEW" firstAttribute="top" secondItem="pDL-cr-efO" secondAttribute="bottom" id="l7Y-Zt-bsJ"/>
                                             <constraint firstAttribute="trailing" secondItem="Ir7-hV-qJc" secondAttribute="trailing" constant="20" id="l7n-Wd-b5x"/>
                                             <constraint firstAttribute="trailing" secondItem="doA-Qp-h4f" secondAttribute="trailing" id="mEO-mI-aa4"/>
-                                            <constraint firstItem="p7v-Hc-Nqa" firstAttribute="top" secondItem="pDL-cr-efO" secondAttribute="bottom" id="ojD-aR-vaY"/>
                                             <constraint firstItem="Ir7-hV-qJc" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="p7C-i2-xUa"/>
                                             <constraint firstItem="g4P-Iz-B6p" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" constant="20" id="r57-pD-iU1"/>
+                                            <constraint firstItem="6oN-U0-dEW" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="rqD-Yn-uLO"/>
                                             <constraint firstItem="ooj-6t-Kqv" firstAttribute="top" secondItem="Ir7-hV-qJc" secondAttribute="bottom" id="sg6-gf-2iC"/>
                                             <constraint firstItem="EdP-bu-26h" firstAttribute="leading" secondItem="52U-NX-BJP" secondAttribute="leading" id="uqG-n5-bKO"/>
                                             <constraint firstItem="Ir7-hV-qJc" firstAttribute="top" secondItem="NZ9-h6-BpU" secondAttribute="bottom" constant="30" id="vtB-is-heL"/>
                                             <constraint firstItem="M9O-fN-pcK" firstAttribute="top" secondItem="g4P-Iz-B6p" secondAttribute="bottom" constant="15" id="yZG-ra-c5g"/>
-                                            <constraint firstAttribute="trailing" secondItem="p7v-Hc-Nqa" secondAttribute="trailing" id="yeX-Rk-6Br"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -6393,8 +6268,6 @@ Birmingham AL 35235</string>
                         <outlet property="btnFirstMortgageNo" destination="gKk-0x-duO" id="MEr-TE-sYd"/>
                         <outlet property="btnFirstMortgageYes" destination="iXz-Mh-1h6" id="Ykx-1P-g22"/>
                         <outlet property="btnNo" destination="hfi-pt-umw" id="Skj-E8-EDX"/>
-                        <outlet property="btnNonOccupying" destination="aJE-lF-ETk" id="j7S-4v-Jlg"/>
-                        <outlet property="btnOccupying" destination="eD6-rX-Ir4" id="cSr-1B-YHK"/>
                         <outlet property="btnSaveChanges" destination="By6-FS-4yD" id="Hju-Na-kWz"/>
                         <outlet property="btnSecondMortgageNo" destination="yrg-qH-Doi" id="S12-il-bK8"/>
                         <outlet property="btnSecondMortgageYes" destination="yE4-Ja-svt" id="MiJ-in-jSr"/>
@@ -6403,19 +6276,17 @@ Birmingham AL 35235</string>
                         <outlet property="btnYes" destination="SeS-vh-62U" id="Bd9-eY-pJb"/>
                         <outlet property="firstMortgageMainView" destination="EdP-bu-26h" id="XiE-F8-so1"/>
                         <outlet property="firstMortgageMainViewHeightConstraint" destination="jQz-M6-HCu" id="HVV-HP-bHg"/>
+                        <outlet property="firstMortgageMainViewTopConstraint" destination="GBW-ll-rAR" id="WcW-hm-Hmy"/>
                         <outlet property="firstMortgageNoStackView" destination="69v-9c-uzd" id="d5Q-KA-Ga0"/>
                         <outlet property="firstMortgageView" destination="Gph-qJ-t0s" id="R5I-Qf-cGm"/>
                         <outlet property="firstMortgageYesStackView" destination="NPz-n8-5Ad" id="hN0-SW-McF"/>
                         <outlet property="lblAddress" destination="Rps-GC-uf3" id="dYQ-Ij-AUv"/>
-                        <outlet property="lblCoBorrowerName" destination="hFK-v5-rtV" id="dKr-ZE-jeA"/>
                         <outlet property="lblFirstMortgageBalance" destination="xnV-p5-6iB" id="SnK-og-IgL"/>
                         <outlet property="lblFirstMortgageNo" destination="XVj-59-tsa" id="OOl-af-qqI"/>
                         <outlet property="lblFirstMortgagePayment" destination="gKM-VV-RDV" id="B9z-Zr-AAw"/>
                         <outlet property="lblFirstMortgageYes" destination="m2a-bF-zjd" id="gwu-g1-U3M"/>
                         <outlet property="lblNavTitle" destination="4D6-2p-9GX" id="8wP-eN-SYu"/>
                         <outlet property="lblNo" destination="50w-mc-TyH" id="rqU-Xm-xfI"/>
-                        <outlet property="lblNonOccupying" destination="t1N-gm-bTA" id="cFa-RS-jNh"/>
-                        <outlet property="lblOccupying" destination="FjN-OE-mcw" id="qNH-zD-szp"/>
                         <outlet property="lblPropertyUseDetail" destination="ESX-1a-73Y" id="czd-dT-slV"/>
                         <outlet property="lblSecondMortgageBalance" destination="05W-mt-JVZ" id="2Yh-Rm-PEm"/>
                         <outlet property="lblSecondMortgageNo" destination="DGP-LB-eSt" id="qb0-bc-9Aw"/>
@@ -6429,9 +6300,6 @@ Birmingham AL 35235</string>
                         <outlet property="mainView" destination="52U-NX-BJP" id="zpW-1q-vqf"/>
                         <outlet property="mainViewHeightConstraint" destination="K6B-LJ-fNn" id="Tdo-mE-oIT"/>
                         <outlet property="noStackView" destination="CJL-eR-Bbe" id="fiV-nu-IFG"/>
-                        <outlet property="nonOccupyingStackView" destination="nww-0N-jRh" id="rgl-cO-gwF"/>
-                        <outlet property="occupancyStatusView" destination="p7v-Hc-Nqa" id="IHY-a7-wRa"/>
-                        <outlet property="occupyingStackView" destination="PV7-ZO-CgO" id="fXe-tq-TBA"/>
                         <outlet property="propertyDetailView" destination="w0q-mi-cGw" id="bQg-6o-6Fi"/>
                         <outlet property="propertyView" destination="doA-Qp-h4f" id="JJI-7o-b87"/>
                         <outlet property="propertyViewHeightConstraint" destination="p5K-XE-uzw" id="Sr0-tK-jLD"/>
@@ -6444,6 +6312,8 @@ Birmingham AL 35235</string>
                         <outlet property="subjectPropertyAddressView" destination="M9O-fN-pcK" id="tnj-oR-XHs"/>
                         <outlet property="subjectPropertyAddressViewHeightConstraint" destination="cTH-lM-ES9" id="gFG-PR-yse"/>
                         <outlet property="subjectPropertyTBDView" destination="g4P-Iz-B6p" id="ITH-yS-iYA"/>
+                        <outlet property="tableViewOccupancyStatus" destination="6oN-U0-dEW" id="HlL-lZ-ZBo"/>
+                        <outlet property="tableViewOccupancyStatusHeightConstraint" destination="mbv-N3-mp1" id="WZv-RP-lC4"/>
                         <outlet property="txtfieldAppraisedPropertyValue" destination="BxF-2J-8ni" id="16r-b3-zNF"/>
                         <outlet property="txtfieldFloodInsurance" destination="EVn-jc-Yrq" id="bhr-5T-aCK"/>
                         <outlet property="txtfieldHomeOwnerAssociationDues" destination="X9i-Pg-FfO" id="mml-An-Gdh"/>

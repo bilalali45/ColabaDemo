@@ -24,11 +24,10 @@ class GovtQuestionActivity : BaseActivity() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: GovtQuestionsActivityLayoutBinding
-    //private lateinit var appBarConfiguration : AppBarConfiguration
     var loanApplicationId:Int? = null
-    var loanPurpose:String? = null
-    var borrowerTabList:ArrayList<Int>? = null
-    var borrowerOwnTypeList:ArrayList<Int>? = null
+    private var loanPurpose:String? = null
+    private var borrowerTabList:ArrayList<Int>? = null
+    private var borrowerOwnTypeList:ArrayList<Int>? = null
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,59 +35,24 @@ class GovtQuestionActivity : BaseActivity() {
         binding = GovtQuestionsActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
-
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
-            borrowerTabList =
-                it.getIntegerArrayList(AppConstant.borrowerList) as ArrayList<Int>
-            Timber.d("borrowerTabList size " + borrowerTabList!!.size)
-
-            borrowerOwnTypeList =
-                it.getIntegerArrayList(AppConstant.borrowerOwnTypeList) as ArrayList<Int>
-
-            for (item in borrowerTabList!!) {
-                Timber.d("item size " + item)
-            }
+            borrowerTabList = it.getIntegerArrayList(AppConstant.borrowerList) as ArrayList<Int>
+            borrowerOwnTypeList = it.getIntegerArrayList(AppConstant.borrowerOwnTypeList) as ArrayList<Int>
+            //for (item in borrowerTabList!!) Timber.d("item size " + item)
         }
-
-
-        val navController = findNavController(R.id.nav_host_govt_question)
-
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
-                /*
-                Timber.e("loading govt service...")
-                val borrowerId =  borrowerTabList?.get(0)
-                val ownTypeId = borrowerOwnTypeList?.get(0)
-                if(loanApplicationId!=null && borrowerTabList!=null &&  borrowerId!=null && ownTypeId!=null ) {
-                    val bool = borrowerApplicationViewModel.getGovernmentQuestions(
-                        authToken,
-                        loanApplicationId!!,
-                        ownTypeId,
-                        borrowerId
-                    )
-                 */
-
-                    if(loanApplicationId!=null && borrowerTabList!=null  &&  borrowerOwnTypeList!=null) {
-                        borrowerApplicationViewModel.getGovernmentQuestionsList(
-                            authToken,
-                            loanApplicationId!!,
-                            borrowerOwnTypeList!!,
-                            borrowerTabList!!
-                        )
-                        Timber.e("Government service loaded...Loading DemoGraphic..." )
-                        borrowerApplicationViewModel.getDemoGraphicInfoList(authToken, loanApplicationId!!, borrowerTabList!! )
-
-                        //borrowerApplicationViewModel.getDemoGraphicInfo(authToken, 1050, 1065 )
+                if(loanApplicationId!=null && borrowerTabList!=null  &&  borrowerOwnTypeList!=null) {
+                    borrowerApplicationViewModel.getGovernmentQuestionsList(authToken, loanApplicationId!!, borrowerOwnTypeList!!,borrowerTabList!!)
+                    Timber.e("Government service loaded...Loading DemoGraphic..." )
+                    borrowerApplicationViewModel.getDemoGraphicInfoList(authToken, loanApplicationId!!, borrowerTabList!! )
                 }
             }
         }
-
-
     }
 
     override fun onStart() {

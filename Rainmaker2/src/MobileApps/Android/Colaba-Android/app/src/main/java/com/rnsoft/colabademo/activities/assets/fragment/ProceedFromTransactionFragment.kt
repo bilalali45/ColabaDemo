@@ -44,6 +44,7 @@ import javax.inject.Inject
         private var borrowerAssetId:Int? = null
         private var assetCategoryId:Int? = null
         private var assetTypeID:Int? = null
+        private var id:Int? = null
 
         private var catogoryList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 

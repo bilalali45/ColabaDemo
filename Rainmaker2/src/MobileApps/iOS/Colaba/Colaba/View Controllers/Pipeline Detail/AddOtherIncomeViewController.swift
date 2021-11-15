@@ -36,6 +36,7 @@ class AddOtherIncomeViewController: BaseViewController {
         setupTextFields()
         lblUsername.text = borrowerName.uppercased()
         getOtherIncomeType()
+        btnDelete.isHidden = isForAdd
     }
         
     //MARK:- Methods and Actions
@@ -76,12 +77,16 @@ class AddOtherIncomeViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this income source?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
-            self.dismissVC()
+            addUpdateOtherIncome()
         }
     }
     
@@ -150,6 +155,72 @@ class AddOtherIncomeViewController: BaseViewController {
             }
         }
     }
+    
+    func addUpdateOtherIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var incomeTypeId = 0
+        var otherDescription: Any = NSNull()
+        var monthlyBaseIncome: Any = NSNull()
+        
+        if let incomeType = (otherIncomeTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldIncomeType.text!)})).first{
+            incomeTypeId = incomeType.optionId
+        }
+        
+        if (txtfieldDescription.text! != ""){
+            otherDescription = txtfieldDescription.text!
+        }
+        
+        if (txtfieldMonthlyIncome.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMonthlyIncome.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                monthlyBaseIncome = value
+            }
+        }
+        
+        let params = ["IncomeInfoId": isForAdd ? NSNull() : otherIncomeDetail.incomeInfoId,
+                      "BorrowerId": borrowerId,
+                      "description": otherDescription,
+                      "MonthlyBaseIncome": monthlyBaseIncome,
+                      "IncomeTypeId": incomeTypeId,
+                      "LoanApplicationId": loanApplicationId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateOtherIncome, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "IncomeInfoId=\(incomeInfoId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteIncome, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AddOtherIncomeViewController : ColabaTextFieldDelegate {
@@ -157,5 +228,11 @@ extension AddOtherIncomeViewController : ColabaTextFieldDelegate {
         if textField == txtfieldIncomeType {
             setTextfieldAccordingToOption(option: option)
         }
+    }
+}
+
+extension AddOtherIncomeViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteIncome()
     }
 }

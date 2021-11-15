@@ -166,6 +166,12 @@
                                                     <constraint firstItem="L95-AW-46X" firstAttribute="leading" secondItem="acM-Gf-oBi" secondAttribute="leading" constant="20" id="zXR-RK-187"/>
                                                 </constraints>
                                             </view>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select one." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRv-S9-6ZX">
+                                                <rect key="frame" x="20" y="234" width="117" height="17"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="SeparatorErrorColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8Ov-B6-h3w" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="249" width="335" height="39"/>
                                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
@@ -252,6 +258,7 @@
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="650" id="1a2-7r-8Uq"/>
+                                            <constraint firstItem="rRv-S9-6ZX" firstAttribute="top" secondItem="acM-Gf-oBi" secondAttribute="bottom" constant="5" id="4F8-NT-WES"/>
                                             <constraint firstAttribute="trailing" secondItem="8Ov-B6-h3w" secondAttribute="trailing" constant="20" id="58a-L8-0cT"/>
                                             <constraint firstAttribute="trailing" secondItem="8Ov-B6-h3w" secondAttribute="trailing" constant="20" id="7BK-z4-0md"/>
                                             <constraint firstItem="8Ov-B6-h3w" firstAttribute="leading" secondItem="mDf-2H-5SN" secondAttribute="leading" constant="20" id="DVf-MB-oOu"/>
@@ -268,6 +275,7 @@
                                             <constraint firstAttribute="trailing" secondItem="0lX-ax-HAH" secondAttribute="trailing" constant="20" id="dhy-V5-Jtu"/>
                                             <constraint firstItem="acM-Gf-oBi" firstAttribute="leading" secondItem="mDf-2H-5SN" secondAttribute="leading" id="fpY-7w-p94"/>
                                             <constraint firstItem="8Ov-B6-h3w" firstAttribute="top" secondItem="acM-Gf-oBi" secondAttribute="bottom" constant="20" id="h5U-UW-4Yl"/>
+                                            <constraint firstItem="rRv-S9-6ZX" firstAttribute="leading" secondItem="mDf-2H-5SN" secondAttribute="leading" constant="20" id="oiL-Eb-3ZN"/>
                                             <constraint firstItem="acM-Gf-oBi" firstAttribute="top" secondItem="0lX-ax-HAH" secondAttribute="bottom" constant="50" id="v4T-Pb-XVV"/>
                                         </constraints>
                                     </view>
@@ -327,6 +335,7 @@
                         <outlet property="lblBorrowerName" destination="Gs6-O0-3PP" id="cdr-ey-biW"/>
                         <outlet property="lblCashGift" destination="NrL-0m-MPo" id="KE7-MO-diN"/>
                         <outlet property="lblGiftOfEquity" destination="laF-3d-poF" id="ZXa-ze-1f6"/>
+                        <outlet property="lblGiftTypeError" destination="rRv-S9-6ZX" id="MGh-dF-ITz"/>
                         <outlet property="lblNo" destination="mro-lt-bJl" id="jdV-Az-ELh"/>
                         <outlet property="lblTitle" destination="CWq-ff-9UW" id="dc5-PB-W8V"/>
                         <outlet property="lblYes" destination="3MV-Gf-ApV" id="Hqp-Yr-Hhm"/>
@@ -1866,7 +1875,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPJ-Ay-YrH">
-                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
+                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -4465,10 +4474,8 @@ Houston, TX 77027, USA</string>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-rr-GEJ">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
-                                                        <string key="text">4521 San Felipe St,
-Houston, TX 77027, USA</string>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8h-rr-GEJ">
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="0.0"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
@@ -9242,17 +9249,34 @@ Houston, TX 77027, USA</string>
                                     <constraint firstItem="an6-ZL-geb" firstAttribute="width" secondItem="W1Z-bu-Xw4" secondAttribute="width" id="ucI-hR-DU2"/>
                                 </constraints>
                             </scrollView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhr-ju-mdP" customClass="ColabaButton" customModule="Colaba" customModuleProvider="target">
+                                <rect key="frame" x="300" y="592" width="60" height="60"/>
+                                <color key="backgroundColor" name="ButtonBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="33g-Bn-OCx"/>
+                                    <constraint firstAttribute="width" constant="60" id="596-9b-IiP"/>
+                                </constraints>
+                                <state key="normal" image="SaveIcon">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="btnSaveChangesTapped:" destination="yyi-cH-RVK" eventType="touchUpInside" id="zMX-Jf-X32"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WkE-2D-33E"/>
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="W1Z-bu-Xw4" firstAttribute="leading" secondItem="WkE-2D-33E" secondAttribute="leading" id="6Um-jK-JRO"/>
+                            <constraint firstItem="WkE-2D-33E" firstAttribute="bottom" secondItem="vhr-ju-mdP" secondAttribute="bottom" constant="15" id="B6f-0d-KKK"/>
+                            <constraint firstItem="WkE-2D-33E" firstAttribute="trailing" secondItem="vhr-ju-mdP" secondAttribute="trailing" constant="15" id="CGG-sa-4TT"/>
                             <constraint firstItem="W1Z-bu-Xw4" firstAttribute="top" secondItem="WkE-2D-33E" secondAttribute="top" constant="10" id="Mfa-AQ-RdC"/>
                             <constraint firstItem="WkE-2D-33E" firstAttribute="trailing" secondItem="W1Z-bu-Xw4" secondAttribute="trailing" id="bvq-eS-iHv"/>
                             <constraint firstItem="WkE-2D-33E" firstAttribute="bottom" secondItem="W1Z-bu-Xw4" secondAttribute="bottom" id="eyJ-4g-IGw"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="btnSaveChanges" destination="vhr-ju-mdP" id="PeQ-4d-KOB"/>
                         <outlet property="ethnicityTableView" destination="Puy-NF-rYe" id="DhV-XL-GhV"/>
                         <outlet property="ethnicityTableViewHeightConstraint" destination="Amu-8j-Lzr" id="I3v-jK-0pS"/>
                         <outlet property="mainView" destination="an6-ZL-geb" id="dI7-KD-eHt"/>

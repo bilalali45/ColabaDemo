@@ -36,6 +36,7 @@ class AddRetirementIncomeViewController: BaseViewController {
         setupTextFields()
         lblUsername.text = borrowerName.uppercased()
         getRetirementTypes()
+        btnDelete.isHidden = isForAdd
     }
         
     //MARK:- Methods and Actions
@@ -84,18 +85,24 @@ class AddRetirementIncomeViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this income source?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate(){
-            self.dismissVC()
+            addUpdateRetirementIncome()
         }
     }
     
     func validate() -> Bool {
         var isValidate = txtfieldRetirementIncomeType.validate()
-        isValidate = txtfieldEmployerName.validate() && isValidate
+        if (!txtfieldEmployerName.isHidden){
+            isValidate = txtfieldEmployerName.validate() && isValidate
+        }
         isValidate = txtfieldMonthlyIncome.validate() && isValidate
         return isValidate
     }
@@ -156,6 +163,71 @@ class AddRetirementIncomeViewController: BaseViewController {
             }
         }
     }
+    
+    func addUpdateRetirementIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var incomeTypeId = 0
+        var employerNameOrDescription: Any = NSNull()
+        var monthlyBaseIncome: Any = NSNull()
+        
+        if let incomeType = (retirementTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldRetirementIncomeType.text!)})).first{
+            incomeTypeId = incomeType.optionId
+        }
+        if (txtfieldEmployerName.text! != ""){
+            employerNameOrDescription = txtfieldEmployerName.text!
+        }
+        if (txtfieldMonthlyIncome.text! != ""){
+            if let value = Int(cleanString(string: txtfieldMonthlyIncome.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                monthlyBaseIncome = value
+            }
+        }
+        
+        let params = ["IncomeInfoId": isForAdd ? NSNull() : retirementDetail.incomeInfoId,
+                      "BorrowerId": borrowerId,
+                      "employerName": employerNameOrDescription,
+                      "description": employerNameOrDescription,
+                      "MonthlyBaseIncome": monthlyBaseIncome,
+                      "IncomeTypeId": incomeTypeId,
+                      "LoanApplicationId": loanApplicationId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateRetirementIncome, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "IncomeInfoId=\(incomeInfoId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteIncome, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension AddRetirementIncomeViewController : ColabaTextFieldDelegate {
@@ -163,5 +235,11 @@ extension AddRetirementIncomeViewController : ColabaTextFieldDelegate {
         if textField == txtfieldRetirementIncomeType {
             setTextFieldAccordingToOptions(option: option)
         }
+    }
+}
+
+extension AddRetirementIncomeViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteIncome()
     }
 }

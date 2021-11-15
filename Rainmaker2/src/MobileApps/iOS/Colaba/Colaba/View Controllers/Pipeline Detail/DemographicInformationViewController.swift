@@ -19,6 +19,7 @@ class DemographicInformationViewController: BaseViewController {
     @IBOutlet weak var ethnicityTableView: UITableView!
     @IBOutlet weak var ethnicityTableViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var sexTableView: UITableView!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var loanApplicationId = 0
     var borrowerId = 0
@@ -55,7 +56,7 @@ class DemographicInformationViewController: BaseViewController {
         setDemographicData()
     }
   
-    //MARK:- Methods
+    //MARK:- Methods and Actions
     
     func setScreenHeight(){
         let raceTableViewHeight = raceTableView.contentSize.height
@@ -76,9 +77,28 @@ class DemographicInformationViewController: BaseViewController {
         
         for race in allRacesArray{
             race.isSelected = demographicDetail.race.filter({$0.raceId == race.id}).count > 0
+            if let selectedRace = demographicDetail.race.filter({$0.raceId == race.id}).first{
+                for detail in selectedRace.raceDetails{
+                    if let raceDetail = race.raceDetails.filter({$0.id == detail.detailId}).first{
+                        raceDetail.isSelected = true
+                        raceDetail.isOther = detail.isOther
+                        raceDetail.otherRace = detail.otherRace
+                    }
+                }
+            }
         }
         for ethnicity in allEthnicityArray{
             ethnicity.isSelected = demographicDetail.ethnicity.filter({$0.ethnicityId == ethnicity.id}).count > 0
+            if let selectedEthnicity = demographicDetail.ethnicity.filter({$0.ethnicityId == ethnicity.id}).first{
+                for detail in selectedEthnicity.ethnicityDetails{
+                    if let ethnicityDetail = ethnicity.ethnicityDetails.filter({$0.id == detail.detailId}).first{
+                        ethnicityDetail.isSelected = true
+                        ethnicityDetail.isOther = detail.isOther
+                        ethnicityDetail.otherName = detail.otherEthnicity
+                    }
+                }
+            }
+
         }
         for gender in allGenderArray{
             gender.isSelected = demographicDetail.genderId == gender.optionId
@@ -90,6 +110,10 @@ class DemographicInformationViewController: BaseViewController {
             self.setScreenHeight()
         }
         
+    }
+    
+    @IBAction func btnSaveChangesTapped(_ sender: UIButton){
+        addUpdateDemographicInfo()
     }
     
     //MARK:- API's
@@ -202,6 +226,92 @@ class DemographicInformationViewController: BaseViewController {
             
         }
     }
+    
+    func addUpdateDemographicInfo(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var raceArray: [Any] = []
+        var ethnicityArray: [Any] = []
+        var genderId = 0
+        
+        let selectedRaces = allRacesArray.filter({$0.isSelected == true})
+        for selectedRace in selectedRaces{
+            if (selectedRace.raceDetails.count > 0){
+                var raceDetails: [Any] = []
+                
+                for detail in selectedRace.raceDetails{
+                    if (detail.isSelected){
+                        let subRace = ["detailId": detail.id,
+                                       "otherRace": detail.otherRace,
+                                       "isOther": detail.isOther] as [String: Any]
+                        raceDetails.append(subRace)
+                    }
+                    
+                }
+                
+                let racesDetail = ["raceId": selectedRace.id,
+                                   "raceDetails": raceDetails] as [String: Any]
+                raceArray.append(racesDetail)
+            }
+            else{
+                let racesDetail = ["raceId": selectedRace.id,
+                                   "raceDetails": []] as [String: Any]
+                raceArray.append(racesDetail)
+            }
+        }
+        
+        if let selectedEthnicity = allEthnicityArray.filter({$0.isSelected == true}).first{
+            if (selectedEthnicity.ethnicityDetails.count > 0){
+                var ethnicityDetails: [Any] = []
+                
+                for detail in selectedEthnicity.ethnicityDetails{
+                    if (detail.isSelected){
+                        let subEthnicity = ["detailId": detail.id,
+                                            "otherEthnicity": detail.otherName,
+                                            "isOther": detail.isOther] as [String: Any]
+                        ethnicityDetails.append(subEthnicity)
+                    }
+                    
+                }
+                
+                let ethnicityDetail = ["ethnicityId": selectedEthnicity.id,
+                                       "ethnicityDetails": ethnicityDetails] as [String: Any]
+                ethnicityArray.append(ethnicityDetail)
+            }
+            else{
+                let ethnicityDetail = ["ethnicityId": selectedEthnicity.id,
+                                       "ethnicityDetails": []] as [String: Any]
+                ethnicityArray.append(ethnicityDetail)
+            }
+        }
+        
+        if let selectedGender = allGenderArray.filter({$0.isSelected == true}).first{
+            genderId = selectedGender.optionId
+        }
+        
+        let params = ["race": raceArray,
+                      "ethnicity": ethnicityArray,
+                      "genderId": genderId,
+                      "loanApplicationId": loanApplicationId,
+                      "borrowerId": borrowerId,
+                      "state": NSNull()] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateDemographicInfo, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.getRaces()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
+    }
 }
 
 extension DemographicInformationViewController: UITableViewDataSource, UITableViewDelegate{
@@ -263,7 +373,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 cell.otherDetailViewHeightConstraint.constant = selectedRace.raceDetails.filter({$0.isOther == true}).count > 0 ? 84 : 58
                 let subRace = selectedRace.raceDetails.filter({$0.isOther == false})
                 cell.lblDetail.text = subRace.map({$0.name}).joined(separator: ", ")
-                if let otherRace = selectedRace.raceDetails.filter({$0.isOther == true}).first{
+                if let otherRace = selectedRace.raceDetails.filter({$0.isOther == true}).filter({$0.otherRace != ""}).first{
                     let otherAsian = race.name.localizedCaseInsensitiveContains("Asian") ? "Other Asian: \(otherRace.otherRace)" : "Other Pacific Islander: \(otherRace.otherRace)"
                     let attributedOtherAsian = NSMutableAttributedString(string: otherAsian)
                     let range = otherAsian.range(of: otherRace.otherRace)
@@ -299,7 +409,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 cell.otherDetailViewHeightConstraint.constant = selectedEthnicity.ethnicityDetails.filter({$0.isOther == true}).count > 0 ? 84 : 58
                 let subEthnicity = selectedEthnicity.ethnicityDetails.filter({$0.isOther == false})
                 cell.lblDetail.text = subEthnicity.map({$0.name}).joined(separator: ", ")
-                if let otherEthnicity = selectedEthnicity.ethnicityDetails.filter({$0.isOther == true}).first{
+                if let otherEthnicity = selectedEthnicity.ethnicityDetails.filter({$0.isOther == true}).filter({$0.otherEthnicity != ""}).first{
                     let otherHispanic =  "Other Hispanic or Latino: \(otherEthnicity.otherEthnicity)"
                     let attributedOtherHispanic = NSMutableAttributedString(string: otherHispanic)
                     let range = otherHispanic.range(of: otherEthnicity.otherEthnicity)
@@ -347,6 +457,11 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                     }
                 }
             }
+            else{
+                if let noRace = allRacesArray.filter({$0.name.localizedCaseInsensitiveContains("I do not wish to provide this information")}).first{
+                    noRace.isSelected = false
+                }
+            }
             
             if selectedRace.raceDetails.count > 0 && selectedRace.isSelected{
                 let vc = Utility.getDemographicDetailVC()
@@ -354,6 +469,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 vc.raceModel = selectedRace
                 vc.demographicDetail = self.demographicDetail
                 vc.borrowerName = self.borrowerName
+                vc.delegate = self
                 self.presentVC(vc: vc)
             }
             
@@ -370,6 +486,7 @@ extension DemographicInformationViewController: UITableViewDataSource, UITableVi
                 vc.ethnicityModel = selectedEthnicity
                 vc.demographicDetail = self.demographicDetail
                 vc.borrowerName = self.borrowerName
+                vc.delegate = self
                 self.presentVC(vc: vc)
             }
             ethnicityTableView.reloadData()
@@ -429,6 +546,7 @@ extension DemographicInformationViewController: DemographicQuestionsTableViewCel
     func otherDetailViewTapped(indexPath: IndexPath) {
         
         let vc = Utility.getDemographicDetailVC()
+        vc.delegate = self
         if (indexPath.section == 0){
             let selectedEthnicity = allEthnicityArray[indexPath.section]
             vc.type = .ethnicity
@@ -448,4 +566,27 @@ extension DemographicInformationViewController: DemographicQuestionsTableViewCel
         
     }
     
+}
+
+extension DemographicInformationViewController: DemographicDetailViewControllerDelegate{
+    
+    func saveRaceDetail(race: RaceModel, otherRace: String) {
+        if var selectedRace = allRacesArray.filter({$0.id == race.id}).first{
+            selectedRace = race
+            if (selectedRace.raceDetails.filter({$0.isOther == true})).count > 0{
+                selectedRace.raceDetails.filter({$0.isOther == true}).first!.otherRace = otherRace
+            }
+        }
+        addUpdateDemographicInfo()
+    }
+    
+    func saveEthnicityDetail(ethnicity: EthnicityModel, otherEthnicity: String) {
+        if var selectedEthnicity = allEthnicityArray.filter({$0.id == ethnicity.id}).first{
+            selectedEthnicity = ethnicity
+            if (selectedEthnicity.ethnicityDetails.filter({$0.isOther == true})).count > 0{
+                selectedEthnicity.ethnicityDetails.filter({$0.isOther == true}).first!.otherName = otherEthnicity
+            }
+        }
+        addUpdateDemographicInfo()
+    }
 }

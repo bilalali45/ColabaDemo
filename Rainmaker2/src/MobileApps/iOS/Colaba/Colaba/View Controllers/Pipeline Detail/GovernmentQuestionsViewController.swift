@@ -21,6 +21,8 @@ class GovernmentQuestionsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
+        NotificationCenter.default.addObserver(self, selector: #selector(showSaveButton), name: NSNotification.Name(rawValue: kNotificationShowSaveButtonOnGovernmentScreen), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideSaveButton), name: NSNotification.Name(rawValue: kNotificationHideSaveButtonOnGovernmentScreen), object: nil)
     }
     
     //MARK:- Methods and Actions
@@ -61,6 +63,14 @@ class GovernmentQuestionsViewController: BaseViewController {
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
             
         }
+    }
+    
+    @objc func showSaveButton(){
+        btnSaveChanges.isHidden = false
+    }
+    
+    @objc func hideSaveButton(){
+        btnSaveChanges.isHidden = true
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){

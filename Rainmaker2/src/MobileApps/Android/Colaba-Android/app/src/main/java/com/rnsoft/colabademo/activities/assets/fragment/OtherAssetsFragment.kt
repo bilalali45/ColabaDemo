@@ -14,7 +14,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.fragment.model.OtherAssetAddUpdateParams
 import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,10 +31,10 @@ class OtherAssetsFragment:BaseFragment() {
     private var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
-    private var borrowerAssetId:Int? = null
-    private var assetCategoryId:Int? = null
+    private var borrowerAssetId:Int = -1
+    private var assetCategoryId:Int = 7
     private var assetTypeID:Int? = null
-
+    private var id:Int? = null
 
     private val viewModel: AssetViewModel by activityViewModels()
 
@@ -52,8 +54,8 @@ class OtherAssetsFragment:BaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
-            assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 7)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             getOtherAssets()
         }
@@ -61,6 +63,23 @@ class OtherAssetsFragment:BaseFragment() {
     }
 
     private fun getOtherAssets(){
+
+    viewModel.assetTypesByCategoryItemList.observe(
+        viewLifecycleOwner,
+        { assetTypesByCategoryItemList ->
+            if (assetTypesByCategoryItemList != null && assetTypesByCategoryItemList.size > 0) {
+                otherAssetTypesByList = assetTypesByCategoryItemList
+                otherAssetArray = arrayListOf()
+                for (item in otherAssetTypesByList) {
+                    item.displayName?.let {
+                        otherAssetArray.add(it)
+                    }
+                }
+                getOtherDetailData()
+            }
+        })
+
+
         lifecycleScope.launchWhenStarted {
            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                if (loanApplicationId != null && assetCategoryId != null)
@@ -68,25 +87,16 @@ class OtherAssetsFragment:BaseFragment() {
            }
         }
 
-        viewModel.assetTypesByCategoryItemList.observe(viewLifecycleOwner, { assetTypesByCategoryItemList ->
-            if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
-                otherAssetTypesByList = assetTypesByCategoryItemList
-                otherAssetArray = arrayListOf()
-                for(item in otherAssetTypesByList){
-                    item.displayName?.let { otherAssetArray.add(it) }
-                }
-                getOtherDetailData()
-            }
-         })
+
     }
 
     private fun getOtherDetailData(){
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
                     viewModel.getOtherAssetDetails(authToken,
-                        loanApplicationId!!, borrowerId!!, borrowerAssetId!!
+                        loanApplicationId!!, borrowerId!!, borrowerAssetId
                     )
                 }
             }
@@ -107,6 +117,7 @@ class OtherAssetsFragment:BaseFragment() {
 
                     }
                     if(bool){
+                        otherAssetData.assetId?.let{ id = it }
                         otherAssetData.institutionName?.let { binding.financialEditText.setText(it) }
                         otherAssetData.accountNumber?.let { binding.accountNumberEdittext.setText(it) }
                         otherAssetData.assetValue?.let { binding.annualBaseEditText.setText(it.toString()) }
@@ -117,6 +128,8 @@ class OtherAssetsFragment:BaseFragment() {
 
 
     }
+
+
 
     private fun setUpUI(){
 
@@ -136,17 +149,50 @@ class OtherAssetsFragment:BaseFragment() {
             }
         }
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
-        binding.phoneFab.setOnClickListener {
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                clearFocusFromFields()
-                findNavController().popBackStack()
-            }
+        binding.saveBtn.setOnClickListener {
+            saveOtherAssets()
         }
         addFocusOutListenerToFields()
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
         binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
         setUpEndIcon()
+    }
+
+    private fun saveOtherAssets() {
+        val fieldsValidated = checkEmptyFields()
+        if (fieldsValidated) {
+            clearFocusFromFields()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    var accountTypeId: Int? = null
+                    for (item in otherAssetTypesByList) {
+                        if (item.name == binding.accountTypeCompleteView.text.toString())
+                            accountTypeId = item.id
+                    }
+
+                    accountTypeId?.let { notNullAccountTypeId ->
+                        loanApplicationId?.let { notNullLoanApplicationId ->
+                            borrowerId?.let { notNullBorrowerId ->
+                                val otherAssetAddUpdateParams =
+                                    OtherAssetAddUpdateParams(
+                                        AssetTypeId = notNullAccountTypeId,
+                                        GiftSourceId = notNullLoanApplicationId,
+                                        BorrowerId = notNullBorrowerId,
+                                        AssetId = id,
+                                        Description =  binding.edDetails.text.toString(),
+                                        AccountNumber = Common.removeCommas(binding.accountNumberEdittext.text.toString()),
+                                        Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                        InstitutionName = binding.financialEditText.text.toString()
+                                    )
+                                viewModel.addUpdateOtherAsset(authToken, otherAssetAddUpdateParams)
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
     }
 
     private fun visibleOtherFields(position:Int){
@@ -210,12 +256,6 @@ class OtherAssetsFragment:BaseFragment() {
 
     private fun checkEmptyFields():Boolean{
         var bool =  true
-        if(binding.accountNumberEdittext.text?.isEmpty() == true || binding.accountNumberEdittext.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.accountNumberLayout, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.accountNumberLayout,  requireContext())
 
         if(binding.accountTypeCompleteView.text?.isEmpty() == true || binding.accountTypeCompleteView.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.accountTypeInputLayout, "This field is required." , requireContext())
@@ -223,6 +263,18 @@ class OtherAssetsFragment:BaseFragment() {
         }
         else
             CustomMaterialFields.clearError(binding.accountTypeInputLayout,  requireContext())
+
+
+        /*
+
+        if(binding.accountNumberEdittext.text?.isEmpty() == true || binding.accountNumberEdittext.text?.isBlank() == true) {
+            CustomMaterialFields.setError(binding.accountNumberLayout, "This field is required." , requireContext())
+            bool = false
+        }
+        else
+            CustomMaterialFields.clearError(binding.accountNumberLayout,  requireContext())
+
+
 
         if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
 
@@ -238,6 +290,8 @@ class OtherAssetsFragment:BaseFragment() {
         }
         else
             CustomMaterialFields.clearError(binding.financialLayout,  requireContext())
+
+         */
         return bool
     }
 

@@ -56,12 +56,12 @@ class AssetsDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.setScreenHeight()
         }
-        getAssetsDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.delegate?.getBorrowerTotalAssets(totalAssets: "\(Int(borrowerAssetData.assetsTotal).withCommas().replacingOccurrences(of: ".00", with: ""))")
+        getAssetsDetail()
     }
     
     //MARK:- Methods and Actions
@@ -160,7 +160,9 @@ class AssetsDetailViewController: BaseViewController {
     
     func getAssetsDetail(){
         
-        loadingPlaceholderView.cover(self.view, animated: true)
+        if (bankAccountAsset.assets.count == 0 && retirementAccountAsset.assets.count == 0 && stockBondsAsset.assets.count == 0 && transactionAsset.assets.count == 0 && giftFundsAsset.assets.count == 0 && otherAsset.assets.count == 0){
+            loadingPlaceholderView.cover(self.view, animated: true)
+        }
         
         let extraData = "loanApplicationId=\(loanApplicationId)&borrowerId=\(borrowerId)"
         
@@ -171,6 +173,13 @@ class AssetsDetailViewController: BaseViewController {
                 self.loadingPlaceholderView.uncover(animated: true)
                 
                 if (status == .success){
+                    
+                    self.bankAccountAsset = BorrowerAsset()
+                    self.retirementAccountAsset = BorrowerAsset()
+                    self.stockBondsAsset = BorrowerAsset()
+                    self.transactionAsset = BorrowerAsset()
+                    self.giftFundsAsset = BorrowerAsset()
+                    self.otherAsset = BorrowerAsset()
                     
                     let borrowerAssetsModel = BorrowerAssetsModel()
                     borrowerAssetsModel.updateModelWithJSON(json: result["data"]["borrower"])

@@ -15,6 +15,7 @@ class BankruptcyFragment:BaseFragment() {
 
     private var _binding: BankruptcyLayoutBinding? = null
     private val binding get() = _binding!!
+    private  var bankruptcyGlobalData:BankruptcyAnswerData = BankruptcyAnswerData()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -27,18 +28,21 @@ class BankruptcyFragment:BaseFragment() {
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        arguments?.let { arguments->
+            bankruptcyGlobalData = arguments.getParcelable(AppConstant.bankruptcyGlobalData)!!
+        }
         fillGlobalData()
         return root
     }
 
     private fun fillGlobalData(){
-        if(BorrowerOneQuestions.bankruptcyGlobalData.value1)
+        if(bankruptcyGlobalData.value1)
             binding.chapter7.isChecked = true
-        if(BorrowerOneQuestions.bankruptcyGlobalData.value2)
+        if(bankruptcyGlobalData.value2)
             binding.chapter11.isChecked = true
-        if(BorrowerOneQuestions.bankruptcyGlobalData.value3)
+        if(bankruptcyGlobalData.value3)
             binding.chapter12.isChecked = true
-        if(BorrowerOneQuestions.bankruptcyGlobalData.value4)
+        if(bankruptcyGlobalData.value4)
             binding.chapter13.isChecked = true
     }
 

@@ -74,6 +74,13 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     val genderList: LiveData<ArrayList<GenderResponseModel>> get() = _genderList
 
 
+    private var _governmentAddUpdateDataResponse : MutableLiveData<GovernmentAddUpdateDataResponse> =   MutableLiveData()
+    val governmentAddUpdateDataResponse: LiveData<GovernmentAddUpdateDataResponse> get() = _governmentAddUpdateDataResponse
+
+    private var _addUpdateDemoGraphicResponse : MutableLiveData<AddUpdateDemoGraphicResponse> =   MutableLiveData()
+    val addUpdateDemoGraphicResponse: LiveData<AddUpdateDemoGraphicResponse> get() = _addUpdateDemoGraphicResponse
+
+
     suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
 
         /*
@@ -225,7 +232,36 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
 
+    suspend fun addOrUpdateGovernmentQuestions(token:String, updateGovernmentQuestions:UpdateGovernmentQuestions ) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  updateGovernmentQuestions = updateGovernmentQuestions)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _governmentAddUpdateDataResponse.value = responseResult.data
+                }
+                else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
+            }
+        }
+    }
 
+    suspend fun addOrUpdateDemoGraphic(token:String, demoGraphicData: DemoGraphicData ) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val responseResult = bAppRepo.addOrUpdateDemoGraphic(token = token,  demoGraphicData = demoGraphicData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _addUpdateDemoGraphicResponse.value = responseResult.data
+                }
+                else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
+            }
+        }
+
+    }
 
 
 

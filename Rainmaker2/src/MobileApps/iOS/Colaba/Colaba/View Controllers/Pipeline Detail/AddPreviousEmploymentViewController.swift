@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class AddPreviousEmploymentViewController: BaseViewController {
 
@@ -46,6 +47,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
     var borrowerId = 0
     var incomeInfoId = 0
     var employmentDetail = EmployementDetailModel()
+    var savedAddress: Any = NSNull()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +63,9 @@ class AddPreviousEmploymentViewController: BaseViewController {
         if (!isForAdd){
             getEmploymentDetail()
         }
+        btnDelete.isHidden = isForAdd
+        addressView.isHidden = isForAdd
+        addAddressView.isHidden = !isForAdd
     }
         
     //MARK:- Methods and Actions
@@ -139,6 +144,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         vc.topTitle = "Previous Employer Address"
         vc.searchTextFieldPlaceholder = "Search Main Address"
         vc.borrowerFullName = self.borrowerName
+        vc.delegate = self
         if (!isForAdd){
             vc.selectedAddress = employmentDetail.employerAddress
         }
@@ -198,7 +204,11 @@ class AddPreviousEmploymentViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this income source?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
@@ -214,7 +224,7 @@ class AddPreviousEmploymentViewController: BaseViewController {
         }
         
         if validate(){
-            self.dismissVC()
+            addUpdatePreviousEmployment()
         }
     }
     
@@ -234,7 +244,125 @@ class AddPreviousEmploymentViewController: BaseViewController {
                     let model = EmployementDetailModel()
                     model.updateModelWithJSON(json: result["data"])
                     self.employmentDetail = model
+                    if (result["data"]["employerAddress"] == JSON.null){
+                        self.savedAddress = NSNull()
+                    }
+                    else{
+                        self.savedAddress = ["street": result["data"]["employerAddress"]["street"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["street"].stringValue,
+                                             "unit": result["data"]["employerAddress"]["unit"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["unit"].stringValue,
+                                             "cityId": result["data"]["employerAddress"]["cityId"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["cityId"].intValue,
+                                             "city": result["data"]["employerAddress"]["city"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["city"].stringValue,
+                                             "stateId": result["data"]["employerAddress"]["stateId"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["stateId"].intValue,
+                                             "stateName": result["data"]["employerAddress"]["stateName"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["stateName"].stringValue,
+                                             "zipCode": result["data"]["employerAddress"]["zipCode"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["zipCode"].stringValue,
+                                             "countryId": result["data"]["employerAddress"]["countryId"] == JSON.null ? NSNull() : result["data"]["employerAddress"]["countryId"].intValue]as [String: Any]
+                    }
                     self.setEmployementDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+    
+    func addUpdatePreviousEmployment(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var employerName: Any = NSNull()
+        var jobTitle: Any = NSNull()
+        var startDate: Any = NSNull()
+        var endDate: Any = NSNull()
+        var yearsInProfession: Any = NSNull()
+        var employerPhoneNumber: Any = NSNull()
+        var hasInterestInOwnership: Any = NSNull()
+        var ownershipInterest: Any = NSNull()
+        var annualSalary = 0
+        
+        if (txtfieldEmployerName.text! != ""){
+            employerName = txtfieldEmployerName.text!
+        }
+        if (txtfieldJobTitle.text! != ""){
+            jobTitle = txtfieldJobTitle.text!
+        }
+        let startDateComponent = txtfieldStartDate.text!.components(separatedBy: "/")
+        if (startDateComponent.count == 3){
+            startDate = "\(startDateComponent[2])-\(startDateComponent[0])-\(startDateComponent[1])"
+        }
+        let endDateComponent = txtfieldEndDate.text!.components(separatedBy: "/")
+        if (endDateComponent.count == 3){
+            endDate = "\(endDateComponent[2])-\(endDateComponent[0])-\(endDateComponent[1])"
+        }
+        if (txtfieldProfessionYears.text! != ""){
+            if let years = Int(txtfieldProfessionYears.text!){
+                yearsInProfession = years
+            }
+        }
+        if (txtfieldEmployerPhoneNumber.text != ""){
+            employerPhoneNumber = cleanString(string: txtfieldEmployerPhoneNumber.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: "")
+        }
+        if let interest = hasOwnershipInterest{
+            hasInterestInOwnership = interest
+        }
+        if (txtfieldOwnershipPercentage.text! != ""){
+            if let ownership = Int(cleanString(string: txtfieldOwnershipPercentage.text!, replaceCharacters: ["%  |  ",","], replaceWith: "")){
+                ownershipInterest = ownership
+            }
+        }
+        if (txtfieldNetAnnualIncome.text! != ""){
+            if let value = Int(cleanString(string: txtfieldNetAnnualIncome.text!, replaceCharacters: ["$  |  ",","], replaceWith: "")){
+                annualSalary = value
+            }
+        }
+        
+        let employementInfo = ["EmployerName": employerName,
+                               "JobTitle": jobTitle,
+                               "StartDate": startDate,
+                               "EndDate": endDate,
+                               "YearsInProfession": yearsInProfession,
+                               "EmployerPhoneNumber": employerPhoneNumber,
+                               "HasOwnershipInterest": hasInterestInOwnership,
+                               "OwnershipInterest": ownershipInterest,
+                               "IncomeInfoId": isForAdd ? NSNull() : employmentDetail.employmentInfo.incomeInfoId] as [String: Any]
+        
+        let wayOfIncome = ["EmployerAnnualSalary": annualSalary] as [String: Any]
+        
+        let params = ["BorrowerId": borrowerId,
+                      "LoanApplicationId": loanApplicationId,
+                      "EmploymentInfo": employementInfo,
+                      "EmployerAddress": savedAddress,
+                      "WayOfIncome": wayOfIncome] as [String:Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdatePreviousEmployment, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteIncome(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "IncomeInfoId=\(incomeInfoId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteIncome, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
@@ -263,4 +391,36 @@ extension AddPreviousEmploymentViewController: ColabaTextFieldDelegate{
         }
     }
     
+}
+
+extension AddPreviousEmploymentViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteIncome()
+    }
+}
+
+extension AddPreviousEmploymentViewController: CurrentEmployerAddressViewControllerDelegate{
+    func saveAddressObject(address: [String : Any]) {
+        savedAddress = address
+        addressView.isHidden = false
+        addAddressView.isHidden = true
+        
+        var street = "", unit = "", city = "", stateName = "", zipCode = ""
+        if let addressStreet = address["street"] as? String{
+            street = addressStreet
+        }
+        if let addressUnit = address["unit"] as? String{
+            unit = addressUnit
+        }
+        if let addressCity = address["city"] as? String{
+            city = addressCity
+        }
+        if let addressState = address["stateName"] as? String{
+            stateName = addressState
+        }
+        if let addressZipCode = address["zipCode"] as? String{
+            zipCode = addressZipCode
+        }
+        lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+    }
 }

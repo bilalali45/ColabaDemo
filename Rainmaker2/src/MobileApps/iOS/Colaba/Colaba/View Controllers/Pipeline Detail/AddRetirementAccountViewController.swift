@@ -36,19 +36,20 @@ class AddRetirementAccountViewController: BaseViewController {
         if (!isForAdd){
             getRetirementAccountDetail()
         }
+        btnDelete.isHidden = isForAdd
     }
     
     //MARK:- Methods and Actions
     func setTextFields() {
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .noValidation)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .noValidation, keyboardType: .numberPad)
         txtfieldAccountNumber.type = .password
         
         ///Annual Base Salary Text Field
-        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
+        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .noValidation)
         txtfieldAnnualBaseSalary.type = .amount
     }
     
@@ -63,14 +64,18 @@ class AddRetirementAccountViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this asset type?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        if validate() {
-            if (txtfieldFinancialInstitution.text != "" && txtfieldAccountNumber.text != "" && txtfieldAnnualBaseSalary.text != ""){
-                self.dismissVC()
-            }
-        }
+        addUpdateRetirementAccount()
+//        if validate() {
+//
+//        }
     }
     
     func validate() -> Bool {
@@ -105,5 +110,77 @@ class AddRetirementAccountViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    func addUpdateRetirementAccount(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var institutionName: Any = NSNull()
+        var accountNumber: Any = NSNull()
+        var balance: Any = NSNull()
+        
+        if (txtfieldFinancialInstitution.text != ""){
+            institutionName = txtfieldFinancialInstitution.text!
+        }
+        
+        if (txtfieldAccountNumber.text != ""){
+            accountNumber = txtfieldAccountNumber.text!
+        }
+        
+        if (txtfieldAnnualBaseSalary.text != ""){
+            if let value = Double(cleanString(string: txtfieldAnnualBaseSalary.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                balance = value
+            }
+        }
+        
+        let params = ["Id": isForAdd ? NSNull() : retirementAccountDetail.id,
+                      "LoanApplicationId": loanApplicationId,
+                      "BorrowerId": borrowerId,
+                      "Value": balance,
+                      "InstitutionName": institutionName,
+                      "AccountNumber": accountNumber] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateRetirementAccount, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteAsset(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "AssetId=\(borrowerAssetId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteAsset, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension AddRetirementAccountViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteAsset()
     }
 }

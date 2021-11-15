@@ -122,7 +122,15 @@ class BorrowerOneAssets : AssetBaseFragment() {
                         //bottomCell.tag = R.string.asset_bottom_cell
                         bottomCell.visibility = View.GONE
                         bottomCell.setOnClickListener {
-                            findNavController().navigate(modelData.listenerAttached)
+                            val parentActivity = activity as? AssetsActivity
+                            parentActivity?.let {
+                                val bundle = Bundle()
+                                parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
+                                findNavController().navigate(modelData.listenerAttached , bundle)
+                            }
+
                         }
 
                         mainCell.addView(bottomCell)

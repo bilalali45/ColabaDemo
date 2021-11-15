@@ -36,6 +36,7 @@ class AddBankAccountViewController: BaseViewController {
         lblBorrowerName.text = borrowerName.uppercased()
         setTextFields()
         getBankAccountTypes()
+        btnDelete.isHidden = isForAdd
     }
     
     //MARK:- Methods and Actions
@@ -45,14 +46,14 @@ class AddBankAccountViewController: BaseViewController {
         txtfieldAccountType.type = .dropdown
         
         ///Financial Institution Text Field
-        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .required)
+        txtfieldFinancialInstitution.setTextField(placeholder: "Financial Institution", controller: self, validationType: .noValidation)
         
         ///Account Number Text Field
-        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .required, keyboardType: .numberPad)
+        txtfieldAccountNumber.setTextField(placeholder: "Account Number", controller: self, validationType: .noValidation, keyboardType: .numberPad)
         txtfieldAccountNumber.type = .password
         
         ///Annual Base Salary Text Field
-        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .required)
+        txtfieldAnnualBaseSalary.setTextField(placeholder: "Annual Base Salary", controller: self, validationType: .noValidation)
         txtfieldAnnualBaseSalary.type = .amount
     }
     
@@ -70,22 +71,24 @@ class AddBankAccountViewController: BaseViewController {
     }
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getDeleteAddressPopupVC()
+        vc.popupTitle = "Are you sure you want to remove this asset type?"
+        vc.screenType = 4
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (txtfieldAccountType.text != "" && txtfieldFinancialInstitution.text != "" && txtfieldAccountNumber.text != "" && txtfieldAnnualBaseSalary.text != ""){
-                self.dismissVC()
-            }
+            addUpdateBankAccount()
         }
     }
     
     func validate() -> Bool {
-        var isValidate = txtfieldAccountType.validate()
-        isValidate = txtfieldFinancialInstitution.validate() && isValidate
-        isValidate = txtfieldAccountNumber.validate() && isValidate
-        isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
+        let isValidate = txtfieldAccountType.validate()
+//        isValidate = txtfieldFinancialInstitution.validate() && isValidate
+//        isValidate = txtfieldAccountNumber.validate() && isValidate
+//        isValidate = txtfieldAnnualBaseSalary.validate() && isValidate
         return isValidate
     }
     
@@ -144,5 +147,83 @@ class AddBankAccountViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    func addUpdateBankAccount(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var assetTypeId = 0
+        var institutionName: Any = NSNull()
+        var accountNumber: Any = NSNull()
+        var balance: Any = NSNull()
+        
+        if let type = accountTypeArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldAccountType.text!)}).first{
+            assetTypeId = type.optionId
+        }
+        
+        if (txtfieldFinancialInstitution.text != ""){
+            institutionName = txtfieldFinancialInstitution.text!
+        }
+        
+        if (txtfieldAccountNumber.text != ""){
+            accountNumber = txtfieldAccountNumber.text!
+        }
+        
+        if (txtfieldAnnualBaseSalary.text != ""){
+            if let value = Double(cleanString(string: txtfieldAnnualBaseSalary.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                balance = value
+            }
+        }
+        
+        let params = ["id": isForAdd ? NSNull() : bankAccountDetail.id,
+                      "AssetTypeId": assetTypeId,
+                      "InstitutionName": institutionName,
+                      "AccountNumber": accountNumber,
+                      "Balance": balance,
+                      "LoanApplicationId": loanApplicationId,
+                      "BorrowerId": borrowerId] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateBankAccount, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteAsset(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "AssetId=\(borrowerAssetId)&borrowerId=\(borrowerId)&loanApplicationId=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteAsset, method: .delete, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
+}
+
+extension AddBankAccountViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteAsset()
     }
 }

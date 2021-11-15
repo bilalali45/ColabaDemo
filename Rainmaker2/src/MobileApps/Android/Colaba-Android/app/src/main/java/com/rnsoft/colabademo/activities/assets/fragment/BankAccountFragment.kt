@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.assets.fragment.model.BankAddUpdateParams
 import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -33,9 +34,9 @@ class BankAccountFragment : BaseFragment() {
     private var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
-    private var borrowerAssetId:Int? = null
+    private var borrowerAssetId:Int = -1
     private var assetTypeID:Int? = null
-
+    private var id:Int? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -43,13 +44,14 @@ class BankAccountFragment : BaseFragment() {
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
+
         super.addListeners(binding.root)
         arguments?.let { arguments->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-            loanPurpose = arguments.getString(AppConstant.loanPurpose)
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId )
+            loanPurpose = arguments.getString(AppConstant.loanPurpose , null)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
-            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
             observeBankData()
         }
         return root
@@ -86,15 +88,60 @@ class BankAccountFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
-        binding.phoneFab.setOnClickListener {
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                clearFocusFromFields()
-                findNavController().popBackStack()
-            }
+        binding.saveBtn.setOnClickListener {
+            saveBankDetails()
         }
         addFocusOutListenerToFields()
         setUpEndIcon()
+    }
+
+    private fun saveBankDetails(){
+        val fieldsValidated = checkEmptyFields()
+        if(fieldsValidated) {
+            clearFocusFromFields()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    var accountTypeId:Int?=null
+                    for(item in classLevelBankAccountTypes){
+                        if(item.name == binding.accountTypeCompleteView.text.toString())
+                            accountTypeId = item.id
+                    }
+                    accountTypeId?.let { notNullAccountTypeId->
+                        loanApplicationId?.let { notNullLoanApplicationId->
+                            borrowerId?.let { notNullBorrowerId ->
+                                val bankAddUpdateParams =
+                                    BankAddUpdateParams(
+                                        AssetTypeId = notNullAccountTypeId,
+                                        LoanApplicationId = notNullLoanApplicationId,
+                                        BorrowerId = notNullBorrowerId,
+                                        id = id,
+                                        AccountNumber = binding.accountNumberEdittext.text.toString(),
+                                        Balance = binding.annualBaseEditText.text.toString().toInt(),
+                                        InstitutionName = binding.financialEditText.text.toString()
+                                    )
+                                viewModel.addUpdateBankDetails(authToken , bankAddUpdateParams)
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                if(genericAddUpdateAssetResponse.status == "OK"){
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "200"){
+                        lifecycleScope.launchWhenStarted {
+                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+
+                            }
+                        }
+                    }
+                }
+         })
+
     }
 
     private fun setUpEndIcon(){
@@ -120,12 +167,6 @@ class BankAccountFragment : BaseFragment() {
 
     private fun checkEmptyFields():Boolean{
         var bool =  true
-        if(binding.accountNumberEdittext.text?.isEmpty() == true || binding.accountNumberEdittext.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.accountNumberLayout, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.accountNumberLayout,  requireContext())
 
         if(binding.accountTypeCompleteView.text?.isEmpty() == true || binding.accountTypeCompleteView.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.accountTypeInputLayout, "This field is required." , requireContext())
@@ -133,6 +174,16 @@ class BankAccountFragment : BaseFragment() {
         }
         else
             CustomMaterialFields.clearError(binding.accountTypeInputLayout,  requireContext())
+
+        /*
+        if(binding.accountNumberEdittext.text?.isEmpty() == true || binding.accountNumberEdittext.text?.isBlank() == true) {
+            CustomMaterialFields.setError(binding.accountNumberLayout, "This field is required." , requireContext())
+            bool = false
+        }
+        else
+            CustomMaterialFields.clearError(binding.accountNumberLayout,  requireContext())
+
+
 
         if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
 
@@ -148,6 +199,8 @@ class BankAccountFragment : BaseFragment() {
         }
         else
             CustomMaterialFields.clearError(binding.financialLayout,  requireContext())
+
+         */
         return bool
     }
 
@@ -185,8 +238,8 @@ class BankAccountFragment : BaseFragment() {
     private fun fetchAndObserveBankAccountDetails(){
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
-                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId!!)
+                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId >0) {
+                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
                 }
             }
         }
@@ -197,6 +250,7 @@ class BankAccountFragment : BaseFragment() {
                     bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
                     bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
                     bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
+                    bankAccountData.id?.let { id = it }
                     bankAccountData.assetTypeId?.let { assetTypeId->
                         for(item in classLevelBankAccountTypes){
                             if(assetTypeId == item.id){

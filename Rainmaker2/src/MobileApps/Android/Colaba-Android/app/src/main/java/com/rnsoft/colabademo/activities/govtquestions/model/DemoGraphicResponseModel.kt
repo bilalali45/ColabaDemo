@@ -5,47 +5,46 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 data class DemoGraphicResponseModel(
-    val code: String?,
-    @SerializedName("data") val demoGraphicData : DemoGraphicData?,
-    val message: String?,
-    val status: String?,
+    var code: String?,
+    @SerializedName("data") var demoGraphicData : DemoGraphicData?,
+    var message: String?,
+    var status: String?,
     var passedBorrowerId:Int?
 )
 
 data class DemoGraphicData(
-    val borrowerId: Int?,
-    val ethnicity: List<EthnicityDemoGraphic>?,
-    val genderId: Int?,
-    val loanApplicationId: Int?,
-    val race: List<DemoGraphicRace>?,
-    val state: String?
+    var borrowerId: Int?,
+    var ethnicity: ArrayList<EthnicityDemoGraphic>? = arrayListOf(),
+    var genderId: Int?,
+    var loanApplicationId: Int?,
+    var race: ArrayList<DemoGraphicRace>? = arrayListOf() ,
+    var state: String?
 )
 
 data class EthnicityDemoGraphic(
-    val ethnicityDetails: List<EthnicityDetailDemoGraphic>?,
-    val ethnicityId: Int?
+    var ethnicityDetails: ArrayList<EthnicityDetailDemoGraphic>? = arrayListOf(),
+    var ethnicityId: Int?
 )
 
 @Parcelize
 data class EthnicityDetailDemoGraphic(
-    val detailId: Int?,
-    val name: String?,
-    val isOther: Boolean?,
-    val otherEthnicity: String?
+    var detailId: Int?,
+    var name: String?,
+    var isOther: Boolean?,
+    var otherEthnicity: String?
 ):Parcelable
 
 
 data class DemoGraphicRace(
-    val raceDetails : ArrayList<DemoGraphicRaceDetail>?,
-    val raceId: Int?
+    var raceDetails : ArrayList<DemoGraphicRaceDetail>? = arrayListOf(),
+    var raceId: Int?
 )
 
 @Parcelize
 data class DemoGraphicRaceDetail(
-    val detailId: Int?,
-    val name: String?,
-    val isOther: Boolean?,
-    val otherRace: String?
+    var detailId: Int?,
+    var name: String?,
+    var isOther: Boolean?,
+    var otherRace: String?
 ):Parcelable
-
 

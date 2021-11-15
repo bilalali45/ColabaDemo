@@ -88,7 +88,29 @@ enum EndPoint:String{
     case getOtherIncomeDetail = "loanapplication/Assets/GetOtherIncomeInfo?"
     case updatePurchaseSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateSubjectPropertyDetail"
     case updateRefinanceSubjectProperty = "loanapplication/SubjectProperty/AddOrUpdateRefinanceSubjectPropertyDetail"
+    case updateCoBorrowerOccupancyStatus = "loanapplication/SubjectProperty/AddOrUpdateCoBorrowerOccupancyStatus"
     case updateLoanInformation = "loanapplication/Loan/AddOrUpdateLoanInformation"
+    case deleteAsset = "loanapplication/Assets/DeleteAsset?"
+    case addUpdateBankAccount = "loanapplication/Assets/AddOrUpdateBankAccount"
+    case addUpdateRetirementAccount = "loanapplication/Assets/AddOrUpdateRetirementAccount"
+    case addUpdateFinancialAccount = "loanapplication/Assets/AddOrUpdateFinancialAsset"
+    case addUpdateProceedsFromLoan = "loanapplication/Assets/AddOrUpdateProceedsfromloan"
+    case addUpdateProceedFromLoanOther = "loanapplication/Assets/AddOrUpdateProceedsfromloanOther"
+    case addUpdateProceedFromRealState = "loanapplication/Assets/AddOrUpdateAssestsRealState"
+    case addUpdateProceedFromNonRealState = "loanapplication/Assets/AddOrUpdateAssestsNonRealState"
+    case addUpdateGiftFunds = "loanapplication/Assets/AddOrUpdateGiftAsset"
+    case addUpdateOtherAssets = "loanapplication/Assets/AddOrUpdateOtherAssetsInfo"
+    case deleteIncome = "loanapplication/Assets/DeleteIncome?"
+    case addUpdateCurrentEmployment = "loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail"
+    case addUpdatePreviousEmployment = "loanapplication/Assets/AddOrUpdatePreviousEmploymentDetail"
+    case addUpdateSelfEmployment = "loanapplication/Assets/AddOrUpdateSelfBusiness"
+    case addUpdateBusiness = "loanapplication/Assets/AddOrUpdateBusiness"
+    case addUpdateMilitaryPay = "loanapplication/Assets/AddOrUpdateMilitaryIncome"
+    case addUpdateRetirementIncome = "loanapplication/Assets/AddOrUpdateRetirementIncomeInfo"
+    case addUpdateOtherIncome = "loanapplication/Assets/AddOrUpdateOtherIncome"
+    case addUpdateRealEstate = "loanapplication/RealEstate/AddOrUpdateRealEstateDetails"
+    case deleteRealEstate = "loanapplication/RealEstate/DeleteRealEstateDetails?"
+    case addUpdateDemographicInfo = "loanapplication/GovtQuestions/AddOrUpdateDemogrhphicInfo"
     case logout = "identity/mcuaccount/Logout"
     
 }
@@ -157,7 +179,7 @@ class APIRouter: NSObject {
             endPoint = type.rawValue
         }
         
-        request = AF.request(BASEURL + endPoint, method: method, parameters: params, encoding: method == .get ? URLEncoding.queryString : JSONEncoding.default, headers:headers)
+        request = AF.request(BASEURL + endPoint, method: method, parameters: params, encoding: method == .post ? JSONEncoding.default : URLEncoding.queryString, headers:headers)
         
         request.responseJSON { response in
             
