@@ -15,7 +15,7 @@ data class MilitaryIncomeData(
     val loanApplicationId: Int?,
     val id: Int?,
     val borrowerId: Int?,
-    val address: CommonAddressModel?,
+    val address: AddressData?,
     val employerName: String?,
     val jobTitle: String?,
     val militaryEntitlements: Double?,

@@ -140,7 +140,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_bus_phnum"
+                    android:id="@+id/ed_bus_phoneNum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -394,7 +394,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_net_income"
+                    android:id="@+id/editText_annual_income"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"

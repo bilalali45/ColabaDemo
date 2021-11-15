@@ -178,12 +178,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         // radio mixed use property click
         binding.radioMixedPropertyYes.setOnClickListener {
-            findNavController().navigate(R.id.action_mixed_property)
+            gotoMixedUseProperty()
             binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
         }
         // mixed property detail
         binding.layoutMixedPropertyDetail.setOnClickListener{
-            findNavController().navigate(R.id.action_mixed_property)
+            gotoMixedUseProperty()
         }
 
         // radio btn mixed use property Yes
@@ -576,27 +576,32 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         findNavController().navigate(R.id.action_address, fragment.arguments)
     }
 
+    private fun gotoMixedUseProperty(){
+        var mixedUsePropertyDesc : String? = ""
+        mixedUsePropertyDesc = binding.mixedPropertyDesc.text.toString()
+        val fragment = MixedUsePropertyFragment()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.MIXED_USE_PROPERTY_DESC,mixedUsePropertyDesc)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_mixed_property, fragment.arguments)
+
+    }
+
     override fun onResume() {
         super.onResume()
         viewModelSubProperty.updatedRefinanceAddress.observe(viewLifecycleOwner, {
             it?.let {
-                /*addressList.clear()
-                addressList.add(AddressData(
-                        street = it.street,
-                        unit = it.unit,
-                        city = it.city,
-                        stateName = it.stateName,
-                        countryName = it.countryName,
-                        countyName = it.countyName,
-                        countyId = it.countyId,
-                        stateId = it.stateId,
-                        countryId = it.countryId,
-                        zipCode = it.zipCode)) */
-
                 refinanceAddressData = it
 
-                binding.tvSubPropertyAddress.text =
-                    it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+               // binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                val builder = StringBuilder()
+                it.street?.let { builder.append(it).append(" ") }
+                it.unit?.let { builder.append(it) }
+                it.city?.let {builder.append("\n").append(it).append(" ") }
+                it.stateName?.let{ builder.append(it).append(" ")}
+                it.zipCode?.let { builder.append(it) }
+                it.countryName.let { builder.append(" ").append(it)}
+                binding.tvSubPropertyAddress.text = builder
 
             }
         })

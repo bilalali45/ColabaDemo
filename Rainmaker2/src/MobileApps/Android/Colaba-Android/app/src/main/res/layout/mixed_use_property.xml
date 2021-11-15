@@ -83,7 +83,7 @@
             app:hintTextColor="@color/grey_color_two">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ed_details"
+                android:id="@+id/editText_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"

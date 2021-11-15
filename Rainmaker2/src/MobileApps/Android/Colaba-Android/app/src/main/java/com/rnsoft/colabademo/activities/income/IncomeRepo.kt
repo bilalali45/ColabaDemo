@@ -49,7 +49,7 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return sendDataResponse
     }
 
-    suspend fun sendCurrentEmploymentData(token: String, employmentData: EmploymentData): Result<AddUpdateDataResponse> {
+    suspend fun sendCurrentEmploymentData(token: String, employmentData: AddCurrentEmploymentModel): Result<AddUpdateDataResponse> {
         return dataSource.sendCurrentEmploymentData(token,employmentData)
     }
 
@@ -61,11 +61,13 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.sendRetirementIncomeData(token,retirementData)
     }
 
-    suspend fun sendOtherIncomeData(token: String, otherData: OtherIncomeData): Result<AddUpdateDataResponse> {
+    suspend fun sendOtherIncomeData(token: String, otherData: AddOtherIncomeInfo): Result<AddUpdateDataResponse> {
         return dataSource.sendOtherIncomeData(token,otherData)
     }
 
-    suspend fun sendPrevEmploymentData(token: String, employmentData: PreviousEmploymentResponse): Result<AddUpdateDataResponse> {
+    suspend fun sendPrevEmploymentData(token: String, employmentData: PreviousEmploymentData): Result<AddUpdateDataResponse> {
         return dataSource.sendPrevEmploymentData(token,employmentData)
     }
+
+
 }
