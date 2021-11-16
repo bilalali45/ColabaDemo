@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +16,6 @@ import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -41,12 +39,12 @@ import javax.inject.Inject
         private var loanApplicationId:Int? = null
         private var loanPurpose:String? = null
         private var borrowerId:Int? = null
-        private var borrowerAssetId:Int? = null
-        private var assetCategoryId:Int? = null
+        private var borrowerAssetId:Int = -1
+        private var assetCategoryId:Int = 6
         private var assetTypeID:Int? = null
         private var id:Int? = null
 
-        private var catogoryList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
+        private var categoryList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
         @Inject
         lateinit var sharedPreferences: SharedPreferences
@@ -59,8 +57,8 @@ import javax.inject.Inject
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 loanPurpose = arguments.getString(AppConstant.loanPurpose)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
-                borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
-                assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+                borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+                assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 6)
                 assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             }
             getTransactionCategories()
@@ -70,15 +68,15 @@ import javax.inject.Inject
         private fun getTransactionCategories() {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && assetCategoryId != null)
-                        viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId!!, loanApplicationId!!)
+                    if (loanApplicationId != null && assetCategoryId > 0)
+                        viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId, loanApplicationId!!)
                 }
             }
 
             viewModel.assetTypesByCategoryItemList.observe(viewLifecycleOwner, { assetTypesByCategoryItemList ->
                 if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
-                    catogoryList = assetTypesByCategoryItemList
-                    for(item in catogoryList){
+                    categoryList = assetTypesByCategoryItemList
+                    for(item in categoryList){
                         if(item.id == assetTypeID){
                             binding.transactionAutoCompleteTextView.setText(item.displayName , false)
                             if(item.id == 12){
@@ -97,47 +95,53 @@ import javax.inject.Inject
             })
         }
 
-        private fun getProceedsFromLoan(position:Int){
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
-                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
-                        )
+        private fun getProceedsFromLoan(position:Int) {
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId > 0){
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!, borrowerId!!, assetTypeID!!, borrowerAssetId)
+                    }
                 }
+                observeChanges(position)
             }
-             observeChanges(position)
         }
 
-
         private fun getProceedsFromNonRealEstateDetail(position:Int){
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
-                        viewModel.getProceedsFromNonRealEstateDetail(authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId>0) {
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+
+                        viewModel.getProceedsFromNonRealEstateDetail(
+                            authToken, loanApplicationId!!,
+                            borrowerId!!, assetTypeID!!, borrowerAssetId
                         )
+                    }
                 }
+                observeChanges(position)
             }
-            observeChanges(position)
         }
 
         private fun getProceedsFromRealEstateDetail(position:Int){
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId != null)
-                        viewModel.getProceedsFromRealEstateDetail(authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, borrowerAssetId!!
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId>0) {
+                observeChanges(position)
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getProceedsFromRealEstateDetail(
+                            authToken, loanApplicationId!!,
+                            borrowerId!!, assetTypeID!!, borrowerAssetId
                         )
+                    }
                 }
             }
-            observeChanges(position)
+
         }
 
         private fun observeChanges(position:Int){
             visibleOtherFields(position)
             viewModel.proceedFromLoanModel.observe(viewLifecycleOwner, { proceedFromLoanModel ->
                 proceedFromLoanModel.proceedFromLoanData?.let{ proceedFromLoanData->
+                    proceedFromLoanData.id?.let { id = it }
                     proceedFromLoanData.value?.let {
                         binding.annualBaseEditText.setText(it.toString())
                     }
@@ -159,11 +163,7 @@ import javax.inject.Inject
                     proceedFromLoanData.collateralAssetName?.let{
                         binding.whichAssetsCompleteView.setText(it, false)
                     }
-
-
                 }
-
-
             })
         }
 
@@ -199,7 +199,6 @@ import javax.inject.Inject
                 binding.layoutDetail.visibility = View.VISIBLE
             }
         }
-
 
         private fun setUpUI(){
             transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  transactionArray)
@@ -277,7 +276,6 @@ import javax.inject.Inject
 
 
         }
-
 
         private fun clearFocusFromFields(){
             binding.annualBaseLayout.clearFocus()

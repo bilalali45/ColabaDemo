@@ -134,7 +134,7 @@ class BankAccountFragment : BaseFragment() {
                     if(codeString == "200"){
                         lifecycleScope.launchWhenStarted {
                             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
+                                findNavController().popBackStack()
                             }
                         }
                     }
@@ -235,32 +235,33 @@ class BankAccountFragment : BaseFragment() {
     }
 
     private fun fetchAndObserveBankAccountDetails(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId >0) {
-                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
-                }
-            }
-        }
+        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId >0) {
 
-        viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
-            if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
-                bankAccountDetails.bankAccountData?.let { bankAccountData ->
-                    bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
-                    bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
-                    bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
-                    bankAccountData.id?.let { id = it }
-                    bankAccountData.assetTypeId?.let { assetTypeId->
-                        for(item in classLevelBankAccountTypes){
-                            if(assetTypeId == item.id){
-                                binding.accountTypeCompleteView.setText(item.name, false)
-                                break
+            viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
+                if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
+                    bankAccountDetails.bankAccountData?.let { bankAccountData ->
+                        bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
+                        bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
+                        bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
+                        bankAccountData.id?.let { id = it }
+                        bankAccountData.assetTypeId?.let { assetTypeId->
+                            for(item in classLevelBankAccountTypes){
+                                if(assetTypeId == item.id){
+                                    binding.accountTypeCompleteView.setText(item.name, false)
+                                    break
+                                }
                             }
                         }
                     }
                 }
+            })
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                }
             }
-        })
+        }
     }
 
 }

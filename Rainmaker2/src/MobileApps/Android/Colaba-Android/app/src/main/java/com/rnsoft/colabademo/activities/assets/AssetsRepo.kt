@@ -36,6 +36,31 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
     }
 
 
+
+
+    suspend fun addUpdateProceedFromLoan(token: String, addUpdateProceedLoanParams: AddUpdateProceedLoanParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateProceedFromLoan(token = token, addUpdateProceedLoanParams)
+    }
+
+    suspend fun addUpdateProceedFromLoanOther(token: String,  addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateProceedFromLoanOther(token = token, addUpdateProceedFromLoanOtherParams)
+    }
+
+    suspend fun addUpdateAssetsRealStateOrNonRealState(token: String,  addUpdateRealStateParams: AddUpdateRealStateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateAssetsRealStateOrNonRealState(token = token, addUpdateRealStateParams)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int): Result<ArrayList<GetAssetTypesByCategoryItem>> {
         return dataSource.fetchAssetTypesByCategoryItemList(token = token , categoryId, loanPurposeId)
     }

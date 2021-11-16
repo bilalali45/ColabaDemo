@@ -151,6 +151,62 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
 
 
 
+
+
+
+    suspend fun addUpdateProceedFromLoan(token : String, addUpdateProceedLoanParams: AddUpdateProceedLoanParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateProceedFromLoan(newToken, addUpdateProceedLoanParams)
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun addUpdateProceedFromLoanOther(token : String, addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateProceedFromLoanOther(
+                newToken,
+                addUpdateProceedFromLoanOtherParams
+            )
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addUpdateAssetsRealStateOrNonRealState(token : String,  addUpdateRealStateParams: AddUpdateRealStateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateAssetsRealState(newToken, addUpdateRealStateParams)
+            //val response = serverApi.addUpdateAssetsNonRealState(newToken, addUpdateRealStateParams)
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+
+
+
+
+
     suspend fun addUpdateRetirement(token : String, retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"

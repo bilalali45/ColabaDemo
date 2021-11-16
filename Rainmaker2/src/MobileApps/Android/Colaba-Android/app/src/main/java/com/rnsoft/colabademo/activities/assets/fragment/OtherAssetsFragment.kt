@@ -90,40 +90,50 @@ class OtherAssetsFragment:BaseFragment() {
     }
 
     private fun getOtherDetailData(){
+        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
+            lifecycleScope.launchWhenStarted {
+                viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
+                    if (otherAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                        otherAssetDetail.otherAssetData?.let { otherAssetData ->
+                            var bool = false
+                            otherAssetData.assetTypeName?.let {
+                                for (item in otherAssetArray)
+                                    if (item == otherAssetData.assetTypeName) {
+                                        binding.accountTypeCompleteView.setText(item, false)
+                                        visibleOtherFields(otherAssetArray.indexOf(item))
+                                        bool = true
+                                        break
+                                    }
 
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
-                    viewModel.getOtherAssetDetails(authToken,
-                        loanApplicationId!!, borrowerId!!, borrowerAssetId
+                            }
+                            if (bool) {
+                                otherAssetData.assetId?.let { id = it }
+                                otherAssetData.institutionName?.let {
+                                    binding.financialEditText.setText(
+                                        it
+                                    )
+                                }
+                                otherAssetData.accountNumber?.let {
+                                    binding.accountNumberEdittext.setText(
+                                        it
+                                    )
+                                }
+                                otherAssetData.assetValue?.let { binding.annualBaseEditText.setText(it.toString()) }
+                            }
+                        }
+                    }
+                })
+
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getOtherAssetDetails(
+                        authToken,
+                        loanApplicationId!!,
+                        borrowerId!!,
+                        borrowerAssetId
                     )
                 }
             }
         }
-
-        viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
-            if(otherAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS){
-                otherAssetDetail.otherAssetData?.let { otherAssetData ->
-                    var bool = false
-                    otherAssetData.assetTypeName?.let {
-                    for(item in otherAssetArray)
-                        if(item == otherAssetData.assetTypeName){
-                            binding.accountTypeCompleteView.setText(item, false)
-                            visibleOtherFields(otherAssetArray.indexOf(item))
-                            bool = true
-                            break
-                        }
-
-                    }
-                    if(bool){
-                        otherAssetData.assetId?.let{ id = it }
-                        otherAssetData.institutionName?.let { binding.financialEditText.setText(it) }
-                        otherAssetData.accountNumber?.let { binding.accountNumberEdittext.setText(it) }
-                        otherAssetData.assetValue?.let { binding.annualBaseEditText.setText(it.toString()) }
-                    }
-                }
-            }
-        })
 
 
     }

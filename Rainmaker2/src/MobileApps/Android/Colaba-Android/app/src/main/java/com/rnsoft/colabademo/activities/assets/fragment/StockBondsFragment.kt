@@ -101,9 +101,6 @@ class StockBondsFragment:BaseFragment() {
         setUpEndIcon()
     }
 
-
-
-
     private fun saveStockBonds(){
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
@@ -222,13 +219,7 @@ class StockBondsFragment:BaseFragment() {
             })
         }
 
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
-                    viewModel
-                        .getFinancialAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
-                }
-            }
+        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
             viewModel.financialAssetDetail.observe(viewLifecycleOwner, { financialAssetDetail ->
                 if(financialAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     financialAssetDetail.financialAssetData?.let{ financialAssetData->
@@ -249,6 +240,12 @@ class StockBondsFragment:BaseFragment() {
                 else
                     findNavController().popBackStack()
             })
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getFinancialAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                }
+            }
         }
 
     }

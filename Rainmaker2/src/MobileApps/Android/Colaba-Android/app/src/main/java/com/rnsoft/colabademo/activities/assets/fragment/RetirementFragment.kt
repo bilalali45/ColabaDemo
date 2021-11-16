@@ -170,13 +170,7 @@ class RetirementFragment:BaseFragment() {
     }
 
     private fun observeRetirementData(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
-                    viewModel
-                        .getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
-                }
-            }
+        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
             viewModel.retirementAccountDetail.observe(viewLifecycleOwner, { observeRetirementData ->
                 if(observeRetirementData.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     observeRetirementData.retirementAccountData?.let{ retirementAccountData->
@@ -190,6 +184,12 @@ class RetirementFragment:BaseFragment() {
                 else
                     findNavController().popBackStack()
             })
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                }
+            }
         }
     }
 

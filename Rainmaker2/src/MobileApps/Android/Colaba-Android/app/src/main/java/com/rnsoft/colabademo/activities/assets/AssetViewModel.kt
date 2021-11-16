@@ -218,6 +218,53 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     }
 
 
+    suspend fun addUpdateProceedFromLoan(token: String,  addUpdateProceedLoanParams: AddUpdateProceedLoanParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateProceedFromLoan(token = token, addUpdateProceedLoanParams = addUpdateProceedLoanParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun addUpdateProceedFromLoanOther(token: String, addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateProceedFromLoanOther(token = token, addUpdateProceedFromLoanOtherParams = addUpdateProceedFromLoanOtherParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+
+    suspend fun addUpdateAssetsRealStateOrNonRealState(token: String, addUpdateRealStateParams: AddUpdateRealStateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateAssetsRealStateOrNonRealState(token = token, addUpdateRealStateParams = addUpdateRealStateParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+
+
+
+
     suspend fun getRetirementAccountDetails(token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = assetsRepo.getRetirementAccountDetails(

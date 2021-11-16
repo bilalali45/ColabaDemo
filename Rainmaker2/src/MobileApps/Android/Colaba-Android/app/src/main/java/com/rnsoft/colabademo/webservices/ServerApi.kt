@@ -155,6 +155,10 @@ interface ServerApi{
         @Query("borrowerId") borrowerId:Int,
         @Query("borrowerAssetId") borrowerAssetId:Int): BankAccountResponse
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Assets Add Update Api....
+
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateBankAccount")
     suspend fun addUpdateBankDetails(
         @Header("Authorization") Authorization:String,
@@ -182,6 +186,20 @@ interface ServerApi{
         @Header("Authorization") Authorization:String,
         @Body giftAddUpdateParams: GiftAddUpdateParams): GenericAddUpdateAssetResponse
 
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateProceedsfromloan")
+    suspend fun addUpdateProceedFromLoan(@Header("Authorization") Authorization:String, @Body addUpdateProceedLoanParams: AddUpdateProceedLoanParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateProceedsfromloanOther")
+    suspend fun addUpdateProceedFromLoanOther(@Header("Authorization") Authorization:String, @Body addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateAssestsRealState")
+    suspend fun addUpdateAssetsRealState(@Header("Authorization") Authorization:String, @Body addUpdateRealStateParams: AddUpdateRealStateParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateAssestsNonRealState")
+    suspend fun addUpdateAssetsNonRealState(@Header("Authorization") Authorization:String, @Body addUpdateRealStateParams: AddUpdateRealStateParams) : GenericAddUpdateAssetResponse
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
     suspend fun getBankAccountType(
