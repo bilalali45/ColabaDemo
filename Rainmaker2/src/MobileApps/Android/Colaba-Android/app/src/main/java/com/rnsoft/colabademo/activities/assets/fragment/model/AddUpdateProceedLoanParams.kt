@@ -1,13 +1,14 @@
 package com.rnsoft.colabademo
 
 data class AddUpdateProceedLoanParams(
+    val BorrowerId: Int,
+    val LoanApplicationId: Int,
     val AssetCategoryId: Int,
     val AssetTypeId: Int,
-    val AssetValue: Int,
-    val BorrowerAssetId: Int,
-    val BorrowerId: Int,
-    val CollateralAssetDescription: Any,
-    val ColletralAssetTypeId: Int,
-    val LoanApplicationId: Int,
-    val SecuredByColletral: Boolean
+
+     val AssetValue: Int?=null,
+    val BorrowerAssetId: Int?=null,
+    val CollateralAssetDescription: String? = null,
+    val ColletralAssetTypeId: Int?=null,
+    val SecuredByColletral: Boolean?=null
 )

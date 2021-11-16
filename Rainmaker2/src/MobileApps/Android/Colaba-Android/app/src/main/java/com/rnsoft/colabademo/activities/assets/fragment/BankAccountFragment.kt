@@ -212,7 +212,6 @@ class BankAccountFragment : BaseFragment() {
 
     private var classLevelBankAccountTypes: ArrayList<DropDownResponse> = arrayListOf(DropDownResponse(1, "Checking Account"), DropDownResponse(2, "Savings Account"))
 
-
     private fun observeBankData(){
         lifecycleScope.launchWhenStarted {
             viewModel.bankAccountType.observe(viewLifecycleOwner, { bankAccountTypes ->

@@ -9,13 +9,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.proceed_from_trans_layout.*
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -26,7 +30,7 @@ import javax.inject.Inject
         private var _binding: ProceedFromTransLayoutBinding? = null
         private val binding get() = _binding!!
 
-        private var transactionArray: ArrayList<String> = arrayListOf("Proceeds From A Loan", "Proceeds From Selling Non-Real Estate Assets", "Proceeds From Selling Real Estate Assets")
+        private var transactionArray: ArrayList<String> = arrayListOf("Proceeds From A Loan", "Proceeds from Selling Non-Real Estate Assets", "Processing from Selling Real Estate")
         private lateinit var transactionAdapter: ArrayAdapter<String>
 
         private val financialArray: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
@@ -78,14 +82,14 @@ import javax.inject.Inject
                     categoryList = assetTypesByCategoryItemList
                     for(item in categoryList){
                         if(item.id == assetTypeID){
-                            binding.transactionAutoCompleteTextView.setText(item.displayName , false)
+                            binding.transactionAutoCompleteTextView.setText(item.name , false)
                             if(item.id == 12){
                                 getProceedsFromLoan(0)
                             }
-                            else if(item.id == 13){
+                            else if(item.id == AppConstant.assetNonRealStateId){
                                 getProceedsFromNonRealEstateDetail(1)
                             }
-                            else if(item.id == 14){
+                            else if(item.id == AppConstant.assetRealStateId){
                                 getProceedsFromRealEstateDetail(2)
                             }
                             break
@@ -215,9 +219,6 @@ import javax.inject.Inject
                 }
             }
 
-
-
-
             binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.radioButton -> {
@@ -264,18 +265,132 @@ import javax.inject.Inject
                 findNavController().popBackStack()
             }
 
-            binding.phoneFab.setOnClickListener {
-                val fieldsValidated = checkEmptyFields()
-                if(fieldsValidated) {
-                    clearFocusFromFields()
-                    findNavController().popBackStack()
-                }
+            binding.saveBtn.setOnClickListener {
+               saveProceedTransaction()
             }
 
             addFocusOutListenerToFields()
 
 
         }
+
+        private fun saveProceedTransaction(){
+            val fieldsValidated = checkEmptyFields()
+            if(fieldsValidated) {
+                clearFocusFromFields()
+                for(item in categoryList){
+                    Timber.e("name = "+item.name +"  = "+binding.transactionAutoCompleteTextView.text.toString())
+                    if(item.name.equals(binding.transactionAutoCompleteTextView.text.toString(),true)) {
+                        if (item.id == 12)
+                            addUpdateProceedFromLoan(item.id)
+                        else if (item.id == AppConstant.assetRealStateId || item.id == AppConstant.assetNonRealStateId)
+                            item.displayName?.let {
+                                addUpdateAssetsRealStateOrNonRealState(item.id, it)
+                            }
+                        break
+                    }
+                }
+            }
+        }
+
+
+        private fun addUpdateProceedFromLoan(assetTypeId:Int){
+            observeDataUploaded()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    var paramBorrowerAssetId:Int? = null
+                    if(borrowerAssetId > 0)
+                        paramBorrowerAssetId = borrowerAssetId
+
+                    var securedByColletral:Boolean? = null
+                    if(radioButton.isChecked)
+                        securedByColletral = true
+                    if(radioButton2.isChecked)
+                        securedByColletral = false
+
+                    var colletralAssetTypeId:Int? = null
+                    for(item in financialArray) {
+                        if (item == binding.whichAssetsCompleteView.text.toString()) {
+                            colletralAssetTypeId = financialArray.indexOf(item)+1
+                            break
+                        }
+                    }
+
+                    loanApplicationId?.let { notNullLoanApplicationId ->
+                        borrowerId?.let { notNullBorrowerId ->
+                            val addUpdateProceedLoanParams =
+                                AddUpdateProceedLoanParams(
+                                    BorrowerId = notNullBorrowerId,
+                                    LoanApplicationId = notNullLoanApplicationId,
+                                    AssetCategoryId = assetCategoryId,
+                                    AssetTypeId = assetTypeId,
+                                    BorrowerAssetId = paramBorrowerAssetId,
+                                    AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                    SecuredByColletral = securedByColletral,
+                                    CollateralAssetDescription = binding.edDetails.text.toString(),
+                                    ColletralAssetTypeId = colletralAssetTypeId,
+                                )
+                            viewModel.addUpdateProceedFromLoan(authToken, addUpdateProceedLoanParams)
+
+                            colletralAssetTypeId?.let { notNullColletralAssetTypeId->
+                                val addUpdateProceedFromLoanOtherParams =
+                                    AddUpdateProceedFromLoanOtherParams(
+                                        BorrowerId = notNullBorrowerId,
+                                        LoanApplicationId = notNullLoanApplicationId,
+                                        AssetCategoryId = assetCategoryId,
+                                        AssetTypeId = assetTypeId,
+                                        AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                        CollateralAssetDescription = binding.edDetails.text.toString(),
+                                        ColletralAssetTypeId = notNullColletralAssetTypeId,
+                                    )
+                                viewModel.addUpdateProceedFromLoanOther(authToken, addUpdateProceedFromLoanOtherParams)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
+            observeDataUploaded()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    loanApplicationId?.let { notNullLoanApplicationId ->
+                        borrowerId?.let { notNullBorrowerId ->
+                            val addUpdateRealStateParams =
+                                AddUpdateRealStateParams(
+                                    BorrowerId = notNullBorrowerId,
+                                    LoanApplicationId = notNullLoanApplicationId,
+                                    AssetCategoryId = assetCategoryId,
+                                    AssetTypeId = assetTypeId,
+                                    AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                    Description = binding.edDetails.text.toString(),
+                                )
+                            viewModel.addUpdateAssetsRealStateOrNonRealState(
+                                authToken,
+                                addUpdateRealStateParams
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun observeDataUploaded(){
+            viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                if(genericAddUpdateAssetResponse.status == "OK"){
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "200"){
+                        lifecycleScope.launchWhenStarted {
+                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                                findNavController().popBackStack()
+                            }
+                        }
+                    }
+                }
+            })
+        }
+
 
         private fun clearFocusFromFields(){
             binding.annualBaseLayout.clearFocus()
@@ -288,7 +403,8 @@ import javax.inject.Inject
         private fun checkEmptyFields():Boolean{
             var bool =  true
 
-            if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
+            if((binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true)
+                && binding.annualBaseLayout.isVisible) {
                 CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
                 bool = false
             }
@@ -296,14 +412,16 @@ import javax.inject.Inject
                 CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
 
 
-            if(binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true) {
+            if((binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true)
+                && binding.layoutDetail.isVisible) {
                 CustomMaterialFields.setError(binding.layoutDetail, "This field is required." , requireContext())
                 bool = false
             }
             else
                 CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
 
-            if(binding.transactionAutoCompleteTextView.text?.isEmpty() == true || binding.transactionAutoCompleteTextView.text?.isBlank() == true) {
+            if((binding.transactionAutoCompleteTextView.text?.isEmpty() == true || binding.transactionAutoCompleteTextView.text?.isBlank() == true)
+                && binding.transactionTextInputLayout.isVisible) {
                 CustomMaterialFields.setError(binding.transactionTextInputLayout, "This field is required." , requireContext())
                 bool = false
             }
@@ -311,7 +429,8 @@ import javax.inject.Inject
                 CustomMaterialFields.clearError(binding.transactionTextInputLayout,  requireContext())
 
 
-            if(binding.whichAssetsCompleteView.text?.isEmpty() == true || binding.whichAssetsCompleteView.text?.isBlank() == true) {
+            if((binding.whichAssetsCompleteView.text?.isEmpty() == true || binding.whichAssetsCompleteView.text?.isBlank() == true)
+                &&  binding.whichAssetInputLayout.isVisible) {
                 CustomMaterialFields.setError(binding.whichAssetInputLayout, "This field is required." , requireContext())
                 bool = false
             }
@@ -345,23 +464,5 @@ import javax.inject.Inject
             )
         }
 
-        private fun observeFinancialData(){
-            lifecycleScope.launchWhenStarted {
-                viewModel.allFinancialAsset.observe(viewLifecycleOwner, { allFinancialAsset ->
-                    if(allFinancialAsset.size>0) {
-                        transactionArray = arrayListOf()
-                        dropDownList = arrayListOf()
-                        for (item in allFinancialAsset) {
-                            transactionArray.add(item.name)
-                            dropDownList.add(item)
-                        }
-                        transactionAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  transactionArray)
-                        binding.transactionAutoCompleteTextView.setAdapter(transactionAdapter)
 
-                    }
-                    else
-                        findNavController().popBackStack()
-                })
-            }
-        }
 }

@@ -189,8 +189,10 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateAssetsRealStateOrNonRealState(token : String,  addUpdateRealStateParams: AddUpdateRealStateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateAssetsRealState(newToken, addUpdateRealStateParams)
-            //val response = serverApi.addUpdateAssetsNonRealState(newToken, addUpdateRealStateParams)
+            val response:GenericAddUpdateAssetResponse = if(addUpdateRealStateParams.AssetTypeId == AppConstant.assetRealStateId)
+                serverApi.addUpdateAssetsRealState(newToken, addUpdateRealStateParams)
+            else
+                serverApi.addUpdateAssetsNonRealState(newToken, addUpdateRealStateParams)
             Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
