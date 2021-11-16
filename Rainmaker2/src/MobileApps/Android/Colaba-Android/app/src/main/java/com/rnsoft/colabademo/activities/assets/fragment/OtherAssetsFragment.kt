@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -11,39 +10,24 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
-import javax.inject.Inject
-@AndroidEntryPoint
-class OtherAssetsFragment:BaseFragment() {
+
+
+class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
 
     private var _binding: OtherAssetsLayoutBinding? = null
     private val binding get() = _binding!!
-
-    private var loanApplicationId:Int? = null
-    private var loanPurpose:String? = null
-    private var borrowerId:Int? = null
-    private var borrowerAssetId:Int = -1
-    private var assetCategoryId:Int = 7
-    private var assetTypeID:Int? = null
-    private var id:Int? = null
-
-    private val viewModel: AssetViewModel by activityViewModels()
 
     private var otherAssetArray: ArrayList<String> = arrayListOf("Trust Account", "Bridge Loan Proceeds", "Individual Development Account (IDA)", "Cash Value of Life Insurance", "Employer Assistance", "Relocation Funds", "Rent Credit", "Lot Equity", "Sweat Equity", "Trade Equity", "Other")
     private lateinit var otherAssetAdapter : ArrayAdapter<String>
     private var otherAssetTypesByList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = OtherAssetsLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -57,6 +41,10 @@ class OtherAssetsFragment:BaseFragment() {
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 7)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             getOtherAssets()
+        }
+        if(borrowerAssetId>0) {
+            binding.topDelImageview.visibility = View.VISIBLE
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
         }
         return root
     }
@@ -81,8 +69,8 @@ class OtherAssetsFragment:BaseFragment() {
 
         lifecycleScope.launchWhenStarted {
            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-               if (loanApplicationId != null && assetCategoryId != null)
-                   viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId!!, loanApplicationId!!)
+               if (loanApplicationId != null)
+                   viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId, loanApplicationId!!)
            }
         }
 
@@ -152,11 +140,8 @@ class OtherAssetsFragment:BaseFragment() {
             binding.accountTypeCompleteView.showDropDown()
         }
 
-        binding.accountTypeCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-               visibleOtherFields(position)
-            }
-        }
+        binding.accountTypeCompleteView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ -> visibleOtherFields(position) }
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
             saveOtherAssets()
@@ -242,18 +227,19 @@ class OtherAssetsFragment:BaseFragment() {
     }
 
     private fun setUpEndIcon(){
-        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
-            if (binding.accountNumberEdittext.getTransformationMethod()
+        binding.accountNumberLayout.setEndIconOnClickListener {
+            if (binding.accountNumberEdittext.transformationMethod
                     .equals(PasswordTransformationMethod.getInstance())
             ) { //  hide password
-                binding.accountNumberEdittext.setTransformationMethod(
-                    HideReturnsTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
             } else {
-                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
-        })
+        }
     }
 
     private fun clearFocusFromFields(){
@@ -305,9 +291,9 @@ class OtherAssetsFragment:BaseFragment() {
     }
 
     private  fun addFocusOutListenerToFields(){
-        binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
+        binding.accountNumberEdittext.onFocusChangeListener = CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext())
         //binding.accountTypeCompleteView.setOnFocusChangeListener(CustomFocusListenerForAutoCompleteTextView( binding.accountTypeCompleteView , binding.accountTypeInputLayout , requireContext()))
-        binding.annualBaseEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext()))
-        binding.financialEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext()))
+        binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext())
+        binding.financialEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext())
     }
 }

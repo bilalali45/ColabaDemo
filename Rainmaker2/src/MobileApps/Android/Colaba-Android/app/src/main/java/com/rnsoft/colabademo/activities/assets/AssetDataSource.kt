@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.util.Log
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
+import retrofit2.http.Query
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -203,7 +204,21 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-
+    suspend fun deleteAsset(token : String,  assetId:Int,
+                              borrowerId:Int,
+                              loanApplicationId:Int): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.deleteAsset(newToken, AssetId = assetId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+            Timber.e("deleteAsset = $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 
 
 

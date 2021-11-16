@@ -1,38 +1,23 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.RetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class RetirementFragment:BaseFragment() {
+
+class RetirementFragment:AssetAddUpdateBaseFragment() {
 
     private var _binding: RetirementLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private var loanApplicationId:Int? = null
-    private var loanPurpose:String? = null
-    private var borrowerId:Int? = null
-    private var borrowerAssetId:Int = -1
-    private var assetTypeID:Int? = null
-    private var id:Int? = null
-
-    private val viewModel: AssetViewModel by activityViewModels()
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RetirementLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -45,6 +30,10 @@ class RetirementFragment:BaseFragment() {
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId, -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeRetirementData()
+        }
+        if(borrowerAssetId>0) {
+            binding.topDelImageview.visibility = View.VISIBLE
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
         }
         return root
     }
@@ -67,22 +56,10 @@ class RetirementFragment:BaseFragment() {
 
     private fun saveRetirement(){
 
-        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-            if(genericAddUpdateAssetResponse.status == "OK"){
-                val codeString = genericAddUpdateAssetResponse.code.toString()
-                if(codeString == "200"){
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
-                        }
-                    }
-                }
-            }
-        })
-
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
             clearFocusFromFields()
+            observeAddUpdateResponse()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
@@ -104,15 +81,6 @@ class RetirementFragment:BaseFragment() {
             }
         }
 
-        /*
-        BorrowerId = 5,
-        LoanApplicationId = 5,
-        AccountNumber = "ABC",
-        InstitutionName = "XYZ",
-        Value = 10011,
-        Id = 1102
-
-         */
 
 
     }

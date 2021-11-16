@@ -1,6 +1,6 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
+
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -18,27 +18,16 @@ import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-@AndroidEntryPoint
-class BankAccountFragment : BaseFragment() {
+
+class BankAccountFragment : AssetAddUpdateBaseFragment() {
 
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
     private var bankAccounts: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
     private lateinit var bankAdapter:ArrayAdapter<String>
-    private val viewModel: AssetViewModel by activityViewModels()
 
-    private var loanApplicationId:Int? = null
-    private var loanPurpose:String? = null
-    private var borrowerId:Int? = null
-    private var borrowerAssetId:Int = -1
-    private var assetTypeID:Int? = null
-    private var id:Int? = null
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = BankAccountLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -52,6 +41,10 @@ class BankAccountFragment : BaseFragment() {
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
             observeBankData()
+        }
+        if(borrowerAssetId>0) {
+            binding.topDelImageview.visibility = View.VISIBLE
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
         }
         return root
     }

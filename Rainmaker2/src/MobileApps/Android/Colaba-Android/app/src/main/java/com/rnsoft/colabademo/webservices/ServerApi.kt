@@ -176,6 +176,17 @@ interface ServerApi{
         @Body stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): GenericAddUpdateAssetResponse
 
 
+    @DELETE("/api/mcu/mobile/loanapplication/Assets/DeleteAsset")
+    suspend fun deleteAsset(@Header("Authorization" )  Authorization:String,
+                            @Query("AssetId" )  AssetId:Int,
+                            @Query("borrowerId")  borrowerId:Int,
+                            @Query("loanApplicationId")  loanApplicationId:Int ):
+            GenericAddUpdateAssetResponse
+
+
+
+
+
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateRetirementAccount")
     suspend fun addUpdateRetirement(
         @Header("Authorization") Authorization:String,

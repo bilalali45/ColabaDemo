@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -11,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
@@ -20,29 +18,18 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.ArrayList
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class StockBondsFragment:BaseFragment() {
+
+
+class StockBondsFragment:AssetAddUpdateBaseFragment() {
 
     private var _binding: StockBondsLayoutBinding? = null
     private val binding get() = _binding!!
-
-    private var loanApplicationId:Int? = null
-    private var loanPurpose:String? = null
-    private var borrowerId:Int? = null
-    private var borrowerAssetId:Int = -1
-    private var assetTypeID:Int? = null
-    private var id:Int? = null
 
     private var dataArray: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
     private var bankAccounts: ArrayList<DropDownResponse> = arrayListOf()
     private lateinit var bankAdapter:ArrayAdapter<String>
 
-    private val viewModel: AssetViewModel by activityViewModels()
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,6 +46,10 @@ class StockBondsFragment:BaseFragment() {
             borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeStockBondsData()
+        }
+        if(borrowerAssetId>0) {
+            binding.topDelImageview.visibility = View.VISIBLE
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
         }
         return root
     }
@@ -104,6 +95,7 @@ class StockBondsFragment:BaseFragment() {
     private fun saveStockBonds(){
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
+            observeAddUpdateResponse()
             clearFocusFromFields()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -135,18 +127,7 @@ class StockBondsFragment:BaseFragment() {
             }
         }
 
-        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-            if(genericAddUpdateAssetResponse.status == "OK"){
-                val codeString = genericAddUpdateAssetResponse.code.toString()
-                if(codeString == "200"){
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            findNavController().popBackStack()
-                        }
-                    }
-                }
-            }
-        })
+
 
     }
 

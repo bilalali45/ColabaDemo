@@ -2,6 +2,8 @@ package com.rnsoft.colabademo
 
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
+import retrofit2.Response
+import retrofit2.http.*
 import javax.inject.Inject
 
 /**
@@ -52,12 +54,9 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
 
 
 
-
-
-
-
-
-
+    suspend fun deleteAsset(token : String,  assetId:Int, borrowerId:Int, loanApplicationId:Int): Result<GenericAddUpdateAssetResponse>{
+        return dataSource.deleteAsset(token = token, assetId = assetId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+    }
 
 
 
