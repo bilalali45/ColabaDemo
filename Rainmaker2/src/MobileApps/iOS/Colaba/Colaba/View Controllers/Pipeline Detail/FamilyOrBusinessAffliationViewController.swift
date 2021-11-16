@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FamilyOrBusinessAffliationViewControllerDelegate: AnyObject {
+    func getFamilyOrBusinessQuestionModel(question: [String: Any])
+}
+
 class FamilyOrBusinessAffliationViewController: UIViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: FamilyOrBusinessAffliationViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +36,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         setQuestionData()
+        saveQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,27 +57,31 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
     
     func setQuestionData(){
         lblQuestion.text = questionModel.question
-        if questionModel.answer == "Yes"{
+        if questionModel.isAffiliatedWithSeller{
             isYes = true
         }
-        else if (questionModel.answer == "No"){
+        else{
             isYes = false
         }
-        lblDetailQuestion.text = questionModel.answerDetail
+        lblAns.text = questionModel.answerDetail
         detailView.isHidden = questionModel.answerDetail == ""
         changeStatus()
     }
     
     @objc func yesStackViewTapped(){
+        questionModel.isAffiliatedWithSeller = true
         isYes = true
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .debtCoSigner
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questionModel = questionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
+        questionModel.isAffiliatedWithSeller = false
         isYes = false
         changeStatus()
     }
@@ -82,8 +92,10 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
             lblYes.font = ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             btnNo.setImage(UIImage(named: !ansYes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            //detailView.isHidden = !ansYes
+            detailView.isHidden = questionModel.answerDetail == ""
+            lblAns.text = questionModel.answerDetail
         }
+        saveQuestion()
     }
     
     @objc func detailViewTapped(){
@@ -91,7 +103,33 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         vc.type = .familyOrBusinessAffilation
         vc.questionModel = questionModel
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
+    
+    func saveQuestion(){
+        let question = ["id": questionModel.id,
+                        "parentQuestionId": NSNull(),
+                        "headerText": questionModel.headerText,
+                        "questionSectionId": questionModel.questionSectionId,
+                        "ownTypeId": questionModel.ownTypeId,
+                        "firstName": questionModel.firstName,
+                        "lastName": questionModel.lastName,
+                        "question": questionModel.question,
+                        "answer": NSNull(),
+                        "answerDetail":questionModel.answerDetail,
+                        "selectionOptionId": NSNull(),
+                        "answerData": [
+                            "IsAffiliatedWithSeller": isYes == nil ? false : isYes!,
+                            "AffiliationDescription": questionModel.answerDetail]] as [String: Any]
+        self.delegate?.getFamilyOrBusinessQuestionModel(question: question)
+    }
 
+}
+
+extension FamilyOrBusinessAffliationViewController: GovernmentQuestionDetailControllerDelegate{
+    func saveQuestionModel(question: GovernmentQuestionModel) {
+        questionModel = question
+        changeStatus()
+    }
 }

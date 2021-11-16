@@ -22,6 +22,10 @@ enum DetailScreenType{
     case forceClosedProperty
 }
 
+protocol GovernmentQuestionDetailControllerDelegate: AnyObject {
+    func saveQuestionModel(question: GovernmentQuestionModel)
+}
+
 class PriorityLiensFollowupQuestionViewController: UIViewController {
 
     //MARK:- Outlets and Properties
@@ -43,6 +47,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
     
     var questionModel = GovernmentQuestionModel()
     var borrowerName = ""
+    weak var delegate: GovernmentQuestionDetailControllerDelegate?
     
     init(validation: Validation) {
         self.validation = validation
@@ -100,7 +105,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         let estimatedFrame = txtviewDetailContainerView.frame
         txtViewDetail = MDCFilledTextArea(frame: estimatedFrame)
         txtViewDetail.label.text = "Details"
-        txtViewDetail.textView.text = ""
+        txtViewDetail.textView.text = questionModel.answerDetail
         txtViewDetail.leadingAssistiveLabel.text = ""
         txtViewDetail.setFilledBackgroundColor(.clear, for: .normal)
         txtViewDetail.setFilledBackgroundColor(.clear, for: .disabled)
@@ -126,6 +131,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
         txtViewDetail.setLeadingAssistiveLabel(.red, for: .disabled)
         txtViewDetail.textView.textColor = .black
         txtViewDetail.textView.delegate = self
+        txtViewDetail.sizeToFit()
         mainView.addSubview(txtViewDetail)
 
     }
@@ -136,6 +142,11 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
             return false
         }
         return true
+    }
+    
+    func saveQuestion(){
+        questionModel.answerDetail = txtViewDetail.textView.text!
+        self.delegate?.saveQuestionModel(question: questionModel)
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -158,6 +169,7 @@ class PriorityLiensFollowupQuestionViewController: UIViewController {
 //        }
         
         //if validate(){
+            saveQuestion()
             self.dismissVC()
         //}
     }

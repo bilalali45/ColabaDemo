@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class GovernmentQuestionDetailViewController: BaseViewController {
 
@@ -30,6 +31,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     @IBOutlet weak var childSupportView: UIView!
     @IBOutlet weak var demographicView: UIView!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var undisclosedVC: UndisclosedBorrowerFundsViewController!
     var ownershipInterestVC: OwnershipInterestInPropertyViewController!
@@ -53,9 +55,29 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     var ownTypeId = 0
     var governmentQuestions = [GovernmentQuestionModel]()
     
+    var undisclosedQuestion: [String: Any] = [:]
+    var undisclosedSubQuestion: [String: Any] = [:]
+    var ownershipInterestQuestion: [String: Any] = [:]
+    var ownershipInterestSubQuestion1: [String: Any] = [:]
+    var ownershipInterestSubQuestion2: [String: Any] = [:]
+    var familiyOrBusinessAffiliationQuestion: [String: Any] = [:]
+    var debtcoSignerQuestion: [String: Any] = [:]
+    var outStandingJudgementsQuestion: [String: Any] = [:]
+    var fedralDebtQuestion: [String: Any] = [:]
+    var partyToLawsuitQuestion: [String: Any] = [:]
+    var titleConveyanceQuestion: [String: Any] = [:]
+    var preForceClosureQuestion: [String: Any] = [:]
+    var forceClosuredQuestion: [String: Any] = [:]
+    var bankruptcyQuestion: [String: Any] = [:]
+    var bankruptcySubQuestion: [String: Any] = [:]
+    var childSupportQuestion: [String: Any] = [:]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(showSaveButton), name: NSNotification.Name(rawValue: kNotificationShowSaveButtonOnGovernmentScreen), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideSaveButton), name: NSNotification.Name(rawValue: kNotificationHideSaveButtonOnGovernmentScreen), object: nil)
+        
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, familyOrBusinessAffiliationView,/*priorityLiensView,*/ undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         getGovernmentQuestions()
         
@@ -78,6 +100,14 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     }
     
     //MARK:- Methods and Actions
+    
+    @objc func showSaveButton(){
+        btnSaveChanges.isHidden = false
+    }
+    
+    @objc func hideSaveButton(){
+        btnSaveChanges.isHidden = true
+    }
     
     func roundAllFilterViews(filterViews: [UIView]){
         for filterView in filterViews{
@@ -200,6 +230,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             undisclosedVC.questionModel = undisclosedQuestion
             if let subQuestion = governmentQuestions.filter({$0.parentQuestionId == undisclosedQuestion.id}).first{
                 undisclosedVC.subQuestionModel = subQuestion
+                undisclosedVC.delegate = self
             }
         }
         
@@ -208,12 +239,13 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             ownershipInterestVC.questionModel = ownershipQuestion
             let subQuestions = governmentQuestions.filter({$0.parentQuestionId == ownershipQuestion.id})
             ownershipInterestVC.subQuestions = subQuestions
-            
+            ownershipInterestVC.delegate = self
         }
         
         familyOrBusinessAffiliationVC = Utility.getFamilyOrBusinessAffliationVC()
         if let familyOrBusinessAffiliationQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Family or Business affiliation")}).first{
             familyOrBusinessAffiliationVC.questionModel = familyOrBusinessAffiliationQuestion
+            familyOrBusinessAffiliationVC.delegate = self
         }
         
         //priorityLiensVC = Utility.getPriorityLiensViewController()
@@ -225,40 +257,48 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         debtCoSignerVC = Utility.getDebtCoSignerVC()
         if let debtCoQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Debt Co-Signer or Guarantor")}).first{
             debtCoSignerVC.questionModel = debtCoQuestion
+            debtCoSignerVC.delegate = self
         }
         
         outstandingJudgementsVC = Utility.getOutstandingJudgementsVC()
         if let outstandingJudgementQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Outstanding Judgements")}).first{
             outstandingJudgementsVC.questionModel = outstandingJudgementQuestion
+            outstandingJudgementsVC.delegate = self
         }
         
         fedralDebtVC =  Utility.getFedralDebtVC()
         if let fedralDebtQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Federal Debt Deliquency")}).first{
             fedralDebtVC.questionModel = fedralDebtQuestion
+            fedralDebtVC.delegate = self
         }
         
         partyToLawsuitVC = Utility.getPartyToLawsuitVC()
         if let partyToLawsuitQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Party to Lawsuit")}).first{
             partyToLawsuitVC.questionModel = partyToLawsuitQuestion
+            partyToLawsuitVC.delegate = self
         }
         
         titleConveyanceVC = Utility.getTitleConveyanceVC()
         if let titleConveyanceQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Title Conveyance")}).first{
             titleConveyanceVC.questionModel = titleConveyanceQuestion
+            titleConveyanceVC.delegate = self
         }
         
         preForceClosureVC = Utility.getPreForceClosureVC()
         if let preForceClosureQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Pre-Foreclosureor Short Sale")}).first{
             preForceClosureVC.questionModel = preForceClosureQuestion
+            preForceClosureVC.delegate = self
         }
         
         forceClosedPropertyVC = Utility.getForceClosedPropertyVC()
         if let forceClosureQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Foreclosured Property")}).first{
             forceClosedPropertyVC.questionModel = forceClosureQuestion
+            forceClosedPropertyVC.delegate = self
         }
         
         bankruptcyVC = Utility.getBankruptcyVC()
         if let bankruptcyQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Bankruptcy")}).first{
+            bankruptcyVC.delegate = self
             bankruptcyVC.questionModel = bankruptcyQuestion
             if let subQuestion = governmentQuestions.filter({$0.parentQuestionId == bankruptcyQuestion.id}).first{
                 bankruptcyVC.subQuestionModel = subQuestion
@@ -268,6 +308,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         childSupportVC = Utility.getChildSupportVC()
         if let childSupportQuestion = governmentQuestions.filter({$0.headerText.localizedCaseInsensitiveContains("Child Support, Alimony, etc.")}).first{
             childSupportVC.questionModel = childSupportQuestion
+            childSupportVC.delegate = self
         }
         
         demographicInfoVC = Utility.getDemographicInformationVC()
@@ -344,6 +385,10 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         filterViewTapped(selectedFilterView: demographicView, filterViews: [unDisclosedView, ownershipInterestView, /*priorityLiensView,*/familyOrBusinessAffiliationView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
     }
     
+    @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        addUpdateGovernmentQuestion()
+    }
+    
     //MARK:- API
     
     func getGovernmentQuestions(){
@@ -378,5 +423,106 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         }
         
     }
+    
+    func addUpdateGovernmentQuestion(){
+        
+        //Utility.showOrHideLoader(shouldShow:  true)
+        
+        let questions = [undisclosedQuestion, undisclosedSubQuestion, ownershipInterestQuestion, ownershipInterestSubQuestion1, ownershipInterestSubQuestion2, familiyOrBusinessAffiliationQuestion, debtcoSignerQuestion, outStandingJudgementsQuestion, fedralDebtQuestion, partyToLawsuitQuestion, titleConveyanceQuestion, preForceClosureQuestion, forceClosuredQuestion, bankruptcyQuestion, bankruptcySubQuestion, childSupportQuestion]
 
+        let params = ["LoanApplicationId": loanApplicationId,
+                      "BorrowerId": borrowerId,
+                      "Questions": questions] as [String:Any]
+        
+//        APIRouter.sharedInstance.executeAPI(type: .addUpdateGovernmentQuestion, method: .post, params: params) { status, result, message in
+//            DispatchQueue.main.async {
+//                Utility.showOrHideLoader(shouldShow: false)
+//                if (status == .success){
+//                    self.goBack()
+//                }
+//                else{
+//                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+//
+//                    }
+//                }
+//            }
+//        }
+        
+    }
+}
+
+extension GovernmentQuestionDetailViewController: UndisclosedBorrowerFundsViewControllerDelegate{
+    func getQuestionModel(question: [String : Any], subQuestions: [String : Any]) {
+        undisclosedQuestion = question
+        undisclosedSubQuestion = subQuestions
+    }
+}
+
+extension GovernmentQuestionDetailViewController: OwnershipInterestInPropertyViewControllerDelegate{
+    func getQuestionModel(question: [String : Any], subQuestions: [[String : Any]]) {
+        ownershipInterestQuestion = question
+        ownershipInterestSubQuestion1 = subQuestions[0]
+        ownershipInterestSubQuestion2 = subQuestions[1]
+    }
+}
+
+extension GovernmentQuestionDetailViewController: FamilyOrBusinessAffliationViewControllerDelegate{
+    func getFamilyOrBusinessQuestionModel(question: [String : Any]) {
+        familiyOrBusinessAffiliationQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: DebtCoSignerViewControllerDelegate{
+    func getDebtCoQuestionModel(question: [String : Any]) {
+        debtcoSignerQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: OutstandingJudgementsViewControllerDelegate{
+    func getOutstandingJudgementQuestionModel(question: [String: Any]){
+        outStandingJudgementsQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: FedralDebtViewControllerDelegate{
+    func getFedralDebtQuestionModel(question: [String : Any]) {
+        fedralDebtQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: PartyToLawsuitViewControllerDelegate{
+    func getPartyToLawsuitQuestionModel(question: [String : Any]) {
+        partyToLawsuitQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: TitleConveyanceViewControllerDelegate{
+    func getTitleQuestionModel(question: [String : Any]) {
+        titleConveyanceQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: PreForceClosureViewControllerDelegate{
+    func getPreForceClosureQuestionModel(question: [String : Any]) {
+        preForceClosureQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: ForceClosedPropertyViewControllerDelegate{
+    func getForceClosedPropertyQuestionModel(question: [String : Any]) {
+        forceClosuredQuestion = question
+    }
+}
+
+extension GovernmentQuestionDetailViewController: BankruptcyViewControllerDelegate{
+    func getBankruptcyQuestionModel(question: [String : Any], subQuestion: [String : Any]) {
+        bankruptcyQuestion = question
+        bankruptcySubQuestion = subQuestion
+    }
+}
+
+extension GovernmentQuestionDetailViewController: ChildSupportViewControllerDelegate{
+    func getChildSupportQuestionModel(question: [String : Any]) {
+        childSupportQuestion = question
+    }
 }

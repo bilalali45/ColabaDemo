@@ -39,6 +39,7 @@ enum EndPoint:String{
     case getLoanApplicationData = "loanapplication/Loan/GetLoanApplicationSummary?"
     case getAllPropertyTypeDrowpDown = "loanapplication/Loan/GetAllPropertyTypeDropDown"
     case getAllOccupancyTypeDropDown = "loanapplication/Loan/GetPropertyUsageDropDown"
+    case getAllPropertyHoldTitle = "loanapplication/Loan/GetAllTitleHeldWithDropDown"
     case getCoBorrowersOccupancyStatus = "loanapplication/SubjectProperty/GetCoBorrowersOccupancyStatus?"
     case getPurchaseSubjectPropertyDetail = "loanapplication/SubjectProperty/GetSubjectPropertyDetails?"
     case getAllCountries = "loanapplication/Loan/GetCountries"
@@ -111,6 +112,7 @@ enum EndPoint:String{
     case addUpdateRealEstate = "loanapplication/RealEstate/AddOrUpdateRealEstateDetails"
     case deleteRealEstate = "loanapplication/RealEstate/DeleteRealEstateDetails?"
     case addUpdateDemographicInfo = "loanapplication/GovtQuestions/AddOrUpdateDemogrhphicInfo"
+    case addUpdateGovernmentQuestion = "loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions"
     case logout = "identity/mcuaccount/Logout"
     
 }

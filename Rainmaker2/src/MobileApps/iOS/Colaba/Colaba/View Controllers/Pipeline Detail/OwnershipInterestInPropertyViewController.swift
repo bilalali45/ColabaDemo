@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol OwnershipInterestInPropertyViewControllerDelegate: AnyObject {
+    func getQuestionModel(question: [String: Any], subQuestions: [[String: Any]])
+}
+
 class OwnershipInterestInPropertyViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -28,6 +32,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
     var subQuestions: [GovernmentQuestionModel]?
+    weak var delegate: OwnershipInterestInPropertyViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +44,7 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         propertyTypeView.isHidden = true
         propertyTitleView.isHidden = true
         setQuestionData()
+        saveQuestions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,11 +84,14 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
         isYes = true
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questions = subQuestions
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -101,12 +110,83 @@ class OwnershipInterestInPropertyViewController: BaseViewController {
                 lblPropertyTitleAnswer.text = questions.filter({$0.question.localizedCaseInsensitiveContains("How did you hold title to the property?")}).first?.answer
             }
         }
+        saveQuestions()
     }
     
     @objc func propertyTypeViewTapped(){
         let vc = Utility.getOwnershipInterestInPropertyFollowupQuestionVC()
         vc.questions = subQuestions
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
+    }
+    
+    func saveQuestions(){
+        
+        var subQuestion1: [String: Any] = [:]
+        var subQuestion2: [String: Any] = [:]
+        
+        let mainQuestion = ["id": questionModel.id,
+                            "parentQuestionId": NSNull(),
+                            "headerText": questionModel.headerText,
+                            "questionSectionId": questionModel.questionSectionId,
+                            "ownTypeId": questionModel.ownTypeId,
+                            "firstName": questionModel.firstName,
+                            "lastName": questionModel.lastName,
+                            "question": questionModel.question,
+                            "answer": questionModel.answer,
+                            "answerDetail": questionModel.answerDetail,
+                            "selectionOptionId": NSNull(),
+                            "answerData": NSNull()] as [String: Any]
+        
+        if let propertyTypeQuestion = subQuestions?.filter({$0.question.localizedCaseInsensitiveContains("What type of property did you own?")}).first{
+            
+            subQuestion1 = ["id": propertyTypeQuestion.id,
+                            "parentQuestionId": propertyTypeQuestion.parentQuestionId,
+                            "headerText": propertyTypeQuestion.headerText,
+                            "questionSectionId": propertyTypeQuestion.questionSectionId,
+                            "ownTypeId": propertyTypeQuestion.ownTypeId,
+                            "firstName": propertyTypeQuestion.firstName,
+                            "lastName": propertyTypeQuestion.lastName,
+                            "question": propertyTypeQuestion.question,
+                            "answer": propertyTypeQuestion.answer,
+                            "answerDetail": NSNull(),
+                            "selectionOptionId": propertyTypeQuestion.selectionOptionId == 0 ? NSNull() : propertyTypeQuestion.selectionOptionId,
+                            "answerData": propertyTypeQuestion.selectionOptionId == 0 ? NSNull() : [
+                                "selectionOptionId": propertyTypeQuestion.selectionOptionId,
+                                "selectionOptionText": propertyTypeQuestion.answer]]
+            
+        }
+        
+        if let holdTitleQuestion = subQuestions?.filter({$0.question.localizedCaseInsensitiveContains("How did you hold title to the property?")}).first{
+            
+            subQuestion2 = ["id": holdTitleQuestion.id,
+                            "parentQuestionId": holdTitleQuestion.parentQuestionId,
+                            "headerText": holdTitleQuestion.headerText,
+                            "questionSectionId": holdTitleQuestion.questionSectionId,
+                            "ownTypeId": holdTitleQuestion.ownTypeId,
+                            "firstName": holdTitleQuestion.firstName,
+                            "lastName": holdTitleQuestion.lastName,
+                            "question": holdTitleQuestion.question,
+                            "answer": holdTitleQuestion.answer,
+                            "answerDetail": NSNull(),
+                            "selectionOptionId": holdTitleQuestion.selectionOptionId == 0 ? NSNull() : holdTitleQuestion.selectionOptionId,
+                            "answerData": holdTitleQuestion.selectionOptionId == 0 ? NSNull() :  [
+                                "selectionOptionId": holdTitleQuestion.selectionOptionId,
+                                "selectionOptionText": holdTitleQuestion.answer]]
+            
+        }
+         
+        self.delegate?.getQuestionModel(question: mainQuestion, subQuestions: [subQuestion1, subQuestion2])
+    }
+}
+
+extension OwnershipInterestInPropertyViewController: OwnershipInterestInPropertyFollowupQuestionViewControllerDelegate{
+    func saveQuestion(propertyTypeQuestion: GovernmentQuestionModel, holdPropertyTypeQuestion: GovernmentQuestionModel) {
+        subQuestions?.removeAll()
+        subQuestions?.append(propertyTypeQuestion)
+        subQuestions?.append(holdPropertyTypeQuestion)
+        questionModel.answer = "Yes"
+        changeStatus()
     }
 }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol BankruptcyViewControllerDelegate: AnyObject {
+    func getBankruptcyQuestionModel(question: [String: Any], subQuestion: [String: Any])
+}
+
 class BankruptcyViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -25,6 +29,7 @@ class BankruptcyViewController: BaseViewController {
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
     var subQuestionModel: GovernmentQuestionModel?
+    weak var delegate: BankruptcyViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
