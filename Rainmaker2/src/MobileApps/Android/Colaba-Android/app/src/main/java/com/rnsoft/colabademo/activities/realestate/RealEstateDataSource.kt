@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.model.StatesModel
+import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -12,10 +13,7 @@ import javax.inject.Inject
 class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi) {
 
     suspend fun getRealEstateDetails(
-        token: String,
-        loanApplicationId: Int,
-        borrowerPropertyId: Int
-    ): Result<RealEstateResponse> {
+        token: String, loanApplicationId: Int, borrowerPropertyId: Int): Result<RealEstateResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getRealEstateDetails(newToken,loanApplicationId,borrowerPropertyId)
@@ -150,4 +148,28 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
                 Result.Error(IOException("Error notification -", e.cause))
         }
     }
+
+    suspend fun sendRealEstateDetails(token: String, data: RealEstateData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addRealEstateDetails(newToken,data)
+            Log.e("realEstate-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                //Log.e("add-business-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+
+
+
+
+
+
 }

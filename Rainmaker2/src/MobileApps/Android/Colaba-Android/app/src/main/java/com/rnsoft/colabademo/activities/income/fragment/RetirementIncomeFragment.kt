@@ -21,6 +21,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.processNextEventInCurrentThread
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -44,7 +45,7 @@ class RetirementIncomeFragment : BaseFragment(){
     private var retirementTypes: ArrayList<DropDownResponse> = arrayListOf()
     private var loanApplicationId:Int? = null
     private var borrowerId:Int? = null
-    private var incomeId:Int? = null
+    private var incomeInfoId:Int? = null
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
 
@@ -63,12 +64,16 @@ class RetirementIncomeFragment : BaseFragment(){
             // set Header title
             toolbarBinding.toolbarTitle.setText(getString(R.string.retirement))
 
+
             arguments?.let { arguments ->
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
-                incomeId = arguments.getInt(AppConstant.incomeId)
                 incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
                 incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+                arguments.getInt(AppConstant.incomeId).let {
+                    if(it > 0)
+                        incomeInfoId = it
+                }
             }
             setRetirementType()
             initViews()
@@ -82,36 +87,45 @@ class RetirementIncomeFragment : BaseFragment(){
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(borrowerId != null && incomeId != null){
+                if(borrowerId != null && incomeInfoId != null){
                     binding.loaderRetirementIncome.visibility = View.VISIBLE
-                    viewModel.getRetirementIncome(authToken,borrowerId!!,incomeId!!)
+                    viewModel.getRetirementIncome(authToken,borrowerId!!,incomeInfoId!!)
+
+                    viewModel.retirementIncomeData.observe(viewLifecycleOwner, { data ->
+                        binding.loaderRetirementIncome.visibility = View.GONE
+                        data?.retirementIncomeData?.let { info ->
+                            info.incomeTypeId?.let { incomeTypeId->
+                                for(item in retirementTypes)
+                                    if(incomeTypeId == item.id){
+                                        binding.tvRetirementType.setText(item.name, false)
+                                        toggleOtherFields()
+                                        break
+                                    }
+                            }
+                            info.employerName?.let {
+                                binding.edEmpName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
+                            }
+                            info.description?.let {
+                                binding.edDesc.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutDesc, R.color.grey_color_two, requireContext())
+                            }
+                            info.monthlyBaseIncome?.let {
+                                binding.edMonthlyIncome.setText(it.toString())
+                                CustomMaterialFields.setColor(binding.layoutMonthlyIncome, R.color.grey_color_two, requireContext())
+
+                            }
+                        }
+                    })
                 }
             }
         }
-
-        viewModel.retirementIncomeData.observe(viewLifecycleOwner, { data ->
-            binding.loaderRetirementIncome.visibility = View.GONE
-            data?.retirementIncomeData?.let { info ->
-                info.incomeTypeId?.let { incomeTypeId->
-                    for(item in retirementTypes)
-                        if(incomeTypeId == item.id){
-                            binding.tvRetirementType.setText(item.name, false)
-                            toggleOtherFields()
-                            break
-                        }
-                }
-                info.employerName?.let { binding.edEmpName.setText(it)}
-                info.description?.let { binding.edDesc.setText(it) }
-                info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
-            }
-        })
-
     }
 
     private fun observeRetirementIncomeTypes(){
         lifecycleScope.launchWhenStarted {
             viewModel.retirementIncomeTypes.observe(viewLifecycleOwner, { types ->
-                if(types.size>0) {
+                if(types.size > 0) {
                     val itemList:ArrayList<String> = arrayListOf()
                     retirementTypes = arrayListOf()
                     for (item in types) {
@@ -136,12 +150,13 @@ class RetirementIncomeFragment : BaseFragment(){
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener{ findNavController().popBackStack()}
 
-        //binding.mainLayoutRetirement.setOnClickListener{
-        //  HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
-        //                super.removeFocusFromAllFields(binding.mainLayoutRetirement)}
+        binding.mainLayoutRetirement.setOnClickListener{
+          HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
+          super.removeFocusFromAllFields(binding.mainLayoutRetirement)
+        }
 
         binding.btnSaveChange.setOnClickListener{
-            checkValidations()
+            prosessSendData()
         }
 
         setInputFields()
@@ -149,7 +164,6 @@ class RetirementIncomeFragment : BaseFragment(){
     }
 
     private fun setInputFields() {
-
         // set lable focus
         binding.edEmpName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edEmpName, binding.layoutEmpName, requireContext()))
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
@@ -220,7 +234,7 @@ class RetirementIncomeFragment : BaseFragment(){
         }
     }
 
-    private fun checkValidations(){
+    private fun prosessSendData(){
 
         val retirementType: String = binding.tvRetirementType.text.toString()
         val empName: String = binding.edEmpName.text.toString()
@@ -266,7 +280,6 @@ class RetirementIncomeFragment : BaseFragment(){
             val retirementTypeId =
                 if (matchedType.size > 0) matchedType.map { matchedType.get(0).id }
                     .single() else null
-           // Log.e("retirementTypeId", "" + retirementTypeId)
 
             val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
             val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
@@ -280,15 +293,15 @@ class RetirementIncomeFragment : BaseFragment(){
             val data = RetirementIncomeData(
                 loanApplicationId = loanApplicationId,
                 borrowerId = borrowerId,
-                incomeInfoId = incomeId,
+                incomeInfoId = incomeInfoId,
                 incomeTypeId = retirementTypeId,
                 employerName = employerName,
-                description = desc,monthlyBaseIncome = monthlyIncome?.toDouble())
+                description = desc,monthlyBaseIncome = newMonthlyIncome?.toDouble())
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (loanApplicationId != null && borrowerId != null && incomeId != null) {
-                        Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
+                    if (loanApplicationId != null && borrowerId != null) {
+                        Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
                         Log.e("employmentData-snding to API", "" + data)
                         binding.loaderRetirementIncome.visibility = View.VISIBLE
                         viewModel.sendRetiremnentData(authToken, data)
@@ -312,11 +325,7 @@ class RetirementIncomeFragment : BaseFragment(){
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
         binding.loaderRetirementIncome.visibility = View.GONE
-//
-//        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
-//
-//        else
-            if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+        if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
 
         else

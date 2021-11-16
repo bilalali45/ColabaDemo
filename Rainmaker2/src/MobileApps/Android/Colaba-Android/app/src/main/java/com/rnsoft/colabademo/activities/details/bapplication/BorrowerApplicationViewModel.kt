@@ -196,7 +196,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val errorResult:Result.Error?=null
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                delay(1000)
                 borrowerIds.forEach { id ->
                     launch {
                         val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)

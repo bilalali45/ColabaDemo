@@ -333,7 +333,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
             }
         }
 
-        binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext(),getString(R.string.error_field_required)))
+        binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext(),getString(R.string.error_field_required)))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext(),getString(R.string.error_field_required)))
         //binding.tvCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.tvCounty, binding.layoutCounty,requireContext(),getString(R.string.error_field_required)))
@@ -401,8 +401,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
         }
         if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length > 0 && country.length > 0 && zipCode.length > 0) {
 
-            val unit =
-                if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+            val unit = if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
 
             val address = AddressData(
                 street = street,

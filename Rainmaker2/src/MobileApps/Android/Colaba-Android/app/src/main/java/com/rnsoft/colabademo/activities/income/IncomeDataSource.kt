@@ -46,7 +46,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBusinessIncome(newToken,borrowerId,incomeInfoId)
-            //Timber.e("business-income-Response-- $response")
+            Timber.e("business-income-Response-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -106,7 +106,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getOtherIncomeInfo(newToken,incomeInfoId)
-            //Timber.e("other-income-Response-- $response")
+            Timber.e("other-income-Response-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -115,6 +115,8 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+
 
     suspend fun getOtherIncomeTypes(
         token: String): Result<ArrayList<DropDownResponse>> {
@@ -130,6 +132,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
     suspend fun getBusinessTypes(
         token: String): Result<ArrayList<DropDownResponse>> {
         return try {
@@ -153,10 +156,11 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
+                //Log.e("incomeDatasource1",e.localizedMessage)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                //Log.e("incomeDatasource",e.localizedMessage)
+                //Log.e("incomeDatasource2",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
@@ -166,14 +170,14 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addCurrentEmployment(newToken,data)
-            Log.e("add-CurrentEmployment-respone","$response")
+            //Log.e("add-CurrentEmployment-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("add-CurrentEmployment-Error",e.localizedMessage)
+               // Log.e("add-CurrentEmployment-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
@@ -183,30 +187,48 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addPreviousEmployment(newToken,data)
-            Log.e("add-PrevEmployment-respone","$response")
+           // Log.e("add-PrevEmployment-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("add-PrevEmployment-Error",e.localizedMessage)
+                //Log.e("add-PrevEmployment-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
+
     suspend fun sendBusinessIncomeData(token: String, data: BusinessData): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateBusiness(newToken,data)
-            Log.e("business-respone","$response")
+            //Log.e("business-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("add-business-Error",e.localizedMessage)
+                //Log.e("add-business-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
+    suspend fun sendMilitaryIncomeData(token: String, data:MilitaryIncomeData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateMilitaryIncome(newToken,data)
+            Log.e("military income-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                //Log.e("add-business-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
@@ -216,7 +238,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateRetirement(newToken,data)
-            Log.e("retirement-respone","$response")
+            //Log.e("retirement-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
@@ -238,14 +260,14 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateOtherIncome(newToken,data)
-            Log.e("other-respone","$response")
+            //Log.e("other-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("other-income-Error",e.localizedMessage)
+                //Log.e("other-income-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
