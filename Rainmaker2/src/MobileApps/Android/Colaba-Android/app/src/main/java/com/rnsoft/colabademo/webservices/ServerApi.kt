@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
@@ -175,6 +176,11 @@ interface ServerApi{
     suspend fun addUpdateRetirement(
         @Header("Authorization") Authorization:String,
         @Body retirementAddUpdateParams: RetirementAddUpdateParams): GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateGiftAsset")
+    suspend fun addUpdateGift(
+        @Header("Authorization") Authorization:String,
+        @Body giftAddUpdateParams: GiftAddUpdateParams): GenericAddUpdateAssetResponse
 
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
@@ -383,6 +389,8 @@ interface ServerApi{
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherIncome")
     suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: AddOtherIncomeInfo) : AddUpdateDataResponse
+
+
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetOtherIncomeInfo")
     suspend fun getOtherIncomeInfo(

@@ -189,7 +189,7 @@
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/gift_of_equity"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="22dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/rubik_regular"
@@ -382,7 +382,7 @@
 
 
     <ImageView
-        android:id="@+id/phone_fab"
+        android:id="@+id/save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save_icon"

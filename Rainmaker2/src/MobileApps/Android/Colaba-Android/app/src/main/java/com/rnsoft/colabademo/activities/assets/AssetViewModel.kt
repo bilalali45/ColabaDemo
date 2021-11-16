@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,7 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _allGiftResources: MutableLiveData<ArrayList<GiftSourcesResponse>> = MutableLiveData()
     val allGiftResources: LiveData<ArrayList<GiftSourcesResponse>> get() = _allGiftResources
 
-    private val _giftAssetDetail: MutableLiveData<GiftAssetResponse> = MutableLiveData()
+    private var _giftAssetDetail: MutableLiveData<GiftAssetResponse> = MutableLiveData()
     val giftAssetDetail: LiveData<GiftAssetResponse> get() = _giftAssetDetail
 
     private val _otherAssetDetail: MutableLiveData<OtherAssetResponse> = MutableLiveData()
@@ -70,6 +71,11 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
                     _assetTypesByCategoryItemList.value = (responseResult.data  )
             }
         }
+    }
+
+    fun setGiftDetailToNull(){
+        //_giftAssetDetail.value = GiftAssetResponse(null, null, null,null)
+        _giftAssetDetail.postValue( GiftAssetResponse(null, null, null,null))
     }
 
     suspend fun getProceedsFromLoan(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {
@@ -165,6 +171,21 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
             }
         }
     }
+
+    suspend fun addUpdateGift(token: String,  giftAddUpdateParams: GiftAddUpdateParams) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.addUpdateGift(token = token, giftAddUpdateParams = giftAddUpdateParams)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
 
 
     suspend fun addUpdateRetirement(token: String, retirementAddUpdateParams: RetirementAddUpdateParams) {

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.assets.fragment.model
+package com.rnsoft.colabademo
 
 data class RetirementAddUpdateParams(
     val BorrowerId: Int,

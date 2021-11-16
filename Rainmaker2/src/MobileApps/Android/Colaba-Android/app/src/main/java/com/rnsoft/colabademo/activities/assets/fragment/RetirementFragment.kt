@@ -7,12 +7,9 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.assets.fragment.model.BankAddUpdateParams
-import com.rnsoft.colabademo.activities.assets.fragment.model.RetirementAddUpdateParams
 import com.rnsoft.colabademo.databinding.RetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat

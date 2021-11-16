@@ -14,13 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.assets.fragment.model.GiftSourcesResponse
 
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.non_permenant_resident_layout.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -34,10 +33,14 @@ class GiftsAssetsFragment:BaseFragment() {
     private var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
-    private var borrowerAssetId:Int? = null
-    private var assetCategoryId:Int? = null
+    private var borrowerAssetId:Int = -1
+    private var assetCategoryId:Int = 4
     private var assetTypeID:Int? = null
     private var id:Int? = null
+
+    private val GIFT_OF_EQUITY = "Gift Of Equity"
+    private val GRANT = "Grant"
+    private val CASH_GIFT = "Cash Gift"
 
     private val viewModel: AssetViewModel by activityViewModels()
 
@@ -57,8 +60,8 @@ class GiftsAssetsFragment:BaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
-            assetCategoryId = arguments.getInt(AppConstant.assetCategoryId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 4)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeGiftData()
             getGiftCategory()
@@ -69,8 +72,8 @@ class GiftsAssetsFragment:BaseFragment() {
     private fun getGiftCategory() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && assetCategoryId != null)
-                    viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId!!, loanApplicationId!!)
+                if (loanApplicationId != null)
+                    viewModel.fetchAssetTypesByCategoryItemList(authToken, assetCategoryId, loanApplicationId!!)
             }
         }
 
@@ -102,55 +105,74 @@ class GiftsAssetsFragment:BaseFragment() {
     }
 
     private fun fetchAndObserveGiftDetails(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && borrowerId != null && borrowerAssetId != null)
-                    viewModel.getGiftAssetDetails(
-                        authToken,
-                        loanApplicationId!!,
-                        borrowerId!!,
-                        borrowerAssetId!!
-                    )
-            }
-        }
 
-        viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
-            if(giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS){
-                giftAssetDetail.giftAssetData?.let { giftAssetData ->
-                    giftAssetData.isDeposited?.let{ isDeposited ->
-                         if(isDeposited) {
-                             binding.cashGift.isChecked = true
-                             giftAssetData.valueDate?.let {  valueDate ->
-                                 binding.layoutTransferDate.visibility = View.VISIBLE
-                                 val newDate = valueDate.substring(0, valueDate.indexOf("T"))
-                                 val initDate: Date? = SimpleDateFormat("yyyy-MM-dd").parse(newDate)
-                                 val formatter = SimpleDateFormat("MM-dd-yyyy")
-                                 val parsedDate: String = formatter.format(initDate)
-                                  binding.dateOfTransferEditText.setText(newDate)
-                             }
-                             binding.yesDeposited.isChecked = true
-                         }
-                         else {
-                             binding.giftOfEquity.isChecked = true
-                             binding.noDeposited.isChecked = false
-                         }
-                    }
+        if (loanApplicationId != null && borrowerId != null && borrowerAssetId >0) {
 
-                    giftAssetData.value?.let{
-                        val newValue = it.toString()
-                        binding.annualBaseEditText.setText(newValue)
-                    }
-                    giftAssetData.giftSourceId?.let { giftSourceId->
-                        for(item in giftResources){
-                            if(giftSourceId == item.id){
-                                binding.giftSourceAutoCompeleteView.setText(item.name, false)
-                                break
+            viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
+                if (giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                    giftAssetDetail.giftAssetData?.let { giftAssetData ->
+
+                       giftAssetData.id?.let { id = it }
+
+                        giftAssetData.isDeposited?.let { isDeposited ->
+                            if (isDeposited) {
+                                binding.cashGift.isChecked = true
+                                giftAssetData.valueDate?.let { valueDate ->
+                                    binding.layoutTransferDate.visibility = View.VISIBLE
+                                    val newDate = valueDate.substring(0, valueDate.indexOf("T"))
+                                    val initDate: Date? = SimpleDateFormat("yyyy-MM-dd").parse(newDate)
+                                    val formatter = SimpleDateFormat("MM-dd-yyyy")
+                                    val parsedDate: String = formatter.format(initDate)
+                                    binding.dateOfTransferEditText.setText(parsedDate)
+                                }
+                                binding.yesDeposited.isChecked = true
+                            } else {
+                                binding.giftOfEquity.isChecked = true
+                                binding.noDeposited.isChecked = false
+                            }
+                        }
+
+                        giftAssetData.assetTypeId?.let{ assetTypeId->
+                            for(item in giftAssetList){
+                                if(item.id == 10 && item.id == assetTypeId )
+                                    binding.cashGift.isChecked = true
+                                else
+                                if(item.id == 26 && item.id == assetTypeId) {
+                                    binding.giftOfEquity.isChecked = true
+                                    binding.giftOfEquity.text = GIFT_OF_EQUITY
+                                }
+                                else
+                                if(item.id == 11 && item.id == assetTypeId) {
+                                    binding.giftOfEquity.isChecked = true
+                                    binding.giftOfEquity.text = GRANT
+                                }
+                            }
+                        }
+
+                        giftAssetData.value?.let {
+                            val newValue = it.toString()
+                            binding.annualBaseEditText.setText(newValue)
+                        }
+                        giftAssetData.giftSourceId?.let { giftSourceId ->
+                            for (item in giftResources) {
+                                if (giftSourceId == item.id) {
+                                    binding.giftSourceAutoCompeleteView.setText(item.name, false)
+                                    break
+                                }
                             }
                         }
                     }
                 }
+            })
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getGiftAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                }
             }
-        })
+        }
+
+
     }
 
     private fun setUpUI(){
@@ -180,10 +202,10 @@ class GiftsAssetsFragment:BaseFragment() {
                 clearFocusFromFields()
 
                 if(position <=1) {
-                    binding.giftOfEquity.text = "Grant"
+                    binding.giftOfEquity.text = GRANT
                 }
                 else{
-                    binding.giftOfEquity.text = "Gift Of Equity"
+                    binding.giftOfEquity.text = GIFT_OF_EQUITY
                 }
             }
         }
@@ -226,21 +248,88 @@ class GiftsAssetsFragment:BaseFragment() {
 
 
         binding.backButton.setOnClickListener {
+            viewModel.setGiftDetailToNull()
             findNavController().popBackStack()
         }
 
-        binding.phoneFab.setOnClickListener {
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                clearFocusFromFields()
-                findNavController().popBackStack()
-            }
+        binding.saveBtn.setOnClickListener {
+            saveGift()
         }
 
         addFocusOutListenerToFields()
 
 
     }
+
+
+
+    private fun saveGift(){
+        val fieldsValidated = checkEmptyFields()
+        if(fieldsValidated) {
+            clearFocusFromFields()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    var assetTypeId:Int?=null
+                    for(item in giftAssetList){
+                        if(binding.cashGift.isChecked && item.name ==binding.cashGift.text.toString() )
+                            assetTypeId = item.id
+                        if(binding.giftOfEquity.isChecked && item.name.equals(GIFT_OF_EQUITY, true) )
+                            assetTypeId = item.id
+                        if(binding.giftOfEquity.isChecked && item.name.equals(GRANT, true) )
+                            assetTypeId = item.id
+                    }
+
+                    var giftSourceId:Int?=null
+                    for(item in giftResources){
+                        if(item.name == binding.giftSourceAutoCompeleteView.text.toString())
+                            giftSourceId = item.id
+                    }
+                    giftSourceId?.let { notNullGiftSourceId ->
+                            loanApplicationId?.let { notNullLoanApplicationId ->
+                                borrowerId?.let { notNullBorrowerId ->
+
+                                    var IsDeposited:Boolean? = null
+                                    if(binding.yesDeposited.isChecked) IsDeposited = true
+                                    else
+                                        if(binding.noDeposited.isChecked) IsDeposited = false
+
+                                    val giftAddUpdateParams =
+                                        GiftAddUpdateParams(
+                                            BorrowerId = notNullBorrowerId,
+                                            LoanApplicationId = notNullLoanApplicationId,
+                                            GiftSourceId = notNullGiftSourceId,
+                                            Description = null,
+                                            AssetTypeId = assetTypeId,
+                                            Id = id,
+                                            IsDeposited = IsDeposited,
+                                            Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                            valueDate = binding.dateOfTransferEditText.text.toString()
+                                        )
+                                    viewModel.addUpdateGift(authToken, giftAddUpdateParams)
+                                }
+
+                        }
+                    }
+
+                }
+            }
+        }
+
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+            if(genericAddUpdateAssetResponse.status == "OK"){
+                val codeString = genericAddUpdateAssetResponse.code.toString()
+                if(codeString == "200"){
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            viewModel.setGiftDetailToNull()
+                            findNavController().popBackStack()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
 
     private val onGiftDateCheckListener =
         RadioGroup.OnCheckedChangeListener { p0, checkedId ->
@@ -273,14 +362,6 @@ class GiftsAssetsFragment:BaseFragment() {
     private fun checkEmptyFields():Boolean{
         var bool =  true
 
-        if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
-
-
         if(binding.giftSourceAutoCompeleteView.text?.isEmpty() == true || binding.giftSourceAutoCompeleteView.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.giftSourceInputLayout, "This field is required." , requireContext())
             bool = false
@@ -288,16 +369,21 @@ class GiftsAssetsFragment:BaseFragment() {
         else
             CustomMaterialFields.clearError(binding.giftSourceInputLayout,  requireContext())
 
+        /*
+        if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
+            CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
+            bool = false
+        }
+        else
+            CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
+
         if(binding.dateOfTransferEditText.text?.isEmpty() == true || binding.dateOfTransferEditText.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.layoutTransferDate, "This field is required." , requireContext())
             bool = false
         }
         else
             CustomMaterialFields.clearError(binding.layoutTransferDate,  requireContext())
-
-
-
-
+         */
         return bool
     }
 

@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import javax.inject.Inject
 
@@ -19,6 +20,10 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
 
     suspend fun addUpdateOtherAsset(token: String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return dataSource.addUpdateOtherAsset(token = token, otherAssetAddUpdateParams)
+    }
+
+    suspend fun addUpdateGift(token: String, giftAddUpdateParams: GiftAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateGift(token = token, giftAddUpdateParams)
     }
 
 
