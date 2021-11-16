@@ -36,6 +36,7 @@ class TitleConveyanceViewController: BaseViewController {
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         setQuestionData()
+        saveQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,22 +63,26 @@ class TitleConveyanceViewController: BaseViewController {
         else if (questionModel.answer == "No"){
             isYes = false
         }
-        lblDetailQuestion.text = questionModel.answerDetail
+        lblAns.text = questionModel.answerDetail
         detailView.isHidden = questionModel.answerDetail == ""
         changeStatus()
     }
     
     @objc func yesStackViewTapped(){
         isYes = true
+        questionModel.answer = "Yes"
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
         vc.type = .titleConveyance
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questionModel = questionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -89,6 +94,7 @@ class TitleConveyanceViewController: BaseViewController {
             lblNo.font = !ansYes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             //detailView.isHidden = !ansYes
         }
+        saveQuestion()
     }
     
     @objc func detailViewTapped(){
@@ -96,7 +102,30 @@ class TitleConveyanceViewController: BaseViewController {
         vc.type = .titleConveyance
         vc.questionModel = questionModel
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
+    func saveQuestion(){
+        let question = ["id": questionModel.id,
+                        "parentQuestionId": NSNull(),
+                        "headerText": questionModel.headerText,
+                        "questionSectionId": questionModel.questionSectionId,
+                        "ownTypeId": questionModel.ownTypeId,
+                        "firstName": questionModel.firstName,
+                        "lastName": questionModel.lastName,
+                        "question": questionModel.question,
+                        "answer": questionModel.answer,
+                        "answerDetail": questionModel.answerDetail,
+                        "selectionOptionId": NSNull(),
+                        "answerData": NSNull()] as [String: Any]
+        self.delegate?.getTitleQuestionModel(question: question)
+    }
+}
+
+extension TitleConveyanceViewController: GovernmentQuestionDetailControllerDelegate{
+    func saveQuestionModel(question: GovernmentQuestionModel) {
+        questionModel = question
+        changeStatus()
+    }
 }

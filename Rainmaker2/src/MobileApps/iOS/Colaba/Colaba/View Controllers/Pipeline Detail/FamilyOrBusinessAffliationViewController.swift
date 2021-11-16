@@ -63,7 +63,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
         else{
             isYes = false
         }
-        lblDetailQuestion.text = questionModel.answerDetail
+        lblAns.text = questionModel.answerDetail
         detailView.isHidden = questionModel.answerDetail == ""
         changeStatus()
     }
