@@ -39,7 +39,6 @@ class OtherIncomeFragment : BaseFragment() {
     var incomeInfoId :Int? = null
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    private var savedViewInstance: View? = null
     private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
         "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
                 " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
@@ -59,26 +58,27 @@ class OtherIncomeFragment : BaseFragment() {
     ): View {
         binding = IncomeOtherLayoutBinding.inflate(inflater, container, false)
         toolbarBinding = binding.headerIncome
-        savedViewInstance = binding.root
         super.addListeners(binding.root)
         // set Header title
         toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
 
-
-
         arguments?.let { arguments ->
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            incomeId = arguments.getInt(AppConstant.incomeId)
             incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
             incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            arguments.getInt(AppConstant.incomeId).let {
+                if(it > 0) {
+                    incomeInfoId = it
+                }
+            }
         }
 
-        Log.e("onCreate", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
-
+       // Log.e("onCreate", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
 
         initViews()
-        observeOtherIncomeTypes()
+        //observeOtherIncomeTypes()
+        getOtherIncomeDetails()
         return binding.root
     }
 
@@ -96,11 +96,11 @@ class OtherIncomeFragment : BaseFragment() {
                     Timber.e("RetirementTypes- $incomeTypes")
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                     binding.tvIncomeType.setAdapter(adapter)
+
+                    getOtherIncomeDetails()
                 }
                 else
                     findNavController().popBackStack()
-
-                getOtherIncomeDetails()
 
             })
         }
@@ -108,31 +108,32 @@ class OtherIncomeFragment : BaseFragment() {
     }
 
     private fun getOtherIncomeDetails(){
+        //Timber.e( "borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId )
+
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(incomeId != null){
+                if(incomeInfoId != null){
                     binding.loaderOtherIncome.visibility = View.VISIBLE
                     viewModel.getOtherIncome(authToken,incomeId!!)
+//                    viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
+//                        binding.loaderOtherIncome.visibility = View.GONE
+//                        data?.otherIncomeData?.let { info ->
+//                            info.incomeTypeId?.let { incomeTypeId->
+//                                for(item in incomeTypes)
+//                                    if(incomeTypeId == item.id){
+//                                        binding.tvIncomeType.setText(item.name, false)
+//                                        toggleOtherFields()
+//                                        break
+//                                    }
+//                            }
+//                            //info.description?.let { binding.edDesc.setText(it) }
+//                            //info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
+//                            //info.annualBaseIncome?.let {  binding.edAnnualIncome.setText(it.toString()) }
+//                        }
+//                    })
                 }
             }
         }
-
-        viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
-            binding.loaderOtherIncome.visibility = View.GONE
-            data?.otherIncomeData?.let { info ->
-                info.incomeTypeId?.let { incomeTypeId->
-                    for(item in incomeTypes)
-                        if(incomeTypeId == item.id){
-                            binding.tvIncomeType.setText(item.name, false)
-                            toggleOtherFields()
-                            break
-                        }
-                }
-                info.description?.let { binding.edDesc.setText(it) }
-                info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
-                info.annualBaseIncome?.let {  binding.edAnnualIncome.setText(it.toString()) }
-            }
-        })
     }
 
     private fun toggleOtherFields(){
@@ -163,8 +164,12 @@ class OtherIncomeFragment : BaseFragment() {
 
     private fun initViews() {
         toolbarBinding.btnClose.setOnClickListener{ findNavController().popBackStack()}
-        //binding.mainLayoutOther.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener{ sendData() }
+        binding.mainLayoutOther.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
+            super.removeFocusFromAllFields(binding.mainLayoutOther)
+        }
+
 
         setInputFields()
         setRetirementType()
@@ -240,7 +245,7 @@ class OtherIncomeFragment : BaseFragment() {
                 val incomeTypeId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
                 //Log.e("propertyId",""+propertyId)
 
-                val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
+                val monthlyIncome : String = binding.edMonthlyIncome.text.toString().trim()
                 val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
 
                 val annualIncome = binding.edAnnualIncome.text.toString().trim()
@@ -253,7 +258,7 @@ class OtherIncomeFragment : BaseFragment() {
 
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        if (loanApplicationId != null && borrowerId != null && incomeId != null) {
+                        if (loanApplicationId != null && borrowerId != null) {
                             Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
                             Log.e("employmentData-snding to API", "" + data)
                             binding.loaderOtherIncome.visibility = View.VISIBLE
@@ -263,12 +268,6 @@ class OtherIncomeFragment : BaseFragment() {
                 }
             }
         }
-
-
-
-
-
-
     }
 
     private fun setRetirementType(){

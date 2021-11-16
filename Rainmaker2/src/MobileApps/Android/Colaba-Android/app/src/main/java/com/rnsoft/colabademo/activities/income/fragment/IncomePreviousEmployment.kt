@@ -65,6 +65,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             incomeInfoId = arguments.getInt(AppConstant.incomeId)
         }
+        Log.e("Current Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
         initViews()
         getEmploymentData()
@@ -83,11 +84,99 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && incomeInfoId != null && borrowerId != null) {
+                if (loanApplicationId != null && incomeInfoId!! > 0  && borrowerId != null) {
                     Log.e("getting details", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
 
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+
+                    lifecycleScope.launchWhenStarted {
+                        viewModel.prevEmploymentDetail.observe(viewLifecycleOwner, { data ->
+
+                            data?.employmentData?.employmentInfo.let { info ->
+                                info?.employerName?.let {
+                                    binding.editTextEmpName.setText(it)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutEmpName,
+                                        R.color.grey_color_two,
+                                        requireContext()
+                                    )
+                                }
+                                info?.employerPhoneNumber?.let {
+                                    binding.editTextEmpPhnum.setText(it)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutEmpPhnum,
+                                        R.color.grey_color_two,
+                                        requireContext()
+                                    )
+                                }
+                                info?.jobTitle?.let {
+                                    binding.editTextJobTitle.setText(it)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutJobTitle,
+                                        R.color.grey_color_two,
+                                        requireContext()
+                                    )
+                                }
+                                info?.startDate?.let {
+                                    binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
+                                }
+                                info?.endDate?.let {
+                                    binding.editTextEndDate.setText(AppSetting.getFullDate1(it))
+                                }
+                                info?.yearsInProfession?.let {
+                                    binding.editTextProfYears.setText(it.toString())
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutYearsProfession,
+                                        R.color.grey_color_two,
+                                        requireContext()
+                                    )
+                                }
+
+                                data.employmentData?.wayOfIncome?.let {
+                                    it.employerAnnualSalary?.let {
+                                        binding.editTextAnnualIncome.setText(
+                                            Math.round(it).toString()
+                                        )
+                                        CustomMaterialFields.setColor(
+                                            binding.layoutNetIncome,
+                                            R.color.grey_color_two,
+                                            requireContext()
+                                        )
+                                    }
+                                }
+
+                                data.employmentData?.employerAddress?.let {
+                                    employerAddress = it
+
+                                    val builder = StringBuilder()
+                                    it.street?.let { builder.append(it).append(" ") }
+                                    it.unit?.let { builder.append(it).append("\n") }
+                                    it.city?.let { builder.append(it).append(" ") }
+                                    it.stateName?.let { builder.append(it).append(" ") }
+                                    it.zipCode?.let { builder.append(it) }
+                                    binding.textviewPrevEmploymentAddress.text = builder
+                                }
+
+                                info?.hasOwnershipInterest?.let {
+                                    if (it == true) {
+                                        binding.rbOwnershipYes.isChecked = true
+                                        binding.layoutOwnershipPercentage.visibility = View.VISIBLE
+                                        info.ownershipInterest?.let { percentage ->
+                                            binding.edOwnershipPercent.setText(Math.round(percentage).toString())
+                                            CustomMaterialFields.setColor(binding.layoutOwnershipPercentage, R.color.grey_color_two, requireContext())
+                                        }
+                                    } else {
+                                        binding.rbOwnershipNo.isChecked = true
+                                        binding.layoutOwnershipPercentage.visibility = View.GONE
+                                    }
+                                }
+                            }
+
+                            binding.loaderEmployment.visibility = View.GONE
+                        })
+                    }
+
                 }
                 else{
                     Timber.e(" some id is null")
@@ -95,62 +184,6 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             }
         }
 
-        viewModel.prevEmploymentDetail.observe(viewLifecycleOwner, { data ->
-
-            data?.employmentData?.employmentInfo.let { info ->
-                info?.employerName?.let {
-                    binding.editTextEmpName.setText(it)
-                    CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
-                }
-                info?.employerPhoneNumber?.let {
-                    binding.editTextEmpPhnum.setText(it)
-                    CustomMaterialFields.setColor(binding.layoutEmpPhnum, R.color.grey_color_two, requireContext())
-                }
-                info?.jobTitle?.let {
-                    binding.editTextJobTitle.setText(it)
-                    CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
-                }
-                info?.startDate?.let {
-                    binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
-                }
-                info?.endDate?.let {
-                    binding.editTextEndDate.setText(AppSetting.getFullDate1(it))
-                }
-                info?.yearsInProfession?.let {
-                    binding.editTextProfYears.setText(it.toString())
-                    CustomMaterialFields.setColor(binding.layoutYearsProfession, R.color.grey_color_two, requireContext())
-                }
-
-                data.employmentData?.wayOfIncome?.let {
-                    it.employerAnnualSalary?.let {
-                        binding.editTextAnnualIncome.setText(Math.round(it).toString())
-                        CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
-                    }
-                }
-
-                data.employmentData?.employerAddress?.let {
-                    employerAddress = it
-
-                    val builder = StringBuilder()
-                    it.street?.let { builder.append(it).append(" ") }
-                    it.unit?.let { builder.append(it).append("\n") }
-                    it.city?.let { builder.append(it).append(" ") }
-                    it.stateName?.let{ builder.append(it).append(" ")}
-                    it.zipCode?.let { builder.append(it) }
-                    binding.textviewPrevEmploymentAddress.text = builder
-                }
-
-                info?.hasOwnershipInterest?.let {
-                    if(it == true)
-                        binding.rbOwnershipYes.isChecked = true
-                    else {
-                        binding.rbOwnershipNo.isChecked = true
-                    }
-                }
-            }
-
-            binding.loaderEmployment.visibility = View.GONE
-        })
     }
 
     private fun initViews() {
@@ -166,7 +199,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.btn_save_change -> checkValidations()
+            R.id.btn_save_change -> processSendData()
             R.id.rb_ownership_yes -> ownershipInterest()
             R.id.rb_ownership_no -> ownershipInterest()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
@@ -178,7 +211,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         }
     }
 
-    private fun checkValidations(){
+    private fun processSendData(){
         val empName: String = binding.editTextEmpName.text.toString()
         val jobTitle: String = binding.editTextJobTitle.text.toString()
         val startDate: String = binding.editTextStartDate.text.toString()
@@ -226,18 +259,22 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
             lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if(loanApplicationId != null && borrowerId !=null && incomeInfoId != null) {
-                        Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+                    if(loanApplicationId != null && borrowerId !=null) {
+                        //Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
 
                         val phoneNum = if(binding.editTextEmpPhnum.text.toString().length > 0) binding.editTextEmpPhnum.text.toString() else null
                         var isOwnershipInterest : Boolean ? = null
-                        if(binding.rbOwnershipYes.isChecked)
+                        var ownershipPercentage : String? = null
+                        if(binding.rbOwnershipYes.isChecked) {
                             isOwnershipInterest = true
+                            ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
+                        }
 
-                        if(binding.rbOwnershipNo.isChecked)
+                        if(binding.rbOwnershipNo.isChecked) {
                             isOwnershipInterest = false
+                            binding.edOwnershipPercent.setText("")
+                        }
 
-                        val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
 
                         val employerInfo = PrevEmploymentInfo(
                             employerName=empName, employerPhoneNumber=phoneNum, jobTitle=jobTitle,startDate=startDate,endDate =endDate, yearsInProfession = profYears.toInt(),
@@ -257,20 +294,6 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                     }
                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         }
     }
@@ -355,12 +378,12 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         binding.textviewPrevEmploymentAddress.text = builder
     }
 
-    override fun onStart() {
+    override fun onStart(){
         super.onStart()
         EventBus.getDefault().register(this)
     }
 
-    override fun onStop() {
+    override fun onStop(){
         super.onStop()
         EventBus.getDefault().unregister(this)
     }

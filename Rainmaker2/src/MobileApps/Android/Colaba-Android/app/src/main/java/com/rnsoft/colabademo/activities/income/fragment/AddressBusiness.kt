@@ -160,7 +160,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
             }
         }
 
-        binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext(),getString(R.string.error_field_required)))
+        binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext(),getString(R.string.error_field_required)))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext(),getString(R.string.error_field_required)))
        // binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty,requireContext(),getString(R.string.error_field_required)))

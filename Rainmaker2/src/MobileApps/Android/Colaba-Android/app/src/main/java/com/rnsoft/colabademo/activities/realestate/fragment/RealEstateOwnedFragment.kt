@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.res.ColorStateList
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +41,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private var occupancyTypeId : Int = 0
     var addressList : ArrayList<RealEstateAddress> = ArrayList()
     var addressHeading: String? = null
-
+    var firstMortgageModel = FirstMortgageModel()
+    var secondMortgageModel = SecondMortgageModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -74,11 +76,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         addressHeading = it.street
                         addressList.add(RealEstateAddress(street= it.street, unit=it.unit, city=it.city,stateName=it.stateName,countryName=it.countryName,countyName = it.countyName,
                                 countyId = it.countyId, stateId = it.stateId, countryId = it.countryId, zipCode = it.zipCode ))
+                        } ?: run {}
 
-                        } ?: run {
-
-                        }
-                        it.data?.rentalIncome?.let{
+                    it.data?.rentalIncome?.let{
                             binding.edRentalIncome.setText(it.toString())
                             binding.layoutRentalIncome.visibility = View.VISIBLE
                             CustomMaterialFields.setColor(binding.layoutRentalIncome,R.color.grey_color_two,requireActivity())
@@ -122,6 +122,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                             CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
                         }
 
+                    Log.e("firstMortage",""+ it.data?.firstMortgageModel)
                         // has first mortgage 'yes'
                         if(it.data?.hasFirstMortgage !=null){
                             if(it.data.hasFirstMortgage){
@@ -129,34 +130,41 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                                 binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
                                 binding.layoutSecondMortgage.visibility = View.VISIBLE
 
-                                it.data.firstMortgagePayment?.let {
-                                    binding.firstMortgagePayment.text= Math.round(it).toString()
+                                it.data.firstMortgageModel?.let{ model->
+                                    firstMortgageModel = model
+                                    model.firstMortgagePayment?.let { payment->
+                                        binding.firstMortgagePayment.setText("$" + Math.round(payment))
+                                    } ?: run {
+                                        binding.firstMortgagePayment.setText("$0")
+                                    }
+                                    model.unpaidFirstMortgagePayment?.let{ balance ->
+                                        binding.firstMortgageBalance.setText("$" + Math.round(balance))
+                                    } ?: run{
+                                        binding.firstMortgageBalance.setText("$0")
+                                    }
                                 }
-                                it.data.firstMortgageBalance?.let{
-                                    binding.firstMortgageBalance.text = Math.round(it).toString()
-                                }
-
-                            } else binding.rbFirstMortgageNo.isChecked = true
-                        }
-                        else {
-                            binding.rbFirstMortgageNo.isChecked = true
-                        }
+                            }
+                        } else {
+                            binding.rbFirstMortgageNo.isChecked = true }
 
 
                         // has second mortgage 'yes'
                         if(it.data?.hasSecondMortgage !=null){
-                            if(it.data.hasSecondMortgage){
+                            if(it.data.hasSecondMortgage) {
                                 binding.rbSecMortgageYes.isChecked = true
-                                binding.layoutSecMortgageDetail.visibility =View.VISIBLE
+                                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
 
-                                it.data.secondMortgagePayment?.let {
-                                    binding.secMortgagePayment.text= Math.round(it).toString()
-                                }
-                                it.data.secondMortgageBalance?.let{
-                                    binding.secMortgageBalance.text = Math.round(it).toString()
-                                }
+                                it.data.secondMortgageModel?.let { model ->
+                                    secondMortgageModel = model
+                                    model.secondMortgagePayment?.let { payment->
+                                        binding.secMortgagePayment.setText("$" + Math.round(payment))
+                                    } ?: run { binding.secMortgagePayment.setText("$0") }
 
-                            } else  binding.rbSecMortgageNo.isChecked = true
+                                    model.unpaidSecondMortgagePayment?.let { balance->
+                                        binding.secMortgageBalance.setText("$" + Math.round(balance))
+                                    } ?: run {binding.secMortgageBalance.setText("$0)")}
+                                }
+                            }
                         } else {
                             binding.rbSecMortgageNo.isChecked = true
                         }
@@ -425,8 +433,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             val fragment = RealEstateFirstMortgage()
             val bundle = Bundle()
             bundle.putString(AppConstant.address,addressHeading)
+            bundle.putParcelable(AppConstant.firstMortgage,firstMortgageModel)
             fragment.arguments = bundle
-            findNavController().navigate(R.id.action_realestate_first_mortgage,fragment.arguments)
+            findNavController().navigate(R.id.action_realestate_first_mortgage,bundle)
 
         }
     }
@@ -447,8 +456,9 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         val fragment = RealEstateSecondMortgage()
         val bundle = Bundle()
         bundle.putString(AppConstant.address, addressHeading)
+        bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
         fragment.arguments = bundle
-        findNavController().navigate(R.id.action_realestate_second_mortgage,fragment.arguments)
+        findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
     }
 
     private fun onSecMortgegeNoClick(){

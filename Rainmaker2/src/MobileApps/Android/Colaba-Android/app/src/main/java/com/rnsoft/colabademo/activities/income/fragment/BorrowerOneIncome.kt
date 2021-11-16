@@ -84,9 +84,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         topCell.tag = R.string.asset_top_cell
                         mainCell.addView(topCell)
 
-
                         var totalAmount = 0.0
-                        for (i in 0 until getBorrowerIncome.size) {
+                        for (i in 0 until getBorrowerIncome.size){
 
                             val webModelData = getBorrowerIncome[i]
                             webModelData.incomeCategory?.let { incomeCategory->
@@ -95,8 +94,8 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                         for (j in 0 until it.size) {
                                             val contentCell: View = layoutInflater.inflate(R.layout.income_middle_cell, null)
                                             val contentData = webModelData.incomes[j]
-                                            contentCell.content_title.text = contentData.incomeTypeDisplayName
-                                            contentCell.content_desc.text = contentData.incomeName
+                                            contentCell.content_title.text = contentData.incomeName
+                                            contentCell.content_desc.text = contentData.jobTitle
                                             var startDate : String = ""
                                             var endDate : String = ""
                                             contentData.startDate?.let{
@@ -107,8 +106,6 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                                 endDate = AppSetting.getMonthAndYearValue(it)
                                                 contentCell.tenureTextView.setText(startDate.plus(" To " + endDate))
                                             }
-
-
 
                                             contentData.incomeValue?.let{ incomeValue->
                                                 totalAmount += incomeValue
@@ -133,7 +130,6 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                             }
                                             else
                                             contentCell.setOnClickListener {
-
                                                 findNavController().navigate(modelData.listenerAttached , bundle)
 
                                             }
@@ -155,8 +151,17 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                             bottomCell.setOnClickListener(bottomEmploymentListener)
                         }
                         else
-                            bottomCell.setOnClickListener{
-                                    findNavController().navigate(modelData.listenerAttached)
+                            bottomCell.setOnClickListener {
+                                val parentActivity = activity as? IncomeActivity
+                                parentActivity?.let {
+                                    val bundle = Bundle()
+                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1)
+                                    }
+                                    tabBorrowerId?.let { it1 ->
+                                        bundle.putInt(AppConstant.borrowerId, it1)
+                                    }
+                                    findNavController().navigate(modelData.listenerAttached, bundle)
+                                }
                             }
 
                         mainCell.addView(bottomCell)
@@ -180,7 +185,6 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                 EventBus.getDefault().post(GrandTotalEvent("$"+(Common.addNumberFormat(grandTotalAmount))))
                 })
         }
-
     }
 
     val currentEmploymentListener:View.OnClickListener= View.OnClickListener {
@@ -236,12 +240,21 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onAddEmploymentEvent(eventAddEmployment: EventAddEmployment) {
+    fun onAddEmploymentEvent(eventAddEmployment: EventAddEmployment){
+        val parentActivity = activity as? IncomeActivity
+        val bundle = Bundle()
+        //var incomeInfoId : Int? = null
+        parentActivity?.let {
+            parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+            tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+            //bundle.putInt(AppConstant.incomeId,incomeInfoId)
+        }
+
         if(eventAddEmployment.boolean) {
-            findNavController().navigate(R.id.action_add_current_employement, null)
+            findNavController().navigate(R.id.action_add_current_employement, bundle)
         }
         else {
-            findNavController().navigate(R.id.action_add_prev_employment , null)
+            findNavController().navigate(R.id.action_add_prev_employment , bundle)
         }
     }
 }

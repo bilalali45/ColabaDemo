@@ -229,7 +229,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 borrowerInfoAdapter.notifyDataSetChanged()
 
 
-                realStateList.add(RealStateOwn(null,0,0,0,"", true))
+                realStateList.add(RealStateOwn(null,0,0,0,"", true,0))
                 realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
@@ -348,17 +348,14 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         detailActivity?.let {
             val intent = Intent(requireActivity(), RealEstateActivity::class.java)
             //Log.e("loanAppID", ""+ it.loanApplicationId)
-            //Log.e("purpose", ""+ it.)
+            //Log.e("bPropertyId", ""+ realStateList.get(position).borrowerPropertyId)
             intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
-            //intent.putExtra(AppConstant.borrowerPropertyId,it )
+            intent.putExtra(AppConstant.borrowerPropertyId,realStateList.get(position).borrowerPropertyId)
             startActivity(intent)
         }
-
-
     }
 
     override fun navigateToGovernmentActivity(position: Int) {
-        //startActivity(Intent(requireActivity(), GovtQuestionActivity::class.java))
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val govtQuestionActivity = Intent(requireActivity(), GovtQuestionActivity::class.java)

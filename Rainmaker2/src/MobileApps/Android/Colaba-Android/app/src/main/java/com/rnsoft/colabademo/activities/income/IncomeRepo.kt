@@ -69,5 +69,9 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.sendPrevEmploymentData(token,employmentData)
     }
 
+    suspend fun sendMilitaryData(token: String, data:MilitaryIncomeData): Result<AddUpdateDataResponse> {
+        return dataSource.sendMilitaryIncomeData(token,data)
+    }
+
 
 }

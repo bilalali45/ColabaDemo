@@ -21,8 +21,8 @@ class RealEstateActivity : BaseActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var binding: RealEstateActivityLayoutBinding
     private val viewModel : RealEstateViewModel by viewModels()
-    var loanApplicationId: Int = -1
-    var propertyId : Int = -1
+    var loanApplicationId: Int? =null
+    var borrowerPropertyId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +33,18 @@ class RealEstateActivity : BaseActivity() {
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
+            borrowerPropertyId = it.getInt(AppConstant.borrowerPropertyId)
         }
 
-        loanApplicationId = 5
-        propertyId = 1003
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != -1 && propertyId != -1 ) {
+                if (loanApplicationId != null && borrowerPropertyId != null ) {
                     coroutineScope {
                         binding.loaderRealEstate.visibility = View.VISIBLE
-                        delay(2000)
-                        viewModel.getRealEstateDetails(authToken, loanApplicationId, propertyId)
-                        viewModel.getFirstMortgageDetails(authToken, loanApplicationId, propertyId)
-                        viewModel.getSecondMortgageDetails(authToken, 5, 1003)
+                        viewModel.getRealEstateDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
+                        //viewModel.getFirstMortgageDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
+                        //viewModel.getSecondMortgageDetails(authToken, loanApplicationId!! 1003)
                         viewModel.getPropertyTypes(authToken)
                         viewModel.getOccupancyType(authToken)
                         viewModel.getPropertyStatus(authToken)

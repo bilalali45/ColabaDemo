@@ -48,8 +48,25 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo, 
     private val _states : MutableLiveData<ArrayList<StatesModel>> =   MutableLiveData()
     val states: LiveData<ArrayList<StatesModel>> get() = _states
 
+
+    suspend fun sendRealEstate(token: String,data: RealEstateData) {
+        //Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendRealEstateDetails(token = token, data)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+            }
+        }
+    }
+
     suspend fun getRealEstateDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
-        //Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
+        Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {

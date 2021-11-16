@@ -126,12 +126,15 @@ interface ServerApi{
         @Query("borrowerPropertyId") borrowerPropertyId:Int)
     : RealEstateResponse
 
+    @POST("api/mcu/mobile/loanapplication/RealEstate/AddOrUpdateRealEstateDetails")
+    suspend fun addRealEstateDetails(@Header("Authorization")  Authorization:String, @Body data: RealEstateData) :AddUpdateDataResponse
+
+
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetFirstMortgageDetails")
     suspend fun getFirstMortgageDetails(
         @Header("Authorization") Authorization:String,
         @Query("loanApplicationId") loanPurpuseId:Int,
         @Query("borrowerPropertyId") borrowerPropertyId:Int) : RealEstateFirstMortgageModel
-
 
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetSecondMortgageDetails")
     suspend fun getSecMortgageDetails(
@@ -377,7 +380,6 @@ interface ServerApi{
     suspend fun getRetirementIncomeTypes(
         @Header("Authorization") Authorization : String): ArrayList<DropDownResponse>
 
-    //AddOrUpdateRetirementIncomeInfo
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateRetirementIncomeInfo")
     suspend fun addUpdateRetirement(@Header("Authorization")  Authorization:String, @Body data: RetirementIncomeData) : AddUpdateDataResponse
 

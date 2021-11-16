@@ -56,9 +56,11 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
         arguments?.let { arguments ->
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            incomeInfoId = arguments.getInt(AppConstant.incomeId)
-            //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-            //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            arguments.getInt(AppConstant.incomeId).let {
+                if(it > 0)
+                    incomeInfoId = it
+            }
+
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
@@ -133,7 +135,7 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
-            R.id.btn_save_change -> checkValidations()
+            R.id.btn_save_change -> processSendData()
             R.id.layout_address -> openAddressFragment()
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_military_pay -> {
@@ -195,7 +197,7 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    private fun checkValidations(){
+    private fun processSendData(){
         val empName: String = binding.editTextEmpName.text.toString()
         val jobTitle: String = binding.edJobTitle.text.toString()
         val profYears: String = binding.edProfYears.text.toString()
@@ -241,7 +243,11 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             CustomMaterialFields.clearError(binding.layoutEntitlement,requireActivity())
         }
         if (empName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && profYears.length > 0 ){
-            findNavController().popBackStack()
+
+
+
+
+
         }
 
     }
