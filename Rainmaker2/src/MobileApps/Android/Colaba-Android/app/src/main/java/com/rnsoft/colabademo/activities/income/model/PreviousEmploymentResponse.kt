@@ -13,17 +13,18 @@ data class PreviousEmploymentResponse(
     val status: String?
 )
 
+
 data class PreviousEmploymentData(
     val loanApplicationId: Int?,
     val borrowerId: Int?,
     val employerAddress: AddressData?,
-    val employmentInfo: EmploymentData?,
-    val wayOfIncome: WayOfIncome?
+    val employmentInfo: PrevEmploymentInfo?,
+    val wayOfIncome: WayOfIncomePrevious?
 )
 
-/*
+
 data class PrevEmploymentInfo(
-    val employedByFamilyOrParty: Boolean?,
+    //val employedByFamilyOrParty: Boolean?,
     val employerName: String?,
     val employerPhoneNumber: String?,
     val startDate: String?,
@@ -33,4 +34,8 @@ data class PrevEmploymentInfo(
     val jobTitle: String?,
     val ownershipInterest: Double?,
     val yearsInProfession: Int?
-) */
+)
+
+data class WayOfIncomePrevious(
+    val employerAnnualSalary: Double?
+)

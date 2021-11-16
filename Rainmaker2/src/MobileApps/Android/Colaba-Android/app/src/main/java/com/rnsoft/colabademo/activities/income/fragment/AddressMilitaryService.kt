@@ -51,7 +51,8 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
     private val viewModel : CommonViewModel by activityViewModels()
-    private var addressList : ArrayList<CommonAddressModel> = ArrayList()
+    private var militaryAddress = AddressData()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +66,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         toolbar.titleTextView.setText(title)
 
         setInputFields()
-        //setStateAndCountyDropDown()
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
@@ -241,32 +241,32 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     }
 
     private fun setData() {
-        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
-        if (addressList.size > 0) {
-            addressList[0].street?.let {
-                binding.tvSearch.setText(it)
-                CustomMaterialFields.setColor(
-                    binding.layoutSearchAddress,
-                    R.color.grey_color_two,
-                    requireActivity()
-                )
+        militaryAddress = arguments?.getParcelable(AppConstant.address)!!
+        militaryAddress.let { data->
+            data.street?.let {
+                binding.tvSearch.setText(it.toString())
+                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+                binding.edStreetAddress.setText(it)
             }
-            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
-            addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let {
+            data.city?.let {
+                binding.edCity.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCity, R.color.grey_color_two, requireActivity())
+            }
+            data.countryName?.let {
                 binding.tvCountry.setText(it)
                 binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
-            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let {
+            data.zipCode?.let { binding.edZipcode.setText(it)
+            }
+            data.stateName?.let {
                 binding.tvState.setText(it)
                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
-            /*addressList[0].countyName?.let {
+            data.countyName?.let {
                 binding.tvCounty.setText(it)
-                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            } */
-            addressList[0].unit.let { binding.edUnitAtpNo.setText(it) }
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+            }
+            data.unit?.let { binding.edUnitAtpNo.setText(it) }
             visibleAllFields()
         }
     }
@@ -355,7 +355,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         val county = binding.tvCounty.text.toString()
         val zipCode = binding.edZipcode.text.toString()
 
-
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }
@@ -399,9 +398,25 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 CustomMaterialFields.clearError(binding.layoutState,requireActivity())
             }
         }
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
-            //removeError()
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
+
+            val unit = if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+            val address = AddressData(
+                street = street,
+                unit = unit,
+                city = city,
+                stateName = state,
+                countryName = country,
+                countyName = county,
+                countyId = 1,
+                stateId = 1,
+                countryId = 1,
+                zipCode = zipCode
+            )
+
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.address, address)
             findNavController().popBackStack()
+
         }
     }
 

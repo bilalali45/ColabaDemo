@@ -56,8 +56,6 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
     private val incomeViewModel : IncomeViewModel by activityViewModels()
     private var businessAddress = AddressData()
 
-    //private var addressList : ArrayList<BusinessIncomeAddress> = ArrayList()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,7 +68,6 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
         toolbar.titleTextView.setText(title)
 
         setInputFields()
-        //setStateAndCountyDropDown()
         getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
@@ -234,8 +231,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
 
             businessAddress = AddressData(street = street, unit = unit, city = city, stateName = state, countryName = country,
                 countyName = county,countyId = 1, stateId = 1, countryId = 1, zipCode = zipCode)
-
-            incomeViewModel.saveIncomeAddress(businessAddress)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.address, businessAddress)
             findNavController().popBackStack()
         }
     }
@@ -384,29 +380,32 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
     }
 
     private fun setData() {
-
         businessAddress = arguments?.getParcelable(AppConstant.address)!!
         businessAddress.let { data->
-            data.street.let {
-                binding.tvSearch.setText(it)
-                binding.edStreetAddress.setText(it)
+            data.street?.let {
+                binding.tvSearch.setText(it.toString())
                 CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+                binding.edStreetAddress.setText(it)
             }
-            data.city.let { binding.edCity.setText(it) }
+            data.city?.let {
+                binding.edCity.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCity, R.color.grey_color_two, requireActivity())
+            }
             data.countryName?.let {
                 binding.tvCountry.setText(it)
                 binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
-            data.zipCode?.let { binding.edZipcode.setText(it) }
-            data.stateName?.let { binding.tvState.setText(it)
+            data.zipCode?.let { binding.edZipcode.setText(it)
+            }
+            data.stateName?.let {
+                binding.tvState.setText(it)
                 binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
             }
             data.countyName?.let {
                 binding.tvCounty.setText(it)
-                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
             }
-            data.unit.let { binding.edUnitAtpNo.setText(it) }
-
+            data.unit?.let { binding.edUnitAtpNo.setText(it) }
             visibleAllFields()
         }
     }

@@ -21,6 +21,10 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.internal.wait
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +45,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     private var loanApplicationId: Int? = null
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
-    var addressList :  ArrayList<EmployerAddress> = ArrayList()
+    //var addressList :  ArrayList<EmployerAddress> = ArrayList()
+    private var employerAddress = AddressData()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,29 +68,15 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
         initViews()
         getEmploymentData()
+
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(
+            viewLifecycleOwner) { result ->
+            employerAddress = result
+            displayAddress(result)
+        }
         return binding.root
 
-
-        /*return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = IncomePreviousEmploymentBinding.inflate(inflater, container, false)
-            toolbar = binding.headerIncome
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
-            // set Header title
-            toolbar.toolbarTitle.setText(getString(R.string.previous_employment))
-
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-                borrowerId = arguments.getInt(AppConstant.borrowerId)
-                incomeInfoId = arguments.getInt(AppConstant.incomeId)
-            }
-
-            initViews()
-            getEmploymentData()
-            savedViewInstance
-        } */
     }
 
     private fun getEmploymentData(){
@@ -92,6 +84,8 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null && incomeInfoId != null && borrowerId != null) {
+                    Log.e("getting details", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
                 }
@@ -126,6 +120,26 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                     binding.editTextProfYears.setText(it.toString())
                     CustomMaterialFields.setColor(binding.layoutYearsProfession, R.color.grey_color_two, requireContext())
                 }
+
+                data.employmentData?.wayOfIncome?.let {
+                    it.employerAnnualSalary?.let {
+                        binding.editTextAnnualIncome.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
+                    }
+                }
+
+                data.employmentData?.employerAddress?.let {
+                    employerAddress = it
+
+                    val builder = StringBuilder()
+                    it.street?.let { builder.append(it).append(" ") }
+                    it.unit?.let { builder.append(it).append("\n") }
+                    it.city?.let { builder.append(it).append(" ") }
+                    it.stateName?.let{ builder.append(it).append(" ")}
+                    it.zipCode?.let { builder.append(it) }
+                    binding.textviewPrevEmploymentAddress.text = builder
+                }
+
                 info?.hasOwnershipInterest?.let {
                     if(it == true)
                         binding.rbOwnershipYes.isChecked = true
@@ -133,33 +147,6 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                         binding.rbOwnershipNo.isChecked = true
                     }
                 }
-            }
-
-            data.employmentData?.employerAddress?.let {
-               /* addressList.add(EmployerAddress(
-                    streetAddress = it.streetAddress,
-                    unitNo = it.unitNo,
-                    cityName = it.cityName,
-                    cityId = it.cityId,
-                    stateName = it.stateName,
-                    countryName = it.countryName,
-                    //countyName = it.,
-                    //countyId = it.countyId,
-                    stateId = it.stateId,
-                    countryId = it.countryId,
-                    zipCode = it.zipCode,
-                    borrowerId = it.borrowerId,
-                    loanApplicationId = it.loanApplicationId,
-                    incomeInfoId = it.incomeInfoId
-                ))
-
-                val builder = StringBuilder()
-                it.streetAddress?.let { builder.append(it).append(" ") }
-                it.unitNo?.let { builder.append(it).append("\n") }
-                it.cityName?.let { builder.append(it).append(" ") }
-                it.stateName?.let{ builder.append(it).append(" ")}
-                it.zipCode?.let { builder.append(it) }
-                binding.tvPrevEmploymentAddress.text = builder */
             }
 
             binding.loaderEmployment.visibility = View.GONE
@@ -197,7 +184,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val startDate: String = binding.editTextStartDate.text.toString()
         val endDate: String = binding.editTextEndDate.text.toString()
         val profYears: String = binding.editTextProfYears.text.toString()
-        val netIncome: String = binding.edNetIncome.text.toString()
+        val netIncome: String = binding.editTextAnnualIncome.text.toString()
 
         if (empName.isEmpty() || empName.length == 0) {
             CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
@@ -230,7 +217,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             CustomMaterialFields.clearError(binding.layoutEndDate,requireActivity())
         }
         if (netIncome.isNotEmpty() || netIncome.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutYearsProfession,requireActivity())
+            CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
         }
         if (profYears.isNotEmpty() || profYears.length > 0) {
             CustomMaterialFields.clearError(binding.layoutYearsProfession,requireActivity())
@@ -240,7 +227,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if(loanApplicationId != null && borrowerId !=null && incomeInfoId != null) {
-                        Log.e("Loan Application Id", "" +loanApplicationId + " borrowerId:  " + borrowerId)
+                        Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
 
                         val phoneNum = if(binding.editTextEmpPhnum.text.toString().length > 0) binding.editTextEmpPhnum.text.toString() else null
                         var isOwnershipInterest : Boolean ? = null
@@ -250,39 +237,28 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                         if(binding.rbOwnershipNo.isChecked)
                             isOwnershipInterest = false
 
-
                         val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
 
-//                        val employerInfo = EmploymentInfo(
-//                            borrowerId = borrowerId,incomeInfoId= incomeInfoId, employerName=empName, employerPhoneNumber=phoneNum, jobTitle=jobTitle,startDate=startDate,endDate =null, yearsInProfession = profYears.toInt(),
-//                            hasOwnershipInterest = isOwnershipInterest, ownershipInterest = ownershipPercentage?.toDouble())
+                        val employerInfo = PrevEmploymentInfo(
+                            employerName=empName, employerPhoneNumber=phoneNum, jobTitle=jobTitle,startDate=startDate,endDate =endDate, yearsInProfession = profYears.toInt(),
+                            hasOwnershipInterest = isOwnershipInterest, ownershipInterest = ownershipPercentage?.toDouble(),incomeInfoId = incomeInfoId)
 
-                        // chekc values for wasys of income
-                        var isPaidByMonthlySalary : Boolean? = null
-                        var annualSalary : String = "0"
-                        var hourlyRate : String = "0"
-                        var avgHourWeeks : String= "0"
+                        val annualIncome = binding.editTextAnnualIncome.text.toString().trim()
+                        val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
 
+                        val wayOfIncome = WayOfIncomePrevious(employerAnnualSalary=newAnnualIncome?.toDouble())
 
+                        val employmentData = PreviousEmploymentData(
+                            loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome)
+                        Log.e("employmentData-snding to API", "" + employmentData)
 
-                        val wayOfIncome = WayOfIncome(isPaidByMonthlySalary=isPaidByMonthlySalary,employerAnnualSalary=annualSalary?.toDouble(),hourlyRate= hourlyRate?.toDouble(),hoursPerWeek=avgHourWeeks.toInt())
-
-                        // get other income types
-                        val otherIncomeList :  ArrayList<EmploymentOtherIncome> = ArrayList()
-
-                        /*otherIncomeList.add(EmploymentOtherIncome(
-
-                        )) */
-
-//                        val employmentData = EmploymentData(
-//                            loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome,employmentOtherIncome = otherIncomeList)
-//                        Log.e("employmentData-snding to API", "" + employmentData)
-//
-//                        binding.loaderEmployment.visibility = View.VISIBLE
-//                        viewModel.sendCurrentEmploymentData(authToken, employmentData)
+                        binding.loaderEmployment.visibility = View.VISIBLE
+                        viewModel.sendPrevEmploymentData(authToken, employmentData)
                     }
                 }
             }
+
+
 
 
 
@@ -307,10 +283,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         binding.editTextJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextJobTitle, binding.layoutJobTitle, requireContext()))
         binding.editTextProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextProfYears, binding.layoutYearsProfession, requireContext()))
         binding.edOwnershipPercent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
-        binding.edNetIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edNetIncome, binding.layoutNetIncome, requireContext()))
+        binding.editTextAnnualIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextAnnualIncome, binding.layoutNetIncome, requireContext()))
 
         // set input format
-        binding.edNetIncome.addTextChangedListener(NumberTextFormat(binding.edNetIncome))
+        binding.editTextAnnualIncome.addTextChangedListener(NumberTextFormat(binding.editTextAnnualIncome))
         binding.editTextEmpPhnum.addTextChangedListener(PhoneTextFormatter(binding.editTextEmpPhnum, "(###) ###-####"))
 
 
@@ -363,9 +339,45 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val addressFragment = AddressPrevEmployment()
         val bundle = Bundle()
         bundle.putString(AppConstant.TOOLBAR_TITLE, getString(R.string.previous_employer_address))
-        bundle.putParcelableArrayList(AppConstant.address,addressList)
+        bundle.putParcelable(AppConstant.address,employerAddress)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_prev_employment_address, addressFragment.arguments)
+    }
+
+    private fun displayAddress(it: AddressData){
+        val builder = StringBuilder()
+        it.street?.let { builder.append(it).append(" ") }
+        it.unit?.let { builder.append(it).append("\n") }
+        it.city?.let { builder.append(it).append(" ") }
+        it.stateName?.let{ builder.append(it).append(" ")}
+        it.zipCode?.let { builder.append(it) }
+        it.countryName?.let { builder.append(" ").append(it)}
+        binding.textviewPrevEmploymentAddress.text = builder
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
+            binding.loaderEmployment.visibility = View.GONE
+
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+
+        else
+            if(event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        findNavController().popBackStack()
     }
 
     var maxDate:Long = 0

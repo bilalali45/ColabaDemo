@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,9 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -28,7 +32,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/15/2021.
  */
 @AndroidEntryPoint
-class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
+class OtherIncomeFragment : BaseFragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : IncomeViewModel by activityViewModels()
@@ -52,36 +56,36 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = IncomeOtherLayoutBinding.inflate(inflater, container, false)
-            toolbarBinding = binding.headerIncome
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
-            // set Header title
-            toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
+    ): View {
+        binding = IncomeOtherLayoutBinding.inflate(inflater, container, false)
+        toolbarBinding = binding.headerIncome
+        savedViewInstance = binding.root
+        super.addListeners(binding.root)
+        // set Header title
+        toolbarBinding.toolbarTitle.setText(getString(R.string.income_other))
 
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-                borrowerId = arguments.getInt(AppConstant.borrowerId)
-                incomeId = arguments.getInt(AppConstant.incomeId)
-                incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-                incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
-            }
 
-            initViews()
-            observeOtherIncomeTypes()
-            savedViewInstance
 
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            incomeId = arguments.getInt(AppConstant.incomeId)
+            incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+            incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
         }
+
+        Log.e("onCreate", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
+
+
+        initViews()
+        observeOtherIncomeTypes()
+        return binding.root
     }
 
     private fun observeOtherIncomeTypes(){
         lifecycleScope.launchWhenStarted {
             viewModel.otherIncomeTypes.observe(viewLifecycleOwner, { types ->
-                if(types.size>0) {
+                if(types.size > 0) {
                     val itemList: ArrayList<String> = arrayListOf()
                     incomeTypes = arrayListOf()
                     for (item in types) {
@@ -91,40 +95,19 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
                     Timber.e("itemList- $itemList")
                     Timber.e("RetirementTypes- $incomeTypes")
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
-                    binding.tvRetirementType.setAdapter(adapter)
+                    binding.tvIncomeType.setAdapter(adapter)
                 }
                 else
                     findNavController().popBackStack()
+
+                getOtherIncomeDetails()
+
             })
         }
 
-        getOtherIncomeDetails()
     }
 
     private fun getOtherIncomeDetails(){
-        /*lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(incomeInfoId != null){
-                    binding.loaderOtherIncome.visibility = View.VISIBLE
-                    viewModel.getOtherIncome(authToken,incomeInfoId!!)
-
-                    viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
-                        data?.otherIncomeData?.let { info ->
-
-                            /*info.employerName?.let {
-                                binding.editTextEmpName.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
-                            }
-                            info.militaryEntitlements?.let {
-                                binding.editTextEntitlement.setText(Math.round(it).toString())
-                                CustomMaterialFields.setColor(binding.layoutEntitlement, R.color.grey_color_two, requireContext())
-                            } */
-                        }
-                        binding.loaderOtherIncome.visibility = View.GONE
-                    })
-                }
-            }
-        } */
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if(incomeId != null){
@@ -140,40 +123,29 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
                 info.incomeTypeId?.let { incomeTypeId->
                     for(item in incomeTypes)
                         if(incomeTypeId == item.id){
-                            binding.tvRetirementType.setText(item.name, false)
+                            binding.tvIncomeType.setText(item.name, false)
                             toggleOtherFields()
                             break
                         }
                 }
-                //info.employerName?.let { binding.edEmpName.setText(it)}
-                //info.description?.let { binding.edDesc.setText(it) }
-                //info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
+                info.description?.let { binding.edDesc.setText(it) }
+                info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
+                info.annualBaseIncome?.let {  binding.edAnnualIncome.setText(it.toString()) }
             }
         })
-
-
-
-
-
-
-
-
-
-
-
     }
 
     private fun toggleOtherFields(){
-        binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
-            ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+       // binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
+         // ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
-        var item = binding.tvRetirementType.text.toString()
-        if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
+        val item = binding.tvIncomeType.text.toString()
+        if (item.equals("Capital Gains",true) || item.equals( "Interest / Dividends",true) || item.equals("Other Income Source",true)) {
             binding.layoutAnnualIncome.visibility = View.VISIBLE
             binding.layoutMonthlyIncome.visibility = View.GONE
             binding.layoutDesc.visibility = View.GONE
         }
-        else if (item == "Annuity") {
+        else if (item.equals("Annuity",true)) {
             binding.layoutAnnualIncome.visibility = View.GONE
             binding.layoutMonthlyIncome.visibility = View.VISIBLE
             binding.layoutDesc.visibility = View.VISIBLE
@@ -184,28 +156,22 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
             binding.layoutMonthlyIncome.visibility = View.VISIBLE
         }
 
-        if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
-            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
-        }
-
-
-
-        if (binding.tvRetirementType.text.isNotEmpty() && binding.tvRetirementType.text.isNotBlank()) {
+        if (binding.tvIncomeType.text.isNotEmpty() && binding.tvIncomeType.text.isNotBlank()) {
             CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
         }
     }
 
     private fun initViews() {
-        toolbarBinding.btnClose.setOnClickListener(this)
-        binding.mainLayoutOther.setOnClickListener(this)
-        binding.btnSaveChange.setOnClickListener(this)
+        toolbarBinding.btnClose.setOnClickListener{ findNavController().popBackStack()}
+        //binding.mainLayoutOther.setOnClickListener(this)
+        binding.btnSaveChange.setOnClickListener{ sendData() }
 
         setInputFields()
         setRetirementType()
 
     }
 
-    override fun onClick(view: View?) {
+    /*override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.btn_save_change -> checkValidations()
             R.id.btn_close -> findNavController().popBackStack()
@@ -215,7 +181,7 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
             }
 
         }
-    }
+    }*/
 
     private fun setInputFields() {
 
@@ -232,9 +198,9 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
         CustomMaterialFields.setDollarPrefix(binding.layoutAnnualIncome, requireContext())
     }
 
-    private fun checkValidations(){
+    private fun sendData(){
 
-        val incomeType: String = binding.tvRetirementType.text.toString()
+        val incomeType: String = binding.tvIncomeType.text.toString()
         val annualIncome: String = binding.edAnnualIncome.text.toString()
         val monthlyIncome: String = binding.edMonthlyIncome.text.toString()
         val desc: String = binding.edDesc.text.toString()
@@ -264,23 +230,63 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
             CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
         }
 
+        if(incomeType.length > 0) {
+            if(monthlyIncome.length > 0 || annualIncome.length >0 || desc.length > 0){
+
+                // get incomeType id
+                val type : String = binding.tvIncomeType.getText().toString().trim()
+                val matchedList =  incomeTypes.filter { p -> p.name.equals(type,true)}
+                //Log.e("matchedList",""+matchedList1)
+                val incomeTypeId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+                //Log.e("propertyId",""+propertyId)
+
+                val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
+                val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+
+                val annualIncome = binding.edAnnualIncome.text.toString().trim()
+                val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
+                val desc = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+
+                val data = AddOtherIncomeInfo(
+                    loanApplicationId=loanApplicationId,incomeInfoId=incomeInfoId,borrowerId=borrowerId,monthlyBaseIncome = newMonthlyIncome?.toDouble(),annualBaseIncome = newAnnualIncome?.toDouble(),
+                    description = desc,incomeTypeId = incomeTypeId)
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        if (loanApplicationId != null && borrowerId != null && incomeId != null) {
+                            Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
+                            Log.e("employmentData-snding to API", "" + data)
+                            binding.loaderOtherIncome.visibility = View.VISIBLE
+                            viewModel.sendOtherIncome(authToken, data)
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
     }
 
     private fun setRetirementType(){
         //val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, retirementArray)
         //binding.tvRetirementType.setAdapter(adapter)
-        binding.tvRetirementType.setOnFocusChangeListener { _, _ ->
-            binding.tvRetirementType.showDropDown()
+        binding.tvIncomeType.setOnFocusChangeListener { _, _ ->
+            binding.tvIncomeType.showDropDown()
         }
-        binding.tvRetirementType.setOnClickListener {
-            binding.tvRetirementType.showDropDown()
+        binding.tvIncomeType.setOnClickListener {
+            binding.tvIncomeType.showDropDown()
         }
-        binding.tvRetirementType.onItemClickListener = object :
+        binding.tvIncomeType.onItemClickListener = object :
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                 binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.grey_color_two))
+                toggleOtherFields()
 
                 /*var item = binding.tvRetirementType.text.toString()
                 if (item == "Capital Gains" || item == "Interest / Dividends" || item == "Other Income Source") {
@@ -305,5 +311,27 @@ class OtherIncomeFragment : BaseFragment(), View.OnClickListener {
 
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderOtherIncome.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else
+            if(event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        findNavController().popBackStack()
     }
 }

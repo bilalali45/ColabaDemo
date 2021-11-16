@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
@@ -154,6 +155,52 @@ interface ServerApi{
         @Query("borrowerId") borrowerId:Int,
         @Query("borrowerAssetId") borrowerAssetId:Int): BankAccountResponse
 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Assets Add Update Api....
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateBankAccount")
+    suspend fun addUpdateBankDetails(
+        @Header("Authorization") Authorization:String,
+        @Body addUpdateParams:BankAddUpdateParams): GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherAssetsInfo")
+    suspend fun addUpdateOtherAsset(
+        @Header("Authorization") Authorization:String,
+        @Body ootherAssetAddUpdateParams: OtherAssetAddUpdateParams): GenericAddUpdateAssetResponse
+
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateFinancialAsset")
+    suspend fun addUpdateStockBonds(
+        @Header("Authorization") Authorization:String,
+        @Body stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): GenericAddUpdateAssetResponse
+
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateRetirementAccount")
+    suspend fun addUpdateRetirement(
+        @Header("Authorization") Authorization:String,
+        @Body retirementAddUpdateParams: RetirementAddUpdateParams): GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateGiftAsset")
+    suspend fun addUpdateGift(
+        @Header("Authorization") Authorization:String,
+        @Body giftAddUpdateParams: GiftAddUpdateParams): GenericAddUpdateAssetResponse
+
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateProceedsfromloan")
+    suspend fun addUpdateProceedFromLoan(@Header("Authorization") Authorization:String, @Body addUpdateProceedLoanParams: AddUpdateProceedLoanParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateProceedsfromloanOther")
+    suspend fun addUpdateProceedFromLoanOther(@Header("Authorization") Authorization:String, @Body addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateAssestsRealState")
+    suspend fun addUpdateAssetsRealState(@Header("Authorization") Authorization:String, @Body addUpdateRealStateParams: AddUpdateRealStateParams) : GenericAddUpdateAssetResponse
+
+    @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateAssestsNonRealState")
+    suspend fun addUpdateAssetsNonRealState(@Header("Authorization") Authorization:String, @Body addUpdateRealStateParams: AddUpdateRealStateParams) : GenericAddUpdateAssetResponse
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     @GET("api/mcu/mobile/loanapplication/Assets/GetBankAccountType")
     suspend fun getBankAccountType(
         @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
@@ -293,10 +340,10 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
-    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: EmploymentData) : AddUpdateDataResponse
+    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: AddCurrentEmploymentModel) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdatePreviousEmploymentDetail")
-    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentResponse) : AddUpdateDataResponse
+    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentData) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
     suspend fun getSelfEmploymentContractor(
@@ -359,7 +406,7 @@ interface ServerApi{
     suspend fun addUpdateRetirement(@Header("Authorization")  Authorization:String, @Body data: RetirementIncomeData) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateOtherIncome")
-    suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: OtherIncomeData) : AddUpdateDataResponse
+    suspend fun addUpdateOtherIncome(@Header("Authorization") Authorization:String, @Body data: AddOtherIncomeInfo) : AddUpdateDataResponse
 
 
 

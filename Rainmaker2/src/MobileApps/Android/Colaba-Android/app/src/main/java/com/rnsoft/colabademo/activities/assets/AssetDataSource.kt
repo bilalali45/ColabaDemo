@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import timber.log.Timber
 import java.io.IOException
@@ -17,7 +18,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.fetchAssetTypesByCategoryItemList(newToken , categoryId = categoryId, loanPurposeId = loanPurposeId)
-            Timber.e("GetAssetTypesByCategoryItem:  - $response")
+            //Timber.e("GetAssetTypesByCategoryItem:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -77,12 +78,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     }
 
 
-    suspend fun getBankAccountDetails(
-        token : String,
-        loanApplicationId : Int,
-        borrowerId : Int,
-        borrowerAssetId : Int
-    ): Result<BankAccountResponse> {
+    suspend fun getBankAccountDetails(token : String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBankAccountDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
@@ -95,6 +91,139 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun addUpdateBankDetails(token : String, addUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateBankDetails(newToken, addUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun addUpdateOtherAsset(token : String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateOtherAsset(newToken, otherAssetAddUpdateParams)
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun addUpdateGift(token : String, giftAddUpdateParams: GiftAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateGift(newToken, giftAddUpdateParams)
+            Timber.e("addUpdate = $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addUpdateStockBonds(token : String, stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateStockBonds(newToken, stocksBondsAddUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+
+
+
+
+    suspend fun addUpdateProceedFromLoan(token : String, addUpdateProceedLoanParams: AddUpdateProceedLoanParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateProceedFromLoan(newToken, addUpdateProceedLoanParams)
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun addUpdateProceedFromLoanOther(token : String, addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateProceedFromLoanOther(
+                newToken,
+                addUpdateProceedFromLoanOtherParams
+            )
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun addUpdateAssetsRealStateOrNonRealState(token : String,  addUpdateRealStateParams: AddUpdateRealStateParams): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response:GenericAddUpdateAssetResponse = if(addUpdateRealStateParams.AssetTypeId == AppConstant.assetRealStateId)
+                serverApi.addUpdateAssetsRealState(newToken, addUpdateRealStateParams)
+            else
+                serverApi.addUpdateAssetsNonRealState(newToken, addUpdateRealStateParams)
+            Timber.e(response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+
+
+
+
+
+    suspend fun addUpdateRetirement(token : String, retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateRetirement(newToken, retirementAddUpdateParams)
+            Log.e("-addUpdateBankDetails----", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
 
     suspend fun getBankAccountType(token: String) : Result<ArrayList<DropDownResponse>> {
         return try {
@@ -196,7 +325,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getAssetTransactionType(newToken, categoryId, loanPurposeId)
-            Timber.e("Assets by category:  - $response")
+            //Timber.e("Assets by category:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -227,7 +356,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getGiftAssetDetail(newToken, loanApplicationId,borrowerId,borrowerAssetId)
-            Log.e("Gift Asset Detail--", response.toString())
+            //Log.e("Gift Asset Detail--", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -241,7 +370,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getAllGiftSources(newToken)
-            Timber.e("Gift sources: - $response")
+            //Timber.e("Gift sources: - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

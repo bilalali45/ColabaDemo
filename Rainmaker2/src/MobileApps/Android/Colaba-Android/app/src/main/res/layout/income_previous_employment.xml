@@ -136,7 +136,7 @@
                     app:drawableStartCompat="@drawable/ic_location_svg" />
 
                 <TextView
-                    android:id="@+id/tv_prev_employment_address"
+                    android:id="@+id/textview_prev_employment_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -438,7 +438,7 @@
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_net_income"
+                    android:id="@+id/editText_annual_income"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"

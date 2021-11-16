@@ -7,7 +7,6 @@ import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,8 +25,9 @@ class RetirementFragment:BaseFragment() {
     private var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
     private var borrowerId:Int? = null
-    private var borrowerAssetId:Int? = null
+    private var borrowerAssetId:Int = -1
     private var assetTypeID:Int? = null
+    private var id:Int? = null
 
     private val viewModel: AssetViewModel by activityViewModels()
 
@@ -42,7 +42,7 @@ class RetirementFragment:BaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId)
+            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId, -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             observeRetirementData()
         }
@@ -58,17 +58,63 @@ class RetirementFragment:BaseFragment() {
             findNavController().popBackStack()
         }
 
-        binding.phoneFab.setOnClickListener {
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                clearFocusFromFields()
-                findNavController().popBackStack()
-            }
-        }
+        binding.saveBtn.setOnClickListener { saveRetirement() }
 
         addFocusOutListenerToFields()
 
         setUpEndIcon()
+    }
+
+    private fun saveRetirement(){
+
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+            if(genericAddUpdateAssetResponse.status == "OK"){
+                val codeString = genericAddUpdateAssetResponse.code.toString()
+                if(codeString == "200"){
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+
+                        }
+                    }
+                }
+            }
+        })
+
+        val fieldsValidated = checkEmptyFields()
+        if(fieldsValidated) {
+            clearFocusFromFields()
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+
+                    loanApplicationId?.let { notNullLoanApplicationId->
+                        borrowerId?.let { notNullBorrowerId ->
+                            val retirementAddUpdateParams =
+                                RetirementAddUpdateParams(
+                                    BorrowerId = notNullBorrowerId,
+                                    LoanApplicationId = notNullLoanApplicationId,
+                                    AccountNumber = binding.accountNumberEdittext.text.toString(),
+                                    InstitutionName = binding.financialEditText.text.toString(),
+                                    Value = binding.annualBaseEditText.text.toString().toInt(),
+                                    Id = id
+                                )
+                            viewModel.addUpdateRetirement(authToken , retirementAddUpdateParams)
+                        }
+                    }
+                }
+            }
+        }
+
+        /*
+        BorrowerId = 5,
+        LoanApplicationId = 5,
+        AccountNumber = "ABC",
+        InstitutionName = "XYZ",
+        Value = 10011,
+        Id = 1102
+
+         */
+
+
     }
 
     private fun setUpEndIcon(){
@@ -124,16 +170,11 @@ class RetirementFragment:BaseFragment() {
     }
 
     private fun observeRetirementData(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId!=null) {
-                    viewModel
-                        .getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId!!)
-                }
-            }
+        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
             viewModel.retirementAccountDetail.observe(viewLifecycleOwner, { observeRetirementData ->
                 if(observeRetirementData.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     observeRetirementData.retirementAccountData?.let{ retirementAccountData->
+                        retirementAccountData.id?.let { id = it }
                         binding.financialEditText.setText(retirementAccountData.institutionName)
                         binding.accountNumberEdittext.setText(retirementAccountData.accountNumber)
                         val value = retirementAccountData.value.toString()
@@ -143,6 +184,12 @@ class RetirementFragment:BaseFragment() {
                 else
                     findNavController().popBackStack()
             })
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                }
+            }
         }
     }
 

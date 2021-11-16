@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,9 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -28,7 +32,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/15/2021.
  */
 @AndroidEntryPoint
-class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
+class RetirementIncomeFragment : BaseFragment(){
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -102,7 +106,6 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
             }
         })
 
-
     }
 
     private fun observeRetirementIncomeTypes(){
@@ -122,32 +125,27 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
                 }
                 else
                     findNavController().popBackStack()
+
+                getRetirementDetails()
+
             })
         }
 
-        getRetirementDetails()
     }
 
     private fun initViews() {
-        toolbarBinding.btnClose.setOnClickListener(this)
-        binding.mainLayoutRetirement.setOnClickListener(this)
-        binding.btnSaveChange.setOnClickListener(this)
+        toolbarBinding.btnClose.setOnClickListener{ findNavController().popBackStack()}
+
+        //binding.mainLayoutRetirement.setOnClickListener{
+        //  HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
+        //                super.removeFocusFromAllFields(binding.mainLayoutRetirement)}
+
+        binding.btnSaveChange.setOnClickListener{
+            checkValidations()
+        }
 
         setInputFields()
-        //setRetirementType()
 
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.btn_save_change -> checkValidations()
-            R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_retirement -> {
-                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutRetirement)
-                super.removeFocusFromAllFields(binding.mainLayoutRetirement)
-            }
-
-        }
     }
 
     private fun setInputFields() {
@@ -188,14 +186,14 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
             ContextCompat.getColor(requireContext(), R.color.grey_color_two))
 
         val type = binding.tvRetirementType.text.toString()
-        if (type == "Pension") {
+        if (type.equals("Pension",true)) {
             binding.layoutEmpName.visibility = View.VISIBLE
             binding.layoutMonthlyIncome.visibility = View.VISIBLE
             binding.layoutMonthlyWithdrawal.visibility = View.GONE
             binding.layoutDesc.visibility = View.GONE
         }
 
-        else if (type == "Social Security") {
+        else if (type.equals("Social Security",true)) {
             binding.layoutEmpName.visibility = View.GONE
             binding.layoutMonthlyIncome.visibility = View.VISIBLE
 
@@ -203,14 +201,14 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
             binding.layoutDesc.visibility = View.GONE
         }
 
-        else if (type == "IRA / 401K") {
+        else if (type.equals("IRA / 401K",true)) {
             binding.layoutEmpName.visibility = View.GONE
             binding.layoutMonthlyIncome.visibility = View.GONE
             binding.layoutDesc.visibility = View.GONE
             binding.layoutMonthlyWithdrawal.visibility = View.VISIBLE
         }
 
-        else if (type == "Other Retirement Source") {
+        else if (type.equals("Other Retirement Source")) {
             binding.layoutEmpName.visibility = View.GONE
             binding.layoutMonthlyWithdrawal.visibility = View.GONE
             binding.layoutDesc.visibility = View.VISIBLE
@@ -261,5 +259,70 @@ class RetirementIncomeFragment : BaseFragment(), View.OnClickListener {
             CustomMaterialFields.clearError(binding.layoutMonthlyWithdrawal,requireActivity())
         }
 
+        if(retirementType.length >0) {
+
+            val type: String = binding.tvRetirementType.getText().toString().trim()
+            val matchedType = retirementTypes.filter { p -> p.name.equals(type, true) }
+            val retirementTypeId =
+                if (matchedType.size > 0) matchedType.map { matchedType.get(0).id }
+                    .single() else null
+           // Log.e("retirementTypeId", "" + retirementTypeId)
+
+            val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
+            val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+
+            val employerName =
+                if (binding.edEmpName.text.toString().length > 0) binding.edEmpName.text.toString() else null
+
+            val desc =
+                if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+
+            val data = RetirementIncomeData(
+                loanApplicationId = loanApplicationId,
+                borrowerId = borrowerId,
+                incomeInfoId = incomeId,
+                incomeTypeId = retirementTypeId,
+                employerName = employerName,
+                description = desc,monthlyBaseIncome = monthlyIncome?.toDouble())
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null && incomeId != null) {
+                        Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
+                        Log.e("employmentData-snding to API", "" + data)
+                        binding.loaderRetirementIncome.visibility = View.VISIBLE
+                        viewModel.sendRetiremnentData(authToken, data)
+                    }
+                }
+            }
+        }
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderRetirementIncome.visibility = View.GONE
+//
+//        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
+//
+//        else
+            if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+
+        else
+            if(event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        findNavController().popBackStack()
     }
 }

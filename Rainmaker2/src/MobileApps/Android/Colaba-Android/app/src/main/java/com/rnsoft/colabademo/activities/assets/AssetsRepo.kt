@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import javax.inject.Inject
 
@@ -12,6 +13,53 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
     suspend fun getBankAccountDetails(token: String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return dataSource.getBankAccountDetails(token = token, loanApplicationId,borrowerId,borrowerAssetId)
     }
+
+    suspend fun addUpdateBankDetails(token: String, bankAddUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateBankDetails(token = token, bankAddUpdateParams)
+    }
+
+    suspend fun addUpdateOtherAsset(token: String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateOtherAsset(token = token, otherAssetAddUpdateParams)
+    }
+
+    suspend fun addUpdateGift(token: String, giftAddUpdateParams: GiftAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateGift(token = token, giftAddUpdateParams)
+    }
+
+
+    suspend fun addUpdateRetirement(token: String,  retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateRetirement(token = token, retirementAddUpdateParams)
+    }
+
+    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams)
+    }
+
+
+
+
+    suspend fun addUpdateProceedFromLoan(token: String, addUpdateProceedLoanParams: AddUpdateProceedLoanParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateProceedFromLoan(token = token, addUpdateProceedLoanParams)
+    }
+
+    suspend fun addUpdateProceedFromLoanOther(token: String,  addUpdateProceedFromLoanOtherParams: AddUpdateProceedFromLoanOtherParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateProceedFromLoanOther(token = token, addUpdateProceedFromLoanOtherParams)
+    }
+
+    suspend fun addUpdateAssetsRealStateOrNonRealState(token: String,  addUpdateRealStateParams: AddUpdateRealStateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateAssetsRealStateOrNonRealState(token = token, addUpdateRealStateParams)
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int): Result<ArrayList<GetAssetTypesByCategoryItem>> {
         return dataSource.fetchAssetTypesByCategoryItemList(token = token , categoryId, loanPurposeId)

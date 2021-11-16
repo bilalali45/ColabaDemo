@@ -36,6 +36,8 @@ object AppConstant {
         const val tenantTwoFaSetting:String = "tenantTwoFaSetting"
         const val tabBorrowerId:String = "tabBorrowerId"
 
+        const val assetRealStateId = 14
+        const val assetNonRealStateId = 13
 
         const val otpDataJson:String =  "otpDataJson"
         const val phoneNumber:String = "phoneNumber"
@@ -146,6 +148,7 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val MIXED_USE_PROPERTY_DESC: String = "mixed_property_explaination"
         const val TOOLBAR_TITLE: String = "toolbar_title"
         const val RESERVE_ACTIVATED: String = "reserve_activated"
         const val secMortgage : String = "sec_mortgage"

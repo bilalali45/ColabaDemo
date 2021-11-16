@@ -17,14 +17,14 @@ data class BusinessData(
     val id: Int?,
     val borrowerId: Int?,
     val incomeTypeId: Int?,
-    val address: BusinessIncomeAddress?,
+    val address: AddressData?,
     val businessName: String?,
     val businessPhone: String?,
     val startDate: String?,
     val jobTitle: String?,
     val ownershipPercentage: Double?,
     val annualIncome: Double?,
-    val hasOwnershipInterest: Boolean?
+    //val hasOwnershipInterest: Boolean?
 )
 
 @Parcelize
