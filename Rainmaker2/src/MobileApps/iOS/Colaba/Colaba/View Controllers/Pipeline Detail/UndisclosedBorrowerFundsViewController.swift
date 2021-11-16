@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol UndisclosedBorrowerFundsViewControllerDelegate: AnyObject {
+    func getQuestionModel(question: [String: Any], subQuestions: [String: Any])
+}
+
 class UndisclosedBorrowerFundsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -25,6 +29,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
     var subQuestionModel: GovernmentQuestionModel?
+    weak var delegate: UndisclosedBorrowerFundsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +40,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         amountView.isHidden = true
         setQuestionData()
+        saveQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,7 +64,7 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
         if questionModel.answer == "Yes"{
             isYes = true
         }
-        else{
+        else if questionModel.answer == "No"{
             isYes = false
         }
         changeStatus()
@@ -68,11 +74,14 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
         isYes = true
         let vc = Utility.getUndisclosedBorrowerFundsFollowupQuestionsVC()
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questionModel = subQuestionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -90,12 +99,54 @@ class UndisclosedBorrowerFundsViewController: BaseViewController {
                 }
             }
         }
+        saveQuestion()
     }
     
     @objc func amountViewTapped(){
         let vc = Utility.getUndisclosedBorrowerFundsFollowupQuestionsVC()
         vc.questionModel = subQuestionModel
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
+    }
+    
+    func saveQuestion(){
+        let question = ["id": questionModel.id,
+                        "parentQuestionId": NSNull(),
+                        "headerText": questionModel.headerText,
+                        "questionSectionId": questionModel.questionSectionId,
+                        "ownTypeId": questionModel.ownTypeId,
+                        "firstName": questionModel.firstName,
+                        "lastName": questionModel.lastName,
+                        "question": questionModel.question,
+                        "answer": questionModel.answer,
+                        "answerDetail": questionModel.answerDetail,
+                        "selectionOptionId": NSNull(),
+                        "answerData":NSNull()] as [String: Any]
+        
+        if let subQuestion = subQuestionModel{
+            let question2 = ["id": subQuestion.id,
+                             "parentQuestionId": subQuestion.parentQuestionId,
+                             "headerText": subQuestion.headerText,
+                             "questionSectionId": subQuestion.questionSectionId,
+                             "ownTypeId": subQuestion.ownTypeId,
+                             "firstName": subQuestion.firstName,
+                             "lastName": subQuestion.lastName,
+                             "question": subQuestion.question,
+                             "answer": subQuestion.answer,
+                             "answerDetail": subQuestion.answerDetail,
+                             "selectionOptionId": NSNull(),
+                             "answerData": NSNull()] as [String: Any]
+            
+            self.delegate?.getQuestionModel(question: question, subQuestions: question2)
+        }
+    }
+}
+
+extension UndisclosedBorrowerFundsViewController: UndisclosedBorrowerFundsFollowupQuestionsViewControllerDelegate{
+    func saveUndisclosedFollowupQuestion(question: GovernmentQuestionModel) {
+        subQuestionModel = question
+        questionModel.answer = "Yes"
+        changeStatus()
     }
 }

@@ -13,7 +13,6 @@ class GovernmentQuestionsViewController: BaseViewController {
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var tabView: UIView!
-    @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var loanApplicationId = 0
     var borrowersArray = [BorrowerInfoModel]()
@@ -21,8 +20,6 @@ class GovernmentQuestionsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
-        NotificationCenter.default.addObserver(self, selector: #selector(showSaveButton), name: NSNotification.Name(rawValue: kNotificationShowSaveButtonOnGovernmentScreen), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideSaveButton), name: NSNotification.Name(rawValue: kNotificationHideSaveButtonOnGovernmentScreen), object: nil)
     }
     
     //MARK:- Methods and Actions
@@ -65,21 +62,10 @@ class GovernmentQuestionsViewController: BaseViewController {
         }
     }
     
-    @objc func showSaveButton(){
-        btnSaveChanges.isHidden = false
-    }
-    
-    @objc func hideSaveButton(){
-        btnSaveChanges.isHidden = true
-    }
-    
     @IBAction func btnBackTapped(_ sender: UIButton){
         self.goBack()
     }
 
-    @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        self.goBack()
-    }
 }
 
 extension GovernmentQuestionsViewController: CarbonTabSwipeNavigationDelegate{

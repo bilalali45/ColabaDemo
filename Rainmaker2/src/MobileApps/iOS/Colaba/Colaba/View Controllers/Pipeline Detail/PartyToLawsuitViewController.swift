@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PartyToLawsuitViewControllerDelegate: AnyObject {
+    func getPartyToLawsuitQuestionModel(question: [String: Any])
+}
+
 class PartyToLawsuitViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class PartyToLawsuitViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: PartyToLawsuitViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

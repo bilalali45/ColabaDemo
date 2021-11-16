@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol DebtCoSignerViewControllerDelegate: AnyObject {
+    func getDebtCoQuestionModel(question: [String: Any])
+}
+
 class DebtCoSignerViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class DebtCoSignerViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: DebtCoSignerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

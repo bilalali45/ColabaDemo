@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol OutstandingJudgementsViewControllerDelegate: AnyObject {
+    func getOutstandingJudgementQuestionModel(question: [String: Any])
+}
+
 class OutstandingJudgementsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class OutstandingJudgementsViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: OutstandingJudgementsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

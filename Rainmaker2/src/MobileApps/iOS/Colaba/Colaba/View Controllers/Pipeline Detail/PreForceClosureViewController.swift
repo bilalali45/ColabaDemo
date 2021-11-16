@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PreForceClosureViewControllerDelegate: AnyObject {
+    func getPreForceClosureQuestionModel(question: [String: Any])
+}
+
 class PreForceClosureViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class PreForceClosureViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: PreForceClosureViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

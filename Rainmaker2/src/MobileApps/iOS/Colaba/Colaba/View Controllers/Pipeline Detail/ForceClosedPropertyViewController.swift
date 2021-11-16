@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ForceClosedPropertyViewControllerDelegate: AnyObject {
+    func getForceClosedPropertyQuestionModel(question: [String: Any])
+}
+
 class ForceClosedPropertyViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class ForceClosedPropertyViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: ForceClosedPropertyViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

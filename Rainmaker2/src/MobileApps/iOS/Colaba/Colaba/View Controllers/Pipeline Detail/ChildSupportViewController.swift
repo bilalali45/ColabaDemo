@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ChildSupportViewControllerDelegate: AnyObject {
+    func getChildSupportQuestionModel(question: [String: Any])
+}
+
 class ChildSupportViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -30,6 +34,7 @@ class ChildSupportViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: ChildSupportViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

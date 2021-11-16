@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TitleConveyanceViewControllerDelegate: AnyObject {
+    func getTitleQuestionModel(question: [String: Any])
+}
+
 class TitleConveyanceViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class TitleConveyanceViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: TitleConveyanceViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

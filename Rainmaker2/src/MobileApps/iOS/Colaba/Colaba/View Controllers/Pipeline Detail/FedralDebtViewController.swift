@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol FedralDebtViewControllerDelegate: AnyObject {
+    func getFedralDebtQuestionModel(question: [String: Any])
+}
+
 class FedralDebtViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -24,6 +28,7 @@ class FedralDebtViewController: BaseViewController {
     
     var isYes: Bool?
     var questionModel = GovernmentQuestionModel()
+    weak var delegate: FedralDebtViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

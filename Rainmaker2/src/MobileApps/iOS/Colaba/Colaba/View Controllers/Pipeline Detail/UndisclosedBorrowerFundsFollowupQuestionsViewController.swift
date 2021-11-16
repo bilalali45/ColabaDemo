@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol UndisclosedBorrowerFundsFollowupQuestionsViewControllerDelegate: AnyObject {
+    func saveUndisclosedFollowupQuestion(question: GovernmentQuestionModel)
+}
+
 class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -28,6 +32,7 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
     
     var questionModel: GovernmentQuestionModel?
     var borrowerName = ""
+    weak var delegate: UndisclosedBorrowerFundsFollowupQuestionsViewControllerDelegate?
     
     init(validation: Validation) {
         self.validation = validation
@@ -128,10 +133,18 @@ class UndisclosedBorrowerFundsFollowupQuestionsViewController: BaseViewControlle
         }
         
         if validate(){
-            self.dismissVC()
+            saveQuestion()
         }
     }
     
+    func saveQuestion(){
+        if let quesion = questionModel{
+            quesion.answer = cleanString(string: txtfieldAmountBorrowed.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")
+            quesion.answerDetail = txtViewDetail.textView.text!
+            self.delegate?.saveUndisclosedFollowupQuestion(question: quesion)
+            self.dismissVC()
+        }
+    }
 }
 
 extension UndisclosedBorrowerFundsFollowupQuestionsViewController: UITextViewDelegate{
