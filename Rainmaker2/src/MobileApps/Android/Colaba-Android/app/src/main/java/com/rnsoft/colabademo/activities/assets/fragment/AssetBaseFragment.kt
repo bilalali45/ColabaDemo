@@ -51,8 +51,6 @@ open class AssetBaseFragment:BaseFragment() {
 
     }
 
-
-
     private val navigateToBank =  R.id.action_assets_bank_account //View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
     private val navigateToRetirement = R.id.action_assets_retirement  //View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
     private val navigateToStockBonds =  R.id.action_assets_stocks_bond  // View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }

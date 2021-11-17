@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
@@ -21,11 +19,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.proceed_from_trans_layout.*
 import timber.log.Timber
 import java.util.ArrayList
-import javax.inject.Inject
 
 
-    @AndroidEntryPoint
-    class ProceedFromTransactionFragment : BaseFragment() {
+
+    class ProceedFromTransactionFragment : AssetAddUpdateBaseFragment() {
 
         private var _binding: ProceedFromTransLayoutBinding? = null
         private val binding get() = _binding!!
@@ -36,22 +33,8 @@ import javax.inject.Inject
         private val financialArray: ArrayList<String> = arrayListOf("House", "Automobile", "Financial Account", "Other")
         private lateinit var financialAdapter : ArrayAdapter<String>
 
-        private var dropDownList: ArrayList<DropDownResponse> = arrayListOf()
-
-        private val viewModel: AssetViewModel by activityViewModels()
-
-        private var loanApplicationId:Int? = null
-        private var loanPurpose:String? = null
-        private var borrowerId:Int? = null
-        private var borrowerAssetId:Int = -1
-        private var assetCategoryId:Int = 6
-        private var assetTypeID:Int? = null
-        private var id:Int? = null
-
         private var categoryList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
-        @Inject
-        lateinit var sharedPreferences: SharedPreferences
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
             _binding = ProceedFromTransLayoutBinding.inflate(inflater, container, false)
             val root: View = binding.root
@@ -64,6 +47,10 @@ import javax.inject.Inject
                 borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
                 assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 6)
                 assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            }
+            if(borrowerAssetId>0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
             }
             getTransactionCategories()
             return root
@@ -295,7 +282,7 @@ import javax.inject.Inject
 
 
         private fun addUpdateProceedFromLoan(assetTypeId:Int){
-            observeDataUploaded()
+            observeAddUpdateResponse()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     var paramBorrowerAssetId:Int? = null
@@ -352,7 +339,7 @@ import javax.inject.Inject
         }
 
         private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
-            observeDataUploaded()
+            observeAddUpdateResponse()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     loanApplicationId?.let { notNullLoanApplicationId ->
@@ -375,22 +362,6 @@ import javax.inject.Inject
                 }
             }
         }
-
-        private fun observeDataUploaded(){
-            viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                if(genericAddUpdateAssetResponse.status == "OK"){
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
-                    if(codeString == "200"){
-                        lifecycleScope.launchWhenStarted {
-                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                                findNavController().popBackStack()
-                            }
-                        }
-                    }
-                }
-            })
-        }
-
 
         private fun clearFocusFromFields(){
             binding.annualBaseLayout.clearFocus()

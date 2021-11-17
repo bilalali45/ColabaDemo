@@ -8,13 +8,14 @@ data class AddCurrentEmploymentModel(
     val borrowerId: Int?,
     val employerAddress: AddressData?,
     val employmentInfo: EmploymentInfo?,
-    val employmentOtherIncome: List<AddEmploymentOtherIncome>?,
+    val employmentOtherIncomes: List<EmploymentOtherIncomes>?,
     val wayOfIncome: WayOfIncome?
 )
 
-data class AddEmploymentOtherIncome(
+data class EmploymentOtherIncomes(
     val incomeTypeId: Int?,
     val annualIncome: Double?
 )
+
 
 

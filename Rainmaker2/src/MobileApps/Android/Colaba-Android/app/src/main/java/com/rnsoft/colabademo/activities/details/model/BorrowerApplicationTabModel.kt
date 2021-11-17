@@ -97,7 +97,8 @@ data class RealStateOwn(
     val propertyInfoId: Int,
     val propertyTypeId: Int,
     val propertyTypeName: String,
-    val isFooter:Boolean = false
+    val isFooter:Boolean = false,
+    val borrowerPropertyId: Int
 )
 
 data class RealStateAddress(

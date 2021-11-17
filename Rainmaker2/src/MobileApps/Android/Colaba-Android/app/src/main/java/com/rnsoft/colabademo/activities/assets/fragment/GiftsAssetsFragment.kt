@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
-import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,46 +10,33 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class GiftsAssetsFragment:BaseFragment() {
+class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private var loanApplicationId:Int? = null
-    private var loanPurpose:String? = null
-    private var borrowerId:Int? = null
-    private var borrowerAssetId:Int = -1
-    private var assetCategoryId:Int = 4
-    private var assetTypeID:Int? = null
-    private var id:Int? = null
 
-    private val GIFT_OF_EQUITY = "Gift Of Equity"
-    private val GRANT = "Grant"
-    private val CASH_GIFT = "Cash Gift"
+    private val giftOfEquity = "Gift Of Equity"
+    private val grant = "Grant"
+    //private val CASH_GIFT = "Cash Gift"
 
-    private val viewModel: AssetViewModel by activityViewModels()
+
 
     private var dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
     private lateinit var giftAdapter:ArrayAdapter<String>
     private var giftResources: ArrayList<GiftSourcesResponse> = arrayListOf()
     private var giftAssetList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = GiftsAssetLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -66,8 +52,14 @@ class GiftsAssetsFragment:BaseFragment() {
             observeGiftData()
             getGiftCategory()
         }
+        if(borrowerAssetId>0) {
+            binding.topDelImageview.visibility = View.VISIBLE
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+        }
         return root
     }
+
+
 
     private fun getGiftCategory() {
         lifecycleScope.launchWhenStarted {
@@ -120,10 +112,13 @@ class GiftsAssetsFragment:BaseFragment() {
                                 giftAssetData.valueDate?.let { valueDate ->
                                     binding.layoutTransferDate.visibility = View.VISIBLE
                                     val newDate = valueDate.substring(0, valueDate.indexOf("T"))
-                                    val initDate: Date? = SimpleDateFormat("yyyy-MM-dd").parse(newDate)
-                                    val formatter = SimpleDateFormat("MM-dd-yyyy")
-                                    val parsedDate: String = formatter.format(initDate)
-                                    binding.dateOfTransferEditText.setText(parsedDate)
+                                    val initDate: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(newDate)
+                                    val formatter = SimpleDateFormat("MM-dd-yyyy" , Locale.US)
+                                    initDate?.let { notNullInitDate ->
+                                        val parsedDate: String = formatter.format(notNullInitDate)
+                                        binding.dateOfTransferEditText.setText(parsedDate)
+                                    }
+
                                 }
                                 binding.yesDeposited.isChecked = true
                             } else {
@@ -139,12 +134,12 @@ class GiftsAssetsFragment:BaseFragment() {
                                 else
                                 if(item.id == 26 && item.id == assetTypeId) {
                                     binding.giftOfEquity.isChecked = true
-                                    binding.giftOfEquity.text = GIFT_OF_EQUITY
+                                    binding.giftOfEquity.text = giftOfEquity
                                 }
                                 else
                                 if(item.id == 11 && item.id == assetTypeId) {
                                     binding.giftOfEquity.isChecked = true
-                                    binding.giftOfEquity.text = GRANT
+                                    binding.giftOfEquity.text = grant
                                 }
                             }
                         }
@@ -187,8 +182,8 @@ class GiftsAssetsFragment:BaseFragment() {
             binding.giftSourceAutoCompeleteView.showDropDown()
         }
 
-        binding.giftSourceAutoCompeleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+        binding.giftSourceAutoCompeleteView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
                 binding.giftSourceInputLayout.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
                 binding.giftSourceInputLayout.helperText?.let{
@@ -202,36 +197,34 @@ class GiftsAssetsFragment:BaseFragment() {
                 clearFocusFromFields()
 
                 if(position <=1) {
-                    binding.giftOfEquity.text = GRANT
-                }
-                else{
-                    binding.giftOfEquity.text = GIFT_OF_EQUITY
+                    binding.giftOfEquity.text = grant
+                } else{
+                    binding.giftOfEquity.text = giftOfEquity
                 }
             }
-        }
         //set prefix and format
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
         binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
 
 
-        binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
+        binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.cash_gift -> {
-                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE
-                    binding.giftDepositGroup.setOnCheckedChangeListener (null);
+                    binding.giftDepositGroup.setOnCheckedChangeListener(null)
                     binding.giftDepositGroup.clearCheck()
                     binding.giftDepositGroup.setOnCheckedChangeListener(onGiftDateCheckListener)
                     binding.giftTransferConstraintlayout.visibility = View.VISIBLE
                     binding.annualBaseLayout.hint = "Cash Value"
                 }
                 R.id.gift_of_equity -> {
-                    HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
+                    HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE
-                    binding.giftDepositGroup.setOnCheckedChangeListener (null);
+                    binding.giftDepositGroup.setOnCheckedChangeListener(null)
                     binding.giftDepositGroup.clearCheck()
                     binding.giftDepositGroup.setOnCheckedChangeListener(onGiftDateCheckListener)
                     binding.giftTransferConstraintlayout.visibility = View.GONE
@@ -240,7 +233,7 @@ class GiftsAssetsFragment:BaseFragment() {
                 else -> {
                 }
             }
-        })
+        }
 
         binding.dateOfTransferEditText.showSoftInputOnFocus = false
         binding.dateOfTransferEditText.setOnClickListener { openCalendar() }
@@ -273,9 +266,9 @@ class GiftsAssetsFragment:BaseFragment() {
                     for(item in giftAssetList){
                         if(binding.cashGift.isChecked && item.name ==binding.cashGift.text.toString() )
                             assetTypeId = item.id
-                        if(binding.giftOfEquity.isChecked && item.name.equals(GIFT_OF_EQUITY, true) )
+                        if(binding.giftOfEquity.isChecked && item.name.equals(giftOfEquity, true) )
                             assetTypeId = item.id
-                        if(binding.giftOfEquity.isChecked && item.name.equals(GRANT, true) )
+                        if(binding.giftOfEquity.isChecked && item.name.equals(grant, true) )
                             assetTypeId = item.id
                     }
 
@@ -288,10 +281,10 @@ class GiftsAssetsFragment:BaseFragment() {
                             loanApplicationId?.let { notNullLoanApplicationId ->
                                 borrowerId?.let { notNullBorrowerId ->
 
-                                    var IsDeposited:Boolean? = null
-                                    if(binding.yesDeposited.isChecked) IsDeposited = true
+                                    var isDeposited:Boolean? = null
+                                    if(binding.yesDeposited.isChecked) isDeposited = true
                                     else
-                                        if(binding.noDeposited.isChecked) IsDeposited = false
+                                        if(binding.noDeposited.isChecked) isDeposited = false
 
                                     val giftAddUpdateParams =
                                         GiftAddUpdateParams(
@@ -301,7 +294,7 @@ class GiftsAssetsFragment:BaseFragment() {
                                             Description = null,
                                             AssetTypeId = assetTypeId,
                                             Id = id,
-                                            IsDeposited = IsDeposited,
+                                            IsDeposited = isDeposited,
                                             Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                             valueDate = binding.dateOfTransferEditText.text.toString()
                                         )
@@ -315,24 +308,12 @@ class GiftsAssetsFragment:BaseFragment() {
             }
         }
 
-        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-            if(genericAddUpdateAssetResponse.status == "OK"){
-                val codeString = genericAddUpdateAssetResponse.code.toString()
-                if(codeString == "200"){
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            viewModel.setGiftDetailToNull()
-                            findNavController().popBackStack()
-                        }
-                    }
-                }
-            }
-        })
+        observeAddUpdateResponse()
     }
 
 
     private val onGiftDateCheckListener =
-        RadioGroup.OnCheckedChangeListener { p0, checkedId ->
+        RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.yes_deposited -> {
                     HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
@@ -395,19 +376,15 @@ class GiftsAssetsFragment:BaseFragment() {
     }
 
     private  fun addFocusOutListenerToFields() {
-        binding.annualBaseEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.annualBaseEditText,
-                binding.annualBaseLayout,
-                requireContext()
-            )
+        binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText(
+            binding.annualBaseEditText,
+            binding.annualBaseLayout,
+            requireContext()
         )
-        binding.dateOfTransferEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.dateOfTransferEditText,
-                binding.layoutTransferDate,
-                requireContext()
-            )
+        binding.dateOfTransferEditText.onFocusChangeListener = CustomFocusListenerForEditText(
+            binding.dateOfTransferEditText,
+            binding.layoutTransferDate,
+            requireContext()
         )
 
 
@@ -419,9 +396,13 @@ class GiftsAssetsFragment:BaseFragment() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val newMonth = month + 1
-        //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
 
-        val dpd = DatePickerDialog(requireActivity(), { view, year, monthOfYear, dayOfMonth -> binding.dateOfTransferEditText.setText("" + newMonth + "-" + dayOfMonth + "-" + year) }, year, month, day)
+
+
+        val dpd = DatePickerDialog(requireActivity(), { _, year, _, dayOfMonth ->
+            val dateOfTransferString = "$newMonth-$dayOfMonth-$year"
+            binding.dateOfTransferEditText.setText(dateOfTransferString)
+                                                      }, year, month, day)
 
         dpd.show()
 

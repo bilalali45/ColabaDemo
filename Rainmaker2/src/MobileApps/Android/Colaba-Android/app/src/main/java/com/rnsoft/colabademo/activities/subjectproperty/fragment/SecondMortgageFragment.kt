@@ -25,6 +25,7 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
     private lateinit var binding : SubPropertySecondMortgageBinding
     private var list : ArrayList<SecondMortgageModel> = ArrayList()
     private val viewModel : SubjectPropertyViewModel by activityViewModels()
+    var secondMortgageModel = SecondMortgageModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -147,7 +148,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-
     private fun saveData() {
 
         // first mortgage
@@ -173,7 +173,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         findNavController().popBackStack()
 
     }
-
 
     private fun setInputFields(){
 

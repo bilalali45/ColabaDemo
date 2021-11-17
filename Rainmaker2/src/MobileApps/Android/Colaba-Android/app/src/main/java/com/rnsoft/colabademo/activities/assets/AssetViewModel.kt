@@ -263,6 +263,22 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
 
 
 
+    suspend fun deleteAsset(token: String, assetId:Int, borrowerId:Int, loanApplicationId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = assetsRepo.deleteAsset(token = token, assetId = assetId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _genericAddUpdateAssetResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+
+
 
 
     suspend fun getRetirementAccountDetails(token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId:Int) {

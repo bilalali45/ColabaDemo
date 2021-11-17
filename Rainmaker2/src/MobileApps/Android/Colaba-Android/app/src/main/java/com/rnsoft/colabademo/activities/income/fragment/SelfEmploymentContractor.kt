@@ -19,6 +19,8 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -50,13 +52,19 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         // set Header title
         toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
 
+        Log.e("incomeId", ""+incomeInfoId)
+
         arguments?.let { arguments ->
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            incomeInfoId = arguments.getInt(AppConstant.incomeId)
-            //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-            //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            arguments.getInt(AppConstant.incomeId).let {
+                if(it > 0)
+                incomeInfoId = it
+            }
         }
+
+        Log.e("Self Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
             AppConstant.address)?.observe(viewLifecycleOwner) { result ->
@@ -70,7 +78,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         return binding.root
     }
 
-    private fun initViews() {
+    private fun initViews(){
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutBusinessCont.setOnClickListener(this)
@@ -83,53 +91,57 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private fun getData(){
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                //if (borrowerId != null && incomeInfoId != null) {
-                binding.loaderSelfEmployment.visibility = View.VISIBLE
-                viewModel.getSelfEmploymentDetail(authToken, 5, 2)
-                //}
+                if (borrowerId != null && incomeInfoId != null && incomeInfoId !=null) {
+                    binding.loaderSelfEmployment.visibility = View.VISIBLE
+                    viewModel.getSelfEmploymentDetail(authToken, borrowerId!!, incomeInfoId!!)
+
+                    viewModel.selfEmploymentDetail.observe(viewLifecycleOwner, { data ->
+                        data?.selfEmploymentData?.let { info ->
+                            info.businessName?.let {
+                                binding.editTextBusinessName.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
+                            }
+                            info.businessPhone?.let {
+                                binding.editTextBusPhnum.setText(it)
+                                CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
+                            }
+                            info.startDate?.let {
+                                binding.editTextBstartDate.setText(AppSetting.getFullDate1(it))
+                            }
+                            info.jobTitle?.let {
+                                binding.edJobTitle.setText(it)
+                                CustomMaterialFields.setColor(
+                                    binding.layoutJobTitle,
+                                    R.color.grey_color_two,
+                                    requireContext()
+                                )
+                            }
+                            info.annualIncome?.let {
+                                binding.edNetIncome.setText(Math.round(it).toString())
+                                CustomMaterialFields.setColor(
+                                    binding.layoutNetIncome,
+                                    R.color.grey_color_two,
+                                    requireContext()
+                                )
+                            }
+
+                            info.businessAddress?.let {
+                                val builder = StringBuilder()
+                                it.street?.let { builder.append(it).append(" ") }
+                                it.unit?.let { builder.append(it) }
+                                it.city?.let { builder.append("\n").append(it).append(" ") }
+                                it.stateName?.let { builder.append(it).append(" ") }
+                                it.zipCode?.let { builder.append(it) }
+                                it.countryName.let { builder.append(" ").append(it) }
+                                binding.textviewBusinessAddress.text = builder
+                            }
+                        }
+                        binding.loaderSelfEmployment.visibility = View.GONE
+                    })
+                }
+
             }
         }
-
-        viewModel.selfEmploymentDetail.observe(viewLifecycleOwner, { data ->
-            data?.selfEmploymentData?.let { info ->
-                info.businessName?.let {
-                    binding.editTextBusinessName.setText(it)
-                    CustomMaterialFields.setColor(binding.layoutBusinessName, R.color.grey_color_two, requireContext())
-                }
-                info.businessPhone?.let {
-                    binding.editTextBusPhnum.setText(it)
-                    CustomMaterialFields.setColor(binding.layoutBusPhnum, R.color.grey_color_two, requireContext())
-                }
-                info.startDate?.let {
-                    binding.editTextBstartDate.setText(AppSetting.getFullDate1(it))
-                }
-                info.jobTitle?.let {
-                    binding.edJobTitle.setText(it)
-                    CustomMaterialFields.setColor(
-                        binding.layoutJobTitle,
-                        R.color.grey_color_two,
-                        requireContext()
-                    )
-                }
-                info.annualIncome?.let {
-                    binding.edNetIncome.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(binding.layoutNetIncome, R.color.grey_color_two, requireContext())
-                }
-
-                info.businessAddress?.let {
-                    val builder = StringBuilder()
-                    it.street?.let { builder.append(it).append(" ") }
-                    it.unit?.let { builder.append(it)}
-                    it.city?.let {builder.append("\n").append(it).append(" ") }
-                    it.stateName?.let{ builder.append(it).append(" ")}
-                    it.zipCode?.let { builder.append(it)}
-                    it.countryName.let { builder.append(" ").append(it)}
-                    binding.textviewBusinessAddress.text = builder
-                }
-            }
-            binding.loaderSelfEmployment.visibility = View.GONE
-        })
-
     }
 
     private fun openAddressFragment(){
@@ -228,7 +240,13 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.sendSelfEmploymentData(authToken,selfEmploymentData)
+                    if(loanApplicationId != null && borrowerId !=null) {
+                        Log.e("Loan Application Id", "" + loanApplicationId + " borrowerId:  " + borrowerId + " income:  " + incomeInfoId)
+                        Log.e("selfEmployment-snding to API", "" + selfEmploymentData)
+
+                        binding.loaderSelfEmployment.visibility = View.VISIBLE
+                        viewModel.sendSelfEmploymentData(authToken, selfEmploymentData)
+                    }
                 }
             }
         }
@@ -244,7 +262,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         it.countryName?.let { builder.append(" ").append(it)}
         binding.textviewBusinessAddress.text = builder
     }
-
 
     private fun openCalendar() {
         val c = Calendar.getInstance()
@@ -278,5 +295,31 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             EventBus.getDefault().post(AddressUpdateEvent(it))
         })
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            binding.loaderSelfEmployment.visibility = View.GONE
+        }
+
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+
+        else
+            if(event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        findNavController().popBackStack()
     }
 }

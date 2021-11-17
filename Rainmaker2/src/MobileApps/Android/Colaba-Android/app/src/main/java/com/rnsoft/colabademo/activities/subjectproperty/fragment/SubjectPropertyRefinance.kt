@@ -592,7 +592,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         viewModelSubProperty.updatedRefinanceAddress.observe(viewLifecycleOwner, {
             it?.let {
                 refinanceAddressData = it
-
                // binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
                 val builder = StringBuilder()
                 it.street?.let { builder.append(it).append(" ") }
@@ -628,7 +627,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     binding.firstMortgageBalance.setText("$0")
                 }
                 firstMortgageModel = it
-                Log.e("onResume", "First: --"+firstMortgageModel)
+                //Log.e("onResume", "First: --"+firstMortgageModel)
             }
            })
 
@@ -711,7 +710,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     override fun onCoborrowerClick(position: Int, isOccupying: Boolean) {
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                Log.e("frag-Refinance", ""+ coborrowerList.get(position).borrowerId + " Occupying: " + isOccupying)
+                //Log.e("frag-Refinance", ""+ coborrowerList.get(position).borrowerId + " Occupying: " + isOccupying)
                 val data = AddCoBorrowerOccupancy(coborrowerList.get(position).borrowerId,isOccupying)
                 viewModelSubProperty.sendCoBorrowerOccupancy(authToken,data)
             }

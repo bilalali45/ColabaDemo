@@ -30,8 +30,10 @@ data class RealEstateData(
     val propertyTypeId: Int?,
     val propertyValue: Double?,
     val rentalIncome: Double?,
-    val secondMortgageBalance: Double?,
-    val secondMortgagePayment: Double?
+    //val secondMortgageBalance: Double?,
+    //val secondMortgagePayment: Double?
+    var firstMortgageModel : FirstMortgageModel?,
+    var secondMortgageModel : SecondMortgageModel?,
 )
 
 @Parcelize

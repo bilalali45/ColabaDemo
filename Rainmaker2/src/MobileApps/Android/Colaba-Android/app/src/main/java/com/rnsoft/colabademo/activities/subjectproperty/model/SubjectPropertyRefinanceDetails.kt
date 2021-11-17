@@ -74,5 +74,6 @@ data class SecondMortgageModel(
     var helocCreditLimit : Double?=null,
     var isHeloc: Boolean?=null,
     var combineWithNewFirstMortgage : Boolean? = null,
-    var wasSmTaken: Boolean? = null
+    var wasSmTaken: Boolean? = null,
+    var paidAtClosing : Boolean? = null
 ) : Parcelable

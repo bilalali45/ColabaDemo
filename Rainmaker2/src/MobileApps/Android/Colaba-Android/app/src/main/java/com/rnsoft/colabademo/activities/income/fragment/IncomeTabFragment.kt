@@ -66,8 +66,7 @@ class IncomeTabFragment : BaseFragment() {
 
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
-                pageAdapter =
-                    IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
+                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
                 viewPager.adapter = pageAdapter
                 viewPager.setPageTransformer(null)
                 viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {

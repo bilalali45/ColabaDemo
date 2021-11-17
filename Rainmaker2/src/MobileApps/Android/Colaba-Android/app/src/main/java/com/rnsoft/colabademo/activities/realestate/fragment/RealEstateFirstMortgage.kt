@@ -28,7 +28,8 @@ import javax.inject.Inject
 class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
-    private val viewModel : RealEstateViewModel by activityViewModels()
+    //private val viewModel : RealEstateViewModel by activityViewModels()
+    var firstMortgageModel= FirstMortgageModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,85 +62,81 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
     }
 
     private fun getFirstMortgageDetails() {
-        viewModel.firstMortgageDetails.observe(viewLifecycleOwner, {
-            if (it != null) {
-                it.data?.firstMortgagePayment?.let {
-                    binding.edFirstMortgagePayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutFirstPayment,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
-                }
-                it.data?.unpaidFirstMortgagePayment?.let {
-                    binding.edUnpaidBalance.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutUnpaidBalance,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
-                }
-                it.data?.floodInsuranceIncludeinPayment?.let {
-                    if (it == true) {
-                        binding.cbFloodInsurance.isChecked = true
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.cbFloodInsurance.isChecked = false
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
-                    }
-                }
-                it.data?.propertyTaxesIncludeinPayment?.let {
-                    if (it == true) {
-                        binding.cbPropertyTaxes.isChecked = true
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.cbPropertyTaxes.isChecked = false
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
-                    }
-                }
-                it.data?.homeOwnerInsuranceIncludeinPayment?.let {
-                    if (it == true) {
-                        binding.cbHomeownwerInsurance.isChecked = true
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.cbHomeownwerInsurance.isChecked = false
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
-                    }
-                }
 
-                it.data?.isHeloc?.let {
-                    if (it == true) {
-                        binding.switchCreditLimit.isChecked = true
-                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.switchCreditLimit.isChecked = false
-                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                    }
-                }
-                it.data?.helocCreditLimit?.let {
-                    binding.edCreditLimit.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutCreditLimit,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
-                }
-                it.data?.paidAtClosing?.let {
-                    if (it == true) {
-                        binding.rbPaidClosingYes.isChecked = true
-                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.rbPaidClosingNo.isChecked = true
-                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                    }
-                }
+        firstMortgageModel = arguments?.getParcelable(AppConstant.firstMortgage)!!
+         firstMortgageModel?.let {
+             it.firstMortgagePayment?.let {
+                 binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                 CustomMaterialFields.setColor(
+                     binding.layoutFirstPayment,
+                     R.color.grey_color_two,
+                     requireActivity()
+                 )
+             }
+             it.unpaidFirstMortgagePayment?.let {
+                 binding.edUnpaidBalance.setText(Math.round(it).toString())
+                 CustomMaterialFields.setColor(
+                     binding.layoutUnpaidBalance,
+                     R.color.grey_color_two,
+                     requireActivity()
+                 )
+             }
+             it.floodInsuranceIncludeinPayment?.let {
+                 if (it == true) {
+                     binding.cbFloodInsurance.isChecked = true
+                     binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                 } else {
+                     binding.cbFloodInsurance.isChecked = false
+                     binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+                 }
+             }
+             it.propertyTaxesIncludeinPayment?.let {
+                 if (it == true) {
+                     binding.cbPropertyTaxes.isChecked = true
+                     binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                 } else {
+                     binding.cbPropertyTaxes.isChecked = false
+                     binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                 }
+             }
+             it.homeOwnerInsuranceIncludeinPayment?.let {
+                 if (it == true) {
+                     binding.cbHomeownwerInsurance.isChecked = true
+                     binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                 } else {
+                     binding.cbHomeownwerInsurance.isChecked = false
+                     binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                 }
+             }
 
-                if(it.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
-                    hideLoader()
-                }
-            }
-            hideLoader()
-        })
+             it.isHeloc?.let {
+                 if (it == true) {
+                     binding.switchCreditLimit.isChecked = true
+                     binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                 } else {
+                     binding.switchCreditLimit.isChecked = false
+                     binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                 }
+             }
+             it.helocCreditLimit?.let {
+                 binding.edCreditLimit.setText(Math.round(it).toString())
+                 CustomMaterialFields.setColor(
+                     binding.layoutCreditLimit,
+                     R.color.grey_color_two,
+                     requireActivity()
+                 )
+             }
+             it.paidAtClosing?.let {
+                 if (it == true) {
+                     binding.rbPaidClosingYes.isChecked = true
+                     binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                 } else {
+                     binding.rbPaidClosingNo.isChecked = true
+                     binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                 }
+             }
+         }
+
 
     }
 

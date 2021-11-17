@@ -54,4 +54,8 @@ class RealEstateRepo @Inject constructor(private val dataSource: RealEstateDataS
     suspend fun getStates(token:String): Result<ArrayList<StatesModel>> {
         return dataSource.getStates(token = token)
     }
+
+    suspend fun sendRealEstateDetails(token: String, data: RealEstateData): Result<AddUpdateDataResponse> {
+        return dataSource.sendRealEstateDetails(token,data)
+    }
 }
