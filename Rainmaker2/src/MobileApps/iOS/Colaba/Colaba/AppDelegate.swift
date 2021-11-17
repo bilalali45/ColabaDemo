@@ -90,27 +90,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func showInitialViewController(){
             
-//        var isAlreadyRegisteredWithBiometric = ""
-//        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
-//            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
-//        }
-//
-//        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
-//            if (Utility.checkDeviceAuthType() == kTouchID){
-//                loadFingerPrintViewController()
-//            }
-//            else if (Utility.checkDeviceAuthType() == kFaceID){
-//                loadFaceLockViewController()
-//            }
-//            else{
-//                loadLoginViewController()
-//            }
-//        }
-//        else{
-//            loadLoginViewController()
-//        }
-        self.loadBorrowerInfoController()
-        self.window?.makeKeyAndVisible()
+        var isAlreadyRegisteredWithBiometric = ""
+        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+        }
+
+        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+            if (Utility.checkDeviceAuthType() == kTouchID){
+                loadFingerPrintViewController()
+            }
+            else if (Utility.checkDeviceAuthType() == kFaceID){
+                loadFaceLockViewController()
+            }
+            else{
+                loadLoginViewController()
+            }
+        }
+        else{
+            loadLoginViewController()
+        }
+//        self.loadBorrowerInfoController()
+//        self.window?.makeKeyAndVisible()
     }
 
     func loadDashboardViewController(){
@@ -124,8 +124,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = vc
         
         let vc = Utility.getLoanDetailVC()
-        vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
-        vc.borrowerName = "Farhan Qadir"//"flow check"//"Quentin Finley"//"flow check"
+        vc.loanApplicationId = 1108//1042    //1009 for Refinance with co borrower
+        vc.borrowerName = "Mark Stephen"//"flow check"//"Quentin Finley"//"flow check"
         vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
         vc.phoneNumber = ""
         vc.email = ""
