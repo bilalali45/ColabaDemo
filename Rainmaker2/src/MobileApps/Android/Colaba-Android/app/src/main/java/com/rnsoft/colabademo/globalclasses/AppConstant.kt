@@ -55,6 +55,8 @@ object AppConstant {
 
 
         const val borrowerId:String = "borrowerId"
+        const val propertyInfoId:String = "propertyInfoId"
+
 
         const val borrowerAssetId:String = "borrowerAssetId"
 
@@ -148,6 +150,7 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val income_delete_text: String = "Are you sure you want to remove this income source?"
         const val MIXED_USE_PROPERTY_DESC: String = "mixed_property_explaination"
         const val TOOLBAR_TITLE: String = "toolbar_title"
         const val RESERVE_ACTIVATED: String = "reserve_activated"

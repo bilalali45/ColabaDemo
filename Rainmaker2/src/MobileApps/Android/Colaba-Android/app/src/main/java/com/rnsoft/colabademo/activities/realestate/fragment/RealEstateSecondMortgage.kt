@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.RealEstateSecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -100,6 +101,41 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
             }
 
     }
+
+    private fun saveData() {
+
+        // first mortgage
+        val secMortgagePayment = binding.edSecMortgagePayment.text.toString().trim()
+        var newSecMortgagePayment = if(secMortgagePayment.length > 0) secMortgagePayment.replace(",".toRegex(), "") else null
+
+        // second mortgage
+        val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+
+        val creditLimit = binding.edCreditLimit.text.toString().trim()
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+
+        val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
+        var isCombinedWithFirstMortgage : Boolean? = null
+
+        if(binding.rbPaidClosingYes.isChecked)
+            isCombinedWithFirstMortgage = true
+
+        if(binding.rbPaidClosingNo.isChecked)
+            isCombinedWithFirstMortgage = false
+
+        //val isMortgageTaken = if(binding.rbQuesTwoYes.isChecked) true else false
+
+        val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment?.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance?.toDouble(),
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = null)
+
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.secMortgage,secMortgageDetail)
+        findNavController().popBackStack()
+
+
+
+    }
+
 
     override fun onClick(view: View?) {
         when (view?.getId()) {

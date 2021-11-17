@@ -13,9 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeCurrentEmploymentBinding
+import com.rnsoft.colabademo.databinding.IncomeRetirementLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -44,17 +46,19 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     private var loanApplicationId: Int? = null
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
-    //var addressList :  ArrayList<AddressData> = ArrayList()
     private var employerAddress = AddressData()
-    //val otherIncomeList : ArrayList<EmploymentOtherIncome> = ArrayList()
     val incomeListForApi : ArrayList<EmploymentOtherIncomes> = ArrayList()
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = IncomeCurrentEmploymentBinding.inflate(inflater, container, false)
-        toolbar = binding.headerIncome
-        super.addListeners(binding.root)
-        // set Header title
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return if (savedViewInstance != null){
+            savedViewInstance
+        } else {
+            binding = IncomeCurrentEmploymentBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
+            toolbar = binding.headerIncome
+            super.addListeners(binding.root)
+            // set Header title
             toolbar.toolbarTitle.text = getString(R.string.current_employment)
             arguments?.let { arguments ->
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
@@ -64,163 +68,192 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
             }
 
-        Log.e("Current Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+            Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
-        binding.textviewCurrentEmployerAddress.setText("sample")
-
-        initViews()
-        setInputFields()
-        getEmploymentData()
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(
-            viewLifecycleOwner) { result ->
-            employerAddress = result
-            Log.e("updated-Address",""+ result)
-            binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
-            //displayAddress(result)
-        }
-
-         return binding.root
-    }
-
-    private fun getEmploymentData(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && borrowerId!=null && incomeInfoId!! > 0 ) {
-                    Log.e("getting-current-details", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
-                    binding.loaderEmployment.visibility = View.VISIBLE
-                    viewModel.getEmploymentDetail(authToken, loanApplicationId!!,borrowerId!!,incomeInfoId!!)
-
-                    viewModel.employmentDetail.observe(viewLifecycleOwner, { data ->
-
-                        data?.employmentData?.employmentInfo.let { info ->
-                            info?.employerName?.let {
-                                binding.editTextEmpName.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutEmpName, R.color.grey_color_two, requireContext())
-                            }
-                            info?.employerPhoneNumber?.let {
-                                binding.editTextEmpPhnum.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutEmpPhnum, R.color.grey_color_two, requireContext())
-                            }
-                            info?.jobTitle?.let {
-                                binding.editTextJobTitle.setText(it)
-                                CustomMaterialFields.setColor(binding.layoutJobTitle, R.color.grey_color_two, requireContext())
-                            }
-                            info?.startDate?.let {
-                                binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
-                            }
-                            info?.yearsInProfession?.let {
-                                binding.editTextProfYears.setText(it.toString())
-                                CustomMaterialFields.setColor(
-                                    binding.layoutYearsProfession,
-                                    R.color.grey_color_two,
-                                    requireContext()
-                                )
-                            }
-
-                            info?.employedByFamilyOrParty?.let {
-                                if (it == true)
-                                    binding.rbEmployedByFamilyYes.isChecked = true
-                                else {
-                                    binding.rbEmployedByFamilyNo.isChecked = true
-                                }
-                            }
-
-                            info?.hasOwnershipInterest?.let {
-                                if (it == true) {
-                                    binding.rbOwnershipYes.isChecked = true
-                                    binding.layoutOwnershipPercentage.visibility = View.VISIBLE
-                                    info.ownershipInterest?.let { percentage ->
-                                        binding.edOwnershipPercent.setText(Math.round(percentage).toString())
-                                        CustomMaterialFields.setColor(binding.layoutOwnershipPercentage, R.color.grey_color_two, requireContext())
-                                    }
-                                }
-                                    else {
-                                        binding.rbOwnershipNo.isChecked = true
-                                        binding.layoutOwnershipPercentage.visibility = View.GONE
-
-                                    }
-                            }
-
-                            data.employmentData?.employerAddress?.let {
-                                employerAddress = it
-                                displayAddress(it)
-                            }
-
-                            /*data?.employmentData?.employerAddress?.let {
-
-                                val builder = StringBuilder()
-                                it.street?.let { builder.append(it).append(" ") }
-                                it.unit?.let { builder.append(it)}
-                                it.city?.let {builder.append("\n").append(it).append(" ") }
-                                it.stateName?.let{ builder.append(it).append(" ")}
-                                it.zipCode?.let { builder.append(it)}
-                                it.countryName.let { builder.append(" ").append(it)}
-                                builder?.let{ text-> binding.textviewCurrentEmployerAddress.text = text }
-
-                                employerAddress = it
-                            } */
-
-                            data?.employmentData?.wayOfIncome?.let { salary ->
-                                salary.isPaidByMonthlySalary?.let {
-                                    if(it==true){
-                                        binding.paytypeSalary.isChecked = true
-                                        payTypeClicked()
-                                        salary.employerAnnualSalary?.let {
-                                            binding.edAnnualSalary.setText(Math.round(it).toString())
-                                            CustomMaterialFields.setColor(binding.layoutBaseSalary, R.color.grey_color_two, requireContext())
-                                        }
-                                    } else {
-                                        binding.paytypeHourly.isChecked = true
-                                        payTypeClicked()
-                                        salary.hourlyRate?.let {
-                                            binding.edHourlyRate.setText(Math.round(it).toString())
-                                            CustomMaterialFields.setColor(binding.layoutHourlyRate, R.color.grey_color_two, requireContext())
-                                        }
-                                        salary.hoursPerWeek?.let {
-                                            binding.editTextWeeklyHours.setText(it.toString())
-                                            CustomMaterialFields.setColor(binding.layoutWeeklyHours, R.color.grey_color_two, requireContext())
-                                        }
-                                    }
-                                }
-                            }
-
-                            data?.employmentData?.employmentOtherIncome?.let {
-                                for (i in 0 until it.size) {
-                                    // otherIncomeList.add(EmploymentOtherIncome(
-                                    //        it.get(i).incomeTypeId, // maintainging list for matching ids for sending data to api
-                                    //      it.get(i).name, it.get(i).displayName, it.get(i).annualIncome))
-
-                                    it.get(i).displayName?.let { name ->
-                                        if (name.equals(AppConstant.INCOME_BONUS, true)){
-                                            it.get(i).annualIncome?.let {
-                                                binding.editTextBonusIncome.setText(Math.round(it).toString())
-                                                binding.cbBonus.isChecked= true
-                                            }
-                                        }
-                                        if (name.equals(AppConstant.INCOME_COMMISSION, true)) {
-                                            it.get(i).annualIncome?.let {
-                                                binding.editTextCommission.setText(Math.round(it).toString())
-                                                binding.cbCommission.isChecked = true
-                                            }
-                                        }
-                                        if (name.equals(AppConstant.INCOME_OVERTIME, true)) {
-                                            it.get(i).annualIncome?.let {
-                                                binding.editTextOvertimeIncome.setText(Math.round(it).toString())
-                                                binding.cbOvertime.isChecked=true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        binding.loaderEmployment.visibility = View.GONE
-                    })
-
+            if (loanApplicationId != null && borrowerId != null) {
+                toolbar.btnTopDelete.visibility = View.VISIBLE
+                toolbar.btnTopDelete.setOnClickListener {
+                    DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(
+                        childFragmentManager,
+                        DeleteCurrentResidenceDialogFragment::class.java.canonicalName
+                    )
                 }
             }
+            if (incomeInfoId == null || incomeInfoId == 0) {
+                toolbar.btnTopDelete.visibility = View.GONE
+            }
+
+            initViews()
+            setInputFields()
+            getEmploymentData()
+
+            savedViewInstance
         }
+    }
+
+     private fun getEmploymentData(){
+         if (loanApplicationId != null && borrowerId!=null && incomeInfoId!! > 0) {
+
+             lifecycleScope.launchWhenStarted {
+                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                     //Log.e("getting-current-details", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+                     binding.loaderEmployment.visibility = View.VISIBLE
+                     viewModel.getEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
+                 }
+             }
+             viewModel.employmentDetail.observe(viewLifecycleOwner, { data ->
+
+                 data?.employmentData?.employmentInfo.let { info ->
+                     info?.employerName?.let {
+                         binding.editTextEmpName.setText(it)
+                         CustomMaterialFields.setColor(
+                             binding.layoutEmpName,
+                             R.color.grey_color_two,
+                             requireContext()
+                         )
+                     }
+                     info?.employerPhoneNumber?.let {
+                         binding.editTextEmpPhnum.setText(it)
+                         CustomMaterialFields.setColor(
+                             binding.layoutEmpPhnum,
+                             R.color.grey_color_two,
+                             requireContext()
+                         )
+                     }
+                     info?.jobTitle?.let {
+                         binding.editTextJobTitle.setText(it)
+                         CustomMaterialFields.setColor(
+                             binding.layoutJobTitle,
+                             R.color.grey_color_two,
+                             requireContext()
+                         )
+                     }
+                     info?.startDate?.let {
+                         binding.editTextStartDate.setText(AppSetting.getFullDate1(it))
+                     }
+                     info?.yearsInProfession?.let {
+                         binding.editTextProfYears.setText(it.toString())
+                         CustomMaterialFields.setColor(
+                             binding.layoutYearsProfession,
+                             R.color.grey_color_two,
+                             requireContext()
+                         )
+                     }
+
+                     info?.employedByFamilyOrParty?.let {
+                         if (it == true)
+                             binding.rbEmployedByFamilyYes.isChecked = true
+                         else {
+                             binding.rbEmployedByFamilyNo.isChecked = true
+                         }
+                     }
+
+                     info?.hasOwnershipInterest?.let {
+                         if (it == true) {
+                             binding.rbOwnershipYes.isChecked = true
+                             binding.layoutOwnershipPercentage.visibility = View.VISIBLE
+                             info.ownershipInterest?.let { percentage ->
+                                 binding.edOwnershipPercent.setText(
+                                     Math.round(percentage).toString()
+                                 )
+                                 CustomMaterialFields.setColor(
+                                     binding.layoutOwnershipPercentage,
+                                     R.color.grey_color_two,
+                                     requireContext()
+                                 )
+                             }
+                         } else {
+                             binding.rbOwnershipNo.isChecked = true
+                             binding.layoutOwnershipPercentage.visibility = View.GONE
+
+                         }
+                     }
+
+                     data.employmentData?.employerAddress?.let {
+                         employerAddress = it
+                         displayAddress(it)
+                         //binding.textviewCurrentEmployerAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                     }
+
+                     data?.employmentData?.wayOfIncome?.let { salary ->
+                         salary.isPaidByMonthlySalary?.let {
+                             if (it == true) {
+                                 binding.paytypeSalary.isChecked = true
+                                 payTypeClicked()
+                                 salary.employerAnnualSalary?.let {
+                                     binding.edAnnualSalary.setText(
+                                         Math.round(it).toString()
+                                     )
+                                     CustomMaterialFields.setColor(
+                                         binding.layoutBaseSalary,
+                                         R.color.grey_color_two,
+                                         requireContext()
+                                     )
+                                 }
+                             } else {
+                                 binding.paytypeHourly.isChecked = true
+                                 payTypeClicked()
+                                 salary.hourlyRate?.let {
+                                     binding.edHourlyRate.setText(Math.round(it).toString())
+                                     CustomMaterialFields.setColor(
+                                         binding.layoutHourlyRate,
+                                         R.color.grey_color_two,
+                                         requireContext()
+                                     )
+                                 }
+                                 salary.hoursPerWeek?.let {
+                                     binding.editTextWeeklyHours.setText(it.toString())
+                                     CustomMaterialFields.setColor(
+                                         binding.layoutWeeklyHours,
+                                         R.color.grey_color_two,
+                                         requireContext()
+                                     )
+                                 }
+                             }
+                         }
+                     }
+
+                     data?.employmentData?.employmentOtherIncome?.let {
+                         for (i in 0 until it.size) {
+                             // otherIncomeList.add(EmploymentOtherIncome(
+                             //        it.get(i).incomeTypeId, // maintainging list for matching ids for sending data to api
+                             //      it.get(i).name, it.get(i).displayName, it.get(i).annualIncome))
+
+                             it.get(i).displayName?.let { name ->
+                                 if (name.equals(AppConstant.INCOME_BONUS, true)) {
+                                     it.get(i).annualIncome?.let {
+                                         binding.editTextBonusIncome.setText(
+                                             Math.round(it).toString()
+                                         )
+                                         binding.cbBonus.isChecked = true
+                                     }
+                                 }
+                                 if (name.equals(AppConstant.INCOME_COMMISSION, true)) {
+                                     it.get(i).annualIncome?.let {
+                                         binding.editTextCommission.setText(
+                                             Math.round(it).toString()
+                                         )
+                                         binding.cbCommission.isChecked = true
+                                     }
+                                 }
+                                 if (name.equals(AppConstant.INCOME_OVERTIME, true)) {
+                                     it.get(i).annualIncome?.let {
+                                         binding.editTextOvertimeIncome.setText(
+                                             Math.round(
+                                                 it
+                                             ).toString()
+                                         )
+                                         binding.cbOvertime.isChecked = true
+                                     }
+                                 }
+                             }
+                         }
+                     }
+                 }
+
+                 binding.loaderEmployment.visibility = View.GONE
+             })
+         }
     }
 
     private fun processSendData(){
@@ -342,16 +375,21 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         findNavController().navigate(R.id.action_current_employment_address, addressFragment.arguments)
     }
 
-    private fun displayAddress(it: AddressData){
+    private fun displayAddress(it: AddressData) {
+        Log.e("displayAddress", ""+ it)
+
         val builder = StringBuilder()
         it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it).append("\n") }
-        it.city?.let { builder.append(it).append(" ") }
-        it.stateName?.let{ builder.append(it).append(" ")}
+        it.unit?.let { builder.append(it) }
+        it.city?.let { builder.append("\n").append(it).append(" ") }
+        it.stateName?.let { builder.append(it).append(" ") }
         it.zipCode?.let { builder.append(it) }
-        it.countryName?.let { builder.append(" ").append(it)}
-        binding.textviewCurrentEmployerAddress.setText(builder)
-        binding.textviewCurrentEmployerAddress.setText(it.countryName)
+        it.countryName.let {
+            if(it != null)
+                builder.append(" ").append(it)
+        }
+        binding.textviewCurrentEmployerAddress.text = builder
+
     }
 
     private fun initViews() {
@@ -448,6 +486,15 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(), binding.currentEmpLayout)
                 super.removeFocusFromAllFields(binding.currentEmpLayout)
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result -> employerAddress = result
+            //binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
+            displayAddress(result)
         }
     }
 
@@ -552,6 +599,28 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
         findNavController().popBackStack()
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        findNavController().popBackStack()
+                    }
+                })
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
+        }
     }
 
     private fun setInputFields() {

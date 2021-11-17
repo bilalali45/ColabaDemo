@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeRetirementLayoutBinding
@@ -39,7 +40,7 @@ class RetirementIncomeFragment : BaseFragment(){
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    private var savedViewInstance: View? = null
+    //private var savedViewInstance: View? = null
     //private val retirementArray = listOf("Social Security", "Pension","IRA / 401K" , "Other Retirement Source")
     private val viewModel : IncomeViewModel by activityViewModels()
     private var retirementTypes: ArrayList<DropDownResponse> = arrayListOf()
@@ -49,38 +50,40 @@ class RetirementIncomeFragment : BaseFragment(){
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return if (savedViewInstance != null) {
-            savedViewInstance
-        } else {
-            binding = IncomeRetirementLayoutBinding.inflate(inflater, container, false)
-            toolbarBinding = binding.headerIncome
-            savedViewInstance = binding.root
-            super.addListeners(binding.root)
-            // set Header title
-            toolbarBinding.toolbarTitle.setText(getString(R.string.retirement))
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
+        binding = IncomeRetirementLayoutBinding.inflate(inflater, container, false)
+        toolbarBinding = binding.headerIncome
+        super.addListeners(binding.root)
+        // set Header title
+        toolbarBinding.toolbarTitle.setText(getString(R.string.retirement))
 
-
-            arguments?.let { arguments ->
-                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-                borrowerId = arguments.getInt(AppConstant.borrowerId)
-                incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-                incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
-                arguments.getInt(AppConstant.incomeId).let {
-                    if(it > 0)
-                        incomeInfoId = it
+        arguments?.let { arguments ->
+            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+            borrowerId = arguments.getInt(AppConstant.borrowerId)
+            incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
+            incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            arguments.getInt(AppConstant.incomeId).let {
+                if(it > 0)
+                    incomeInfoId = it
                 }
-            }
+        }
             setRetirementType()
             initViews()
             observeRetirementIncomeTypes()
-            savedViewInstance
 
-        }
+            if(loanApplicationId != null && borrowerId !=null){
+                toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+                toolbarBinding.btnTopDelete.setOnClickListener {
+                    DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                }
+            }
+
+            if(incomeInfoId == null || incomeInfoId ==0) {
+                toolbarBinding.btnTopDelete.visibility = View.GONE
+            }
+
+        return binding.root
     }
 
     private fun getRetirementDetails(){
@@ -144,7 +147,6 @@ class RetirementIncomeFragment : BaseFragment(){
 
             })
         }
-
     }
 
     private fun initViews() {
@@ -333,5 +335,24 @@ class RetirementIncomeFragment : BaseFragment(){
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
         findNavController().popBackStack()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        findNavController().popBackStack()
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
+        }
     }
 }

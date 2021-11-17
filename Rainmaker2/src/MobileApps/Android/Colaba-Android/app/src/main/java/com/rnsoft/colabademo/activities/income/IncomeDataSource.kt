@@ -251,11 +251,6 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-
-
-
-
-
     suspend fun sendOtherIncomeData(token: String, data: AddOtherIncomeInfo): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
@@ -272,5 +267,20 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
             }
         }
     }
+
+    suspend fun deleteIncome(token : String, incomeInfoId:Int, borrowerId:Int, loanApplicationId:Int): Result<GenericAddUpdateAssetResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.deleteIncome(newToken, incomeInfoId, borrowerId,loanApplicationId)
+            Timber.e("deleteIncome = $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
 
 }

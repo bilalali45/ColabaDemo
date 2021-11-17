@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +24,8 @@ class RealEstateActivity : BaseActivity() {
     private val viewModel : RealEstateViewModel by viewModels()
     var loanApplicationId: Int? =null
     var borrowerPropertyId : Int? = null
+    var borrowerId : Int? = null
+    var propertyInfoId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +37,16 @@ class RealEstateActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             borrowerPropertyId = it.getInt(AppConstant.borrowerPropertyId)
+            borrowerId = it.getInt(AppConstant.borrowerId)
+            propertyInfoId = it.getInt(AppConstant.propertyInfoId)
         }
+
+        Log.e("activity","loanApplicatioId: " + loanApplicationId + " borrowerPropertyId:" + borrowerPropertyId + " borrowerId: " + borrowerId)
 
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null && borrowerPropertyId != null ) {
+                if(loanApplicationId != null && borrowerPropertyId != null) {
                     coroutineScope {
                         binding.loaderRealEstate.visibility = View.VISIBLE
                         viewModel.getRealEstateDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)

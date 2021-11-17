@@ -73,5 +73,9 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.sendMilitaryIncomeData(token,data)
     }
 
+    suspend fun deleteIncomeSource(token : String,  incomeInfoId:Int, borrowerId:Int, loanApplicationId:Int): Result<GenericAddUpdateAssetResponse>{
+        return dataSource.deleteIncome(token = token, incomeInfoId = incomeInfoId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+    }
+
 
 }

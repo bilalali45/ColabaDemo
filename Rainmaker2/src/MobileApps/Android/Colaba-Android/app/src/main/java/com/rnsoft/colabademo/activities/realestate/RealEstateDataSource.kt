@@ -69,7 +69,6 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-
     suspend fun getPropertyTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
@@ -122,7 +121,6 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-
     suspend fun getCounties(token: String): Result<ArrayList<CountiesModel>> {
         return try {
             val newToken = "Bearer $token"
@@ -149,11 +147,11 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-    suspend fun sendRealEstateDetails(token: String, data: RealEstateData): Result<AddUpdateDataResponse> {
+    suspend fun sendRealEstateDetails(token: String, data: AddRealEstateResponse): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addRealEstateDetails(newToken,data)
-            Log.e("realEstate-respone","$response")
+            //Log.e("realEstate-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
@@ -166,10 +164,18 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-
-
-
-
-
+    suspend fun deleteRealEstate(token: String,borrowerPropertyId: Int): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.deleteRealEstate(newToken, borrowerPropertyId)
+            Timber.e("deleteRealEstate = $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 
 }

@@ -128,8 +128,7 @@ interface ServerApi{
     : RealEstateResponse
 
     @POST("api/mcu/mobile/loanapplication/RealEstate/AddOrUpdateRealEstateDetails")
-    suspend fun addRealEstateDetails(@Header("Authorization")  Authorization:String, @Body data: RealEstateData) :AddUpdateDataResponse
-
+    suspend fun addRealEstateDetails(@Header("Authorization")  Authorization:String, @Body data: AddRealEstateResponse) :AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/RealEstate/GetFirstMortgageDetails")
     suspend fun getFirstMortgageDetails(
@@ -142,6 +141,11 @@ interface ServerApi{
         @Header("Authorization") Authorization:String,
         @Query("loanApplicationId") loanPurpuseId:Int,
         @Query("borrowerPropertyId") borrowerPropertyId:Int) : RealEstateSecondMortgageModel
+
+    @DELETE("api/mcu/mobile/loanapplication/RealEstate/DeleteRealEstateDetails")
+    suspend fun deleteRealEstate(
+        @Header("Authorization") Authorization: String,
+        @Query("BorrowerPropertyId")borrowerId:Int) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetIncomeDetails")
     suspend fun getBorrowerIncomeDetail(
@@ -157,6 +161,14 @@ interface ServerApi{
         @Query("loanApplicationId") loanPurpuseId:Int,
         @Query("borrowerId") borrowerId:Int,
         @Query("borrowerAssetId") borrowerAssetId:Int): BankAccountResponse
+
+    @DELETE("/api/mcu/mobile/loanapplication/Assets/DeleteIncome")
+    suspend fun deleteIncome(
+        @Header("Authorization") Authorization: String,
+        @Query("IncomeInfoId")incomeInfoId: Int,
+        @Query("borrowerId")borrowerId:Int,
+        @Query("loanApplicationId") loanApplicationId:Int ): GenericAddUpdateAssetResponse
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,6 +197,8 @@ interface ServerApi{
                             @Query("borrowerId")  borrowerId:Int,
                             @Query("loanApplicationId")  loanApplicationId:Int ):
             GenericAddUpdateAssetResponse
+
+
 
 
 

@@ -41,6 +41,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
+    var saveBorrowerId:Int = 0
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -130,6 +132,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
         binding.applicationTabLayout.visibility = View.INVISIBLE
 
+
         detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
             if (appTabModel != null) {
                 binding.applicationTopContainer.visibility = View.VISIBLE
@@ -184,6 +187,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     bAppData.borrowersInformation?.let { borrowersList ->
                         borrowerInfoList.clear()
                         borrowerInfoList = borrowersList
+                        saveBorrowerId = borrowersList.get(0).borrowerId
+
 
                         for(borrower in borrowersList){
                             Timber.e("BApp -- " + borrower.firstName , borrower.borrowerId, borrower.owntypeId , borrower.genderName)
@@ -206,9 +211,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         for(item in it){
                             Timber.e(" Get -- "+item)
                             Timber.e(" details -- "+item.borrowerId + "  "+item.propertyInfoId +"  "+ item.propertyTypeId + "  "+item.propertyTypeName)
+
                         }
                         realStateList.clear()
                         realStateList = it
+                        Log.e("list1", ""+it)
 
                     }
                 }
@@ -229,7 +236,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 borrowerInfoAdapter.notifyDataSetChanged()
 
 
-                realStateList.add(RealStateOwn(null,0,0,0,"", true,0))
+                realStateList.add(RealStateOwn(null,saveBorrowerId,0,0,"", true,0))
+                Log.e("list2", ""+realStateList)
                 realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
@@ -336,7 +344,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     }
 
     override fun getSingleItemIndex(position: Int) {
-
     }
 
     override fun navigateTo(position: Int) {
@@ -344,14 +351,23 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     }
 
     override fun onRealEstateClick(position: Int) {
+
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
-            val intent = Intent(requireActivity(), RealEstateActivity::class.java)
-            //Log.e("loanAppID", ""+ it.loanApplicationId)
-            //Log.e("bPropertyId", ""+ realStateList.get(position).borrowerPropertyId)
-            intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
-            intent.putExtra(AppConstant.borrowerPropertyId,realStateList.get(position).borrowerPropertyId)
-            startActivity(intent)
+            if(realStateList.get(position).isFooter){
+                val intent = Intent(requireActivity(), RealEstateActivity::class.java)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerId, realStateList.get(position).borrowerId)
+                startActivity(intent)
+            } else {
+                val intent = Intent(requireActivity(), RealEstateActivity::class.java)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerId, realStateList.get(position).borrowerId)
+                intent.putExtra(AppConstant.propertyInfoId, realStateList.get(position).propertyInfoId)
+                intent.putExtra(AppConstant.borrowerPropertyId, realStateList.get(position).borrowerPropertyId)
+                startActivity(intent)
+            }
+
         }
     }
 
