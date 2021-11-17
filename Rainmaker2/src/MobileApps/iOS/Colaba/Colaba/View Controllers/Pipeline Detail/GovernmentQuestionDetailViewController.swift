@@ -77,6 +77,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(showSaveButton), name: NSNotification.Name(rawValue: kNotificationShowSaveButtonOnGovernmentScreen), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideSaveButton), name: NSNotification.Name(rawValue: kNotificationHideSaveButtonOnGovernmentScreen), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(demographicSaveButtonTapped), name: NSNotification.Name(rawValue: kNotificationDemographicSaveButtonTapped), object: nil)
         
         roundAllFilterViews(filterViews: [unDisclosedView, ownershipInterestView, familyOrBusinessAffiliationView,/*priorityLiensView,*/ undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
         getGovernmentQuestions()
@@ -385,6 +386,10 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         filterViewTapped(selectedFilterView: demographicView, filterViews: [unDisclosedView, ownershipInterestView, /*priorityLiensView,*/familyOrBusinessAffiliationView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
     }
     
+    @objc func demographicSaveButtonTapped(){
+        addUpdateGovernmentQuestion()
+    }
+    
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         addUpdateGovernmentQuestion()
     }
@@ -426,7 +431,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     
     func addUpdateGovernmentQuestion(){
         
-        //Utility.showOrHideLoader(shouldShow:  true)
+        Utility.showOrHideLoader(shouldShow:  true)
         
         let questions = [undisclosedQuestion, undisclosedSubQuestion, ownershipInterestQuestion, ownershipInterestSubQuestion1, ownershipInterestSubQuestion2, familiyOrBusinessAffiliationQuestion, debtcoSignerQuestion, outStandingJudgementsQuestion, fedralDebtQuestion, partyToLawsuitQuestion, titleConveyanceQuestion, preForceClosureQuestion, forceClosuredQuestion, bankruptcyQuestion, bankruptcySubQuestion, childSupportQuestion]
 
@@ -434,19 +439,19 @@ class GovernmentQuestionDetailViewController: BaseViewController {
                       "BorrowerId": borrowerId,
                       "Questions": questions] as [String:Any]
         
-//        APIRouter.sharedInstance.executeAPI(type: .addUpdateGovernmentQuestion, method: .post, params: params) { status, result, message in
-//            DispatchQueue.main.async {
-//                Utility.showOrHideLoader(shouldShow: false)
-//                if (status == .success){
-//                    self.goBack()
-//                }
-//                else{
-//                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
-//
-//                    }
-//                }
-//            }
-//        }
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateGovernmentQuestion, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.goBack()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+
+                    }
+                }
+            }
+        }
         
     }
 }

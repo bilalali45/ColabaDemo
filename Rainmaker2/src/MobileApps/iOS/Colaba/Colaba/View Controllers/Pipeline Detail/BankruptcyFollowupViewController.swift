@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol BankruptcyFollowupViewControllerDelegate: AnyObject {
+    func saveQuestion(bankruptcyTypeQuestion: GovernmentQuestionModel)
+}
+
 class BankruptcyFollowupViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -29,6 +33,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     @IBOutlet weak var chapter13StackView: UIStackView!
     @IBOutlet weak var btnChapter13: UIButton!
     @IBOutlet weak var lblChapter13: UILabel!
+    @IBOutlet weak var lblError: UILabel!
     @IBOutlet weak var txtviewDetailContainerView: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
@@ -39,6 +44,7 @@ class BankruptcyFollowupViewController: BaseViewController {
     var isChapter13 = false
     var questionModel: GovernmentQuestionModel?
     var borrowerName = ""
+    weak var delegate: BankruptcyFollowupViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +134,32 @@ class BankruptcyFollowupViewController: BaseViewController {
         lblChapter12.font = isChapter12 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         btnChapter13.setImage(UIImage(named: isChapter13 ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
         lblChapter13.font = isChapter13 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        
+        questionModel?.childSupportTypes.removeAll()
+        if (isChapter7){
+            questionModel?.childSupportTypes.append("Chapter 7")
+        }
+        if (isChapter11){
+            questionModel?.childSupportTypes.append("Chapter 11")
+        }
+        if (isChapter12){
+            questionModel?.childSupportTypes.append("Chapter 12")
+        }
+        if (isChapter13){
+            questionModel?.childSupportTypes.append("Chapter 13")
+        }
+    }
+    
+    func validate() -> Bool{
+        if (!isChapter7 && !isChapter11 && !isChapter12 && !isChapter13){
+            lblError.isHidden = false
+            return false
+        }
+        else{
+            lblError.isHidden = true
+            return true
+        }
+        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -149,8 +181,12 @@ class BankruptcyFollowupViewController: BaseViewController {
 //            self.txtViewDetail.leadingAssistiveLabel.text = error.localizedDescription
 //        }
         
-        //if validate(){
+        if validate(){
+            if let question = questionModel{
+                question.answerDetail = txtViewDetail.textView.text!
+                self.delegate?.saveQuestion(bankruptcyTypeQuestion: question)
+            }
             self.dismissVC()
-        //}
+        }
     }
 }

@@ -124,8 +124,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        self.window?.rootViewController = vc
         
         let vc = Utility.getLoanDetailVC()
-        vc.loanApplicationId = 1108//1042    //1009 for Refinance with co borrower
-        vc.borrowerName = "Mark Stephen"//"flow check"//"Quentin Finley"//"flow check"
+        vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
+        vc.borrowerName = "Farhan Qadir"//"flow check"//"Quentin Finley"//"flow check"
         vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
         vc.phoneNumber = ""
         vc.email = ""

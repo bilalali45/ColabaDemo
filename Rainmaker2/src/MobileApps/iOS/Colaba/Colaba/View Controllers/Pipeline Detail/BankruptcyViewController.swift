@@ -40,6 +40,7 @@ class BankruptcyViewController: BaseViewController {
         lblYes.font = Theme.getRubikRegularFont(size: 14)
         typeView.isHidden = true
         setQuestionData()
+        saveQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,11 +75,14 @@ class BankruptcyViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getBankruptcyFollowupVC()
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questionModel = subQuestionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -90,18 +94,86 @@ class BankruptcyViewController: BaseViewController {
             btnNo.setImage(UIImage(named: !yes ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
             lblNo.font = !yes ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
             if let typeQuestion = subQuestionModel{
-                typeView.isHidden = !yes
+                if (yes && typeQuestion.childSupportTypes.count > 0){
+                    typeView.isHidden = false
+                }
+                else{
+                    typeView.isHidden = true
+                }
                 lblBankruptcyQuestion.text = typeQuestion.question
                 lblBankruptcyType.text = typeQuestion.childSupportTypes.joined(separator: ", ")
             }
         }
-        
+        saveQuestion()
     }
     
     @objc func typeViewTapped(){
         let vc = Utility.getBankruptcyFollowupVC()
         vc.questionModel = subQuestionModel
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
+    }
+    
+    func saveQuestion(){
+        let mainQuestion = ["id": questionModel.id,
+                            "parentQuestionId": NSNull(),
+                            "headerText": questionModel.headerText,
+                            "questionSectionId": questionModel.questionSectionId,
+                            "ownTypeId": questionModel.ownTypeId,
+                            "firstName": questionModel.firstName,
+                            "lastName": questionModel.lastName,
+                            "question": questionModel.question,
+                            "answer": questionModel.answer,
+                            "answerDetail": questionModel.answerDetail,
+                            "selectionOptionId": NSNull(),
+                            "answerData": NSNull()] as [String: Any]
+        
+        var subQuestion: [String: Any] = [:]
+        
+        if let typeQuestion = subQuestionModel{
+            var bankruptcyTypes: [Any] = []
+            
+            if (typeQuestion.childSupportTypes.contains("Chapter 7")){
+                let type = ["1": "Chapter 7"]
+                bankruptcyTypes.append(type)
+            }
+            if (typeQuestion.childSupportTypes.contains("Chapter 11")){
+                let type = ["2": "Chapter 11"]
+                bankruptcyTypes.append(type)
+            }
+            if (typeQuestion.childSupportTypes.contains("Chapter 12")){
+                let type = ["3": "Chapter 12"]
+                bankruptcyTypes.append(type)
+            }
+            if (typeQuestion.childSupportTypes.contains("Chapter 13")){
+                let type = ["4": "Chapter 13"]
+                bankruptcyTypes.append(type)
+            }
+            
+            subQuestion = ["id": typeQuestion.id,
+                           "parentQuestionId": typeQuestion.parentQuestionId,
+                           "headerText": typeQuestion.headerText,
+                           "questionSectionId": typeQuestion.questionSectionId,
+                           "ownTypeId": typeQuestion.ownTypeId,
+                           "firstName": typeQuestion.firstName,
+                           "lastName": typeQuestion.lastName,
+                           "question": typeQuestion.question,
+                           "answer": bankruptcyTypes.count == 0 ? NSNull() : "Yes",
+                           "answerDetail": typeQuestion.answerDetail,
+                           "selectionOptionId": NSNull(),
+                           "answerData": bankruptcyTypes.count == 0 ? NSNull() : bankruptcyTypes]
+            
+            self.delegate?.getBankruptcyQuestionModel(question: mainQuestion, subQuestion: subQuestion)
+        }
+        
+    }
+}
+
+extension BankruptcyViewController: BankruptcyFollowupViewControllerDelegate{
+    func saveQuestion(bankruptcyTypeQuestion: GovernmentQuestionModel) {
+        subQuestionModel = bankruptcyTypeQuestion
+        questionModel.answer = "Yes"
+        changeStatus()
     }
 }

@@ -416,10 +416,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns1.text = "No"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if questionResponse1.questionResponseText == ""{
                         cell.iconAns1.image = UIImage(named: "Ans-NA")
                         cell.lblAns1.text = "N/a"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = questionResponse1.questionResponseText
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
                     
@@ -455,10 +460,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns1.text = "No"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse1.questionResponseText == ""){
                         cell.iconAns1.image = UIImage(named: "Ans-NA")
                         cell.lblAns1.text = "N/a"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = questionResponse1.questionResponseText
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
                     
@@ -476,10 +486,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns2.text = "No"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse2.questionResponseText == ""){
                         cell.iconAns2.image = UIImage(named: "Ans-NA")
                         cell.lblAns2.text = "N/a"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = questionResponse2.questionResponseText
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
                     
@@ -512,10 +527,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns1.text = "No"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse1.questionResponseText == ""){
                         cell.iconAns1.image = UIImage(named: "Ans-NA")
                         cell.lblAns1.text = "N/a"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = questionResponse1.questionResponseText
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
                     
@@ -533,10 +553,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns2.text = "No"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse2.questionResponseText == ""){
                         cell.iconAns2.image = UIImage(named: "Ans-NA")
                         cell.lblAns2.text = "N/a"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = questionResponse2.questionResponseText
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
                     
@@ -554,10 +579,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns3.text = "No"
                         cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse3.questionResponseText == ""){
                         cell.iconAns3.image = UIImage(named: "Ans-NA")
                         cell.lblAns3.text = "N/a"
                         cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns3.text = questionResponse3.questionResponseText
+                        cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
                     
@@ -586,10 +616,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns1.text = "No"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse1.questionResponseText == ""){
                         cell.iconAns1.image = UIImage(named: "Ans-NA")
                         cell.lblAns1.text = "N/a"
                         cell.lblAns1.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns1.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns1.text = questionResponse1.questionResponseText
+                        cell.lblAns1.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser1.text = " - \(questionResponse1.borrowerFirstName)"
                     
@@ -607,10 +642,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns2.text = "No"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse2.questionResponseText == ""){
                         cell.iconAns2.image = UIImage(named: "Ans-NA")
                         cell.lblAns2.text = "N/a"
                         cell.lblAns2.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns2.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns2.text = questionResponse2.questionResponseText
+                        cell.lblAns2.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser2.text = " - \(questionResponse2.borrowerFirstName)"
                     
@@ -628,10 +668,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns3.text = "No"
                         cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse3.questionResponseText == ""){
                         cell.iconAns3.image = UIImage(named: "Ans-NA")
                         cell.lblAns3.text = "N/a"
                         cell.lblAns3.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns3.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns3.text = questionResponse3.questionResponseText
+                        cell.lblAns3.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser3.text = " - \(questionResponse3.borrowerFirstName)"
                     
@@ -649,10 +694,15 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
                         cell.lblAns4.text = "No"
                         cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
                     }
-                    else{
+                    else if (questionResponse4.questionResponseText == ""){
                         cell.iconAns4.image = UIImage(named: "Ans-NA")
                         cell.lblAns4.text = "N/a"
                         cell.lblAns4.font = Theme.getRubikRegularFont(size: 15)
+                    }
+                    else{
+                        cell.iconAns4.image = UIImage(named: "Ans-Yes")
+                        cell.lblAns4.text = questionResponse4.questionResponseText
+                        cell.lblAns4.font = Theme.getRubikMediumFont(size: 15)
                     }
                     cell.lblUser4.text = " - \(questionResponse4.borrowerFirstName)"
                 }

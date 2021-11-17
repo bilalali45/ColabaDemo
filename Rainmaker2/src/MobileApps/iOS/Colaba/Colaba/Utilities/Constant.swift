@@ -48,6 +48,7 @@ let kNotificationShowRequestDocumentFooterButton = "notificationShowRequestDocum
 let kNotificationHideRequestDocumentFooterButton = "notificationHideRequestDocumentFooterButton"
 let kNotificationShowSaveButtonOnGovernmentScreen = "notificationShowSaveButtonOnGovernmentScreen"
 let kNotificationHideSaveButtonOnGovernmentScreen = "notificationHideSaveButtonOnGovernmentScreen"
+let kNotificationDemographicSaveButtonTapped = "notificationDemographicSaveButtonTapped"
 let kHousingStatusArray = ["Own", "Rent", "No Primary Housing Expense"]
 let kBusinessTypeArray = ["Partnership (e.g. LLC, LP, or GP)", "Corporation (e.g. C-Corp, S-Corp, or LLC)"]
 let kRetirementIncomeTypeArray = ["Social Security", "Pension", "IRA / 401K", "Other Retirement Source"]
