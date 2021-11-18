@@ -23,9 +23,6 @@ open class AddUpdateIncomeBaseFragment : BaseFragment(){
     lateinit var sharedPreferences: SharedPreferences
     protected val viewModel: IncomeViewModel by activityViewModels()
 
-    protected fun showDeleteDialog(text:String ="Are you sure you want to remove this income source?"){
-        DeleteAssetBoxFragment.newInstance(text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
-    }
 
 
     override fun onStart() {

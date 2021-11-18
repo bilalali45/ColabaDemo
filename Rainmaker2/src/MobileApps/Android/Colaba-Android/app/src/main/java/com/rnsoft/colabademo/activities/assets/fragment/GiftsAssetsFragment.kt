@@ -119,7 +119,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
                 if (giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     giftAssetDetail.giftAssetData?.let { giftAssetData ->
-                        giftAssetData.giftUniqueId?.let {
+                        giftAssetData.assetUniqueId?.let {
                            Timber.e("catching unique id in Response = $it")
                            assetUniqueId = it
                         }

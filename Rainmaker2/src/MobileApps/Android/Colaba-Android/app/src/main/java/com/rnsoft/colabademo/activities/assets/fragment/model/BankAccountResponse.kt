@@ -13,7 +13,8 @@ data class BankAccountResponse(
 )
 
 data class BankAccountData(
-    val id: Int?,
+
+    @SerializedName("id") val assetUniqueId: Int?,
     val assetTypeId: Int?,
     val institutionName: String?,
     val accountNumber: String?,

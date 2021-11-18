@@ -39,12 +39,14 @@ class BankAccountFragment : AssetBaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose , null)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            Timber.e("catching unique id in Response = $assetUniqueId")
             assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeBankData()
         }
         if(assetUniqueId>0) {
+            Timber.e("catching unique id in Response = $assetUniqueId")
             binding.topDelImageview.visibility = View.VISIBLE
             binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
         }
@@ -130,6 +132,9 @@ class BankAccountFragment : AssetBaseFragment() {
                     var balance = 0
                     if(binding.annualBaseEditText.text.toString().isNotBlank() && binding.annualBaseEditText.text.toString().isNotEmpty())
                         balance =  binding.annualBaseEditText.text.toString().toInt()
+
+
+                    Timber.e("catching unique id in saved response = $assetUniqueId")
 
                     accountTypeId?.let { notNullAccountTypeId->
                         loanApplicationId?.let { notNullLoanApplicationId->
@@ -258,7 +263,10 @@ class BankAccountFragment : AssetBaseFragment() {
                         bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
                         bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
                         bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
-                        bankAccountData.id?.let { assetUniqueId = it }
+                        bankAccountData.assetUniqueId?.let {
+                            assetUniqueId = it
+                            Timber.e("catching unique id in Response = $assetUniqueId")
+                        }
                         bankAccountData.assetTypeId?.let { assetTypeId->
                             for(item in classLevelBankAccountTypes){
                                 if(assetTypeId == item.id){
