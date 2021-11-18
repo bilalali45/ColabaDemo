@@ -10,7 +10,8 @@ data class MyAssetBorrowerDataClass(
     @SerializedName("data") val bAssetData : BAssetData?=null,
     val message: String?,
     val status: String?,
-    var passedBorrowerId:Int?
+    var passedBorrowerId:Int?,
+    var updateBorrowerId:Int = -1
 )
 
 
@@ -79,7 +80,7 @@ enum class CATEGORIES(var categoryName: String){
 data class Asset(
     val assetCategoryId: Int?,
     val assetCategoryName: String?,
-    val assetId: Int?,
+    @SerializedName("assetId") val assetUniqueId : Int,
     val assetName: String?,
     val assetTypeID: Int?,
     val assetTypeName: String?,

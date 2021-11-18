@@ -15,7 +15,9 @@ class DeleteAssetBoxFragment : BottomSheetDialogFragment() {
 
     companion object {
         lateinit var deleteText:String
-        fun newInstance(text:String): DeleteAssetBoxFragment {
+        lateinit var returnParams:AssetReturnParams
+        fun newInstance(assetReturnParams:AssetReturnParams, text:String): DeleteAssetBoxFragment {
+            returnParams = assetReturnParams
             deleteText = text
             return DeleteAssetBoxFragment()
         }
@@ -38,7 +40,7 @@ class DeleteAssetBoxFragment : BottomSheetDialogFragment() {
 
         binding.yesBtn.setOnClickListener {
             dismiss()
-            EventBus.getDefault().post(AssetDeleteEvent(true))
+            EventBus.getDefault().post(AssetDeleteEvent(true, returnParams))
         }
 
         binding.noBtn.setOnClickListener {

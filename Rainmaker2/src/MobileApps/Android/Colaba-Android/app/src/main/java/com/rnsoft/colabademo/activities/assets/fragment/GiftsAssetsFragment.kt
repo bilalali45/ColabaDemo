@@ -16,10 +16,11 @@ import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
-class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
+class GiftsAssetsFragment:AssetBaseFragment() {
 
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
@@ -27,7 +28,7 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
     private val giftOfEquity = "Gift Of Equity"
     private val grant = "Grant"
-    //private val CASH_GIFT = "Cash Gift"
+    private val cashGift = "Cash Gift"
 
 
 
@@ -46,20 +47,35 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            Timber.e("catching unique id in assetUniqueId = $assetUniqueId")
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 4)
+            assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeGiftData()
             getGiftCategory()
         }
-        if(borrowerAssetId>0) {
+        if(assetUniqueId>0) {
             binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
     }
 
 
+
+    private fun getAssetTypeName():String{
+        var assetTypeName = ""
+        if(binding.cashGift.isChecked )
+            assetTypeName = cashGift
+        if(binding.giftOfEquity.isChecked && binding.giftOfEquity.text.toString().equals(giftOfEquity, true) )
+            assetTypeName = giftOfEquity
+        if(binding.giftOfEquity.isChecked && binding.giftOfEquity.text.toString().equals(grant, true) )
+            assetTypeName = grant
+        return assetTypeName
+    }
 
     private fun getGiftCategory() {
         lifecycleScope.launchWhenStarted {
@@ -98,14 +114,15 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
     private fun fetchAndObserveGiftDetails(){
 
-        if (loanApplicationId != null && borrowerId != null && borrowerAssetId >0) {
+        if (loanApplicationId != null && borrowerId != null && assetUniqueId >0) {
 
             viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
                 if (giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     giftAssetDetail.giftAssetData?.let { giftAssetData ->
-
-                       giftAssetData.id?.let { id = it }
-
+                        giftAssetData.giftUniqueId?.let {
+                           Timber.e("catching unique id in Response = $it")
+                           assetUniqueId = it
+                        }
                         giftAssetData.isDeposited?.let { isDeposited ->
                             if (isDeposited) {
                                 binding.cashGift.isChecked = true
@@ -126,7 +143,6 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
                                 binding.noDeposited.isChecked = false
                             }
                         }
-
                         giftAssetData.assetTypeId?.let{ assetTypeId->
                             for(item in giftAssetList){
                                 if(item.id == 10 && item.id == assetTypeId )
@@ -143,7 +159,6 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
                                 }
                             }
                         }
-
                         giftAssetData.value?.let {
                             val newValue = it.toString()
                             binding.annualBaseEditText.setText(newValue)
@@ -162,7 +177,8 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getGiftAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                    Timber.e("catching unique id $assetUniqueId")
+                    viewModel.getGiftAssetDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
                 }
             }
         }
@@ -241,7 +257,6 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
 
         binding.backButton.setOnClickListener {
-            viewModel.setGiftDetailToNull()
             findNavController().popBackStack()
         }
 
@@ -281,6 +296,12 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
                             loanApplicationId?.let { notNullLoanApplicationId ->
                                 borrowerId?.let { notNullBorrowerId ->
 
+                                    if(id == null)
+                                        Timber.e(" unique Id is NUlll")
+                                    else
+                                        Timber.e("unique Id not null = $id")
+
+
                                     var isDeposited:Boolean? = null
                                     if(binding.yesDeposited.isChecked) isDeposited = true
                                     else
@@ -306,11 +327,35 @@ class GiftsAssetsFragment:AssetAddUpdateBaseFragment() {
 
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
 
-        observeAddUpdateResponse()
+
     }
 
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else
+        if(assetUniqueId>0)
+            assetAction = AppConstant.assetUpdated
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+
+        return AssetReturnParams(
+             assetName = binding.giftSourceAutoCompeleteView.text.toString(),
+             assetTypeName = getAssetTypeName(),
+             assetTypeID = assetTypeID,
+             assetUniqueId = assetUniqueId,
+             assetCategoryId = assetCategoryId,
+             assetCategoryName = assetCategoryName,
+             listenerAttached = listenerAttached,
+             assetAction = assetAction,
+             assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+         )
+    }
 
     private val onGiftDateCheckListener =
         RadioGroup.OnCheckedChangeListener { _, checkedId ->

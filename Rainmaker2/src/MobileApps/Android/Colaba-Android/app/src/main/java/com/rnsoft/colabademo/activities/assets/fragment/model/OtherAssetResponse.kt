@@ -12,7 +12,7 @@ data class OtherAssetResponse(
 data class OtherAssetData(
     val accountNumber: String?,
     val assetDescription: String?,
-    val assetId: Int?,
+    val otherUniqueId: Int?,
     val assetTypeId: Int?,
     val assetTypeName: String?,
     val assetValue: Double?,

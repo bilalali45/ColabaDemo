@@ -11,17 +11,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.BankAccountLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import kotlin.collections.ArrayList
 
 
-class BankAccountFragment : AssetAddUpdateBaseFragment() {
+class BankAccountFragment : AssetBaseFragment() {
 
     private var _binding: BankAccountLayoutBinding? = null
     private val binding get() = _binding!!
@@ -38,15 +38,45 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId )
             loanPurpose = arguments.getString(AppConstant.loanPurpose , null)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
+            assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeBankData()
         }
-        if(borrowerAssetId>0) {
+        if(assetUniqueId>0) {
             binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
+    }
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else
+            if(assetUniqueId>0)
+                assetAction = AppConstant.assetUpdated
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+
+        var assetValue = 0.0
+        if(binding.annualBaseEditText.text.toString().isNotEmpty() && binding.annualBaseEditText.text.toString().isNotBlank() )
+            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+
+        return AssetReturnParams(
+            assetName = binding.accountTypeCompleteView.text.toString(),
+            assetTypeName = binding.financialEditText.text.toString(),
+            assetTypeID = assetTypeID,
+            assetUniqueId = assetUniqueId,
+            assetCategoryId = assetCategoryId,
+            assetCategoryName = assetCategoryName,
+            listenerAttached = listenerAttached,
+            assetAction = assetAction,
+            assetValue = assetValue
+        )
     }
 
 
@@ -76,9 +106,7 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
         binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.backButton.setOnClickListener { findNavController().popBackStack() }
 
         binding.saveBtn.setOnClickListener {
             saveBankDetails()
@@ -98,6 +126,11 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
                         if(item.name == binding.accountTypeCompleteView.text.toString())
                             accountTypeId = item.id
                     }
+
+                    var balance = 0
+                    if(binding.annualBaseEditText.text.toString().isNotBlank() && binding.annualBaseEditText.text.toString().isNotEmpty())
+                        balance =  binding.annualBaseEditText.text.toString().toInt()
+
                     accountTypeId?.let { notNullAccountTypeId->
                         loanApplicationId?.let { notNullLoanApplicationId->
                             borrowerId?.let { notNullBorrowerId ->
@@ -106,9 +139,9 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
                                         AssetTypeId = notNullAccountTypeId,
                                         LoanApplicationId = notNullLoanApplicationId,
                                         BorrowerId = notNullBorrowerId,
-                                        id = id,
+                                        bankUniqueId  = assetUniqueId,
                                         AccountNumber = binding.accountNumberEdittext.text.toString(),
-                                        Balance = binding.annualBaseEditText.text.toString().toInt(),
+                                        Balance = balance,
                                         InstitutionName = binding.financialEditText.text.toString()
                                     )
                                 viewModel.addUpdateBankDetails(authToken , bankAddUpdateParams)
@@ -119,20 +152,10 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
 
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
 
-        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                if(genericAddUpdateAssetResponse.status == "OK"){
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
-                    if(codeString == "200"){
-                        lifecycleScope.launchWhenStarted {
-                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                                findNavController().popBackStack()
-                            }
-                        }
-                    }
-                }
-         })
+
 
     }
 
@@ -227,7 +250,7 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
     }
 
     private fun fetchAndObserveBankAccountDetails(){
-        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId >0) {
+        if(loanApplicationId != null && borrowerId != null &&  assetUniqueId >0) {
 
             viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
                 if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
@@ -235,7 +258,7 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
                         bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
                         bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
                         bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
-                        bankAccountData.id?.let { id = it }
+                        bankAccountData.id?.let { assetUniqueId = it }
                         bankAccountData.assetTypeId?.let { assetTypeId->
                             for(item in classLevelBankAccountTypes){
                                 if(assetTypeId == item.id){
@@ -250,7 +273,7 @@ class BankAccountFragment : AssetAddUpdateBaseFragment() {
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
                 }
             }
         }

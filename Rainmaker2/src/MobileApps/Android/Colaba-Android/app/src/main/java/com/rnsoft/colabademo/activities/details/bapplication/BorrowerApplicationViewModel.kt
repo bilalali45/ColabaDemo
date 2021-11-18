@@ -156,7 +156,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     }
 
 
-    suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+    suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int> , updateBorrowerId:Int = -1) {
         var errorResult:Result.Error?=null
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
@@ -172,6 +172,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                         )
                         if (responseResult is Result.Success) {
                             responseResult.data.passedBorrowerId = id
+                            responseResult.data.updateBorrowerId = updateBorrowerId
                             Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
                             borrowerAssetList.add(responseResult.data)
                         }

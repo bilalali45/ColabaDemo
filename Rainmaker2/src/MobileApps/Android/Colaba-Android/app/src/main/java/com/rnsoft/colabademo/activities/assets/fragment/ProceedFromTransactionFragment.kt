@@ -15,14 +15,13 @@ import com.rnsoft.colabademo.databinding.ProceedFromTransLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.proceed_from_trans_layout.*
 import timber.log.Timber
 import java.util.ArrayList
 
 
 
-    class ProceedFromTransactionFragment : AssetAddUpdateBaseFragment() {
+    class ProceedFromTransactionFragment : AssetBaseFragment() {
 
         private var _binding: ProceedFromTransLayoutBinding? = null
         private val binding get() = _binding!!
@@ -44,14 +43,17 @@ import java.util.ArrayList
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 loanPurpose = arguments.getString(AppConstant.loanPurpose)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
-                borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+                assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
                 assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 6)
                 assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+                assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+                listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             }
-            if(borrowerAssetId>0) {
+            if(assetUniqueId>0) {
                 binding.topDelImageview.visibility = View.VISIBLE
-                binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+                binding.topDelImageview.setOnClickListener{ showDeleteDialog( returnUpdatedParams(true)) }
             }
+            activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
             getTransactionCategories()
             return root
         }
@@ -87,10 +89,10 @@ import java.util.ArrayList
         }
 
         private fun getProceedsFromLoan(position:Int) {
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId > 0){
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId > 0){
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!, borrowerId!!, assetTypeID!!, borrowerAssetId)
+                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!, borrowerId!!, assetTypeID!!, assetUniqueId)
                     }
                 }
                 observeChanges(position)
@@ -98,13 +100,13 @@ import java.util.ArrayList
         }
 
         private fun getProceedsFromNonRealEstateDetail(position:Int){
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId>0) {
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId>0) {
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
                         viewModel.getProceedsFromNonRealEstateDetail(
                             authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, borrowerAssetId
+                            borrowerId!!, assetTypeID!!, assetUniqueId
                         )
                     }
                 }
@@ -113,14 +115,14 @@ import java.util.ArrayList
         }
 
         private fun getProceedsFromRealEstateDetail(position:Int){
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && borrowerAssetId>0) {
+            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId>0) {
                 observeChanges(position)
 
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         viewModel.getProceedsFromRealEstateDetail(
                             authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, borrowerAssetId
+                            borrowerId!!, assetTypeID!!, assetUniqueId
                         )
                     }
                 }
@@ -282,12 +284,12 @@ import java.util.ArrayList
 
 
         private fun addUpdateProceedFromLoan(assetTypeId:Int){
-            observeAddUpdateResponse()
+            observeAddUpdateResponse(returnUpdatedParams())
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     var paramBorrowerAssetId:Int? = null
-                    if(borrowerAssetId > 0)
-                        paramBorrowerAssetId = borrowerAssetId
+                    if(assetUniqueId > 0)
+                        paramBorrowerAssetId = assetUniqueId
 
                     var securedByColletral:Boolean? = null
                     if(radioButton.isChecked)
@@ -339,7 +341,7 @@ import java.util.ArrayList
         }
 
         private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
-            observeAddUpdateResponse()
+            observeAddUpdateResponse(returnUpdatedParams())
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     loanApplicationId?.let { notNullLoanApplicationId ->
@@ -361,6 +363,29 @@ import java.util.ArrayList
                     }
                 }
             }
+        }
+
+        private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+            var assetAction = AppConstant.assetAdded
+            if(assetDeleteBoolean)
+                assetAction = AppConstant.assetDeleted
+            else
+                if(assetUniqueId>0)
+                    assetAction = AppConstant.assetUpdated
+
+            Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+
+            return AssetReturnParams(
+                assetName = binding.transactionAutoCompleteTextView.text.toString(),
+                assetTypeName = binding.edDetails.text.toString(),
+                assetTypeID = assetTypeID,
+                assetUniqueId = assetUniqueId,
+                assetCategoryId = assetCategoryId,
+                assetCategoryName = assetCategoryName,
+                listenerAttached = listenerAttached,
+                assetAction = assetAction,
+                assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+            )
         }
 
         private fun clearFocusFromFields(){
@@ -419,19 +444,15 @@ import java.util.ArrayList
         }
 
         private  fun addFocusOutListenerToFields() {
-            binding.annualBaseEditText.setOnFocusChangeListener(
-                CustomFocusListenerForEditText(
-                    binding.annualBaseEditText,
-                    binding.annualBaseLayout,
-                    requireContext()
-                )
+            binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText(
+                binding.annualBaseEditText,
+                binding.annualBaseLayout,
+                requireContext()
             )
-            binding.edDetails.setOnFocusChangeListener(
-                CustomFocusListenerForEditText(
-                    binding.edDetails,
-                    binding.layoutDetail,
-                    requireContext()
-                )
+            binding.edDetails.onFocusChangeListener = CustomFocusListenerForEditText(
+                binding.edDetails,
+                binding.layoutDetail,
+                requireContext()
             )
         }
 

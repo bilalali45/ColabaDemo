@@ -56,9 +56,13 @@ object AppConstant {
 
         const val borrowerId:String = "borrowerId"
 
-        const val borrowerAssetId:String = "borrowerAssetId"
+        const val assetUniqueId:String = "borrowerAssetId"
 
         const val assetCategoryId:String = "assetCategoryId"
+
+        const val assetCategoryName:String = "assetCategoryName"
+
+        const val listenerAttached:String = "listenerAttached"
 
         const val assetTypeID:String = "assetTypeID"
 
@@ -173,6 +177,11 @@ object AppConstant {
         const val INCOME_OVERTIME ="Overtime"
         const val INCOME_COMMISSION = "Commission"
 
+
+        const val assetReturnParams = "assetReturnParams"
+        const val assetDeleted = "assetDeleted"
+        const val assetUpdated = "assetUpdated"
+        const val assetAdded = "assetAdded"
 
         const val selectedAsianChildList = "selectedAsianChildList"
         const val asianChildList = "AsianChildList"

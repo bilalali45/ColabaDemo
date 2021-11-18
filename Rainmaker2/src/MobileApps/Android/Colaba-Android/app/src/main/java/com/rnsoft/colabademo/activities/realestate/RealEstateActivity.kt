@@ -25,16 +25,17 @@ class RealEstateActivity : BaseActivity() {
     var borrowerPropertyId : Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = RealEstateActivityLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_up, R.anim.hold)
-
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             borrowerPropertyId = it.getInt(AppConstant.borrowerPropertyId)
         }
+        super.onCreate(savedInstanceState)
+        binding = RealEstateActivityLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_up, R.anim.hold)
+
+
 
 
         lifecycleScope.launchWhenStarted {
