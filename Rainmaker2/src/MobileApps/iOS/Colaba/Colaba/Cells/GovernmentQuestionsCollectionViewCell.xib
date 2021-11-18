@@ -56,8 +56,8 @@
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Richard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9I-y4-wl7">
-                                <rect key="frame" x="62.5" y="92" width="68.5" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text=" - Richard" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a9I-y4-wl7">
+                                <rect key="frame" x="62.5" y="92" width="278.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -71,8 +71,8 @@
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fh-y7-rOw">
-                                <rect key="frame" x="56.5" y="119.5" width="52" height="18"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Fh-y7-rOw">
+                                <rect key="frame" x="56.5" y="119.5" width="284.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -86,8 +86,8 @@
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLW-GL-Vqq">
-                                <rect key="frame" x="56.5" y="147" width="52" height="18"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cLW-GL-Vqq">
+                                <rect key="frame" x="56.5" y="147" width="284.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -101,8 +101,8 @@
                                 <color key="textColor" name="AppBlackColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPX-rZ-Dq8">
-                                <rect key="frame" x="56.5" y="174.5" width="52" height="18"/>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text=" - Maria" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPX-rZ-Dq8">
+                                <rect key="frame" x="56.5" y="174.5" width="284.5" height="18"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -118,11 +118,14 @@
                             <constraint firstItem="ZA1-eY-7vw" firstAttribute="centerY" secondItem="8jk-cR-Anw" secondAttribute="centerY" id="6bb-qG-VA3"/>
                             <constraint firstItem="gKy-Gi-aZ7" firstAttribute="leading" secondItem="1im-BT-Q2J" secondAttribute="leading" constant="15" id="7jy-6y-Ibp"/>
                             <constraint firstItem="a9I-y4-wl7" firstAttribute="centerY" secondItem="48i-TC-ig2" secondAttribute="centerY" id="8O6-dM-jJt"/>
+                            <constraint firstAttribute="trailing" secondItem="a9I-y4-wl7" secondAttribute="trailing" constant="10" id="Bij-Sj-s0j"/>
                             <constraint firstItem="6HX-dp-5Oq" firstAttribute="top" secondItem="ycC-oF-kie" secondAttribute="bottom" constant="11" id="Dtw-Z2-SVQ"/>
                             <constraint firstItem="cLW-GL-Vqq" firstAttribute="centerY" secondItem="vqA-GL-CYQ" secondAttribute="centerY" id="JfF-LK-vLp"/>
                             <constraint firstItem="aPX-rZ-Dq8" firstAttribute="leading" secondItem="ZA1-eY-7vw" secondAttribute="trailing" id="N2V-jo-oyT"/>
                             <constraint firstItem="48i-TC-ig2" firstAttribute="centerY" secondItem="gKy-Gi-aZ7" secondAttribute="centerY" id="PGS-A0-A4t"/>
                             <constraint firstItem="vqA-GL-CYQ" firstAttribute="centerY" secondItem="6HX-dp-5Oq" secondAttribute="centerY" id="TLg-FW-cka"/>
+                            <constraint firstAttribute="trailing" secondItem="aPX-rZ-Dq8" secondAttribute="trailing" constant="10" id="VJ7-c7-E42"/>
+                            <constraint firstAttribute="trailing" secondItem="2Fh-y7-rOw" secondAttribute="trailing" constant="10" id="VLq-cY-UZI"/>
                             <constraint firstItem="8jk-cR-Anw" firstAttribute="top" secondItem="6HX-dp-5Oq" secondAttribute="bottom" constant="11" id="VNf-OV-gOb"/>
                             <constraint firstItem="48i-TC-ig2" firstAttribute="leading" secondItem="gKy-Gi-aZ7" secondAttribute="trailing" constant="6" id="Wre-Pc-9JT"/>
                             <constraint firstItem="ycC-oF-kie" firstAttribute="top" secondItem="gKy-Gi-aZ7" secondAttribute="bottom" constant="11" id="a9y-ZF-dL9"/>
@@ -141,6 +144,7 @@
                             <constraint firstItem="2Fh-y7-rOw" firstAttribute="leading" secondItem="eGQ-iR-mSf" secondAttribute="trailing" id="rsf-u7-v1B"/>
                             <constraint firstItem="eGQ-iR-mSf" firstAttribute="centerY" secondItem="ycC-oF-kie" secondAttribute="centerY" id="tQI-Og-Mjd"/>
                             <constraint firstItem="gKy-Gi-aZ7" firstAttribute="top" secondItem="PV3-AL-jbs" secondAttribute="bottom" constant="20" id="utk-BE-x9J"/>
+                            <constraint firstAttribute="trailing" secondItem="cLW-GL-Vqq" secondAttribute="trailing" constant="10" id="xJL-vY-nLL"/>
                             <constraint firstItem="2Fh-y7-rOw" firstAttribute="centerY" secondItem="eGQ-iR-mSf" secondAttribute="centerY" id="xvK-Cx-qv9"/>
                         </constraints>
                     </view>

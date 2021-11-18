@@ -51,6 +51,7 @@ class AddResidenceViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        btnDelete.isHidden = true
         setTextFields()
         setPlacePickerTextField()
         lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"

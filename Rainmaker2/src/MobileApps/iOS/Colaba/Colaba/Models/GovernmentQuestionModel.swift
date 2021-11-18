@@ -43,6 +43,7 @@ class GovernmentQuestionModel: NSObject{
         lastName = json["lastName"].stringValue
         ownTypeId = json["ownTypeId"].intValue
         question = json["question"].stringValue
+        question = question.replacingOccurrences(of: "[Co-Applicant First Name]", with: firstName).replacingOccurrences(of: "[Co-Applicant Last Name]", with: lastName)
         questionSectionId = json["questionSectionId"].intValue
         selectionOptionId = json["selectionOptionId"].intValue
         selectionOptionText = json["answerData"]["selectionOptionText"].stringValue

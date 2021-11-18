@@ -165,9 +165,10 @@ class RefinanceLoanInfoViewController: BaseViewController {
             DispatchQueue.main.async {
                 Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
-                    self.showPopup(message: "Loan Information updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
-                        self.goBack()
-                    }
+//                    self.showPopup(message: "Loan Information updated sucessfully", popupState: .success, popupDuration: .custom(5)) { dismiss in
+//                        self.goBack()
+//                    }
+                    self.goBack()
                 }
                 else{
                     self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in

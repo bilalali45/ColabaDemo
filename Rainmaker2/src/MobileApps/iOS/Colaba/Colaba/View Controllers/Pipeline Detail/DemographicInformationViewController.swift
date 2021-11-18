@@ -114,6 +114,7 @@ class DemographicInformationViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
         addUpdateDemographicInfo()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationDemographicSaveButtonTapped), object: nil)
     }
     
     //MARK:- API's

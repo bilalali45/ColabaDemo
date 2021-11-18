@@ -79,6 +79,7 @@ class DeleteAddressPopupViewController: BaseViewController {
             }
             else if (self.screenType == 2){
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
+                self.delegate?.deleteAddress(indexPath: self.indexPath)
             }
             else if (self.screenType == 3){
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationDeleteMailingAddressAndDismiss), object: nil)
