@@ -88,7 +88,7 @@ class BankAccountFragment : AssetBaseFragment() {
             binding.accountTypeCompleteView.showDropDown()
         }
         binding.accountTypeCompleteView.setOnClickListener{
-            binding.accountTypeCompleteSpView.showDropDown()
+           // binding.accountTypeCompleteSpView.showDropDown()
         }
 
         binding.accountTypeCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {

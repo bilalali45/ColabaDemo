@@ -152,7 +152,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addOrUpdateSelfBusiness(newToken,data)
-            //Log.e("incomeDatasource","$response")
+            Log.e("incomeDatasource","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){

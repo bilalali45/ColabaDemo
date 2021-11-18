@@ -31,7 +31,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/15/2021.
  */
 @AndroidEntryPoint
-class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
+class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences

@@ -161,7 +161,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerIncomeDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            //Timber.e("IncomeResponse-", response.toString())
+            Timber.e("IncomeResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

@@ -265,11 +265,12 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     }
 
     suspend fun sendSelfEmploymentData(token: String,selfEmploymentData: SelfEmploymentData) {
-        //Log.e("ViewModel", "inside-SendData")
+        Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendSelfEmploymentData(token = token, selfEmploymentData)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
+                    Log.e("viewmodel", "success")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     //EventBus.getDefault().post(WebServiceErrorEvent(null, true))

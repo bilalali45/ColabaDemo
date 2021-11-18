@@ -21,7 +21,7 @@ class IncomeActivity : BaseActivity() {
     lateinit var binding: IncomeActivityLayoutBinding
     private val viewModel: BorrowerApplicationViewModel by viewModels()
     private val incomeViewModel: IncomeViewModel by viewModels()
-    private var borrowerTabList:ArrayList<Int>? = null
+    var borrowerTabList:ArrayList<Int>? = null
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
@@ -37,9 +37,9 @@ class IncomeActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList = it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-            //for (item in borrowerTabList!!) {
+            for (item in borrowerTabList!!) {
                 //Timber.d("item size " + item)
-            //}
+            }
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

@@ -39,6 +39,8 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private val viewModel : IncomeViewModel by activityViewModels()
     private lateinit var binding: SelfEmpolymentContLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
     var loanApplicationId: Int? = null
     var incomeInfoId :Int? = null
     var borrowerId :Int? = null
@@ -154,6 +156,25 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                     })
                 }
 
+            }
+        }
+    }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            Log.e("GOING BACK", "AFTER UPDATE")
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList:ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
             }
         }
     }
@@ -282,6 +303,23 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        Log.e("RECEIVED","TRUE")
+//        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+//            //updateMainIncome()
+//            //binding.loaderEmployment.visibility = View.GONE
+//        }
+//        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
+//            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+//        } else {
+//            if (event.addUpdateDataResponse.message != null)
+//                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+//        }
+    }
+
+
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
         if(isShowAddress){
             binding.layoutAddress.visibility = View.VISIBLE
@@ -374,19 +412,26 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
-        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-            binding.loaderSelfEmployment.visibility = View.GONE
+
+
+
+    /*@Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        updateMainIncome()
+                            //findNavController().popBackStack()
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
         }
-
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-
-        else
-            if(event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-
-        findNavController().popBackStack()
-    }
+    } */
 }

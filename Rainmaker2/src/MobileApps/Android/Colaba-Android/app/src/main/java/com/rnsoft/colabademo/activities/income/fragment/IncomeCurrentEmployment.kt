@@ -70,7 +70,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
             }
 
-            Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+            //Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
             if (loanApplicationId != null && borrowerId != null) {
                 toolbar.btnTopDelete.visibility = View.VISIBLE
@@ -609,15 +609,16 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-            binding.loaderEmployment.visibility = View.GONE
+            updateMainIncome()
+            //binding.loaderEmployment.visibility = View.GONE
         }
 
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-
-        else
-            if(event.addUpdateDataResponse.message != null)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
 
         findNavController().popBackStack()
     }
@@ -627,11 +628,11 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
-
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
                     val codeString = genericAddUpdateAssetResponse.code.toString()
                     if(codeString == "400" || codeString == "200"){
-                        findNavController().popBackStack()
+                        updateMainIncome()
+                        //findNavController().popBackStack()
                     }
                 })
 
@@ -643,6 +644,29 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             }
         }
     }
+
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            Log.e("GOING BACK", "AFTER UPDATE")
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList:ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
+            }
+        }
+    }
+
+
 
     private fun setInputFields() {
 
