@@ -8276,6 +8276,12 @@ Houston, TX 77027, USA</string>
                                                     </label>
                                                 </subviews>
                                             </stackView>
+                                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose one or more options." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbb-N4-PqO">
+                                                <rect key="frame" x="20" y="207.5" width="185.5" height="17"/>
+                                                <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
+                                                <color key="textColor" name="SeparatorErrorColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AjM-Yr-nmz">
                                                 <rect key="frame" x="20" y="232.5" width="335" height="71"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -8287,6 +8293,7 @@ Houston, TX 77027, USA</string>
                                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                                         <constraints>
                                             <constraint firstItem="ttF-8Y-lD4" firstAttribute="top" secondItem="DAk-lR-tpp" secondAttribute="bottom" id="CFW-W2-mbA"/>
+                                            <constraint firstItem="wbb-N4-PqO" firstAttribute="top" secondItem="PBO-Hu-UKE" secondAttribute="bottom" id="Eoc-39-Fi5"/>
                                             <constraint firstAttribute="trailing" secondItem="AjM-Yr-nmz" secondAttribute="trailing" constant="20" id="GOT-Ob-sgR"/>
                                             <constraint firstItem="DAk-lR-tpp" firstAttribute="top" secondItem="eK9-nD-6po" secondAttribute="bottom" id="I4W-79-hDP"/>
                                             <constraint firstItem="p5O-AX-Pey" firstAttribute="leading" secondItem="3rE-Dv-cO1" secondAttribute="leading" constant="20" id="Ioe-A4-hhh"/>
@@ -8301,6 +8308,7 @@ Houston, TX 77027, USA</string>
                                             <constraint firstItem="ttF-8Y-lD4" firstAttribute="leading" secondItem="3rE-Dv-cO1" secondAttribute="leading" constant="20" id="fCg-oZ-JTC"/>
                                             <constraint firstAttribute="trailing" secondItem="DAk-lR-tpp" secondAttribute="trailing" constant="20" id="fVd-kF-7ZI"/>
                                             <constraint firstItem="AjM-Yr-nmz" firstAttribute="leading" secondItem="3rE-Dv-cO1" secondAttribute="leading" constant="20" id="jRh-WK-FZ0"/>
+                                            <constraint firstItem="wbb-N4-PqO" firstAttribute="leading" secondItem="3rE-Dv-cO1" secondAttribute="leading" constant="20" id="mdr-xq-i29"/>
                                             <constraint firstItem="DAk-lR-tpp" firstAttribute="leading" secondItem="3rE-Dv-cO1" secondAttribute="leading" constant="20" id="sMw-77-Fa6"/>
                                             <constraint firstItem="eK9-nD-6po" firstAttribute="top" secondItem="p5O-AX-Pey" secondAttribute="bottom" constant="2" id="vZj-Vm-Gop"/>
                                             <constraint firstItem="PBO-Hu-UKE" firstAttribute="top" secondItem="ttF-8Y-lD4" secondAttribute="bottom" id="zeb-nR-fEz"/>
@@ -8362,6 +8370,7 @@ Houston, TX 77027, USA</string>
                         <outlet property="lblChapter12" destination="rZl-Nj-xPs" id="Urt-ej-hYb"/>
                         <outlet property="lblChapter13" destination="CQ1-rT-FFW" id="TDZ-ky-JIx"/>
                         <outlet property="lblChapter7" destination="9Rf-fn-9v1" id="3y4-Nj-Q74"/>
+                        <outlet property="lblError" destination="wbb-N4-PqO" id="yTA-rI-QBV"/>
                         <outlet property="lblUsername" destination="74a-9O-cE0" id="MzJ-Lz-H7i"/>
                         <outlet property="mainView" destination="3rE-Dv-cO1" id="uMj-BC-Q11"/>
                         <outlet property="mainViewHeightConstraint" destination="asz-t2-B38" id="p4N-ux-wIi"/>

@@ -70,6 +70,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
     
     @objc func yesStackViewTapped(){
         questionModel.isAffiliatedWithSeller = true
+        questionModel.answer = "Yes"
         isYes = true
         changeStatus()
         let vc = Utility.getPriorityLiensFollowupQuestionViewController()
@@ -83,6 +84,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
     @objc func noStackViewTapped(){
         questionModel.isAffiliatedWithSeller = false
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -116,7 +118,7 @@ class FamilyOrBusinessAffliationViewController: UIViewController {
                         "firstName": questionModel.firstName,
                         "lastName": questionModel.lastName,
                         "question": questionModel.question,
-                        "answer": NSNull(),
+                        "answer": questionModel.answer,
                         "answerDetail":questionModel.answerDetail,
                         "selectionOptionId": NSNull(),
                         "answerData": [

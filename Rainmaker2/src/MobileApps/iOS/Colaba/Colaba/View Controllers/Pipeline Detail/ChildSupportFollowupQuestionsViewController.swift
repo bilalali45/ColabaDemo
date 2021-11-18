@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ChildSupportFollowupQuestionsViewControllerDelegate: AnyObject {
+    func saveQuestion(childSupport: GovernmentQuestionModel)
+}
+
 class ChildSupportFollowupQuestionsViewController: UIViewController {
 
     //MARK:- Outlets and Properties
@@ -48,6 +52,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
     var isSeparateMaintainance = false
     var questionModel = GovernmentQuestionModel()
     var borrowerName = ""
+    weak var delegate: ChildSupportFollowupQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,7 +113,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         }
         
         if let separate = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Separate Maintenance")}).first{
-            isAlimony = true
+            isSeparateMaintainance = true
             txtfieldSeparateMaintainancePaymentsRemaining.setTextField(text: "\(separate.remainingMonth)")
             txtfieldSeparateMaintainanceMonthlyPayment.setTextField(text: String(format: "%.0f", Double(separate.monthlyPayment).rounded()))
             txtfieldSeparateMaintainancePaymentRecipient.setTextField(text: separate.name)
@@ -222,6 +227,91 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         
     }
     
+    func saveQuestion(){
+        
+        questionModel.answerData.removeAll()
+        
+        if (isChildSupport){
+            
+            var monthlyPayment: Int = 0
+            if (txtfieldChildSupportMonthlyPayment.text != ""){
+                if let value = Int(cleanString(string: txtfieldChildSupportMonthlyPayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                    monthlyPayment = value
+                }
+            }
+            
+            var remainingMonth: Int = 0
+            if (txtfieldChildSupportPaymentsRemaining.text != ""){
+                if let value = Int(txtfieldChildSupportPaymentsRemaining.text!){
+                    remainingMonth = value
+                }
+            }
+            
+            let model = AnswerData()
+            model.liabilityName = "Child Support"
+            model.liabilityTypeId = 1
+            model.monthlyPayment = monthlyPayment
+            model.name = txtfieldChildSupportPaymentRecipient.text!
+            model.remainingMonth = remainingMonth
+            
+            questionModel.answerData.append(model)
+        }
+        
+        if (isAlimony){
+            
+            var monthlyPayment: Int = 0
+            if (txtfieldAlimonyMonthlyPayment.text != ""){
+                if let value = Int(cleanString(string: txtfieldAlimonyMonthlyPayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                    monthlyPayment = value
+                }
+            }
+            
+            var remainingMonth: Int = 0
+            if (txtfieldAlimonyPaymentsRemaining.text != ""){
+                if let value = Int(txtfieldAlimonyPaymentsRemaining.text!){
+                    remainingMonth = value
+                }
+            }
+            
+            let model = AnswerData()
+            model.liabilityName = "Alimony"
+            model.liabilityTypeId = 8
+            model.monthlyPayment = monthlyPayment
+            model.name = txtfieldAlimonyPaymentRecipient.text!
+            model.remainingMonth = remainingMonth
+            
+            questionModel.answerData.append(model)
+        }
+        
+        if (isSeparateMaintainance){
+            
+            var monthlyPayment: Int = 0
+            if (txtfieldSeparateMaintainanceMonthlyPayment.text != ""){
+                if let value = Int(cleanString(string: txtfieldSeparateMaintainanceMonthlyPayment.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                    monthlyPayment = value
+                }
+            }
+            
+            var remainingMonth: Int = 0
+            if (txtfieldSeparateMaintainancePaymentsRemaining.text != ""){
+                if let value = Int(txtfieldSeparateMaintainancePaymentsRemaining.text!){
+                    remainingMonth = value
+                }
+            }
+            
+            let model = AnswerData()
+            model.liabilityName = "Separate Maintenance"
+            model.liabilityTypeId = 2
+            model.monthlyPayment = monthlyPayment
+            model.name = txtfieldSeparateMaintainancePaymentRecipient.text!
+            model.remainingMonth = remainingMonth
+            
+            questionModel.answerData.append(model)
+        }
+        
+        self.delegate?.saveQuestion(childSupport: questionModel)
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -244,6 +334,7 @@ class ChildSupportFollowupQuestionsViewController: UIViewController {
         }
         
         if (validate()){
+            saveQuestion()
             self.dismissVC()
         }
     }

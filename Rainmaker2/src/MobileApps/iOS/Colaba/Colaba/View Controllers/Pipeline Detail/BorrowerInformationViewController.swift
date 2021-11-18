@@ -909,6 +909,27 @@ class BorrowerInformationViewController: BaseViewController {
         
     }
     
+    func deletePreviousAddress(addressId: Int){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&id=\(addressId)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteBorrowerPreviousAddress, method: .post, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.getBorrowerDetail()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension BorrowerInformationViewController: ColabaTextFieldDelegate {
@@ -972,6 +993,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
             vc.selectedAddress = borrowerInformationModel.previousAddresses[indexPath.row - 1]
             vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
             vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.loanApplicationId = self.loanApplicationId
             vc.housingStatusArray = self.housingStatusArray
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
@@ -985,7 +1007,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        return indexPath.row > 0
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -1019,13 +1041,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
 
 extension BorrowerInformationViewController: DeleteAddressPopupViewControllerDelegate{
     func deleteAddress(indexPath: IndexPath) {
-        totalAddresses = totalAddresses - 1
-        self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
-        self.tblViewAddress.deleteRows(at: [indexPath], with: .left)
-        self.tblViewAddress.reloadData()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
-        }
+        deletePreviousAddress(addressId: borrowerInformationModel.previousAddresses[indexPath.row - 1].id)
     }
 }
 

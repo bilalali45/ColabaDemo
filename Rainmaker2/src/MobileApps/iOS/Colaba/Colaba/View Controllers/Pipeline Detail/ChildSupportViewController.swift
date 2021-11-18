@@ -47,6 +47,7 @@ class ChildSupportViewController: BaseViewController {
         detailView2.isHidden = true
         detailView3.isHidden = true
         setQuestionData()
+        saveQuestion()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,11 +94,14 @@ class ChildSupportViewController: BaseViewController {
         changeStatus()
         let vc = Utility.getChildSupportFollowupQuestionsVC()
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
+        vc.questionModel = questionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
     @objc func noStackViewTapped(){
         isYes = false
+        questionModel.answer = "No"
         changeStatus()
     }
     
@@ -131,13 +135,68 @@ class ChildSupportViewController: BaseViewController {
                 detailView3.isHidden = true
             }
         }
+        saveQuestion()
     }
     
     @objc func detailViewTapped(){
         let vc = Utility.getChildSupportFollowupQuestionsVC()
         vc.borrowerName = "\(questionModel.firstName) \(questionModel.lastName)"
         vc.questionModel = questionModel
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
+    func saveQuestion(){
+        
+        var answerData: [Any] = []
+        
+        if let childSupport = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Child Support")}).first{
+            let data = ["liabilityTypeId": 1,
+                        "liabilityName": childSupport.liabilityName,
+                        "remainingMonth": childSupport.remainingMonth,
+                        "monthlyPayment": childSupport.monthlyPayment,
+                        "name": childSupport.name] as [String: Any]
+            answerData.append(data)
+        }
+        
+        if let alimony = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Alimony")}).first{
+            let data = ["liabilityTypeId": 8,
+                        "liabilityName": alimony.liabilityName,
+                        "remainingMonth": alimony.remainingMonth,
+                        "monthlyPayment": alimony.monthlyPayment,
+                        "name": alimony.name] as [String: Any]
+            answerData.append(data)
+        }
+        
+        if let separate = questionModel.answerData.filter({$0.liabilityName.localizedCaseInsensitiveContains("Separate Maintenance")}).first{
+            let data = ["liabilityTypeId": 2,
+                        "liabilityName": separate.liabilityName,
+                        "remainingMonth": separate.remainingMonth,
+                        "monthlyPayment": separate.monthlyPayment,
+                        "name": separate.name] as [String: Any]
+            answerData.append(data)
+        }
+        
+        let question = ["id": questionModel.id,
+                        "parentQuestionId": NSNull(),
+                        "headerText": questionModel.headerText,
+                        "questionSectionId": questionModel.questionSectionId,
+                        "ownTypeId": questionModel.ownTypeId,
+                        "firstName": questionModel.firstName,
+                        "lastName": questionModel.lastName,
+                        "question": questionModel.question,
+                        "answer": questionModel.answer,
+                        "answerDetail": questionModel.answerDetail,
+                        "selectionOptionId": NSNull(),
+                        "answerData": answerData.count == 0 ? NSNull() : answerData] as [String: Any]
+        self.delegate?.getChildSupportQuestionModel(question: question)
+    }
+}
+
+extension ChildSupportViewController: ChildSupportFollowupQuestionsViewControllerDelegate{
+    func saveQuestion(childSupport: GovernmentQuestionModel) {
+        questionModel = childSupport
+        questionModel.answer = "Yes"
+        changeStatus()
+    }
 }
