@@ -52,11 +52,7 @@ class RealEstateActivity : BaseActivity() {
                     if (loanApplicationId != null && borrowerPropertyId!! >0) {
                         coroutineScope {
                             binding.loaderRealEstate.visibility = View.VISIBLE
-                            viewModel.getRealEstateDetails(
-                                authToken,
-                                loanApplicationId!!,
-                                borrowerPropertyId!!
-                            )
+                            viewModel.getRealEstateDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
                             //viewModel.getFirstMortgageDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
                             //viewModel.getSecondMortgageDetails(authToken, loanApplicationId!! 1003)
                             viewModel.getPropertyTypes(authToken)
@@ -67,7 +63,6 @@ class RealEstateActivity : BaseActivity() {
                 }
             }
         }
-
 
     }
 }

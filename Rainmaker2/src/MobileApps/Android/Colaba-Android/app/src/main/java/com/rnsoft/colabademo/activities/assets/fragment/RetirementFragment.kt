@@ -172,7 +172,7 @@ class RetirementFragment:AssetBaseFragment() {
             viewModel.retirementAccountDetail.observe(viewLifecycleOwner, { observeRetirementData ->
                 if(observeRetirementData.code == AppConstant.RESPONSE_CODE_SUCCESS) {
                     observeRetirementData.retirementAccountData?.let{ retirementAccountData->
-                        retirementAccountData.id?.let { id = it }
+                        //retirementAccountData.id?.let { id = it }
                         binding.financialEditText.setText(retirementAccountData.institutionName)
                         binding.accountNumberEdittext.setText(retirementAccountData.accountNumber)
                         val value = retirementAccountData.value.toString()

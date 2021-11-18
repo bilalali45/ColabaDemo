@@ -234,7 +234,7 @@ class StockBondsFragment:AssetBaseFragment() {
                         binding.financialEditText.setText(financialAssetData.institutionName)
                         binding.accountNumberEdittext.setText(financialAssetData.accountNumber)
                         binding.annualBaseEditText.setText(financialAssetData.balance.toString())
-                        financialAssetData.id?.let { id = it }
+                        //financialAssetData.id?.let { id = it }
                         financialAssetData.assetTypeId?.let { assetTypeId->
                             for(item in bankAccounts){
                                 if(assetTypeId == item.id){
