@@ -28,7 +28,7 @@ interface ServerApi{
     suspend fun getOccupancyType(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyStatusDropDown")
-    suspend fun getPropertyStauts(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
+    suspend fun getPropertyStatus(@Header("Authorization" )Authorization:String) : ArrayList<DropDownResponse>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetCountries")
     suspend fun getCountries(@Header("Authorization" )Authorization:String) : ArrayList<CountriesModel>

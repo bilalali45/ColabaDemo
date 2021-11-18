@@ -110,23 +110,23 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                  }
              }
 
-             it.isHeloc?.let {
-                 if (it == true) {
+             it.isHeloc?.let { bool->
+                 if (bool == true) {
                      binding.switchCreditLimit.isChecked = true
                      binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                     binding.layoutCreditLimit.visibility = View.VISIBLE
+
+                     it.helocCreditLimit?.let {
+                         binding.edCreditLimit.setText(Math.round(it).toString())
+                         CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
+                     }
+
                  } else {
                      binding.switchCreditLimit.isChecked = false
                      binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                  }
              }
-             it.helocCreditLimit?.let {
-                 binding.edCreditLimit.setText(Math.round(it).toString())
-                 CustomMaterialFields.setColor(
-                     binding.layoutCreditLimit,
-                     R.color.grey_color_two,
-                     requireActivity()
-                 )
-             }
+
              it.paidAtClosing?.let {
                  if (it == true) {
                      binding.rbPaidClosingYes.isChecked = true

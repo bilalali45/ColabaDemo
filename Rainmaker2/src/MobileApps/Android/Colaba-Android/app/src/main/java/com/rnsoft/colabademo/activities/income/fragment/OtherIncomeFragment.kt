@@ -42,7 +42,6 @@ class OtherIncomeFragment : BaseFragment() {
     private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
         "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
                 " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
-
     private var loanApplicationId:Int? = null
     private var borrowerId:Int? = null
     private var incomeCategoryId:Int? = null

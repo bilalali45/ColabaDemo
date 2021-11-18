@@ -98,7 +98,7 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
     suspend fun getPropertyStatus(token: String): Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getOccupancyType(newToken)
+            val response = serverApi.getPropertyStatus(newToken)
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -165,6 +165,7 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
     }
 
     suspend fun deleteRealEstate(token: String,borrowerPropertyId: Int): Result<AddUpdateDataResponse> {
+        Log.e("-dataSource-borrowerPropertyId" , ""+ borrowerPropertyId)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.deleteRealEstate(newToken, borrowerPropertyId)

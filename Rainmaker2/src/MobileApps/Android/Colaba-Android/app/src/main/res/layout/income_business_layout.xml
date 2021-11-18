@@ -244,7 +244,7 @@
                 android:id="@+id/add_business_address"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/style_btn_add"
                 android:clickable="true"
                 android:gravity="center">

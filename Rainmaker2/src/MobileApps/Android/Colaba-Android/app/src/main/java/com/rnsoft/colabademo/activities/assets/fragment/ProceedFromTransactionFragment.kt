@@ -134,7 +134,7 @@ import java.util.ArrayList
             visibleOtherFields(position)
             viewModel.proceedFromLoanModel.observe(viewLifecycleOwner, { proceedFromLoanModel ->
                 proceedFromLoanModel.proceedFromLoanData?.let{ proceedFromLoanData->
-                    proceedFromLoanData.id?.let { id = it }
+                    //proceedFromLoanData.id?.let { assetUniqueId = it }
                     proceedFromLoanData.value?.let {
                         binding.annualBaseEditText.setText(it.toString())
                     }
