@@ -47,6 +47,7 @@ class AddPreviousResidenceViewController: BaseViewController {
     var housingStatusArray = [DropDownModel]()
     var borrowerFirstName = ""
     var borrowerLastName = ""
+    var loanApplicationId = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -275,6 +276,7 @@ class AddPreviousResidenceViewController: BaseViewController {
         let vc = Utility.getDeleteAddressPopupVC()
         vc.popupTitle = "Are you sure you want to delete \(borrowerFirstName)'s Previous Residence?"
         vc.screenType = 2
+        vc.delegate = self
         self.present(vc, animated: false, completion: nil)
     }
     
@@ -307,6 +309,30 @@ class AddPreviousResidenceViewController: BaseViewController {
             isValidate = txtfieldMonthlyRent.validate() && isValidate
         }
         return isValidate
+    }
+    
+    //MARK:- API's
+    
+    func deleteAddress(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=\(loanApplicationId)&id=\(selectedAddress.id)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .deleteBorrowerPreviousAddress, method: .post, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.dismissVC()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -500,5 +526,11 @@ extension AddPreviousResidenceViewController : ColabaTextFieldDelegate {
                 self.view.layoutSubviews()
             }
         }
+    }
+}
+
+extension AddPreviousResidenceViewController: DeleteAddressPopupViewControllerDelegate{
+    func deleteAddress(indexPath: IndexPath) {
+        deleteAddress()
     }
 }

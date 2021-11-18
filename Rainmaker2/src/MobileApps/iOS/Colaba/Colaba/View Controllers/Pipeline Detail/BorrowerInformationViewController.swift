@@ -972,6 +972,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
             vc.selectedAddress = borrowerInformationModel.previousAddresses[indexPath.row - 1]
             vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
             vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.loanApplicationId = self.loanApplicationId
             vc.housingStatusArray = self.housingStatusArray
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
