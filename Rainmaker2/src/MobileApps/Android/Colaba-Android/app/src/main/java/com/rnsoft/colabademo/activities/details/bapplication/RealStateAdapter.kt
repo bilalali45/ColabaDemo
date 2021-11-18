@@ -32,9 +32,7 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
             }
             propertyType.text = item.propertyTypeName
 
-
             itemView.setOnClickListener {
-                //itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
                 onRealEstateClick.onRealEstateClick(position)
             }
         }
@@ -42,7 +40,11 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
     }
 
     inner class RealStateFooterViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        override fun bind(item: RealStateOwn) {}
+        override fun bind(item: RealStateOwn) {
+            itemView.setOnClickListener {
+                onRealEstateClick.onRealEstateClick(position)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

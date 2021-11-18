@@ -15,6 +15,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeBusinessLayoutBinding
@@ -39,7 +40,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeBusinessLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    //private var savedViewInstance: View? = null
+    private var savedViewInstance: View? = null
     //private val businessTypeArray = listOf("Partnership (e.g. LLC, LP, or GP","Corporation (e.g. C-Corp, S-Corp, or LLC")
     private val viewModel : IncomeViewModel by activityViewModels()
     var incomeInfoId :Int? = null
@@ -53,35 +54,43 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = IncomeBusinessLayoutBinding.inflate(inflater, container, false)
-        toolbarBinding = binding.headerIncome
-        super.addListeners(binding.root)
+    ): View? {
+//          return if (savedViewInstance != null){
+//            savedViewInstance
+//        } else {
+              binding = IncomeBusinessLayoutBinding.inflate(inflater, container, false)
+              //savedViewInstance = binding.root
+              toolbarBinding = binding.headerIncome
+              super.addListeners(binding.root)
 
-        // set Header title
-        toolbarBinding.toolbarTitle.setText(getString(R.string.business))
+              // set Header title
+              toolbarBinding.toolbarTitle.setText(getString(R.string.business))
 
-        arguments?.let { arguments ->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-            borrowerId = arguments.getInt(AppConstant.borrowerId)
-            arguments.getInt(AppConstant.incomeId).let {
-                if(it > 0)
-                    incomeInfoId = it
-            }
-        }
-        Log.e("Current Employment-oncreate"," Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+              arguments?.let { arguments ->
+                  loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                  borrowerId = arguments.getInt(AppConstant.borrowerId)
+                  arguments.getInt(AppConstant.incomeId).let {
+                      if (it > 0)
+                          incomeInfoId = it
+                  }
+              }
 
+              initViews()
+              observeBusinesstIncomeTypes()
 
-        initViews()
-        observeBusinesstIncomeTypes()
+              if (loanApplicationId != null && borrowerId != null){
+                  toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+                  toolbarBinding.btnTopDelete.setOnClickListener {
+                      DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                  }
+              }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(
-            viewLifecycleOwner) { result ->
-            businessAddress = result
-            displayAddress(result)
-        }
-
-        return binding.root
+              if (incomeInfoId == null || incomeInfoId == 0) {
+                  toolbarBinding.btnTopDelete.visibility = View.GONE
+              }
+               return binding.root
+              //savedViewInstance
+          //}
     }
 
 
@@ -159,14 +168,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
 
                             info.address?.let {
                                 businessAddress = it
-
-                                val builder = StringBuilder()
-                                it.street?.let { builder.append(it).append(" ") }
-                                it.unit?.let { builder.append(it) }
-                                it.city?.let { builder.append("\n").append(it).append(" ") }
-                                it.stateName?.let{ builder.append(it).append(" ")}
-                                it.zipCode?.let { builder.append(it) }
-                                binding.textviewBusinessAddress.text = builder
+                                displayAddress(it)
                             }
 
                             info.incomeTypeId?.let { id ->
@@ -353,6 +355,16 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         binding.textviewBusinessAddress.text = builder
     }
 
+    override fun onResume() {
+        super.onResume()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result -> businessAddress = result
+            //binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
+            displayAddress(result)
+        }
+    }
+
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -376,6 +388,26 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
         findNavController().popBackStack()
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        findNavController().popBackStack()
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
+        }
     }
 
     private fun openCalendar() {

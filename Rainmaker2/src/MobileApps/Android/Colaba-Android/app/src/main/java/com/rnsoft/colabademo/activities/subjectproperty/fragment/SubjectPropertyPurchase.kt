@@ -42,6 +42,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     private var purchaseAddress = AddressData()
     private lateinit var adapterCoborrower: CoBorrowerAdapter
     var coborrowerList = ArrayList<CoBorrowerOccupancyData>()
+    private var savedViewInstance: View? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

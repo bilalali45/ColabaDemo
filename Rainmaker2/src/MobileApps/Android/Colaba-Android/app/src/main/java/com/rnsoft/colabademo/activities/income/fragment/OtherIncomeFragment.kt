@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeOtherLayoutBinding
@@ -36,7 +37,6 @@ class OtherIncomeFragment : BaseFragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : IncomeViewModel by activityViewModels()
-    var incomeInfoId :Int? = null
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
@@ -45,9 +45,9 @@ class OtherIncomeFragment : BaseFragment() {
 
     private var loanApplicationId:Int? = null
     private var borrowerId:Int? = null
-    private var incomeId:Int? = null
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
+    private var incomeInfoId :Int? = null
     private var incomeTypes: ArrayList<DropDownResponse> = arrayListOf()
 
 
@@ -74,11 +74,20 @@ class OtherIncomeFragment : BaseFragment() {
             }
         }
 
-       // Log.e("onCreate", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
-
         initViews()
-        //observeOtherIncomeTypes()
-        getOtherIncomeDetails()
+        observeOtherIncomeTypes()
+
+        if(loanApplicationId != null && borrowerId !=null){
+            toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+            toolbarBinding.btnTopDelete.setOnClickListener {
+                DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+            }
+        }
+
+        if(incomeInfoId == null || incomeInfoId ==0) {
+            toolbarBinding.btnTopDelete.visibility = View.GONE
+        }
+
         return binding.root
     }
 
@@ -101,38 +110,47 @@ class OtherIncomeFragment : BaseFragment() {
                 }
                 else
                     findNavController().popBackStack()
-
             })
         }
 
     }
 
     private fun getOtherIncomeDetails(){
-        //Timber.e( "borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId )
+        //Timber.e ( "borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId )
 
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if(incomeInfoId != null){
+        if(incomeInfoId != null){
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     binding.loaderOtherIncome.visibility = View.VISIBLE
-                    viewModel.getOtherIncome(authToken,incomeId!!)
-//                    viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
-//                        binding.loaderOtherIncome.visibility = View.GONE
-//                        data?.otherIncomeData?.let { info ->
-//                            info.incomeTypeId?.let { incomeTypeId->
-//                                for(item in incomeTypes)
-//                                    if(incomeTypeId == item.id){
-//                                        binding.tvIncomeType.setText(item.name, false)
-//                                        toggleOtherFields()
-//                                        break
-//                                    }
-//                            }
-//                            //info.description?.let { binding.edDesc.setText(it) }
-//                            //info.monthlyBaseIncome?.let {  binding.edMonthlyIncome.setText(it.toString()) }
-//                            //info.annualBaseIncome?.let {  binding.edAnnualIncome.setText(it.toString()) }
-//                        }
-//                    })
+                    viewModel.getOtherIncome(authToken, incomeInfoId!!)
                 }
             }
+
+            viewModel.otherIncomeData.observe(viewLifecycleOwner, { data ->
+                binding.loaderOtherIncome.visibility = View.GONE
+                data?.otherIncomeData?.let { info ->
+                    info.incomeTypeId?.let { incomeTypeId ->
+                        for (item in incomeTypes)
+                            if (incomeTypeId == item.id) {
+                                binding.tvIncomeType.setText(item.name, false)
+                                toggleOtherFields()
+                                break
+                            }
+                    }
+                    info.description?.let {
+                        binding.edDesc.setText(it)
+                        CustomMaterialFields.setColor(binding.layoutDesc, R.color.grey_color_two, requireContext())
+                    }
+                    info.monthlyBaseIncome?.let {
+                        binding.edMonthlyIncome.setText(it.toString())
+                        CustomMaterialFields.setColor(binding.layoutMonthlyIncome, R.color.grey_color_two, requireContext())
+                    }
+                    info.annualBaseIncome?.let {
+                        binding.edAnnualIncome.setText(it.toString())
+                        CustomMaterialFields.setColor(binding.layoutAnnualIncome, R.color.grey_color_two, requireContext())
+                    }
+                }
+            })
         }
     }
 
@@ -170,23 +188,10 @@ class OtherIncomeFragment : BaseFragment() {
             super.removeFocusFromAllFields(binding.mainLayoutOther)
         }
 
-
         setInputFields()
         setRetirementType()
 
     }
-
-    /*override fun onClick(view: View?) {
-        when (view?.getId()) {
-            R.id.btn_save_change -> checkValidations()
-            R.id.btn_close -> findNavController().popBackStack()
-            R.id.mainLayout_other -> {
-                HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutOther)
-                super.removeFocusFromAllFields(binding.mainLayoutOther)
-            }
-
-        }
-    }*/
 
     private fun setInputFields() {
 
@@ -259,7 +264,7 @@ class OtherIncomeFragment : BaseFragment() {
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         if (loanApplicationId != null && borrowerId != null) {
-                            Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeId)
+                            Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
                             Log.e("employmentData-snding to API", "" + data)
                             binding.loaderOtherIncome.visibility = View.VISIBLE
                             viewModel.sendOtherIncome(authToken, data)
@@ -271,8 +276,6 @@ class OtherIncomeFragment : BaseFragment() {
     }
 
     private fun setRetirementType(){
-        //val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, retirementArray)
-        //binding.tvRetirementType.setAdapter(adapter)
         binding.tvIncomeType.setOnFocusChangeListener { _, _ ->
             binding.tvIncomeType.showDropDown()
         }
@@ -332,5 +335,24 @@ class OtherIncomeFragment : BaseFragment() {
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
         findNavController().popBackStack()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        findNavController().popBackStack()
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
+        }
     }
 }
