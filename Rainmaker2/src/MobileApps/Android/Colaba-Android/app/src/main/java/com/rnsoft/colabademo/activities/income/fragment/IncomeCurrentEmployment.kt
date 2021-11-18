@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -81,6 +83,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             }
             if (incomeInfoId == null || incomeInfoId == 0) {
                 toolbar.btnTopDelete.visibility = View.GONE
+                showHideAddress(false,true)
             }
 
             initViews()
@@ -173,6 +176,8 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                          employerAddress = it
                          displayAddress(it)
                          //binding.textviewCurrentEmployerAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+                     } ?:run{
+                         showHideAddress(false,true)
                      }
 
                      data?.employmentData?.wayOfIncome?.let { salary ->
@@ -366,6 +371,17 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
+        if(isShowAddress){
+            binding.layoutAddress.visibility = View.VISIBLE
+            binding.addEmployerAddress.visibility = View.GONE
+        }
+        if(isAddAddress){
+            binding.layoutAddress.visibility = View.GONE
+            binding.addEmployerAddress.visibility = View.VISIBLE
+        }
+    }
+
     private fun openAddressFragment(){
         val addressFragment = AddressCurrentEmployment()
         val bundle = Bundle()
@@ -376,23 +392,27 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     }
 
     private fun displayAddress(it: AddressData) {
-        Log.e("displayAddress", ""+ it)
-
-        val builder = StringBuilder()
-        it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it) }
-        it.city?.let { builder.append("\n").append(it).append(" ") }
-        it.stateName?.let { builder.append(it).append(" ") }
-        it.zipCode?.let { builder.append(it) }
-        it.countryName.let {
-            if(it != null)
-                builder.append(" ").append(it)
+        //Log.e("displayAddress", ""+ it)
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+            showHideAddress(false,true)
+        else {
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it).append("\n") }
+            it.city?.let { builder.append(it).append(" ") }
+            it.stateName?.let { builder.append(it).append(" ") }
+            it.zipCode?.let { builder.append(it) }
+            it.countryName?.let { builder.append(" ").append(it) }
+            binding.textviewCurrentEmployerAddress.text = builder
+            showHideAddress(true,false)
         }
-        binding.textviewCurrentEmployerAddress.text = builder
-
     }
 
     private fun initViews() {
+        binding.addEmployerAddress.setOnClickListener {
+            openAddressFragment()
+        }
+
         binding.rbEmployedByFamilyYes.setOnClickListener(this)
         binding.rbEmployedByFamilyNo.setOnClickListener(this)
         binding.rbOwnershipYes.setOnClickListener(this)
@@ -583,6 +603,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -670,7 +691,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
     }
 
-    private fun openCalendar() {
+    /*private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -685,7 +706,53 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             day
         )
         dpd.show()
+    } */
+
+    var maxDate:Long = 0
+    var minDate:Long = 0
+
+    private fun openCalendar() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        //val newMonth = month + 1
+
+        /*
+        val dpd = DatePickerDialog(
+            requireActivity(), {
+                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
+                val cal = Calendar.getInstance()
+                cal.set(year, newMonth, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }, year, month, day)
+         */
+
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.editTextStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, (monthOfYear), dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(minDate!=0L)
+            datePickerDialog.datePicker.maxDate = minDate
+        datePickerDialog.show()
+
     }
+
+    private fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        return df.parse(date).time
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()

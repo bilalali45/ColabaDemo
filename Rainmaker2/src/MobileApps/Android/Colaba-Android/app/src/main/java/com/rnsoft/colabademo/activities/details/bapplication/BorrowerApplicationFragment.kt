@@ -42,6 +42,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
     var saveBorrowerId:Int = 0
+    var borrowerName : String? = null
 
 
     @Inject
@@ -188,6 +189,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         borrowerInfoList.clear()
                         borrowerInfoList = borrowersList
                         saveBorrowerId = borrowersList.get(0).borrowerId
+                        borrowerName = borrowersList.get(0).firstName.plus(" ").plus(borrowersList.get(0).lastName)
 
 
                         for(borrower in borrowersList){
@@ -237,7 +239,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
                 realStateList.add(RealStateOwn(null,saveBorrowerId,0,0,"", true,0))
-                Log.e("list2", ""+realStateList)
                 realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
                 realStateRecyclerView.adapter = realStateAdapter
                 realStateAdapter.notifyDataSetChanged()
@@ -358,6 +359,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val intent = Intent(requireActivity(), RealEstateActivity::class.java)
                 intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
                 intent.putExtra(AppConstant.borrowerId, realStateList.get(position).borrowerId)
+                intent.putExtra(AppConstant.borrowerName, borrowerName)
                 startActivity(intent)
             } else {
                 val intent = Intent(requireActivity(), RealEstateActivity::class.java)
@@ -365,6 +367,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 intent.putExtra(AppConstant.borrowerId, realStateList.get(position).borrowerId)
                 intent.putExtra(AppConstant.propertyInfoId, realStateList.get(position).propertyInfoId)
                 intent.putExtra(AppConstant.borrowerPropertyId, realStateList.get(position).borrowerPropertyId)
+                intent.putExtra(AppConstant.borrowerName, borrowerName)
                 startActivity(intent)
             }
 

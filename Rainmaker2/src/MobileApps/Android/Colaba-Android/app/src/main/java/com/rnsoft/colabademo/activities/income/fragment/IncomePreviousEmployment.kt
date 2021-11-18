@@ -82,6 +82,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
             if (incomeInfoId == null || incomeInfoId == 0) {
                 toolbar.btnTopDelete.visibility = View.GONE
+                showHideAddress(false,true)
             }
 
             savedViewInstance
@@ -144,7 +145,8 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                     data.employmentData?.employerAddress?.let {
                         employerAddress = it
                         displayAddress(it)
-                    }
+                    } ?: run {
+                        showHideAddress(false,true) }
 
                     info?.hasOwnershipInterest?.let {
                         if (it == true) {
@@ -173,6 +175,10 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     private fun initViews() {
+        binding.addEmployerAddress.setOnClickListener {
+            openAddressFragment()
+        }
+
         binding.rbOwnershipYes.setOnClickListener(this)
         binding.rbOwnershipNo.setOnClickListener(this)
         binding.layoutAddress.setOnClickListener(this)
@@ -329,6 +335,17 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         }
     }
 
+    private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
+        if(isShowAddress){
+            binding.layoutAddress.visibility = View.VISIBLE
+            binding.addEmployerAddress.visibility = View.GONE
+        }
+        if(isAddAddress){
+            binding.layoutAddress.visibility = View.GONE
+            binding.addEmployerAddress.visibility = View.VISIBLE
+        }
+    }
+
     private fun ownershipInterest(){
         if(binding.rbOwnershipYes.isChecked) {
             binding.rbOwnershipYes.setTypeface(null, Typeface.BOLD)
@@ -363,14 +380,19 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     private fun displayAddress(it: AddressData){
-        val builder = StringBuilder()
-        it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it).append("\n") }
-        it.city?.let { builder.append(it).append(" ") }
-        it.stateName?.let{ builder.append(it).append(" ")}
-        it.zipCode?.let { builder.append(it) }
-        it.countryName?.let { builder.append(" ").append(it)}
-        binding.textviewPrevEmploymentAddress.text = builder
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+            showHideAddress(false,true)
+        else {
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it).append("\n") }
+            it.city?.let { builder.append(it).append(" ") }
+            it.stateName?.let { builder.append(it).append(" ") }
+            it.zipCode?.let { builder.append(it) }
+            it.countryName?.let { builder.append(" ").append(it) }
+            binding.textviewPrevEmploymentAddress.text = builder
+            showHideAddress(true,false)
+        }
     }
 
     override fun onStart(){

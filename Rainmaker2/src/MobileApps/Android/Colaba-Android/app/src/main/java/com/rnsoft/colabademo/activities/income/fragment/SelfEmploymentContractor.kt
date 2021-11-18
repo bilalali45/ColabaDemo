@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.SelfEmpolymentContLayoutBinding
@@ -22,6 +24,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -67,6 +70,18 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                  }
              }
 
+             if (loanApplicationId != null && borrowerId != null) {
+                 toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+                 toolbarBinding.btnTopDelete.setOnClickListener {
+                     DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                 }
+             }
+
+             if (incomeInfoId == null || incomeInfoId == 0) {
+                 toolbarBinding.btnTopDelete.visibility = View.GONE
+                 showHideAddress(false,true)
+             }
+
              findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
                  AppConstant.address
              )?.observe(viewLifecycleOwner) { result ->
@@ -82,6 +97,10 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     }
 
     private fun initViews(){
+        binding.addBusinessAddress.setOnClickListener {
+            openAddressFragment()
+        }
+
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutBusinessCont.setOnClickListener(this)
@@ -129,7 +148,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                             info.businessAddress?.let {
                                businessAddress = it
                                 displayAddress(it)
-                            }
+                            } ?:run { showHideAddress(false,true)}
                         }
                         binding.loaderSelfEmployment.visibility = View.GONE
                     })
@@ -146,6 +165,22 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         bundle.putParcelable(AppConstant.address,businessAddress)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_business_address, addressFragment.arguments)
+    }
+
+    private fun displayAddress(it: AddressData){
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+            showHideAddress(false,true)
+        else {
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it).append("\n") }
+            it.city?.let { builder.append(it).append(" ") }
+            it.stateName?.let { builder.append(it).append(" ") }
+            it.zipCode?.let { builder.append(it) }
+            it.countryName?.let { builder.append(" ").append(it) }
+            binding.textviewBusinessAddress.text = builder
+            showHideAddress(true,false)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -247,17 +282,17 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
-    private fun displayAddress(it: AddressData){
-        val builder = StringBuilder()
-        it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it).append("\n") }
-        it.city?.let { builder.append(it).append(" ") }
-        it.stateName?.let{ builder.append(it).append(" ")}
-        it.zipCode?.let { builder.append(it) }
-        it.countryName?.let { builder.append(" ").append(it)}
-        binding.textviewBusinessAddress.text = builder
+    private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
+        if(isShowAddress){
+            binding.layoutAddress.visibility = View.VISIBLE
+            binding.addBusinessAddress.visibility = View.GONE
+        }
+        if(isAddAddress){
+            binding.layoutAddress.visibility = View.GONE
+            binding.addBusinessAddress.visibility = View.VISIBLE
+        }
     }
-
+/*
     private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -271,6 +306,51 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             month,
             day)
         dpd.show()
+    } */
+
+    var maxDate:Long = 0
+    var minDate:Long = 0
+
+    private fun openCalendar() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        //val newMonth = month + 1
+
+        /*
+        val dpd = DatePickerDialog(
+            requireActivity(), {
+                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
+                val cal = Calendar.getInstance()
+                cal.set(year, newMonth, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }, year, month, day)
+         */
+
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.editTextBstartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, (monthOfYear), dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(minDate!=0L)
+            datePickerDialog.datePicker.maxDate = minDate
+        datePickerDialog.show()
+
+    }
+
+    private fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        return df.parse(date).time
     }
 
     override fun onResume() {
