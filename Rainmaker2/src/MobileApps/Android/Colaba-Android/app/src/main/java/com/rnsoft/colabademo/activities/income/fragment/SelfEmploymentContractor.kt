@@ -160,24 +160,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
-    private fun updateMainIncome(){
-        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            Log.e("GOING BACK", "AFTER UPDATE")
-            findNavController().popBackStack()
-        })
-        val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList:ArrayList<Int>? = null
-        incomeActivity?.let { it ->
-            mainBorrowerList =  it.borrowerTabList
-        }
-        mainBorrowerList?.let { notNullMainBorrowerList->
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
-                }
-            }
-        }
-    }
 
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
@@ -248,15 +230,12 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private fun checkValidations(){
 
         val businessName: String = binding.editTextBusinessName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
+        //var jobTitle: String? = binding.edJobTitle.text.toString()
         val startDate: String = binding.editTextBstartDate.text.toString()
         val netIncome: String = binding.edNetIncome.text.toString()
 
         if (businessName.isEmpty() || businessName.length == 0) {
             CustomMaterialFields.setError(binding.layoutBusinessName, getString(R.string.error_field_required),requireActivity())
-        }
-        if (jobTitle.isEmpty() || jobTitle.length == 0) {
-            CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
         }
         if (startDate.isEmpty() || startDate.length == 0) {
             CustomMaterialFields.setError(binding.layoutBStartDate, getString(R.string.error_field_required),requireActivity())
@@ -267,22 +246,19 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         if (businessName.isNotEmpty() || businessName.length > 0) {
             CustomMaterialFields.clearError(binding.layoutBusinessName,requireActivity())
         }
-        if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
-        }
+
         if (startDate.isNotEmpty() || startDate.length > 0) {
             CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
         }
         if (netIncome.isNotEmpty() || netIncome.length > 0) {
             CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
         }
-        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
-            findNavController().popBackStack()
-        }
 
-        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
+        if (businessName.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
             val businessPhone = if( binding.editTextBusPhnum.text.toString().trim().length >0 ) binding.editTextBusPhnum.text.toString().trim() else null
             val newNetIncome = if(netIncome.length > 0) netIncome.replace(",".toRegex(), "") else null
+
+            val jobTitle = if(binding.edJobTitle.text.toString().length > 0) binding.edJobTitle.text.toString() else null
 
 
             val selfEmploymentData = SelfEmploymentData(loanApplicationId=loanApplicationId,borrowerId=borrowerId,id= incomeInfoId,
@@ -302,23 +278,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             }
         }
     }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
-        Log.e("RECEIVED","TRUE")
-//        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-//            //updateMainIncome()
-//            //binding.loaderEmployment.visibility = View.GONE
-//        }
-//        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
-//            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-//        } else {
-//            if (event.addUpdateDataResponse.message != null)
-//                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-//        }
-    }
-
 
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
         if(isShowAddress){
@@ -412,10 +371,21 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         EventBus.getDefault().unregister(this)
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderSelfEmployment.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            updateMainIncome()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
+    }
 
-
-
-    /*@Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
@@ -423,7 +393,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                     val codeString = genericAddUpdateAssetResponse.code.toString()
                     if(codeString == "400" || codeString == "200"){
                         updateMainIncome()
-                            //findNavController().popBackStack()
                     }
                 })
                 lifecycleScope.launchWhenStarted {
@@ -433,5 +402,27 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                 }
             }
         }
-    } */
+    }
+
+    private fun updateMainIncome(){
+        Log.e("updateMain,","income")
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_self_employment)
+            Log.e("going","BACK")
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList:ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
+            }
+        }
+    }
+
 }

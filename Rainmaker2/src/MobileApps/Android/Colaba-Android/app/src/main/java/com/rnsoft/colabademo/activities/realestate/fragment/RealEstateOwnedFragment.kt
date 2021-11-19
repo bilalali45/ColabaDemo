@@ -60,67 +60,64 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = RealEstateOwnedLayoutBinding.inflate(inflater, container, false)
-        toolbar = binding.headerRealestate
-         // savedViewInstance = binding.root
-        super.addListeners(binding.root)
+    ): View? {
+         return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+             binding = RealEstateOwnedLayoutBinding.inflate(inflater, container, false)
+             toolbar = binding.headerRealestate
+             savedViewInstance = binding.root
+             super.addListeners(binding.root)
 
-        // set Header title
-        toolbar.toolbarTitle.setText(getString(R.string.real_estate_owned))
+             // set Header title
+             toolbar.toolbarTitle.setText(getString(R.string.real_estate_owned))
 
-        val activity = (activity as? RealEstateActivity)
-        activity?.loanApplicationId?.let { loanId -> loanApplicationId = loanId }
-        activity?.borrowerPropertyId?.let {
-            if (it > 0)
-               borrowerPropertyId = it
-        }
-        activity?.borrowerId?.let { borrowerId = it }
-        activity?.propertyInfoId?.let {
-            if (it > 0)
-                 propertyInfoId = it
-        }
-        activity?.borrowerName?.let {
-            toolbar.borrowerPurpose.setText(it)
-        }
+             val activity = (activity as? RealEstateActivity)
+             activity?.loanApplicationId?.let { loanId -> loanApplicationId = loanId }
+             activity?.borrowerPropertyId?.let {
+                 if (it > 0)
+                     borrowerPropertyId = it
+             }
+             activity?.borrowerId?.let { borrowerId = it }
+             activity?.propertyInfoId?.let {
+                 if (it > 0)
+                     propertyInfoId = it
+             }
+             activity?.borrowerName?.let {
+                 toolbar.borrowerPurpose.setText(it)
+             }
 
+             //Log.e("fragment","loanApplicatioId: " + loanApplicationId + " borrowerPropertyId:" + borrowerPropertyId + " borrowerId: " + borrowerId)
 
-        Log.e("fragment","loanApplicatioId: " + loanApplicationId + " borrowerPropertyId:" + borrowerPropertyId + " borrowerId: " + borrowerId)
+             if (borrowerPropertyId == null || borrowerPropertyId == 0) {
+                 toolbar.btnTopDelete.visibility = View.GONE
+                 showHideAddress(false, true)
 
-        if(borrowerPropertyId ==null || borrowerPropertyId ==0){
-            toolbar.btnTopDelete.visibility = View.GONE
-            showHideAddress(false,true)
+             } else {
+                 //Log.e("loanApplicationId: ", ""+ loanApplicationId + " borrwerId:" + borrowerId)
+                 toolbar.btnTopDelete.visibility = View.VISIBLE
+                 toolbar.btnTopDelete.setOnClickListener {
+                     DeleteIncomeDialogFragment.newInstance(AppConstant.real_estate_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                 }
+             }
 
-        }
-        else {
-            //Log.e("loanApplicationId: ", ""+ loanApplicationId + " borrwerId:" + borrowerId)
-            toolbar.btnTopDelete.visibility = View.VISIBLE
-            toolbar.btnTopDelete.setOnClickListener {
-                DeleteIncomeDialogFragment.newInstance(AppConstant.real_estate_delete_text).show(childFragmentManager,
-                DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
-            }
-        }
+             initViews()
+             setDropDownData()
 
-        initViews()
-        setDropDownData()
+             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<FirstMortgageModel>(AppConstant.firstMortgage)?.observe(viewLifecycleOwner) { result ->
+                 setFirstMorgageDetails(result)
+             }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<FirstMortgageModel>(AppConstant.firstMortgage)?.observe(
-            viewLifecycleOwner) { result ->
-            setFirstMorgageDetails(result)
-        }
+             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<SecondMortgageModel>(AppConstant.secMortgage)?.observe(viewLifecycleOwner) { result ->
+                 setSecondMortgageDetails(result)
+             }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<SecondMortgageModel>(AppConstant.secMortgage)?.observe(
-                viewLifecycleOwner) { result ->
-                setSecondMortgageDetails(result)
-        }
+             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(viewLifecycleOwner) { result -> realEstateAddress = result
+                 displayAddress(result)
+             }
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(
-            viewLifecycleOwner) { result ->
-            realEstateAddress = result
-            displayAddress(result)
-        }
-
-        return binding.root // savedViewInstance
+           savedViewInstance
+         }
     }
 
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){

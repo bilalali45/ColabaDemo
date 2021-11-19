@@ -48,6 +48,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     private var loanApplicationId: Int? = null
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
+    private var borrowerName: String? = null
     private var employerAddress = AddressData()
     val incomeListForApi : ArrayList<EmploymentOtherIncomes> = ArrayList()
 
@@ -66,19 +67,19 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
                 incomeInfoId = arguments.getInt(AppConstant.incomeId)
-                //incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
-                //incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+                borrowerName = arguments.getString(AppConstant.borrowerName)
             }
 
             //Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
+            borrowerName?.let {
+                toolbar.borrowerPurpose.setText(it)
+            }
+
             if (loanApplicationId != null && borrowerId != null) {
                 toolbar.btnTopDelete.visibility = View.VISIBLE
                 toolbar.btnTopDelete.setOnClickListener {
-                    DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(
-                        childFragmentManager,
-                        DeleteCurrentResidenceDialogFragment::class.java.canonicalName
-                    )
+                    DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
                 }
             }
             if (incomeInfoId == null || incomeInfoId == 0) {
@@ -268,36 +269,27 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         val startDate: String = binding.editTextStartDate.text.toString()
         val profYears: String = binding.editTextProfYears.text.toString()
 
+
+
         if (empName.isEmpty() || empName.length == 0) {
             CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
         }
-        if (jobTitle.isEmpty() || jobTitle.length == 0) {
-            CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
-        }
+
         if (startDate.isEmpty() || startDate.length == 0) {
             CustomMaterialFields.setError(binding.layoutStartDate, getString(R.string.error_field_required),requireActivity())
         }
-        if (profYears.isEmpty() || profYears.length == 0) {
-            CustomMaterialFields.setError(binding.layoutYearsProfession, getString(R.string.error_field_required),requireActivity())
-        }
+
         if (empName.isNotEmpty() || empName.length > 0) {
             CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
-        }
-        if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
         }
         if (startDate.isNotEmpty() || startDate.length > 0) {
             CustomMaterialFields.clearError(binding.layoutStartDate,requireActivity())
         }
-        if (profYears.isNotEmpty() || profYears.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutYearsProfession,requireActivity())
-        }
-        if (empName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && profYears.length > 0 ){
-
+        if (empName.length > 0 &&  startDate.length >0 ){
             lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if(loanApplicationId != null && borrowerId !=null) {
-                        Log.e("Loan Application Id", "" +loanApplicationId + " borrowerId:  " + borrowerId)
+                        //Log.e("Loan Application Id", "" +loanApplicationId + " borrowerId:  " + borrowerId)
 
                         val phoneNum = if(binding.editTextEmpPhnum.text.toString().length > 0) binding.editTextEmpPhnum.text.toString() else null
                         var isOwnershipInterest : Boolean ? = null
@@ -360,8 +352,8 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
                         val employmentData = AddCurrentEmploymentModel(
                             loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome,employmentOtherIncomes = incomeListForApi)
-                        Log.e("incomeOther", "" + incomeListForApi)
-                        Log.e("employmentData-snding to API", "" + employmentData)
+                        //Log.e("incomeOther", "" + incomeListForApi)
+                        //Log.e("employmentData-snding to API", "" + employmentData)
 
                         binding.loaderEmployment.visibility = View.VISIBLE
                         viewModel.sendCurrentEmploymentData(authToken, employmentData)
@@ -606,23 +598,21 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         EventBus.getDefault().unregister(this)
     }
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
+        binding.loaderEmployment.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
-            //binding.loaderEmployment.visibility = View.GONE
         }
-
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
         } else {
             if (event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
         }
-
-        findNavController().popBackStack()
     }
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
@@ -632,10 +622,8 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                     val codeString = genericAddUpdateAssetResponse.code.toString()
                     if(codeString == "400" || codeString == "200"){
                         updateMainIncome()
-                        //findNavController().popBackStack()
                     }
                 })
-
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
@@ -645,15 +633,13 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
-
     private fun updateMainIncome(){
         borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            Log.e("GOING BACK", "AFTER UPDATE")
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_employment)
             findNavController().popBackStack()
         })
         val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList:ArrayList<Int>? = null
+        var mainBorrowerList: java.util.ArrayList<Int>? = null
         incomeActivity?.let { it ->
             mainBorrowerList =  it.borrowerTabList
         }
@@ -665,8 +651,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             }
         }
     }
-
-
 
     private fun setInputFields() {
 
@@ -777,10 +761,4 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         return df.parse(date).time
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        //viewModel.employmentDetail.value = null
-
-    }
 }

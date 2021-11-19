@@ -272,7 +272,8 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 if (responseResult is Result.Success) {
                     Log.e("viewmodel", "success")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
-                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                }
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     //EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                     EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
 

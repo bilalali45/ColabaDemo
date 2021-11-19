@@ -53,12 +53,14 @@ class IncomeTabFragment : BaseFragment() {
             viewLifecycleOwner,
             Observer { observableSampleContent ->
                 var index = 0
+                var name : String = ""
                 val tabIds: ArrayList<Int> = arrayListOf()
                 for (tab in observableSampleContent) {
                     tab.passedBorrowerId?.let {
                         tabIds.add(it)
                         tab.incomeData?.borrower?.borrowerName?.let { borrowerName ->
                             incomeTabArray[index] = borrowerName
+                            name = borrowerName
                             index++
                         }
                     }
@@ -66,7 +68,7 @@ class IncomeTabFragment : BaseFragment() {
 
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
-                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
+                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds,name)
                 viewPager.adapter = pageAdapter
                 viewPager.setPageTransformer(null)
                 viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {

@@ -272,7 +272,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.deleteIncome(newToken, incomeInfoId, borrowerId,loanApplicationId)
-            Timber.e("deleteIncome = $response")
+            Timber.e("deleteIncomeRESPONSE = $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

@@ -324,17 +324,20 @@ class RetirementIncomeFragment : BaseFragment(){
         EventBus.getDefault().unregister(this)
     }
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
         binding.loaderRetirementIncome.visibility = View.GONE
-        if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            updateMainIncome()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-
-        else
-            if(event.addUpdateDataResponse.message != null)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-
-        findNavController().popBackStack()
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -344,13 +347,32 @@ class RetirementIncomeFragment : BaseFragment(){
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
                     val codeString = genericAddUpdateAssetResponse.code.toString()
                     if(codeString == "400" || codeString == "200"){
-                        findNavController().popBackStack()
+                        updateMainIncome()
                     }
                 })
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
                     }
+                }
+            }
+        }
+    }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_retirement)
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList: java.util.ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
                 }
             }
         }

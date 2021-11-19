@@ -324,16 +324,20 @@ class OtherIncomeFragment : BaseFragment() {
         EventBus.getDefault().unregister(this)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
-        binding.loaderOtherIncome.visibility = View.GONE
-        if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-        else
-            if(event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
-        findNavController().popBackStack()
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent){
+        binding.loaderOtherIncome.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            updateMainIncome()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -343,7 +347,7 @@ class OtherIncomeFragment : BaseFragment() {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
                     val codeString = genericAddUpdateAssetResponse.code.toString()
                     if(codeString == "400" || codeString == "200"){
-                        findNavController().popBackStack()
+                        updateMainIncome()
                     }
                 })
                 lifecycleScope.launchWhenStarted {
@@ -354,4 +358,24 @@ class OtherIncomeFragment : BaseFragment() {
             }
         }
     }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_other)
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList: java.util.ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
+            }
+        }
+    }
+
 }

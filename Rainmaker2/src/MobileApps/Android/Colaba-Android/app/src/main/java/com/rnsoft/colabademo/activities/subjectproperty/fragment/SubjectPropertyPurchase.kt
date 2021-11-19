@@ -45,16 +45,21 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     private var savedViewInstance: View? = null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
-        super.addListeners(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return if (savedViewInstance != null){
+            savedViewInstance
+        } else {
+            binding = SubjectPropertyPurchaseBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
+            super.addListeners(binding.root)
 
-        setupUI()
-        setInputFields()
-        setDropDownData()
+            setupUI()
+            setInputFields()
+            setDropDownData()
 
-        return binding.root
+            savedViewInstance
 
+        }
     }
 
     private fun addObserver(){
@@ -132,9 +137,9 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         }
                     }
                     // occupancy id
-                    details.subPropertyData?.occupancyTypeId?.let { selectedId ->
+                    details.subPropertyData?.occupancyTypeId?.let { occupancyId ->
                         for(item in occupancyTypeList) {
-                            if (item.id == selectedId) {
+                            if (item.id == occupancyId) {
                                 binding.tvOccupancyType.setText(item.name,false)
                                 CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 break
@@ -198,11 +203,13 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
 
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.tvPropertyType.setAdapter(adapter)
+                        //adapter.getFilter().filter(null)
+                       // binding.tvPropertyType.adapter.filter(null)
                         //adapter.setNotifyOnChange(true)
 
-//                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-//                        binding.tvPropertyType.showDropDown()
-//                    }
+                    binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
+                        binding.tvPropertyType.showDropDown()
+                    }
                         binding.tvPropertyType.setOnClickListener {
                             binding.tvPropertyType.showDropDown()
                         }
@@ -266,6 +273,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         coborrowerList = it.occupancyData
                         adapterCoborrower.setBorrowers(coborrowerList)
                         binding.recyclerviewCoBorrower.adapter = adapterCoborrower
+                    } else {
+                        binding.coBorrowerHeading.visibility = View.GONE
                     }
 
                 })
@@ -292,10 +301,11 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         //Log.e("propertyId",""+propertyId)
 
         // get occupancy id
+        //Log.e("occupancyList",""+occupancyTypeList)
         val occupancy : String = binding.tvOccupancyType.getText().toString().trim()
         val matchedList =  occupancyTypeList.filter { s -> s.name.equals(occupancy,true)}
-        val occupancyId = if(matchedList.size>0) matchedList.map { matchedList.get(0).id }.single() else null
-        //Log.e("occcupancyId",""+occupancyId)
+         var occupancyId = if(matchedList.size > 0)  matchedList.map { matchedList.get(0).id }.single() else null
+        // Log.e("occcupancyId",""+occupancyId)
 
         // mixed use property
         val isMixedUseProperty = if(binding.radioMixedPropertyYes.isChecked) true else false
@@ -334,8 +344,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         floodInsurance = newFloodInsurance?.toDouble(),
                         addressData = addressForApi ,isMixedUseProperty= isMixedUseProperty,mixedUsePropertyExplanation=mixedUsePropertyDesc,subjectPropertyTbd = tbd)
                     showLoader()
-                   // Log.e("PropertyData", ""+propertyData)
-                    viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
+                    //Log.e("PropertyData", ""+propertyData)
+                        viewModelSubProperty.sendSubjectPropertyDetail(authToken,propertyData)
                 }
             }
         }
@@ -350,7 +360,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     }
 
     fun setupUI(){
-
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
             binding.radioSubPropertyAddress.isChecked = false
@@ -474,9 +483,10 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
-        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS)
-            dismissActivity()
-
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+            updateApplicationTab()
+            //dismissActivity()
+        }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
 
@@ -491,6 +501,24 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
     }
+
+    private val detailViewModel: DetailViewModel by activityViewModels()
+
+    private fun updateApplicationTab() {
+        lifecycleScope.launchWhenStarted{
+        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+             val activity = (activity as? SubjectPropertyActivity)
+             activity?.loanApplicationId?.let {
+                 detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = it)
+             }
+         }
+      }
+        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, {
+           dismissActivity()
+        })
+    }
+
+
 
     override fun onCoborrowerClick(position: Int, isOccupying: Boolean) {
         lifecycleScope.launchWhenStarted{

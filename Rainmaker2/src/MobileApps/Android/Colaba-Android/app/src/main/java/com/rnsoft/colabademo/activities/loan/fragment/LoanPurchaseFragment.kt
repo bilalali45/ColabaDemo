@@ -415,7 +415,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
 
     private fun checkValidations(){
 
-        val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = "2021-11-09",downPayment = 20000.0, cashOutAmount = 1,
+        /*val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = "2021-11-09",downPayment = 20000.0, cashOutAmount = 1,
             propertyValue = 2000.0)
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -423,7 +423,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                 loanViewModel.addLoanInfo(authToken,info)
             }
         }
-        binding.loaderLoanPurchase.visibility = View.GONE
+        binding.loaderLoanPurchase.visibility = View.GONE */
 
         val loanStage: String = binding.tvLoanStage.text.toString()
         val purchasePrice: String = binding.edPurchasePrice.text.toString()
@@ -472,17 +472,17 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
             clearError(binding.layoutClosingDate)
         }
         else {
-            Timber.e("else")
             if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
-                val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = closingDate,downPayment = 20000.0, cashOutAmount = 1,
-                    propertyValue = 2000.0)
-                lifecycleScope.launchWhenStarted{
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        binding.loaderLoanPurchase.visibility = View.VISIBLE
-                        loanViewModel.addLoanInfo(authToken,info)
+                loanApplicationId?.let { loanId ->
+                    val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = 4, loanGoalId = 4, expectedClosingDate = closingDate, downPayment = downPayment.toDouble(), cashOutAmount = 1, propertyValue = purchasePrice.toDouble())
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            binding.loaderLoanPurchase.visibility = View.VISIBLE
+                            loanViewModel.addLoanInfo(authToken, info)
+                        }
                     }
+                    binding.loaderLoanPurchase.visibility = View.GONE
                 }
-                binding.loaderLoanPurchase.visibility = View.GONE
             }
         }
     }

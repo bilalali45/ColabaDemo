@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -52,7 +53,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = DetailApplicationTabBinding.inflate(inflater, container, false)
         val root: View = binding.root
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
@@ -100,7 +100,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 //Log.e("purpose", ""+ it.)
                 intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
                 intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
-                startActivity(intent)
+                startActivityForResult(intent,200)
 
             }
         }
@@ -132,127 +132,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         questionAdapter.notifyDataSetChanged()
 
         binding.applicationTabLayout.visibility = View.INVISIBLE
-
-
-        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
-            if (appTabModel != null) {
-                binding.applicationTopContainer.visibility = View.VISIBLE
-                binding.applicationTabLayout.visibility = View.VISIBLE
-
-                appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
-                    val builder = StringBuilder()
-                    it.street.let { builder.append(it).append(" ") }
-                    it.unit.let { builder.append(it) }
-                    it.city.let { builder.append("\n").append(it).append(" ") }
-                    it.stateName.let{ builder.append(it).append(" ")}
-                    it.zipCode.let { builder.append(it) }
-                    it.countryName.let { builder.append(" ").append(it)}
-                    binding.bAppAddress.text = builder
-
-                   // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-                }
-
-                appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
-                    binding.bAppPropertyType.text = it
-                }
-
-                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription.let{
-                    binding.bAppPropertyUsage.text = it
-                }
-
-                appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let{
-                    binding.bAppLoanPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-                }
-
-                appTabModel.borrowerAppData?.loanInformation?.downPayment?.let{
-                    binding.bAppDownPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-                }
-
-                appTabModel.borrowerAppData?.loanInformation?.downPaymentPercent?.let {
-                    binding.bAppPercentage.text = "("+it.roundToInt()+"%)"
-                }
-
-                appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
-                    binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-                    //binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-                }
-
-                appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{
-                    binding.bAppMonthlylncome.text = "$".plus(AppSetting.returnAmountFormattedString(it))
-                }
-
-                var races:ArrayList<Race>? =null
-                var ethnicities:ArrayList<Ethnicity>? =null
-
-                appTabModel.borrowerAppData?.let { bAppData->
-                    bAppData.borrowersInformation?.let { borrowersList ->
-                        borrowerInfoList.clear()
-                        borrowerInfoList = borrowersList
-                        saveBorrowerId = borrowersList.get(0).borrowerId
-                        borrowerName = borrowersList.get(0).firstName.plus(" ").plus(borrowersList.get(0).lastName)
-
-
-                        for(borrower in borrowersList){
-                            Timber.e("BApp -- " + borrower.firstName , borrower.borrowerId, borrower.owntypeId , borrower.genderName)
-                           if(borrower.owntypeId == 1) {
-                               borrower.races?.let {
-                                   races = it
-                               }
-                               borrower.ethnicities?.let {
-                                   ethnicities = it
-                               }
-                           }
-                        }
-                   }
-                }
-
-
-
-                appTabModel.borrowerAppData?.let { bAppData->
-                    bAppData.realStateOwns?.let {
-                        for(item in it){
-                            Timber.e(" Get -- "+item)
-                            Timber.e(" details -- "+item.borrowerId + "  "+item.propertyInfoId +"  "+ item.propertyTypeId + "  "+item.propertyTypeName)
-
-                        }
-                        realStateList.clear()
-                        realStateList = it
-                        Log.e("list1", ""+it)
-
-                    }
-                }
-
-                appTabModel.borrowerAppData?.let { bAppData->
-                    bAppData.borrowerQuestionsModel?.let {
-                        questionList.clear()
-                        questionList = it
-                    }
-                }
-
-
-                //////////////////////////////////////////////////////////////////////////////////////////////////
-                // add add-more last cell to the adapters
-                borrowerInfoList.add(BorrowersInformation(-1,"",0,"","", "",0,null, null, true))
-                borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this@BorrowerApplicationFragment )
-                horizontalRecyclerView.adapter = borrowerInfoAdapter
-                borrowerInfoAdapter.notifyDataSetChanged()
-
-
-                realStateList.add(RealStateOwn(null,saveBorrowerId,0,0,"", true,0))
-                realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
-                realStateRecyclerView.adapter = realStateAdapter
-                realStateAdapter.notifyDataSetChanged()
-
-
-                questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
-                questionAdapter  = QuestionAdapter(questionList , this@BorrowerApplicationFragment)
-                questionsRecyclerView.adapter = questionAdapter
-                questionAdapter.notifyDataSetChanged()
-
-            }
-            else
-               binding.applicationTabLayout.visibility = View.INVISIBLE
-        })
 
         horizontalRecyclerView.addOnItemTouchListener(object : OnItemTouchListener {
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
@@ -291,6 +170,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
+        observeTabData()
 
         super.addListeners(binding.root)
         return root
@@ -299,7 +179,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     fun Fragment.getNavigationResult(key: String = "result") =
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(key)
-
 
 
     private fun navigateToAssetActivity(){
@@ -344,8 +223,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-    override fun getSingleItemIndex(position: Int) {
-    }
+    override fun getSingleItemIndex(position: Int) {}
 
     override fun navigateTo(position: Int) {
         startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
@@ -404,35 +282,147 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
+    private fun observeTabData(){
+        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel->
+            Log.e("oberving app","tab")
+            if (appTabModel != null) {
+                binding.applicationTopContainer.visibility = View.VISIBLE
+                binding.applicationTabLayout.visibility = View.VISIBLE
+
+                appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
+                    val builder = StringBuilder()
+                    it.street.let { builder.append(it).append(" ") }
+                    it.unit.let { builder.append(it) }
+                    it.city.let { builder.append("\n").append(it).append(" ") }
+                    it.stateName.let{ builder.append(it).append(" ")}
+                    it.zipCode.let { builder.append(it) }
+                    it.countryName.let { builder.append(" ").append(it)}
+                    binding.bAppAddress.text = builder
+
+                    // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                }
+
+                appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let{
+                    binding.bAppPropertyType.text = it
+                }
+
+                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription.let{
+                    binding.bAppPropertyUsage.text = it
+                }
+
+                appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let{
+                    binding.bAppLoanPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
+                }
+
+                appTabModel.borrowerAppData?.loanInformation?.downPayment?.let{
+                    binding.bAppDownPayment.text = "$".plus(AppSetting.returnAmountFormattedString(it))
+                }
+
+                appTabModel.borrowerAppData?.loanInformation?.downPaymentPercent?.let {
+                    binding.bAppPercentage.text = "("+it.roundToInt()+"%)"
+                }
+
+                appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let{
+                    binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
+                    //binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
+                }
+
+                appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let{
+                    binding.bAppMonthlylncome.text = "$".plus(AppSetting.returnAmountFormattedString(it))
+                }
+
+                var races:ArrayList<Race>? =null
+                var ethnicities:ArrayList<Ethnicity>? =null
+
+                appTabModel.borrowerAppData?.let { bAppData->
+                    bAppData.borrowersInformation?.let { borrowersList ->
+                        borrowerInfoList.clear()
+                        borrowerInfoList = borrowersList
+                        saveBorrowerId = borrowersList.get(0).borrowerId
+                        borrowerName = borrowersList.get(0).firstName.plus(" ").plus(borrowersList.get(0).lastName)
+
+
+                        for(borrower in borrowersList){
+                            Timber.e("BApp -- " + borrower.firstName , borrower.borrowerId, borrower.owntypeId , borrower.genderName)
+                            if(borrower.owntypeId == 1) {
+                                borrower.races?.let {
+                                    races = it
+                                }
+                                borrower.ethnicities?.let {
+                                    ethnicities = it
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+
+                appTabModel.borrowerAppData?.let { bAppData->
+                    bAppData.realStateOwns?.let {
+                        for(item in it){
+                            Timber.e(" Get -- "+item)
+                            Timber.e(" details -- "+item.borrowerId + "  "+item.propertyInfoId +"  "+ item.propertyTypeId + "  "+item.propertyTypeName)
+
+                        }
+                        realStateList.clear()
+                        realStateList = it
+                        Log.e("list1", ""+it)
+
+                    }
+                }
+
+                appTabModel.borrowerAppData?.let { bAppData->
+                    bAppData.borrowerQuestionsModel?.let {
+                        questionList.clear()
+                        questionList = it
+                    }
+                }
+
+
+                //////////////////////////////////////////////////////////////////////////////////////////////////
+                // add add-more last cell to the adapters
+                borrowerInfoList.add(BorrowersInformation(-1,"",0,"","", "",0,null, null, true))
+                borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this@BorrowerApplicationFragment )
+                horizontalRecyclerView.adapter = borrowerInfoAdapter
+                borrowerInfoAdapter.notifyDataSetChanged()
+
+
+                realStateList.add(RealStateOwn(null,saveBorrowerId,0,0,"", true,0))
+                realStateAdapter  = RealStateAdapter(realStateList,this@BorrowerApplicationFragment)
+                realStateRecyclerView.adapter = realStateAdapter
+                realStateAdapter.notifyDataSetChanged()
+
+
+                questionList.add(BorrowerQuestionsModel(null,null, true, races, ethnicities ))
+                questionAdapter  = QuestionAdapter(questionList , this@BorrowerApplicationFragment)
+                questionsRecyclerView.adapter = questionAdapter
+                questionAdapter.notifyDataSetChanged()
+
+            }
+            else
+                binding.applicationTabLayout.visibility = View.INVISIBLE
+        })
+    }
+
     override fun onResume() {
         super.onResume()
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
-    }
+        //observeTabData()
 
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN,sticky = true)
-    fun onSubjectPropertyAddressEvent(evt: AddressUpdateEvent) {
-        Log.e("Event", "onSubjectPropertyAddressEvent - AddressUpdateEvent")
-        evt.subPropertyAddress?.let {
-            binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-        }
-        /*propertyType?.let {
-            binding.bAppPropertyType.text=propertyType
-        }
-        occupancyType?.let {
-            binding.bAppPropertyUsage.text=propertyType
+        /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.application_tab_updated)?.observe(
+            viewLifecycleOwner) { result ->
+            observeTabData()
         } */
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(resultCode == Activity.RESULT_OK && requestCode == 200) {
+            Log.d("TAG", "${data.toString()}")
+        }
+
+    }
 
 
     /*
