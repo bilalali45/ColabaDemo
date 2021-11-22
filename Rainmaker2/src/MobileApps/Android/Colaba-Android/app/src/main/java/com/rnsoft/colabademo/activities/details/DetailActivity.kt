@@ -10,6 +10,9 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -125,6 +128,33 @@ class DetailActivity : BaseActivity() {
             loanApplicationId?.let { loanId->
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun updatedBorrowerApplicationEvent(borrowerApplicationEvent: BorrowerApplicationUpdatedEvent) {
+        if(borrowerApplicationEvent.objectUpdated) {
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    loanApplicationId?.let {
+                        detailViewModel.getBorrowerApplicationTabData(
+                            token = authToken,
+                            loanApplicationId = it
+                        )
+                    }
                 }
             }
         }

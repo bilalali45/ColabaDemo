@@ -30,7 +30,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     val borrowerDocsModelList: LiveData<ArrayList<BorrowerDocsModel>> get() = _borrowerDocsModelList
 
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
-    val borrowerApplicationTabModel: LiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
+    val borrowerApplicationTabModel: MutableLiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
@@ -69,8 +69,10 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                 )
                 withContext(Dispatchers.Main) {
                     docsServiceRunning = false
-                    if (responseResult is Result.Success)
+                    if (responseResult is Result.Success) {
                         _borrowerDocsModelList.value = (responseResult.data)
+
+                    }
                     else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                     else if (responseResult is Result.Error)
@@ -90,8 +92,9 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                 )
                 withContext(Dispatchers.Main) {
                     applicationServiceRunning = false
-                    if (responseResult is Result.Success)
+                    if (responseResult is Result.Success) {
                         _borrowerApplicationTabModel.value = (responseResult.data)
+                    }
                     else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                     else if (responseResult is Result.Error)
