@@ -282,7 +282,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private fun observeTabData(){
 
             detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel ->
-                Log.e("observing app", "tab")
                 if (appTabModel != null) {
                     binding.applicationTopContainer.visibility = View.VISIBLE
                     binding.applicationTabLayout.visibility = View.VISIBLE
@@ -325,7 +324,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let {
                         binding.bAppTotalAssets.text =
                             "$".plus(AppSetting.returnAmountFormattedString(it))
-                        //binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                     }
 
                     appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let {
@@ -431,15 +429,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     override fun onResume() {
         super.onResume()
-       // observeTabData()
-
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
 
-
-        /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.application_tab_updated)?.observe(
-            viewLifecycleOwner) { result ->
-            observeTabData()
-        } */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

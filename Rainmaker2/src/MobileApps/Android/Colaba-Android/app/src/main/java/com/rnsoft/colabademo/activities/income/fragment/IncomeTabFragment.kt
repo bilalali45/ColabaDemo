@@ -128,6 +128,7 @@ class IncomeTabFragment : BaseFragment() {
         _binding = null
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -141,7 +142,7 @@ class IncomeTabFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onGrandTotalAmountReceived(event: GrandTotalEvent) {
         binding.grandTotalTextView.text = event.totalAmount
-    }
+    } */
 
 }
 
