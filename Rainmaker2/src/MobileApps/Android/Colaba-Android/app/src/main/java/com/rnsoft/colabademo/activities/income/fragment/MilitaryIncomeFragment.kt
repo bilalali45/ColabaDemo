@@ -167,6 +167,7 @@ class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             }
         }
     }
+
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
         if(isShowAddress){
             binding.layoutAddress.visibility = View.VISIBLE
@@ -368,7 +369,7 @@ class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
     private fun updateMainIncome(){
         borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_retirement)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_military)
             findNavController().popBackStack()
         })
         val incomeActivity = (activity as? IncomeActivity)

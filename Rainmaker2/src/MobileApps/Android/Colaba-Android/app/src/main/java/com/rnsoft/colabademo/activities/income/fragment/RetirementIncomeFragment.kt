@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -238,6 +239,102 @@ class RetirementIncomeFragment : BaseFragment(){
 
     private fun prosessSendData(){
 
+        var isDataEntered : Boolean = false
+        val retirementType: String = binding.tvRetirementType.text.toString()
+        val monthlyIncome: String = binding.edMonthlyIncome.text.toString()
+        val mWithdrawal: String = binding.edMonthlyWithdrawl.text.toString()
+
+        if (retirementType.isEmpty() || retirementType.length == 0) {
+            isDataEntered = false
+            CustomMaterialFields.setError(binding.layoutRetirement, getString(R.string.error_field_required),requireActivity())
+        }
+
+        if (retirementType.isNotEmpty() || retirementType.length > 0) {
+            isDataEntered = true
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+
+        if(binding.layoutEmpName.isVisible){
+            if (binding.edEmpName.text.toString().length == 0) {
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
+            }
+            if (binding.edEmpName.text.toString().length > 0) {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
+            }
+        }
+
+        if(binding.layoutMonthlyIncome.isVisible){
+            isDataEntered = false
+            if (monthlyIncome.isEmpty() || monthlyIncome.length == 0) {
+                CustomMaterialFields.setError(binding.layoutMonthlyIncome, getString(R.string.error_field_required),requireActivity())
+            }
+            if (monthlyIncome.isNotEmpty() || monthlyIncome.length > 0) {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutMonthlyIncome,requireActivity())
+            }
+        }
+
+        if(binding.layoutDesc.isVisible){
+            if (binding.edDesc.text.toString().isEmpty() ||  binding.edDesc.text.toString().length == 0){
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutDesc, getString(R.string.error_field_required),requireActivity())
+            }
+            if (binding.edDesc.text.toString().isNotEmpty() || binding.edDesc.text.toString().length > 0) {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
+            }
+        }
+
+        if(binding.layoutMonthlyWithdrawal.isVisible){
+            if (mWithdrawal.isEmpty() || mWithdrawal.length == 0){
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutMonthlyWithdrawal, getString(R.string.error_field_required),requireActivity())
+            }
+            if (mWithdrawal.isNotEmpty() || mWithdrawal.length > 0){
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutMonthlyWithdrawal,requireActivity())
+            }
+        }
+
+
+
+        if(isDataEntered){
+            val type: String = binding.tvRetirementType.getText().toString().trim()
+            val matchedType = retirementTypes.filter { p -> p.name.equals(type, true) }
+            val retirementTypeId = if (matchedType.size > 0) matchedType.map { matchedType.get(0).id }.single() else null
+
+            //val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
+            val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+
+            val employerName = if (binding.edEmpName.text.toString().length > 0) binding.edEmpName.text.toString() else null
+
+            val description = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+
+            val data = RetirementIncomeData(
+                loanApplicationId = loanApplicationId,
+                borrowerId = borrowerId,
+                incomeInfoId = incomeInfoId,
+                incomeTypeId = retirementTypeId,
+                employerName = employerName,
+                description = description,monthlyBaseIncome = newMonthlyIncome?.toDouble())
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null) {
+                        Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
+                        Log.e("employmentData-snding to API", "" + data)
+                        binding.loaderRetirementIncome.visibility = View.VISIBLE
+                        viewModel.sendRetiremnentData(authToken, data)
+                    }
+                }
+            }
+        }
+    }
+
+    /*private fun prosessSendData(){
+
         val retirementType: String = binding.tvRetirementType.text.toString()
         val empName: String = binding.edEmpName.text.toString()
         val desc: String = binding.edDesc.text.toString()
@@ -312,7 +409,7 @@ class RetirementIncomeFragment : BaseFragment(){
             }
         }
 
-    }
+    } */
 
     override fun onStart() {
         super.onStart()

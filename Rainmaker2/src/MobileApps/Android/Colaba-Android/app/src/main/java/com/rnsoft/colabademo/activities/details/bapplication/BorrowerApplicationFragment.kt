@@ -276,10 +276,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
             startActivity(govtQuestionActivity)
         }
-
-
-
-
     }
 
     private fun observeTabData(){
@@ -407,8 +403,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     override fun onResume() {
         super.onResume()
+       // observeTabData()
+
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
-        //observeTabData()
+
 
         /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.application_tab_updated)?.observe(
             viewLifecycleOwner) { result ->

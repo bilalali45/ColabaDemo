@@ -268,8 +268,8 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if(loanApplicationId != null && borrowerId !=null) {
-                        Log.e("Loan Application Id", "" + loanApplicationId + " borrowerId:  " + borrowerId + " income:  " + incomeInfoId)
-                        Log.e("selfEmployment-snding to API", "" + selfEmploymentData)
+                        //Log.e("Loan Application Id", "" + loanApplicationId + " borrowerId:  " + borrowerId + " income:  " + incomeInfoId)
+                        //Log.e("selfEmployment-snding to API", "" + selfEmploymentData)
 
                         binding.loaderSelfEmployment.visibility = View.VISIBLE
                         viewModel.sendSelfEmploymentData(authToken, selfEmploymentData)

@@ -514,11 +514,10 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
          }
       }
         detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, {
-           dismissActivity()
+            Log.e("nwe data observed", "true")
+            dismissActivity()
         })
     }
-
-
 
     override fun onCoborrowerClick(position: Int, isOccupying: Boolean) {
         lifecycleScope.launchWhenStarted{

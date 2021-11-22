@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -196,6 +197,7 @@ class OtherIncomeFragment : BaseFragment() {
 
         // set lable focus
         binding.edMonthlyIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMonthlyIncome, binding.layoutMonthlyIncome, requireContext()))
+        binding.edDesc.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edDesc, binding.layoutDesc, requireContext()))
         binding.edAnnualIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edAnnualIncome, binding.layoutAnnualIncome, requireContext()))
 
         // set input format
@@ -208,6 +210,86 @@ class OtherIncomeFragment : BaseFragment() {
     }
 
     private fun sendData(){
+
+        var isDataEntered : Boolean = false
+        val incomeType: String = binding.tvIncomeType.text.toString()
+
+        if (incomeType.isEmpty() || incomeType.length == 0) {
+            isDataEntered = false
+            CustomMaterialFields.setError(binding.layoutRetirement,getString(R.string.error_field_required),requireActivity())
+        }
+
+        if (incomeType.isNotEmpty() || incomeType.length > 0) {
+            isDataEntered = true
+            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+        }
+
+        if(binding.layoutAnnualIncome.isVisible) {
+            if (binding.edAnnualIncome.text.toString().length == 0) {
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutAnnualIncome, getString(R.string.error_field_required), requireActivity())
+            }
+            if (binding.edAnnualIncome.text.toString().length > 0) {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutAnnualIncome, requireActivity())
+            }
+        }
+
+        if(binding.layoutMonthlyIncome.isVisible){
+            if (binding.edMonthlyIncome.text.toString().length == 0) {
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutMonthlyIncome, getString(R.string.error_field_required),requireActivity())
+            }
+            if(binding.edMonthlyIncome.text.toString().length > 0){
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutMonthlyIncome,requireActivity())
+            }
+        }
+
+        if(binding.layoutDesc.isVisible){
+            if (binding.edDesc.text.toString().length > 0){
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.layoutDesc,requireActivity())
+            }
+            if (binding.edDesc.text.toString().length == 0){
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.layoutDesc, getString(R.string.error_field_required),requireActivity())
+            }
+        }
+
+        if(isDataEntered) {
+            // get incomeType id
+            val type : String = binding.tvIncomeType.getText().toString().trim()
+            val matchedList =  incomeTypes.filter { p -> p.name.equals(type,true)}
+            //Log.e("matchedList",""+matchedList1)
+            val incomeTypeId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+            //Log.e("propertyId",""+propertyId)
+
+            val monthlyIncome : String = binding.edMonthlyIncome.text.toString().trim()
+            val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+
+            val annualIncome = binding.edAnnualIncome.text.toString().trim()
+            val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
+            val desc = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+
+            val data = AddOtherIncomeInfo(
+                loanApplicationId=loanApplicationId,incomeInfoId=incomeInfoId,borrowerId=borrowerId,monthlyBaseIncome = newMonthlyIncome?.toDouble(),annualBaseIncome = newAnnualIncome?.toDouble(),
+                description = desc,incomeTypeId = incomeTypeId)
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if (loanApplicationId != null && borrowerId != null) {
+                       // Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
+                        Log.e("employmentData-snding to API", "" + data)
+                        binding.loaderOtherIncome.visibility = View.VISIBLE
+                        viewModel.sendOtherIncome(authToken, data)
+                    }
+                }
+            }
+        }
+    }
+
+    /*private fun sendData(){
 
         val incomeType: String = binding.tvIncomeType.text.toString()
         val annualIncome: String = binding.edAnnualIncome.text.toString()
@@ -272,7 +354,7 @@ class OtherIncomeFragment : BaseFragment() {
                 }
             }
         }
-    }
+    } */
 
     private fun setRetirementType(){
         binding.tvIncomeType.setOnFocusChangeListener { _, _ ->
