@@ -302,7 +302,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    private fun processSendData(){
+  /*  private fun processSendData(){
 
         var isDataEntered : Boolean = true
         var ownershipPercentage: String?= null
@@ -512,7 +512,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
-    }
+    } */
 
     private fun initViews() {
         binding.addEmployerAddress.setOnClickListener {
@@ -666,7 +666,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    /*private fun processSendData(){
+    private fun processSendData(){
 
         val empName: String = binding.editTextEmpName.text.toString()
         val jobTitle: String = binding.editTextJobTitle.text.toString()
@@ -763,7 +763,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 }
             }
         }
-    } */
+    } 
 
 
     override fun onStart() {

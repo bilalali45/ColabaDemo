@@ -349,7 +349,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                 }
             }
         }
-    } 
+    }
 
     private fun openAddress(){
         val fragment = SubPropertyAddressFragment()
