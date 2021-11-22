@@ -571,7 +571,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                "Undisclosed Borrowered Funds" ->{
                    findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
                }
-               "Family or business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
+               "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
                "Ownership Interest in Property" ->{
 
                    bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipGlobalData)

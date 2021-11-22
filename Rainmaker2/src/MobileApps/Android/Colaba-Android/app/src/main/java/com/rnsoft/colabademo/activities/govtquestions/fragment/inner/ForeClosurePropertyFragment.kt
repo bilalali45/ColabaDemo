@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,8 +14,9 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class ForeClosurePropertyFragment:BaseFragment() {
+class ForeClosurePropertyFragment: BaseFragment() {
 
     private var _binding: ForeClosurePropertyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -90,16 +90,20 @@ class ForeClosurePropertyFragment:BaseFragment() {
     private fun checkEmptyFields():Boolean{
         var bool = true
         if(binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.layoutDetail, "This field is required." , requireContext())
+            CustomMaterialFields.setError(
+                binding.layoutDetail,
+                "This field is required.",
+                requireContext()
+            )
             bool = false
         }
         else
-            CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
+            CustomMaterialFields.clearError(binding.layoutDetail, requireContext())
 
         return bool
     }
 
-    private fun updateGovernmentData(testData:QuestionData){
+    private fun updateGovernmentData(testData: QuestionData){
         for (item in updateGovernmentQuestionByBorrowerId.Questions) {
             if(item.id == testData.id){
                 item.answer = testData.answer
