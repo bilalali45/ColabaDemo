@@ -165,7 +165,7 @@ class BorrowerOneAssets : BaseFragment() {
 
 
                         var totalAmount = 0.0
-
+                        var currentAssetTypeID:Int? = 0
                         for (i in 0 until getBorrowerAssets.size) {
                             val webModelData = getBorrowerAssets[i]
                             webModelData.assetsCategory?.let { assetsCategory ->
@@ -200,16 +200,19 @@ class BorrowerOneAssets : BaseFragment() {
                                                     tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
                                                     contentData.assetUniqueId.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
                                                     contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
-                                                    contentData.assetTypeID?.let { it1 -> bundle.putInt(AppConstant.assetTypeID, it1) }
+                                                    contentData.assetTypeID?.let { it1->
+                                                        currentAssetTypeID = it1
+                                                        bundle.putInt(AppConstant.assetTypeID, it1)
+                                                    }
                                                     parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
                                                     contentData.assetCategoryName?.let { it1-> bundle.putString(AppConstant.assetCategoryName, it1) }
                                                     Timber.e(" content data - $contentData")
                                                     bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
                                                     contentData.assetValue?.let { nonNullAssetValue->
-                                                        val assetTypeValue = topCell.header_amount.text.toString()
-                                                        val newValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
-                                                        Timber.e("newValue is $newValue")
-                                                        classCategoryTotal = newValue
+                                                        //val assetTypeValue = topCell.header_amount.text.toString()
+                                                        //val newValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
+                                                        //Timber.e("newValue is $newValue")
+                                                        classCategoryTotal = nonNullAssetValue
 
                                                     }
 
@@ -235,10 +238,12 @@ class BorrowerOneAssets : BaseFragment() {
                             val parentActivity = activity as? AssetsActivity
                             parentActivity?.let {
                                 val bundle = Bundle()
+                                classCategoryTotal = 0.0
                                 parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                currentAssetTypeID?.let { it1 -> bundle.putInt(AppConstant.assetTypeID, it1) }
                                 tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
                                 parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
-
+                                bundle.putInt(AppConstant.assetUniqueId, -1)
                                 bundle.putString(AppConstant.assetCategoryName, modelData.headerTitle)
                                 bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
                                 findNavController().navigate(modelData.listenerAttached, bundle)
@@ -440,7 +445,7 @@ class BorrowerOneAssets : BaseFragment() {
                                         evt.assetReturnParams.assetId?.let { it1 ->
                                             bundle.putInt(AppConstant.assetUniqueId, it1)
                                         }
-                                        evt.assetReturnParams.assetUniqueId.let { it1 ->
+                                        evt.assetReturnParams.assetUniqueId?.let { it1 ->
                                             bundle.putInt(AppConstant.assetUniqueId, it1)
                                         }
                                         evt.assetReturnParams.assetCategoryId?.let { it1 ->
@@ -524,7 +529,7 @@ class BorrowerOneAssets : BaseFragment() {
                     assetReturnParams.assetId?.let { it1 ->
                         bundle.putInt(AppConstant.assetUniqueId, it1)
                     }
-                    assetReturnParams.assetUniqueId.let { it1 ->
+                    assetReturnParams.assetUniqueId?.let { it1 ->
                         bundle.putInt(AppConstant.assetUniqueId, it1)
                     }
                     assetReturnParams.assetCategoryId?.let { it1 ->
@@ -543,6 +548,7 @@ class BorrowerOneAssets : BaseFragment() {
 
                     assetReturnParams.listenerAttached?.let { it1 ->
                         bundle.putInt(AppConstant.listenerAttached, it1)
+                        Timber.e("navigation = $it1")
                         findNavController().navigate(it1, bundle)
                     }
                 }
@@ -575,13 +581,15 @@ class BorrowerOneAssets : BaseFragment() {
             val assetTypeValue = foundLayout.header_amount.text.toString()
             Timber.e("assetTypeValue = $assetTypeValue")
 
-            var newValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
+            var displayedValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
             assetReturnParams.assetValue?.let{ assetDoubleValue->
                 if(needSubtraction)
-                    newValue -= assetDoubleValue
-                else
-                    newValue += assetDoubleValue
-                foundLayout.header_amount.text = "$".plus(Common.addNumberFormat(newValue))
+                    displayedValue -= assetDoubleValue
+                else {
+                    displayedValue -= classCategoryTotal
+                    displayedValue += assetDoubleValue
+                }
+                foundLayout.header_amount.text = "$".plus(Common.addNumberFormat(displayedValue))
             }
            // grandTotalAmount += newValue
             //EventBus.getDefault()
@@ -600,7 +608,7 @@ class BorrowerOneAssets : BaseFragment() {
                 val bundle = Bundle()
                 parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
                 tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
-                assetReturnParams.assetUniqueId.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
+                assetReturnParams.assetUniqueId?.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
                 assetReturnParams.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
                 assetReturnParams.assetTypeID?.let { it1 -> bundle.putInt(AppConstant.assetTypeID, it1) }
                 parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }

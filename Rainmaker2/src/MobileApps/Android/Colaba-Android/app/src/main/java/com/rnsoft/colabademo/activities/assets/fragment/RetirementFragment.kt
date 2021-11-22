@@ -25,10 +25,16 @@ class RetirementFragment:AssetBaseFragment() {
         if(assetDeleteBoolean)
             assetAction = AppConstant.assetDeleted
         else
-            if(assetUniqueId>0)
+        assetUniqueId?.let { assetUniqueId ->
+            if (assetUniqueId > 0)
                 assetAction = AppConstant.assetUpdated
+        }
 
         Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
 
         return AssetReturnParams(
             assetName = binding.financialEditText.text.toString(),
@@ -52,15 +58,21 @@ class RetirementFragment:AssetBaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId, -1)
-            assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            if(assetUniqueId == -1)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeRetirementData()
         }
-        if(assetUniqueId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
+        assetUniqueId?.let { assetUniqueId ->
+            if (assetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(returnUpdatedParams(true))
+                }
+            }
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
@@ -87,8 +99,7 @@ class RetirementFragment:AssetBaseFragment() {
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
             clearFocusFromFields()
-            observeAddUpdateResponse(AssetReturnParams())
-            lifecycleScope.launchWhenStarted {
+             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
                     loanApplicationId?.let { notNullLoanApplicationId->
@@ -100,7 +111,7 @@ class RetirementFragment:AssetBaseFragment() {
                                     AccountNumber = binding.accountNumberEdittext.text.toString(),
                                     InstitutionName = binding.financialEditText.text.toString(),
                                     Value = binding.annualBaseEditText.text.toString().toInt(),
-                                    Id = id
+                                    Id = assetUniqueId
                                 )
                             viewModel.addUpdateRetirement(authToken , retirementAddUpdateParams)
                         }
@@ -168,24 +179,32 @@ class RetirementFragment:AssetBaseFragment() {
     }
 
     private fun observeRetirementData(){
-        if(loanApplicationId != null && borrowerId != null &&  assetUniqueId>0) {
-            viewModel.retirementAccountDetail.observe(viewLifecycleOwner, { observeRetirementData ->
-                if(observeRetirementData.code == AppConstant.RESPONSE_CODE_SUCCESS) {
-                    observeRetirementData.retirementAccountData?.let{ retirementAccountData->
-                        //retirementAccountData.id?.let { id = it }
-                        binding.financialEditText.setText(retirementAccountData.institutionName)
-                        binding.accountNumberEdittext.setText(retirementAccountData.accountNumber)
-                        val value = retirementAccountData.value.toString()
-                        binding.annualBaseEditText.setText(value)
-                    }
-                }
-                else
-                    findNavController().popBackStack()
-            })
+        assetUniqueId?.let { assetUniqueId ->
+            if (loanApplicationId != null && borrowerId != null && assetUniqueId > 0) {
+                viewModel.retirementAccountDetail.observe(
+                    viewLifecycleOwner,
+                    { observeRetirementData ->
+                        if (observeRetirementData?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                            observeRetirementData.retirementAccountData?.let { retirementAccountData ->
+                                //retirementAccountData.id?.let { id = it }
+                                binding.financialEditText.setText(retirementAccountData.institutionName)
+                                binding.accountNumberEdittext.setText(retirementAccountData.accountNumber)
+                                val value = retirementAccountData.value.toString()
+                                binding.annualBaseEditText.setText(value)
+                            }
+                        } else
+                            findNavController().popBackStack()
+                    })
 
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getRetirementAccountDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getRetirementAccountDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            assetUniqueId
+                        )
+                    }
                 }
             }
         }
