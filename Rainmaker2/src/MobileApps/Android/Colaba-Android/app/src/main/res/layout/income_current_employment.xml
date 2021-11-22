@@ -114,7 +114,7 @@
                 android:id="@+id/layout_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/content_bg_with_drop_shadow"
                 android:clickable="true"
                 android:orientation="vertical">
