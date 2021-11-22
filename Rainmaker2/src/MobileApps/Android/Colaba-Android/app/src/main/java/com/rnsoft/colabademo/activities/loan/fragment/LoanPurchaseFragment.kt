@@ -25,6 +25,9 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.text.DecimalFormat
 import java.util.*
@@ -56,8 +59,9 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         binding = LoanPurchaseInfoBinding.inflate(inflater, container, false)
         bindingToolbar = binding.headerLoanPurchase
 
-        arguments?.let { arguments ->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+      val test = activity as BorrowerLoanActivity
+        test.let{
+            loanApplicationId = it.loanApplicationId
         }
 
         initViews()
@@ -471,8 +475,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         if(closingDate.isNotEmpty() || closingDate.length > 0) {
             clearError(binding.layoutClosingDate)
         }
-        else {
-            if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
+        if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
                 loanApplicationId?.let { loanId ->
                     val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = 4, loanGoalId = 4, expectedClosingDate = closingDate, downPayment = downPayment.toDouble(), cashOutAmount = 1, propertyValue = purchasePrice.toDouble())
                     lifecycleScope.launchWhenStarted {
@@ -484,7 +487,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                     binding.loaderLoanPurchase.visibility = View.GONE
                 }
             }
-        }
+
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
@@ -514,6 +517,32 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
     private fun hideLoader(){
         val  activity = (activity as? BorrowerLoanActivity)
         activity?.binding?.loaderLoanInfo?.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderLoanPurchase.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE){
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
     }
 
 }

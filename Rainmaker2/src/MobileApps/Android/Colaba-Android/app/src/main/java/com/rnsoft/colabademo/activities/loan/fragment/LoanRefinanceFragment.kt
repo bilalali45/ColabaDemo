@@ -20,6 +20,9 @@ import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -32,6 +35,7 @@ class LoanRefinanceFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+    private var loanApplicationId: Int? = null
     private val loanViewModel : LoanInfoViewModel by activityViewModels()
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
@@ -50,6 +54,11 @@ class LoanRefinanceFragment : BaseFragment() {
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_refinance))
 
+
+        val test = activity as BorrowerLoanActivity
+        test.let{
+            loanApplicationId = it.loanApplicationId
+        }
 
         initViews()
         clicks()
@@ -265,5 +274,33 @@ class LoanRefinanceFragment : BaseFragment() {
         val  activity = (activity as? BorrowerLoanActivity)
         activity?.binding?.loaderLoanInfo?.visibility = View.GONE
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderLoanRefinance.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE){
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
+    }
+
 
 }
