@@ -103,7 +103,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             }
         }
 
-
         setupLayout()
         super.addListeners(binding.root)
         return binding.root
@@ -142,10 +141,21 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         selectedGovernmentQuestionModel = item
 
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
-                            item.questionData?.let { questionDataList ->
-                                item.passedBorrowerId?.let { passedBorrowerId ->
-                                    updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions(passedBorrowerId, governmentQuestionActivity.loanApplicationId.toString(), questionDataList)
-                                    //udateGovernmentQuestionsList.add(test)
+                            governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
+                                item.questionData?.let { questionDataList ->
+                                    item.passedBorrowerId?.let { passedBorrowerId ->
+                                        updateGovernmentQuestionByBorrowerId =
+                                            UpdateGovernmentQuestions(
+                                                passedBorrowerId, nonNullLoanApplicationId.toString(),
+                                                questionDataList
+                                            )
+                                        Timber.e(
+                                            "TingoPingo = ",
+                                            updateGovernmentQuestionByBorrowerId.BorrowerId,
+                                            updateGovernmentQuestionByBorrowerId.toString()
+                                        )
+                                        //udateGovernmentQuestionsList.add(test)
+                                    }
                                 }
                             }
                         }
@@ -343,7 +353,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         return appCompactTextView
     }
 
-
     private lateinit var ownerShipConstraintLayout:ConstraintLayout
     private lateinit var childConstraintLayout:ConstraintLayout
     private lateinit var bankruptcyConstraintLayout:ConstraintLayout
@@ -537,7 +546,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.govt_detail_box2?.visibility = View.INVISIBLE
                 contentCell.govt_detail_box3?.visibility = View.INVISIBLE
                 variableQuestionData.answer = "No"
-                updateGovernmentData(variableQuestionData)
+                //updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
                 if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
@@ -546,7 +555,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     contentCell.govt_detail_box3?.visibility = View.VISIBLE
                 }
                 variableQuestionData.answer = "Yes"
-                updateGovernmentData(variableQuestionData)
+                //updateGovernmentData(variableQuestionData)
                 navigateToInnerScreen(headerTitle, questionId)
             }
         }
@@ -557,7 +566,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun updateGovernmentData(testData:QuestionData){
         for (item in updateGovernmentQuestionByBorrowerId.Questions) {
             if(item.id == testData.id){
-                item.answer = testData.answer
+                //item.answer = testData.answer
             }
         }
     }
@@ -723,8 +732,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         demoGraphicConstraintLayout.american_or_indian_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
 
     }
-
-
 
     private fun observeDemoGraphicData( contentCell:ConstraintLayout){
         borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
@@ -968,7 +975,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     }
 
-   private fun updateDemoGraphicRace(raceId:Int, removeFromList:Boolean){
+    private fun updateDemoGraphicRace(raceId:Int, removeFromList:Boolean){
        if(!removeFromList) {
            for (race in variableRaceList) {
                if (race.raceId == raceId) {
@@ -981,12 +988,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
            variableRaceList.add(DemoGraphicRace(arrayListOf(), raceId))
    }
 
-
     private fun updateDemoGraphicEthnicity(ethnicityId:Int){
         variableEthnicityList.clear()
         variableEthnicityList.add(EthnicityDemoGraphic(ethnicityId = ethnicityId , ethnicityDetails = arrayListOf()) )
     }
-
 
     private fun updateDemoGraphicGender(genderId:Int){
         variableGender = genderId
@@ -1080,9 +1085,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
     }
-
-
-
 
     private fun updateDemoGraphicService(){
         lifecycleScope.launchWhenStarted {
