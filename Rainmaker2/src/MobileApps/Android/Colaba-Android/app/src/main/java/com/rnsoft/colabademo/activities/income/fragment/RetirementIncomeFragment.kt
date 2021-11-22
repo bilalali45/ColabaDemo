@@ -428,6 +428,7 @@ class RetirementIncomeFragment : BaseFragment(){
         binding.loaderRetirementIncome.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
+            viewModel.resetChildFragmentToNull()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
@@ -442,9 +443,10 @@ class RetirementIncomeFragment : BaseFragment(){
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
                     if(codeString == "400" || codeString == "200"){
                         updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
                     }
                 })
                 lifecycleScope.launchWhenStarted {

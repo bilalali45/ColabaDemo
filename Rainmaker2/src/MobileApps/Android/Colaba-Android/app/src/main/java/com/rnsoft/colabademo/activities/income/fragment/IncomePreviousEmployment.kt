@@ -129,7 +129,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                         )
                     }
 
-                    data.employmentData?.wayOfIncome?.let {
+                    data?.employmentData?.wayOfIncome?.let {
                         it.employerAnnualSalary?.let {
                             binding.editTextAnnualIncome.setText(
                                 Math.round(it).toString()
@@ -142,7 +142,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                         }
                     }
 
-                    data.employmentData?.employerAddress?.let {
+                    data?.employmentData?.employerAddress?.let {
                         employerAddress = it
                         displayAddress(it)
                     } ?: run {
@@ -411,6 +411,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     fun onSentData(event: SendDataEvent) {
         binding.loaderEmployment.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            viewModel.resetChildFragmentToNull()
             updateMainIncome()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
@@ -426,8 +427,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
                     if(codeString == "400" || codeString == "200"){
+                        viewModel.resetChildFragmentToNull()
                         updateMainIncome()
                     }
                 })

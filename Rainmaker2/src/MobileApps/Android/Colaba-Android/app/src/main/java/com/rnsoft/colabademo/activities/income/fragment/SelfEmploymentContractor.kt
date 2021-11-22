@@ -376,6 +376,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         binding.loaderSelfEmployment.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
+            viewModel.resetChildFragmentToNull()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
@@ -390,9 +391,12 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
                     if(codeString == "400" || codeString == "200"){
+
                         updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
+
                     }
                 })
                 lifecycleScope.launchWhenStarted {
@@ -405,10 +409,9 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     }
 
     private fun updateMainIncome(){
-        Log.e("updateMain,","income")
         borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_self_employment)
-            Log.e("going","BACK")
+            //Log.e("going","BACK")
             findNavController().popBackStack()
         })
         val incomeActivity = (activity as? IncomeActivity)
