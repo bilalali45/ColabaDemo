@@ -33,11 +33,18 @@ class OtherAssetsFragment:AssetBaseFragment() {
         var assetAction = AppConstant.assetAdded
         if(assetDeleteBoolean)
             assetAction = AppConstant.assetDeleted
-        else
-            if(assetUniqueId>0)
-                assetAction = AppConstant.assetUpdated
+        else {
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+        }
 
         Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
 
         return AssetReturnParams(
             assetName = binding.accountTypeCompleteView.text.toString(),
@@ -62,15 +69,22 @@ class OtherAssetsFragment:AssetBaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            if(assetUniqueId == 0)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 7)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             getOtherAssets()
         }
-        if(assetUniqueId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (nonNullAssetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(returnUpdatedParams(true))
+                }
+            }
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
@@ -105,38 +119,49 @@ class OtherAssetsFragment:AssetBaseFragment() {
     }
 
     private fun getOtherDetailData(){
-        if(loanApplicationId != null && borrowerId != null &&  assetUniqueId>0) {
-            lifecycleScope.launchWhenStarted {
-                viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
-                    if (otherAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
-                        otherAssetDetail.otherAssetData?.let { otherAssetData ->
-                            var bool = false
-                            otherAssetData.assetTypeName?.let {
-                                for (item in otherAssetArray)
-                                    if (item == otherAssetData.assetTypeName) {
-                                        binding.accountTypeCompleteView.setText(item, false)
-                                        visibleOtherFields(otherAssetArray.indexOf(item))
-                                        bool = true
-                                        break
-                                    }
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
+                lifecycleScope.launchWhenStarted {
+                    viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
+                        if (otherAssetDetail?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                            otherAssetDetail?.otherAssetData?.let { otherAssetData ->
+                                var bool = false
+                                otherAssetData.assetTypeName?.let {
+                                    for (item in otherAssetArray)
+                                        if (item == otherAssetData.assetTypeName) {
+                                            binding.accountTypeCompleteView.setText(item, false)
+                                            visibleOtherFields(otherAssetArray.indexOf(item))
+                                            bool = true
+                                            break
+                                        }
 
-                            }
-                            if (bool) {
-                                otherAssetData.otherUniqueId?.let { assetUniqueId = it }
-                                otherAssetData.institutionName?.let {
-                                    binding.financialEditText.setText(it)
                                 }
-                                otherAssetData.accountNumber?.let {
-                                    binding.accountNumberEdittext.setText(it)
+                                if (bool) {
+                                    otherAssetData.otherUniqueId?.let { assetUniqueId = it }
+                                    otherAssetData.institutionName?.let {
+                                        binding.financialEditText.setText(it)
+                                    }
+                                    otherAssetData.accountNumber?.let {
+                                        binding.accountNumberEdittext.setText(it)
+                                    }
+                                    otherAssetData.assetValue?.let {
+                                        binding.annualBaseEditText.setText(
+                                            it.toString()
+                                        )
+                                    }
                                 }
-                                otherAssetData.assetValue?.let { binding.annualBaseEditText.setText(it.toString()) }
                             }
                         }
-                    }
-                })
+                    })
 
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getOtherAssetDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getOtherAssetDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            nonNullAssetUniqueId
+                        )
+                    }
                 }
             }
         }

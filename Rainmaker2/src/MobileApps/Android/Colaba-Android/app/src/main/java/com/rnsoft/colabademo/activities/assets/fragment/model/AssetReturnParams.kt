@@ -10,7 +10,7 @@ data class AssetReturnParams(
     val assetId: Int? = null,
     val assetName: String? = null,
     val assetTypeID: Int? = null,
-    var assetUniqueId: Int = -1,
+    var assetUniqueId: Int? = null,
     val assetTypeName: String? = "",
     val assetValue: Double? = null,
     val listenerAttached:Int? = null,

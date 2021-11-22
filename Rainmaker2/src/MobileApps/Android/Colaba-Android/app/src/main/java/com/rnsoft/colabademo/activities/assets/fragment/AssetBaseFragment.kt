@@ -18,7 +18,7 @@ open class AssetBaseFragment: BaseFragment() {
     protected var loanApplicationId:Int? = null
     protected var loanPurpose:String? = null
     protected var borrowerId:Int? = null
-    protected var assetUniqueId:Int = -1
+    protected var assetUniqueId:Int? = null
     protected var assetCategoryId:Int = 4
     protected var assetTypeID:Int? = null
     protected var assetCategoryName:String? = null
@@ -49,23 +49,37 @@ open class AssetBaseFragment: BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onAssetDeleteEventReceived(evt: AssetDeleteEvent) {
         if(evt.bool){
-            if (loanApplicationId != null && borrowerId != null && assetUniqueId >0) {
-                viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
-                    if(codeString == "400"){
-                        evt.assetReturnParams.assetAction = AppConstant.assetDeleted
-                        Timber.e("catching unique new id = "+evt.assetReturnParams.assetUniqueId)
-                        EventBus.getDefault()
-                            .post(AssetUpdateEvent(evt.assetReturnParams))
-                        findNavController().popBackStack()
-                        //updateMainAsset()
-                        //findNavController().popBackStack()
-                    }
-                })
+            assetUniqueId?.let { nonNullUniqueId ->
+                if (loanApplicationId != null && borrowerId != null && nonNullUniqueId > 0) {
+                    viewModel.genericAddUpdateAssetResponse.observe(
+                        viewLifecycleOwner,
+                        { genericAddUpdateAssetResponse ->
+                            val codeString = genericAddUpdateAssetResponse?.code.toString()
+                            if (codeString == "400") {
 
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.deleteAsset(authToken, assetUniqueId, borrowerId!!, loanApplicationId!!)
+                                evt.assetReturnParams.assetAction = AppConstant.assetDeleted
+                                Timber.e("catching unique id in Response 3 = " + evt.assetReturnParams.assetUniqueId)
+                                viewModel.resetChildFragmentToNull()
+                                EventBus.getDefault().post(AssetUpdateEvent(evt.assetReturnParams))
+                                findNavController().navigateUp()
+                                //updateMainAsset()
+                                //findNavController().popBackStack()
+                            }
+                        })
+
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            assetUniqueId?.let { nonNullUniqueId ->
+                                if (nonNullUniqueId > 0)
+                                    viewModel.deleteAsset(
+                                        authToken,
+                                        nonNullUniqueId,
+                                        borrowerId!!,
+                                        loanApplicationId!!
+                                    )
+                            }
+
+                        }
                     }
                 }
             }
@@ -73,18 +87,23 @@ open class AssetBaseFragment: BaseFragment() {
     }
 
     protected fun observeAddUpdateResponse(assetReturnParams: AssetReturnParams){
-        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-            if(genericAddUpdateAssetResponse.status == "OK"){
-                val codeString = genericAddUpdateAssetResponse.code.toString()
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { addUpdateResponse ->
+            if(addUpdateResponse?.status.equals("OK", true)){
+                val codeString:String = addUpdateResponse?.code.toString()
                 if(codeString == "200"){
                     lifecycleScope.launchWhenStarted {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            genericAddUpdateAssetResponse.assetUniqueData?.let { nonNullAssetUniqueData->
-                                assetReturnParams.assetUniqueId = nonNullAssetUniqueData
-                                Timber.e("catching unique new id = "+nonNullAssetUniqueData)
-                                EventBus.getDefault()
-                                    .post(AssetUpdateEvent(assetReturnParams))
-                                findNavController().popBackStack()
+                            addUpdateResponse?.assetUniqueId?.let { nonNullAssetUniqueData->
+
+                                if( assetReturnParams.assetUniqueId!=null)
+                                Timber.e("catching passed - unique new id = "+assetReturnParams.assetUniqueId)
+                                    assetReturnParams.assetUniqueId = nonNullAssetUniqueData
+                                Timber.e("catching response - unique new id = $nonNullAssetUniqueData")
+                                viewModel.resetChildFragmentToNull()
+                                EventBus.getDefault().post(AssetUpdateEvent(assetReturnParams))
+
+
+                                findNavController().navigateUp()
                             }
                             //updateMainAsset()
                             //findNavController().popBackStack()
@@ -98,12 +117,13 @@ open class AssetBaseFragment: BaseFragment() {
 
     protected val backToAssetScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            findNavController().popBackStack()
+            viewModel.resetChildFragmentToNull()
+            findNavController().navigateUp()
         }
     }
 
 
-
+    /*
     private fun updateMainAsset(){
         borrowerApplicationViewModel.assetsModelDataClass.observe(viewLifecycleOwner, { observableSampleContent ->
             findNavController().popBackStack()
@@ -123,5 +143,6 @@ open class AssetBaseFragment: BaseFragment() {
             }
         }
     }
+    */
 
 }

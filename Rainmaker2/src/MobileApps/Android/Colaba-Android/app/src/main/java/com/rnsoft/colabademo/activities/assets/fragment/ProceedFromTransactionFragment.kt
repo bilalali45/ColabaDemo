@@ -44,14 +44,21 @@ import java.util.ArrayList
                 loanPurpose = arguments.getString(AppConstant.loanPurpose)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
                 assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+                if(assetUniqueId == -1)
+                    assetUniqueId = null
+                Timber.e("catching unique id in Argument  = $assetUniqueId")
                 assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 6)
                 assetTypeID = arguments.getInt(AppConstant.assetTypeID)
                 assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
                 listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             }
-            if(assetUniqueId>0) {
-                binding.topDelImageview.visibility = View.VISIBLE
-                binding.topDelImageview.setOnClickListener{ showDeleteDialog( returnUpdatedParams(true)) }
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0) {
+                    binding.topDelImageview.visibility = View.VISIBLE
+                    binding.topDelImageview.setOnClickListener {
+                        showDeleteDialog(returnUpdatedParams(true))
+                    }
+                }
             }
             activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
             getTransactionCategories()
@@ -66,64 +73,87 @@ import java.util.ArrayList
                 }
             }
 
-            viewModel.assetTypesByCategoryItemList.observe(viewLifecycleOwner, { assetTypesByCategoryItemList ->
-                if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
-                    categoryList = assetTypesByCategoryItemList
-                    for(item in categoryList){
-                        if(item.id == assetTypeID){
-                            binding.transactionAutoCompleteTextView.setText(item.name , false)
-                            if(item.id == 12){
-                                getProceedsFromLoan(0)
+                    viewModel.assetTypesByCategoryItemList.observe(
+                        viewLifecycleOwner,
+                        { assetTypesByCategoryItemList ->
+                            if (assetTypesByCategoryItemList != null && assetTypesByCategoryItemList.size > 0) {
+                                categoryList = assetTypesByCategoryItemList
+                                assetUniqueId?.let { assetUniqueId ->
+                                    if (assetUniqueId > 0) {
+                                        for (item in categoryList) {
+                                            if (item.id == assetTypeID) {
+                                                binding.transactionAutoCompleteTextView.setText(
+                                                    item.name,
+                                                    false
+                                                )
+                                                if (item.id == 12) {
+                                                    getProceedsFromLoan(0)
+                                                } else if (item.id == AppConstant.assetNonRealStateId) {
+                                                    getProceedsFromNonRealEstateDetail(1)
+                                                } else if (item.id == AppConstant.assetRealStateId) {
+                                                    getProceedsFromRealEstateDetail(2)
+                                                }
+                                                break
+                                            }
+                                        }
+                                    }
+                                }
                             }
-                            else if(item.id == AppConstant.assetNonRealStateId){
-                                getProceedsFromNonRealEstateDetail(1)
-                            }
-                            else if(item.id == AppConstant.assetRealStateId){
-                                getProceedsFromRealEstateDetail(2)
-                            }
-                            break
-                        }
-                    }
-                }
-            })
+                        })
+
+
         }
 
         private fun getProceedsFromLoan(position:Int) {
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId > 0){
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.getProceedsFromLoan(authToken, loanApplicationId!!, borrowerId!!, assetTypeID!!, assetUniqueId)
+            assetUniqueId?.let { assetUniqueId ->
+                if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId > 0) {
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            viewModel.getProceedsFromLoan(
+                                authToken,
+                                loanApplicationId!!,
+                                borrowerId!!,
+                                assetTypeID!!,
+                                assetUniqueId
+                            )
+                        }
                     }
+                    observeChanges(position)
                 }
-                observeChanges(position)
             }
         }
 
         private fun getProceedsFromNonRealEstateDetail(position:Int){
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId>0) {
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
-                        viewModel.getProceedsFromNonRealEstateDetail(
-                            authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, assetUniqueId
-                        )
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+
+                if (loanApplicationId != null && borrowerId != null && assetTypeID != null && nonNullAssetUniqueId > 0) {
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+
+                            viewModel.getProceedsFromNonRealEstateDetail(
+                                authToken, loanApplicationId!!,
+                                borrowerId!!, assetTypeID!!, nonNullAssetUniqueId
+                            )
+                        }
                     }
+                    observeChanges(position)
                 }
-                observeChanges(position)
             }
         }
 
         private fun getProceedsFromRealEstateDetail(position:Int){
-            if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId>0) {
-                observeChanges(position)
+            assetUniqueId?.let { assetUniqueId->
+                if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId > 0) {
+                    observeChanges(position)
 
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.getProceedsFromRealEstateDetail(
-                            authToken, loanApplicationId!!,
-                            borrowerId!!, assetTypeID!!, assetUniqueId
-                        )
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            viewModel.getProceedsFromRealEstateDetail(
+                                authToken, loanApplicationId!!,
+                                borrowerId!!, assetTypeID!!, assetUniqueId
+                            )
+                        }
                     }
                 }
             }
@@ -133,7 +163,7 @@ import java.util.ArrayList
         private fun observeChanges(position:Int){
             visibleOtherFields(position)
             viewModel.proceedFromLoanModel.observe(viewLifecycleOwner, { proceedFromLoanModel ->
-                proceedFromLoanModel.proceedFromLoanData?.let{ proceedFromLoanData->
+                proceedFromLoanModel?.proceedFromLoanData?.let{ proceedFromLoanData->
                     //proceedFromLoanData.id?.let { assetUniqueId = it }
                     proceedFromLoanData.value?.let {
                         binding.annualBaseEditText.setText(it.toString())
@@ -284,12 +314,14 @@ import java.util.ArrayList
 
 
         private fun addUpdateProceedFromLoan(assetTypeId:Int){
-            observeAddUpdateResponse(returnUpdatedParams())
+
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     var paramBorrowerAssetId:Int? = null
-                    if(assetUniqueId > 0)
-                        paramBorrowerAssetId = assetUniqueId
+                    assetUniqueId?.let { assetUniqueId ->
+                        if (assetUniqueId > 0)
+                            paramBorrowerAssetId = assetUniqueId
+                    }
 
                     var securedByColletral:Boolean? = null
                     if(radioButton.isChecked)
@@ -338,10 +370,11 @@ import java.util.ArrayList
                     }
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
 
         private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
-            observeAddUpdateResponse(returnUpdatedParams())
+
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     loanApplicationId?.let { notNullLoanApplicationId ->
@@ -363,6 +396,7 @@ import java.util.ArrayList
                     }
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
 
         private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
@@ -370,10 +404,16 @@ import java.util.ArrayList
             if(assetDeleteBoolean)
                 assetAction = AppConstant.assetDeleted
             else
-                if(assetUniqueId>0)
+            assetUniqueId?.let { assetUniqueId ->
+                if (assetUniqueId > 0)
                     assetAction = AppConstant.assetUpdated
+            }
 
             Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+            assetUniqueId?.let { notNullAssetUniqueId->
+                if(notNullAssetUniqueId<=0)
+                    assetUniqueId = null
+            }
 
             return AssetReturnParams(
                 assetName = binding.transactionAutoCompleteTextView.text.toString(),

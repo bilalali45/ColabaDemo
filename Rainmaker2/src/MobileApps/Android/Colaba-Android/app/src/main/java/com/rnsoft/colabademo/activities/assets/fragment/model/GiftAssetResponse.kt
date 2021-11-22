@@ -15,7 +15,7 @@ data class GiftAssetData(
     val borrowerId: Int?,
     val description: String?,
     val giftSourceId: Int?,
-    @SerializedName("id") val giftUniqueId: Int?,
+    @SerializedName("id") val assetUniqueId: Int?,
     val isDeposited: Boolean?,
     val loanApplicationId: Int?,
     val value: Double?,

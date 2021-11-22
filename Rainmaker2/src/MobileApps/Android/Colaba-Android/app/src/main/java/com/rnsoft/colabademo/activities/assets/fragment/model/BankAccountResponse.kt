@@ -2,9 +2,6 @@ package com.rnsoft.colabademo
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by Anita Kiran on 11/1/2021.
- */
 data class BankAccountResponse(
     val code: String?,
     @SerializedName("data") val bankAccountData: BankAccountData?,
@@ -13,7 +10,8 @@ data class BankAccountResponse(
 )
 
 data class BankAccountData(
-    val id: Int?,
+
+    @SerializedName("id") val assetUniqueId: Int?,
     val assetTypeId: Int?,
     val institutionName: String?,
     val accountNumber: String?,

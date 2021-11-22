@@ -39,14 +39,21 @@ class BankAccountFragment : AssetBaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose , null)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            if(assetUniqueId == -1)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeBankData()
         }
-        if(assetUniqueId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (nonNullAssetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(returnUpdatedParams(true))
+                }
+            }
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
@@ -56,11 +63,15 @@ class BankAccountFragment : AssetBaseFragment() {
         var assetAction = AppConstant.assetAdded
         if(assetDeleteBoolean)
             assetAction = AppConstant.assetDeleted
-        else
-            if(assetUniqueId>0)
-                assetAction = AppConstant.assetUpdated
+        else {
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+        }
 
         Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+
 
         var assetValue = 0.0
         if(binding.annualBaseEditText.text.toString().isNotEmpty() && binding.annualBaseEditText.text.toString().isNotBlank() )
@@ -88,7 +99,7 @@ class BankAccountFragment : AssetBaseFragment() {
             binding.accountTypeCompleteView.showDropDown()
         }
         binding.accountTypeCompleteView.setOnClickListener{
-           // binding.accountTypeCompleteSpView.showDropDown()
+            binding.accountTypeCompleteView.showDropDown()
         }
 
         binding.accountTypeCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
@@ -129,7 +140,10 @@ class BankAccountFragment : AssetBaseFragment() {
 
                     var balance = 0
                     if(binding.annualBaseEditText.text.toString().isNotBlank() && binding.annualBaseEditText.text.toString().isNotEmpty())
-                        balance =  binding.annualBaseEditText.text.toString().toInt()
+                        balance =  Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt()
+
+
+                    Timber.e("catching unique id in saved response = $assetUniqueId")
 
                     accountTypeId?.let { notNullAccountTypeId->
                         loanApplicationId?.let { notNullLoanApplicationId->
@@ -152,6 +166,7 @@ class BankAccountFragment : AssetBaseFragment() {
 
                 }
             }
+
             observeAddUpdateResponse(returnUpdatedParams())
         }
 
@@ -250,30 +265,48 @@ class BankAccountFragment : AssetBaseFragment() {
     }
 
     private fun fetchAndObserveBankAccountDetails(){
-        if(loanApplicationId != null && borrowerId != null &&  assetUniqueId >0) {
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
 
-            viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
-                if(bankAccountDetails.code == AppConstant.RESPONSE_CODE_SUCCESS){
-                    bankAccountDetails.bankAccountData?.let { bankAccountData ->
-                        bankAccountData.institutionName?.let { binding.financialEditText.setText(it)  }
-                        bankAccountData.accountNumber?.let{ binding.accountNumberEdittext.setText(it) }
-                        bankAccountData.balance?.let{binding.annualBaseEditText.setText(it.toString())}
-                        bankAccountData.id?.let { assetUniqueId = it }
-                        bankAccountData.assetTypeId?.let { assetTypeId->
-                            for(item in classLevelBankAccountTypes){
-                                if(assetTypeId == item.id){
-                                    binding.accountTypeCompleteView.setText(item.name, false)
-                                    break
+                viewModel.bankAccountDetails.observe(viewLifecycleOwner, { bankAccountDetails ->
+                    if (bankAccountDetails?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                        bankAccountDetails.bankAccountData?.let { bankAccountData ->
+                            bankAccountData.institutionName?.let {
+                                binding.financialEditText.setText(
+                                    it
+                                )
+                            }
+                            bankAccountData.accountNumber?.let {
+                                binding.accountNumberEdittext.setText(
+                                    it
+                                )
+                            }
+                            bankAccountData.balance?.let { binding.annualBaseEditText.setText(it.toString()) }
+                            bankAccountData.assetUniqueId?.let {
+                                //assetUniqueId = it
+                                Timber.e("catching unique id in Observe -2 = $assetUniqueId")
+                            }
+                            bankAccountData.assetTypeId?.let { assetTypeId ->
+                                for (item in classLevelBankAccountTypes) {
+                                    if (assetTypeId == item.id) {
+                                        binding.accountTypeCompleteView.setText(item.name, false)
+                                        break
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            })
+                })
 
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getBankAccountDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getBankAccountDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            nonNullAssetUniqueId
+                        )
+                    }
                 }
             }
         }

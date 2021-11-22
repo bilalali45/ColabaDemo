@@ -25,12 +25,9 @@ class GiftsAssetsFragment:AssetBaseFragment() {
     private var _binding: GiftsAssetLayoutBinding? = null
     private val binding get() = _binding!!
 
-
     private val giftOfEquity = "Gift Of Equity"
     private val grant = "Grant"
     private val cashGift = "Cash Gift"
-
-
 
     private var dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
     private lateinit var giftAdapter:ArrayAdapter<String>
@@ -48,7 +45,9 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
-            Timber.e("catching unique id in assetUniqueId = $assetUniqueId")
+            if(assetUniqueId == -1)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 4)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
@@ -56,9 +55,14 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             observeGiftData()
             getGiftCategory()
         }
-        if(assetUniqueId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog(returnUpdatedParams(true)) }
+
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (nonNullAssetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(returnUpdatedParams(true))
+                }
+            }
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
@@ -114,71 +118,82 @@ class GiftsAssetsFragment:AssetBaseFragment() {
 
     private fun fetchAndObserveGiftDetails(){
 
-        if (loanApplicationId != null && borrowerId != null && assetUniqueId >0) {
+        assetUniqueId?.let { nonNullAssetUniqueId->
+            if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
 
-            viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
-                if (giftAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
-                    giftAssetDetail.giftAssetData?.let { giftAssetData ->
-                        giftAssetData.giftUniqueId?.let {
-                           Timber.e("catching unique id in Response = $it")
-                           assetUniqueId = it
-                        }
-                        giftAssetData.isDeposited?.let { isDeposited ->
-                            if (isDeposited) {
-                                binding.cashGift.isChecked = true
-                                giftAssetData.valueDate?.let { valueDate ->
-                                    binding.layoutTransferDate.visibility = View.VISIBLE
-                                    val newDate = valueDate.substring(0, valueDate.indexOf("T"))
-                                    val initDate: Date? = SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(newDate)
-                                    val formatter = SimpleDateFormat("MM-dd-yyyy" , Locale.US)
-                                    initDate?.let { notNullInitDate ->
-                                        val parsedDate: String = formatter.format(notNullInitDate)
-                                        binding.dateOfTransferEditText.setText(parsedDate)
-                                    }
-
-                                }
-                                binding.yesDeposited.isChecked = true
-                            } else {
-                                binding.giftOfEquity.isChecked = true
-                                binding.noDeposited.isChecked = false
+                viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
+                    if (giftAssetDetail?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                        giftAssetDetail.giftAssetData?.let { giftAssetData ->
+                            giftAssetData.assetUniqueId?.let {
+                                Timber.e("catching unique id in Response = $it")
+                                assetUniqueId = it
                             }
-                        }
-                        giftAssetData.assetTypeId?.let{ assetTypeId->
-                            for(item in giftAssetList){
-                                if(item.id == 10 && item.id == assetTypeId )
+                            giftAssetData.isDeposited?.let { isDeposited ->
+                                if (isDeposited) {
                                     binding.cashGift.isChecked = true
-                                else
-                                if(item.id == 26 && item.id == assetTypeId) {
+                                    giftAssetData.valueDate?.let { valueDate ->
+                                        binding.layoutTransferDate.visibility = View.VISIBLE
+                                        val newDate = valueDate.substring(0, valueDate.indexOf("T"))
+                                        val initDate: Date? =
+                                            SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(newDate)
+                                        val formatter = SimpleDateFormat("MM-dd-yyyy", Locale.US)
+                                        initDate?.let { notNullInitDate ->
+                                            val parsedDate: String =
+                                                formatter.format(notNullInitDate)
+                                            binding.dateOfTransferEditText.setText(parsedDate)
+                                        }
+
+                                    }
+                                    binding.yesDeposited.isChecked = true
+                                } else {
                                     binding.giftOfEquity.isChecked = true
-                                    binding.giftOfEquity.text = giftOfEquity
-                                }
-                                else
-                                if(item.id == 11 && item.id == assetTypeId) {
-                                    binding.giftOfEquity.isChecked = true
-                                    binding.giftOfEquity.text = grant
+                                    binding.noDeposited.isChecked = false
                                 }
                             }
-                        }
-                        giftAssetData.value?.let {
-                            val newValue = it.toString()
-                            binding.annualBaseEditText.setText(newValue)
-                        }
-                        giftAssetData.giftSourceId?.let { giftSourceId ->
-                            for (item in giftResources) {
-                                if (giftSourceId == item.id) {
-                                    binding.giftSourceAutoCompeleteView.setText(item.name, false)
-                                    break
+                            giftAssetData.assetTypeId?.let { assetTypeId ->
+                                for (item in giftAssetList) {
+                                    if (item.id == 10 && item.id == assetTypeId)
+                                        binding.cashGift.isChecked = true
+                                    else
+                                        if (item.id == 26 && item.id == assetTypeId) {
+                                            binding.giftOfEquity.isChecked = true
+                                            binding.giftOfEquity.text = giftOfEquity
+                                        } else
+                                            if (item.id == 11 && item.id == assetTypeId) {
+                                                binding.giftOfEquity.isChecked = true
+                                                binding.giftOfEquity.text = grant
+                                            }
+                                }
+                            }
+                            giftAssetData.value?.let {
+                                val newValue = it.toString()
+                                binding.annualBaseEditText.setText(newValue)
+                            }
+                            giftAssetData.giftSourceId?.let { giftSourceId ->
+                                for (item in giftResources) {
+                                    if (giftSourceId == item.id) {
+                                        binding.giftSourceAutoCompeleteView.setText(
+                                            item.name,
+                                            false
+                                        )
+                                        break
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            })
+                })
 
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    Timber.e("catching unique id $assetUniqueId")
-                    viewModel.getGiftAssetDetails(authToken, loanApplicationId!!, borrowerId!!, assetUniqueId)
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        Timber.e("catching unique id $assetUniqueId")
+                        viewModel.getGiftAssetDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            nonNullAssetUniqueId
+                        )
+                    }
                 }
             }
         }
@@ -296,11 +311,6 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                             loanApplicationId?.let { notNullLoanApplicationId ->
                                 borrowerId?.let { notNullBorrowerId ->
 
-                                    if(id == null)
-                                        Timber.e(" unique Id is NUlll")
-                                    else
-                                        Timber.e("unique Id not null = $id")
-
 
                                     var isDeposited:Boolean? = null
                                     if(binding.yesDeposited.isChecked) isDeposited = true
@@ -314,7 +324,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                                             GiftSourceId = notNullGiftSourceId,
                                             Description = null,
                                             AssetTypeId = assetTypeId,
-                                            Id = id,
+                                            Id = assetUniqueId,
                                             IsDeposited = isDeposited,
                                             Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                             valueDate = binding.dateOfTransferEditText.text.toString()
@@ -338,11 +348,19 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         var assetAction = AppConstant.assetAdded
         if(assetDeleteBoolean)
             assetAction = AppConstant.assetDeleted
-        else
-        if(assetUniqueId>0)
-            assetAction = AppConstant.assetUpdated
+        else // if action updated....
+        {
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+        }
 
         Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
 
         return AssetReturnParams(
              assetName = binding.giftSourceAutoCompeleteView.text.toString(),

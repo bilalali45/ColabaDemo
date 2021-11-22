@@ -13,9 +13,7 @@ import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-/**
- * Created by Anita Kiran on 11/1/2021.
- */
+
 
 @HiltViewModel
 class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : ViewModel() {
@@ -29,17 +27,43 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _assetByCategory: MutableLiveData<ArrayList<AssetTypesByCategory>> = MutableLiveData()
     val assetByCategory: LiveData<ArrayList<AssetTypesByCategory>> get() = _assetByCategory
 
-    private val _bankAccountDetails: MutableLiveData<BankAccountResponse> = MutableLiveData()
-    val bankAccountDetails: LiveData<BankAccountResponse> get() = _bankAccountDetails
+    private val _bankAccountDetails: MutableLiveData<BankAccountResponse?> = MutableLiveData()
+    val bankAccountDetails: LiveData<BankAccountResponse?> get() = _bankAccountDetails
 
-    private val _genericAddUpdateAssetResponse: MutableLiveData<GenericAddUpdateAssetResponse> = MutableLiveData()
-    val genericAddUpdateAssetResponse: LiveData<GenericAddUpdateAssetResponse> get() = _genericAddUpdateAssetResponse
 
-    private val _retirementAccountDetail: MutableLiveData<RetirementAccountResponse> = MutableLiveData()
-    val retirementAccountDetail: LiveData<RetirementAccountResponse> get() = _retirementAccountDetail
 
-    private val _financialAssetDetail: MutableLiveData<FinancialAssetResponse> = MutableLiveData()
-    val financialAssetDetail: LiveData<FinancialAssetResponse> get() = _financialAssetDetail
+    private var _genericAddUpdateAssetResponse: MutableLiveData<GenericAddUpdateAssetResponse?> = MutableLiveData()
+    val genericAddUpdateAssetResponse: LiveData<GenericAddUpdateAssetResponse?> get() = _genericAddUpdateAssetResponse
+
+    private val _retirementAccountDetail: MutableLiveData<RetirementAccountResponse?> = MutableLiveData()
+    val retirementAccountDetail: LiveData<RetirementAccountResponse?> get() = _retirementAccountDetail
+
+    fun resetChildFragmentToNull(){
+        _bankAccountDetails.value = null
+        _bankAccountDetails.postValue(null)
+
+        _retirementAccountDetail.value = null
+        _retirementAccountDetail.postValue(null)
+
+        _financialAssetDetail.value = null
+        _financialAssetDetail.postValue(null)
+
+        _giftAssetDetail.value = null
+        _giftAssetDetail.postValue(null)
+
+        _otherAssetDetail.value = null
+        _otherAssetDetail.postValue(null)
+
+        _proceedFromLoanModel.value = null
+        _proceedFromLoanModel.postValue(null)
+
+        _genericAddUpdateAssetResponse.value  = null
+        _genericAddUpdateAssetResponse.postValue(null)
+
+    }
+
+    private val _financialAssetDetail: MutableLiveData<FinancialAssetResponse?> = MutableLiveData()
+    val financialAssetDetail: LiveData<FinancialAssetResponse?> get() = _financialAssetDetail
 
     private val _loanNonRealEstate: MutableLiveData<AssetsRealEstateResponse> = MutableLiveData()
     val loanNonRealEstate: LiveData<AssetsRealEstateResponse> get() = _loanNonRealEstate
@@ -50,17 +74,17 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     private val _allGiftResources: MutableLiveData<ArrayList<GiftSourcesResponse>> = MutableLiveData()
     val allGiftResources: LiveData<ArrayList<GiftSourcesResponse>> get() = _allGiftResources
 
-    private var _giftAssetDetail: MutableLiveData<GiftAssetResponse> = MutableLiveData()
-    val giftAssetDetail: LiveData<GiftAssetResponse> get() = _giftAssetDetail
+    private var _giftAssetDetail: MutableLiveData<GiftAssetResponse?> = MutableLiveData()
+    val giftAssetDetail: LiveData<GiftAssetResponse?> get() = _giftAssetDetail
 
-    private val _otherAssetDetail: MutableLiveData<OtherAssetResponse> = MutableLiveData()
-    val otherAssetDetail: LiveData<OtherAssetResponse> get() = _otherAssetDetail
+    private val _otherAssetDetail: MutableLiveData<OtherAssetResponse?> = MutableLiveData()
+    val otherAssetDetail: LiveData<OtherAssetResponse?> get() = _otherAssetDetail
 
     private val _assetTypesByCategoryItemList: MutableLiveData<ArrayList<GetAssetTypesByCategoryItem>> = MutableLiveData()
     val assetTypesByCategoryItemList: LiveData<ArrayList<GetAssetTypesByCategoryItem>> get() = _assetTypesByCategoryItemList
 
-    private val _proceedFromLoanModel: MutableLiveData<ProceedFromLoanModel> = MutableLiveData()
-    val proceedFromLoanModel: LiveData<ProceedFromLoanModel> get() = _proceedFromLoanModel
+    private val _proceedFromLoanModel: MutableLiveData<ProceedFromLoanModel?> = MutableLiveData()
+    val proceedFromLoanModel: LiveData<ProceedFromLoanModel?> get() = _proceedFromLoanModel
 
 
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int) {
