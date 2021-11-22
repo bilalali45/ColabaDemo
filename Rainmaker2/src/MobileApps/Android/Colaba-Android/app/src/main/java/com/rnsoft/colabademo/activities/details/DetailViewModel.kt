@@ -93,9 +93,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                 withContext(Dispatchers.Main) {
                     applicationServiceRunning = false
                     if (responseResult is Result.Success) {
-
                         _borrowerApplicationTabModel.value = (responseResult.data)
-                        _borrowerApplicationTabModel.postValue(responseResult.data)
                     }
                     else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(WebServiceErrorEvent(null, true))

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
@@ -275,15 +276,15 @@ class BorrowerOneAssets : BaseFragment() {
                         }
                     }
 
+                //EventBus.getDefault().post(GrandTotalEvent("$".plus(Common.addNumberFormat(grandTotalAmount))))
+                binding.grandTotalTextView.text = "$".plus(Common.addNumberFormat(grandTotalAmount))
 
-                EventBus.getDefault()
-                    .post(GrandTotalEvent("$".plus(Common.addNumberFormat(grandTotalAmount))))
             })
-
         super.addListeners(binding.root)
-
         return binding.root
     }
+
+
 
     private fun setupLayout() {
 
@@ -583,13 +584,18 @@ class BorrowerOneAssets : BaseFragment() {
 
             var displayedValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
             assetReturnParams.assetValue?.let{ assetDoubleValue->
-                if(needSubtraction)
+                if(needSubtraction) {
                     displayedValue -= assetDoubleValue
+                    grandTotalAmount -= assetDoubleValue
+                }
                 else {
                     displayedValue -= classCategoryTotal
+                    grandTotalAmount -= displayedValue
                     displayedValue += assetDoubleValue
+                    grandTotalAmount += displayedValue
                 }
                 foundLayout.header_amount.text = "$".plus(Common.addNumberFormat(displayedValue))
+                binding.grandTotalTextView.text = "$".plus(Common.addNumberFormat(grandTotalAmount))
             }
            // grandTotalAmount += newValue
             //EventBus.getDefault()

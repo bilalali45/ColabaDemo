@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -54,6 +55,7 @@ class AssetsTabFragment : BaseFragment() {
         assetsActivity?.let { assetsActivity->
             //assetsActivity.borrowerTabList?.let { borrowerTabList-> }
         }
+
 
 
         borrowerApplicationViewModel.assetsModelDataClass.observe(
@@ -110,11 +112,15 @@ class AssetsTabFragment : BaseFragment() {
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
+
+
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
@@ -122,6 +128,8 @@ class AssetsTabFragment : BaseFragment() {
 
         return root
     }
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
@@ -144,6 +152,7 @@ class AssetsTabFragment : BaseFragment() {
         _binding = null
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -158,6 +167,8 @@ class AssetsTabFragment : BaseFragment() {
     fun onGrandTotalAmountReceived(event: GrandTotalEvent) {
         binding.grandTotalTextView.text = event.totalAmount
     }
+
+     */
 
     /*
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

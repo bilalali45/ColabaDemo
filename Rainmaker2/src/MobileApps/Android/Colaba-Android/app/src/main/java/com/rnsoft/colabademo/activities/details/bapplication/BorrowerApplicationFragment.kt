@@ -342,7 +342,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                             borrowerInfoList = borrowersList
                             saveBorrowerId = borrowersList[0].borrowerId
                             borrowerName = borrowersList[0].firstName.plus(" ")
-                                .plus(borrowersList.get(0).lastName)
+                                .plus(borrowersList[0].lastName)
 
 
                             for (borrower in borrowersList) {
@@ -450,33 +450,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
 
-    override fun onStop() {
-        EventBus.getDefault().unregister(this)
-        super.onStop()
-
-    }
-
-    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    fun updatedBorrowerApplicationEvent(borrowerApplicationEvent: BorrowerApplicationUpdatedEvent) {
-        if(borrowerApplicationEvent.objectUpdated) {
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    val activity = (activity as? DetailActivity)
-                    activity?.loanApplicationId?.let {
-                        detailViewModel.getBorrowerApplicationTabData(
-                            token = authToken,
-                            loanApplicationId = it
-                        )
-                    }
-                }
-            }
-        }
-    }
 
 
     /*
