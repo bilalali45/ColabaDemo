@@ -40,15 +40,15 @@ class OtherIncomeFragment : BaseFragment() {
     private val viewModel : IncomeViewModel by activityViewModels()
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
-        "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
-                " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
+    //private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
+      //  "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" + " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
     private var loanApplicationId:Int? = null
     private var borrowerId:Int? = null
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
     private var incomeInfoId :Int? = null
     private var incomeTypes: ArrayList<DropDownResponse> = arrayListOf()
+    private var borrowerName: String? = null
 
 
     override fun onCreateView(
@@ -67,11 +67,16 @@ class OtherIncomeFragment : BaseFragment() {
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
             incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            borrowerName = arguments.getString(AppConstant.borrowerName)
             arguments.getInt(AppConstant.incomeId).let {
                 if(it > 0) {
                     incomeInfoId = it
                 }
             }
+        }
+
+        borrowerName?.let {
+            toolbarBinding.borrowerPurpose.setText(it)
         }
 
         initViews()

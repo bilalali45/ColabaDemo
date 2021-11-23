@@ -488,11 +488,11 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             //dismissActivity()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
 
         else
             if(event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
         hideLoader()
 
     }
@@ -514,7 +514,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
          }
       }
         detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, {
-            Log.e("nwe data observed", "true")
+            //Log.e("nwe data observed", "true")
             dismissActivity()
         })
     }

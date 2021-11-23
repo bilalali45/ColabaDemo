@@ -41,7 +41,6 @@ class RetirementIncomeFragment : BaseFragment(){
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeRetirementLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    //private var savedViewInstance: View? = null
     //private val retirementArray = listOf("Social Security", "Pension","IRA / 401K" , "Other Retirement Source")
     private val viewModel : IncomeViewModel by activityViewModels()
     private var retirementTypes: ArrayList<DropDownResponse> = arrayListOf()
@@ -50,6 +49,7 @@ class RetirementIncomeFragment : BaseFragment(){
     private var incomeInfoId:Int? = null
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
+    private var borrowerName: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -64,11 +64,17 @@ class RetirementIncomeFragment : BaseFragment(){
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
             incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            borrowerName = arguments.getString(AppConstant.borrowerName)
             arguments.getInt(AppConstant.incomeId).let {
                 if(it > 0)
                     incomeInfoId = it
                 }
         }
+
+        borrowerName?.let {
+            toolbarBinding.borrowerPurpose.setText(it)
+        }
+
             setRetirementType()
             initViews()
             observeRetirementIncomeTypes()

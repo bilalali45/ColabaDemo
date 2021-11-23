@@ -15,7 +15,7 @@ object AppConstant {
 
         //const val  LOGIN_NAME:String = "khatri03.mcu@mailinator.com"
         //const val  PASSWORD:String = "test123"
-        const val real_estate_delete_text: String = "Are you sure you want to remove this property?"
+        const val real_estate_delete_text: String = "Are you sure you want to delete this property?"
         const val income_update: String = "income-update"
         const val income_self_employment: String = "Self Employment / Independent Contractor"
         const val income_employment: String = "Employment"

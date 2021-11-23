@@ -58,12 +58,11 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
     }
 
     suspend fun addLoanInfo(token: String,data: AddLoanInfoModel) {
-        //delay(2000)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.addLoanInfo(token = token,data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    //Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "${responseResult.data}")
                     //Log.e("Viewmodel", "$responseResult")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }

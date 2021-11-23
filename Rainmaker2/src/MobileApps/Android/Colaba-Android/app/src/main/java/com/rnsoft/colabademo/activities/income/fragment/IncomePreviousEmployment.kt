@@ -47,6 +47,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     private var loanApplicationId: Int? = null
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
+    private var borrowerName: String? = null
     private var employerAddress = AddressData()
 
 
@@ -65,8 +66,12 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
                 incomeInfoId = arguments.getInt(AppConstant.incomeId)
+                borrowerName = arguments.getString(AppConstant.borrowerName)
             }
             //Log.e("Current Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+            borrowerName?.let {
+                toolbar.borrowerPurpose.setText(it)
+            }
 
             initViews()
             getEmploymentData()

@@ -141,11 +141,10 @@ class DetailActivity : BaseActivity() {
     override fun onStop() {
         EventBus.getDefault().unregister(this)
         super.onStop()
-
     }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
-    fun updatedBorrowerApplicationEvent(borrowerApplicationEvent: BorrowerApplicationUpdatedEvent) {
+    fun updatedBorrowerApplicationEvent(borrowerApplicationEvent: BorrowerApplicationUpdatedEvent){
         if(borrowerApplicationEvent.objectUpdated) {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

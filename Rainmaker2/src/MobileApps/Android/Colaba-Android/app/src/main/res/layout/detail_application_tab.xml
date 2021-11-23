@@ -207,7 +207,7 @@
             android:clickable="true">
 
             <TextView
-                android:id="@+id/textView19"
+                android:id="@+id/textviewLoanPurpose"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
@@ -225,8 +225,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                app:layout_constraintStart_toStartOf="@+id/textView19"
-                app:layout_constraintTop_toBottomOf="@+id/textView19"
+                app:layout_constraintStart_toStartOf="@+id/textviewLoanPurpose"
+                app:layout_constraintTop_toBottomOf="@+id/textviewLoanPurpose"
                 app:srcCompat="@drawable/ic_dollar_bag" />
 
             <TextView

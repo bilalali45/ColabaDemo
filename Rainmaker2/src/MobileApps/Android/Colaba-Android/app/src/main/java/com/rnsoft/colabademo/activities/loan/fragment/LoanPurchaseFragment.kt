@@ -138,10 +138,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                     for (item in goalFullList) {
                         if (item.id == goalId) {
                             binding.tvLoanStage.setText(item.description, false)
-                            CustomMaterialFields.setColor(
-                                binding.layoutLoanStage,
-                                R.color.grey_color_two,
-                                requireActivity())
+                            CustomMaterialFields.setColor(binding.layoutLoanStage, R.color.grey_color_two, requireActivity())
                             break
                         }
                     }
@@ -149,6 +146,79 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
             }
             hideLoader()
         })
+    }
+
+    private fun checkValidations(){
+        val loanStage: String = binding.tvLoanStage.text.toString()
+        val purchasePrice: String = binding.edPurchasePrice.text.toString()
+        val loanAmount: String = binding.edLoanAmount.text.toString()
+        val downPayment: String = binding.edDownPayment.text.toString()
+        val percentage: String = binding.edPercent.text.toString()
+        val closingDate: String = binding.edClosingDate.text.toString()
+
+        if (loanStage.isEmpty() || loanStage.length == 0) {
+            setError(binding.layoutLoanStage, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (purchasePrice.isEmpty() || purchasePrice.length == 0) {
+            setError(binding.layoutPurchasePrice, getString(R.string.invalid_purchase_price))
+        }
+        if (loanAmount.isEmpty() || loanAmount.length == 0) {
+            setError(binding.layoutLoanAmount, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (closingDate.isEmpty() || closingDate.length == 0) {
+            setError(binding.layoutClosingDate, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (downPayment.isEmpty() || downPayment.length == 0) {
+            setError(binding.layoutDownPayment, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        if (percentage.isEmpty() || percentage.length == 0) {
+            setError(binding.layoutPercent, getString(com.rnsoft.colabademo.R.string.error_field_required))
+        }
+        // clear error
+        if (loanStage.isNotEmpty() || loanStage.length > 0) {
+            clearError(binding.layoutLoanStage)
+        }
+        if(purchasePrice.isNotEmpty() || purchasePrice.length > 0) {
+            validatePurchasePrice(purchasePrice)
+            clearError(binding.layoutDownPayment)
+            clearError(binding.layoutPercent)
+        }
+        if(loanAmount.isNotEmpty() || loanAmount.length > 0) {
+            clearError(binding.layoutLoanAmount)
+        }
+        if(downPayment.isNotEmpty() || downPayment.length > 0) {
+            clearError(binding.layoutDownPayment)
+        }
+        if(percentage.isNotEmpty() || percentage.length > 0) {
+            clearError(binding.layoutPercent)
+        }
+        if(closingDate.isNotEmpty() || closingDate.length > 0) {
+            clearError(binding.layoutClosingDate)
+        }
+        if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
+            loanApplicationId?.let { loanId ->
+
+                val loanGoal : String = binding.tvLoanStage.getText().toString().trim()
+                val matchedList =  goalFullList.filter { g -> g.description.equals(loanGoal,true)}
+                val loanGoalId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+
+                val newLoanAmount = if(loanAmount.length > 0) loanAmount.replace(",".toRegex(), "") else null
+                val newDownPayment = if(downPayment.length > 0) downPayment.replace(",".toRegex(), "") else null
+                val newPurchasePrice = if(purchasePrice.length > 0) purchasePrice.replace(",".toRegex(), "") else null
+
+                val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = AppConstant.PURPOSE_ID_PURCHASE,loanPayment= newLoanAmount?.toDouble(),
+                    loanGoalId = loanGoalId, expectedClosingDate = closingDate, downPayment = newDownPayment?.toDouble(), cashOutAmount=1, propertyValue = newPurchasePrice?.toDouble())
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        binding.loaderLoanPurchase.visibility = View.VISIBLE
+                        //Log.e("LoanInfoApi",""+info)
+                        loanViewModel.addLoanInfo(authToken, info)
+                    }
+                }
+                binding.loaderLoanPurchase.visibility = View.GONE
+            }
+        }
+
     }
 
     private fun initViews() {
@@ -356,6 +426,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                         if (value?.length == 0) {
                             binding.edPercent.setText("0")
                             binding.edDownPayment.setText("0")
+                            binding.edLoanAmount.setText("0")
                         }
                     }
                 }
@@ -379,12 +450,17 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
     private fun calculateInitialDownPayment(value: String) {
         value.let {
             if (value.length > 0) {
-                val purchasePrice = value.replace(",", "");
+                val purchasePrice = value.replace(",", "")
                 val amount: Long = purchasePrice.toLong()
                 val result = (amount * 20) / 100
                 binding.edPercent.setText("20")
                 val newPrice = format.format(result)
                 binding.edDownPayment.setText(newPrice.toString())
+
+                // calculate loan amount
+                val newLoanAmount: Float = (purchasePrice.toFloat() - result.toFloat())
+                //Log.e("loanAmount",""+newDownPayment)
+                binding.edLoanAmount.setText(Math.round(newLoanAmount).toString())
             }
         }
     }
@@ -411,83 +487,43 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         }
     }
 
+    private fun hideLoader(){
+        val  activity = (activity as? BorrowerLoanActivity)
+        activity?.binding?.loaderLoanInfo?.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderLoanPurchase.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE){
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+            requireActivity().finish()
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+            requireActivity().finish()
+        }
+    }
+
     private fun createCalendarDialog() {
         val pd = MonthYearPickerDialog()
         pd.setListener(this)
         pd.show(requireActivity().supportFragmentManager, "MonthYearPickerDialog")
-    }
-
-    private fun checkValidations(){
-
-        /*val info = AddLoanInfoModel(loanApplicationId = 5,loanPurposeId = 4,loanGoalId = 4,expectedClosingDate = "2021-11-09",downPayment = 20000.0, cashOutAmount = 1,
-            propertyValue = 2000.0)
-        lifecycleScope.launchWhenStarted{
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                binding.loaderLoanPurchase.visibility = View.VISIBLE
-                loanViewModel.addLoanInfo(authToken,info)
-            }
-        }
-        binding.loaderLoanPurchase.visibility = View.GONE */
-
-        val loanStage: String = binding.tvLoanStage.text.toString()
-        val purchasePrice: String = binding.edPurchasePrice.text.toString()
-        val loanAmount: String = binding.edLoanAmount.text.toString()
-        val downPayment: String = binding.edDownPayment.text.toString()
-        val percentage: String = binding.edPercent.text.toString()
-        val closingDate: String = binding.edClosingDate.text.toString()
-
-        if (loanStage.isEmpty() || loanStage.length == 0) {
-            setError(binding.layoutLoanStage, getString(com.rnsoft.colabademo.R.string.error_field_required))
-        }
-        if (purchasePrice.isEmpty() || purchasePrice.length == 0) {
-            setError(binding.layoutPurchasePrice, getString(R.string.invalid_purchase_price))
-        }
-        if (loanAmount.isEmpty() || loanAmount.length == 0) {
-            setError(binding.layoutLoanAmount, getString(com.rnsoft.colabademo.R.string.error_field_required))
-        }
-        if (closingDate.isEmpty() || closingDate.length == 0) {
-            setError(binding.layoutClosingDate, getString(com.rnsoft.colabademo.R.string.error_field_required))
-        }
-        if (downPayment.isEmpty() || downPayment.length == 0) {
-            setError(binding.layoutDownPayment, getString(com.rnsoft.colabademo.R.string.error_field_required))
-        }
-        if (percentage.isEmpty() || percentage.length == 0) {
-            setError(binding.layoutPercent, getString(com.rnsoft.colabademo.R.string.error_field_required))
-        }
-        // clear error
-        if (loanStage.isNotEmpty() || loanStage.length > 0) {
-            clearError(binding.layoutLoanStage)
-        }
-        if(purchasePrice.isNotEmpty() || purchasePrice.length > 0) {
-            validatePurchasePrice(purchasePrice)
-            clearError(binding.layoutDownPayment)
-            clearError(binding.layoutPercent)
-        }
-        if(loanAmount.isNotEmpty() || loanAmount.length > 0) {
-            clearError(binding.layoutLoanAmount)
-        }
-        if(downPayment.isNotEmpty() || downPayment.length > 0) {
-            clearError(binding.layoutDownPayment)
-        }
-        if(percentage.isNotEmpty() || percentage.length > 0) {
-            clearError(binding.layoutPercent)
-        }
-        if(closingDate.isNotEmpty() || closingDate.length > 0) {
-            clearError(binding.layoutClosingDate)
-        }
-        if(loanStage.length > 0 && purchasePrice.length >0 && loanAmount.length >0 && downPayment.length > 0 && percentage.length > 0 && closingDate.length>0){
-                loanApplicationId?.let { loanId ->
-                    val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = 4, loanGoalId = 4, expectedClosingDate = closingDate, downPayment = downPayment.toDouble(), cashOutAmount = 1, propertyValue = purchasePrice.toDouble())
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            binding.loaderLoanPurchase.visibility = View.VISIBLE
-                            loanViewModel.addLoanInfo(authToken, info)
-                        }
-                    }
-                    binding.loaderLoanPurchase.visibility = View.GONE
-                }
-            }
-
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
@@ -514,35 +550,5 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         CustomMaterialFields.clearError(binding.layoutClosingDate,requireActivity())
     }
 
-    private fun hideLoader(){
-        val  activity = (activity as? BorrowerLoanActivity)
-        activity?.binding?.loaderLoanInfo?.visibility = View.GONE
-    }
-
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        EventBus.getDefault().unregister(this)
-        EventBus.getDefault().unregister(this)
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
-        binding.loaderLoanPurchase.visibility = View.GONE
-        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-            requireActivity().finish()
-        }
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE){
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-        } else {
-            if (event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-        }
-    }
 
 }

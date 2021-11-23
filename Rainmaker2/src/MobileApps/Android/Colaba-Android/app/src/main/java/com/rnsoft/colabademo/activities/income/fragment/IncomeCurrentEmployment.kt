@@ -71,7 +71,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
                 borrowerName = arguments.getString(AppConstant.borrowerName)
             }
 
-            Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+            //Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
             borrowerName?.let {
                 toolbar.borrowerPurpose.setText(it)

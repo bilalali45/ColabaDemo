@@ -42,6 +42,7 @@ class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
     private var loanApplicationId: Int? = null
+    private var borrowerName: String? = null
     private var militaryAddress = AddressData()
 
     override fun onCreateView(
@@ -62,10 +63,15 @@ class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             arguments?.let { arguments ->
                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                 borrowerId = arguments.getInt(AppConstant.borrowerId)
+                borrowerName = arguments.getString(AppConstant.borrowerName)
                 arguments.getInt(AppConstant.incomeId).let {
                     if (it > 0)
                         incomeInfoId = it
                 }
+            }
+
+            borrowerName?.let {
+                toolbarBinding.borrowerPurpose.setText(it)
             }
 
             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(viewLifecycleOwner){ result ->

@@ -66,6 +66,7 @@ class IncomeTabFragment : BaseFragment() {
                     }
                 }
 
+                binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
                 pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds,name)
@@ -109,11 +110,13 @@ class IncomeTabFragment : BaseFragment() {
 
 
         binding.backButton.setOnClickListener {
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }

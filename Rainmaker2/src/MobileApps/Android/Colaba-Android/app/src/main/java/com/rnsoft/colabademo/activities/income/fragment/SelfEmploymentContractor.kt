@@ -40,7 +40,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private lateinit var binding: SelfEmpolymentContLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
-
+    private var borrowerName: String? = null
     var loanApplicationId: Int? = null
     var incomeInfoId :Int? = null
     var borrowerId :Int? = null
@@ -66,10 +66,15 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
              arguments?.let { arguments ->
                  loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                  borrowerId = arguments.getInt(AppConstant.borrowerId)
+                 borrowerName = arguments.getString(AppConstant.borrowerName)
                  arguments.getInt(AppConstant.incomeId).let {
                      if (it > 0)
                          incomeInfoId = it
                  }
+             }
+
+             borrowerName?.let {
+                 toolbarBinding.borrowerPurpose.setText(it)
              }
 
              if (loanApplicationId != null && borrowerId != null) {
