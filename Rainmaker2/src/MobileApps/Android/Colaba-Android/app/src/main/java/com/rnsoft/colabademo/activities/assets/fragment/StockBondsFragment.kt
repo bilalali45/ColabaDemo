@@ -78,8 +78,12 @@ class StockBondsFragment:AssetBaseFragment() {
             Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeStockBondsData()
+        }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
         assetUniqueId?.let { assetUniqueId ->
             if (assetUniqueId > 0) {

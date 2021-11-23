@@ -44,8 +44,12 @@ class BankAccountFragment : AssetBaseFragment() {
             Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetTypeID = arguments.getInt(AppConstant.assetTypeID, -1)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeBankData()
+        }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
         assetUniqueId?.let { nonNullAssetUniqueId ->
             if (nonNullAssetUniqueId > 0) {

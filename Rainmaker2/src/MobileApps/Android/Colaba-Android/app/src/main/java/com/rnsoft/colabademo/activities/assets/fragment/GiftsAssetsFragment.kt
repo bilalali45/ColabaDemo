@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,10 +53,14 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
             observeGiftData()
             getGiftCategory()
         }
 
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
+        }
         assetUniqueId?.let { nonNullAssetUniqueId ->
             if (nonNullAssetUniqueId > 0) {
                 binding.topDelImageview.visibility = View.VISIBLE
@@ -228,8 +233,10 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                 clearFocusFromFields()
 
                 if(position <=1) {
+
                     binding.giftOfEquity.text = grant
                 } else{
+
                     binding.giftOfEquity.text = giftOfEquity
                 }
             }
@@ -244,6 +251,8 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                 R.id.cash_gift -> {
                     HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
+                    binding.cashGift.setTypeface(null, Typeface.BOLD)
+                    binding.giftOfEquity.setTypeface(null, Typeface.NORMAL)
                     binding.layoutTransferDate.visibility = View.GONE
                     binding.giftDepositGroup.setOnCheckedChangeListener(null)
                     binding.giftDepositGroup.clearCheck()
@@ -252,6 +261,8 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                     binding.annualBaseLayout.hint = "Cash Value"
                 }
                 R.id.gift_of_equity -> {
+                    binding.giftOfEquity.setTypeface(null, Typeface.BOLD)
+                    binding.cashGift.setTypeface(null, Typeface.NORMAL)
                     HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE

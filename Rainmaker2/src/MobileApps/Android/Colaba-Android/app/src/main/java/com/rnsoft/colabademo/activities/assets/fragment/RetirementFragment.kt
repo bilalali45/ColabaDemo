@@ -63,8 +63,12 @@ class RetirementFragment:AssetBaseFragment() {
                 assetUniqueId = null
             Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeRetirementData()
+        }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
         assetUniqueId?.let { assetUniqueId ->
             if (assetUniqueId > 0) {

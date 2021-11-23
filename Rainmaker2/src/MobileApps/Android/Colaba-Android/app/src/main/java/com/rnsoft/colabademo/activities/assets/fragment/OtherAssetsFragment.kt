@@ -75,8 +75,12 @@ class OtherAssetsFragment:AssetBaseFragment() {
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 7)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             getOtherAssets()
+        }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
         assetUniqueId?.let { nonNullAssetUniqueId ->
             if (nonNullAssetUniqueId > 0) {
@@ -303,6 +307,14 @@ class OtherAssetsFragment:AssetBaseFragment() {
         else
             CustomMaterialFields.clearError(binding.accountTypeInputLayout,  requireContext())
 
+
+        if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
+
+            CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
+            bool = false
+        }
+        else
+            CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
 
         /*
 

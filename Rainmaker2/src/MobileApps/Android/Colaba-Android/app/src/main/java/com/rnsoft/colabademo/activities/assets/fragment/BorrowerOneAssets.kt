@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
@@ -142,11 +141,15 @@ class BorrowerOneAssets : BaseFragment() {
 
                 var observerCounter = 0
                 var getBorrowerAssets: ArrayList<BorrowerAsset> = arrayListOf()
+                var assetBorrowerName = ""
                 while (observerCounter < observableSampleContent.size) {
                     val webAssets = observableSampleContent[observerCounter]
                     if (tabBorrowerId == webAssets.passedBorrowerId) {
                         webAssets.bAssetData?.borrower?.borrowerAssets?.let { webBorrowerAssets ->
                             getBorrowerAssets = webBorrowerAssets
+                        }
+                        webAssets.bAssetData?.borrower?.borrowerName?.let { webBorrowerName ->
+                            assetBorrowerName = webBorrowerName
                         }
                     }
                     observerCounter++
@@ -201,6 +204,7 @@ class BorrowerOneAssets : BaseFragment() {
                                                     tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
                                                     contentData.assetUniqueId.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
                                                     contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
+                                                    bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
                                                     contentData.assetTypeID?.let { it1->
                                                         currentAssetTypeID = it1
                                                         bundle.putInt(AppConstant.assetTypeID, it1)
@@ -247,6 +251,7 @@ class BorrowerOneAssets : BaseFragment() {
                                 bundle.putInt(AppConstant.assetUniqueId, -1)
                                 bundle.putString(AppConstant.assetCategoryName, modelData.headerTitle)
                                 bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
+                                bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
                                 findNavController().navigate(modelData.listenerAttached, bundle)
 
                             }

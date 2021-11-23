@@ -50,7 +50,11 @@ import java.util.ArrayList
                 assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 6)
                 assetTypeID = arguments.getInt(AppConstant.assetTypeID)
                 assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+                assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
                 listenerAttached = arguments.getInt(AppConstant.listenerAttached)
+            }
+            assetBorrowerName?.let {
+                binding.borrowerPurpose.text = it
             }
             assetUniqueId?.let { nonNullAssetUniqueId ->
                 if (nonNullAssetUniqueId > 0) {

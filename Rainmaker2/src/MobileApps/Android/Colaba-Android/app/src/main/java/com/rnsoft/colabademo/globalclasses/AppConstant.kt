@@ -72,6 +72,9 @@ object AppConstant {
 
         const val assetCategoryId:String = "assetCategoryId"
 
+        const val assetBorrowerName:String = "assetBorrowerName"
+
+
         const val assetCategoryName:String = "assetCategoryName"
 
         const val listenerAttached:String = "listenerAttached"

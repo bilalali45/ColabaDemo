@@ -23,14 +23,13 @@ open class AssetBaseFragment: BaseFragment() {
     protected var assetTypeID:Int? = null
     protected var assetCategoryName:String? = null
     protected var listenerAttached:Int? = null
+    protected var assetBorrowerName:String? = null
 
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
     protected val viewModel: AssetViewModel by activityViewModels()
-
-    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     protected fun showDeleteDialog(params: AssetReturnParams, text:String ="Are you sure you want to remove this asset type?"){
         DeleteAssetBoxFragment.newInstance(params , text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
