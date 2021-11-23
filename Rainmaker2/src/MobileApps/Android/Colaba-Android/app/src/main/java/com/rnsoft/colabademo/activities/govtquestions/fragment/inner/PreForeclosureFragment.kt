@@ -13,14 +13,13 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@AndroidEntryPoint
-class PreForeclosureFragment:BaseFragment() {
+
+class PreForeclosureFragment:GovtDetailBaseFragment() {
 
     private var _binding: PreForceClosureLayoutBinding? = null
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,6 +28,11 @@ class PreForeclosureFragment:BaseFragment() {
 
         _binding = PreForceClosureLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        arguments?.let {
+            questionId = it.getInt(AppConstant.questionId)
+            updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
+        }
+        fillWithData(binding.edDetails)
         setUpUI()
         super.addListeners(binding.root)
         return root
@@ -37,25 +41,9 @@ class PreForeclosureFragment:BaseFragment() {
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
-
-            //findNavController().popBackStack()
-
-            /*
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) findNavController().popBackStack()
-             */
+            updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }
     }
 
-    private fun checkEmptyFields():Boolean{
-        var bool = true
-        if(binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.layoutDetail, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
 
-        return bool
-    }
 }

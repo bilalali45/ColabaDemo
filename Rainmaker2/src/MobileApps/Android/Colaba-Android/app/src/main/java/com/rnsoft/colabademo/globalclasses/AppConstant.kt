@@ -152,7 +152,7 @@ object AppConstant {
 
         const val borrowerDocScreen:String = "borrowerDocScreen"
 
-        const val updateGovernmentQuestionByBorrowerId : String = "updateGovernmentQuestionByBorrowerId"
+        const val addUpdateQuestionsParams : String = "addUpdateQuestionsParams"
 
 
         const val questionId : String = "questionId"

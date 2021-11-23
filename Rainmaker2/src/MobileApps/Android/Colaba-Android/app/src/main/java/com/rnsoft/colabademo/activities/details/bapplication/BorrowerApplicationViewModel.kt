@@ -81,79 +81,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     val addUpdateDemoGraphicResponse: LiveData<AddUpdateDemoGraphicResponse> get() = _addUpdateDemoGraphicResponse
 
 
-    suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
 
-        /*
-        viewModelScope.launch (Dispatchers.IO) {
-            val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
-                    _assetsModelDataClass.value = ((responseResult as Result.Success<AssetsModelDataClass>).data)
-                else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-                else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
-            }
-        }
-
-         */
-
-        return true
-
-    }
-
-    private val job = Job()
-    val coroutineContext: CoroutineContext
-        get() = job + Dispatchers.Main
-
-    suspend fun getBorrowerAssetsDetail2(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>): Boolean {
-        /*
-        viewModelScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.Default) {
-                //val content = arrayListOf<Int>()
-                val content = arrayListOf<Result<AssetsModelDataClass>>()
-                coroutineScope {
-                    borrowerIds.forEach { id ->
-                        launch { // this will allow us to run multiple tasks in parallel
-                            val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
-                            if (responseResult is Result.Success) {
-
-                            }
-                        }
-                    }
-                }  // coroutineScope block will wait here until all child tasks are completed
-
-
-
-                val runningTasks = borrowerIds.map { id ->
-                    async { // this will allow us to run multiple tasks in parallel
-                        val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
-                        if (responseResult is Result.Success) {
-
-                        }
-                    }
-                }
-
-                val responses = runningTasks.awaitAll()
-
-
-
-                responses.forEach { (id, response) ->
-                    if (response.isSuccessful()) {
-                       // content.find { it.id == id }.enable = true
-                    }
-                }
-
-
-            }
-
-
-        }
-
-         */
-
-        return true
-    }
 
 
     suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int> , updateBorrowerId:Int = -1) {
@@ -536,3 +464,70 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 }
+
+
+        /*
+
+            suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {
+               viewModelScope.launch (Dispatchers.IO) {
+                   val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
+                   withContext(Dispatchers.Main) {
+                       if (responseResult is Result.Success)
+                           _assetsModelDataClass.value = ((responseResult as Result.Success<AssetsModelDataClass>).data)
+                       else if (responseResult is Result.Error && (responseResult as Result.Error).exception.message == AppConstant.INTERNET_ERR_MSG)
+                           EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                       else if (responseResult is Result.Error)
+                           EventBus.getDefault().post(WebServiceErrorEvent(responseResult as Result.Error))
+                   }
+               }
+               return true
+            }
+
+            private val job = Job()
+            val coroutineContext: CoroutineContext
+               get() = job + Dispatchers.Main
+
+            suspend fun getBorrowerAssetsDetail2(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>): Boolean {
+
+                   viewModelScope.launch(Dispatchers.IO) {
+                       withContext(Dispatchers.Default) {
+                           //val content = arrayListOf<Int>()
+                           val content = arrayListOf<Result<AssetsModelDataClass>>()
+                           coroutineScope {
+                               borrowerIds.forEach { id ->
+                                   launch { // this will allow us to run multiple tasks in parallel
+                                       val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
+                                       if (responseResult is Result.Success) {
+
+                                       }
+                                   }
+                               }
+                           }  // coroutineScope block will wait here until all child tasks are completed
+
+
+
+                       val runningTasks = borrowerIds.map { id ->
+                           async { // this will allow us to run multiple tasks in parallel
+                               val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId , borrowerId = id)
+                               if (responseResult is Result.Success) {
+
+                               }
+                           }
+                       }
+
+                       val responses = runningTasks.awaitAll()
+
+
+
+                       responses.forEach { (id, response) ->
+                           if (response.isSuccessful()) {
+                              // content.find { it.id == id }.enable = true
+                           }
+                       }
+
+
+                }
+             }
+            return true
+        }
+    */

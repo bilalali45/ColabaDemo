@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
@@ -24,9 +25,6 @@ import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_tex
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_title
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_detail_box
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_question
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box2
 import com.google.gson.Gson
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -43,7 +41,13 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.*
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
+import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box2
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -105,28 +109,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             }
         }
 
-        setupLayout()
+        setUpDynamicTabs()
         super.addListeners(binding.root)
         return binding.root
     }
-
-
-    private fun setupLayout(){
-
-        /*
-            borrowerAppViewModel.addUpdateDemoGraphicResponse.observe(
-                viewLifecycleOwner,
-                { addUpdateDemoGraphicResponse ->
-                    Timber.e("demo-graphic updated....")
-                })
-
-         */
-
-
-
-        setUpDynamicTabs( )
-    }
-
 
 
     private var addUpdateQuestionsParams = AddUpdateQuestionsParams()
@@ -383,6 +369,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     //private lateinit var variableQuestionData: QuestionData
 
 
+    private lateinit var clickedContentCell:ConstraintLayout
+
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
         val variableQuestionData: QuestionData = questionData
         var childSupport = false
@@ -454,15 +442,28 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         if(ownerShip) {
             contentCell.govt_detail_box.setOnClickListener {
+                clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle , questionId)
             }
-            contentCell.govt_detail_box2.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
+            contentCell.govt_detail_box2.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle , questionId) }
         }
 
         if(childSupport){
-            contentCell.govt_detail_box.setOnClickListener {  navigateToInnerScreen(headerTitle ,  questionId) }
-            contentCell.govt_detail_box2.setOnClickListener {navigateToInnerScreen(headerTitle , questionId) }
-            contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
+
+            contentCell.govt_detail_box.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle ,  questionId)
+            }
+            contentCell.govt_detail_box2.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle , questionId)
+            }
+            contentCell.govt_detail_box3.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle , questionId)
+            }
 
             val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
             questionData.answerData?.let { notNullChildAnswerData->
@@ -566,6 +567,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     contentCell.ans_yes.setOnClickListener {
                         for (item in childInnerDetailQuestions)
                             item.visibility = View.VISIBLE
+                        clickedContentCell = contentCell
                         navigateToInnerScreen(headerTitle, questionId)
                     }
 
@@ -583,9 +585,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             }
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
-
                 if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
+            }
+
+            if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
+                contentCell.govt_detail_box.visibility = View.VISIBLE
+                contentCell.govt_detail_box2?.visibility = View.VISIBLE
+                contentCell.govt_detail_box3?.visibility = View.VISIBLE
             }
 
             contentCell.ans_no.setOnClickListener {
@@ -593,17 +600,34 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.govt_detail_box2?.visibility = View.INVISIBLE
                 contentCell.govt_detail_box3?.visibility = View.INVISIBLE
                 variableQuestionData.answer = "No"
-                //updateGovernmentData(variableQuestionData)
+                updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
-                if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
+                if(contentCell.detail_text.text.toString().isNotBlank() && contentCell.detail_text.text.toString().isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
-                    contentCell.govt_detail_box2?.visibility = View.VISIBLE
-                    contentCell.govt_detail_box3?.visibility = View.VISIBLE
+
+                contentCell.govt_detail_box2?.let{ govt_detail_box2->
+                    if(contentCell.detail_text2.text.toString().isNotBlank() && contentCell.detail_text2.text.toString().isNotEmpty())
+                        govt_detail_box2.visibility = View.VISIBLE
                 }
+
+                contentCell.govt_detail_box3?.let{ govt_detail_box3->
+                    if(contentCell.detail_text3.text.toString().isNotBlank() && contentCell.detail_text3.text.toString().isNotEmpty())
+                        govt_detail_box3.visibility = View.VISIBLE
+                }
+
+
                 variableQuestionData.answer = "Yes"
-                //updateGovernmentData(variableQuestionData)
-                navigateToInnerScreen(headerTitle, questionId)
+                updateGovernmentData(variableQuestionData)
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle, questionId )
+            }
+
+            contentCell.govt_detail_box.setOnClickListener {
+                variableQuestionData.answer = "Yes"
+                updateGovernmentData(variableQuestionData)
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle, questionId )
             }
         }
 
@@ -613,7 +637,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun updateGovernmentData(testData:QuestionData){
         for (item in addUpdateQuestionsParams.Questions) {
             if(item.id == testData.id){
-                //item.answer = testData.answer
+                item.answer = testData.answer
             }
         }
     }
@@ -621,10 +645,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
-        //bundle.putParcelable(AppConstant.updateGovernmentQuestionByBorrowerId , updateGovernmentQuestionByBorrowerId)
+        bundle.putParcelable(AppConstant.addUpdateQuestionsParams , addUpdateQuestionsParams)
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
+
                    findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
                }
                "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
@@ -657,7 +682,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                }
            }
     }
-
 
     private val openTabMenuScreen = View.OnClickListener { p0 ->
         demoGraphicScreenDisplaying = false
@@ -1142,6 +1166,27 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
             }
         }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateReceivedFromInnerScreen(updateEvent: GovtScreenUpdateEvent) {
+        clickedContentCell.govt_detail_box.detail_title.text = updateEvent.detailTitle
+        clickedContentCell.govt_detail_box.detail_text.text = updateEvent.detailDescription
+        if(updateEvent.detailDescription.isNotEmpty() && updateEvent.detailDescription.isNotBlank())
+            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+        else
+            clickedContentCell.govt_detail_box.visibility = View.INVISIBLE
     }
 
     private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {

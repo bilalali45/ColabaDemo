@@ -8,7 +8,7 @@ import kotlinx.android.parcel.RawValue
 @Parcelize
 data class GovernmentQuestionsModelClass(
     val code: String?=null,
-    @SerializedName("data") val questionData : @RawValue ArrayList<QuestionData>?=null,
+    @SerializedName("data") val questionData :  ArrayList<QuestionData>?=null,
     val message: String?=null,
     val status: String?=null,
     var passedBorrowerId:Int?
@@ -22,7 +22,7 @@ data class QuestionData(
     var answer: String?,
     var answerDetail: String?= "",
     val headerText:String? = "title1",
-    val answerData : @RawValue Any? = null,
+    var answerData : @RawValue Any? = null,
 
     val firstName: String?=null,
 

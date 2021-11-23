@@ -26,19 +26,20 @@ class SplashActivity : AppCompatActivity() {
             redirectToApplicationDetailScreen()
 
 
-
-//            if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
-//                && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
-//            ) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
-//            } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            } else {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            }
+            /*
+            if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
+                && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
+            ) {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
+            } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+            } else {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+            }
+            */
 
 
 
@@ -50,7 +51,7 @@ class SplashActivity : AppCompatActivity() {
     private fun redirectToApplicationDetailScreen(){
         val borrowerDetailIntent = Intent(this@SplashActivity, DetailActivity::class.java)
         //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
-        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, 5)
+        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, 1110 )
         borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "loanPurpose")
         borrowerDetailIntent.putExtra(AppConstant.firstName, "Quinee")
         borrowerDetailIntent.putExtra(AppConstant.lastName, "Paidala")
