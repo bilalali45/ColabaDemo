@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
@@ -41,10 +40,6 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.*
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box2
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -205,6 +200,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             }
                         }
 
+                        // adding demo graphic tab here....
                         if (zeroIndexAppCompat != null) {
                             val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, 0)
                             binding.horizontalTabs.addView(appCompactTextView)
@@ -222,7 +218,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             horizontalTabArrayList.add(appCompactTextView)
                         }
 
-                        var ownerShip = true
+                        //var ownerShip = true
 
                         for (qData in questionData) {
                             qData.parentQuestionId?.let { parentQuestionId ->
@@ -299,22 +295,26 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                         Timber.e("ownerShipConstraintLayout " + qData.question)
                                         Timber.e(qData.answerDetail.toString())
 
-                                        if (ownerShip) {
-                                            ownerShip = false
+                                        //if (ownerShip) { ownerShip = false
                                             ownerShipConstraintLayout.detail_title.text = qData.question
                                             ownerShipConstraintLayout.detail_text.text = qData.answer
                                             ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
                                             ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
                                             ownerShipGlobalData.add(qData.answer!!)
                                             ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                                        } else {
-                                            ownerShipConstraintLayout.detail_title2.text = qData.question
-                                            ownerShipConstraintLayout.detail_text2.text = qData.answer
-                                            ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
-                                            ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-                                            ownerShipGlobalData.add(qData.answer!!)
-                                            ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
-                                        }
+                                            /*
+
+                                            }
+                                            else {
+                                                ownerShipConstraintLayout.detail_title2.text = qData.question
+                                                ownerShipConstraintLayout.detail_text2.text = qData.answer
+                                                ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
+                                                ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
+                                                ownerShipGlobalData.add(qData.answer!!)
+                                                ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
+                                            }
+
+                                             */
 
                                     }
                                     else
