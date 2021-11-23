@@ -43,8 +43,8 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
+import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
@@ -97,8 +97,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         variableDemoGraphicData.ethnicity = variableEthnicityList
                         borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
                     } else {
-                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, addUpdateQuestionsParams)
                     }
+                    EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+                    findNavController().popBackStack()
                 }
             }
         }
@@ -127,7 +129,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
 
-    private var updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions()
+    private var addUpdateQuestionsParams = AddUpdateQuestionsParams()
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -143,16 +145,21 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
+
+                                    for(question in questionDataList){
+                                        question.answerData = null
+                                    }
+
                                     item.passedBorrowerId?.let { passedBorrowerId ->
-                                        updateGovernmentQuestionByBorrowerId =
-                                            UpdateGovernmentQuestions(
-                                                passedBorrowerId, nonNullLoanApplicationId.toString(),
+                                        addUpdateQuestionsParams =
+                                            AddUpdateQuestionsParams(
+                                                passedBorrowerId, nonNullLoanApplicationId,
                                                 questionDataList
                                             )
                                         Timber.e(
                                             "TingoPingo = ",
-                                            updateGovernmentQuestionByBorrowerId.BorrowerId,
-                                            updateGovernmentQuestionByBorrowerId.toString()
+                                            addUpdateQuestionsParams.BorrowerId,
+                                            addUpdateQuestionsParams.toString()
                                         )
                                         //udateGovernmentQuestionsList.add(test)
                                     }
@@ -216,7 +223,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, 0)
                             binding.horizontalTabs.addView(appCompactTextView)
                             val contentView = createContentLayoutForTab(
-                                QuestionData(id = 5000, parentQuestionId = null, headerText = AppConstant.demographicInformation,
+                                QuestionData(
+                                    id = 5000, parentQuestionId = null, headerText = AppConstant.demographicInformation,
                                     questionSectionId = 1, ownTypeId = 1, firstName = lastQData.firstName, lastName = lastQData.lastName,
                                     question = "", answer = null, answerDetail = null, selectionOptionId = null, answerData = null))
 
@@ -233,63 +241,75 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         for (qData in questionData) {
                             qData.parentQuestionId?.let { parentQuestionId ->
                                 if (parentQuestionId == bankruptcyConstraintLayout.id) {
-                                    Timber.e("bankruptcyConstraintLayout " + qData.question)
-                                    Timber.e(qData.answerDetail.toString())
-                                    var extractedAnswer = ""
-                                    val bankruptAnswerData = qData.answerData as ArrayList<*>
-                                    if (bankruptAnswerData.size > 0) {
-                                        if (bankruptAnswerData[0] != null) {
-                                            val getrow: Any = bankruptAnswerData[0]
-                                            val t: LinkedTreeMap<Any, Any> =
-                                                getrow as LinkedTreeMap<Any, Any>
-                                            val chapter1 = t["`1`"].toString()
-                                            extractedAnswer = chapter1
-                                            bankruptcyGlobalData.value1 = true
-                                            Timber.e("1 = " + chapter1)
-                                        }
-                                        if ( bankruptAnswerData.size > 1 && bankruptAnswerData[1] != null ) {
-                                            val getrow: Any = bankruptAnswerData[1]
-                                            val t: LinkedTreeMap<Any, Any> =
-                                                getrow as LinkedTreeMap<Any, Any>
-                                            val chapter2 = t["`2`"].toString()
-                                            extractedAnswer = "$extractedAnswer, $chapter2"
-                                            bankruptcyGlobalData.value2 = true
-                                            Timber.e("2 = " + chapter2)
+                                        Timber.e("bankruptcyConstraintLayout " + qData.question)
+                                        Timber.e(qData.answerDetail.toString())
+                                        var extractedAnswer = ""
+                                        qData.answerData?.let {
+                                            val bankruptAnswerData = it as ArrayList<*>
+                                            if (bankruptAnswerData.size > 0) {
+                                                if (bankruptAnswerData[0] != null) {
+                                                    val getrow: Any = bankruptAnswerData[0]
+                                                    val t: LinkedTreeMap<Any, Any> =
+                                                        getrow as LinkedTreeMap<Any, Any>
+                                                    val chapter1 = t["`1`"].toString()
+                                                    extractedAnswer = chapter1
+                                                    bankruptcyGlobalData.value1 = true
+                                                    Timber.e("1 = " + chapter1)
+                                                }
+                                                if (bankruptAnswerData.size > 1 && bankruptAnswerData[1] != null) {
+                                                    val getrow: Any = bankruptAnswerData[1]
+                                                    val t: LinkedTreeMap<Any, Any> =
+                                                        getrow as LinkedTreeMap<Any, Any>
+                                                    val chapter2 = t["`2`"].toString()
+                                                    extractedAnswer = "$extractedAnswer, $chapter2"
+                                                    bankruptcyGlobalData.value2 = true
+                                                    Timber.e("2 = " + chapter2)
 
-                                        }
+                                                }
 
-                                        if ( bankruptAnswerData.size > 2 && bankruptAnswerData[2] != null) {
-                                            val getrow: Any = bankruptAnswerData[2]
-                                            val t: LinkedTreeMap<Any, Any> =
-                                                getrow as LinkedTreeMap<Any, Any>
-                                            val chapter3 = t["`3`"].toString()
-                                            extractedAnswer = "$extractedAnswer, $chapter3"
-                                            bankruptcyGlobalData.value3 = true
-                                            Timber.e("3 = " + chapter3)
-                                        }
+                                                if (bankruptAnswerData.size > 2 && bankruptAnswerData[2] != null) {
+                                                    val getrow: Any = bankruptAnswerData[2]
+                                                    val t: LinkedTreeMap<Any, Any> =
+                                                        getrow as LinkedTreeMap<Any, Any>
+                                                    val chapter3 = t["`3`"].toString()
+                                                    extractedAnswer = "$extractedAnswer, $chapter3"
+                                                    bankruptcyGlobalData.value3 = true
+                                                    Timber.e("3 = " + chapter3)
+                                                }
 
-                                        if (bankruptAnswerData.size > 3 && bankruptAnswerData[3] != null ) {
-                                            val getrow: Any = bankruptAnswerData[3]
-                                            val t: LinkedTreeMap<Any, Any> =
-                                                getrow as LinkedTreeMap<Any, Any>
-                                            val chapter4 = t["`4`"].toString()
-                                            bankruptcyGlobalData.value4 = true
-                                            extractedAnswer = "$extractedAnswer, $chapter4"
-                                            Timber.e("4 = " + chapter4)
-                                        }
+                                                if (bankruptAnswerData.size > 3 && bankruptAnswerData[3] != null) {
+                                                    val getrow: Any = bankruptAnswerData[3]
+                                                    val t: LinkedTreeMap<Any, Any> =
+                                                        getrow as LinkedTreeMap<Any, Any>
+                                                    val chapter4 = t["`4`"].toString()
+                                                    bankruptcyGlobalData.value4 = true
+                                                    extractedAnswer = "$extractedAnswer, $chapter4"
+                                                    Timber.e("4 = " + chapter4)
+                                                }
 
-                                        Timber.e(" extracted answer = " + extractedAnswer)
-                                        bankruptcyConstraintLayout.detail_text.text = extractedAnswer
-                                        bankruptcyConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                        bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                        bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                                Timber.e(" extracted answer = " + extractedAnswer)
+                                                bankruptcyConstraintLayout.detail_text.text =
+                                                    extractedAnswer
+                                                bankruptcyConstraintLayout.detail_title.setTypeface(
+                                                    null,
+                                                    Typeface.NORMAL
+                                                )
+                                                bankruptcyConstraintLayout.detail_text.setTypeface(
+                                                    null,
+                                                    Typeface.BOLD
+                                                )
+                                                bankruptcyConstraintLayout.govt_detail_box.visibility =
+                                                    View.VISIBLE
+                                            }
+                                        }
                                     }
-                                } else if (parentQuestionId == childConstraintLayout.id) {
-                                    Timber.e("childConstraintLayout " + qData.question)
-                                    Timber.e(qData.answerDetail.toString())
-                                }
-                                else
-                                    if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
+                                    else
+                                        if (parentQuestionId == childConstraintLayout.id) {
+                                        Timber.e("childConstraintLayout " + qData.question)
+                                        Timber.e(qData.answerDetail.toString())
+                                    }
+                                    else
+                                        if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
                                         Timber.e("ownerShipConstraintLayout " + qData.question)
                                         Timber.e(qData.answerDetail.toString())
 
@@ -311,6 +331,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                         }
 
                                     }
+                                    else
+                                        Timber.e("nothing")
 
                                 }
                             }
@@ -443,87 +465,112 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             contentCell.govt_detail_box3.setOnClickListener { navigateToInnerScreen(headerTitle , questionId) }
 
             val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
-            val childAnswerData = questionData.answerData as ArrayList<*>
-            if(childAnswerData!=null) {
-                if (childAnswerData.size > 0 && childAnswerData[0] != null) {
-                    val getrow: Any = childAnswerData[0]
-                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                    val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
-                    val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
+            questionData.answerData?.let { notNullChildAnswerData->
+                val childAnswerData = notNullChildAnswerData as ArrayList<*>
+                if (childAnswerData != null) {
+                    if (childAnswerData.size > 0 && childAnswerData[0] != null) {
+                        val getrow: Any = childAnswerData[0]
+                        val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                        val liabilityName = t["liabilityName"].toString()
+                        val monthlyPayment = t["monthlyPayment"].toString()
+                        val liabilityTypeId = t["liabilityTypeId"].toString()
+                        val name = t["name"].toString()
+                        val remainingMonth = t["remainingMonth"].toString()
 
-                    Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
-                    contentCell.detail_title.text = liabilityName
-                    contentCell.detail_text.text = monthlyPayment
+                        Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
+                        contentCell.detail_title.text = liabilityName
+                        contentCell.detail_text.text = monthlyPayment
 
-                    contentCell.govt_detail_box.visibility = View.VISIBLE
+                        contentCell.govt_detail_box.visibility = View.VISIBLE
 
-                    childGlobalList.add(ChildAnswerData(liabilityName,liabilityTypeId, monthlyPayment, name, remainingMonth ))
-                    childInnerDetailQuestions.add(contentCell.govt_detail_box)
+                        childGlobalList.add(
+                            ChildAnswerData(
+                                liabilityName,
+                                liabilityTypeId,
+                                monthlyPayment,
+                                name,
+                                remainingMonth
+                            )
+                        )
+                        childInnerDetailQuestions.add(contentCell.govt_detail_box)
+                    }
+
+                    if (childAnswerData.size > 1 && childAnswerData[1] != null) {
+                        val getrow: Any = childAnswerData[1]
+                        val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                        val liabilityName = t["liabilityName"].toString()
+                        val monthlyPayment = t["monthlyPayment"].toString()
+                        val liabilityTypeId = t["liabilityTypeId"].toString()
+                        val name = t["name"].toString()
+                        val remainingMonth = t["remainingMonth"].toString()
+
+                        childGlobalList.add(
+                            ChildAnswerData(
+                                liabilityName,
+                                liabilityTypeId,
+                                monthlyPayment,
+                                name,
+                                remainingMonth
+                            )
+                        )
+
+                        Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
+                        contentCell.detail_title2.text = liabilityName
+                        contentCell.detail_text2.text = monthlyPayment
+
+
+                        contentCell.govt_detail_box2.visibility = View.VISIBLE
+                        childInnerDetailQuestions.add(contentCell.govt_detail_box2)
+
+                    }
+
+                    if (childAnswerData.size > 2 && childAnswerData[2] != null) {
+                        val getrow: Any = childAnswerData[2]
+                        val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                        val liabilityName = t["liabilityName"].toString()
+                        val monthlyPayment = t["monthlyPayment"].toString()
+                        val liabilityTypeId = t["liabilityTypeId"].toString()
+                        val name = t["name"].toString()
+                        val remainingMonth = t["remainingMonth"].toString()
+                        childGlobalList.add(
+                            ChildAnswerData(
+                                liabilityName,
+                                liabilityTypeId,
+                                monthlyPayment,
+                                name,
+                                remainingMonth
+                            )
+                        )
+
+                        Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
+
+                        contentCell.detail_title3.text = liabilityName
+                        contentCell.detail_text3.text = monthlyPayment
+                        contentCell.govt_detail_box3.visibility = View.VISIBLE
+                        childInnerDetailQuestions.add(contentCell.govt_detail_box3)
+                    }
+
+                    if (questionData.answer.equals("no", true)) {
+                        contentCell.ans_no.isChecked = true
+                        for (item in childInnerDetailQuestions)
+                            item.visibility = View.INVISIBLE
+                    } else {
+                        contentCell.ans_yes.isChecked = true
+                        for (item in childInnerDetailQuestions)
+                            item.visibility = View.VISIBLE
+                    }
+                    contentCell.ans_no.setOnClickListener {
+                        for (item in childInnerDetailQuestions)
+                            item.visibility = View.INVISIBLE
+                    }
+                    contentCell.ans_yes.setOnClickListener {
+                        for (item in childInnerDetailQuestions)
+                            item.visibility = View.VISIBLE
+                        navigateToInnerScreen(headerTitle, questionId)
+                    }
+
+
                 }
-
-                if (childAnswerData.size > 1 && childAnswerData[1] != null) {
-                    val getrow: Any = childAnswerData[1]
-                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                    val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
-                    val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
-
-                    childGlobalList.add( ChildAnswerData(liabilityName,liabilityTypeId, monthlyPayment, name, remainingMonth ))
-
-                    Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
-                    contentCell.detail_title2.text = liabilityName
-                    contentCell.detail_text2.text = monthlyPayment
-
-
-                    contentCell.govt_detail_box2.visibility = View.VISIBLE
-                    childInnerDetailQuestions.add(contentCell.govt_detail_box2)
-
-                }
-
-                if (childAnswerData.size > 2 && childAnswerData[2] != null) {
-                    val getrow: Any = childAnswerData[2]
-                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                    val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
-                    val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
-                    childGlobalList.add(ChildAnswerData(liabilityName,liabilityTypeId, monthlyPayment, name, remainingMonth ))
-
-                    Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
-
-                    contentCell.detail_title3.text = liabilityName
-                    contentCell.detail_text3.text = monthlyPayment
-                    contentCell.govt_detail_box3.visibility = View.VISIBLE
-                    childInnerDetailQuestions.add(contentCell.govt_detail_box3)
-                }
-
-                if(questionData.answer.equals("no",true)) {
-                    contentCell.ans_no.isChecked = true
-                    for(item in childInnerDetailQuestions)
-                        item.visibility = View.INVISIBLE
-                }
-                else {
-                    contentCell.ans_yes.isChecked = true
-                    for(item in childInnerDetailQuestions)
-                        item.visibility = View.VISIBLE
-                }
-                contentCell.ans_no.setOnClickListener {
-                    for(item in childInnerDetailQuestions)
-                        item.visibility = View.INVISIBLE
-                }
-                contentCell.ans_yes.setOnClickListener {
-                    for(item in childInnerDetailQuestions)
-                        item.visibility = View.VISIBLE
-                    navigateToInnerScreen(headerTitle , questionId)
-                }
-
-
             }
         }
         else
@@ -564,7 +611,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     private fun updateGovernmentData(testData:QuestionData){
-        for (item in updateGovernmentQuestionByBorrowerId.Questions) {
+        for (item in addUpdateQuestionsParams.Questions) {
             if(item.id == testData.id){
                 //item.answer = testData.answer
             }
@@ -574,7 +621,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
-        bundle.putParcelable(AppConstant.updateGovernmentQuestionByBorrowerId , updateGovernmentQuestionByBorrowerId)
+        //bundle.putParcelable(AppConstant.updateGovernmentQuestionByBorrowerId , updateGovernmentQuestionByBorrowerId)
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{

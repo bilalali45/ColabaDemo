@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -172,10 +171,10 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     }
 
 
-    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<GovernmentAddUpdateDataResponse>{
+    suspend fun addOrUpdateGovernmentQuestions(token:String, addUpdateQuestionsParams:AddUpdateQuestionsParams):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  updateGovernmentQuestions )
+            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  addUpdateQuestionsParams )
             Timber.e("updateGovernmentQuestions - $response")
             Result.Success(response)
         } catch (e: Throwable) {

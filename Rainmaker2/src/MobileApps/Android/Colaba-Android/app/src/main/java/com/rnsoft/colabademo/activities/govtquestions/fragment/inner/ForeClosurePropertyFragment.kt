@@ -20,7 +20,7 @@ class ForeClosurePropertyFragment: BaseFragment() {
 
     private var _binding: ForeClosurePropertyLayoutBinding? = null
     private val binding get() = _binding!!
-    private var updateGovernmentQuestionByBorrowerId = UpdateGovernmentQuestions()
+    private var updateGovernmentQuestionByBorrowerId = AddUpdateQuestionsParams()
     private var questionId:Int = 0
 
 

@@ -233,9 +233,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
 
-    suspend fun addOrUpdateGovernmentQuestions(token:String, updateGovernmentQuestions:UpdateGovernmentQuestions ) {
+    suspend fun addOrUpdateGovernmentQuestions(token:String, addUpdateQuestionsParams:AddUpdateQuestionsParams ) {
         viewModelScope.launch (Dispatchers.IO) {
-            val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  updateGovernmentQuestions = updateGovernmentQuestions)
+            val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  addUpdateQuestionsParams = addUpdateQuestionsParams)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
                     _governmentAddUpdateDataResponse.value = responseResult.data
