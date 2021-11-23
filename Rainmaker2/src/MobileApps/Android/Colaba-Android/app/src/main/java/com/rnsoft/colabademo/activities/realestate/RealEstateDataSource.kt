@@ -165,7 +165,7 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
     }
 
     suspend fun deleteRealEstate(token: String,borrowerPropertyId: Int): Result<AddUpdateDataResponse> {
-        Log.e("-dataSource-borrowerPropertyId" , ""+ borrowerPropertyId)
+        Log.e("-dataSource-Delete-borrowerPropertyId" , ""+ borrowerPropertyId)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.deleteRealEstate(newToken, borrowerPropertyId)

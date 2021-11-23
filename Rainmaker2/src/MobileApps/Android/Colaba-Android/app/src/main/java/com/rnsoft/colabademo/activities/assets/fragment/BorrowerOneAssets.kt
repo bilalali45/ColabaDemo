@@ -391,7 +391,6 @@ class BorrowerOneAssets : BaseFragment() {
     }
 
 
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -484,7 +483,6 @@ class BorrowerOneAssets : BaseFragment() {
             }
         }
     }
-
 
     private fun addNewCell(assetReturnParams:AssetReturnParams ){
         val layout = binding.assetParentContainer
@@ -610,8 +608,6 @@ class BorrowerOneAssets : BaseFragment() {
         }
     }
 
-
-
     private fun addListenerToNewOrModifiedCell(assetReturnParams:AssetReturnParams , contentCell:View){
         contentCell.setOnClickListener {
             val parentActivity = activity as? AssetsActivity
@@ -631,10 +627,5 @@ class BorrowerOneAssets : BaseFragment() {
             }
         }
     }
-
-
-
-
-
 
 }

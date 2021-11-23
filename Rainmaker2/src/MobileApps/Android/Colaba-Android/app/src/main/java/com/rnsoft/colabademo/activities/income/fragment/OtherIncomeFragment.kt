@@ -40,15 +40,15 @@ class OtherIncomeFragment : BaseFragment() {
     private val viewModel : IncomeViewModel by activityViewModels()
     private lateinit var binding: IncomeOtherLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
-        "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" +
-                " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
+    //private val retirementArray = listOf("Alimony", "Child Support", "Separate Maintenance", "Foster Care", "Annuity", "Capital Gains", "Interest / Dividends", "Notes Receivable",
+      //  "Trust", "Housing Or Parsonage", "Mortgage Credit Certificate", "Mortgage Differential Payments", "Public Assistance", "Unemployment Benefits", "VA Compensation", "Automobile" + " Allowance", "Boarder Income", "Royalty Payments", "Disability", "Other Income Source")
     private var loanApplicationId:Int? = null
     private var borrowerId:Int? = null
     private var incomeCategoryId:Int? = null
     private var incomeTypeID:Int? = null
     private var incomeInfoId :Int? = null
     private var incomeTypes: ArrayList<DropDownResponse> = arrayListOf()
+    private var borrowerName: String? = null
 
 
     override fun onCreateView(
@@ -67,11 +67,16 @@ class OtherIncomeFragment : BaseFragment() {
             borrowerId = arguments.getInt(AppConstant.borrowerId)
             incomeCategoryId = arguments.getInt(AppConstant.incomeCategoryId)
             incomeTypeID = arguments.getInt(AppConstant.incomeTypeID)
+            borrowerName = arguments.getString(AppConstant.borrowerName)
             arguments.getInt(AppConstant.incomeId).let {
                 if(it > 0) {
                     incomeInfoId = it
                 }
             }
+        }
+
+        borrowerName?.let {
+            toolbarBinding.borrowerPurpose.setText(it)
         }
 
         initViews()
@@ -280,7 +285,7 @@ class OtherIncomeFragment : BaseFragment() {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerId != null) {
                        // Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
-                        Log.e("employmentData-snding to API", "" + data)
+                        //Log.e("employmentData-snding to API", "" + data)
                         binding.loaderOtherIncome.visibility = View.VISIBLE
                         viewModel.sendOtherIncome(authToken, data)
                     }
@@ -413,6 +418,7 @@ class OtherIncomeFragment : BaseFragment() {
         binding.loaderOtherIncome.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
+            viewModel.resetChildFragmentToNull()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
@@ -427,9 +433,10 @@ class OtherIncomeFragment : BaseFragment() {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
                     if(codeString == "400" || codeString == "200"){
                         updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
                     }
                 })
                 lifecycleScope.launchWhenStarted {
@@ -447,7 +454,7 @@ class OtherIncomeFragment : BaseFragment() {
             findNavController().popBackStack()
         })
         val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList: java.util.ArrayList<Int>? = null
+        var mainBorrowerList: ArrayList<Int>? = null
         incomeActivity?.let { it ->
             mainBorrowerList =  it.borrowerTabList
         }
@@ -459,5 +466,4 @@ class OtherIncomeFragment : BaseFragment() {
             }
         }
     }
-
 }

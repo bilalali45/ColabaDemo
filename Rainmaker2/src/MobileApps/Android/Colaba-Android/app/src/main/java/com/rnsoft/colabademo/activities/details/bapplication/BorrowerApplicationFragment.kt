@@ -63,6 +63,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         loanLayout = root.findViewById(R.id.loanInfoLayout)
         subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
 
+
+
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{
@@ -83,11 +85,11 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val borrowerLoanActivity = Intent(requireActivity(), BorrowerLoanActivity::class.java)
                 it.loanApplicationId?.let { loanId ->
                     borrowerLoanActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                    Log.e("Loan Id", ""+it.loanApplicationId)
+                    //Log.e("Loan Id", ""+it.loanApplicationId)
                 }
                 it.borrowerLoanPurpose?.let{ loanPurpose->
                     borrowerLoanActivity.putExtra(AppConstant.loanPurpose, loanPurpose)
-                    Log.e("PurposeId", ""+loanPurpose)
+                    //Log.e("PurposeId", ""+loanPurpose)
                 }
                 startActivity(borrowerLoanActivity)
             }
@@ -171,6 +173,13 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
 
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            it.borrowerLoanPurpose?.let { loanPurpose ->
+                binding.textviewLoanPurpose.text = loanPurpose
+            }
+        }
+
         observeTabData()
 
         super.addListeners(binding.root)
@@ -249,7 +258,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 intent.putExtra(AppConstant.borrowerName, borrowerName)
                 startActivity(intent)
             }
-
         }
     }
 
@@ -262,8 +270,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             for(item in borrowerInfoList) {
                 //Timber.d("borrowerInfoList borrowerId  "+ item)
                 if(item.borrowerId!=-1) {
-                    Timber.e("passing borrowerId -- "+item.borrowerId)
-                    Timber.e("passing owntypeId -- "+item.owntypeId)
+                    //Timber.e("passing borrowerId -- "+item.borrowerId)
+                   // Timber.e("passing owntypeId -- "+item.owntypeId)
                     bList.add(item.borrowerId)
                     bListOwnTypeId.add(item.owntypeId)
                 }
@@ -272,7 +280,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             govtQuestionActivity.putIntegerArrayListExtra( AppConstant.borrowerOwnTypeList, bListOwnTypeId)
             it.loanApplicationId?.let { loanId ->
                 govtQuestionActivity.putExtra(AppConstant.loanApplicationId, loanId)
-                Timber.e("loanApplicationId -- "+loanId)
+                //Timber.e("loanApplicationId -- "+loanId)
             }
 
             startActivity(govtQuestionActivity)
@@ -282,19 +290,39 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private fun observeTabData(){
 
             detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel ->
-                Log.e("observing app", "tab")
                 if (appTabModel != null) {
                     binding.applicationTopContainer.visibility = View.VISIBLE
                     binding.applicationTabLayout.visibility = View.VISIBLE
 
                     appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
                         val builder = StringBuilder()
-                        it.street.let { builder.append(it).append(" ") }
-                        it.unit.let { builder.append(it) }
-                        it.city.let { builder.append("\n").append(it).append(" ") }
-                        it.stateName.let { builder.append(it).append(" ") }
-                        it.zipCode.let { builder.append(it) }
-                        it.countryName.let { builder.append(" ").append(it) }
+                        it.street.let {
+                            if(it != null)
+                                builder.append(it)
+                        }
+                        it.unit.let {
+                            if(it != null)
+                                builder.append(" ").append(it).append(",")
+                        }
+                        it.city.let {
+                            if(it != null)
+                                builder.append("\n").append(it).append(",").append(" ")
+                            else
+                                builder.append("\n")
+                        } ?: run { builder.append("\n") }
+
+                        it.stateName.let {
+                            if(it != null)
+                                builder.append(it).append(" ")
+                        }
+                        it.zipCode.let {
+                            if(it != null)
+                                builder.append(it)
+                        }
+                        it.countryName.let {
+                            if(it !=null)
+                                builder.append(" ").append(it)
+                        }
                         binding.bAppAddress.text = builder
 
                         // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
@@ -325,7 +353,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     appTabModel.borrowerAppData?.assetAndIncome?.totalAsset?.let {
                         binding.bAppTotalAssets.text =
                             "$".plus(AppSetting.returnAmountFormattedString(it))
-                        //binding.bAppTotalAssets.text = "$".plus(AppSetting.returnAmountFormattedString(it))
                     }
 
                     appTabModel.borrowerAppData?.assetAndIncome?.totalMonthyIncome?.let {
@@ -346,8 +373,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
                             for (borrower in borrowersList) {
-                                Timber.e(
-                                    "BApp -- " + borrower.firstName,
+                                Timber.e("BApp -- " + borrower.firstName,
                                     borrower.borrowerId,
                                     borrower.owntypeId,
                                     borrower.genderName
@@ -369,13 +395,13 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     appTabModel.borrowerAppData?.let { bAppData ->
                         bAppData.realStateOwns?.let {
                             for (item in it) {
-                                Timber.e(" Get -- " + item)
-                                Timber.e(" details -- " + item.borrowerId + "  " + item.propertyInfoId + "  " + item.propertyTypeId + "  " + item.propertyTypeName)
+                                //Timber.e(" Get -- " + item)
+                                //Timber.e(" details -- " + item.borrowerId + "  " + item.propertyInfoId + "  " + item.propertyTypeId + "  " + item.propertyTypeName)
 
                             }
                             realStateList.clear()
                             realStateList = it
-                            Log.e("list1", "" + it)
+                            //Log.e("list1", "" + it)
 
                         }
                     }
@@ -431,15 +457,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     override fun onResume() {
         super.onResume()
-       // observeTabData()
-
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
 
-
-        /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.application_tab_updated)?.observe(
-            viewLifecycleOwner) { result ->
-            observeTabData()
-        } */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

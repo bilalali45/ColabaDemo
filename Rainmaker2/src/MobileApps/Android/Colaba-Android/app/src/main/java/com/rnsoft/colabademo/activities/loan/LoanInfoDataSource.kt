@@ -70,8 +70,6 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
         val serverResponse: AddUpdateDataResponse
         return try {
-            //val g = Gson()
-            //val passJson = g.toJson(data)
             val newToken = "Bearer $token"
             serverResponse = serverApi.addUpdateLoanInfo(newToken, data)
             if(serverResponse.status.equals("OK", true) )
@@ -83,13 +81,13 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
             }
 
         } catch (e: Throwable){
-             Log.e("errorrr",e.localizedMessage)
+             //Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                 Log.e("network", "issues...")
+                 //Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                 Log.e("erorr",e.message ?:"Error")
+                 //Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
@@ -101,6 +99,8 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             serverResponse = serverApi.addUpdateLoanRefinance(newToken, data)
+            Log.e("Add-Refinance-Response","$serverResponse")
+
             if(serverResponse.status.equals("OK", true) )
                 Result.Success(serverResponse)
             else {

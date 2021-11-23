@@ -63,6 +63,9 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
 
         binding.titleTextView.setText(getString(R.string.property_address))
 
+        binding.layoutSearchAddress.hint = "Search Property Address"
+
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }

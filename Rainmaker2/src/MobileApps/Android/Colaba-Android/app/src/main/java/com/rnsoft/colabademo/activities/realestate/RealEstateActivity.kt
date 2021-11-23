@@ -49,10 +49,13 @@ class RealEstateActivity : BaseActivity() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 borrowerPropertyId?.let { id->
-                    if (loanApplicationId != null && borrowerPropertyId!! >0) {
+                    if (loanApplicationId != null) {
                         coroutineScope {
                             binding.loaderRealEstate.visibility = View.VISIBLE
-                            viewModel.getRealEstateDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
+
+                            if(borrowerPropertyId!! >0) {
+                                viewModel.getRealEstateDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
+                            }
                             //viewModel.getFirstMortgageDetails(authToken, loanApplicationId!!, borrowerPropertyId!!)
                             //viewModel.getSecondMortgageDetails(authToken, loanApplicationId!! 1003)
                             viewModel.getPropertyTypes(authToken)
@@ -63,6 +66,5 @@ class RealEstateActivity : BaseActivity() {
                 }
             }
         }
-
     }
 }

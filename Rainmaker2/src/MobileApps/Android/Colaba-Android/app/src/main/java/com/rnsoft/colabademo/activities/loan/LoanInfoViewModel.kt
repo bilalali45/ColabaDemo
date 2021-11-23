@@ -58,14 +58,13 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
     }
 
     suspend fun addLoanInfo(token: String,data: AddLoanInfoModel) {
-        //delay(2000)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.addLoanInfo(token = token,data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    //Log.e("Viewmodel", "${responseResult.data}")
+                    Log.e("Viewmodel", "${responseResult.data}")
                     //Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
@@ -82,7 +81,7 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
                 if(responseResult is Result.Success) {
                     //Log.e("Viewmodel", "${responseResult.data}")
                     //Log.e("Viewmodel", "$responseResult")
-                    //EventBus.getDefault().post(SendDataEvent(responseResult))
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))

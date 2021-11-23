@@ -50,6 +50,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     private var loanApplicationId: Int? = null
     private var businessTypes: ArrayList<DropDownResponse> = arrayListOf()
     private var businessAddress = AddressData()
+    private var borrowerName: String? = null
 
 
     override fun onCreateView(
@@ -57,11 +58,11 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//          return if (savedViewInstance != null){
-//            savedViewInstance
-//        } else {
-              binding = IncomeBusinessLayoutBinding.inflate(inflater, container, false)
-              //savedViewInstance = binding.root
+          return if (savedViewInstance != null){
+            savedViewInstance
+        } else {
+            binding = IncomeBusinessLayoutBinding.inflate(inflater, container, false)
+              savedViewInstance = binding.root
               toolbarBinding = binding.headerIncome
               super.addListeners(binding.root)
 
@@ -71,10 +72,15 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
               arguments?.let { arguments ->
                   loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
                   borrowerId = arguments.getInt(AppConstant.borrowerId)
+                  borrowerName = arguments.getString(AppConstant.borrowerName)
                   arguments.getInt(AppConstant.incomeId).let {
                       if (it > 0)
                           incomeInfoId = it
                   }
+              }
+
+              borrowerName?.let {
+                  toolbarBinding.borrowerPurpose.setText(it)
               }
 
               initViews()
@@ -91,9 +97,9 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
                   toolbarBinding.btnTopDelete.visibility = View.GONE
                   showHideAddress(false,true)
               }
-               return binding.root
-              //savedViewInstance
-          //}
+
+              savedViewInstance
+          }
     }
 
 
@@ -476,6 +482,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         binding.loaderIncomeBusiness.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
+            viewModel.resetChildFragmentToNull()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
@@ -490,9 +497,11 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         if(evt.isDeleteIncome){
             if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
                 viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse.code.toString()
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
                     if(codeString == "400" || codeString == "200"){
                         updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
+
                     }
                 })
                 lifecycleScope.launchWhenStarted {

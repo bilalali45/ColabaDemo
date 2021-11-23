@@ -214,10 +214,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         }
                     }
 
-                    //EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
-                EventBus.getDefault().post(GrandTotalEvent("$"+(Common.addNumberFormat(grandTotalAmount))))
-                })
-        }
+                //EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                binding.grandTotalTextView.text = "$".plus(Common.addNumberFormat(grandTotalAmount))
+
+
+                }) }
     }
 
     val currentEmploymentListener:View.OnClickListener= View.OnClickListener {

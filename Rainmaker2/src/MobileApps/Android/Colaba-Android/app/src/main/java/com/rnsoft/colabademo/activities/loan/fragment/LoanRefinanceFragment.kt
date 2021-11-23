@@ -20,6 +20,9 @@ import com.rnsoft.colabademo.databinding.LoanRefinanceInfoBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -32,11 +35,11 @@ class LoanRefinanceFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+    private var loanApplicationId: Int? = null
     private val loanViewModel : LoanInfoViewModel by activityViewModels()
     private lateinit var binding: LoanRefinanceInfoBinding
     private lateinit var bindingToolbar: AppHeaderWithBackNavBinding
     private var goalFullList: ArrayList<LoanGoalModel> = arrayListOf()
-
     var downPayment : Double?= null
     var propertyValue : Double ?= null
 
@@ -50,6 +53,11 @@ class LoanRefinanceFragment : BaseFragment() {
         // set Header title
         bindingToolbar.headerTitle.setText(getString(R.string.loan_info_refinance))
 
+
+        val activity = activity as BorrowerLoanActivity
+        activity.let{
+            loanApplicationId = it.loanApplicationId
+        }
 
         initViews()
         clicks()
@@ -95,22 +103,6 @@ class LoanRefinanceFragment : BaseFragment() {
                     CustomMaterialFields.setColor(binding.layoutLoanAmount, R.color.grey_color_two, requireContext())
                 }
             }
-        }
-    }
-
-    private fun clicks(){
-        binding.btnSaveChanges.setOnClickListener {
-            processData()
-        }
-
-        bindingToolbar.backButton.setOnClickListener {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback {
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
     }
 
@@ -220,22 +212,30 @@ class LoanRefinanceFragment : BaseFragment() {
                 var newCashoutAmount = cashOutAmount.replace(",".toRegex(), "")
                 var newLoanAmount = loanAmount.replace(",".toRegex(), "")
 
-                val activity = (activity as? BorrowerLoanActivity)
-                activity?.loanApplicationId?.let { loanId->
-                    val info = UpdateLoanRefinanceModel(
-                        loanApplicationId = loanId,
-                        loanPurposeId = 2,
-                        loanGoalId = 4,
-                        cashOutAmount = newCashoutAmount.toDouble(),
-                        downPayment = downPayment!!,
-                        propertyValue = propertyValue!!,
-                        loanPayment = newLoanAmount.toDouble()
-                    )
+                val loanGoal : String = binding.tvLoanStage.getText().toString().trim()
+                val matchedList =  goalFullList.filter { g -> g.description.equals(loanGoal,true)}
+                val loanGoalId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
 
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            binding.loaderLoanRefinance.visibility = View.VISIBLE
-                            loanViewModel.addLoanRefinanceInfo(authToken, info)
+
+                val activity = (activity as? BorrowerLoanActivity)
+                activity?.loanApplicationId?.let { loanId ->
+                    if (downPayment != null && propertyValue != null) {
+                        val info = UpdateLoanRefinanceModel(
+                            loanApplicationId = loanId,
+                            loanPurposeId = AppConstant.PURPOSE_ID_REFINANCE,
+                            loanGoalId = loanGoalId,
+                            cashOutAmount = newCashoutAmount.toDouble(),
+                            downPayment = 0.0,
+                            propertyValue = propertyValue!!,
+                            loanPayment = newLoanAmount.toDouble()
+                        )
+
+                        lifecycleScope.launchWhenStarted {
+                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                                binding.loaderLoanRefinance.visibility = View.VISIBLE
+                                  //Log.e("LoanInfoApi",""+info)
+                                  loanViewModel.addLoanRefinanceInfo(authToken, info)
+                            }
                         }
                     }
                 }
@@ -244,6 +244,23 @@ class LoanRefinanceFragment : BaseFragment() {
 
 
     }
+
+    private fun clicks(){
+        binding.btnSaveChanges.setOnClickListener {
+            processData()
+        }
+
+        bindingToolbar.backButton.setOnClickListener {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold,R.anim.slide_out_left)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finish()
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+    }
+
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
@@ -265,5 +282,35 @@ class LoanRefinanceFragment : BaseFragment() {
         val  activity = (activity as? BorrowerLoanActivity)
         activity?.binding?.loaderLoanInfo?.visibility = View.GONE
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+        EventBus.getDefault().unregister(this)
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderLoanRefinance.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            Log.e("posted","success")
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE){
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
+    }
+
 
 }
