@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ReserveFollowUpQuestionsViewControllerDelegate: AnyObject {
+    func saveReserveNationalGuard(status: String)
+}
+
 class ReserveFollowUpQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -28,14 +32,22 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     var isActive = 0 // 1 for yes 2 for no
     var selectedMilitary = Detail()
     var borrowerName = ""
+    weak var delegate: ReserveFollowUpQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         isActive = selectedMilitary.reserveEverActivated == true ? 1 : 2
-        lblQuestion.text = "Was \(borrowerName) ever activated during their tour of duty?"
+        if (borrowerName == " "){
+            lblQuestion.text = "Was he ever activated during their tour of duty?"
+        }
+        else{
+            lblQuestion.text = "Was \(borrowerName) ever activated during their tour of duty?"
+        }
+        
         lblBorrowerName.text = borrowerName.uppercased()
+        isActive = selectedMilitary.reserveEverActivated == true ? 1 : 2
         changeActiveStatus()
     }
 
@@ -63,6 +75,7 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
+        self.delegate?.saveReserveNationalGuard(status: isActive == 1 ? "Yes" : "No")
         self.dismissVC()
     }
 }

@@ -9,6 +9,10 @@ import UIKit
 import Material
 import GooglePlaces
 
+protocol AddResidenceViewControllerDelegate: AnyObject {
+    func saveCurrentAddress(address: BorrowerAddress)
+}
+
 class AddResidenceViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
@@ -38,21 +42,26 @@ class AddResidenceViewController: BaseViewController {
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
-    
     @IBOutlet weak var tblViewPlaces: UITableView!
+   
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
     
     var numberOfMailingAddress = 0
     var selectedAddress = BorrowerAddress()
     var housingStatusArray = [DropDownModel]()
+    var countriesArray = [CountriesModel]()
+    var statesArray = [StatesModel]()
+    var countiesArray = [CountiesModel]()
     var borrowerFirstName = ""
     var borrowerLastName = ""
+    weak var delegate: AddResidenceViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         btnDelete.isHidden = true
         setTextFields()
+        getCountriesDropDown()
         setPlacePickerTextField()
         lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
         setCurrentAddress()
@@ -71,11 +80,11 @@ class AddResidenceViewController: BaseViewController {
         
         ///County Text Field
         txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        txtfieldCounty.type = .editableDropdown
         
         ///State Text Field
         txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
-        txtfieldState.setDropDownDataSource(kUSAStatesArray)
         
         ///Zip Code Text Field
         txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
@@ -83,7 +92,6 @@ class AddResidenceViewController: BaseViewController {
         ///Country Text Field
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
         txtfieldCountry.type = .editableDropdown
-        txtfieldCountry.setDropDownDataSource(kCountryListArray)
         
         ///Move In Date Text Field
         txtfieldMoveInDate.setTextField(placeholder: "Move in Date", controller: self, validationType: .required)
@@ -118,7 +126,7 @@ class AddResidenceViewController: BaseViewController {
                     txtfieldMonthlyRent.isHidden = false
                     txtfieldMonthlyRentTopConstraint.constant = 30
                     txtfieldMonthlyRentHeightConstraint.constant = 39
-                    txtfieldMonthlyRent.setTextField(text: selectedAddress.monthlyRent.withCommas().replacingOccurrences(of: ".00", with: ""))
+                    txtfieldMonthlyRent.setTextField(text: String(format: "%.0f", Double(selectedAddress.monthlyRent).rounded()))
                     UIView.animate(withDuration: 0.0) {
                         self.view.layoutSubviews()
                     }
@@ -146,7 +154,7 @@ class AddResidenceViewController: BaseViewController {
         txtfieldHomeAddress.textInsetsPreset = .horizontally5
         
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(dismissAddressVC), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveButtonTapped), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
@@ -280,8 +288,10 @@ class AddResidenceViewController: BaseViewController {
         self.pushToVC(vc: vc)
     }
     
-    @objc func dismissAddressVC(){
-        self.dismissVC()
+    @objc func saveButtonTapped(){
+        if validate(){
+            addUpdateCurrentAddress()
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -297,16 +307,7 @@ class AddResidenceViewController: BaseViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
-        if validate() {
-            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != "" && txtfieldMoveInDate.text != "" && txtfieldHousingStatus.text != ""){
-                if (txtfieldHousingStatus.text == "Rent" && txtfieldMonthlyRent.text != ""){
-                    self.dismissVC()
-                }
-                else if (txtfieldHousingStatus.text != "Rent"){
-                    self.dismissVC()
-                }
-            }
-        }
+        saveButtonTapped()
     }
     
     func validate() -> Bool {
@@ -325,6 +326,142 @@ class AddResidenceViewController: BaseViewController {
         return isValidate
     }
     
+    func addUpdateCurrentAddress(){
+        var stateId = 0
+        var countryId = 0
+        var countyId = 0
+        var housingStatusId = 0
+        var monthlyRent = 0
+        var fromDate = ""
+        var toDate = ""
+        
+        if let selectedState = statesArray.filter({$0.name == txtfieldState.text!}).first{
+            stateId = selectedState.id
+        }
+        
+        if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text!}).first{
+            countryId = selectedCountry.id
+        }
+        
+        if let selectedCounty = countiesArray.filter({$0.name == txtfieldCounty.text!}).first{
+            countyId = selectedCounty.id
+        }
+        
+        if let selectedHousingStatus = housingStatusArray.filter({$0.optionName == txtfieldHousingStatus.text!}).first{
+            housingStatusId = selectedHousingStatus.optionId
+        }
+        
+        if txtfieldMonthlyRent.text != "" && !txtfieldMonthlyRent.isHidden{
+            if let value = Int(cleanString(string: txtfieldMonthlyRent.text!, replaceCharacters: ["$  |  ",".00", ","], replaceWith: "")){
+                monthlyRent = value
+            }
+        }
+        
+        let fromDateComponent = txtfieldMoveInDate.text!.components(separatedBy: "/")
+        if (fromDateComponent.count == 2){
+            fromDate = "\(fromDateComponent[1])-\(fromDateComponent[0])-01T00:00:00"
+        }
+        
+        selectedAddress.housingStatusId = housingStatusId
+        selectedAddress.monthlyRent = monthlyRent
+        selectedAddress.fromDate = fromDate
+        selectedAddress.addressModel.street = txtfieldStreetAddress.text!
+        selectedAddress.addressModel.unit = txtfieldUnitNo.text!
+        selectedAddress.addressModel.city = txtfieldCity.text!
+        selectedAddress.addressModel.stateId = stateId
+        selectedAddress.addressModel.zipCode = txtfieldZipCode.text!
+        selectedAddress.addressModel.countryId = countryId
+        selectedAddress.addressModel.countryName = txtfieldCountry.text!
+        selectedAddress.addressModel.stateName = txtfieldState.text!
+        selectedAddress.addressModel.countyId = countyId
+        selectedAddress.addressModel.countyName = txtfieldCounty.text!
+        self.delegate?.saveCurrentAddress(address: selectedAddress)
+        self.dismissVC()
+    }
+    
+    //MARK:- API's
+    
+    func getCountriesDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCountries, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let countries = result.arrayValue
+                    for country in countries{
+                        let model = CountriesModel()
+                        model.updateModelWithJSON(json: country)
+                        self.countriesArray.append(model)
+                    }
+                    self.txtfieldCountry.setDropDownDataSource(self.countriesArray.map{$0.name})
+                    self.getStatesDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getStatesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllStates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let statesArray = result.arrayValue
+                    for state in statesArray{
+                        let model = StatesModel()
+                        model.updateModelWithJSON(json: state)
+                        self.statesArray.append(model)
+                    }
+                    self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                    self.getCountiesDropDown()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCountiesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCounties, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let countiesArray = result.arrayValue
+                    for county in countiesArray{
+                        let model = CountiesModel()
+                        model.updateModelWithJSON(json: county)
+                        self.countiesArray.append(model)
+                    }
+                    self.txtfieldCounty.setDropDownDataSource(self.countiesArray.map{$0.name})
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
+    }
 }
 
 extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate{
@@ -412,7 +549,8 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return tableView == tblViewMailingAddress
+        //return tableView == tblViewMailingAddress
+        return false
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

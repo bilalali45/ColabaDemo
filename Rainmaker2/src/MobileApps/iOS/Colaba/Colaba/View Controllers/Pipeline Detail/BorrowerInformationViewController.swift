@@ -111,10 +111,13 @@ class BorrowerInformationViewController: BaseViewController {
     
     var loanApplicationId = 0
     var borrowerId = 0
+    var selectedResidencyStatusId: Any = NSNull()
+    var selectedResidencyStatusExplanation: Any = NSNull()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViews()
+        getAllMaritalStatus()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -122,7 +125,6 @@ class BorrowerInformationViewController: BaseViewController {
         setDependentCollectionViewLayout()
         setScreenHeight()
         setTextFields()
-        getAllMaritalStatus()
         self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
     }
 
@@ -175,21 +177,35 @@ class BorrowerInformationViewController: BaseViewController {
         txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
         txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
         txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
-        txtfieldHomeNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.homePhone)
-        txtfieldWorkNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhone)
+        
+        let homePhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.homePhone)
+        txtfieldHomeNumber.setTextField(text: homePhoneNumber)
+        
+        let workPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.workPhone)
+        txtfieldWorkNumber.setTextField(text: workPhoneNumber)
+        
         txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
-        txtfieldCellNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.cellPhone)
-       
+        
+        let cellPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.cellPhone)
+        txtfieldCellNumber.setTextField(text: cellPhoneNumber)
+        
+        if (borrowerInformationModel.borrowerBasicDetails.firstName != ""){
+            lblReserveNationalGuardQuestion.text =  "Was \(borrowerInformationModel.borrowerBasicDetails.firstName.capitalized) \(borrowerInformationModel.borrowerBasicDetails.lastName.capitalized) ever activated during their tour of duty?"
+        }
+        
         if let selectedMaritalStatus = maritalStatusArray.filter({$0.optionId == self.borrowerInformationModel.maritalStatus.maritalStatusId}).first{
             if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Unmarried")){
+                maritalStatus = 1
                 btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
             }
             else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Married")){
+                maritalStatus = 2
                 btnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblMarried.font = Theme.getRubikMediumFont(size: 14)
             }
             else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Separated")){
+                maritalStatus = 3
                 btnSeparated.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblSeparated.font = Theme.getRubikMediumFont(size: 14)
             }
@@ -197,18 +213,26 @@ class BorrowerInformationViewController: BaseViewController {
         
         if let selectedCitizenshipStatus = citizenshipArray.filter({$0.optionId == self.borrowerInformationModel.borrowerCitizenship.residencyTypeId}).first{
             if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("US Citizen")){
+                citizenshipStatus = 1
                 btnUSCitizen.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblUSCitizen.font = Theme.getRubikMediumFont(size: 14)
             }
             else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Permanent Resident Alien (Green Card)")){
+                citizenshipStatus = 2
                 btnPermanentResident.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblPermanentResident.font = Theme.getRubikMediumFont(size: 14)
             }
             else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")){
+                citizenshipStatus = 3
                 btnNonPermanent.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblNonPermanent.font = Theme.getRubikMediumFont(size: 14)
+                if let selectedVisaStatus = visaStatusArray.filter({$0.optionId == borrowerInformationModel.borrowerCitizenship.residencyStatusId}).first{
+                    lblNonPermanentAns.text = selectedVisaStatus.optionName
+                }
             }
         }
+        selectedResidencyStatusId = borrowerInformationModel.borrowerCitizenship.residencyStatusId
+        selectedResidencyStatusExplanation = borrowerInformationModel.borrowerCitizenship.residencyStatusExplanation
         nonPermanentResidentMainView.isHidden = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0
         citizenshipViewHeightConstraint.constant = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0 ? 140 : 242
         txtfieldDOB.setTextField(text: Utility.getDayMonthYear(borrowerInformationModel.borrowerCitizenship.dobUtc))
@@ -216,6 +240,8 @@ class BorrowerInformationViewController: BaseViewController {
         noOfDependents = borrowerInformationModel.borrowerCitizenship.dependentCount
         lblNoOfDependent.text = "\(borrowerInformationModel.borrowerCitizenship.dependentCount)"
         noOfAges = borrowerInformationModel.borrowerCitizenship.dependentAges.components(separatedBy: ",")
+        changeMaritalStatus()
+        changeCitizenshipStatus()
         self.dependentsCollectionView.reloadData()
         
         for militaryService in borrowerInformationModel.militaryServiceDetails.details{
@@ -359,6 +385,10 @@ class BorrowerInformationViewController: BaseViewController {
         
         if (totalAddresses == 0){
             let vc = Utility.getAddResidenceVC()
+            vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
+            vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.housingStatusArray = self.housingStatusArray
+            vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -366,6 +396,11 @@ class BorrowerInformationViewController: BaseViewController {
         }
         else{
             let vc = Utility.getAddPreviousResidenceVC()
+            vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
+            vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
+            vc.loanApplicationId = self.loanApplicationId
+            vc.housingStatusArray = self.housingStatusArray
+            vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -497,6 +532,7 @@ class BorrowerInformationViewController: BaseViewController {
         vc.visaStatusArray = visaStatusArray
         vc.selectedCitizenShip = borrowerInformationModel.borrowerCitizenship
         vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -522,6 +558,7 @@ class BorrowerInformationViewController: BaseViewController {
             if let activeDuty = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Active Duty Personnel"}).first!.optionId}).first{
                 vc.selectedMilitary = activeDuty
             }
+            vc.delegate = self
             self.presentVC(vc: vc)
         }
     }
@@ -532,6 +569,7 @@ class BorrowerInformationViewController: BaseViewController {
         if let activeDuty = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Active Duty Personnel"}).first!.optionId}).first{
             vc.selectedMilitary = activeDuty
         }
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -543,6 +581,7 @@ class BorrowerInformationViewController: BaseViewController {
         if (isReserveOrNationalCard){
             let vc = Utility.getReserveFollowUpQuestionsVC()
             vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+            vc.delegate = self
             if let reserveNationalGuard = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Reserve Or National Guard"}).first!.optionId}).first{
                 vc.selectedMilitary = reserveNationalGuard
             }
@@ -553,6 +592,7 @@ class BorrowerInformationViewController: BaseViewController {
     @objc func reserveOrNationalGuardMainViewTapped(){
         let vc = Utility.getReserveFollowUpQuestionsVC()
         vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        vc.delegate = self
         if let reserveNationalGuard = self.borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == self.militaryAffiliationArray.filter({$0.optionName == "Reserve Or National Guard"}).first!.optionId}).first{
             vc.selectedMilitary = reserveNationalGuard
         }
@@ -672,20 +712,21 @@ class BorrowerInformationViewController: BaseViewController {
 //            }
 //        }
         if validate() {
-            if (txtfieldEmail.text != "" && txtfieldHomeNumber.text != ""){
-                if (txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text?.count == 14){
-                    self.goBack()
-                }
-            }
-            else if (txtfieldEmail.text != "" && txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text == ""){
-                self.goBack()
-            }
-            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text?.count == 14){
-                self.goBack()
-            }
-            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text == ""){
-                self.goBack()
-            }
+            addUpdateBorrowerDetail()
+//            if (txtfieldEmail.text != "" && txtfieldHomeNumber.text != ""){
+//                if (txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text?.count == 14){
+//                    self.goBack()
+//                }
+//            }
+//            else if (txtfieldEmail.text != "" && txtfieldEmail.text!.isValidEmail() && txtfieldHomeNumber.text == ""){
+//                self.goBack()
+//            }
+//            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text?.count == 14){
+//                self.goBack()
+//            }
+//            else if (txtfieldEmail.text == "" && txtfieldHomeNumber.text == ""){
+//                self.goBack()
+//            }
         }
     }
     
@@ -827,6 +868,7 @@ class BorrowerInformationViewController: BaseViewController {
             
             DispatchQueue.main.async {
                 if (status == .success){
+                    self.visaStatusArray.removeAll()
                     let optionsArray = result.arrayValue
                     for option in optionsArray{
                         let model = DropDownModel()
@@ -843,6 +885,7 @@ class BorrowerInformationViewController: BaseViewController {
                         vc.visaStatusArray = self.visaStatusArray
                         vc.selectedCitizenShip = self.borrowerInformationModel.borrowerCitizenship
                         vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                        vc.delegate = self
                         self.presentVC(vc: vc)
                     }
                 }
@@ -907,6 +950,201 @@ class BorrowerInformationViewController: BaseViewController {
             }
         }
         
+    }
+    
+    func addUpdateBorrowerDetail(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let basicDetails = ["borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                            "loanApplicationId": loanApplicationId,
+                            "firstName": txtfieldLegalFirstName.text!,
+                            "middleName": txtfieldMiddleName.text!,
+                            "lastName": txtfieldLegalLastName.text!,
+                            "suffix": txtfieldSuffix.text!,
+                            "emailAddress": txtfieldEmail.text!,
+                            "homePhone": cleanString(string: txtfieldHomeNumber.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: ""),
+                            "workPhone": cleanString(string: txtfieldWorkNumber.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: ""),
+                            "workPhoneExt": txtfieldExtensionNumber.text!,
+                            "cellPhone": cleanString(string: txtfieldCellNumber.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: ""),
+                            "ownTypeId": borrowerId == 0 ? 2 : borrowerInformationModel.borrowerBasicDetails.ownTypeId] as [String: Any]
+        
+        var maritalStatusId = 0
+        var residencyTypeId = 0
+        var dob = ""
+        
+        if (maritalStatus == 1){ //Unmarried
+            if let selectedMaritalStatus = maritalStatusArray.filter({$0.optionName == "Unmarried"}).first{
+                maritalStatusId = selectedMaritalStatus.optionId
+            }
+        }
+        else if (maritalStatus == 2){ //married
+            if let selectedMaritalStatus = maritalStatusArray.filter({$0.optionName == "Married"}).first{
+                maritalStatusId = selectedMaritalStatus.optionId
+            }
+        }
+        else if (maritalStatus == 3){ //separated
+            if let selectedMaritalStatus = maritalStatusArray.filter({$0.optionName == "Separated"}).first{
+                maritalStatusId = selectedMaritalStatus.optionId
+            }
+        }
+        
+        if (citizenshipStatus == 1){ //us citizen
+            if let selectedCitizenship = citizenshipArray.filter({$0.optionName.localizedCaseInsensitiveContains("US Citizen")}).first{
+                residencyTypeId = selectedCitizenship.optionId
+            }
+        }
+        else if (citizenshipStatus == 2){ // permanent
+            if let selectedCitizenship = citizenshipArray.filter({$0.optionName.localizedCaseInsensitiveContains("Permanent Resident Alien (Green Card)")}).first{
+                residencyTypeId = selectedCitizenship.optionId
+            }
+        }
+        else if (citizenshipStatus == 3){ // non permanent
+            if let selectedCitizenship = citizenshipArray.filter({$0.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")}).first{
+                residencyTypeId = selectedCitizenship.optionId
+            }
+        }
+        
+        let dobComponent = txtfieldDOB.text!.components(separatedBy: "/")
+        if (dobComponent.count == 3){
+            dob = "\(dobComponent[2])-\(dobComponent[0])-\(dobComponent[1])T00:00:00"
+        }
+        
+        var agesArray = [Int]()
+        for i in 0..<noOfDependents{
+            let cell = dependentsCollectionView.cellForItem(at: IndexPath(row: i, section: 0)) as! DependentCollectionViewCell
+            if let age = Int(cell.txtfieldAge.text!){
+                agesArray.append(age)
+            }
+        }
+        
+        var militartyDetailsArray: [Any] = []
+        
+        if (isActiveDutyPersonal){
+            if let selectedMilitary = militaryAffiliationArray.filter({$0.optionName.localizedCaseInsensitiveContains("Active Duty Personnel")}).first{
+                var expirationDate = ""
+                let expirationDateComponent = lblLastDate.text!.components(separatedBy: "/")
+                if (expirationDateComponent.count == 2){
+                    expirationDate = "\(expirationDateComponent[1])-\(expirationDateComponent[0])-01T00:00:00"
+                }
+                let detail = ["militaryAffiliationId": selectedMilitary.optionId,
+                              "expirationDateUtc": expirationDate] as [String : Any]
+                militartyDetailsArray.append(detail)
+            }
+        }
+        if (isReserveOrNationalCard){
+            if let selectedMilitary = militaryAffiliationArray.filter({$0.optionName.localizedCaseInsensitiveContains("Reserve Or National Guard")}).first{
+                let detail = ["militaryAffiliationId": selectedMilitary.optionId,
+                              "reserveEverActivated": lblReserveNationalGuardAns.text == "Yes" ? true : false] as [String : Any]
+                militartyDetailsArray.append(detail)
+            }
+        }
+        if (isVeteran){
+            if let selectedMilitary = militaryAffiliationArray.filter({$0.optionName.localizedCaseInsensitiveContains("Veteran")}).first{
+                let detail = ["militaryAffiliationId": selectedMilitary.optionId]
+                militartyDetailsArray.append(detail)
+            }
+        }
+        if (isSurvivingSpouse){
+            if let selectedMilitary = militaryAffiliationArray.filter({$0.optionName.localizedCaseInsensitiveContains("Surviving Spouse")}).first{
+                let detail = ["militaryAffiliationId": selectedMilitary.optionId]
+                militartyDetailsArray.append(detail)
+            }
+        }
+        
+        let maritalStatusDetail = ["loanApplicationId": loanApplicationId,
+                                   "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                                   "maritalStatusId": maritalStatusId,
+                                   "firstName": "",
+                                   "middleName": "",
+                                   "lastName": "",
+                                   "relationWithPrimaryId": NSNull(),
+                                   "spouseBorrowerId": NSNull(),
+                                   "spouseMaritalStatusId": NSNull(),
+                                   "isInRelationship": false,
+                                   "relationFormedStateId": NSNull(),
+                                   "relationshipTypeId": NSNull(),
+                                   "otherRelationshipExplanation": NSNull(),
+                                   "spouseLoanContactId": NSNull()] as [String: Any]
+        
+        let citizenshipDetail = ["borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                                 "loanApplicationId": loanApplicationId,
+                                 "residencyTypeId": residencyTypeId,
+                                 "residencyStatusId": citizenshipStatus == 3 ? selectedResidencyStatusId : NSNull(),
+                                 "residencyStatusExplanation": citizenshipStatus == 3 ? selectedResidencyStatusExplanation : NSNull(),
+                                 "dependentCount": noOfDependents,
+                                 "dependentAges": agesArray.map{String($0)}.joined(separator: ","),
+                                 "dobUtc": dob,
+                                 "ssn": txtfieldSecurityNo.text!] as [String: Any]
+        
+        let militaryDetail = ["isVaEligible": true,
+                              "details": militartyDetailsArray] as [String: Any]
+        
+        let addressModel = ["street": borrowerInformationModel.currentAddress.addressModel.street,
+                            "unit": borrowerInformationModel.currentAddress.addressModel.unit,
+                              "city": borrowerInformationModel.currentAddress.addressModel.city,
+                            "stateId": borrowerInformationModel.currentAddress.addressModel.stateId == 0 ? NSNull() : borrowerInformationModel.currentAddress.addressModel.stateId,
+                            "zipCode": borrowerInformationModel.currentAddress.addressModel.zipCode,
+                            "countryId": borrowerInformationModel.currentAddress.addressModel.countryId == 0 ? NSNull() : borrowerInformationModel.currentAddress.addressModel.countryId,
+                            "countryName": borrowerInformationModel.currentAddress.addressModel.countryName,
+                            "stateName": borrowerInformationModel.currentAddress.addressModel.stateName,
+                            "countyId": borrowerInformationModel.currentAddress.addressModel.countyId == 0 ? NSNull() : borrowerInformationModel.currentAddress.addressModel.countyId,
+                            "countyName": borrowerInformationModel.currentAddress.addressModel.countyName] as [String: Any]
+        
+        let currentAddress = ["loanApplicationId": loanApplicationId,
+                              "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                              "id": borrowerInformationModel.currentAddress.id == 0 ? NSNull() : borrowerInformationModel.currentAddress.id,
+                              "housingStatusId": borrowerInformationModel.currentAddress.housingStatusId,
+                              "monthlyRent": borrowerInformationModel.currentAddress.monthlyRent,
+                              "fromDate": borrowerInformationModel.currentAddress.fromDate,
+                              "addressModel": addressModel,
+                              "isMailingAddressDifferent": false,
+                              "mailingAddressModel": NSNull()] as [String: Any]
+        
+        
+        var previousAddresses: [Any] = []
+        for address in borrowerInformationModel.previousAddresses{
+            let addressDic = ["street": address.addressModel.street,
+                              "unit": address.addressModel.unit,
+                              "city": address.addressModel.city,
+                              "stateId": address.addressModel.stateId == 0 ? NSNull() : address.addressModel.stateId,
+                              "zipCode": address.addressModel.zipCode,
+                              "countryId": address.addressModel.countryId  == 0 ? NSNull() : address.addressModel.countryId,
+                              "countryName": address.addressModel.countryName,
+                              "stateName": address.addressModel.stateName,
+                              "countyId": address.addressModel.countyId == 0 ? NSNull() : address.addressModel.countyId,
+                              "countyName": address.addressModel.countyName] as [String: Any]
+            
+            let previousAddress = ["id": address.id == 0 ? NSNull() : address.id,
+                                   "housingStatusId": address.housingStatusId,
+                                   "monthlyRent": address.monthlyRent,
+                                   "fromDate": address.fromDate,
+                                   "toDate": address.toDate,
+                                   "addressModel": addressDic] as [String: Any]
+            previousAddresses.append(previousAddress)
+        }
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                      "borrowerBasicDetails": basicDetails,
+                      "maritalStatus": maritalStatusDetail,
+                      "borrowerCitizenship": citizenshipDetail,
+                      "militaryServiceDetails": militaryDetail,
+                      "currentAddress": currentAddress,
+                      "previousAddresses": previousAddresses.count == 0 ? NSNull() : previousAddresses] as [String:Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .addUpdateBorrowerDetail, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    self.goBack()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
     }
     
     func deletePreviousAddress(addressId: Int){
@@ -983,6 +1221,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
             vc.borrowerFirstName = borrowerInformationModel.borrowerBasicDetails.firstName
             vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
             vc.housingStatusArray = self.housingStatusArray
+            vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -995,6 +1234,7 @@ extension BorrowerInformationViewController: UITableViewDataSource, UITableViewD
             vc.borrowerLastName = borrowerInformationModel.borrowerBasicDetails.lastName
             vc.loanApplicationId = self.loanApplicationId
             vc.housingStatusArray = self.housingStatusArray
+            vc.delegate = self
             let navVC = UINavigationController(rootViewController: vc)
             navVC.modalPresentationStyle = .fullScreen
             navVC.navigationBar.isHidden = true
@@ -1079,3 +1319,131 @@ extension BorrowerInformationViewController: DependentCollectionViewCellDelegate
         }
     }
 }
+
+extension BorrowerInformationViewController: NonPermanentResidenceFollowUpQuestionsViewControllerDelegate{
+    func setResidencyStatus(citizenship: BorrowerCitizenship) {
+        citizenshipStatus = 3
+        selectedResidencyStatusId = citizenship.residencyStatusId
+        selectedResidencyStatusExplanation = citizenship.residencyStatusExplanation
+        borrowerInformationModel.borrowerCitizenship = citizenship
+        setBorrowerInformation()
+    }
+}
+
+extension BorrowerInformationViewController: ActiveDutyPersonnelFollowUpQuestionViewControllerDelegate{
+    func saveLastDateOfService(date: String) {
+        lblLastDate.text = date
+    }
+}
+
+extension BorrowerInformationViewController: ReserveFollowUpQuestionsViewControllerDelegate{
+    func saveReserveNationalGuard(status: String) {
+        lblReserveNationalGuardAns.text = status
+        if let selectedMilitary = borrowerInformationModel.militaryServiceDetails.details.filter({$0.militaryAffiliationId == 3}).first{
+            selectedMilitary.reserveEverActivated = status == "Yes" ? true : false
+        }
+
+    }
+}
+
+extension BorrowerInformationViewController: AddResidenceViewControllerDelegate{
+    func saveCurrentAddress(address: BorrowerAddress) {
+        borrowerInformationModel.currentAddress = address
+        setBorrowerInformation()
+    }
+}
+
+extension BorrowerInformationViewController: AddPreviousResidenceViewControllerDelegate{
+    func savePreviousAddress(address: BorrowerAddress) {
+        if (borrowerInformationModel.previousAddresses.filter({$0.id == address.id})).count > 0{
+            if var selectedAddress = borrowerInformationModel.previousAddresses.filter({$0.id == address.id}).first{
+                selectedAddress = address
+            }
+        }
+        else{
+            borrowerInformationModel.previousAddresses.append(address)
+        }
+        setBorrowerInformation()
+    }
+}
+
+//"currentAddress": {
+//    "loanApplicationId": 5,
+//    "borrowerId": 5,
+//    "id": 2,
+//    "housingStatusId": 1,
+//    "monthlyRent": 100,
+//    "fromDate": "2021-01-01T00:00:00",
+//    "addressModel": {
+//        "street": "11111 Research Blvd Edited",
+//        "unit": "424",
+//        "city": "Austin",
+//        "stateId": 45,
+//        "zipCode": "78717",
+//        "countryId": 1,
+//        "countryName": "United States",
+//        "stateName": "Texas",
+//        "countyId": null,
+//        "countyName": null
+//    },
+//    "isMailingAddressDifferent": false,
+//    "mailingAddressModel": null
+//},
+//"previousAddresses": [
+//    {
+//        "id": 1024,
+//        "housingStatusId": 2,
+//        "monthlyRent": 4545.0,
+//        "fromDate": "2021-10-01T00:00:00",
+//        "toDate": "2021-10-08T00:00:00",
+//        "addressModel": {
+//            "street": "6 Vingelodden",
+//            "unit": "66",
+//            "city": "København",
+//            "stateId": 0,
+//            "zipCode": "2200",
+//            "countryId": 60,
+//            "countryName": "Denmark",
+//            "stateName": "None",
+//            "countyId": null,
+//            "countyName": null
+//        }
+//        
+//    },
+//     {
+//        "id": null,
+//        "housingStatusId": 2,
+//        "monthlyRent": 4545.0,
+//        "fromDate": "2021-10-01T00:00:00",
+//        "toDate": "2021-10-08T00:00:00",
+//        "addressModel": {
+//            "street": "6 Vingelodden",
+//            "unit": "66",
+//            "city": "København",
+//            "stateId": 0,
+//            "zipCode": "2200",
+//            "countryId": 60,
+//            "countryName": "Denmark",
+//            "stateName": "None",
+//            "countyId": null,
+//            "countyName": null
+//        }
+//        
+//    }
+//],
+
+
+//{
+//    "reserveEverActivated": true,
+//    "militaryAffiliationId": 3
+//},
+//{
+//    "militaryAffiliationId": 1
+//},
+//{
+//    "militaryAffiliationId": 2
+//},
+//{
+//    "expirationDateUtc": "2021-10-15T00:00:00",
+//    "militaryAffiliationId": 4
+//}

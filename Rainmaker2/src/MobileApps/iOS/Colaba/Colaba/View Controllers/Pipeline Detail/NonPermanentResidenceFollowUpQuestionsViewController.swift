@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol NonPermanentResidenceFollowUpQuestionsViewControllerDelegate: AnyObject {
+    func setResidencyStatus(citizenship: BorrowerCitizenship)
+}
+
 class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     //MARK:- Outlets and Properties
@@ -24,6 +28,8 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     var visaStatusArray = [DropDownModel]()
     var selectedCitizenShip = BorrowerCitizenship()
     var borrowerName = ""
+    
+    weak var delegate: NonPermanentResidenceFollowUpQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,14 +101,8 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (txtfieldVisaStatus.text != ""){
-                if (txtfieldVisaStatus.text == "Other" && txtViewStatusDetail.textView.text != ""){
-                    self.dismissVC()
-                }
-                else if (txtfieldVisaStatus.text != "Other"){
-                    self.dismissVC()
-                }
-            }
+            saveResidencyStatus()
+            self.dismissVC()
         }
     }
     
@@ -112,6 +112,15 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
             isValidate = validateTextView() && isValidate
         }
         return isValidate
+    }
+    
+    func saveResidencyStatus(){
+        selectedCitizenShip.residencyTypeId = 3
+        selectedCitizenShip.residencyStatusId = visaStatusArray.filter({$0.optionName.localizedCaseInsensitiveContains(txtfieldVisaStatus.text!)}).first!.optionId
+        if (txtfieldVisaStatus.text == "Other"){
+            selectedCitizenShip.residencyStatusExplanation = txtViewStatusDetail.textView.text!
+        }
+        self.delegate?.setResidencyStatus(citizenship: selectedCitizenShip)
     }
 }
 
