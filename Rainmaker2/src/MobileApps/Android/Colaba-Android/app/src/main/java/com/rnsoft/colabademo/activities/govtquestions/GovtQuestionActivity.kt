@@ -50,7 +50,8 @@ class GovtQuestionActivity : BaseActivity() {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerTabList != null && borrowerOwnTypeList != null) {
                         borrowerApplicationViewModel.getGovernmentQuestionsList(authToken, loanApplicationId!!, borrowerOwnTypeList!!, borrowerTabList!!)
-                        Timber.e("Government service loaded...Loading DemoGraphic...")
+                        Timber.e("Government service loaded...Loading DemoGraphic...",loanApplicationId!!, borrowerOwnTypeList!!.get(0), borrowerTabList!!.get(0))
+                        //Timber.e("Government service loaded...Loading DemoGraphic...",loanApplicationId!!, borrowerOwnTypeList!!.get(1), borrowerTabList!!.get(1))
                         borrowerApplicationViewModel.getDemoGraphicInfoList(authToken, loanApplicationId!!, borrowerTabList!!)
                     }
                 }

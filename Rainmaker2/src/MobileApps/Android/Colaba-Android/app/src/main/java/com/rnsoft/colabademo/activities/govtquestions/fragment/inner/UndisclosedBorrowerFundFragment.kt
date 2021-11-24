@@ -41,7 +41,6 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
-
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
 
@@ -94,10 +93,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             }
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(
-                        authToken,
-                        updateGovernmentQuestionByBorrowerId
-                    )
+                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
                     var detailTitle =  binding.edDetails.text.toString()
                     if(detailTitle.isEmpty() || detailTitle.isBlank())
                         detailTitle = ""

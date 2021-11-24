@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
@@ -160,6 +160,36 @@ class ChildSupportFragment:BaseFragment() {
             val fieldsValidated = checkEmptyFields()
             if(fieldsValidated) {
                 clearFocusFromFields()
+                val childAnswerList:ArrayList<ChildAnswerData> =  ArrayList()
+                if(binding.childSupportCheckBox.isChecked){
+                    childAnswerList.add(ChildAnswerData(
+                        liabilityName = binding.childSupportCheckBox.text.toString(),
+                        name =  binding.childSupportCheckBox.text.toString(),
+                        remainingMonth = binding.paymentRemainingTextView.text.toString(),
+                        monthlyPayment = Common.removeCommas(binding.monthlyPaymentEditText.text.toString()),
+                        liabilityTypeId = binding.paymentReceiptEditText.text.toString()
+                    ))
+                }
+                if(binding.separateMaintenanceCheckBox.isChecked){
+                    childAnswerList.add(ChildAnswerData(
+                        liabilityName =  binding.separateMaintenanceCheckBox.text.toString(),
+                        name = binding.separateMaintenanceCheckBox.text.toString(),
+                        remainingMonth = binding.separateMaintenancePaymentRemainingTextView.text.toString(),
+                        monthlyPayment = Common.removeCommas(binding.separateMonthlyPaymentEditText.text.toString()),
+                        liabilityTypeId = binding.separatePaymentReceiptEditText.text.toString()
+                    ))
+                }
+                if(binding.alimonyCheckBox.isChecked){
+                    childAnswerList.add(ChildAnswerData(
+                        liabilityName = binding.alimonyCheckBox.text.toString(),
+                        name =binding.alimonyCheckBox.text.toString(),
+                        remainingMonth = binding.alimonyPaymentRemainingTextView.text.toString(),
+                        monthlyPayment =  binding.alimonyMonthlyPaymentEditText.text.toString(),
+                        liabilityTypeId = binding.alimonyPaymentReceiptEditText.text.toString()
+                    ))
+                }
+
+                EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList))
                 findNavController().popBackStack()
             }
             else
@@ -182,6 +212,14 @@ class ChildSupportFragment:BaseFragment() {
 
         fillGlobalData()
     }
+
+    data class InnerBoxType(
+        val categoryName:String ,
+        val paymentRemaining: Int,
+        val monthlyPayment: Double,
+        val paymentRecipient: String)
+
+
 
     private fun fillGlobalData(){
             if(childGlobalList.size>0){
