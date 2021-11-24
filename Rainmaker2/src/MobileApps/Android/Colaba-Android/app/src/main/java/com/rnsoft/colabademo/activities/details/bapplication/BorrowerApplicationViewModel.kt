@@ -10,7 +10,6 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
-import kotlin.coroutines.CoroutineContext
 
 @HiltViewModel
 class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: BorrowerApplicationRepo) : ViewModel() {
@@ -161,9 +160,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
 
-    suspend fun addOrUpdateGovernmentQuestions(token:String, addUpdateQuestionsParams:AddUpdateQuestionsParams ) {
+    suspend fun addOrUpdateGovernmentQuestions(token:String, questionParams:GovernmentParams ) {
         viewModelScope.launch (Dispatchers.IO) {
-            val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  addUpdateQuestionsParams = addUpdateQuestionsParams)
+            val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  questionParams = questionParams)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
                     _governmentAddUpdateDataResponse.value = responseResult.data

@@ -5,8 +5,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
-import com.rnsoft.colabademo.*
-import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
@@ -18,7 +16,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
     lateinit var sharedPreferences: SharedPreferences
 
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
-    protected var updateGovernmentQuestionByBorrowerId:AddUpdateQuestionsParams? = null
+    protected var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     protected var questionId:Int = 0
 
     protected fun fillWithData(detailTextView:TextInputEditText){
@@ -34,7 +32,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
     }
 
 
-    protected fun updateGovernmentAndSaveData(getDetailString:String) {
+    protected fun updateGovernmentAndSaveData(getDetailString:String , govtTitleString:String = "Detail" ) {
 
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
             for (item in updateGovernmentQuestionByBorrowerId.Questions) {
@@ -49,7 +47,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
                         authToken,
                         updateGovernmentQuestionByBorrowerId
                     )
-                    EventBus.getDefault().post(GovtScreenUpdateEvent("Detail", getDetailString))
+                    EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString))
                     findNavController().popBackStack()
                 }
             }

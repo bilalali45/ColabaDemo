@@ -171,10 +171,10 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     }
 
 
-    suspend fun addOrUpdateGovernmentQuestions(token:String, addUpdateQuestionsParams:AddUpdateQuestionsParams):Result<GovernmentAddUpdateDataResponse>{
+    suspend fun addOrUpdateGovernmentQuestions(token:String, questionParams:GovernmentParams):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  addUpdateQuestionsParams )
+            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  questionParams )
             Timber.e("updateGovernmentQuestions - $response")
             Result.Success(response)
         } catch (e: Throwable) {

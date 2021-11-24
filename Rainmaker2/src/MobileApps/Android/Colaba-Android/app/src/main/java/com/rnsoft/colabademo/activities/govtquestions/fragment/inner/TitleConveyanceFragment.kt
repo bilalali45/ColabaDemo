@@ -36,4 +36,6 @@ class TitleConveyanceFragment:GovtDetailBaseFragment() {
             updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }
     }
+
+
 }

@@ -28,6 +28,7 @@ import com.google.gson.Gson
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
+import com.rnsoft.colabademo.utils.Common
 import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
@@ -96,7 +97,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         variableDemoGraphicData.ethnicity = variableEthnicityList
                         borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
                     } else {
-                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, addUpdateQuestionsParams)
+                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
                     }
                     EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
                     findNavController().popBackStack()
@@ -110,7 +111,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
 
-    private var addUpdateQuestionsParams = AddUpdateQuestionsParams()
+    private var governmentParams = GovernmentParams()
+
+    private var saveGovtQuestionForDetailAnswer:ArrayList<QuestionData>? = null
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -132,15 +135,15 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     }
 
                                     item.passedBorrowerId?.let { passedBorrowerId ->
-                                        addUpdateQuestionsParams =
-                                            AddUpdateQuestionsParams(
+                                        governmentParams =
+                                            GovernmentParams(
                                                 passedBorrowerId, nonNullLoanApplicationId,
                                                 questionDataList
                                             )
                                         Timber.e(
                                             "TingoPingo = ",
-                                            addUpdateQuestionsParams.BorrowerId,
-                                            addUpdateQuestionsParams.toString()
+                                            governmentParams.BorrowerId,
+                                            governmentParams.toString()
                                         )
                                         //udateGovernmentQuestionsList.add(test)
                                     }
@@ -153,21 +156,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 }
 
 
-                /*
-                val governmentQuestionActivity = (activity as? GovtQuestionActivity)
-                governmentQuestionActivity?.let { governmentQuestionActivity ->
-                    for (item in governmentQuestionsModelClassList) {
-                        item.questionData?.let { questionDataList ->
-                            item.passedBorrowerId?.let { passedBorrowerId ->
-                                val test = UpdateGovernmentQuestions(passedBorrowerId, governmentQuestionActivity.loanApplicationId.toString() , questionDataList)
-                                 udateGovernmentQuestionsList.add(test)
-                            }
-                        }
-                    }
-                }
-                 */
-
-
                 selectedGovernmentQuestionModel?.let{ selectedGovernmentQuestionModel->
 
                     val govtQuestionActivity = (activity as GovtQuestionActivity)
@@ -178,6 +166,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     ownerShipGlobalData = arrayListOf()
 
                     selectedGovernmentQuestionModel.questionData?.let { questionData ->
+                        saveGovtQuestionForDetailAnswer = questionData
+
                         for (qData in questionData) {
                             lastQData = qData
                             qData.headerText?.let { tabTitle ->
@@ -285,40 +275,40 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                             }
                                         }
                                     }
-                                    else
-                                        if (parentQuestionId == childConstraintLayout.id) {
-                                        Timber.e("childConstraintLayout " + qData.question)
-                                        Timber.e(qData.answerDetail.toString())
-                                    }
-                                    else
-                                        if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
-                                        Timber.e("ownerShipConstraintLayout " + qData.question)
-                                        Timber.e(qData.answerDetail.toString())
-
-                                        //if (ownerShip) { ownerShip = false
+                                else
+                                if (parentQuestionId == childConstraintLayout.id) {
+                                    Timber.e("childConstraintLayout " + qData.question)
+                                    Timber.e(qData.answerDetail.toString())
+                                }
+                                else
+                                if (parentQuestionId == ownerShipConstraintLayout.id && qData.answer != null && !qData.answer.equals("No", true)) {
+                                    Timber.e("ownerShipConstraintLayout " + qData.question)
+                                    Timber.e(qData.answerDetail.toString())
+                                    ownerShipConstraintLayout.detail_title.text = qData.question
+                                    ownerShipConstraintLayout.detail_text.text = qData.answer
+                                    ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                    ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                    ownerShipGlobalData.add(qData.answer!!)
+                                    ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                }
+                                else
+                                if (parentQuestionId == undisclosedLayout.id) {
+                                    qData.answer?.let { answer->
+                                        if (answer.isNotEmpty() && answer.isNotBlank()) {
+                                            Timber.e("ownerShipConstraintLayout " + qData.question)
+                                            Timber.e(qData.answerDetail.toString())
                                             ownerShipConstraintLayout.detail_title.text = qData.question
-                                            ownerShipConstraintLayout.detail_text.text = qData.answer
-                                            ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                            ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                            ownerShipGlobalData.add(qData.answer!!)
+                                            ownerShipConstraintLayout.detail_text.text = answer
+
+                                            //ownerShipGlobalData.add(qData.answer!!)
                                             ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                                            /*
-
-                                            }
-                                            else {
-                                                ownerShipConstraintLayout.detail_title2.text = qData.question
-                                                ownerShipConstraintLayout.detail_text2.text = qData.answer
-                                                ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
-                                                ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-                                                ownerShipGlobalData.add(qData.answer!!)
-                                                ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
-                                            }
-
-                                             */
-
+                                        }
                                     }
-                                    else
-                                        Timber.e("nothing")
+                                    ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                    ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                }
+                                else
+                                    Timber.e("nothing")
 
                                 }
                             }
@@ -363,6 +353,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private lateinit var ownerShipConstraintLayout:ConstraintLayout
     private lateinit var childConstraintLayout:ConstraintLayout
+    private lateinit var undisclosedLayout:ConstraintLayout
     private lateinit var bankruptcyConstraintLayout:ConstraintLayout
     private lateinit var demoGraphicConstraintLayout:ConstraintLayout
 
@@ -383,6 +374,18 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             ownerShipConstraintLayout = contentCell
             questionData.id?.let {
                 ownerShipConstraintLayout.id = it
+                contentCell.id = it
+            }
+        }
+        else
+        if(questionData.headerText == AppConstant.UndisclosedBorrowerFunds) {
+            contentCell = layoutInflater.inflate(R.layout.common_govt_content_layout, null) as ConstraintLayout
+            contentCell.detail_title.text = UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
+            contentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+
+            undisclosedLayout = contentCell
+            questionData.id?.let {
+                undisclosedLayout.id = it
                 contentCell.id = it
             }
         }
@@ -445,9 +448,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle , questionId)
             }
-            contentCell.govt_detail_box2.setOnClickListener {
-                clickedContentCell = contentCell
-                navigateToInnerScreen(headerTitle , questionId) }
         }
 
         if(childSupport){
@@ -635,7 +635,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     private fun updateGovernmentData(testData:QuestionData){
-        for (item in addUpdateQuestionsParams.Questions) {
+        for (item in governmentParams.Questions) {
             if(item.id == testData.id){
                 item.answer = testData.answer
             }
@@ -645,7 +645,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
-        bundle.putParcelable(AppConstant.addUpdateQuestionsParams , addUpdateQuestionsParams)
+        bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
@@ -1188,6 +1188,38 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         else
             clickedContentCell.govt_detail_box.visibility = View.INVISIBLE
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateUndisclosedBorrowerFunds(borrowerFundUpdateEvent: UndisclosedBorrowerFundUpdateEvent) {
+        clickedContentCell.govt_detail_box.detail_title.text =  UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
+        clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+        clickedContentCell.govt_detail_box.detail_text.text = "$".plus(Common.addNumberFormat(borrowerFundUpdateEvent.detailDescription.toDouble()))
+        clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+        clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+
+        governmentParams.Questions.let { questions->
+            for (question in questions) {
+                question.parentQuestionId?.let { parentQuestionId ->
+                    if (parentQuestionId == undisclosedLayout.id) {
+                        question.answer = borrowerFundUpdateEvent.detailDescription
+                        question.answerDetail = borrowerFundUpdateEvent.detailTitle
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateChildSupport(updateEvent: ChildSupportUpdateEvent) {
+    }
+
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateBankruptcy(updateEvent: BankruptcyUpdateEvent) {
+
+    }
+
 
     private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {
         val newList = Gson().fromJson(s, clazz)!!

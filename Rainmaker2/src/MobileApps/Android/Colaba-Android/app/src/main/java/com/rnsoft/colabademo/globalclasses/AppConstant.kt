@@ -187,6 +187,7 @@ object AppConstant {
 
         const val  ownershipConstantValue = "Ownership Interest in Property"
         const val  childConstantValue = "Child Support, Alimony, etc."
+        const val  UndisclosedBorrowerFunds = "Undisclosed Borrowered Funds"
         const val  Bankruptcy = "Bankruptcy"
         const val demographicInformation = "Demographic Information"
 
