@@ -157,7 +157,7 @@ class RefinanceLoanInfoViewController: BaseViewController {
                       "loanPurposeId": loanInfo.loanPurposeId,
                       "loanGoalId": loanGoalId,
                       "propertyValue": loanInfo.propertyValue,
-                      "downPayment": loanInfo.downPayment,
+                      "downPayment": 0,
                       "cashOutAmount": cashOutAmount,
                       "loanPayment": loanPayment] as [String: Any]
         

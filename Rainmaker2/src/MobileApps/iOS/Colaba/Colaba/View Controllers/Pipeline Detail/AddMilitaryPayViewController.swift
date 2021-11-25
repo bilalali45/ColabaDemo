@@ -314,5 +314,26 @@ extension AddMilitaryPayViewController: CurrentEmployerAddressViewControllerDele
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            militaryDetail.address.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            militaryDetail.address.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            militaryDetail.address.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            militaryDetail.address.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            militaryDetail.address.countyName = countyName
+        }
+        militaryDetail.address.street = street
+        militaryDetail.address.unit = unit
+        militaryDetail.address.city = city
+        militaryDetail.address.stateName = stateName
+        militaryDetail.address.zipCode = zipCode
     }
 }

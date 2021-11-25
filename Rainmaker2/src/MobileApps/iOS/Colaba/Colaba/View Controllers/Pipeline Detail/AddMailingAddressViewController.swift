@@ -9,6 +9,10 @@ import UIKit
 import Material
 import GooglePlaces
 
+protocol AddMailingAddressViewControllerDelegate: AnyObject {
+    func saveCurrentAddressWithDifferentMailingAddress(address: BorrowerAddress)
+}
+
 class AddMailingAddressViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -35,13 +39,18 @@ class AddMailingAddressViewController: BaseViewController {
     var placesData=[GMSAutocompletePrediction]()
     var fetcher: GMSAutocompleteFetcher?
     var selectedAddress = BorrowerAddress()
+    var countriesArray = [CountriesModel]()
+    var statesArray = [StatesModel]()
+    var countiesArray = [CountiesModel]()
     var borrowerFirstName = ""
     var borrowerLastName = ""
+    weak var delegate: AddMailingAddressViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setTextFields()
         setPlacePickerTextField()
+        getCountriesDropDown()
         lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
         setAddressData()
     }
@@ -59,11 +68,11 @@ class AddMailingAddressViewController: BaseViewController {
         
         ///County Text Field
         txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        txtfieldCounty.type = .editableDropdown
         
         ///State Text Field
         txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
-        txtfieldState.setDropDownDataSource(kUSAStatesArray)
         
         ///Zip Code Text Field
         txtfieldZipCode.setTextField(placeholder: "Zip Code", controller: self, validationType: .required, keyboardType: .numberPad)
@@ -71,12 +80,11 @@ class AddMailingAddressViewController: BaseViewController {
         ///Country Text Field
         txtfieldCountry.setTextField(placeholder: "Country", controller: self, validationType: .required)
         txtfieldCountry.type = .editableDropdown
-        txtfieldCountry.setDropDownDataSource(kCountryListArray)
     }
     
     func setAddressData(){
         if (selectedAddress.id > 0){
-            let address = selectedAddress.isMailingAddressDifferent ? selectedAddress.mailingAddressModel : selectedAddress.addressModel
+            let address = selectedAddress.mailingAddressModel
             showAllFields()
             txtfieldHomeAddress.text = address.street
             txtfieldStreetAddress.setTextField(text: address.street)
@@ -219,6 +227,9 @@ class AddMailingAddressViewController: BaseViewController {
     }
     
     @objc func goBackAfterDelete(){
+        selectedAddress.isMailingAddressDifferent = false
+        selectedAddress.mailingAddressModel = AddressModel()
+        self.delegate?.saveCurrentAddressWithDifferentMailingAddress(address: selectedAddress)
         self.goBack()
     }
     
@@ -235,10 +246,7 @@ class AddMailingAddressViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-                self.goBack()
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
-            }
+            saveMailingAddressModel()
         }
     }
     
@@ -250,6 +258,124 @@ class AddMailingAddressViewController: BaseViewController {
         isValidate = txtfieldZipCode.validate() && isValidate
         isValidate = txtfieldCountry.validate() && isValidate
         return isValidate
+    }
+    
+    func saveMailingAddressModel(){
+        
+        var stateId = 0
+        var countryId = 0
+        var countyId = 0
+        
+        if let selectedState = statesArray.filter({$0.name == txtfieldState.text!}).first{
+            stateId = selectedState.id
+        }
+        
+        if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text!}).first{
+            countryId = selectedCountry.id
+        }
+        
+        if let selectedCounty = countiesArray.filter({$0.name == txtfieldCounty.text!}).first{
+            countyId = selectedCounty.id
+        }
+        
+        selectedAddress.mailingAddressModel.street = txtfieldStreetAddress.text!
+        selectedAddress.mailingAddressModel.unit = txtfieldUnitNo.text!
+        selectedAddress.mailingAddressModel.city = txtfieldCity.text!
+        selectedAddress.mailingAddressModel.stateId = stateId
+        selectedAddress.mailingAddressModel.zipCode = txtfieldZipCode.text!
+        selectedAddress.mailingAddressModel.countryId = countryId
+        selectedAddress.mailingAddressModel.countryName = txtfieldCountry.text!
+        selectedAddress.mailingAddressModel.stateName = txtfieldState.text!
+        selectedAddress.mailingAddressModel.countyId = countyId
+        selectedAddress.mailingAddressModel.countyName = txtfieldCounty.text!
+        self.delegate?.saveCurrentAddressWithDifferentMailingAddress(address: selectedAddress)
+        
+        self.goBack()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
+    }
+    
+    //MARK:- API's
+    
+    func getCountriesDropDown(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCountries, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let countries = result.arrayValue
+                    for country in countries{
+                        let model = CountriesModel()
+                        model.updateModelWithJSON(json: country)
+                        self.countriesArray.append(model)
+                    }
+                    self.txtfieldCountry.setDropDownDataSource(self.countriesArray.map{$0.name})
+                    self.getStatesDropDown()
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func getStatesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllStates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                if (status == .success){
+                    let statesArray = result.arrayValue
+                    for state in statesArray{
+                        let model = StatesModel()
+                        model.updateModelWithJSON(json: state)
+                        self.statesArray.append(model)
+                    }
+                    self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                    self.getCountiesDropDown()
+                    
+                }
+                else{
+                    Utility.showOrHideLoader(shouldShow: false)
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    func getCountiesDropDown(){
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getAllCounties, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let countiesArray = result.arrayValue
+                    for county in countiesArray{
+                        let model = CountiesModel()
+                        model.updateModelWithJSON(json: county)
+                        self.countiesArray.append(model)
+                    }
+                    self.txtfieldCounty.setDropDownDataSource(self.countiesArray.map{$0.name})
+                    
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        self.goBack()
+                    }
+                }
+            }
+            
+        }
     }
 }
 

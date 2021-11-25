@@ -737,6 +737,27 @@ extension RefinanceSubjectPropertyViewController: SubjectPropertyAddressViewCont
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            subjectPropertyDetail.address?.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            subjectPropertyDetail.address?.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            subjectPropertyDetail.address?.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            subjectPropertyDetail.address?.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            subjectPropertyDetail.address?.countyName = countyName
+        }
+        subjectPropertyDetail.address?.street = street
+        subjectPropertyDetail.address?.unit = unit
+        subjectPropertyDetail.address?.city = city
+        subjectPropertyDetail.address?.stateName = stateName
+        subjectPropertyDetail.address?.zipCode = zipCode
     }
 }
 

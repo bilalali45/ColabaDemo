@@ -684,6 +684,27 @@ extension RealEstateViewController: CurrentEmployerAddressViewControllerDelegate
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            realEstateDetail.address?.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            realEstateDetail.address?.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            realEstateDetail.address?.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            realEstateDetail.address?.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            realEstateDetail.address?.countyName = countyName
+        }
+        realEstateDetail.address?.street = street
+        realEstateDetail.address?.unit = unit
+        realEstateDetail.address?.city = city
+        realEstateDetail.address?.stateName = stateName
+        realEstateDetail.address?.zipCode = zipCode
     }
 }
 

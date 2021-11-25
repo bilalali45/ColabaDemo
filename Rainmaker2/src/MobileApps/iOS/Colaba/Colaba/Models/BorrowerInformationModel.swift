@@ -99,7 +99,7 @@ class BorrowerAddress : NSObject{
     var toDate: String = ""
     var housingStatusId: Int = 0
     var id: Int = 0
-    var isMailingAddressDifferent : Bool!
+    var isMailingAddressDifferent : Bool = false
     var loanApplicationId: Int = 0
     var mailingAddressModel = AddressModel()
     var monthlyRent: Int = 0

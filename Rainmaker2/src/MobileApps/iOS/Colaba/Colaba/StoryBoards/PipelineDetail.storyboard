@@ -930,14 +930,14 @@
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gkc-dp-5FN">
                                                         <rect key="frame" x="20" y="233.5" width="335" height="104"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Was Richard Glenn Randall ever activated during their tour of duty?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IN-G7-JDA">
-                                                                <rect key="frame" x="20" y="20" width="295" height="31"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Was he ever activated during their tour of duty?" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9IN-G7-JDA">
+                                                                <rect key="frame" x="20" y="20" width="295" height="15.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xh-f2-qL9">
-                                                                <rect key="frame" x="20" y="66" width="25.5" height="18"/>
+                                                                <rect key="frame" x="20" y="50.5" width="25.5" height="18"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -2929,8 +2929,26 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="a2N-bw-6ci">
+                                                <rect key="frame" x="20" y="237" width="335" height="18"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="CheckBoxUnSelected" translatesAutoresizingMaskIntoConstraints="NO" id="kUh-W0-qy9">
+                                                        <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="18" id="LkT-gZ-ddi"/>
+                                                            <constraint firstAttribute="width" constant="18" id="Utv-F6-TfB"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mailing Address is different from Current Address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hg7-s7-jkx">
+                                                        <rect key="frame" x="23" y="0.0" width="312" height="18"/>
+                                                        <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
+                                                        <color key="textColor" name="ButtonBlueColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3EI-hs-uPr">
-                                                <rect key="frame" x="20" y="237" width="235.5" height="28"/>
+                                                <rect key="frame" x="20" y="285" width="235.5" height="28"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AddMailingAddress" translatesAutoresizingMaskIntoConstraints="NO" id="oQ1-aS-0Yn">
                                                         <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
@@ -2944,7 +2962,7 @@
                                                 </subviews>
                                             </stackView>
                                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4jW-pU-rUi">
-                                                <rect key="frame" x="0.0" y="236" width="375" height="110"/>
+                                                <rect key="frame" x="0.0" y="283" width="375" height="110"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="110" id="w9T-yf-CFJ"/>
@@ -2971,12 +2989,13 @@
                                             <constraint firstAttribute="height" constant="350" id="Gai-cT-61w"/>
                                             <constraint firstAttribute="trailing" secondItem="BFZ-Yq-6vr" secondAttribute="trailing" constant="20" id="JOu-33-VlP"/>
                                             <constraint firstItem="XGh-lE-Cpf" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="Jov-J3-AMs"/>
-                                            <constraint firstItem="3EI-hs-uPr" firstAttribute="top" secondItem="bnJ-7H-nhK" secondAttribute="bottom" constant="30" id="LaU-TG-Adx"/>
                                             <constraint firstAttribute="trailing" secondItem="Vio-JK-MC0" secondAttribute="trailing" constant="20" id="N2g-gQ-TLZ"/>
                                             <constraint firstItem="CnP-gC-rJM" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="OHv-sd-AM6"/>
+                                            <constraint firstAttribute="trailing" secondItem="a2N-bw-6ci" secondAttribute="trailing" constant="20" id="ORc-Gh-BXp"/>
                                             <constraint firstItem="Z8i-Mv-0O8" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="QHQ-WA-qrb"/>
                                             <constraint firstItem="bnJ-7H-nhK" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="RlQ-Ah-sL8"/>
                                             <constraint firstItem="sr4-2W-izY" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="SXN-gu-vHo"/>
+                                            <constraint firstItem="a2N-bw-6ci" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="T6p-Qu-447"/>
                                             <constraint firstItem="Vio-JK-MC0" firstAttribute="top" secondItem="XGh-lE-Cpf" secondAttribute="bottom" constant="30" id="TU2-UP-h81"/>
                                             <constraint firstAttribute="trailing" secondItem="bnJ-7H-nhK" secondAttribute="trailing" constant="20" id="V3b-vD-1KB"/>
                                             <constraint firstAttribute="trailing" secondItem="XGh-lE-Cpf" secondAttribute="trailing" constant="20" id="VW9-o4-2bg"/>
@@ -2991,13 +3010,15 @@
                                             <constraint firstItem="28G-17-6tf" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="hKK-43-7Ra"/>
                                             <constraint firstItem="28G-17-6tf" firstAttribute="top" secondItem="BFZ-Yq-6vr" secondAttribute="bottom" constant="30" id="hn0-ja-Jgo"/>
                                             <constraint firstItem="CnP-gC-rJM" firstAttribute="top" secondItem="sr4-2W-izY" secondAttribute="bottom" constant="30" id="iUo-Cs-8Kt"/>
+                                            <constraint firstItem="3EI-hs-uPr" firstAttribute="top" secondItem="a2N-bw-6ci" secondAttribute="bottom" constant="30" id="jJO-He-0vD"/>
+                                            <constraint firstItem="a2N-bw-6ci" firstAttribute="top" secondItem="bnJ-7H-nhK" secondAttribute="bottom" constant="30" id="nzf-aF-apk"/>
                                             <constraint firstAttribute="trailing" secondItem="sr4-2W-izY" secondAttribute="trailing" constant="20" id="pKH-lG-gIs"/>
                                             <constraint firstItem="hU7-jD-Rnc" firstAttribute="top" secondItem="eNx-3q-TmC" secondAttribute="top" constant="34" id="qcr-iN-rVV"/>
                                             <constraint firstAttribute="trailing" secondItem="Z8i-Mv-0O8" secondAttribute="trailing" constant="20" id="qdX-7B-AEf"/>
                                             <constraint firstItem="Z8i-Mv-0O8" firstAttribute="top" secondItem="XGh-lE-Cpf" secondAttribute="bottom" constant="30" id="raD-tT-cuM"/>
                                             <constraint firstItem="bnJ-7H-nhK" firstAttribute="top" secondItem="MSm-Ao-wCk" secondAttribute="bottom" id="vrD-5k-qaZ"/>
+                                            <constraint firstItem="4jW-pU-rUi" firstAttribute="top" secondItem="a2N-bw-6ci" secondAttribute="bottom" constant="28" id="w6G-L2-na5"/>
                                             <constraint firstItem="BFZ-Yq-6vr" firstAttribute="top" secondItem="21W-Ph-iWb" secondAttribute="bottom" constant="30" id="wHd-wh-11n"/>
-                                            <constraint firstItem="4jW-pU-rUi" firstAttribute="top" secondItem="bnJ-7H-nhK" secondAttribute="bottom" constant="29" id="wR2-ZG-sCv"/>
                                             <constraint firstItem="BFZ-Yq-6vr" firstAttribute="leading" secondItem="eNx-3q-TmC" secondAttribute="leading" constant="20" id="xla-gS-Shh"/>
                                             <constraint firstAttribute="trailing" secondItem="dMH-FV-QvH" secondAttribute="trailing" constant="20" id="zta-tW-0Lo"/>
                                         </constraints>
@@ -3060,8 +3081,10 @@
                         <outlet property="btnDropDown" destination="WDJ-An-HOI" id="2G2-lx-u3f"/>
                         <outlet property="btnSaveChanges" destination="gXg-yg-wbe" id="Eb1-PR-L8j"/>
                         <outlet property="btnSearchTopConstraint" destination="qcr-iN-rVV" id="0pG-Mb-NPw"/>
+                        <outlet property="differentMailingAddressIcon" destination="kUh-W0-qy9" id="AH3-NK-5Sl"/>
                         <outlet property="lblBorrowerName" destination="z8b-U9-WqU" id="0KA-gf-40k"/>
                         <outlet property="lblTopHeading" destination="cLM-pr-PBw" id="cpX-TJ-oW2"/>
+                        <outlet property="mailingAddressDifferentFromCurrentAddressStackView" destination="a2N-bw-6ci" id="F7f-Y6-g3s"/>
                         <outlet property="mainView" destination="eNx-3q-TmC" id="cog-Jf-L0m"/>
                         <outlet property="mainViewHeightConstraint" destination="Gai-cT-61w" id="tjp-mq-OmZ"/>
                         <outlet property="seperatorView" destination="rXK-om-kXg" id="JuI-iJ-0yL"/>
