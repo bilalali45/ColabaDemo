@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol UnmarriedFollowUpQuestionsViewControllerDelegate: AnyObject {
+    func saveUnmarriedStatus(status: MaritalStatus)
+}
+
 class UnmarriedFollowUpQuestionsViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -33,10 +37,13 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     var relationshipTypeArray = [DropDownModel]()
     var statesArray = [StatesModel]()
     var borrowerName = ""
+    var selectedMaritalStatus = MaritalStatus()
+    weak var delegate: UnmarriedFollowUpQuestionsViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        isNonLegalSpouse = selectedMaritalStatus.isInRelationship == true ? 1 : 2
         changeNonLegalSpouseStatus()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
@@ -95,7 +102,6 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         ///State Text Field
         txtfieldState.setTextField(placeholder: "In what state was this relationship formed", controller: self, validationType: .required)
         txtfieldState.type = .editableDropdown
-        txtfieldState.setDropDownDataSource(kUSAStatesArray)
     }
     
     @objc func yesStackViewTapped(){
@@ -115,6 +121,15 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         lblNo.font = isNonLegalSpouse == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         txtfieldTypeOfRelation.isHidden = isNonLegalSpouse != 1
         txtfieldState.isHidden = isNonLegalSpouse != 1
+        
+        if let selectedRelationshipType = relationshipTypeArray.filter({$0.optionId == selectedMaritalStatus.relationshipTypeId}).first{
+            txtfieldTypeOfRelation.setTextField(text: selectedRelationshipType.optionName)
+        }
+        if let selectedState = statesArray.filter({$0.id == selectedMaritalStatus.relationFormedStateId}).first{
+            txtfieldState.setTextField(text: selectedState.name)
+        }
+        txtViewRelationshipDetail.textView.text = selectedMaritalStatus.otherRelationshipExplanation
+        
         if (isNonLegalSpouse == 1){
             relationshipDetailTextViewContainer.isHidden = txtfieldTypeOfRelation.text != "Other"
             txtViewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
@@ -123,6 +138,7 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
             relationshipDetailTextViewContainer.isHidden = true
             txtViewRelationshipDetail.isHidden = true
         }
+        
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -133,17 +149,11 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         
         if isNonLegalSpouse == 1 {
             if validate() {
-                if (txtfieldTypeOfRelation.text != "" && txtfieldState.text != ""){
-                    if (txtfieldTypeOfRelation.text == "Other" && txtViewRelationshipDetail.textView.text != ""){
-                        self.dismissVC()
-                    }
-                    else if (txtfieldTypeOfRelation.text != "Other"){
-                        self.dismissVC()
-                    }
-                }
-            }}
+                saveUnmarriedAbbendum()
+            }
+        }
         else{
-            self.dismissVC()
+            self.saveUnmarriedAbbendum()
         }
     }
     
@@ -154,6 +164,31 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
             isValidate = validateTextView() && isValidate
         }
         return isValidate
+    }
+    
+    func saveUnmarriedAbbendum(){
+        selectedMaritalStatus.isInRelationship = isNonLegalSpouse == 1
+        selectedMaritalStatus.maritalStatusId = 9
+        
+        if (isNonLegalSpouse == 1){
+            
+            var relationshipTypeId = 0
+            var stateId = 0
+            
+            if let selectedRelationship = relationshipTypeArray.filter({$0.optionName == txtfieldTypeOfRelation.text!}).first{
+                relationshipTypeId = selectedRelationship.optionId
+            }
+            
+            if let selectedState = statesArray.filter({$0.name == txtfieldState.text!}).first{
+                stateId = selectedState.id
+            }
+            selectedMaritalStatus.relationshipTypeId = relationshipTypeId
+            selectedMaritalStatus.relationFormedStateId = stateId
+            selectedMaritalStatus.otherRelationshipExplanation = txtViewRelationshipDetail.textView.text!
+            
+        }
+        self.delegate?.saveUnmarriedStatus(status: selectedMaritalStatus)
+        self.dismissVC()
     }
     
     //MARK:- API's
@@ -171,6 +206,9 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
                         self.statesArray.append(model)
                     }
                     self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
+                    if let selectedState = self.statesArray.filter({$0.id == self.selectedMaritalStatus.relationFormedStateId}).first{
+                        self.txtfieldState.setTextField(text: selectedState.name)
+                    }
                 }
                 else{
                     Utility.showOrHideLoader(shouldShow: false)

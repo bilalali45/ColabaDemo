@@ -198,6 +198,9 @@ class BorrowerInformationViewController: BaseViewController {
                 maritalStatus = 1
                 btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
                 lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
+                unmarriedMainView.isHidden = false
+                maritalStatusViewHeightConstraint.constant = 290
+                lblUnmarriedAns.text = borrowerInformationModel.maritalStatus.isInRelationship == true ? "Yes" : "No"
             }
             else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Married")){
                 maritalStatus = 2
@@ -410,10 +413,13 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     @objc func unmarriedTapped(){
-        maritalStatus = 1
-        changeMaritalStatus()
+//        maritalStatus = 1
+//        changeMaritalStatus()
         let vc = Utility.getUnmarriedFollowUpQuestionsVC()
         vc.relationshipTypeArray = self.relationshipTypeArray
+        vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        vc.selectedMaritalStatus = self.borrowerInformationModel.maritalStatus
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -436,8 +442,6 @@ class BorrowerInformationViewController: BaseViewController {
             lblMarried.font = Theme.getRubikRegularFont(size: 14)
             btnSeparated.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
             lblSeparated.font = Theme.getRubikRegularFont(size: 14)
-            unmarriedMainView.isHidden = false
-            maritalStatusViewHeightConstraint.constant = 290
         }
         else if (maritalStatus == 2){
             btnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
@@ -469,6 +473,8 @@ class BorrowerInformationViewController: BaseViewController {
         let vc = Utility.getUnmarriedFollowUpQuestionsVC()
         vc.relationshipTypeArray = self.relationshipTypeArray
         vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+        vc.selectedMaritalStatus = self.borrowerInformationModel.maritalStatus
+        vc.delegate = self
         self.presentVC(vc: vc)
     }
     
@@ -483,8 +489,8 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     @objc func nonPermanentResidentTapped(){
-        citizenshipStatus = 3
-        changeCitizenshipStatus()
+//        citizenshipStatus = 3
+//        changeCitizenshipStatus()
         if let citizenShip = self.citizenshipArray.filter({$0.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")}).first{
             self.getAllVisaStatus(residencyTypeId: citizenShip.optionId, isForAddUpdate: true)
         }
@@ -911,7 +917,7 @@ class BorrowerInformationViewController: BaseViewController {
                         model.updateModelWithJSON(json: option, isForBorrowerInfo: true)
                         self.militaryAffiliationArray.append(model)
                     }
-                    if (self.loanApplicationId > 0){
+                    if (self.borrowerId > 0){
                         self.getBorrowerDetail()
                     }
                     Utility.showOrHideLoader(shouldShow: false)
@@ -968,8 +974,8 @@ class BorrowerInformationViewController: BaseViewController {
                             "cellPhone": cleanString(string: txtfieldCellNumber.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: ""),
                             "ownTypeId": borrowerId == 0 ? 2 : borrowerInformationModel.borrowerBasicDetails.ownTypeId] as [String: Any]
         
-        var maritalStatusId = 0
-        var residencyTypeId = 0
+        var maritalStatusId: Any = NSNull()
+        var residencyTypeId: Any = NSNull()
         var dob = ""
         
         if (maritalStatus == 1){ //Unmarried
@@ -1051,7 +1057,10 @@ class BorrowerInformationViewController: BaseViewController {
             }
         }
         
-        let maritalStatusDetail = ["loanApplicationId": loanApplicationId,
+        var maritalStatusDetail: [String: Any] = [:]
+        
+        if (maritalStatus == 1){
+            maritalStatusDetail = ["loanApplicationId": loanApplicationId,
                                    "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
                                    "maritalStatusId": maritalStatusId,
                                    "firstName": "",
@@ -1060,11 +1069,28 @@ class BorrowerInformationViewController: BaseViewController {
                                    "relationWithPrimaryId": NSNull(),
                                    "spouseBorrowerId": NSNull(),
                                    "spouseMaritalStatusId": NSNull(),
-                                   "isInRelationship": false,
+                                   "isInRelationship": borrowerInformationModel.maritalStatus.isInRelationship,
+                                   "relationFormedStateId": borrowerInformationModel.maritalStatus.isInRelationship == true ? borrowerInformationModel.maritalStatus.relationFormedStateId : NSNull(),
+                                   "relationshipTypeId": borrowerInformationModel.maritalStatus.isInRelationship == true ? borrowerInformationModel.maritalStatus.relationshipTypeId : NSNull(),
+                                   "otherRelationshipExplanation": borrowerInformationModel.maritalStatus.isInRelationship == true ? borrowerInformationModel.maritalStatus.otherRelationshipExplanation : NSNull(),
+                                   "spouseLoanContactId": NSNull()]
+        }
+        else{
+            maritalStatusDetail = ["loanApplicationId": loanApplicationId,
+                                   "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
+                                   "maritalStatusId": maritalStatusId,
+                                   "firstName": "",
+                                   "middleName": "",
+                                   "lastName": "",
+                                   "relationWithPrimaryId": NSNull(),
+                                   "spouseBorrowerId": NSNull(),
+                                   "spouseMaritalStatusId": NSNull(),
+                                   "isInRelationship": NSNull(),
                                    "relationFormedStateId": NSNull(),
                                    "relationshipTypeId": NSNull(),
                                    "otherRelationshipExplanation": NSNull(),
-                                   "spouseLoanContactId": NSNull()] as [String: Any]
+                                   "spouseLoanContactId": NSNull()]
+        }
         
         let citizenshipDetail = ["borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
                                  "loanApplicationId": loanApplicationId,
@@ -1317,6 +1343,17 @@ extension BorrowerInformationViewController: DependentCollectionViewCellDelegate
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
+    }
+}
+
+extension BorrowerInformationViewController: UnmarriedFollowUpQuestionsViewControllerDelegate{
+    func saveUnmarriedStatus(status: MaritalStatus) {
+        maritalStatus = 1
+        borrowerInformationModel.maritalStatus = status
+        unmarriedMainView.isHidden = false
+        maritalStatusViewHeightConstraint.constant = 290
+        lblUnmarriedAns.text = status.isInRelationship == true ? "Yes" : "No"
+        setBorrowerInformation()
     }
 }
 
