@@ -43,7 +43,7 @@
             android:id="@+id/borrower_purpose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/rubik_light"
             android:text="@string/subject_property"
             android:textAllCaps="true"
@@ -214,7 +214,7 @@
                 android:inputType="number"
                 android:paddingStart="0dp"
                 android:singleLine="true"
-                android:textColor="@color/grey_color_two"
+                android:textColor="@color/grey_color_one"
                 android:textSize="@dimen/ed_txt_size_primary_info" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -274,7 +274,7 @@
                 android:layout_marginTop="20dp">
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques_two_yes"
+                    android:id="@+id/radio_wasMortgageTakenYes"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:button="@drawable/radiodraw"
@@ -286,7 +286,7 @@
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_ques_two_no"
+                    android:id="@+id/radio_wasMortgageTakenNo"
                     android:layout_width="wrap_content"
                     android:layout_height="22dp"
                     android:layout_marginTop="18dp"

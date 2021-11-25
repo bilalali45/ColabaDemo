@@ -41,15 +41,12 @@ class BorrowerAddressActivity : BaseActivity() {
             borrowerId = it.getInt(AppConstant.borrowerId)
         }
 
-        loanApplicationId = 5
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
-                if (loanApplicationId != null) {
+                if (loanApplicationId != null && borrowerId !=null) {
                     coroutineScope {
                         binding.loaderInfo.visibility = View.VISIBLE
-                        delay(2000)
-                        viewModel.getBasicBorrowerDetail(authToken,5,5)
+                        viewModel.getBasicBorrowerDetail(authToken,loanApplicationId!!,borrowerId!!)
 
                     }
                 }

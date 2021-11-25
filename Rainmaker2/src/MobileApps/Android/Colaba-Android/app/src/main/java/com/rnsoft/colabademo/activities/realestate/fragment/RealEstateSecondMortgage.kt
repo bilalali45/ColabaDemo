@@ -37,6 +37,7 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
         val title = arguments?.getString(AppConstant.address).toString()
         title.let {
+            if(it != "null")
             binding.borrowerPurpose.setText(title)
         }
 
@@ -132,7 +133,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
     }
 
-
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
@@ -168,7 +168,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                 }
         }
     }
-
 
     private fun setInputFields(){
 

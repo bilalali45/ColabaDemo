@@ -128,7 +128,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                     CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
                 }
                 loanInfo.data?.expectedClosingDate?.let {
-                    val date = AppSetting.getMonthAndYear(it)
+                    val date = AppSetting.getMonthAndYear(it,false)
                     binding.edClosingDate.setText(date)
                     CustomMaterialFields.setColor(binding.layoutClosingDate,R.color.grey_color_two,requireActivity())
                 }

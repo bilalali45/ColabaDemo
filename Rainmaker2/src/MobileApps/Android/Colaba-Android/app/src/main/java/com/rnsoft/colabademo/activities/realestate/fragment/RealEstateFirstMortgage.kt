@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
@@ -21,7 +18,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
-import javax.inject.Inject
+
 
 /**
  * Created by Anita Kiran on 9/9/2021.
@@ -29,7 +26,6 @@ import javax.inject.Inject
 class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     private lateinit var binding : FirstMortgageLayoutBinding
-    //private val viewModel : RealEstateViewModel by activityViewModels()
     var firstMortgageModel= FirstMortgageModel()
 
     override fun onCreateView(
@@ -41,7 +37,8 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
         val title = arguments?.getString(AppConstant.address).toString()
         title.let {
-            binding.borrowerPurpose.setText(title)
+            if(it != "null")
+              binding.borrowerPurpose.setText(title)
         }
 
         binding.backButton.setOnClickListener(this)
@@ -58,14 +55,12 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         getFirstMortgageDetails()
         super.addListeners(binding.root)
 
-
         return binding.root
     }
 
     private fun getFirstMortgageDetails() {
-
         firstMortgageModel = arguments?.getParcelable(AppConstant.firstMortgage)!!
-         firstMortgageModel?.let {
+        firstMortgageModel?.let {
              it.firstMortgagePayment?.let {
                  binding.edFirstMortgagePayment.setText(Math.round(it).toString())
                  CustomMaterialFields.setColor(
@@ -137,8 +132,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                  }
              }
          }
-
-
     }
 
     private fun saveData() {
@@ -168,8 +161,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         findNavController().popBackStack()
 
     }
-
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -243,7 +234,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         binding.edUnpaidBalance.addTextChangedListener(NumberTextFormat(binding.edUnpaidBalance))
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
     }
-
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg

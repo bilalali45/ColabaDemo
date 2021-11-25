@@ -102,18 +102,17 @@ data class RealStateOwn(
 )
 
 data class RealStateAddress(
-    val city: String,
-    val countryId: Int,
-    val countryName: String,
-    val countyId: Int,
-    val countyName: String,
-    val stateId: Int,
-    val stateName: String,
-    val street: String,
-    val unit: String,
-    val zipCode: String
+    val city: String?,
+    val countryId: Int?,
+    val countryName: String?,
+    val countyId: Int?,
+    val countyName: String?,
+    val stateId: Int?,
+    val stateName: String?,
+    val street: String?,
+    val unit: String?,
+    val zipCode: String?
 )
-
 
 data class SubjectProperty(
     @SerializedName("address") val subjectPropertyAddress : SubjectPropertyAddress?,
@@ -125,17 +124,16 @@ data class SubjectProperty(
     val propertyUsageDescription: String
 )
 
-
 data class SubjectPropertyAddress(
-    val city: String,
-    val countryId: Int,
-    val countryName: String,
-    val countyId: String,
-    val countyName: String,
-    val stateId: Int,
-    val stateName: String,
-    val street: String,
-    val unit: String,
-    val zipCode: String
+    val city: String?,
+    val countryId: Int?,
+    val countryName: String?,
+    val countyId: String?,
+    val countyName: String?,
+    val stateId: Int?,
+    val stateName: String?,
+    val street: String?,
+    val unit: String?,
+    val zipCode: String?
 )
 

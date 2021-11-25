@@ -29,6 +29,7 @@ import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.text.DecimalFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -108,120 +109,152 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
          }
     }
 
-
-    private fun getRealEstateDetails(){
+    private fun getRealEstateDetails(counter:Int){
         hideLoader()
-        viewModel.realEstateDetails.observe(viewLifecycleOwner, {
-            if(propertyTypeList.size > 0 && occupancyTypeList.size > 0 && propertyStatusList.size >0) {
-            if(it != null) {
-                //Log.e("Details",""+it.data)
-                it.data?.address?.let {
-                    //binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-                    addressHeading = it.street
-                    realEstateAddress = it
-                    displayAddress(it)
-                } ?: run { showHideAddress(false, true) }
+        if(counter == 3) {
+            viewModel.realEstateDetails.observe(viewLifecycleOwner, {
+                if (propertyTypeList.size > 0 && occupancyTypeList.size > 0 && propertyStatusList.size > 0) {
+                    if (it != null) {
+                        //Log.e("Details",""+it.data)
+                        it.data?.address?.let {
+                            //binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                            addressHeading = it.street
+                            realEstateAddress = it
+                            displayAddress(it)
+                        } ?: run { showHideAddress(false, true) }
 
-                it.data?.rentalIncome?.let {
-                    binding.edRentalIncome.setText(it.toString())
-                    binding.layoutRentalIncome.visibility = View.VISIBLE
-                    CustomMaterialFields.setColor(binding.layoutRentalIncome, R.color.grey_color_two, requireActivity())
-                }
-
-                it.data?.propertyTypeId?.let { propertyId ->
-                    //Log.e("details", "propertyType" + propertyTypeList.size)
-                    for (item in propertyTypeList) {
-                        if (item.id == propertyId) {
-                            binding.tvPropertyType.setText(item.name, false)
-                            CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
-                            break
-                        }
-                    }
-                }
-                // occupancy id
-                it.data?.occupancyTypeId?.let { occupancyId ->
-                    for (item in occupancyTypeList) {
-                        if (item.id == occupancyId) {
-                            binding.tvOccupancyType.setText(item.name, false)
-                            CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
-                            break
-                        }
-                    }
-                }
-                // property Status
-                it.data?.propertyStatus?.let { statusId ->
-                    for (item in propertyStatusList) {
-                        if (item.id == statusId) {
-                            binding.tvPropertyStatus.setText(item.name, false)
-                            CustomMaterialFields.setColor(binding.layoutPropertyStatus, R.color.grey_color_two, requireActivity())
-                            break
-                        }
-                    }
-                }
-
-                // hoa dues
-                it.data?.hoaDues?.let { value ->
-                    binding.edAssociationDues.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutAssociationDues, R.color.grey_color_two, requireActivity())
-                }
-                // property value
-                it.data?.appraisedPropertyValue?.let { value ->
-                    binding.edPropertyValue.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutPropertyValue, R.color.grey_color_two, requireActivity())
-                }
-                // property tax
-                it.data?.propertyTax?.let { value ->
-                    binding.edPropertyTax.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutPropertyTaxes, R.color.grey_color_two, requireActivity())
-                }
-                // home owner insurance
-                it.data?.homeOwnerInsurance?.let { value ->
-                    binding.edHomeownerInsurance.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutHomeownerInsurance, R.color.grey_color_two, requireActivity())
-                }
-                //  flood insurance
-                it.data?.floodInsurance?.let { value ->
-                    binding.edFloodInsurance.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutFloodInsurance,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
-                }
-
-                //Log.e("firstMortage",""+ it.data?.firstMortgageModel)
-                // has first mortgage 'yes'
-                if (it.data?.hasFirstMortgage != null) {
-                    if(it.data.hasFirstMortgage){
-                        binding.rbFirstMortgageYes.isChecked = true
-                        binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-                        binding.layoutSecondMortgage.visibility = View.VISIBLE
-
-                        it.data.firstMortgageModel?.let { model ->
-                            setFirstMorgageDetails(model)
+                        it.data?.rentalIncome?.let {
+                            binding.edRentalIncome.setText(it.toString())
+                            binding.layoutRentalIncome.visibility = View.VISIBLE
+                            CustomMaterialFields.setColor(
+                                binding.layoutRentalIncome,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
                         }
 
-                        // check for second mortgage
-                        it.data?.hasSecondMortgage?.let{ isSecMortgage ->
-                            if(isSecMortgage){
-                                binding.rbSecMortgageYes.isChecked = true
-                                it.data.secondMortgageModel?.let { model ->
-                                    setSecondMortgageDetails(model)
+                        it.data?.propertyTypeId?.let { propertyId ->
+                            //Log.e("details", "propertyType" + propertyTypeList.size)
+                            for (item in propertyTypeList) {
+                                if (item.id == propertyId) {
+                                    binding.tvPropertyType.setText(item.name, false)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutPropertyType,
+                                        R.color.grey_color_two,
+                                        requireActivity()
+                                    )
+                                    break
                                 }
                             }
-                            if(!isSecMortgage) {
-                                binding.rbSecMortgageNo.isChecked = true
+                        }
+                        // occupancy id
+                        it.data?.occupancyTypeId?.let { occupancyId ->
+                            for (item in occupancyTypeList) {
+                                if (item.id == occupancyId) {
+                                    binding.tvOccupancyType.setText(item.name, false)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutOccupancyType,
+                                        R.color.grey_color_two,
+                                        requireActivity()
+                                    )
+                                    break
+                                }
+                            }
+                        }
+                        // property Status
+                        it.data?.propertyStatus?.let { statusId ->
+                            for (item in propertyStatusList) {
+                                if (item.id == statusId) {
+                                    binding.tvPropertyStatus.setText(item.name, false)
+                                    CustomMaterialFields.setColor(
+                                        binding.layoutPropertyStatus,
+                                        R.color.grey_color_two,
+                                        requireActivity()
+                                    )
+                                    break
+                                }
                             }
                         }
 
-                    } else if(!it.data.hasFirstMortgage){
-                        binding.rbFirstMortgageNo.isChecked = true
-                        binding.rbFirstMortgageNo.performClick()
-                    }
-                }
+                        // hoa dues
+                        it.data?.hoaDues?.let { value ->
+                            binding.edAssociationDues.setText(Math.round(value).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutAssociationDues,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        // property value
+                        it.data?.appraisedPropertyValue?.let { value ->
+                            binding.edPropertyValue.setText(Math.round(value).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutPropertyValue,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        // property tax
+                        it.data?.propertyTax?.let { value ->
+                            binding.edPropertyTax.setText(Math.round(value).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutPropertyTaxes,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        // home owner insurance
+                        it.data?.homeOwnerInsurance?.let { value ->
+                            binding.edHomeownerInsurance.setText(Math.round(value).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutHomeownerInsurance,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
+                        //  flood insurance
+                        it.data?.floodInsurance?.let { value ->
+                            binding.edFloodInsurance.setText(Math.round(value).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutFloodInsurance,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
 
-                // has second mortgage 'yes'
-                /*if (it.data?.hasSecondMortgage != null){
+                        //Log.e("firstMortage",""+ it.data?.firstMortgageModel)
+                        // has first mortgage 'yes'
+                        if (it.data?.hasFirstMortgage != null) {
+                            if (it.data.hasFirstMortgage) {
+                                binding.rbFirstMortgageYes.isChecked = true
+                                binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+                                binding.layoutSecondMortgage.visibility = View.VISIBLE
+
+                                it.data.firstMortgageModel?.let { model ->
+                                    setFirstMorgageDetails(model)
+                                }
+
+                                // check for second mortgage
+                                it.data?.hasSecondMortgage?.let { isSecMortgage ->
+                                    if (isSecMortgage) {
+                                        binding.rbSecMortgageYes.isChecked = true
+                                        it.data.secondMortgageModel?.let { model ->
+                                            setSecondMortgageDetails(model)
+                                        }
+                                    }
+                                    if (!isSecMortgage) {
+                                        binding.rbSecMortgageNo.isChecked = true
+                                    }
+                                }
+
+                            } else if (!it.data.hasFirstMortgage) {
+                                binding.rbFirstMortgageNo.isChecked = true
+                                binding.rbFirstMortgageNo.performClick()
+                            }
+                        }
+
+                        // has second mortgage 'yes'
+                        /*if (it.data?.hasSecondMortgage != null){
                     if (it.data.hasSecondMortgage){
                         binding.rbSecMortgageYes.isChecked = true
                         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
@@ -235,38 +268,45 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         binding.rbSecMortgageNo.performClick()
                     }
                 } */
-            }
-            }
-        })
-        hideLoader()
+                    }
+                }
+            })
+            hideLoader()
+        }
 
     }
 
     private fun setFirstMorgageDetails(model: FirstMortgageModel){
+        val formatter = DecimalFormat("#,###,###")
         firstMortgageModel = model
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         model.firstMortgagePayment?.let { payment->
-            binding.firstMortgagePayment.setText("$" + Math.round(payment))
+            val newPayment: String = formatter.format(Math.round(payment))
+            binding.firstMortgagePayment.setText("$" +newPayment)
         } ?: run {
             binding.firstMortgagePayment.setText("$0")
         }
         model.unpaidFirstMortgagePayment?.let{ balance ->
-            binding.firstMortgageBalance.setText("$" + Math.round(balance))
+            val newBalance: String = formatter.format(Math.round(balance))
+            binding.firstMortgageBalance.setText("$" + newBalance)
         } ?: run{
             binding.firstMortgageBalance.setText("$0")
         }
     }
 
     private fun setSecondMortgageDetails(model: SecondMortgageModel){
+        val formatter = DecimalFormat("#,###,###")
         secondMortgageModel = model
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
         model.secondMortgagePayment?.let { payment->
-            binding.secMortgagePayment.setText("$" + Math.round(payment))
+            val newPayment: String = formatter.format(Math.round(payment))
+            binding.secMortgagePayment.setText("$".plus(newPayment))
         } ?: run { binding.secMortgagePayment.setText("$0") }
 
         model.unpaidSecondMortgagePayment?.let { balance->
-            binding.secMortgageBalance.setText("$" + Math.round(balance))
+            val newBalance: String = formatter.format(Math.round(balance))
+            binding.secMortgageBalance.setText("$".plus(newBalance))
         } ?: run {binding.secMortgageBalance.setText("$0")}
 
     }
@@ -457,18 +497,15 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun displayAddress(it: AddressData){
-        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null)
            showHideAddress(false,true)
         else {
             val builder = StringBuilder()
             it.street?.let { builder.append(it).append(" ") }
-            it.unit?.let {
-                builder.append(it).append("\n")
-            }?: run { builder.append("\n")}
-            it.city?.let { builder.append(it).append(",").append(" ") }
+            it.unit?.let { builder.append(it).append(",") } ?: run { builder.append(",")}
+            it.city?.let { builder.append("\n").append(it).append(",").append(" ") } ?: run {builder.append("\n")}
             it.stateName?.let { builder.append(it).append(" ") }
             it.zipCode?.let { builder.append(it) }
-            it.countryName?.let { builder.append(" ").append(it) }
             binding.tvPropertyAddress.text = builder
             showHideAddress(true,false)
         }
@@ -518,19 +555,29 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         setInputFields()
         binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                val fragment = RealEstateSecondMortgage()
+               /* val fragment = RealEstateSecondMortgage()
                 val bundle = Bundle()
                 bundle.putString(AppConstant.address, addressHeading)
                 bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
                 fragment.arguments = bundle
                 findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
+                */
 
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
-                //binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
                 binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
 
             }
+        }
+
+        binding.rbSecMortgageYes.setOnClickListener {
+            val fragment = RealEstateSecondMortgage()
+            val bundle = Bundle()
+            bundle.putString(AppConstant.address, addressHeading)
+            bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
+            fragment.arguments = bundle
+            findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
         }
 
         binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
@@ -550,7 +597,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             fragment.arguments = bundle
             findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
         }
-
     }
 
     override fun onClick(view: View?) {
@@ -602,8 +648,13 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
     private fun setDropDownData() {
         lifecycleScope.launchWhenStarted {
             coroutineScope {
+
+                var realStateCounter:Int = 0
+
                 viewModel.propertyType.observe(viewLifecycleOwner, { properties ->
+
                     if (properties != null && properties.size > 0) {
+                        realStateCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         propertyTypeList = arrayListOf()
                         for (item in properties) {
@@ -622,14 +673,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                             binding.tvPropertyType.showDropDown()
                         }
 
-                        binding.tvPropertyType.onItemClickListener = object :
-                            AdapterView.OnItemClickListener {
-                            override fun onItemClick(
-                                p0: AdapterView<*>?,
-                                p1: View?,
-                                position: Int,
-                                id: Long
-                            ) {
+                        binding.tvPropertyType.onItemClickListener =
+                            AdapterView.OnItemClickListener { p0, p1, position, id ->
                                 CustomMaterialFields.setColor(
                                     binding.layoutPropertyType,
                                     R.color.grey_color_two,
@@ -637,13 +682,15 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                                 )
                                 showHideRental()
                             }
-                        }
+
+                        getRealEstateDetails(realStateCounter)
                     }
                 })
 
                 viewModel.occupancyType.observe(viewLifecycleOwner, { occupancies ->
 
                     if (occupancies != null && occupancies.size > 0) {
+                        realStateCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in occupancies) {
                             itemList.add(item.name)
@@ -665,26 +712,23 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         }
 
                         binding.tvOccupancyType.onItemClickListener =
-                            object : AdapterView.OnItemClickListener {
-                                override fun onItemClick(
-                                    p0: AdapterView<*>?,
-                                    p1: View?,
-                                    position: Int,
-                                    id: Long
-                                ) {
-                                    CustomMaterialFields.setColor(
-                                        binding.layoutOccupancyType,
-                                        R.color.grey_color_two,
-                                        requireActivity()
-                                    )
-                                    showHideRental()
-                                }
+                            AdapterView.OnItemClickListener { p0, p1, position, id ->
+                                CustomMaterialFields.setColor(
+                                    binding.layoutOccupancyType,
+                                    R.color.grey_color_two,
+                                    requireActivity()
+                                )
+                                showHideRental()
                             }
+
+                        getRealEstateDetails(realStateCounter)
                     }
                 })
 
                 viewModel.propertyStatus.observe(viewLifecycleOwner, {
                     if (it != null && it.size > 0) {
+                        realStateCounter++
+
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in it) {
                             itemList.add(item.name)
@@ -703,14 +747,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                         binding.tvPropertyStatus.setOnClickListener {
                             binding.tvPropertyStatus.showDropDown()
                         }
-                        binding.tvPropertyStatus.onItemClickListener = object :
-                            AdapterView.OnItemClickListener {
-                            override fun onItemClick(
-                                p0: AdapterView<*>?,
-                                p1: View?,
-                                position: Int,
-                                id: Long
-                            ) {
+                        binding.tvPropertyStatus.onItemClickListener =
+                            AdapterView.OnItemClickListener { p0, p1, position, id ->
                                 CustomMaterialFields.setColor(
                                     binding.layoutPropertyStatus,
                                     R.color.grey_color_two,
@@ -718,14 +756,20 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                                 )
                                 //showHideRental()
                             }
-                        }
+
+
+                        getRealEstateDetails(realStateCounter)
                     }
                 })
-                delay(1000)
-                getRealEstateDetails()
+
+
+
             }
        }
     }
+
+    //delay(1000)
+    //getRealEstateDetails()
 
     private fun setSpinnerData() {
 
@@ -815,8 +859,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun onFirstMortgageYes(){
         if(binding.rbFirstMortgageYes.isChecked) {
-            //binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-            //binding.layoutSecondMortgage.visibility = View.VISIBLE
+            binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+            binding.layoutSecondMortgage.visibility = View.VISIBLE
             binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
             binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
 
@@ -895,111 +939,5 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         binding.loaderRealEstate.visibility = View.GONE
         requireActivity().finish()
     }
-
-
-    /*  private fun checkValidations() {
-       var isDataEntered : Boolean = false
-       val propertyType: String = binding.tvPropertyType.text.toString().trim()
-       val occupancyType: String = binding.tvOccupancyType.text.toString().trim()
-       val propertyUsage: String = binding.tvPropertyStatus.text.toString().trim()
-       val hoaDues: String = binding.edAssociationDues.text.toString().trim()
-       val proValue: String = binding.edPropertyValue.text.toString().trim()
-       val annualPropertyTax: String = binding.edPropertyTax.text.toString().trim()
-       val homeInsur: String = binding.edHomeownerInsurance.text.toString().trim()
-       val floodIns: String = binding.edFloodInsurance.text.toString().trim()
-       val rentalIncome: String = binding.edRentalIncome.text.toString().trim()
-
-       if (binding.tvOccupancyType.text.toString().isEmpty() || binding.tvOccupancyType.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutOccupancyType, getString(R.string.error_field_required), requireActivity())
-       }
-       if (binding.tvOccupancyType.text.toString().isNotEmpty() || binding.tvOccupancyType.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutOccupancyType, requireActivity())
-       }
-       if (binding.tvPropertyType.text.toString().isEmpty() || binding.tvPropertyType.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutPropertyType, getString(R.string.error_field_required), requireActivity())
-       }
-       if (binding.tvPropertyType.text.toString().isNotEmpty() || binding.tvPropertyType.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutPropertyType, requireActivity())
-       }
-       if (binding.tvPropertyStatus.text.toString().isEmpty() || binding.tvPropertyStatus.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutPropertyStatus, getString(R.string.error_field_required), requireActivity())
-       }
-
-       if (binding.tvPropertyStatus.text.toString().isNotEmpty() || binding.tvPropertyStatus.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutPropertyStatus, requireActivity())
-       }
-
-       //var isRentalVisible: Boolean = false
-       if (binding.layoutRentalIncome.isVisible) {
-          // isRentalVisible = true
-           if (rentalIncome.length == 0) {
-               isDataEntered = false
-               CustomMaterialFields.setError(binding.layoutRentalIncome, getString(R.string.error_field_required), requireActivity())
-           }
-           if (rentalIncome.length > 0) {
-               isDataEntered = true
-               CustomMaterialFields.clearError(binding.layoutRentalIncome, requireActivity())
-           }
-       }
-
-       if(!binding.layoutRentalIncome.isVisible){
-           //isRentalVisible = false
-       }
-
-       if (binding.edAssociationDues.text.toString().isEmpty() || binding.edAssociationDues.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutAssociationDues, getString(R.string.error_field_required), requireActivity())
-       }
-       if (binding.edAssociationDues.text.toString().isNotEmpty() || binding.edAssociationDues.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutAssociationDues, requireActivity())
-       }
-
-       if (binding.edPropertyValue.text.toString().isEmpty() || binding.edPropertyValue.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutPropertyValue, getString(R.string.error_field_required), requireActivity())
-       }
-       if (binding.edPropertyValue.text.toString().isNotEmpty() || binding.edPropertyValue.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutPropertyValue, requireActivity())
-       }
-       if (binding.edPropertyTax.text.toString().isEmpty() || binding.edPropertyTax.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutPropertyTaxes, getString(R.string.error_field_required), requireActivity())
-       }
-       if (binding.edPropertyTax.text.toString().isNotEmpty() || binding.edPropertyTax.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutPropertyTaxes, requireActivity())
-       }
-
-       if (binding.edHomeownerInsurance.text.toString().isEmpty() || binding.edHomeownerInsurance.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutHomeownerInsurance, getString(R.string.error_field_required), requireActivity())
-       }
-
-       if (binding.edHomeownerInsurance.text.toString().isNotEmpty() || binding.edHomeownerInsurance.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutHomeownerInsurance, requireActivity())
-       }
-       if (binding.edFloodInsurance.text.toString().isEmpty() || binding.edFloodInsurance.text.toString().length == 0) {
-           isDataEntered = false
-           CustomMaterialFields.setError(binding.layoutFloodInsurance, getString(R.string.error_field_required), requireActivity())
-       }
-
-       if (binding.edFloodInsurance.text.toString().isNotEmpty() || binding.edFloodInsurance.text.toString().length > 0) {
-           isDataEntered = true
-           CustomMaterialFields.clearError(binding.layoutFloodInsurance, requireActivity())
-       }
-       if(isDataEntered){
-           //sendDataToServer()
-       }
-   } */
-
 
 }
