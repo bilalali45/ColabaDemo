@@ -53,20 +53,23 @@ class IncomeTabFragment : BaseFragment() {
             viewLifecycleOwner,
             Observer { observableSampleContent ->
                 var index = 0
+                var name : String = ""
                 val tabIds: ArrayList<Int> = arrayListOf()
                 for (tab in observableSampleContent) {
                     tab.passedBorrowerId?.let {
                         tabIds.add(it)
                         tab.incomeData?.borrower?.borrowerName?.let { borrowerName ->
                             incomeTabArray[index] = borrowerName
+                            name = borrowerName
                             index++
                         }
                     }
                 }
 
+                binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
-                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
+                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds,name)
                 viewPager.adapter = pageAdapter
                 viewPager.setPageTransformer(null)
                 viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
@@ -107,11 +110,13 @@ class IncomeTabFragment : BaseFragment() {
 
 
         binding.backButton.setOnClickListener {
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
         requireActivity().onBackPressedDispatcher.addCallback {
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
@@ -126,6 +131,7 @@ class IncomeTabFragment : BaseFragment() {
         _binding = null
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -139,7 +145,7 @@ class IncomeTabFragment : BaseFragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onGrandTotalAmountReceived(event: GrandTotalEvent) {
         binding.grandTotalTextView.text = event.totalAmount
-    }
+    } */
 
 }
 

@@ -55,7 +55,11 @@ class RealEstateRepo @Inject constructor(private val dataSource: RealEstateDataS
         return dataSource.getStates(token = token)
     }
 
-    suspend fun sendRealEstateDetails(token: String, data: RealEstateData): Result<AddUpdateDataResponse> {
+    suspend fun sendRealEstateDetails(token: String, data: AddRealEstateResponse): Result<AddUpdateDataResponse> {
         return dataSource.sendRealEstateDetails(token,data)
+    }
+
+    suspend fun deleteRealEstate(token: String, borrowerPropertyId:Int): Result<AddUpdateDataResponse>{
+        return dataSource.deleteRealEstate(token,borrowerPropertyId)
     }
 }

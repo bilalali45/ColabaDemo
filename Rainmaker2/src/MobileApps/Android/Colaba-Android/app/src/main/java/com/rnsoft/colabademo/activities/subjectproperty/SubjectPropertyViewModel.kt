@@ -87,7 +87,7 @@ class SubjectPropertyViewModel @Inject constructor(private val repository: Subje
     suspend fun getCoBorrowerOccupancyStatus(token: String, loanApplicationId: Int) {
         //Timber.e("CoBorrower: " + loanApplicationId + "Auth Token: " + token)
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repository.getCoBorrowerOccupancyStatus(token = token, loanApplicationId = 5
+            val responseResult = repository.getCoBorrowerOccupancyStatus(token = token, loanApplicationId = loanApplicationId
             )
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)

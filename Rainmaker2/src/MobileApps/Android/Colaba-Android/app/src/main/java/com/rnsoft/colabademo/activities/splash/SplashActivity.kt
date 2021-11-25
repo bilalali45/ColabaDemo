@@ -21,8 +21,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
 
         activityScope.launch {
-//            startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
-            startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
+            //startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
+            //  startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
             //redirectToApplicationDetailScreen()
 
 
@@ -43,8 +43,6 @@ class SplashActivity : AppCompatActivity() {
 
 
 
-
-
             finish()
          }
 
@@ -53,7 +51,8 @@ class SplashActivity : AppCompatActivity() {
     private fun redirectToApplicationDetailScreen(){
         val borrowerDetailIntent = Intent(this@SplashActivity, DetailActivity::class.java)
         //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
-        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, 5)
+        borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, 1110 )
+        //borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, 5 )
         borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "loanPurpose")
         borrowerDetailIntent.putExtra(AppConstant.firstName, "Quinee")
         borrowerDetailIntent.putExtra(AppConstant.lastName, "Paidala")

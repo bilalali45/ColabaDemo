@@ -14,7 +14,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getLoanInfo(newToken, loanApplicationId)
-            Log.e("getLoanInfo-", response.toString())
+            //Log.e("getLoanInfo-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -31,7 +31,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerDocuments(newToken, loanApplicationId)
-            Log.e("BorrowerDocsModel-", response.toString())
+            //Log.e("BorrowerDocsModel-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

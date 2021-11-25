@@ -255,7 +255,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:cursorVisible="true"
-            android:inputType="number"
+            android:inputType="numberPassword"
 
             android:singleLine="true"
             android:ems="10"

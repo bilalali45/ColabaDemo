@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
@@ -16,6 +18,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.rnsoft.colabademo.databinding.AssetsTabLayoutBinding
+import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -54,10 +57,12 @@ class AssetsTabFragment : BaseFragment() {
         }
 
 
+
         borrowerApplicationViewModel.assetsModelDataClass.observe(
             viewLifecycleOwner,
             Observer { observableSampleContent ->
-                var index =0
+
+               var index =0
                 val tabIds:ArrayList<Int> = arrayListOf()
                 for(tab in observableSampleContent) {
                     tab.passedBorrowerId?.let {
@@ -107,11 +112,15 @@ class AssetsTabFragment : BaseFragment() {
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
+
+
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
         }
 
@@ -121,11 +130,29 @@ class AssetsTabFragment : BaseFragment() {
     }
 
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        Timber.e("onViewCreated Asset Tab fragment the screen...")
+
+        val navController = findNavController()
+        // We use a String here, but any type that can be put in a Bundle is supported
+
+        val params = navController.currentBackStackEntry?.savedStateHandle?.get<AssetReturnParams>(AppConstant.assetReturnParams)
+        if (params != null) {
+            if (params.assetName.isNullOrBlank() || params.assetName.isNullOrEmpty())
+                Timber.e("something null...")
+            else
+                Timber.e(params.assetName)
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -140,6 +167,29 @@ class AssetsTabFragment : BaseFragment() {
     fun onGrandTotalAmountReceived(event: GrandTotalEvent) {
         binding.grandTotalTextView.text = event.totalAmount
     }
+
+     */
+
+    /*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val navController = findNavController()
+        // We use a String here, but any type that can be put in a Bundle is supported
+
+        navController.currentBackStackEntry?.savedStateHandle?.getLiveData<AssetReturnParams>(AppConstant.assetReturnParams)?.observe(viewLifecycleOwner) { returnParams ->
+
+            if (returnParams.assetName.isNullOrBlank() || returnParams.assetName.isNullOrEmpty())
+               Timber.e("something null...")
+            else
+                Timber.e(returnParams.assetName)
+            //savedContentCell.content_desc.text = returnParams.assetTypeName
+            returnParams.assetValue?.let { assetValue ->
+                // totalAmount += assetValue
+                //contentCell.content_amount.text = "$".plus(Common.addNumberFormat(assetValue))
+            }
+        }
+    }
+
+     */
 
 
 }

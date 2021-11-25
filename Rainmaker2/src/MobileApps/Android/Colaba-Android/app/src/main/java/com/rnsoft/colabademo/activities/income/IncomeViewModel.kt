@@ -24,23 +24,23 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
         MutableLiveData()
     val assetByCategory: LiveData<ArrayList<AssetTypesByCategory>> get() = _assetByCategory
 
-    private val _employmentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
-    val employmentDetail: LiveData<EmploymentDetailResponse> get() = _employmentDetail
+    private val _employmentDetail: MutableLiveData<EmploymentDetailResponse?> = MutableLiveData()
+    val employmentDetail: LiveData<EmploymentDetailResponse?> get() = _employmentDetail
 
-    private val _prevEmploymentDetail: MutableLiveData<EmploymentDetailResponse> = MutableLiveData()
-    val prevEmploymentDetail: LiveData<EmploymentDetailResponse> get() = _prevEmploymentDetail
+    private val _prevEmploymentDetail: MutableLiveData<EmploymentDetailResponse?> = MutableLiveData()
+    val prevEmploymentDetail: LiveData<EmploymentDetailResponse?> get() = _prevEmploymentDetail
 
-    private val _selfEmploymentDetail: MutableLiveData<SelfEmploymentResponse> = MutableLiveData()
-    val selfEmploymentDetail: LiveData<SelfEmploymentResponse> get() = _selfEmploymentDetail
+    private val _selfEmploymentDetail: MutableLiveData<SelfEmploymentResponse?> = MutableLiveData()
+    val selfEmploymentDetail: LiveData<SelfEmploymentResponse?> get() = _selfEmploymentDetail
 
-    private val _businessIncomeData: MutableLiveData<BusinessIncomeResponse> = MutableLiveData()
-    val businessIncome: LiveData<BusinessIncomeResponse> get() = _businessIncomeData
+    private val _businessIncomeData: MutableLiveData<BusinessIncomeResponse?> = MutableLiveData()
+    val businessIncome: LiveData<BusinessIncomeResponse?> get() = _businessIncomeData
 
-    private val _militaryIncomeData: MutableLiveData<MilitaryIncomeResponse> = MutableLiveData()
-    val militaryIncomeData: LiveData<MilitaryIncomeResponse> get() = _militaryIncomeData
+    private val _militaryIncomeData: MutableLiveData<MilitaryIncomeResponse?> = MutableLiveData()
+    val militaryIncomeData: LiveData<MilitaryIncomeResponse?> get() = _militaryIncomeData
 
-    private val _retirementIncomeData: MutableLiveData<RetirementIncomeResponse> = MutableLiveData()
-    val retirementIncomeData: LiveData<RetirementIncomeResponse> get() = _retirementIncomeData
+    private val _retirementIncomeData: MutableLiveData<RetirementIncomeResponse?> = MutableLiveData()
+    val retirementIncomeData: LiveData<RetirementIncomeResponse?> get() = _retirementIncomeData
 
     private val _retirementIncomeTypes: MutableLiveData<ArrayList<DropDownResponse>> =
         MutableLiveData()
@@ -52,32 +52,38 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     private val _businessTypes: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val businessTypes: LiveData<ArrayList<DropDownResponse>> get() = _businessTypes
 
-    private val _otherIncomeData: MutableLiveData<OtherIncomeResponse> = MutableLiveData()
-    val otherIncomeData: LiveData<OtherIncomeResponse> get() = _otherIncomeData
+    private val _otherIncomeData: MutableLiveData<OtherIncomeResponse?> = MutableLiveData()
+    val otherIncomeData: LiveData<OtherIncomeResponse?> get() = _otherIncomeData
 
-    private val _saveAddress : MutableLiveData<AddressData> = MutableLiveData()
-    val saveAddress : LiveData<AddressData> get() = _saveAddress
+    private val _addUpdateIncomeResponse: MutableLiveData<GenericAddUpdateAssetResponse?> = MutableLiveData()
+    val addUpdateIncomeResponse: LiveData<GenericAddUpdateAssetResponse?> get() = _addUpdateIncomeResponse
 
-    fun saveIncomeAddress(address: AddressData) {
-        _saveAddress.postValue(address)
+    fun resetChildFragmentToNull(){
+        _employmentDetail.value = null
+        _employmentDetail.postValue(null)
+
+        _prevEmploymentDetail.value = null
+        _prevEmploymentDetail.postValue(null)
+
+        _selfEmploymentDetail.value = null
+        _selfEmploymentDetail.postValue(null)
+
+        _businessIncomeData.value = null
+        _businessIncomeData.postValue(null)
+
+        _militaryIncomeData.value = null
+        _militaryIncomeData.postValue(null)
+
+        _retirementIncomeData.value = null
+        _retirementIncomeData.postValue(null)
+
+        _otherIncomeData.value = null
+        _otherIncomeData.postValue(null)
+
+        _addUpdateIncomeResponse.value  = null
+        _addUpdateIncomeResponse.postValue(null)
+
     }
-
-
-    /*suspend fun getBankAccountType(token: String) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = assetsRepo.getBankAccountType(token = token)
-            withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
-                    _bankAccountType.value = (responseResult.data)
-                /*else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                        EventBus.getDefault().post(WebServiceErrorEvent(null, true))
-                     else if (responseResult is Result.Error)
-                        EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
-                    */
-
-            }
-        }
-    } */
 
     suspend fun getEmploymentDetail(
         token: String,
@@ -218,7 +224,7 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     }
 
     suspend fun getOtherIncome(token: String, incomeInfoId: Int){
-        Log.e("Viewmodel","incomeID: " + incomeInfoId)
+        //Log.e("Viewmodel","incomeID: " + incomeInfoId)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getOtherIncome(token = token, incomeInfoId)
             withContext(Dispatchers.Main) {
@@ -261,13 +267,15 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     }
 
     suspend fun sendSelfEmploymentData(token: String,selfEmploymentData: SelfEmploymentData) {
-        //Log.e("ViewModel", "inside-SendData")
+        Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendSelfEmploymentData(token = token, selfEmploymentData)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
+                    Log.e("viewmodel", "success")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
-                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                }
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     //EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                     EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
 
@@ -301,8 +309,8 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
             val responseResult = repo.sendPrevEmploymentData(token = token, employmentData)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
-                    Log.e("Viewmodel", "${responseResult.data}")
-                    Log.e("Viewmodel", "$responseResult")
+                    //Log.e("Viewmodel", "${responseResult.data}")
+                   // Log.e("Viewmodel", "$responseResult")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
@@ -316,6 +324,24 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
     suspend fun sendBusinessData(token: String,businessData: BusinessData) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendBusinessData(token = token, businessData)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    //Log.e("Viewmodel", "${responseResult.data}")
+                    //Log.e("Viewmodel", "$responseResult")
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+
+            }
+        }
+    }
+
+    suspend fun sendMilitaryIncomeData(token: String,businessData: MilitaryIncomeData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendMilitaryData(token = token, businessData)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success) {
                     Log.e("Viewmodel", "${responseResult.data}")
@@ -359,6 +385,20 @@ class IncomeViewModel @Inject constructor(private val repo: IncomeRepo) : ViewMo
                 else if (responseResult is Result.Error)
                     EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
 
+            }
+        }
+    }
+
+    suspend fun deleteIncome(token: String, incomeInfoId: Int, borrowerId:Int, loanApplicationId:Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.deleteIncomeSource(token = token,incomeInfoId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _addUpdateIncomeResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
     }

@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 
-class IncomePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val tabIds:ArrayList<Int>) :
+class IncomePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle, private val tabIds:ArrayList<Int>,private val name :String) :
     FragmentStateAdapter(fragmentManager, lifecycle) {
 
     override fun getItemCount(): Int {
@@ -18,6 +18,7 @@ class IncomePagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle,
         val borrowerOneIncome = BorrowerOneIncome()
         val args = Bundle()
         args.putInt(AppConstant.tabBorrowerId, tabIds[position])
+        args.putString(AppConstant.borrowerName,name)
         borrowerOneIncome.arguments = args
         return borrowerOneIncome
     }

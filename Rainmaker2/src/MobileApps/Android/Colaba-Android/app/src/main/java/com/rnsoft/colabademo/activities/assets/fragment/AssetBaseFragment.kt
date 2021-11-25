@@ -1,60 +1,147 @@
 package com.rnsoft.colabademo
 
-open class AssetBaseFragment:BaseFragment() {
+import android.content.SharedPreferences
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
+import javax.inject.Inject
 
-    protected fun getSampleAssets():ArrayList<TestAssetsModelClass>{
-        val assetModelCell = TestAssetsModelClass( headerTitle = CATEGORIES.BankAccount.categoryName, headerAmount = "$0" , footerTitle = "Add Bank Account",
-            contentCell = arrayListOf(
-             //   TestContentCell("Chase", "Checking" ,"$20,000"), TestContentCell("Ally Bank", "Saving", "$6,000")
-            ), navigateToBank)
-
-        val assetModelCell2 = TestAssetsModelClass( headerTitle = CATEGORIES.RetirementAccount.categoryName, headerAmount = "$0" , footerTitle = "Add Retirement Account",
-            contentCell = arrayListOf(
-               // TestContentCell("401K", "Retirement Account" ,"$10,000" )
-            ), navigateToRetirement)
-
-        val assetModelCell3 = TestAssetsModelClass( headerTitle = CATEGORIES.StocksBondsOtherFinancialAssets.categoryName, headerAmount = "$0" , footerTitle = "Add Financial Assets",
-            contentCell = arrayListOf(
-                //TestContentCell("AHC", "Mutual Funds" ,"$200"  )
-            ), navigateToStockBonds)
-
-
-        val assetModelCell4 = TestAssetsModelClass( headerTitle = CATEGORIES.ProceedFromTransaction.categoryName, headerAmount = "$0" , footerTitle = "Add Proceeds From Transaction",
-            contentCell = arrayListOf(
-               // TestContentCell("Proceeds From Selling Non-Real Es...", "Proceeds From Transaction" ,"$1,200" )
-            ), navigateToTransactionAsset)
-
-
-        val assetModelCell5 = TestAssetsModelClass( headerTitle = CATEGORIES.GiftFunds.categoryName, headerAmount = "$0" , footerTitle = "Add Gifts Account",
-            contentCell = arrayListOf(
-                //TestContentCell("Relative", "Cash Gifts" ,"$2000" )
-            ), navigateToGiftAsset)
+@AndroidEntryPoint
+open class AssetBaseFragment: BaseFragment() {
+    protected var loanApplicationId:Int? = null
+    protected var loanPurpose:String? = null
+    protected var borrowerId:Int? = null
+    protected var assetUniqueId:Int? = null
+    protected var assetCategoryId:Int = 4
+    protected var assetTypeID:Int? = null
+    protected var assetCategoryName:String? = null
+    protected var listenerAttached:Int? = null
+    protected var assetBorrowerName:String? = null
 
 
-        val assetModelCell6 = TestAssetsModelClass( headerTitle = CATEGORIES.Other.categoryName, headerAmount = "$0" , footerTitle = "Add Other Assets",
-            contentCell = arrayListOf(
-                //TestContentCell("Individual Development Account", "Other" ,"$600" )
-            ) , navigateToOtherAsset)
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
+    protected val viewModel: AssetViewModel by activityViewModels()
 
-
-        val modelArrayList:ArrayList<TestAssetsModelClass> = arrayListOf()
-        modelArrayList.add(assetModelCell)
-        modelArrayList.add(assetModelCell2)
-        modelArrayList.add(assetModelCell3)
-        modelArrayList.add(assetModelCell4)
-        modelArrayList.add(assetModelCell5)
-        modelArrayList.add(assetModelCell6)
-
-
-        return modelArrayList
-
+    protected fun showDeleteDialog(params: AssetReturnParams, text:String ="Are you sure you want to remove this asset type?"){
+        DeleteAssetBoxFragment.newInstance(params , text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
     }
 
-    private val navigateToBank =  R.id.action_assets_bank_account //View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
-    private val navigateToRetirement = R.id.action_assets_retirement  //View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
-    private val navigateToStockBonds =  R.id.action_assets_stocks_bond  // View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
-    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction  //View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
-    private val navigateToGiftAsset =  R.id.action_assets_gift  //View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
-    private val navigateToOtherAsset = R.id.action_assets_other  //View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onAssetDeleteEventReceived(evt: AssetDeleteEvent) {
+        if(evt.bool){
+            assetUniqueId?.let { nonNullUniqueId ->
+                if (loanApplicationId != null && borrowerId != null && nonNullUniqueId > 0) {
+                    viewModel.genericAddUpdateAssetResponse.observe(
+                        viewLifecycleOwner,
+                        { genericAddUpdateAssetResponse ->
+                            val codeString = genericAddUpdateAssetResponse?.code.toString()
+                            if (codeString == "400") {
+
+                                evt.assetReturnParams.assetAction = AppConstant.assetDeleted
+                                Timber.e("catching unique id in Response 3 = " + evt.assetReturnParams.assetUniqueId)
+                                viewModel.resetChildFragmentToNull()
+                                EventBus.getDefault().post(AssetUpdateEvent(evt.assetReturnParams))
+                                findNavController().navigateUp()
+                                //updateMainAsset()
+                                //findNavController().popBackStack()
+                            }
+                        })
+
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            assetUniqueId?.let { nonNullUniqueId ->
+                                if (nonNullUniqueId > 0)
+                                    viewModel.deleteAsset(
+                                        authToken,
+                                        nonNullUniqueId,
+                                        borrowerId!!,
+                                        loanApplicationId!!
+                                    )
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    protected fun observeAddUpdateResponse(assetReturnParams: AssetReturnParams){
+        viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { addUpdateResponse ->
+            if(addUpdateResponse?.status.equals("OK", true)){
+                val codeString:String = addUpdateResponse?.code.toString()
+                if(codeString == "200"){
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            addUpdateResponse?.assetUniqueId?.let { nonNullAssetUniqueData->
+
+                                if( assetReturnParams.assetUniqueId!=null)
+                                Timber.e("catching passed - unique new id = "+assetReturnParams.assetUniqueId)
+                                    assetReturnParams.assetUniqueId = nonNullAssetUniqueData
+                                Timber.e("catching response - unique new id = $nonNullAssetUniqueData")
+                                viewModel.resetChildFragmentToNull()
+                                EventBus.getDefault().post(AssetUpdateEvent(assetReturnParams))
+
+
+                                findNavController().navigateUp()
+                            }
+                            //updateMainAsset()
+                            //findNavController().popBackStack()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+
+    protected val backToAssetScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            viewModel.resetChildFragmentToNull()
+            findNavController().navigateUp()
+        }
+    }
+
+
+    /*
+    private fun updateMainAsset(){
+        borrowerApplicationViewModel.assetsModelDataClass.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().popBackStack()
+        })
+        val assetsActivity = (activity as? AssetsActivity)
+        var mainBorrowerList:ArrayList<Int>? = null
+        assetsActivity?.let { assetsActivity ->
+            mainBorrowerList =  assetsActivity.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithAssets(
+                        authToken, loanApplicationId!!, notNullMainBorrowerList , borrowerId!!
+                    )
+                }
+            }
+        }
+    }
+    */
+
 }

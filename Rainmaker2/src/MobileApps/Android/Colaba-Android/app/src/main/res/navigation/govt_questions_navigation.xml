@@ -236,4 +236,5 @@
         android:label="@string/test_id"
         tools:layout="@layout/demographic_detail_layout" />
 
+
 </navigation>

@@ -48,8 +48,11 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo, 
     private val _states : MutableLiveData<ArrayList<StatesModel>> =   MutableLiveData()
     val states: LiveData<ArrayList<StatesModel>> get() = _states
 
+    private val _addUpdateDeleteResponse: MutableLiveData<AddUpdateDataResponse> = MutableLiveData()
+    val addUpdateDeleteResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDeleteResponse
 
-    suspend fun sendRealEstate(token: String,data: RealEstateData) {
+
+    suspend fun sendRealEstate(token: String,data: AddRealEstateResponse) {
         //Log.e("ViewModel", "inside-SendData")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.sendRealEstateDetails(token = token, data)
@@ -197,6 +200,20 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo, 
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _countries.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    suspend fun deleteRealEstate(token: String, borrowerPropertyId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.deleteRealEstate(token = token,borrowerPropertyId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _addUpdateDeleteResponse.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)

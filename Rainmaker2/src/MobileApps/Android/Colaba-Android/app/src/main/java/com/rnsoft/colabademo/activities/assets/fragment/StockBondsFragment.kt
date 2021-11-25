@@ -13,15 +13,15 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
+import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
-import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.ArrayList
 
 
 
-class StockBondsFragment:AssetAddUpdateBaseFragment() {
+class StockBondsFragment:AssetBaseFragment() {
 
     private var _binding: StockBondsLayoutBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,35 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
     private var dataArray: ArrayList<String> = arrayListOf("Checking Account", "Saving Account")
     private var bankAccounts: ArrayList<DropDownResponse> = arrayListOf()
     private lateinit var bankAdapter:ArrayAdapter<String>
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else
+        assetUniqueId?.let { assetUniqueId ->
+            if (assetUniqueId > 0)
+                assetAction = AppConstant.assetUpdated
+        }
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
+
+        return AssetReturnParams(
+            assetName = binding.accountTypeCompleteView.text.toString(),
+            assetTypeName =binding.financialEditText.text.toString(),
+            assetTypeID = assetTypeID,
+            assetUniqueId = assetUniqueId,
+            assetCategoryId = assetCategoryId,
+            assetCategoryName = assetCategoryName,
+            listenerAttached = listenerAttached,
+            assetAction = assetAction,
+            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,14 +72,32 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            if(assetUniqueId == -1)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
+            listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             observeStockBondsData()
         }
-        if(borrowerAssetId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
+        assetUniqueId?.let { assetUniqueId ->
+            if (assetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(
+                        returnUpdatedParams(
+                            true
+                        )
+                    )
+                }
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
     }
 
@@ -95,7 +142,6 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
     private fun saveStockBonds(){
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
-            observeAddUpdateResponse()
             clearFocusFromFields()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -112,7 +158,7 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
                                         AssetTypeId = notNullAccountTypeId,
                                         LoanApplicationId = notNullLoanApplicationId,
                                         BorrowerId = notNullBorrowerId,
-                                        Id = id,
+                                        Id = assetUniqueId,
                                         AccountNumber = binding.accountNumberEdittext.text.toString(),
                                         Balance = binding.annualBaseEditText.text.toString().toInt(),
                                         InstitutionName = binding.financialEditText.text.toString()
@@ -125,6 +171,7 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
 
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
 
 
@@ -199,32 +246,37 @@ class StockBondsFragment:AssetAddUpdateBaseFragment() {
                     findNavController().popBackStack()
             })
         }
-
-        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
-            viewModel.financialAssetDetail.observe(viewLifecycleOwner, { financialAssetDetail ->
-                if(financialAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
-                    financialAssetDetail.financialAssetData?.let{ financialAssetData->
-                        binding.financialEditText.setText(financialAssetData.institutionName)
-                        binding.accountNumberEdittext.setText(financialAssetData.accountNumber)
-                        binding.annualBaseEditText.setText(financialAssetData.balance.toString())
-                        financialAssetData.id?.let { id = it }
-                        financialAssetData.assetTypeId?.let { assetTypeId->
-                            for(item in bankAccounts){
-                                if(assetTypeId == item.id){
-                                    binding.accountTypeCompleteView.setText(item.name, false)
-                                    break
+        assetUniqueId?.let { assetUniqueId ->
+            if (loanApplicationId != null && borrowerId != null && assetUniqueId > 0) {
+                viewModel.financialAssetDetail.observe(viewLifecycleOwner, { financialAssetDetail ->
+                    if (financialAssetDetail?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                        financialAssetDetail.financialAssetData?.let { financialAssetData ->
+                            binding.financialEditText.setText(financialAssetData.institutionName)
+                            binding.accountNumberEdittext.setText(financialAssetData.accountNumber)
+                            binding.annualBaseEditText.setText(financialAssetData.balance.toString())
+                            //financialAssetData.id?.let { id = it }
+                            financialAssetData.assetTypeId?.let { assetTypeId ->
+                                for (item in bankAccounts) {
+                                    if (assetTypeId == item.id) {
+                                        binding.accountTypeCompleteView.setText(item.name, false)
+                                        break
+                                    }
                                 }
                             }
                         }
-                    }
-                }
-                else
-                    findNavController().popBackStack()
-            })
+                    } else
+                        findNavController().popBackStack()
+                })
 
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getFinancialAssetDetails(authToken, loanApplicationId!!, borrowerId!!, borrowerAssetId)
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getFinancialAssetDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            assetUniqueId
+                        )
+                    }
                 }
             }
         }

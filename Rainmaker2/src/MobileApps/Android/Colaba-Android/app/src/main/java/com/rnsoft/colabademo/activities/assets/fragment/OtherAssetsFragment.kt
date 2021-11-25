@@ -16,10 +16,11 @@ import com.rnsoft.colabademo.databinding.OtherAssetsLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.NumberTextFormat
+import timber.log.Timber
 import java.util.ArrayList
 
 
-class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
+class OtherAssetsFragment:AssetBaseFragment() {
 
     private var _binding: OtherAssetsLayoutBinding? = null
     private val binding get() = _binding!!
@@ -27,6 +28,36 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
     private var otherAssetArray: ArrayList<String> = arrayListOf("Trust Account", "Bridge Loan Proceeds", "Individual Development Account (IDA)", "Cash Value of Life Insurance", "Employer Assistance", "Relocation Funds", "Rent Credit", "Lot Equity", "Sweat Equity", "Trade Equity", "Other")
     private lateinit var otherAssetAdapter : ArrayAdapter<String>
     private var otherAssetTypesByList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else {
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+        }
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
+
+        return AssetReturnParams(
+            assetName = binding.accountTypeCompleteView.text.toString(),
+            assetTypeName = binding.financialEditText.text.toString(),
+            assetTypeID = assetTypeID,
+            assetUniqueId = assetUniqueId,
+            assetCategoryId = assetCategoryId,
+            assetCategoryName = assetCategoryName,
+            listenerAttached = listenerAttached,
+            assetAction = assetAction,
+            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+        )
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = OtherAssetsLayoutBinding.inflate(inflater, container, false)
@@ -37,15 +68,29 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
             borrowerId = arguments.getInt(AppConstant.borrowerId)
-            borrowerAssetId = arguments.getInt(AppConstant.borrowerAssetId , -1)
+            assetUniqueId = arguments.getInt(AppConstant.assetUniqueId , -1)
+            if(assetUniqueId == 0)
+                assetUniqueId = null
+            Timber.e("catching unique id in Argument  = $assetUniqueId")
             assetCategoryId = arguments.getInt(AppConstant.assetCategoryId , 7)
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
+            assetCategoryName = arguments.getString(AppConstant.assetCategoryName , null)
+            assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
+            listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             getOtherAssets()
         }
-        if(borrowerAssetId>0) {
-            binding.topDelImageview.visibility = View.VISIBLE
-            binding.topDelImageview.setOnClickListener{ showDeleteDialog() }
+        assetBorrowerName?.let {
+            binding.borrowerPurpose.text = it
         }
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (nonNullAssetUniqueId > 0) {
+                binding.topDelImageview.visibility = View.VISIBLE
+                binding.topDelImageview.setOnClickListener {
+                    showDeleteDialog(returnUpdatedParams(true))
+                }
+            }
+        }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToAssetScreen )
         return root
     }
 
@@ -78,47 +123,49 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
     }
 
     private fun getOtherDetailData(){
-        if(loanApplicationId != null && borrowerId != null &&  borrowerAssetId>0) {
-            lifecycleScope.launchWhenStarted {
-                viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
-                    if (otherAssetDetail.code == AppConstant.RESPONSE_CODE_SUCCESS) {
-                        otherAssetDetail.otherAssetData?.let { otherAssetData ->
-                            var bool = false
-                            otherAssetData.assetTypeName?.let {
-                                for (item in otherAssetArray)
-                                    if (item == otherAssetData.assetTypeName) {
-                                        binding.accountTypeCompleteView.setText(item, false)
-                                        visibleOtherFields(otherAssetArray.indexOf(item))
-                                        bool = true
-                                        break
-                                    }
+        assetUniqueId?.let { nonNullAssetUniqueId ->
+            if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
+                lifecycleScope.launchWhenStarted {
+                    viewModel.otherAssetDetail.observe(viewLifecycleOwner, { otherAssetDetail ->
+                        if (otherAssetDetail?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
+                            otherAssetDetail?.otherAssetData?.let { otherAssetData ->
+                                var bool = false
+                                otherAssetData.assetTypeName?.let {
+                                    for (item in otherAssetArray)
+                                        if (item == otherAssetData.assetTypeName) {
+                                            binding.accountTypeCompleteView.setText(item, false)
+                                            visibleOtherFields(otherAssetArray.indexOf(item))
+                                            bool = true
+                                            break
+                                        }
 
-                            }
-                            if (bool) {
-                                otherAssetData.assetId?.let { id = it }
-                                otherAssetData.institutionName?.let {
-                                    binding.financialEditText.setText(
-                                        it
-                                    )
                                 }
-                                otherAssetData.accountNumber?.let {
-                                    binding.accountNumberEdittext.setText(
-                                        it
-                                    )
+                                if (bool) {
+                                    otherAssetData.otherUniqueId?.let { assetUniqueId = it }
+                                    otherAssetData.institutionName?.let {
+                                        binding.financialEditText.setText(it)
+                                    }
+                                    otherAssetData.accountNumber?.let {
+                                        binding.accountNumberEdittext.setText(it)
+                                    }
+                                    otherAssetData.assetValue?.let {
+                                        binding.annualBaseEditText.setText(
+                                            it.toString()
+                                        )
+                                    }
                                 }
-                                otherAssetData.assetValue?.let { binding.annualBaseEditText.setText(it.toString()) }
                             }
                         }
-                    }
-                })
+                    })
 
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    viewModel.getOtherAssetDetails(
-                        authToken,
-                        loanApplicationId!!,
-                        borrowerId!!,
-                        borrowerAssetId
-                    )
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.getOtherAssetDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            nonNullAssetUniqueId
+                        )
+                    }
                 }
             }
         }
@@ -172,7 +219,7 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
                                         AssetTypeId = notNullAccountTypeId,
                                         GiftSourceId = notNullLoanApplicationId,
                                         BorrowerId = notNullBorrowerId,
-                                        AssetId = id,
+                                        AssetId = assetUniqueId,
                                         Description =  binding.edDetails.text.toString(),
                                         AccountNumber = Common.removeCommas(binding.accountNumberEdittext.text.toString()),
                                         Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
@@ -186,6 +233,7 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
 
                 }
             }
+            observeAddUpdateResponse(returnUpdatedParams())
         }
     }
 
@@ -259,6 +307,14 @@ class OtherAssetsFragment:AssetAddUpdateBaseFragment() {
         else
             CustomMaterialFields.clearError(binding.accountTypeInputLayout,  requireContext())
 
+
+        if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
+
+            CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
+            bool = false
+        }
+        else
+            CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
 
         /*
 

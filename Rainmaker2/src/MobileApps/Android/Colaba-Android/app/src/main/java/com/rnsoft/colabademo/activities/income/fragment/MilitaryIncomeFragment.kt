@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomeMilitaryPayBinding
@@ -21,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -28,51 +31,72 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/15/2021.
  */
 @AndroidEntryPoint
-class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
+class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: IncomeMilitaryPayBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
-    //private var savedViewInstance: View? = null
+    private var savedViewInstance: View? = null
     private val viewModel : IncomeViewModel by activityViewModels()
     private var incomeInfoId :Int? = null
     private var borrowerId :Int? = null
     private var loanApplicationId: Int? = null
+    private var borrowerName: String? = null
     private var militaryAddress = AddressData()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = IncomeMilitaryPayBinding.inflate(inflater, container, false)
-        toolbarBinding = binding.headerIncome
-        super.addListeners(binding.root)
-        // set Header title
-        toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
+    ): View? {
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            binding = IncomeMilitaryPayBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
+            toolbarBinding = binding.headerIncome
+            super.addListeners(binding.root)
+            // set Header title
+            toolbarBinding.toolbarTitle.setText(getString(R.string.military_pay))
 
-        arguments?.let { arguments ->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-            borrowerId = arguments.getInt(AppConstant.borrowerId)
-            arguments.getInt(AppConstant.incomeId).let {
-                if(it > 0)
-                    incomeInfoId = it
+            arguments?.let { arguments ->
+                loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                borrowerId = arguments.getInt(AppConstant.borrowerId)
+                borrowerName = arguments.getString(AppConstant.borrowerName)
+                arguments.getInt(AppConstant.incomeId).let {
+                    if (it > 0)
+                        incomeInfoId = it
+                }
             }
 
+            borrowerName?.let {
+                toolbarBinding.borrowerPurpose.setText(it)
+            }
+
+            findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(viewLifecycleOwner){ result ->
+                militaryAddress = result
+                displayAddress(result)
+            }
+
+            initViews()
+            getData()
+
+            if (loanApplicationId != null && borrowerId != null) {
+                toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+                toolbarBinding.btnTopDelete.setOnClickListener { DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager,
+                        DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                }
+            }
+
+            if (incomeInfoId == null || incomeInfoId == 0) {
+                toolbarBinding.btnTopDelete.visibility = View.GONE
+                showHideAddress(false,true)
+            }
+
+         savedViewInstance
+
         }
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
-            AppConstant.address)?.observe(viewLifecycleOwner) { result ->
-            militaryAddress = result
-            displayAddress(result)
-        }
-
-        initViews()
-        getData()
-
-        return binding.root
     }
 
     private fun getData(){
@@ -115,7 +139,8 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                             info.address?.let {
                                 militaryAddress = it
                                 displayAddress(it)
-                            }
+                            } ?: run {
+                                showHideAddress(false,true) }
                         }
                         binding.loaderMilitary.visibility = View.GONE
                     })
@@ -125,6 +150,10 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun initViews() {
+
+        binding.addMilitaryAddress.setOnClickListener {
+            openAddressFragment()
+        }
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutMilitaryPay.setOnClickListener(this)
@@ -142,7 +171,17 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(),binding.mainLayoutMilitaryPay)
                 super.removeFocusFromAllFields(binding.mainLayoutMilitaryPay)
             }
+        }
+    }
 
+    private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
+        if(isShowAddress){
+            binding.layoutAddress.visibility = View.VISIBLE
+            binding.addMilitaryAddress.visibility = View.GONE
+        }
+        if(isAddAddress){
+            binding.layoutAddress.visibility = View.GONE
+            binding.addMilitaryAddress.visibility = View.VISIBLE
         }
     }
 
@@ -153,17 +192,6 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
         bundle.putParcelable(AppConstant.address,militaryAddress)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_military_address, addressFragment.arguments)
-    }
-
-    private fun displayAddress(it: AddressData){
-        val builder = StringBuilder()
-        it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it).append("\n") }
-        it.city?.let { builder.append(it).append(" ") }
-        it.stateName?.let{ builder.append(it).append(" ")}
-        it.zipCode?.let { builder.append(it) }
-        it.countryName?.let { builder.append(" ").append(it)}
-        binding.textviewMilitaryAddress.text = builder
     }
 
     private fun setInputFields() {
@@ -242,17 +270,58 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
         if (entitlement.isNotEmpty() || entitlement.length > 0) {
             CustomMaterialFields.clearError(binding.layoutEntitlement,requireActivity())
         }
-        if (empName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && profYears.length > 0 ){
+        if (empName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && profYears.length > 0 && baseSalary.length >0 && entitlement.length>0 ){
 
+            lifecycleScope.launchWhenStarted{
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if(loanApplicationId != null && borrowerId !=null) {
 
+                        val monthlyBaseSalary = binding.editTextBaseSalary.text.toString().trim()
+                        val newBaseSalary = if(monthlyBaseSalary.length > 0) monthlyBaseSalary.replace(",".toRegex(), "") else null
 
+                        val militaryEntitlement = binding.editTextEntitlement.text.toString().trim()
+                        val newEntitlement = if(militaryEntitlement.length > 0) militaryEntitlement.replace(",".toRegex(), "") else null
+                        
+                        val data = MilitaryIncomeData(
+                            loanApplicationId = loanApplicationId,borrowerId= borrowerId, employerName = empName, jobTitle= jobTitle,yearsInProfession= profYears.toInt(),
+                            startDate=startDate,monthlyBaseSalary= newBaseSalary?.toDouble(),address = militaryAddress,id=incomeInfoId,militaryEntitlements = newEntitlement?.toDouble())
 
+                        Log.e("businessDate-snding to API", "" + data)
 
+                        binding.loaderMilitary.visibility = View.VISIBLE
+                        viewModel.sendMilitaryIncomeData (authToken,data)
+                    }
+                }
+            }
         }
-
     }
 
-    private fun openCalendar() {
+    override fun onResume() {
+        super.onResume()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result -> militaryAddress = result
+            //binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
+            displayAddress(result)
+        }
+    }
+
+    private fun displayAddress(it: AddressData){
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+            showHideAddress(false,true)
+        else {
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it).append("\n") }
+            it.city?.let { builder.append(it).append(" ") }
+            it.stateName?.let { builder.append(it).append(" ") }
+            it.zipCode?.let { builder.append(it) }
+            it.countryName?.let { builder.append(" ").append(it) }
+            binding.textviewMilitaryAddress.text = builder
+            showHideAddress(true,false)
+        }
+    }
+
+   /* private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
@@ -267,20 +336,65 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
             day
         )
         dpd.show()
+    } */
+
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent) {
+        binding.loaderMilitary.visibility = View.GONE
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            updateMainIncome()
+            viewModel.resetChildFragmentToNull()
+
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDataSendEvent(event: SendDataEvent) {
-        val verificationResponse = event.addUpdateDataResponse
-/*
-        if(verificationResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-        else
-            if(verificationResponse.code == "200" &&  verificationResponse.data != null) {
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+                        updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
             }
-      */
-
+        }
     }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_military)
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList: java.util.ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
+            }
+        }
+    }
+
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -289,6 +403,88 @@ class MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+
+    }
+
+    var maxDate:Long = 0
+    var minDate:Long = 0
+
+    private fun openCalendar() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        //val newMonth = month + 1
+
+        /*
+        val dpd = DatePickerDialog(
+            requireActivity(), {
+                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
+                val cal = Calendar.getInstance()
+                cal.set(year, newMonth, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }, year, month, day)
+         */
+
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.edStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, (monthOfYear), dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(minDate!=0L)
+            datePickerDialog.datePicker.maxDate = minDate
+        datePickerDialog.show()
+
+    }
+
+    private fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        return df.parse(date).time
+    }
+
+    private fun endDateCalendar() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        //val newMonth = month + 1
+
+        /*
+        val dpd = DatePickerDialog(
+            requireActivity(),
+            { view, year, monthOfYear, dayOfMonth -> binding.edEndDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
+            year,
+            month,
+            day
+        )
+        dpd.show()
+         */
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.edStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, monthOfYear, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                minDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(maxDate!=0L)
+            datePickerDialog.datePicker.minDate = maxDate
+        datePickerDialog.show()
+
 
     }
 }

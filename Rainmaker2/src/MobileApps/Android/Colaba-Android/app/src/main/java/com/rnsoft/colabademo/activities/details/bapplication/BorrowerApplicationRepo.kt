@@ -30,9 +30,9 @@ class BorrowerApplicationRepo  @Inject constructor(
             borrowerId = borrowerId )
     }
 
-    suspend fun addOrUpdateGovernmentQuestions(token:String, updateGovernmentQuestions:UpdateGovernmentQuestions ):Result<GovernmentAddUpdateDataResponse> {
+    suspend fun addOrUpdateGovernmentQuestions(token:String, questionParams:GovernmentParams ):Result<GovernmentAddUpdateDataResponse> {
         return borrowerApplicationDataSource.addOrUpdateGovernmentQuestions(
-            token = token , updateGovernmentQuestions = updateGovernmentQuestions )
+            token = token , questionParams = questionParams )
     }
 
     suspend fun addOrUpdateDemoGraphic(token:String, demoGraphicData:DemoGraphicData ):Result<AddUpdateDemoGraphicResponse> {

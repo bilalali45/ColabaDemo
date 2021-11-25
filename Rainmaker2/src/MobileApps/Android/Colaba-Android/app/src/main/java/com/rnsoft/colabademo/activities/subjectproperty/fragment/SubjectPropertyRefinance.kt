@@ -34,8 +34,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/9/2021.
  */
 @AndroidEntryPoint
-class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener,
-    CoBorrowerOccupancyClickListener {
+class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListener, CoBorrowerOccupancyClickListener {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
@@ -50,6 +49,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     var firstMortgageModel =  FirstMortgageModel()
     var secondMortgageModel = SecondMortgageModel()
     var refinanceAddressData = AddressData()
+    private var savedViewInstance: View? = null
+
 
     private lateinit var adapterCoborrower: CoBorrowerAdapter
     var coborrowerList = ArrayList<CoBorrowerOccupancyData>()
@@ -58,15 +59,20 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View{
-        binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
-        super.addListeners(binding.root)
+    ): View? {
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            binding = SubPropertyRefinanceBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
+            super.addListeners(binding.root)
 
-        clicks()
-        setInputFields()
-        setDropDownData()
+            clicks()
+            setInputFields()
+            setDropDownData()
 
-        return binding.root
+            savedViewInstance
+        }
     }
 
     private fun setDropDownData(){
@@ -143,6 +149,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         coborrowerList = it.occupancyData
                         adapterCoborrower.setBorrowers(coborrowerList)
                         binding.recyclerviewCoBorrower.adapter = adapterCoborrower
+                    } else {
+                        binding.coBorrowerHeading.visibility = View.GONE
                     }
                 })
             }

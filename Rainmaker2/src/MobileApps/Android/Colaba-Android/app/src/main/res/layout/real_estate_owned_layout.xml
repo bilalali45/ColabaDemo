@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="17dp"
-                    android:layout_marginEnd="100dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginBottom="18dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text=""
@@ -86,7 +86,7 @@
                 android:id="@+id/add_property_address"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/style_btn_add"
                 android:clickable="true"
                 android:gravity="center">
@@ -139,7 +139,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
-                    android:completionThreshold="1"
+                    android:completionThreshold="100"
                     android:focusable="false"
                     android:focusableInTouchMode="true"
                     android:cursorVisible="false"
@@ -187,7 +187,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
-                    android:completionThreshold="1"
+                    android:completionThreshold="100"
                     android:focusable="false"
                     android:focusableInTouchMode="true"
                     android:cursorVisible="false"
@@ -308,7 +308,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
-                    android:completionThreshold="1"
+                    android:completionThreshold="100"
                     android:focusable="false"
                     android:focusableInTouchMode="true"
                     android:cursorVisible="false"
@@ -735,5 +735,22 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/loader_real_estate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

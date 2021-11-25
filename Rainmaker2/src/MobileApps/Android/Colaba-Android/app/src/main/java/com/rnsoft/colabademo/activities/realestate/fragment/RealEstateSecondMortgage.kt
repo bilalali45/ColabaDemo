@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.RealEstateSecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -24,7 +25,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
     private val viewModel : RealEstateViewModel by activityViewModels()
     lateinit var sharedPreferences : SharedPreferences
     var secondMortgageModel = SecondMortgageModel()
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,20 +71,21 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                         requireActivity()
                     )
                 }
-                it.isHeloc?.let {
-                    if (it == true) {
+                it.isHeloc?.let { isHeloc->
+                    if(isHeloc == true) {
                         binding.switchCreditLimit.isChecked = true
                         binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                        binding.layoutCreditLimit.visibility = View.VISIBLE
+
+                        it.helocCreditLimit?.let {
+                            binding.edCreditLimit.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
+                        }
+
                     } else {
                         binding.switchCreditLimit.isChecked = false
                         binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                     }
-                }
-                it.helocCreditLimit?.let {
-                    binding.edCreditLimit.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutCreditLimit,
-                        R.color.grey_color_two, requireActivity())
                 }
 
                 it.paidAtClosing?.let {
@@ -101,10 +102,41 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
     }
 
+    private fun saveData() {
+
+        // first mortgage
+        val secMortgagePayment = binding.edSecMortgagePayment.text.toString().trim()
+        var newSecMortgagePayment = if(secMortgagePayment.length > 0) secMortgagePayment.replace(",".toRegex(), "") else null
+
+        // second mortgage
+        val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+
+        val creditLimit = binding.edCreditLimit.text.toString().trim()
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+
+        val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
+        var isCombinedWithFirstMortgage : Boolean? = null
+
+        if(binding.rbPaidClosingYes.isChecked)
+            isCombinedWithFirstMortgage = true
+
+        if(binding.rbPaidClosingNo.isChecked)
+            isCombinedWithFirstMortgage = false
+
+        val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment?.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance?.toDouble(),
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = null)
+
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.secMortgage,secMortgageDetail)
+        findNavController().popBackStack()
+
+    }
+
+
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
-            R.id.btn_save ->  checkValidations()
+            R.id.btn_save ->  saveData()
             R.id.layout_realestate_sec_mortgage-> {
                 HideSoftkeyboard.hide(requireActivity(), binding.layoutRealestateSecMortgage)
                 super.removeFocusFromAllFields(binding.layoutRealestateSecMortgage)
@@ -154,11 +186,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         binding.edUnpaidBalance.addTextChangedListener(NumberTextFormat(binding.edUnpaidBalance))
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
 
-    }
-
-
-    private fun checkValidations(){
-        requireActivity().onBackPressed()
     }
 
     override fun onStart() {

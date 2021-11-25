@@ -28,13 +28,22 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
         override fun bind(item: RealStateOwn) {
           item.propertyInfoId.toString()
             item.realStateAddress?.let {
-                propertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                //propertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+
+                val builder = StringBuilder()
+                it.street?.let { builder.append(it).append(" ") }
+                it.unit?.let {
+                    builder.append(it).append("\n")
+                }?: run { builder.append("\n")}
+                it.city?.let { builder.append(it).append(",").append(" ") }
+                it.stateName?.let { builder.append(it).append(" ") }
+                it.zipCode?.let { builder.append(it) }
+                it.countryName?.let { builder.append(" ").append(it) }
+                propertyAddress.text = builder
             }
             propertyType.text = item.propertyTypeName
 
-
             itemView.setOnClickListener {
-                //itemView.context.startActivity(Intent(itemView.context, RealEstateActivity::class.java))
                 onRealEstateClick.onRealEstateClick(position)
             }
         }
@@ -42,7 +51,11 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
     }
 
     inner class RealStateFooterViewHolder(itemView: View) : BaseViewHolder(itemView) {
-        override fun bind(item: RealStateOwn) {}
+        override fun bind(item: RealStateOwn) {
+            itemView.setOnClickListener {
+                onRealEstateClick.onRealEstateClick(position)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

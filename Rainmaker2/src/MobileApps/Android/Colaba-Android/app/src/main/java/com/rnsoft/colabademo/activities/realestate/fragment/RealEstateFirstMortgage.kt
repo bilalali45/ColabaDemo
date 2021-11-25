@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
@@ -109,23 +110,23 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                  }
              }
 
-             it.isHeloc?.let {
-                 if (it == true) {
+             it.isHeloc?.let { bool->
+                 if (bool == true) {
                      binding.switchCreditLimit.isChecked = true
                      binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                     binding.layoutCreditLimit.visibility = View.VISIBLE
+
+                     it.helocCreditLimit?.let {
+                         binding.edCreditLimit.setText(Math.round(it).toString())
+                         CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
+                     }
+
                  } else {
                      binding.switchCreditLimit.isChecked = false
                      binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                  }
              }
-             it.helocCreditLimit?.let {
-                 binding.edCreditLimit.setText(Math.round(it).toString())
-                 CustomMaterialFields.setColor(
-                     binding.layoutCreditLimit,
-                     R.color.grey_color_two,
-                     requireActivity()
-                 )
-             }
+
              it.paidAtClosing?.let {
                  if (it == true) {
                      binding.rbPaidClosingYes.isChecked = true
@@ -140,10 +141,40 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     }
 
+    private fun saveData() {
+
+        // first mortgage
+        val firstMortgagePayment = binding.edFirstMortgagePayment.text.toString().trim()
+        var newFirstMortgagePayment = if(firstMortgagePayment.length > 0) firstMortgagePayment.replace(",".toRegex(), "") else null
+
+        // second mortgage
+        val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+
+        val creditLimit = binding.edCreditLimit.text.toString().trim()
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+
+        val floodInsurance = if(binding.cbFloodInsurance.isChecked) true else false
+        val propertyTax = if(binding.cbPropertyTaxes.isChecked) true else false
+        val homeownerInsurance = if(binding.cbHomeownwerInsurance.isChecked) true else false
+        val isPaidAtClosing = if(binding.rbPaidClosingYes.isChecked)true else false
+        val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
+
+        val firstMortgageDetail = FirstMortgageModel(firstMortgagePayment = newFirstMortgagePayment?.toDouble(),unpaidFirstMortgagePayment = newUnpaidBalance?.toDouble(),
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), floodInsuranceIncludeinPayment = floodInsurance,propertyTaxesIncludeinPayment = propertyTax,homeOwnerInsuranceIncludeinPayment = homeownerInsurance,
+            paidAtClosing = isPaidAtClosing,isHeloc = isHeloc)
+
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.firstMortgage, firstMortgageDetail)
+        findNavController().popBackStack()
+
+    }
+
+
+
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.backButton ->  requireActivity().onBackPressed()
-            R.id.btn_save ->  checkValidations()
+            R.id.btn_save ->  saveData()
             R.id.first_morgtage_parentLayout-> {
                 HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
                 super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
@@ -213,31 +244,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
     }
 
-    private fun checkValidations() {
-        requireActivity().onBackPressed()
-        /*val firstMortgagePayment: String = binding.edFirstMortgagePayment.text.toString()
-        val unpaidBalance: String = binding.edUnpaidBalance.text.toString()
-        val creditLimit: String = binding.edCreditLimit.text.toString()
-
-        if (firstMortgagePayment.isEmpty() || firstMortgagePayment.length == 0) {
-            setError(binding.layoutFirstPayment, getString(R.string.error_field_required))
-        }
-        if (unpaidBalance.isEmpty() || unpaidBalance.length == 0) {
-            setError(binding.layoutUnpaidBalance, getString(R.string.error_field_required))
-        }
-        if (creditLimit.isEmpty() || creditLimit.length == 0) {
-            setError(binding.layoutCreditLimit, getString(R.string.error_field_required))
-        }
-        if (firstMortgagePayment.isNotEmpty() && firstMortgagePayment.length > 0) {
-            clearError(binding.layoutFirstPayment)
-        }
-        if (unpaidBalance.isNotEmpty() && unpaidBalance.length > 0) {
-            clearError(binding.layoutUnpaidBalance)
-        }
-        if (creditLimit.isNotEmpty() && creditLimit.length > 0) {
-            clearError(binding.layoutCreditLimit)
-        } */
-    }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg

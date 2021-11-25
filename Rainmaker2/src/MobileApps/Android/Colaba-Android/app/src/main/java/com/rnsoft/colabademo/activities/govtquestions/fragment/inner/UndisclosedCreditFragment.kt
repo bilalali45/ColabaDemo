@@ -1,27 +1,17 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
-import com.rnsoft.colabademo.databinding.UndisclosedBorrowerFundLayoutBinding
 import com.rnsoft.colabademo.databinding.UndisclosedCreditLayoutBinding
-import com.rnsoft.colabademo.utils.CustomMaterialFields
-import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
-@AndroidEntryPoint
-class UndisclosedCreditFragment:BaseFragment() {
+class UndisclosedCreditFragment:GovtDetailBaseFragment() {
 
     private var _binding: UndisclosedCreditLayoutBinding? = null
     private val binding get() = _binding!!
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,6 +20,11 @@ class UndisclosedCreditFragment:BaseFragment() {
 
         _binding = UndisclosedCreditLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        arguments?.let {
+            questionId = it.getInt(AppConstant.questionId)
+            updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
+        }
+        fillWithData(binding.edDetails)
         setUpUI()
         super.addListeners(binding.root)
         return root
@@ -38,25 +33,7 @@ class UndisclosedCreditFragment:BaseFragment() {
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
-            findNavController().popBackStack()
-            /*
-            val fieldsValidated = checkEmptyFields()
-            if(fieldsValidated) {
-                findNavController().popBackStack()
-            }
-             */
+            updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }
-    }
-
-    private fun checkEmptyFields():Boolean{
-        var bool = true
-        if(binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.layoutDetail, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
-
-        return bool
     }
 }

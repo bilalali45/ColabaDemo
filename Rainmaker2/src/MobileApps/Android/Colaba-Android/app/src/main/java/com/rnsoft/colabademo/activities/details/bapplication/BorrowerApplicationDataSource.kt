@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.google.gson.Gson
 import com.rnsoft.colabademo.activities.model.StatesModel
 import timber.log.Timber
 import java.io.IOException
@@ -161,7 +160,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getBorrowerIncomeDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
-            //Timber.e("IncomeResponse-", response.toString())
+            Timber.e("IncomeResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -172,10 +171,10 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     }
 
 
-    suspend fun addOrUpdateGovernmentQuestions( token:String, updateGovernmentQuestions:UpdateGovernmentQuestions):Result<GovernmentAddUpdateDataResponse>{
+    suspend fun addOrUpdateGovernmentQuestions(token:String, questionParams:GovernmentParams):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  updateGovernmentQuestions )
+            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  questionParams )
             Timber.e("updateGovernmentQuestions - $response")
             Result.Success(response)
         } catch (e: Throwable) {

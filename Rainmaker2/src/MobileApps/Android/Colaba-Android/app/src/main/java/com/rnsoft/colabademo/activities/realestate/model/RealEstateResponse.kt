@@ -13,20 +13,21 @@ data class RealEstateResponse(
     val message: String?,
     val status: String
 )
-
 data class RealEstateData(
-    val address: RealEstateAddress?,
-    val annualFloodInsurance: Double?,
-    val annualHomeInsurance: Double?,
-    val annualPropertyTax: Double?,
+    val loanApplicationId:Int?,
+    val address: AddressData?,
+    val floodInsurance: Double?,
+    val homeOwnerInsurance: Double?,
+    val propertyTax: Double?,
     val firstMortgageBalance: Double?,
     val firstMortgagePayment: Double?,
     val hasFirstMortgage: Boolean?,
     val hasSecondMortgage: Boolean?,
-    val homeOwnerDues: Double?,
+    val hoaDues: Double?,
+    val appraisedPropertyValue : Double?,
     val occupancyTypeId: Int?,
     val propertyInfoId: Int?,
-    val propertyStatus: String?,
+    val propertyStatus: Int?,
     val propertyTypeId: Int?,
     val propertyValue: Double?,
     val rentalIncome: Double?,
@@ -49,4 +50,3 @@ data class RealEstateAddress(
     val unit: String?,
     val zipCode: String?
 ) : Parcelable
-

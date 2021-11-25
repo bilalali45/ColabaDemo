@@ -181,7 +181,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
-                    android:completionThreshold="1"
+                    android:completionThreshold="100"
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="true"
@@ -230,7 +230,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
-                    android:completionThreshold="1"
+                    android:completionThreshold="100"
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="true"
@@ -482,6 +482,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/co_borrower_heading"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"

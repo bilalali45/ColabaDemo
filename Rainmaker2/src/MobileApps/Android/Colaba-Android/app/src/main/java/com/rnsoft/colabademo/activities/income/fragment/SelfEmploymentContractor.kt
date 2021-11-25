@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.SelfEmpolymentContLayoutBinding
@@ -22,6 +24,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -36,56 +39,80 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private val viewModel : IncomeViewModel by activityViewModels()
     private lateinit var binding: SelfEmpolymentContLayoutBinding
     private lateinit var toolbarBinding: AppHeaderWithCrossDeleteBinding
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
+    private var borrowerName: String? = null
     var loanApplicationId: Int? = null
     var incomeInfoId :Int? = null
     var borrowerId :Int? = null
     private var businessAddress = AddressData()
+    private var savedViewInstance: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = SelfEmpolymentContLayoutBinding.inflate(inflater, container, false)
-        toolbarBinding = binding.headerIncome
-        super.addListeners(binding.root)
-        // set Header title
-        toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
-
-        Log.e("incomeId", ""+incomeInfoId)
-
-        arguments?.let { arguments ->
-            loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
-            borrowerId = arguments.getInt(AppConstant.borrowerId)
-            arguments.getInt(AppConstant.incomeId).let {
-                if(it > 0)
-                incomeInfoId = it
-            }
-        }
-
-        Log.e("Self Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
+    ): View? {
+         return if (savedViewInstance != null){
+            savedViewInstance
+        } else {
+             binding = SelfEmpolymentContLayoutBinding.inflate(inflater, container, false)
+             savedViewInstance = binding.root
+             toolbarBinding = binding.headerIncome
+             super.addListeners(binding.root)
+             // set Header title
+             toolbarBinding.toolbarTitle.setText(getString(R.string.self_employment_contractor))
 
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
-            AppConstant.address)?.observe(viewLifecycleOwner) { result ->
-            businessAddress = result
-            displayAddress(result)
-        }
+             arguments?.let { arguments ->
+                 loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
+                 borrowerId = arguments.getInt(AppConstant.borrowerId)
+                 borrowerName = arguments.getString(AppConstant.borrowerName)
+                 arguments.getInt(AppConstant.incomeId).let {
+                     if (it > 0)
+                         incomeInfoId = it
+                 }
+             }
 
-        initViews()
-        getData()
+             borrowerName?.let {
+                 toolbarBinding.borrowerPurpose.setText(it)
+             }
 
-        return binding.root
+             if (loanApplicationId != null && borrowerId != null) {
+                 toolbarBinding.btnTopDelete.visibility = View.VISIBLE
+                 toolbarBinding.btnTopDelete.setOnClickListener {
+                     DeleteIncomeDialogFragment.newInstance(AppConstant.income_delete_text).show(childFragmentManager, DeleteCurrentResidenceDialogFragment::class.java.canonicalName)
+                 }
+             }
+
+             if (incomeInfoId == null || incomeInfoId == 0) {
+                 toolbarBinding.btnTopDelete.visibility = View.GONE
+                 showHideAddress(false,true)
+             }
+
+             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+                 AppConstant.address
+             )?.observe(viewLifecycleOwner) { result ->
+                 businessAddress = result
+                 displayAddress(result)
+             }
+
+             initViews()
+             getData()
+
+             savedViewInstance
+         }
     }
 
     private fun initViews(){
+        binding.addBusinessAddress.setOnClickListener {
+            openAddressFragment()
+        }
+
         binding.layoutAddress.setOnClickListener(this)
         toolbarBinding.btnClose.setOnClickListener(this)
         binding.mainLayoutBusinessCont.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener(this)
-
         setInputFields()
-
     }
 
     private fun getData(){
@@ -126,15 +153,9 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                             }
 
                             info.businessAddress?.let {
-                                val builder = StringBuilder()
-                                it.street?.let { builder.append(it).append(" ") }
-                                it.unit?.let { builder.append(it) }
-                                it.city?.let { builder.append("\n").append(it).append(" ") }
-                                it.stateName?.let { builder.append(it).append(" ") }
-                                it.zipCode?.let { builder.append(it) }
-                                it.countryName.let { builder.append(" ").append(it) }
-                                binding.textviewBusinessAddress.text = builder
-                            }
+                               businessAddress = it
+                                displayAddress(it)
+                            } ?:run { showHideAddress(false,true)}
                         }
                         binding.loaderSelfEmployment.visibility = View.GONE
                     })
@@ -144,6 +165,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
+
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
         val bundle = Bundle()
@@ -151,6 +173,22 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         bundle.putParcelable(AppConstant.address,businessAddress)
         addressFragment.arguments = bundle
         findNavController().navigate(R.id.action_business_address, addressFragment.arguments)
+    }
+
+    private fun displayAddress(it: AddressData){
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+            showHideAddress(false,true)
+        else {
+            val builder = StringBuilder()
+            it.street?.let { builder.append(it).append(" ") }
+            it.unit?.let { builder.append(it).append("\n") }
+            it.city?.let { builder.append(it).append(" ") }
+            it.stateName?.let { builder.append(it).append(" ") }
+            it.zipCode?.let { builder.append(it) }
+            it.countryName?.let { builder.append(" ").append(it) }
+            binding.textviewBusinessAddress.text = builder
+            showHideAddress(true,false)
+        }
     }
 
     override fun onClick(view: View?) {
@@ -197,15 +235,12 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private fun checkValidations(){
 
         val businessName: String = binding.editTextBusinessName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
+        //var jobTitle: String? = binding.edJobTitle.text.toString()
         val startDate: String = binding.editTextBstartDate.text.toString()
         val netIncome: String = binding.edNetIncome.text.toString()
 
         if (businessName.isEmpty() || businessName.length == 0) {
             CustomMaterialFields.setError(binding.layoutBusinessName, getString(R.string.error_field_required),requireActivity())
-        }
-        if (jobTitle.isEmpty() || jobTitle.length == 0) {
-            CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
         }
         if (startDate.isEmpty() || startDate.length == 0) {
             CustomMaterialFields.setError(binding.layoutBStartDate, getString(R.string.error_field_required),requireActivity())
@@ -216,22 +251,19 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         if (businessName.isNotEmpty() || businessName.length > 0) {
             CustomMaterialFields.clearError(binding.layoutBusinessName,requireActivity())
         }
-        if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
-        }
+
         if (startDate.isNotEmpty() || startDate.length > 0) {
             CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
         }
         if (netIncome.isNotEmpty() || netIncome.length > 0) {
             CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
         }
-        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
-            findNavController().popBackStack()
-        }
 
-        if (businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
+        if (businessName.length > 0 &&  startDate.length > 0 && netIncome.length > 0 ){
             val businessPhone = if( binding.editTextBusPhnum.text.toString().trim().length >0 ) binding.editTextBusPhnum.text.toString().trim() else null
             val newNetIncome = if(netIncome.length > 0) netIncome.replace(",".toRegex(), "") else null
+
+            val jobTitle = if(binding.edJobTitle.text.toString().length > 0) binding.edJobTitle.text.toString() else null
 
 
             val selfEmploymentData = SelfEmploymentData(loanApplicationId=loanApplicationId,borrowerId=borrowerId,id= incomeInfoId,
@@ -241,8 +273,8 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if(loanApplicationId != null && borrowerId !=null) {
-                        Log.e("Loan Application Id", "" + loanApplicationId + " borrowerId:  " + borrowerId + " income:  " + incomeInfoId)
-                        Log.e("selfEmployment-snding to API", "" + selfEmploymentData)
+                        //Log.e("Loan Application Id", "" + loanApplicationId + " borrowerId:  " + borrowerId + " income:  " + incomeInfoId)
+                        //Log.e("selfEmployment-snding to API", "" + selfEmploymentData)
 
                         binding.loaderSelfEmployment.visibility = View.VISIBLE
                         viewModel.sendSelfEmploymentData(authToken, selfEmploymentData)
@@ -252,17 +284,17 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
-    private fun displayAddress(it: AddressData){
-        val builder = StringBuilder()
-        it.street?.let { builder.append(it).append(" ") }
-        it.unit?.let { builder.append(it).append("\n") }
-        it.city?.let { builder.append(it).append(" ") }
-        it.stateName?.let{ builder.append(it).append(" ")}
-        it.zipCode?.let { builder.append(it) }
-        it.countryName?.let { builder.append(" ").append(it)}
-        binding.textviewBusinessAddress.text = builder
+    private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
+        if(isShowAddress){
+            binding.layoutAddress.visibility = View.VISIBLE
+            binding.addBusinessAddress.visibility = View.GONE
+        }
+        if(isAddAddress){
+            binding.layoutAddress.visibility = View.GONE
+            binding.addBusinessAddress.visibility = View.VISIBLE
+        }
     }
-
+/*
     private fun openCalendar() {
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
@@ -271,29 +303,66 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         val newMonth = month + 1
 
         val dpd = DatePickerDialog(
-            requireActivity(),
-            { view, year, monthOfYear, dayOfMonth -> binding.editTextBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
+            requireActivity(), { view, year, monthOfYear, dayOfMonth -> binding.editTextBstartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year) },
             year,
             month,
-            day
-        )
+            day)
         dpd.show()
+    } */
+
+    var maxDate:Long = 0
+    var minDate:Long = 0
+
+    private fun openCalendar() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        //val newMonth = month + 1
+
+        /*
+        val dpd = DatePickerDialog(
+            requireActivity(), {
+                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
+                val cal = Calendar.getInstance()
+                cal.set(year, newMonth, dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }, year, month, day)
+         */
+
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle,
+            {
+                    view, selectedYear, monthOfYear, dayOfMonth ->
+                binding.editTextBstartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
+                val cal = Calendar.getInstance()
+                cal.set(selectedYear, (monthOfYear), dayOfMonth)
+                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
+                maxDate = convertDateToLong(date)
+            }
+            , year, month, day
+        )
+        if(minDate!=0L)
+            datePickerDialog.datePicker.maxDate = minDate
+        datePickerDialog.show()
+
+    }
+
+    private fun convertDateToLong(date: String): Long {
+        val df = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+        return df.parse(date).time
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.saveAddress.observe(viewLifecycleOwner, {
-            businessAddress = it
-            val builder = StringBuilder()
-            it.street?.let { builder.append(it).append(" ") }
-            it.unit?.let { builder.append(it)}
-            it.city?.let {builder.append("\n").append(it).append(" ") }
-            it.stateName?.let{ builder.append(it).append(" ")}
-            it.zipCode?.let { builder.append(it)}
-            it.countryName.let { builder.append(" ").append(it)}
-            binding.textviewBusinessAddress.text = builder
-            EventBus.getDefault().post(AddressUpdateEvent(it))
-        })
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
+            AppConstant.address)?.observe(viewLifecycleOwner) { result ->
+            businessAddress = result
+            //binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
+            displayAddress(result)
+        }
 
     }
 
@@ -309,17 +378,59 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent) {
+        binding.loaderSelfEmployment.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-            binding.loaderSelfEmployment.visibility = View.GONE
+            updateMainIncome()
+            viewModel.resetChildFragmentToNull()
         }
-
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
             SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-
-        else
-            if(event.addUpdateDataResponse.message != null)
+        } else {
+            if (event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-
-        findNavController().popBackStack()
+        }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+        if(evt.isDeleteIncome){
+            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                    val codeString = genericAddUpdateAssetResponse?.code.toString()
+                    if(codeString == "400" || codeString == "200"){
+
+                        updateMainIncome()
+                        viewModel.resetChildFragmentToNull()
+
+                    }
+                })
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_self_employment)
+            //Log.e("going","BACK")
+            findNavController().popBackStack()
+        })
+        val incomeActivity = (activity as? IncomeActivity)
+        var mainBorrowerList:ArrayList<Int>? = null
+        incomeActivity?.let { it ->
+            mainBorrowerList =  it.borrowerTabList
+        }
+        mainBorrowerList?.let { notNullMainBorrowerList->
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                }
+            }
+        }
+    }
+
 }

@@ -15,6 +15,15 @@ object AppConstant {
 
         //const val  LOGIN_NAME:String = "khatri03.mcu@mailinator.com"
         //const val  PASSWORD:String = "test123"
+        const val real_estate_delete_text: String = "Are you sure you want to delete this property?"
+        const val income_update: String = "income-update"
+        const val income_self_employment: String = "Self Employment / Independent Contractor"
+        const val income_employment: String = "Employment"
+        const val income_business: String = "Business"
+        const val income_military: String = "Military Pay"
+        const val income_retirement: String = "Retirement"
+        const val income_other: String = "Other"
+
         const val RESPONSE_CODE_SUCCESS = "200"
         const val IS_LOGGED_IN:String ="IS_LOGGED_IN"
         const val RACE_DETAILS : String = "race_details"
@@ -55,10 +64,20 @@ object AppConstant {
 
 
         const val borrowerId:String = "borrowerId"
+        const val borrowerName:String = "borrowerName"
+        const val propertyInfoId:String = "propertyInfoId"
 
-        const val borrowerAssetId:String = "borrowerAssetId"
+
+        const val assetUniqueId:String = "borrowerAssetId"
 
         const val assetCategoryId:String = "assetCategoryId"
+
+        const val assetBorrowerName:String = "assetBorrowerName"
+
+
+        const val assetCategoryName:String = "assetCategoryName"
+
+        const val listenerAttached:String = "listenerAttached"
 
         const val assetTypeID:String = "assetTypeID"
 
@@ -136,7 +155,7 @@ object AppConstant {
 
         const val borrowerDocScreen:String = "borrowerDocScreen"
 
-        const val updateGovernmentQuestionByBorrowerId : String = "updateGovernmentQuestionByBorrowerId"
+        const val addUpdateQuestionsParams : String = "addUpdateQuestionsParams"
 
 
         const val questionId : String = "questionId"
@@ -148,6 +167,8 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val application_tab_updated: String = "tab_data_updated"
+        const val income_delete_text: String = "Are you sure you want to remove this income source?"
         const val MIXED_USE_PROPERTY_DESC: String = "mixed_property_explaination"
         const val TOOLBAR_TITLE: String = "toolbar_title"
         const val RESERVE_ACTIVATED: String = "reserve_activated"
@@ -166,6 +187,7 @@ object AppConstant {
 
         const val  ownershipConstantValue = "Ownership Interest in Property"
         const val  childConstantValue = "Child Support, Alimony, etc."
+        const val  UndisclosedBorrowerFunds = "Undisclosed Borrowered Funds"
         const val  Bankruptcy = "Bankruptcy"
         const val demographicInformation = "Demographic Information"
 
@@ -173,6 +195,11 @@ object AppConstant {
         const val INCOME_OVERTIME ="Overtime"
         const val INCOME_COMMISSION = "Commission"
 
+
+        const val assetReturnParams = "assetReturnParams"
+        const val assetDeleted = "assetDeleted"
+        const val assetUpdated = "assetUpdated"
+        const val assetAdded = "assetAdded"
 
         const val selectedAsianChildList = "selectedAsianChildList"
         const val asianChildList = "AsianChildList"

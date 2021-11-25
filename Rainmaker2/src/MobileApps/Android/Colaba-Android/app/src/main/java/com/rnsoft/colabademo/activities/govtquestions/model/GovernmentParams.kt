@@ -5,8 +5,8 @@ import kotlinx.android.parcel.Parcelize
 import kotlinx.android.parcel.RawValue
 
 @Parcelize
-data class UpdateGovernmentQuestions(
+data class GovernmentParams(
     val BorrowerId: Int = 0,
-    val LoanApplicationId: String = "5",
-    val Questions: @RawValue ArrayList<QuestionData> = arrayListOf()
+    val LoanApplicationId: Int = 5,
+    val Questions: ArrayList<QuestionData> = arrayListOf()
 ):Parcelable
