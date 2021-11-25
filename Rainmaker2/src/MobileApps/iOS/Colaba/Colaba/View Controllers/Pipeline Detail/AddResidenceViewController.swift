@@ -39,6 +39,8 @@ class AddResidenceViewController: BaseViewController {
     @IBOutlet weak var txtfieldMonthlyRent: ColabaTextField!
     @IBOutlet weak var txtfieldMonthlyRentTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldMonthlyRentHeightConstraint: NSLayoutConstraint! //39 or 0
+    @IBOutlet weak var mailingAddressDifferentFromCurrentAddressStackView: UIStackView!
+    @IBOutlet weak var differentMailingAddressIcon: UIImageView!
     @IBOutlet weak var addMailingAddressStackView: UIStackView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     @IBOutlet weak var tblViewMailingAddress: UITableView!
@@ -65,6 +67,8 @@ class AddResidenceViewController: BaseViewController {
         setPlacePickerTextField()
         lblBorrowerName.text = "\(borrowerFirstName.uppercased()) \(borrowerLastName.uppercased())"
         setCurrentAddress()
+        addMailingAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addMailingAddressStackViewTapped)))
+        mailingAddressDifferentFromCurrentAddressStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(differentMailingAddressTapped)))
     }
     
     //MARK:- Methods and Actions
@@ -132,11 +136,13 @@ class AddResidenceViewController: BaseViewController {
                     }
                 }
             }
-            self.tblViewMailingAddress.isHidden = false
-            self.addMailingAddressStackView.isHidden = true
-            self.numberOfMailingAddress = 1
-            self.tblViewMailingAddress.reloadData()
+            differentMailingAddressIcon.image = UIImage(named: selectedAddress.isMailingAddressDifferent ? "CheckBoxSelected" : "CheckBoxUnSelected")
+            
         }
+        self.tblViewMailingAddress.isHidden = selectedAddress.mailingAddressModel.street == ""
+        self.addMailingAddressStackView.isHidden = !selectedAddress.isMailingAddressDifferent
+        self.numberOfMailingAddress = selectedAddress.isMailingAddressDifferent ? 1 : 0
+        self.tblViewMailingAddress.reloadData()
     }
     
     func setPlacePickerTextField() {
@@ -155,6 +161,7 @@ class AddResidenceViewController: BaseViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(showMailingAddress), name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveButtonTapped), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(discardAddressChanges), name: NSNotification.Name(rawValue: kNotificationDiscardAddressChanges), object: nil)
         
         let filter = GMSAutocompleteFilter()
         filter.type = .address
@@ -221,7 +228,8 @@ class AddResidenceViewController: BaseViewController {
         txtfieldState.isHidden = false
         txtfieldZipCode.isHidden = false
         txtfieldCountry.isHidden = false
-        addMailingAddressStackView.isHidden = false
+        mailingAddressDifferentFromCurrentAddressStackView.isHidden = false
+        //addMailingAddressStackView.isHidden = false
         tblViewMailingAddress.isHidden = true
         
         UIView.animate(withDuration: 0.0) {
@@ -285,7 +293,25 @@ class AddResidenceViewController: BaseViewController {
     
     @objc func addMailingAddressStackViewTapped(){
         let vc = Utility.getAddMailingAddressVC()
+        vc.selectedAddress = selectedAddress
+        vc.borrowerFirstName = borrowerFirstName
+        vc.borrowerLastName = borrowerLastName
+        vc.delegate = self
         self.pushToVC(vc: vc)
+    }
+    
+    @objc func differentMailingAddressTapped(){
+        selectedAddress.isMailingAddressDifferent = !selectedAddress.isMailingAddressDifferent
+        differentMailingAddressIcon.image = UIImage(named: selectedAddress.isMailingAddressDifferent ? "CheckBoxSelected" : "CheckBoxUnSelected")
+        if (selectedAddress.isMailingAddressDifferent){
+            addMailingAddressStackView.isHidden = selectedAddress.mailingAddressModel.street != ""
+            tblViewMailingAddress.isHidden = selectedAddress.mailingAddressModel.street == ""
+        }
+        else{
+            addMailingAddressStackView.isHidden = true
+            tblViewMailingAddress.isHidden = true
+        }
+        
     }
     
     @objc func saveButtonTapped(){
@@ -308,6 +334,10 @@ class AddResidenceViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         saveButtonTapped()
+    }
+    
+    @objc func discardAddressChanges(){
+        self.dismissVC()
     }
     
     func validate() -> Bool {
@@ -333,7 +363,6 @@ class AddResidenceViewController: BaseViewController {
         var housingStatusId = 0
         var monthlyRent = 0
         var fromDate = ""
-        var toDate = ""
         
         if let selectedState = statesArray.filter({$0.name == txtfieldState.text!}).first{
             stateId = selectedState.id
@@ -375,6 +404,7 @@ class AddResidenceViewController: BaseViewController {
         selectedAddress.addressModel.stateName = txtfieldState.text!
         selectedAddress.addressModel.countyId = countyId
         selectedAddress.addressModel.countyName = txtfieldCounty.text!
+        //selectedAddress.isMailingAddressDifferent = selectedAddress.mailingAddressModel.street != ""
         self.delegate?.saveCurrentAddress(address: selectedAddress)
         self.dismissVC()
     }
@@ -536,6 +566,7 @@ extension AddResidenceViewController: UITableViewDataSource, UITableViewDelegate
             vc.selectedAddress = selectedAddress
             vc.borrowerFirstName = borrowerFirstName
             vc.borrowerLastName = borrowerLastName
+            vc.delegate = self
             self.pushToVC(vc: vc)
         }
         
@@ -691,3 +722,9 @@ extension AddResidenceViewController : ColabaTextFieldDelegate {
     }
 }
 
+extension AddResidenceViewController: AddMailingAddressViewControllerDelegate{
+    func saveCurrentAddressWithDifferentMailingAddress(address: BorrowerAddress) {
+        selectedAddress = address
+        setCurrentAddress()
+    }
+}

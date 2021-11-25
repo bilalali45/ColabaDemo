@@ -9,6 +9,10 @@ import UIKit
 import Material
 import GooglePlaces
 
+protocol AddMailingAddressViewControllerDelegate: AnyObject {
+    func saveCurrentAddressWithDifferentMailingAddress(address: BorrowerAddress)
+}
+
 class AddMailingAddressViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -40,6 +44,7 @@ class AddMailingAddressViewController: BaseViewController {
     var countiesArray = [CountiesModel]()
     var borrowerFirstName = ""
     var borrowerLastName = ""
+    weak var delegate: AddMailingAddressViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +68,7 @@ class AddMailingAddressViewController: BaseViewController {
         
         ///County Text Field
         txtfieldCounty.setTextField(placeholder: "County", controller: self, validationType: .noValidation)
+        txtfieldCounty.type = .editableDropdown
         
         ///State Text Field
         txtfieldState.setTextField(placeholder: "State", controller: self, validationType: .required)
@@ -78,7 +84,7 @@ class AddMailingAddressViewController: BaseViewController {
     
     func setAddressData(){
         if (selectedAddress.id > 0){
-            let address = selectedAddress.isMailingAddressDifferent ? selectedAddress.mailingAddressModel : selectedAddress.addressModel
+            let address = selectedAddress.mailingAddressModel
             showAllFields()
             txtfieldHomeAddress.text = address.street
             txtfieldStreetAddress.setTextField(text: address.street)
@@ -221,6 +227,9 @@ class AddMailingAddressViewController: BaseViewController {
     }
     
     @objc func goBackAfterDelete(){
+        selectedAddress.isMailingAddressDifferent = false
+        selectedAddress.mailingAddressModel = AddressModel()
+        self.delegate?.saveCurrentAddressWithDifferentMailingAddress(address: selectedAddress)
         self.goBack()
     }
     
@@ -237,10 +246,7 @@ class AddMailingAddressViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (self.txtfieldHomeAddress.text != "" && txtfieldStreetAddress.text != "" && txtfieldCity.text != "" && txtfieldState.text != "" && txtfieldZipCode.text != "" && txtfieldCountry.text != ""){
-                self.goBack()
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
-            }
+            saveMailingAddressModel()
         }
     }
     
@@ -252,6 +258,40 @@ class AddMailingAddressViewController: BaseViewController {
         isValidate = txtfieldZipCode.validate() && isValidate
         isValidate = txtfieldCountry.validate() && isValidate
         return isValidate
+    }
+    
+    func saveMailingAddressModel(){
+        
+        var stateId = 0
+        var countryId = 0
+        var countyId = 0
+        
+        if let selectedState = statesArray.filter({$0.name == txtfieldState.text!}).first{
+            stateId = selectedState.id
+        }
+        
+        if let selectedCountry = countriesArray.filter({$0.name == txtfieldCountry.text!}).first{
+            countryId = selectedCountry.id
+        }
+        
+        if let selectedCounty = countiesArray.filter({$0.name == txtfieldCounty.text!}).first{
+            countyId = selectedCounty.id
+        }
+        
+        selectedAddress.mailingAddressModel.street = txtfieldStreetAddress.text!
+        selectedAddress.mailingAddressModel.unit = txtfieldUnitNo.text!
+        selectedAddress.mailingAddressModel.city = txtfieldCity.text!
+        selectedAddress.mailingAddressModel.stateId = stateId
+        selectedAddress.mailingAddressModel.zipCode = txtfieldZipCode.text!
+        selectedAddress.mailingAddressModel.countryId = countryId
+        selectedAddress.mailingAddressModel.countryName = txtfieldCountry.text!
+        selectedAddress.mailingAddressModel.stateName = txtfieldState.text!
+        selectedAddress.mailingAddressModel.countyId = countyId
+        selectedAddress.mailingAddressModel.countyName = txtfieldCounty.text!
+        self.delegate?.saveCurrentAddressWithDifferentMailingAddress(address: selectedAddress)
+        
+        self.goBack()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowMailingAddress), object: nil)
     }
     
     //MARK:- API's

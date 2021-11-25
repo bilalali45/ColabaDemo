@@ -279,7 +279,7 @@ class BorrowerInformationViewController: BaseViewController {
             }
         }
         
-        totalAddresses = borrowerInformationModel.currentAddress.id > 0 ? 1 : 0
+        totalAddresses = borrowerInformationModel.currentAddress.addressModel.street != "" ? 1 : 0
         totalAddresses = totalAddresses + borrowerInformationModel.previousAddresses.count
         self.tblViewAddress.reloadData()
         self.lblAddAddress.text = totalAddresses == 0 ? "Add Current Residence" : "Add Previous Residence"
@@ -1116,6 +1116,17 @@ class BorrowerInformationViewController: BaseViewController {
                             "countyId": borrowerInformationModel.currentAddress.addressModel.countyId == 0 ? NSNull() : borrowerInformationModel.currentAddress.addressModel.countyId,
                             "countyName": borrowerInformationModel.currentAddress.addressModel.countyName] as [String: Any]
         
+        let differentMailingAddressModel = ["street": borrowerInformationModel.currentAddress.mailingAddressModel.street,
+                                            "unit": borrowerInformationModel.currentAddress.mailingAddressModel.unit,
+                                              "city": borrowerInformationModel.currentAddress.mailingAddressModel.city,
+                                            "stateId": borrowerInformationModel.currentAddress.mailingAddressModel.stateId == 0 ? NSNull() : borrowerInformationModel.currentAddress.mailingAddressModel.stateId,
+                                            "zipCode": borrowerInformationModel.currentAddress.mailingAddressModel.zipCode,
+                                            "countryId": borrowerInformationModel.currentAddress.mailingAddressModel.countryId == 0 ? NSNull() : borrowerInformationModel.currentAddress.mailingAddressModel.countryId,
+                                            "countryName": borrowerInformationModel.currentAddress.mailingAddressModel.countryName,
+                                            "stateName": borrowerInformationModel.currentAddress.mailingAddressModel.stateName,
+                                            "countyId": borrowerInformationModel.currentAddress.mailingAddressModel.countyId == 0 ? NSNull() : borrowerInformationModel.currentAddress.mailingAddressModel.countyId,
+                                            "countyName": borrowerInformationModel.currentAddress.mailingAddressModel.countyName] as [String: Any]
+        
         let currentAddress = ["loanApplicationId": loanApplicationId,
                               "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
                               "id": borrowerInformationModel.currentAddress.id == 0 ? NSNull() : borrowerInformationModel.currentAddress.id,
@@ -1123,8 +1134,8 @@ class BorrowerInformationViewController: BaseViewController {
                               "monthlyRent": borrowerInformationModel.currentAddress.monthlyRent,
                               "fromDate": borrowerInformationModel.currentAddress.fromDate,
                               "addressModel": addressModel,
-                              "isMailingAddressDifferent": false,
-                              "mailingAddressModel": NSNull()] as [String: Any]
+                              "isMailingAddressDifferent": borrowerInformationModel.currentAddress.isMailingAddressDifferent,
+                              "mailingAddressModel": borrowerInformationModel.currentAddress.isMailingAddressDifferent ? differentMailingAddressModel : NSNull()] as [String: Any]
         
         
         var previousAddresses: [Any] = []

@@ -153,6 +153,7 @@ class AddPreviousResidenceViewController: BaseViewController {
         txtfieldHomeAddress.textColor = Theme.getAppBlackColor()
         
         NotificationCenter.default.addObserver(self, selector: #selector(saveButtonTapped), name: NSNotification.Name(rawValue: kNotificationSaveAddressAndDismiss), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(discardAddressChanges), name: NSNotification.Name(rawValue: kNotificationDiscardAddressChanges), object: nil)
         
         txtfieldHomeAddress.textInsetsPreset = .horizontally5
         
@@ -282,6 +283,10 @@ class AddPreviousResidenceViewController: BaseViewController {
         vc.screenType = 2
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
+    }
+    
+    @objc func discardAddressChanges(){
+        self.dismissVC()
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
