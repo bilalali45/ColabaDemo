@@ -325,5 +325,26 @@ extension AddBusinessViewController: CurrentEmployerAddressViewControllerDelegat
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            businessDetail.address.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            businessDetail.address.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            businessDetail.address.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            businessDetail.address.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            businessDetail.address.countyName = countyName
+        }
+        businessDetail.address.street = street
+        businessDetail.address.unit = unit
+        businessDetail.address.city = city
+        businessDetail.address.stateName = stateName
+        businessDetail.address.zipCode = zipCode
     }
 }

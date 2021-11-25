@@ -287,5 +287,26 @@ extension AddSelfEmploymentViewController: CurrentEmployerAddressViewControllerD
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            selfIndependentDetail.address.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            selfIndependentDetail.address.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            selfIndependentDetail.address.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            selfIndependentDetail.address.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            selfIndependentDetail.address.countyName = countyName
+        }
+        selfIndependentDetail.address.street = street
+        selfIndependentDetail.address.unit = unit
+        selfIndependentDetail.address.city = city
+        selfIndependentDetail.address.stateName = stateName
+        selfIndependentDetail.address.zipCode = zipCode
     }
 }
