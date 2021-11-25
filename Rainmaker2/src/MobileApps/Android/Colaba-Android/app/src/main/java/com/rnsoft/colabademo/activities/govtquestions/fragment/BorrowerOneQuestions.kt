@@ -28,7 +28,9 @@ import com.google.gson.Gson
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.utils.Common
+import com.rnsoft.colabademo.utils.JSONUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_text2
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_title2
@@ -55,14 +57,23 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
+
+
+interface JSONConvertable {
+    fun toJSON(): String = Gson().toJson(this)
+}
+
+
+inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
+
+
 @AndroidEntryPoint
-class BorrowerOneQuestions : GovtQuestionBaseFragment() {
+class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
     private lateinit var binding: BorrowerOneQuestionsLayoutBinding
 
@@ -115,7 +126,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
                     }
                     EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
-                    findNavController().popBackStack()
+                    requireActivity().finish()
                 }
             }
         }
@@ -129,6 +140,29 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private var governmentParams = GovernmentParams()
 
     private var saveGovtQuestionForDetailAnswer:ArrayList<QuestionData>? = null
+
+    data class TestAnswerData(
+        val selectionOptionId: String,
+        val selectionOptionText: String
+    )
+
+    private fun guessTheType(any: Any) = when (any){
+        is Int -> Timber.e("It's an Integer !")
+        is String -> Timber.e("It's a String !")
+        is Boolean -> Timber.e("It's a Boolean !")
+        is Array<*> -> Timber.e("It's an Array !")
+        is ArrayList<*> -> Timber.e("It's an ArrayList !")
+        is Gson-> Timber.e("It's an Gson !")
+        is List<*> -> Timber.e("It's a List !")
+        is Set<*> -> Timber.e("It's a Set !")
+        is TestAnswerData -> Timber.e("It's a TestAnswerData !")
+        is ChildAnswerData -> Timber.e("It's an ChildAnswerData !")
+        is BankruptcyAnswerData -> Timber.e("It's an BankruptcyAnswerData !")
+        else -> Timber.e("Error ! Type not recognized...")
+    }
+
+
+
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -145,8 +179,70 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
 
+
+
                                     for(question in questionDataList){
-                                        question.answerData = null
+
+
+
+                                        //var yourModel = gson.fromJson(yourJsonString, YourModel::class.java)
+
+                                        question.id?.let{ questionId->
+                                            if(questionId == 140 || questionId == 130 || questionId == 45)
+                                                question.answerData = null
+                                        }
+                                        question.parentQuestionId?.let { parentQuestionId ->
+                                            var validJson = false
+                                            question.answerData?.let {
+                                                validJson = JSONUtils.isJSONValid(it.toString())
+                                                Timber.e("bool is  $validJson")
+                                                question.headerText?.let{
+                                                    Timber.e(" header text = "+it)
+                                                }
+
+                                                guessTheType(it)
+                                            }
+
+                                            val gson = Gson()
+
+                                            if(parentQuestionId == 140 || parentQuestionId == 130)
+                                                question.answerData = null
+
+                                            if(parentQuestionId == 20){
+                                                //= question.answerData as answerData
+                                                question.answerData?.let {
+
+                                                    //val extractValue = (it as TestAnswerData).selectionOptionId
+                                                    //val listType: Type = object : TypeToken<ArrayList<TestAnswerData?>?>() {}.getType()
+                                                    //val yourClassList: List<TestAnswerData> = Gson().fromJson(jsonArray, listType)
+                                                    //val obj:TestAnswerData = Gson().fromJson(Gson().toJson(((LinkedTreeMap<String, Object>) TestAnswerData)), TestAnswerData.class)
+                                                    //= new Gson().fromJson(new Gson().toJson(((LinkedTreeMap<String, Object>) theLinkedTreeMapObject)), MyClass .class)
+
+
+                                                    val t: LinkedTreeMap<Any, Any> = it as LinkedTreeMap<Any, Any>
+                                                    val selectionOptionId = t["selectionOptionId"].toString()
+                                                    val selectionOptionText = t["selectionOptionText"].toString()
+
+                                                    Timber.e("selectionOptionId $selectionOptionId")
+
+                                                    if(validJson) {
+                                                        val yourModel = gson.fromJson(
+                                                            it.toString(),
+                                                            TestAnswerData::class.java
+                                                        )
+
+
+                                                        val yourObject = gson.fromJson( it.toString(), TestAnswerData::class.java)
+                                                        Timber.e("value is " + yourModel.selectionOptionId +" and "+
+                                                            yourModel.selectionOptionText
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+
+
+
                                     }
 
                                     item.passedBorrowerId?.let { passedBorrowerId ->
@@ -386,7 +482,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var childConstraintLayout:ConstraintLayout
     private lateinit var undisclosedLayout:ConstraintLayout
     private lateinit var bankruptcyConstraintLayout:ConstraintLayout
-    private lateinit var demoGraphicConstraintLayout:ConstraintLayout
+    private lateinit var dGlayout:ConstraintLayout
 
     //private lateinit var variableQuestionData: QuestionData
 
@@ -442,13 +538,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         else
         if(questionData.headerText?.trim() == AppConstant.demographicInformation) {
             contentCell = layoutInflater.inflate(R.layout.new_demo_graphic_show_layout, null) as ConstraintLayout
-            demoGraphicConstraintLayout = contentCell
+            dGlayout = contentCell
             questionData.id?.let {
-                demoGraphicConstraintLayout.id = it
+                dGlayout.id = it
                 contentCell.id = it
             }
             contentCell.visibility = View.INVISIBLE
-            demoGraphicConstraintLayout.visibility = View.INVISIBLE
+            dGlayout.visibility = View.INVISIBLE
             observeDemoGraphicData(contentCell)
             return contentCell
         }
@@ -482,7 +578,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
 
         if(childSupport){
-
             contentCell.govt_detail_box.setOnClickListener {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle ,  questionId)
@@ -495,9 +590,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle , questionId)
             }
-
-
-
             val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
             childInnerDetailQuestions.add(contentCell.govt_detail_box)
             childInnerDetailQuestions.add(contentCell.govt_detail_box2)
@@ -519,8 +611,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                     contentCell.govt_detail_box.visibility = View.VISIBLE
 
-                    childGlobalList.add(
-                        ChildAnswerData(
+                    childGlobalList.add(ChildAnswerData(
                             liabilityName,
                             liabilityTypeId,
                             monthlyPayment,
@@ -596,7 +687,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         item.visibility = View.VISIBLE
                 }
             }
-
             contentCell.ans_no.setOnClickListener {
                 for (item in childInnerDetailQuestions)
                     item.visibility = View.INVISIBLE
@@ -610,7 +700,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle, questionId)
             }
-
         }
         else
         {
@@ -758,7 +847,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
-    private val asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+    private var asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
 
     private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
 
@@ -770,96 +859,94 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private fun showEthnicityInnerBox(){
         if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
-            otherEthnicity = "Other Pacific Islander: $otherEthnicity"
-            otherEthnicity = otherEthnicity.substring(0, otherEthnicity.length-2)
-            demoGraphicConstraintLayout.other_ethnicity.text = otherEthnicity
-            demoGraphicConstraintLayout.other_ethnicity.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+            otherEthnicity = "Other Hispanic or Latino: $otherEthnicity"
+            dGlayout.other_ethnicity.text = otherEthnicity
+            dGlayout.other_ethnicity.visibility = View.VISIBLE
+            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.other_ethnicity.visibility = View.GONE
+            dGlayout.other_ethnicity.visibility = View.GONE
 
         if(ethnicityChildNames.isNotEmpty() && ethnicityChildNames.isNotBlank()) {
-            ethnicityChildNames = ethnicityChildNames.substring(0, ethnicityChildNames.length-2)
-            demoGraphicConstraintLayout.ethnicity_children.text = ethnicityChildNames
-            demoGraphicConstraintLayout.ethnicity_children.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+            //ethnicityChildNames = ethnicityChildNames.substring(0, ethnicityChildNames.length-2)
+            dGlayout.ethnicity_children.text = ethnicityChildNames
+            dGlayout.ethnicity_children.visibility = View.VISIBLE
+            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.ethnicity_children.visibility = View.GONE
+            dGlayout.ethnicity_children.visibility = View.GONE
     }
 
     private fun showNativeHawaiiInnerBox(){
         if(nativeHawaiiOtherRace.isNotEmpty() && nativeHawaiiOtherRace.isNotBlank()) {
             nativeHawaiiOtherRace = "Other Pacific Islander: $nativeHawaiiOtherRace"
-            nativeHawaiiOtherRace = nativeHawaiiOtherRace.substring(0, nativeHawaiiOtherRace.length-2)
-            demoGraphicConstraintLayout.other_typed_native_hawaiian.text = nativeHawaiiOtherRace
-            demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+
+            dGlayout.other_typed_native_hawaiian.text = nativeHawaiiOtherRace
+            dGlayout.other_typed_native_hawaiian.visibility = View.VISIBLE
+            dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.other_typed_native_hawaiian.visibility = View.GONE
+            dGlayout.other_typed_native_hawaiian.visibility = View.GONE
 
         if(nativeHawaiiChildNames.isNotEmpty() && nativeHawaiiChildNames.isNotBlank()) {
-            nativeHawaiiChildNames = nativeHawaiiChildNames.substring(0, nativeHawaiiChildNames.length-2)
-            demoGraphicConstraintLayout.child_native_hawaiian.text = nativeHawaiiChildNames
-            demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+            dGlayout.child_native_hawaiian.text = nativeHawaiiChildNames
+            dGlayout.child_native_hawaiian.visibility = View.VISIBLE
+            dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.child_native_hawaiian.visibility = View.GONE
+            dGlayout.child_native_hawaiian.visibility = View.GONE
     }
 
     private fun showAsianInnerBox(){
         if(otherAsianRace.isNotEmpty() && otherAsianRace.isNotBlank()) {
             otherAsianRace = "Other Asian: $otherAsianRace"
-            demoGraphicConstraintLayout.other_asian_race.text = otherAsianRace
-            demoGraphicConstraintLayout.other_asian_race.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+            dGlayout.other_asian_race.text = otherAsianRace
+            dGlayout.other_asian_race.visibility = View.VISIBLE
+            dGlayout.asian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.other_asian_race.visibility = View.GONE
+            dGlayout.other_asian_race.visibility = View.GONE
 
         if(asianChildNames.isNotEmpty() && asianChildNames.isNotBlank()) {
-            asianChildNames = asianChildNames.substring(0, asianChildNames.length-2)
-            demoGraphicConstraintLayout.asian_child_names.text = asianChildNames
-            demoGraphicConstraintLayout.asian_child_names.visibility = View.VISIBLE
-            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
+            //asianChildNames = asianChildNames.substring(0, asianChildNames.length-2)
+            dGlayout.asian_child_names.text = asianChildNames
+            dGlayout.asian_child_names.visibility = View.VISIBLE
+            dGlayout.asian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            demoGraphicConstraintLayout.asian_child_names.visibility = View.GONE
+            dGlayout.asian_child_names.visibility = View.GONE
     }
 
     private fun addDemoGraphicEvents(){
 
-        demoGraphicConstraintLayout.do_not_wish_check_box.setOnClickListener{
-            demoGraphicConstraintLayout.white_check_box.isChecked = false
-            demoGraphicConstraintLayout.black_or_african_check_box.isChecked = false
-            demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = false
-            demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked = false
-            demoGraphicConstraintLayout.asian_check_box.isChecked = false
+        dGlayout.do_not_wish_check_box.setOnClickListener{
+            dGlayout.white_check_box.isChecked = false
+            dGlayout.black_or_african_check_box.isChecked = false
+            dGlayout.american_or_indian_check_box.isChecked = false
+            dGlayout.native_hawaian_or_other_check_box.isChecked = false
+            dGlayout.asian_check_box.isChecked = false
 
-            if(demoGraphicConstraintLayout.do_not_wish_check_box.isChecked) {
-                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
-                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
+            if(dGlayout.do_not_wish_check_box.isChecked) {
+                dGlayout.asian_child_box_layout.visibility = View.GONE
+                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
             }
 
         }
 
-        demoGraphicConstraintLayout.white_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
-        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
-        demoGraphicConstraintLayout.black_or_african_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
-        demoGraphicConstraintLayout.asian_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
-        demoGraphicConstraintLayout.american_or_indian_check_box.setOnClickListener{ demoGraphicConstraintLayout.do_not_wish_check_box.isChecked = false }
+        dGlayout.white_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
+        dGlayout.native_hawaian_or_other_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
+        dGlayout.black_or_african_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
+        dGlayout.asian_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
+        dGlayout.american_or_indian_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
 
     }
 
     private fun observeDemoGraphicData( contentCell:ConstraintLayout){
         borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
 
-            demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
-            demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
-            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+            dGlayout.asian_child_box_layout.visibility = View.GONE
+            dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
+            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
 
             if(demoGraphicInfoList.size>0){
                 var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
@@ -887,13 +974,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         demoGraphicData.genderId?.let { genderId ->
                             variableGender = genderId
                             if (genderId == 1)
-                                demoGraphicConstraintLayout.demo_male.isChecked = true
+                                dGlayout.demo_male.isChecked = true
                             else
                             if (genderId == 2)
-                                demoGraphicConstraintLayout.demo_female.isChecked = true
+                                dGlayout.demo_female.isChecked = true
                             else
                             if (genderId == 3)
-                                demoGraphicConstraintLayout.demo_do_not_wish_to_provide.isChecked = true
+                                dGlayout.demo_do_not_wish_to_provide.isChecked = true
                         }
 
                         demoGraphicData.ethnicity?.let { ethnicityList ->
@@ -901,7 +988,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             if (ethnicityList.isNotEmpty()) {
                                 val selectedEthnicity = ethnicityList[0]
                                 if (selectedEthnicity.ethnicityId == 1) {
-                                    demoGraphicConstraintLayout.hispanic_or_latino.isChecked = true
+                                    dGlayout.hispanic_or_latino.isChecked = true
                                     selectedEthnicity.ethnicityDetails?.let { theList ->
                                         for (item in theList) {
                                             ethnicityChildList.add(item)
@@ -921,10 +1008,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                 }
                                 else
                                 if (selectedEthnicity.ethnicityId == 2)
-                                    demoGraphicConstraintLayout.not_hispanic.isChecked = true
+                                    dGlayout.not_hispanic.isChecked = true
                                 else
                                 if (selectedEthnicity.ethnicityId == 3)
-                                    demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = true
+                                    dGlayout.not_telling_ethnicity.isChecked = true
                             }
                         }
 
@@ -932,10 +1019,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             variableRaceList = raceList
                             for (race in raceList) {
                                 if (race.raceId == 1) {
-                                    demoGraphicConstraintLayout.american_or_indian_check_box.isChecked = true
+                                    dGlayout.american_or_indian_check_box.isChecked = true
                                 }
                                 if (race.raceId == 2) {
-                                    demoGraphicConstraintLayout.asian_check_box.isChecked = true
+                                    dGlayout.asian_check_box.isChecked = true
                                     race.raceDetails?.let { asianChildList ->
 
                                         for (item in asianChildList) {
@@ -954,11 +1041,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     showAsianInnerBox()
                                 }
                                 if (race.raceId == 3) {
-                                    demoGraphicConstraintLayout.black_or_african_check_box.isChecked =
+                                    dGlayout.black_or_african_check_box.isChecked =
                                         true
                                 }
                                 if (race.raceId == 4) {
-                                    demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked =
+                                    dGlayout.native_hawaian_or_other_check_box.isChecked =
                                         true
 
                                     race.raceDetails?.let { nativeHawaianChildList ->
@@ -981,10 +1068,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                                 }
                                 if (race.raceId == 5) {
-                                    demoGraphicConstraintLayout.white_check_box.isChecked = true
+                                    dGlayout.white_check_box.isChecked = true
                                 }
                                 if (race.raceId == 6) {
-                                    demoGraphicConstraintLayout.do_not_wish_check_box.performClick()
+                                    dGlayout.do_not_wish_check_box.performClick()
                                 }
                             }
 
@@ -1003,101 +1090,114 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private fun setUpDemoGraphicScreen() {
 
-        demoGraphicConstraintLayout.american_or_indian_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+        dGlayout.american_or_indian_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
             updateDemoGraphicRace(1, isChecked)
         }
 
-        demoGraphicConstraintLayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        dGlayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
-                val bundle = bundleOf(AppConstant.asianChildList to asianChildList)
+                if((dGlayout.asian_child_names.text.isNotEmpty() &&
+                        dGlayout.asian_check_box.text.isNotBlank()) ||
+                    (dGlayout.other_asian_race.text.isNotEmpty() &&
+                    dGlayout.other_asian_race.text.isNotBlank())
+                        )
+                dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+
+                val copyAsianChildList =  ArrayList(asianChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
                 findNavController().navigate(R.id.action_asian , bundle)
                 Timber.e("not accessible...")
             }
             else
-                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.GONE
+                dGlayout.asian_child_box_layout.visibility = View.GONE
 
             updateDemoGraphicRace(2, isChecked)
 
         }
 
-        demoGraphicConstraintLayout.black_or_african_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+        dGlayout.black_or_african_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
             updateDemoGraphicRace(3, isChecked)
         }
 
-        demoGraphicConstraintLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        dGlayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                if((dGlayout.child_native_hawaiian.text.isNotEmpty() &&
+                            dGlayout.child_native_hawaiian.text.isNotBlank()) ||
+                    (dGlayout.other_typed_native_hawaiian.text.isNotEmpty() &&
+                            dGlayout.other_typed_native_hawaiian.text.isNotBlank())
+                )
+                    dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
                 val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
             else
-                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.GONE
+                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
             updateDemoGraphicRace(4, isChecked)
         }
 
-        demoGraphicConstraintLayout.white_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        dGlayout.white_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             updateDemoGraphicRace(5, isChecked)
         }
 
 
-        demoGraphicConstraintLayout.do_not_wish_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        dGlayout.do_not_wish_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             variableRaceList.clear()
             updateDemoGraphicRace(6, isChecked)
         }
 
-        demoGraphicConstraintLayout.native_hawaian_child_box_layout.setOnClickListener{
-            if (demoGraphicConstraintLayout.native_hawaian_or_other_check_box.isChecked) {
-                demoGraphicConstraintLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+        dGlayout.native_hawaian_child_box_layout.setOnClickListener{
+            if (dGlayout.native_hawaian_or_other_check_box.isChecked) {
+                dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
                 val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
 
         }
 
-        demoGraphicConstraintLayout.asian_child_box_layout.setOnClickListener{
-            if ( demoGraphicConstraintLayout.asian_check_box.isChecked) {
-                demoGraphicConstraintLayout.asian_child_box_layout.visibility = View.VISIBLE
-                val bundle = bundleOf(AppConstant.asianChildList to asianChildList)
+        dGlayout.asian_child_box_layout.setOnClickListener{
+            if ( dGlayout.asian_check_box.isChecked) {
+                dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+                val copyAsianChildList =  ArrayList(asianChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
                 findNavController().navigate(R.id.action_asian , bundle)
                 Timber.e("not accessible...")
             }
         }
 
-        demoGraphicConstraintLayout.hispanic_or_latino.setOnClickListener {
+        dGlayout.hispanic_or_latino.setOnClickListener {
             val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
             findNavController().navigate(R.id.action_hispanic , bundle)
-            demoGraphicConstraintLayout.not_hispanic.isChecked = false
-            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+            dGlayout.not_hispanic.isChecked = false
+            dGlayout.not_telling_ethnicity.isChecked = false
             showEthnicityInnerBox()
             updateDemoGraphicEthnicity(1)
         }
 
-        demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.setOnClickListener {
+        dGlayout.hispanic_or_latino_child_box_layout.setOnClickListener {
             val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
             findNavController().navigate(R.id.action_hispanic, bundle)
-            demoGraphicConstraintLayout.not_hispanic.isChecked = false
-            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
+            dGlayout.not_hispanic.isChecked = false
+            dGlayout.not_telling_ethnicity.isChecked = false
         }
 
-        demoGraphicConstraintLayout.not_hispanic.setOnClickListener{
-            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
-            demoGraphicConstraintLayout.not_telling_ethnicity.isChecked = false
-            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+        dGlayout.not_hispanic.setOnClickListener{
+            dGlayout.hispanic_or_latino.isChecked = false
+            dGlayout.not_telling_ethnicity.isChecked = false
+            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
             updateDemoGraphicEthnicity(2)
         }
 
-        demoGraphicConstraintLayout.not_telling_ethnicity.setOnClickListener{
-            demoGraphicConstraintLayout.hispanic_or_latino.isChecked = false
-            demoGraphicConstraintLayout.not_hispanic.isChecked = false
-            demoGraphicConstraintLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+        dGlayout.not_telling_ethnicity.setOnClickListener{
+            dGlayout.hispanic_or_latino.isChecked = false
+            dGlayout.not_hispanic.isChecked = false
+            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
             updateDemoGraphicEthnicity(3)
         }
 
 
-            demoGraphicConstraintLayout.demo_male.setOnClickListener { updateDemoGraphicGender(1)}
-            demoGraphicConstraintLayout.demo_female.setOnClickListener { updateDemoGraphicGender(2)}
-            demoGraphicConstraintLayout.demo_do_not_wish_to_provide.setOnClickListener { updateDemoGraphicGender(3)}
+            dGlayout.demo_male.setOnClickListener { updateDemoGraphicGender(1)}
+            dGlayout.demo_female.setOnClickListener { updateDemoGraphicGender(2)}
+            dGlayout.demo_do_not_wish_to_provide.setOnClickListener { updateDemoGraphicGender(3)}
 
     }
 
@@ -1129,6 +1229,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<DemoGraphicRaceDetail>>(AppConstant.selectedAsianChildList)?.observe(
             viewLifecycleOwner) { resultAsianChildList ->
             // Do something with the result.
+            asianChildList = resultAsianChildList
             if(resultAsianChildList.size>0) {
                 for(item in variableRaceList){
                     if(item.raceId == 2) {
@@ -1153,8 +1254,16 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     }
                 }
                 showAsianInnerBox()
-                updateDemoGraphicService()
+                //updateDemoGraphicService()
             }
+            else
+            {
+                dGlayout.asian_child_names.text =""
+                dGlayout.other_asian_race.text=""
+                dGlayout.asian_child_box_layout.visibility = View.GONE
+                dGlayout.asian_check_box.isChecked = false
+            }
+
         }
 
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<DemoGraphicRaceDetail>>(AppConstant.selectedNativeHawaianChildList)?.observe(
@@ -1181,35 +1290,46 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                         break
                     }
                 }
-                updateDemoGraphicService()
+                //updateDemoGraphicService()
+            }
+            else
+            {
+                dGlayout.child_native_hawaiian.text =""
+                dGlayout.other_typed_native_hawaiian.text=""
+                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
+                dGlayout.native_hawaian_or_other_check_box.isChecked = false
             }
 
         }
 
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<EthnicityDetailDemoGraphic>>(AppConstant.selectedEthnicityChildList)?.observe(
-            viewLifecycleOwner) { selectedEthnicityChildList ->
-                // Do something with the result.
+            viewLifecycleOwner) { theList ->
+            // Do something with the result.
+            if(theList.size>0) {
                 ethnicityChildNames = ""
                 otherEthnicity = ""
-                selectedEthnicityChildList?.let { theList ->
-                    for (item in theList) {
-                        item.isOther?.let { isOther ->
-                            if (isOther)
-                                item.otherEthnicity?.let {
-                                    otherEthnicity = it
-                                }
-                            else
-                                ethnicityChildNames = ethnicityChildNames + item.name + ", "
-                        }
+                for (item in theList) {
+                    item.isOther?.let { isOther ->
+                        if (isOther)
+                            item.otherEthnicity?.let {
+                                otherEthnicity = it
+                            }
+                        else
+                            ethnicityChildNames = ethnicityChildNames + item.name + ", "
                     }
                 }
                 showEthnicityInnerBox()
-                variableEthnicityList[0].ethnicityDetails  = selectedEthnicityChildList
-                updateDemoGraphicService()
+                variableEthnicityList[0].ethnicityDetails  = theList
+                //updateDemoGraphicService()
+            }
+            else
+            {
+                dGlayout.ethnicity_children.text =""
+                dGlayout.other_ethnicity.text=""
+                dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+                dGlayout.hispanic_or_latino.isChecked = false
+            }
         }
-
-
-
     }
 
     private fun updateDemoGraphicService(){
@@ -1219,7 +1339,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 variableDemoGraphicData.race = variableRaceList
                 variableDemoGraphicData.ethnicity = variableEthnicityList
                 borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
-                findNavController().popBackStack()
+                //findNavController().popBackStack()
             }
         }
     }
@@ -1265,8 +1385,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
-
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateOwnershipInterest(updateEvent: OwnershipInterestUpdateEvent) {
         var secondMatched = true
@@ -1284,7 +1402,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             clickedContentCell.govt_detail_box.visibility = View.VISIBLE
                             secondMatched = false
                             ownerShipInnerScreenParams.add(updateEvent.answer1)
-                            item.answerData = answerData(updateEvent.index1, updateEvent.answer1)
+                            //item.answerData = TestAnswerData(updateEvent.index1.toString(), updateEvent.answer1)
                         } else {
                             clickedContentCell.detail_text2?.text =  OwnershipInterestInPropertyFragment.ownershipQuestionTwo
                             clickedContentCell.detail_text2?.setTypeface(null, Typeface.NORMAL)
@@ -1292,7 +1410,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                             clickedContentCell.detail_text2?.setTypeface(null, Typeface.BOLD)
                             clickedContentCell.govt_detail_box2?.visibility = View.VISIBLE
                             ownerShipInnerScreenParams.add(updateEvent.answer2)
-                            item.answerData = answerData(updateEvent.index2, updateEvent.answer2)
+                            //item.answerData = TestAnswerData(updateEvent.index2.toString(), updateEvent.answer2)
                         }
                     }
                 }
@@ -1307,15 +1425,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
 
     }
-
-
-    private data class answerData(
-        val selectionOptionId: Int,
-        val selectionOptionText: String
-    )
-
-
-
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateBankruptcy(updateEvent: BankruptcyUpdateEvent) {
@@ -1387,5 +1496,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
 
 }
+
+
+
+
 
 

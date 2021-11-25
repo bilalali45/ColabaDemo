@@ -34,9 +34,10 @@ class HispanicFragment:BaseFragment() {
 
     private fun setUpUI() {
         binding.edDetails.onFocusChangeListener = CustomFocusListenerForEditText( binding.edDetails , binding.layoutDetail , requireContext())
-        binding.backButton.setOnClickListener { findNavController().popBackStack() }
+        binding.backButton.setOnClickListener {   findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
             backToCallingScreen()
+
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
 
@@ -99,7 +100,7 @@ class HispanicFragment:BaseFragment() {
 
     private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            backToCallingScreen()
+            findNavController().popBackStack()
         }
     }
 

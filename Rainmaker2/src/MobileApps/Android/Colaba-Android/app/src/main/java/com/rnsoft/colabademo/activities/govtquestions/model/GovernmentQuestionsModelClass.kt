@@ -22,9 +22,11 @@ data class QuestionData(
     var answer: String?,
     var answerDetail: String?= "",
     val headerText:String? = "title1",
-    var answerData : @RawValue Any? = null,
+    var answerData :  @RawValue Any? = null,
 
     val firstName: String?=null,
+
+
 
     val lastName: String?=null,
     val ownTypeId: Int?=null,
