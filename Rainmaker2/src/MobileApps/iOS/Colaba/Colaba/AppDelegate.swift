@@ -90,27 +90,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func showInitialViewController(){
             
-        var isAlreadyRegisteredWithBiometric = ""
-        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
-            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
-        }
-
-        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
-            if (Utility.checkDeviceAuthType() == kTouchID){
-                loadFingerPrintViewController()
-            }
-            else if (Utility.checkDeviceAuthType() == kFaceID){
-                loadFaceLockViewController()
-            }
-            else{
-                loadLoginViewController()
-            }
-        }
-        else{
-            loadLoginViewController()
-        }
-//        self.loadBorrowerInfoController()
-//        self.window?.makeKeyAndVisible()
+//        var isAlreadyRegisteredWithBiometric = ""
+//        if let isBiometricRegistered = UserDefaults.standard.value(forKey: kIsUserRegisteredWithBiometric){
+//            isAlreadyRegisteredWithBiometric = isBiometricRegistered as! String
+//        }
+//
+//        if (isAlreadyRegisteredWithBiometric == kYes && UserModel.getCurrentUser() != nil){
+//            if (Utility.checkDeviceAuthType() == kTouchID){
+//                loadFingerPrintViewController()
+//            }
+//            else if (Utility.checkDeviceAuthType() == kFaceID){
+//                loadFaceLockViewController()
+//            }
+//            else{
+//                loadLoginViewController()
+//            }
+//        }
+//        else{
+//            loadLoginViewController()
+//        }
+        self.loadBorrowerInfoController()
+        self.window?.makeKeyAndVisible()
     }
 
     func loadDashboardViewController(){
@@ -119,9 +119,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-//        let vc = Utility.getSendDocumentRequestVC()
-//        //let vc = Utility.getTestVC()
-//        self.window?.rootViewController = vc
         
         let vc = Utility.getLoanDetailVC()
         vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
@@ -133,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
         self.window?.rootViewController = navVC
+        
     }
     
     func loadLoginViewController(){

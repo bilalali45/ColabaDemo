@@ -156,12 +156,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
 
         txtfieldPropertyType.setTextField(placeholder: "Property Type" , controller: self, validationType: .noValidation)
         txtfieldPropertyType.type = .dropdown
-        txtfieldPropertyType.setDropDownDataSource(kPropertyTypeArray)
         
         ///Occupancy Type Text Field
         txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type" , controller: self, validationType: .noValidation)
         txtfieldOccupancyType.type = .dropdown
-        txtfieldOccupancyType.setDropDownDataSource(kOccupancyTypeArray)
         
         ///Rental Income Text Field
         txtfieldRentalIncome.setTextField(placeholder: "Rental Income" , controller: self, validationType: .noValidation)
