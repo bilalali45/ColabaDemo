@@ -38,6 +38,7 @@ import kotlinx.android.synthetic.main.view_placesearch.*
 import kotlinx.coroutines.coroutineScope
 
 import java.io.IOException
+import java.lang.NullPointerException
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -103,23 +104,42 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
     } */
 
     private fun setData(){
-        addressList = arguments?.getParcelable(AppConstant.address)!!
-        addressList?.let {
-            it.street?.let { binding.tvSearch.setText(it)
-                CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+        try {
+            addressList = arguments?.getParcelable(AppConstant.address)!!
+            addressList?.let {
+                it.street?.let {
+                    binding.tvSearch.setText(it)
+                    CustomMaterialFields.setColor(
+                        binding.layoutSearchAddress,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.street?.let { binding.edStreetAddress.setText(it) }
+                it.city?.let { binding.edCity.setText(it) }
+                it.countryName?.let {
+                    binding.tvCountry.setText(it)
+                    CustomMaterialFields.setColor(
+                        binding.layoutCountry,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.zipCode?.let { binding.edZipcode.setText(it) }
+                it.stateName?.let {
+                    binding.tvState.setText(it)
+                    CustomMaterialFields.setColor(
+                        binding.layoutState,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.countyName?.let { binding.tvCounty.setText(it) }
+                it.unit?.let { binding.edUnitAtpNo.setText(it) }
+                visibleAllFields()
             }
-            it.street?.let { binding.edStreetAddress.setText(it) }
-            it.city?.let { binding.edCity.setText(it) }
-            it.countryName?.let { binding.tvCountry.setText(it)
-                CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
-            }
-            it.zipCode?.let { binding.edZipcode.setText(it) }
-            it.stateName?.let { binding.tvState.setText(it)
-                CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
-            }
-            it.countyName?.let { binding.tvCounty.setText(it) }
-            it.unit?.let{ binding.edUnitAtpNo.setText(it)}
-            visibleAllFields()
+        }catch (e : NullPointerException){
+
         }
     }
 

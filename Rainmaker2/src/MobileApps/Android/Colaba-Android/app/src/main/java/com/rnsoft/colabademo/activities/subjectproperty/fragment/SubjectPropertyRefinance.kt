@@ -42,7 +42,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private val viewModelSubProperty : SubjectPropertyViewModel by activityViewModels()
     private lateinit var binding: SubPropertyRefinanceBinding
-    //var addressDetailList :  ArrayList<AddressData> = ArrayList()
     var addressList :  ArrayList<AddressData> = ArrayList()
     private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
     private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
@@ -76,8 +75,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun setDropDownData(){
         lifecycleScope.launchWhenStarted {
             coroutineScope {
+                var realStateCounter:Int = 0
                 viewModel.propertyType.observe(viewLifecycleOwner, { properties->
                     if (properties != null && properties.size > 0) {
+                        realStateCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         propertyTypeList = arrayListOf()
                         for (item in properties) {
@@ -102,6 +103,9 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                                 showHideRental()
                             }
                         }
+
+                        getRefinanceDetails(realStateCounter)
+
                     }
                 })
 
@@ -109,6 +113,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 viewModel.occupancyType.observe(viewLifecycleOwner, { occupancies ->
 
                     if (occupancies != null && occupancies.size > 0) {
+                        realStateCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in occupancies) {
                             itemList.add(item.name)
@@ -139,7 +144,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                                 }
                             }
                     }
-                    getRefinanceDetails()
+                    getRefinanceDetails(realStateCounter)
                 })
 
                 viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {
@@ -221,16 +226,33 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
 
         // first mortgage yes
-        binding.radioHasFirstMortgageYes.setOnCheckedChangeListener { _, isChecked ->
+        /*(binding.radioHasFirstMortgageYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
                 binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
             }
-        }
+        } */
 
-        binding.radioHasFirstMortgageYes.setOnClickListener { onFirstMortgageYes() }
+        binding.radioHasFirstMortgageYes.setOnClickListener {
+            onFirstMortgageYes()
+            if(firstMortgageModel != null){
+                Log.e("not null","true")
+                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+                binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+                binding.layoutSecondMortgage.visibility = View.VISIBLE
+            } else{
+                Log.e(" null","First mortgage")
+                binding.radioHasFirstMortgageYes.isChecked = false
+                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.radioHasFirstMortgageNo.isChecked = true
+                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.layoutFirstMortgageDetail.visibility = View.GONE
+                binding.layoutSecondMortgage.visibility = View.GONE
+            }
+        }
 
         binding.layoutFirstMortgageDetail.setOnClickListener { onFirstMortgageYes() }
 
@@ -253,15 +275,28 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             }
         }
 
-        binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
+        /*binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
                 binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.layoutSecMortgageDetail.visibility = View.VISIBLE
             }
-        }
+        } */
 
-        binding.rbSecMortgageYes.setOnClickListener{ onSecMortgageYesClick() }
+        binding.rbSecMortgageYes.setOnClickListener{
+            onSecMortgageYesClick()
+            if(secondMortgageModel != null){
+                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+            } else{
+                binding.rbSecMortgageYes.isChecked = false
+                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.rbSecMortgageNo.isChecked = true
+                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.layoutSecMortgageDetail.visibility = View.GONE
+            }
+        }
 
         binding.layoutSecMortgageDetail.setOnClickListener { onSecMortgageYesClick() }
 
@@ -285,140 +320,178 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
     }
 
-    private fun getRefinanceDetails(){
-        viewModel.refinanceDetails.observe(viewLifecycleOwner, { details->
-            if(details != null){
-                details.subPropertyData?.addressRefinance?.let {
-                     if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
-                         binding.radioSubPropertyTbd.isChecked = true
-                         binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-                     } else {
-                         binding.radioSubPropertyAddress.isChecked = true
-                         binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-                         binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                         //binding.tvSubPropertyAddress.text =
-                         //    it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
+    private fun getRefinanceDetails(counter: Int){
+        if (counter == 2) {
+            viewModel.refinanceDetails.observe(viewLifecycleOwner, { details ->
+                if (details != null) {
+                    details.subPropertyData?.addressRefinance?.let {
+                        if (it.street == null && it.unit == null && it.city == null && it.stateName == null && it.countryName == null) {
+                            binding.radioSubPropertyTbd.isChecked = true
+                            binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
+                        } else {
+                            binding.radioSubPropertyAddress.isChecked = true
+                            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+                            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+                            //binding.tvSubPropertyAddress.text =
+                            //    it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
 
-                         // list for send data to address fragment
-                         displayAddress(it)
-                         refinanceAddressData = it // list for sending data to api
-                     }
-                } ?: run {
-                    binding.radioSubPropertyTbd.isChecked = true
-                    binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-                }
+                            // list for send data to address fragment
+                            displayAddress(it)
+                            refinanceAddressData = it // list for sending data to api
+                        }
+                    } ?: run {
+                        binding.radioSubPropertyTbd.isChecked = true
+                        binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
+                    }
 
-                details.subPropertyData?.rentalIncome?.let{
-                    binding.edRentalIncome.setText(Math.round(it).toString())
-                    binding.layoutRentalIncome.visibility = View.VISIBLE
-                    CustomMaterialFields.setColor(binding.layoutRentalIncome,R.color.grey_color_two,requireActivity())
-                }
-                // property id
-                details.subPropertyData?.propertyTypeId?.let { selectedId ->
-                    for(item in propertyTypeList) {
-                        if (item.id == selectedId) {
-                            binding.tvPropertyType.setText(item.name,false)
-                            CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
-                            break
+                    details.subPropertyData?.rentalIncome?.let {
+                        binding.edRentalIncome.setText(Math.round(it).toString())
+                        binding.layoutRentalIncome.visibility = View.VISIBLE
+                        CustomMaterialFields.setColor(
+                            binding.layoutRentalIncome,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // property id
+                    details.subPropertyData?.propertyTypeId?.let { selectedId ->
+                        for (item in propertyTypeList) {
+                            if (item.id == selectedId) {
+                                binding.tvPropertyType.setText(item.name, false)
+                                CustomMaterialFields.setColor(
+                                    binding.layoutPropertyType,
+                                    R.color.grey_color_two,
+                                    requireActivity()
+                                )
+                                break
+                            }
                         }
                     }
-                }
-                // occupancy id
-                details.subPropertyData?.propertyUsageId?.let { selectedId ->
+                    // occupancy id
+                    details.subPropertyData?.propertyUsageId?.let { selectedId ->
 
-                    for(item in occupancyTypeList) {
-                        if (item.id == selectedId) {
-                            binding.tvOccupancyType.setText(item.name,false)
-                            CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
-                            break
+                        for (item in occupancyTypeList) {
+                            if (item.id == selectedId) {
+                                binding.tvOccupancyType.setText(item.name, false)
+                                CustomMaterialFields.setColor(
+                                    binding.layoutOccupancyType,
+                                    R.color.grey_color_two,
+                                    requireActivity()
+                                )
+                                break
+                            }
                         }
                     }
-                }
-                // date of home purchased
-                details.subPropertyData?.dateAcquired?.let {
-                    val date = AppSetting.getMonthAndYear(it,true)
-                    binding.edDateOfHomePurchase.setText(date)
-                    CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase,R.color.grey_color_two,requireActivity())
-                }
-                // property value
-                details.subPropertyData?.propertyValue?.let { value ->
-                    binding.edPropertyValue.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutPropertyValue,R.color.grey_color_two,requireActivity())
-                }
-                // hoa dues
-                details.subPropertyData?.hoaDues?.let { value ->
-                    binding.edAssociation.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutAssociationDues,R.color.grey_color_two,requireActivity())
-                }
-                // property tax
-                details.subPropertyData?.propertyTax?.let { value ->
-                    binding.edPropertyTaxes.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutPropertyTaxes,R.color.grey_color_two,requireActivity())
-                }
-                // home insurance
-                details.subPropertyData?.homeOwnerInsurance?.let { value ->
-                    binding.edHomeownerInsurance.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutHomeownerInsurance,R.color.grey_color_two,requireActivity())
-                }
-                // flood insurance
-                details.subPropertyData?.floodInsurance?.let { value ->
-                    binding.edFloodInsurance.setText(Math.round(value).toString())
-                    CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
-                }
+                    // date of home purchased
+                    details.subPropertyData?.dateAcquired?.let {
+                        val date = AppSetting.getMonthAndYear(it, true)
+                        binding.edDateOfHomePurchase.setText(date)
+                        CustomMaterialFields.setColor(
+                            binding.layoutDateOfHomepurchase,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // property value
+                    details.subPropertyData?.propertyValue?.let { value ->
+                        binding.edPropertyValue.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(
+                            binding.layoutPropertyValue,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // hoa dues
+                    details.subPropertyData?.hoaDues?.let { value ->
+                        binding.edAssociation.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(
+                            binding.layoutAssociationDues,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // property tax
+                    details.subPropertyData?.propertyTax?.let { value ->
+                        binding.edPropertyTaxes.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(
+                            binding.layoutPropertyTaxes,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // home insurance
+                    details.subPropertyData?.homeOwnerInsurance?.let { value ->
+                        binding.edHomeownerInsurance.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(
+                            binding.layoutHomeownerInsurance,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                    // flood insurance
+                    details.subPropertyData?.floodInsurance?.let { value ->
+                        binding.edFloodInsurance.setText(Math.round(value).toString())
+                        CustomMaterialFields.setColor(
+                            binding.layoutFloodInsurance,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
 
-                details.subPropertyData?.isMixedUseProperty?.let { value ->
-                    if(value){
-                        binding.radioMixedPropertyYes.isChecked = true
-                        details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
-                            binding.mixedPropertyDesc.setText(desc)
-                            binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
-                        }
-                    } else
-                        binding.radioMixedPropertyNo.isChecked = true
-                } ?: run {
-                    //binding.radioMixedPropertyNo.isChecked = true
-                }
+                    details.subPropertyData?.isMixedUseProperty?.let { value ->
+                        if (value) {
+                            binding.radioMixedPropertyYes.isChecked = true
+                            details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
+                                binding.mixedPropertyDesc.setText(desc)
+                                binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+                            }
+                        } else
+                            binding.radioMixedPropertyNo.isChecked = true
+                    } ?: run {
+                        //binding.radioMixedPropertyNo.isChecked = true
+                    }
 
-                // has first mortgage 'yes'
-                details.subPropertyData?.hasFirstMortgage?.let{ yes->
-                    if(yes){
-                        binding.radioHasFirstMortgageYes.isChecked = true
-                       // binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
-                       // binding.layoutSecondMortgage.visibility = View.VISIBLE
-                        details.subPropertyData.firstMortgageModel?.let{ model->
-                            setFirstMorgageDetails(model)
-                        }
-                    }  else {
-                        binding.radioHasFirstMortgageNo.isChecked = true
+                    // has first mortgage 'yes'
+                    details.subPropertyData?.hasFirstMortgage?.let { yes ->
+                        if (yes) {
+                            binding.radioHasFirstMortgageYes.isChecked = true
+                            // binding.layoutFirstMortgageDetail.visibility =View.VISIBLE
+                            // binding.layoutSecondMortgage.visibility = View.VISIBLE
+                            details.subPropertyData.firstMortgageModel?.let { model ->
+                                setFirstMorgageDetails(model)
+                            }
+                        } else {
+                            binding.radioHasFirstMortgageNo.isChecked = true
 //                        details.subPropertyData.firstMortgageModel?.let{ model->
 //                            binding.radioHasFirstMortgageYes.isChecked = true
 //                            setFirstMorgageDetails(model)
 //                        }
+                        }
+
+                    } ?: run {
+                        //binding.radioHasFirstMortgageNo.isChecked = true
                     }
 
-                } ?: run{
-                    //binding.radioHasFirstMortgageNo.isChecked = true
-                }
+                    // has second mortgage 'yes'
+                    details.subPropertyData?.hasSecondMortgage?.let { yes ->
+                        if (yes) {
+                            binding.rbSecMortgageYes.isChecked = true
+                            binding.layoutSecMortgageDetail.visibility = View.VISIBLE
 
-                // has second mortgage 'yes'
-                details.subPropertyData?.hasSecondMortgage?.let{ yes->
-                    if(yes){
-                        binding.rbSecMortgageYes.isChecked = true
-                        binding.layoutSecMortgageDetail.visibility =View.VISIBLE
-
-                        details.subPropertyData.secondMortgageModel?.let{ model->
-                            setSecondMortgageDetails(model)
-                        }
-                    } else  binding.rbSecMortgageNo.isChecked = true
-                } ?: run{
-                    //binding.radioHasFirstMortgageNo.isChecked = true
+                            details.subPropertyData.secondMortgageModel?.let { model ->
+                                setSecondMortgageDetails(model)
+                            }
+                        } else binding.rbSecMortgageNo.isChecked = true
+                    } ?: run {
+                        //binding.radioHasFirstMortgageNo.isChecked = true
+                    }
+                    if (details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)) {
+                        hideLoader()
+                    }
                 }
-                if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
-                    hideLoader()
-                }
-            }
-            hideLoader()
-        })
+                hideLoader()
+            })
+        }
     }
 
     private fun sendData(){
@@ -488,10 +561,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             if (binding.rbSecMortgageYes.isChecked)
                 hasSecondMortgage = true
 
-            if (binding.rbSecMortgageNo.isChecked)
+            if (binding.rbSecMortgageNo.isChecked) {
                 hasSecondMortgage = false
+                secondMortgageModel = null
+            }
         }
-
 
         if (binding.radioHasFirstMortgageNo.isChecked) {
             hasFirstMortgage = false
@@ -516,7 +590,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         subjectPropertyTbd = tbd,firstMortgageModel = firstMortgageModel,secondMortgageModel = secondMortgageModel,rentalIncome = newRentalIncome?.toDouble())
 
                         showLoader()
-                        Log.e("RefinanceData", ""+refinanceDetail)
+                        //Log.e("RefinanceData", ""+refinanceDetail)
                         viewModelSubProperty.sendRefinanceDetail(authToken,refinanceDetail)
                 }
             }
@@ -574,8 +648,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun setFirstMorgageDetails(model: FirstMortgageModel){
         val formatter = DecimalFormat("#,###,###")
-
         firstMortgageModel = model
+        binding.radioHasFirstMortgageYes.isChecked = true
+        binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+        binding.radioHasFirstMortgageNo.isChecked = false
+        binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         model.firstMortgagePayment?.let { payment->
@@ -595,7 +673,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun setSecondMortgageDetails(model: SecondMortgageModel){
         val formatter = DecimalFormat("#,###,###")
         secondMortgageModel = model
+        binding.rbSecMortgageYes.isChecked = true
+        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+        binding.rbSecMortgageNo.isChecked = false
+        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+
         model.secondMortgagePayment?.let { payment->
             val newPayment: String = formatter.format(Math.round(payment))
             binding.textviewSecMortgagePayment.setText("$" + newPayment)

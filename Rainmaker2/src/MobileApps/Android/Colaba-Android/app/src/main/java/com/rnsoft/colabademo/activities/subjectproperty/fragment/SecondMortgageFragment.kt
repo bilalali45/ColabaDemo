@@ -179,14 +179,14 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
         // first mortgage
         val secMortgagePayment = binding.edSecMortgagePayment.text.toString().trim()
-        var newSecMortgagePayment = if(secMortgagePayment.length > 0) secMortgagePayment.replace(",".toRegex(), "") else null
+        var newSecMortgagePayment = if(secMortgagePayment.length > 0) secMortgagePayment.replace(",".toRegex(), "") else "0"
 
         // second mortgage
         val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
-        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else "0"
 
         val creditLimit = binding.edCreditLimit.text.toString().trim()
-        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else "0"
 
         val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
         var isCombinedWithFirstMortgage : Boolean? = null
@@ -204,8 +204,8 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
             isMortgageTaken = false
 
 
-        val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment?.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance?.toDouble(),
-            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = isMortgageTaken)
+        val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance.toDouble(),
+            helocCreditLimit = newCreditLimit.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = isMortgageTaken)
 
         //viewModel.addSecMortgageModel(secMortgageDetail)
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.secMortgage,secMortgageDetail)

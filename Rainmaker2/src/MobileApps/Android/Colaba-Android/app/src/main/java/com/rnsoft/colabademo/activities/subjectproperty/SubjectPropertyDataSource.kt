@@ -125,8 +125,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
             val newToken = "Bearer $token"
             serverResponse = serverApi.addOrUpdateRefinanceDetail(newToken , data)
             if(serverResponse.status.equals("OK", true) ) {
-                Log.e("RefinanceResponse", "$serverResponse")
-
+               // Log.e("SENT REFINANCE DATA", "$serverResponse")
                 Result.Success(serverResponse)
             }
             else {
@@ -134,13 +133,13 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
             }
 
         } catch (e: Throwable){
-             Log.e("errorrr",e.localizedMessage)
+            // Log.e("REFINANCE-SENT-ERROR1",e.localizedMessage)
             if(e is HttpException){
-                 Log.e("network", "issues...")
+                // Log.e("network2", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                 Log.e("erorr",e.message ?:"Error")
+                 //Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }

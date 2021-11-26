@@ -186,66 +186,10 @@ class FirstMortgageFragment : BaseFragment() {
                 }
             }
         } catch (e: NullPointerException){
-            Log.e("Exception", "catch")
+            //Log.e("Exception", "catch")
         }
-
     }
 
-//    override fun onClick(view: View?) {
-//        when (view?.getId()) {
-//            //R.id.backButton ->  requireActivity().onBackPressed()
-            //R.id.btn_save ->  checkValidations()
-//            R.id.first_morgtage_parentLayout-> {
-//                HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
-//                super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
-//            }
-//            R.id.cb_flood_insurance ->
-//                if (binding.cbFloodInsurance.isChecked) {
-//                    binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-//                }else{
-//                    binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
-//                }
-
-//            R.id.cb_property_taxes ->
-//                if (binding.cbPropertyTaxes.isChecked) {
-//                    binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-//                }else{
-//                    binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
-//                }
-//
-//            R.id.cb_homeownwer_insurance ->
-//                if (binding.cbHomeownwerInsurance.isChecked) {
-//                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-//                }else{
-//                    binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
-//                }
-
-//            R.id.switch_credit_limit ->
-//                if(binding.switchCreditLimit.isChecked) {
-//                    binding.layoutCreditLimit.visibility = View.VISIBLE
-//                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-//                } else {
-//                    binding.layoutCreditLimit.visibility = View.GONE
-//                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-//                }
-//
-//            R.id.rb_ques_yes ->
-//                if (binding.rbQuesYes.isChecked) {
-//                    binding.rbQuesYes.setTypeface(null, Typeface.BOLD)
-//                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
-//                }else{
-//                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
-//                }
-//
-//            R.id.rb_ques_no ->
-//                if (binding.rbQuesNo.isChecked) {
-//                    binding.rbQuesNo.setTypeface(null, Typeface.BOLD)
-//                    binding.rbQuesYes.setTypeface(null, Typeface.NORMAL)
-//                }else{
-//                    binding.rbQuesNo.setTypeface(null, Typeface.NORMAL)
-//                }
-//        }
-//    }
 
     private fun setInputFields(){
 
@@ -269,17 +213,19 @@ class FirstMortgageFragment : BaseFragment() {
 
         // first mortgage
         val firstMortgagePayment = binding.edFirstMortgagePayment.text.toString().trim()
-        var newFirstMortgagePayment = if(firstMortgagePayment.length > 0) firstMortgagePayment.replace(",".toRegex(), "") else null
+        val newFirstMortgagePayment = if(firstMortgagePayment.length > 0) firstMortgagePayment.replace(",".toRegex(), "") else "0"
 
         // second mortgage
         val unpaidBalance = binding.edUnpaidBalance.text.toString().trim()
-        var newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else null
+        val newUnpaidBalance = if(unpaidBalance.length > 0) unpaidBalance.replace(",".toRegex(), "") else "0"
 
         val creditLimit = binding.edCreditLimit.text.toString().trim()
-        var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
+        val newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else "0"
 
-        val floodInsurance = if(binding.cbFloodInsurance.isChecked) true else false
+        val floodInsurance = if(binding.cbFloodInsurance.isChecked)  true else false
+
         val propertyTax = if(binding.cbPropertyTaxes.isChecked) true else false
+
         val homeownerInsurance = if(binding.cbHomeownwerInsurance.isChecked) true else false
 
         var isPaidAtClosing : Boolean? = null
@@ -295,11 +241,8 @@ class FirstMortgageFragment : BaseFragment() {
             helocCreditLimit = newCreditLimit?.toDoubleOrNull(), floodInsuranceIncludeinPayment = floodInsurance,propertyTaxesIncludeinPayment = propertyTax,homeOwnerInsuranceIncludeinPayment = homeownerInsurance,
             paidAtClosing = isPaidAtClosing,isHeloc = isHeloc)
 
-        //viewModel.addFirstMortgage(firstMortgageDetail)
-
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.firstMortgage, firstMortgageDetail)
         findNavController().popBackStack()
-
 
     }
 

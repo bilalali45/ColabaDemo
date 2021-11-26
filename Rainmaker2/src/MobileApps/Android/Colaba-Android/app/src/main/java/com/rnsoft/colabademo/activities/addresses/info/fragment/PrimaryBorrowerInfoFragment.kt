@@ -195,14 +195,21 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             bi.tvDependentCount.setText(count.toString())
 
                         it.dependentAges?.let {
-                            val strs = it.split(",").toList()
-                            Timber.e("$strs")
-                            for(i in 0 until strs.size){
-                                var ordinal = getOrdinal(listItems.size + 1)
-                                listItems.add(Dependent(ordinal.plus(" Dependent Age (Years)"), strs.get(i).toInt()))
+                            if (it.length > 0) {
+                                val strs = it.split(",").toList()
+                                //Timber.e("$strs")
+                                for (i in 0 until strs.size) {
+                                    var ordinal = getOrdinal(listItems.size + 1)
+                                    listItems.add(
+                                        Dependent(
+                                            ordinal.plus(" Dependent Age (Years)"),
+                                            strs.get(i).toInt()
+                                        )
+                                    )
+                                }
+                                bi.rvDependents.adapter = dependentAdapter
+                                dependentAdapter.notifyDataSetChanged()
                             }
-                            bi.rvDependents.adapter = dependentAdapter
-                            dependentAdapter.notifyDataSetChanged()
                         }
                         }
                     }
@@ -883,7 +890,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     }
 
     override fun onAddressClick(position: Int) {
-        Log.e("callback", "here")
+       // Log.e("callback", "here")
     }
 
     private fun hideLoader(){

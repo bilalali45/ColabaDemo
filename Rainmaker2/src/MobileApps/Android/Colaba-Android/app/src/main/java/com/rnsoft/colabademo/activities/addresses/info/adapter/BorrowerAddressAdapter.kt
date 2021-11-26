@@ -48,10 +48,13 @@ class BorrowerAddressAdapter(var context: Context) :
           // val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
             binding.tvAddress.text = address.addressDesc
 
-            if (address.isCurrentAddress) {
+            if (address.isCurrentAddress){
                 binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
                 address.fromDate?.let {
-                    binding.tvResidenceDate.text = "From ".plus(AppSetting.getMonthAndYearValue(it))
+                    if(it.length >0) {
+                        binding.tvResidenceDate.text =
+                            "From ".plus(AppSetting.getMonthAndYearValue(it))
+                    }
                 }
 
                 address.monthlyRent?.let {
@@ -65,8 +68,11 @@ class BorrowerAddressAdapter(var context: Context) :
                 binding.tvHomerent.setVisibility(View.GONE)
                 val fromDate = address.fromDate?.let { AppSetting.getMonthAndYearValue(it) }
                 address.toDate?.let {
-                val toDate = AppSetting.getMonthAndYearValue(it)
-                    binding.tvResidenceDate.text = "From ".plus(fromDate).plus(" to ").plus(toDate)
+                    if (it.isNotBlank() && it.length > 0) {
+                        val toDate = AppSetting.getMonthAndYearValue(it)
+                        binding.tvResidenceDate.text =
+                            "From ".plus(fromDate).plus(" to ").plus(toDate)
+                    }
                 }
             }
         }

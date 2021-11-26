@@ -27,6 +27,7 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.AddressIncomeEmploymentBinding
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -55,6 +56,9 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
     private var predicationList: ArrayList<String> = ArrayList()
     private val viewModel : CommonViewModel by activityViewModels()
     private var employerAddress = AddressData()
+    private var countyList: ArrayList<CountiesModel> = arrayListOf()
+    private var countryList: ArrayList<CountriesModel> = arrayListOf()
+    private var stateList: ArrayList<StatesModel> = arrayListOf()
 
 
     override fun onCreateView(
@@ -122,23 +126,19 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in states) {
                         itemList.add(item.name)
+                        stateList.add(item)
                     }
-                    val stateAdapter =
-                        ArrayAdapter(
-                            requireContext(),
-                            R.layout.autocomplete_text_view,
-                            itemList
-                        )
+                    val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view,itemList)
                     binding.tvState.setAdapter(stateAdapter)
 
-                    binding.tvState.setOnFocusChangeListener { _, _ ->
+                    /*binding.tvState.setOnFocusChangeListener { _, _ ->
                         binding.tvState.showDropDown()
                         HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                     }
                     binding.tvState.setOnClickListener {
                         binding.tvState.showDropDown()
                         HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                    }
+                    } */
 
                     binding.tvState.onItemClickListener =
                         object : AdapterView.OnItemClickListener {
@@ -166,19 +166,20 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in countries) {
                         itemList.add(item.name)
+                        countryList.add(item)
                     }
                     val countryAdapter =
                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
                     binding.tvCountry.setAdapter(countryAdapter)
 
-                    binding.tvCountry.setOnFocusChangeListener { _, _ ->
-                        binding.tvCountry.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
-                    }
-                    binding.tvCountry.setOnClickListener {
-                        binding.tvCountry.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
-                    }
+//                    binding.tvCountry.setOnFocusChangeListener { _, _ ->
+//                        binding.tvCountry.showDropDown()
+//                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+//                    }
+//                    binding.tvCountry.setOnClickListener {
+//                        binding.tvCountry.showDropDown()
+//                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
+//                    }
 
                     binding.tvCountry.onItemClickListener =
                         object : AdapterView.OnItemClickListener {
@@ -198,6 +199,7 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in counties) {
                         itemList.add(item.name)
+                        countyList.add(item)
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
@@ -206,15 +208,15 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                     )
                     binding.tvCounty.setAdapter(countyAdapter)
 
-                    binding.tvCounty.setOnFocusChangeListener { _, _ ->
-                        binding.tvCounty.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
-                    }
-
-                    binding.tvCounty.setOnClickListener {
-                        binding.tvCounty.showDropDown()
-                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
-                    }
+//                    binding.tvCounty.setOnFocusChangeListener { _, _ ->
+//                        binding.tvCounty.showDropDown()
+//                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+//                    }
+//
+//                    binding.tvCounty.setOnClickListener {
+//                        binding.tvCounty.showDropDown()
+//                        HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+//                    }
 
                     binding.tvCounty.onItemClickListener =
                         object : AdapterView.OnItemClickListener {
@@ -301,7 +303,7 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
 
         binding.tvState.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.tvState.showDropDown()
+                //binding.tvState.showDropDown()
                 binding.tvState.addTextChangedListener(stateTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
 
@@ -320,7 +322,7 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
 
         binding.tvCountry.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.tvCountry.showDropDown()
+              //  binding.tvCountry.showDropDown()
                 binding.tvCountry.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
 
@@ -333,6 +335,18 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                 } else {
                     CustomMaterialFields.clearError(binding.layoutCountry,requireActivity())
                     CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
+        binding.tvCounty.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            if(!hasFocus){
+                if (binding.tvCounty.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
                 }
             }
         }
@@ -408,6 +422,21 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
             val unit =
                 if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
 
+            val countyName : String = binding.tvCounty.getText().toString().trim()
+            val matchedCounty =  countyList.filter { p -> p.name.equals(countyName,true)}
+            val countyId = if(matchedCounty.size > 0)
+                matchedCounty.get(0).id else null
+
+            val countryName : String = binding.tvCountry.getText().toString().trim()
+            val matchedCountry =  countryList.filter { p -> p.name.equals(countryName,true)}
+            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+
+            val stateName : String = binding.tvState.getText().toString().trim()
+            val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
+            val stateId = if(matchedState.size > 0)
+                matchedState.get(0).id else null
+
+
             val address = AddressData(
                 street = street,
                 unit = unit,
@@ -415,11 +444,13 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
                 stateName = state,
                 countryName = country,
                 countyName = county,
-                countyId = 1,
-                stateId = 1,
-                countryId = 1,
+                countyId = countyId,
+                stateId = stateId,
+                countryId = countryId,
                 zipCode = zipCode
             )
+
+
 
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.address, address)
             findNavController().popBackStack()
@@ -537,10 +568,24 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
             //val countryCode: String? = addresses?.get(0)?.countryCode
             //val stateName: String? = addresses?.get(0)?.locale
 
-            locality?.let { binding.edCity.setText(it) }
+            /*locality?.let { binding.edCity.setText(it) }
             subLocality?.let { binding.tvCounty.setText(it) }
             postalCode?.let { binding.edZipcode.setText(it) }
             countryName?.let { binding.tvCountry.setText(it) }
+            binding.edStreetAddress.setText(place.getPrimaryText(null))
+            premises?.let { binding.edUnitAtpNo.setText(it) } */
+
+
+            locality?.let { binding.edCity.setText(it) }
+            subLocality?.let {
+                binding.tvCounty.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+            }
+            postalCode?.let { binding.edZipcode.setText(it) }
+            countryName?.let {
+                binding.tvCountry.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+            }
             binding.edStreetAddress.setText(place.getPrimaryText(null))
             premises?.let { binding.edUnitAtpNo.setText(it) }
 
@@ -564,6 +609,7 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
             binding.tvState.setText("")
 
         visibleAllFields()
+        clearAllError()
     }
 
     private fun visibleAllFields() {
@@ -574,6 +620,15 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
         binding.layoutUnitAptNo.visibility = View.VISIBLE
         binding.layoutStreetAddress.visibility = View.VISIBLE
         binding.layoutState.visibility = View.VISIBLE
+    }
+
+    private fun clearAllError(){
+        CustomMaterialFields.clearError(binding.layoutStreetAddress,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCountry,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutState,requireActivity())
     }
 
     private var map: HashMap<String, String> = HashMap()

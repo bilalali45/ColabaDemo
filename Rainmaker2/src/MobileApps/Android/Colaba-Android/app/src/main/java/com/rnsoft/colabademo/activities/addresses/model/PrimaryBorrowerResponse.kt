@@ -21,7 +21,21 @@ data class PrimaryBorrowerData(
     val previousAddresses: List<PreviousAddresses>?
 )
 
-/*
+data class BorrowerBasicDetails(
+    val borrowerId: Int,
+    val loanApplicationId: Int,
+    val cellPhone: String?,
+    val emailAddress: String?,
+    val firstName: String?,
+    val homePhone: String?,
+    val lastName: String?,
+    val middleName: String?,
+    val ownTypeId: Int?,
+    val suffix: String?,
+    val workPhone: String?,
+    val workPhoneExt: String?
+)
+
 data class BorrowerCitizenship(
     val borrowerId: Int,
     val loanApplicationId: Int,
@@ -33,6 +47,7 @@ data class BorrowerCitizenship(
     val residencyTypeId: Int?,
     val ssn: String?
 )
+
 
 data class CurrentAddress(
     val loanApplicationId: Int,
@@ -90,7 +105,7 @@ data class MaritalStatus(
 data class MilitaryServiceDetails(
     val details: List<MilitaryServiceDetail>?,
     val isVaEligible: Boolean?
-) */
+)
 
 data class MilitaryServiceDetail(
     val expirationDateUtc: String?,

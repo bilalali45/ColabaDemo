@@ -50,7 +50,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
                                 mainBorrowerName = coBorrowerName
                         }
                         binding.coBorrowerNames.visibility = View.VISIBLE
-                        binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ",")
+                        binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ", ")
                     }
                 }
 
@@ -58,10 +58,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
 
                  if(overviewModel.loanNumber!=null && !overviewModel.loanNumber.equals("null", true)  && overviewModel.loanNumber.isNotEmpty()) {
                      binding.loanId.visibility = View.VISIBLE
-                     binding.loanId.text = "Loan No." + overviewModel.loanNumber
+                     binding.loanId.text = "Loan No. " + overviewModel.loanNumber
                  }
                 else
-                     binding.loanId.visibility = View.GONE
                      binding.loanId.visibility = View.GONE
 
                 binding.loanPurpose.text = overviewModel.loanPurpose
@@ -128,11 +127,11 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 if(overviewModel.postedOn!=null && !overviewModel.postedOn.equals("null", true)) {
                     binding.bytesPosted.text = "Posted to Byte on " + overviewModel.postedOn
                     binding.bytesPosted.visibility = View.VISIBLE
-                    binding.bytesTick.visibility = View.VISIBLE
+                    //binding.bytesTick.visibility = View.VISIBLE
                 }
                 else {
                     binding.bytesPosted.visibility = View.GONE
-                    binding.bytesTick.visibility = View.GONE
+                   // binding.bytesTick.visibility = View.GONE
                 }
             }
             else

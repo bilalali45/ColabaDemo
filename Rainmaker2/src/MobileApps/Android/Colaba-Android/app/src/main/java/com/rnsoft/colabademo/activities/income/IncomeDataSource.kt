@@ -255,14 +255,14 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateOtherIncome(newToken,data)
-            //Log.e("other-respone","$response")
+            Log.e("other-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                //Log.e("other-income-Error",e.localizedMessage)
+                Log.e("other-income-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }

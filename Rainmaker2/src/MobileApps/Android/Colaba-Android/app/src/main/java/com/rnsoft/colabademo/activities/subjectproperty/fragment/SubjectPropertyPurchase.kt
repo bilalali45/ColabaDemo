@@ -36,7 +36,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     private lateinit var binding: SubjectPropertyPurchaseBinding
     private val viewModel : BorrowerApplicationViewModel by activityViewModels()
     private val viewModelSubProperty : SubjectPropertyViewModel by activityViewModels()
-    //var addressList :  ArrayList<AddressData> = ArrayList()
     private var propertyTypeList: ArrayList<DropDownResponse> = arrayListOf()
     private var occupancyTypeList:ArrayList<DropDownResponse> = arrayListOf()
     private var purchaseAddress = AddressData()
@@ -56,7 +55,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             setupUI()
             setInputFields()
             setDropDownData()
-
             savedViewInstance
 
         }
@@ -85,43 +83,52 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         })
     }
 
-    private fun getPurchaseDetails(){
-        viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
-            if(details != null){
-                details.subPropertyData?.addressData?.let {
-                    if(it.street == null && it.unit==null && it.city==null && it.stateName==null && it.countryName==null){
-                        binding.radioSubPropertyTbd.isChecked = true
-                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-                    } else {
-                        binding.radioSubPropertyAddress.isChecked = true
-                        binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-                        binding.tvSubPropertyAddress.visibility = View.VISIBLE
+    private fun getPurchaseDetails(detailCounter:Int){
+        if(detailCounter==2) {
+            viewModel.subjectPropertyDetails.observe(viewLifecycleOwner, { details ->
+                if (details != null) {
+                    details.subPropertyData?.addressData?.let {
+                        if (it.street == null && it.unit == null && it.city == null && it.stateName == null && it.countryName == null) {
+                            binding.radioSubPropertyTbd.isChecked = true
+                            binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
+                        } else {
+                            binding.radioSubPropertyAddress.isChecked = true
+                            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+                            binding.tvSubPropertyAddress.visibility = View.VISIBLE
                             //binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryNameopen
-                       displayAddress(it)
-                        purchaseAddress = it // list for sending data to api
-                    }
+                            displayAddress(it)
+                            purchaseAddress = it // list for sending data to api
+                        }
 
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
-                        binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+                        binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                     }
 
                     // property id
                     details.subPropertyData?.propertyTypeId?.let { selectedId ->
-                        for(item in propertyTypeList) {
+                        for (item in propertyTypeList) {
                             if (item.id == selectedId) {
                                 binding.tvPropertyType.setText(item.name, false)
-                                CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
+                                CustomMaterialFields.setColor(
+                                    binding.layoutPropertyType,
+                                    R.color.grey_color_two,
+                                    requireActivity()
+                                )
                                 break
                             }
                         }
                     }
                     // occupancy id
                     details.subPropertyData?.occupancyTypeId?.let { occupancyId ->
-                        for(item in occupancyTypeList) {
+                        for (item in occupancyTypeList) {
                             if (item.id == occupancyId) {
-                                binding.tvOccupancyType.setText(item.name,false)
-                                CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
+                                binding.tvOccupancyType.setText(item.name, false)
+                                CustomMaterialFields.setColor(
+                                    binding.layoutOccupancyType,
+                                    R.color.grey_color_two,
+                                    requireActivity()
+                                )
                                 break
                             }
                         }
@@ -129,50 +136,69 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                     // appraised value
                     details.subPropertyData?.appraisedPropertyValue?.let { value ->
                         binding.edAppraisedPropertyValue.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(binding.layoutAppraisedProperty,R.color.grey_color_two,requireActivity())
+                        CustomMaterialFields.setColor(
+                            binding.layoutAppraisedProperty,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
 
                     }
                     // property tax
                     details.subPropertyData?.propertyTax?.let { value ->
                         binding.edPropertyTax.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(binding.layoutPropertyTaxes,R.color.grey_color_two,requireActivity())
+                        CustomMaterialFields.setColor(
+                            binding.layoutPropertyTaxes,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
                     }
                     // home insurance
                     details.subPropertyData?.homeOwnerInsurance?.let { value ->
                         binding.edHomeownerInsurance.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(binding.layoutHomeownerInsurance,R.color.grey_color_two,requireActivity())
+                        CustomMaterialFields.setColor(
+                            binding.layoutHomeownerInsurance,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
                     }
                     // flood insurance
                     details.subPropertyData?.floodInsurance?.let { value ->
                         binding.edFloodInsurance.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(binding.layoutFloodInsurance,R.color.grey_color_two,requireActivity())
+                        CustomMaterialFields.setColor(
+                            binding.layoutFloodInsurance,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
                     }
 
                     details.subPropertyData?.isMixedUseProperty?.let { value ->
-                        if(value){
+                        if (value) {
                             binding.radioMixedPropertyYes.isChecked = true
                             details.subPropertyData.mixedUsePropertyExplanation?.let { desc ->
                                 binding.mixedPropertyExplanation.setText(desc)
                                 binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
                             }
-                        }
-                        else
+                        } else
                             binding.radioMixedPropertyNo.isChecked = true
                     } ?: run {
                         //binding.radioMixedPropertyNo.isChecked = true
                     }
-                    if(details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
-                       hideLoader() }
+                    if (details.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)) {
+                        hideLoader()
+                    }
                 }
                 hideLoader()
             })
+        }
     }
 
     private fun setDropDownData(){
         lifecycleScope.launchWhenStarted {
             coroutineScope {
+                var detailCounter:Int = 0
                 viewModel.propertyType.observe(viewLifecycleOwner, { properties->
                     if (properties != null && properties.size > 0) {
+                        detailCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         propertyTypeList = arrayListOf()
                         for (item in properties) {
@@ -180,12 +206,9 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                             propertyTypeList.add(item)
                         }
 
-
                         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.tvPropertyType.setAdapter(adapter)
-                        //adapter.getFilter().filter(null)
-                       // binding.tvPropertyType.adapter.filter(null)
-                        //adapter.setNotifyOnChange(true)
+
 
                     binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
                         binding.tvPropertyType.showDropDown()
@@ -200,18 +223,18 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                                 CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
                             }
                         }
+                        getPurchaseDetails(detailCounter)
                     }
                 })
 
                 // occupancy Type spinner
                 viewModel.occupancyType.observe(viewLifecycleOwner, { occupancies ->
-
                     if (occupancies != null && occupancies.size > 0) {
+                        detailCounter++
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in occupancies) {
                             itemList.add(item.name)
                             occupancyTypeList.add(item)
-
                         }
 
                         val adapterOccupanycyType = ArrayAdapter(
@@ -242,8 +265,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                                     )
                                 }
                             }
+                        getPurchaseDetails(detailCounter)
                     }
-                    getPurchaseDetails()
                 })
 
                 viewModelSubProperty.coBorrowerOccupancyStatus.observe(viewLifecycleOwner, {

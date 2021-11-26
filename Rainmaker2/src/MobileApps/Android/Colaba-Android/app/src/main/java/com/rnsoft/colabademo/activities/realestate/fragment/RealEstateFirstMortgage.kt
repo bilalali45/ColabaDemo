@@ -18,6 +18,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.lang.Exception
+import java.lang.NullPointerException
 
 
 /**
@@ -59,79 +61,87 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
     }
 
     private fun getFirstMortgageDetails() {
-        firstMortgageModel = arguments?.getParcelable(AppConstant.firstMortgage)!!
-        firstMortgageModel?.let {
-             it.firstMortgagePayment?.let {
-                 binding.edFirstMortgagePayment.setText(Math.round(it).toString())
-                 CustomMaterialFields.setColor(
-                     binding.layoutFirstPayment,
-                     R.color.grey_color_two,
-                     requireActivity()
-                 )
-             }
-             it.unpaidFirstMortgagePayment?.let {
-                 binding.edUnpaidBalance.setText(Math.round(it).toString())
-                 CustomMaterialFields.setColor(
-                     binding.layoutUnpaidBalance,
-                     R.color.grey_color_two,
-                     requireActivity()
-                 )
-             }
-             it.floodInsuranceIncludeinPayment?.let {
-                 if (it == true) {
-                     binding.cbFloodInsurance.isChecked = true
-                     binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                 } else {
-                     binding.cbFloodInsurance.isChecked = false
-                     binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
-                 }
-             }
-             it.propertyTaxesIncludeinPayment?.let {
-                 if (it == true) {
-                     binding.cbPropertyTaxes.isChecked = true
-                     binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-                 } else {
-                     binding.cbPropertyTaxes.isChecked = false
-                     binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
-                 }
-             }
-             it.homeOwnerInsuranceIncludeinPayment?.let {
-                 if (it == true) {
-                     binding.cbHomeownwerInsurance.isChecked = true
-                     binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-                 } else {
-                     binding.cbHomeownwerInsurance.isChecked = false
-                     binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
-                 }
-             }
+        try {
+            firstMortgageModel = arguments?.getParcelable(AppConstant.firstMortgage)!!
+            firstMortgageModel?.let {
+                it.firstMortgagePayment?.let {
+                    binding.edFirstMortgagePayment.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutFirstPayment,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.unpaidFirstMortgagePayment?.let {
+                    binding.edUnpaidBalance.setText(Math.round(it).toString())
+                    CustomMaterialFields.setColor(
+                        binding.layoutUnpaidBalance,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
+                it.floodInsuranceIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbFloodInsurance.isChecked = true
+                        binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbFloodInsurance.isChecked = false
+                        binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
+                it.propertyTaxesIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbPropertyTaxes.isChecked = true
+                        binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbPropertyTaxes.isChecked = false
+                        binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
+                it.homeOwnerInsuranceIncludeinPayment?.let {
+                    if (it == true) {
+                        binding.cbHomeownwerInsurance.isChecked = true
+                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.cbHomeownwerInsurance.isChecked = false
+                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
 
-             it.isHeloc?.let { bool->
-                 if (bool == true) {
-                     binding.switchCreditLimit.isChecked = true
-                     binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                     binding.layoutCreditLimit.visibility = View.VISIBLE
+                it.isHeloc?.let { bool ->
+                    if (bool == true) {
+                        binding.switchCreditLimit.isChecked = true
+                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                        binding.layoutCreditLimit.visibility = View.VISIBLE
 
-                     it.helocCreditLimit?.let {
-                         binding.edCreditLimit.setText(Math.round(it).toString())
-                         CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
-                     }
+                        it.helocCreditLimit?.let {
+                            binding.edCreditLimit.setText(Math.round(it).toString())
+                            CustomMaterialFields.setColor(
+                                binding.layoutCreditLimit,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
+                        }
 
-                 } else {
-                     binding.switchCreditLimit.isChecked = false
-                     binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                 }
-             }
+                    } else {
+                        binding.switchCreditLimit.isChecked = false
+                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                    }
+                }
 
-             it.paidAtClosing?.let {
-                 if (it == true) {
-                     binding.rbPaidClosingYes.isChecked = true
-                     binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                 } else {
-                     binding.rbPaidClosingNo.isChecked = true
-                     binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                 }
-             }
-         }
+                it.paidAtClosing?.let {
+                    if (it == true) {
+                        binding.rbPaidClosingYes.isChecked = true
+                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                    } else {
+                        binding.rbPaidClosingNo.isChecked = true
+                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                    }
+                }
+            }
+        } catch (e: NullPointerException){
+
+        }
     }
 
     private fun saveData() {
