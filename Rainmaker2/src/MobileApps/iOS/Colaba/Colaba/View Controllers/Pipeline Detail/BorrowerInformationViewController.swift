@@ -113,6 +113,7 @@ class BorrowerInformationViewController: BaseViewController {
     var borrowerId = 0
     var selectedResidencyStatusId: Any = NSNull()
     var selectedResidencyStatusExplanation: Any = NSNull()
+    var hasCoBorrowers = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,23 +173,36 @@ class BorrowerInformationViewController: BaseViewController {
     
     func setBorrowerInformation(){
         lblBorrowerName.text = "\(borrowerInformationModel.borrowerBasicDetails.firstName.uppercased()) \(borrowerInformationModel.borrowerBasicDetails.lastName.uppercased())"
-        txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
-        txtfieldMiddleName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.middleName)
-        txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
-        txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
-        txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
-        
-        let homePhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.homePhone)
-        txtfieldHomeNumber.setTextField(text: homePhoneNumber)
-        
-        let workPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.workPhone)
-        txtfieldWorkNumber.setTextField(text: workPhoneNumber)
-        
-        txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
-        
-        let cellPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.cellPhone)
-        txtfieldCellNumber.setTextField(text: cellPhoneNumber)
-        
+        if (txtfieldLegalFirstName.text == ""){
+            txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
+        }
+        if (txtfieldMiddleName.text == ""){
+            txtfieldMiddleName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.middleName)
+        }
+        if (txtfieldLegalLastName.text == ""){
+            txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
+        }
+        if (txtfieldSuffix.text == ""){
+            txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
+        }
+        if (txtfieldEmail.text == ""){
+            txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
+        }
+        if (txtfieldHomeNumber.text == ""){
+            let homePhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.homePhone)
+            txtfieldHomeNumber.setTextField(text: homePhoneNumber)
+        }
+        if (txtfieldWorkNumber.text == ""){
+            let workPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.workPhone)
+            txtfieldWorkNumber.setTextField(text: workPhoneNumber)
+        }
+        if (txtfieldExtensionNumber.text == ""){
+            txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
+        }
+        if (txtfieldCellNumber.text == ""){
+            let cellPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.cellPhone)
+            txtfieldCellNumber.setTextField(text: cellPhoneNumber)
+        }
         if (borrowerInformationModel.borrowerBasicDetails.firstName != ""){
             lblReserveNationalGuardQuestion.text =  "Was \(borrowerInformationModel.borrowerBasicDetails.firstName.capitalized) \(borrowerInformationModel.borrowerBasicDetails.lastName.capitalized) ever activated during their tour of duty?"
         }
@@ -425,12 +439,42 @@ class BorrowerInformationViewController: BaseViewController {
     
     @objc func marriedTapped(){
         maritalStatus = 2
+        borrowerInformationModel.maritalStatus.maritalStatusId = 1
         changeMaritalStatus()
+//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
+//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
+//        else{
+//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
     }
     
     @objc func separatedTapped(){
         maritalStatus = 3
+        borrowerInformationModel.maritalStatus.maritalStatusId = 2
         changeMaritalStatus()
+//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
+//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
+//        else{
+//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
     }
     
     func changeMaritalStatus(){
@@ -480,11 +524,13 @@ class BorrowerInformationViewController: BaseViewController {
     
     @objc func usCitizenTapped(){
         citizenshipStatus = 1
+        borrowerInformationModel.borrowerCitizenship.residencyTypeId = 1
         changeCitizenshipStatus()
     }
     
     @objc func permanentResidentTapped(){
         citizenshipStatus = 2
+        borrowerInformationModel.borrowerCitizenship.residencyTypeId = 1
         changeCitizenshipStatus()
     }
     
@@ -1166,7 +1212,7 @@ class BorrowerInformationViewController: BaseViewController {
                       "maritalStatus": maritalStatusDetail,
                       "borrowerCitizenship": citizenshipDetail,
                       "militaryServiceDetails": militaryDetail,
-                      "currentAddress": currentAddress,
+                      "currentAddress": borrowerInformationModel.currentAddress.addressModel.street == "" ? NSNull() : currentAddress,
                       "previousAddresses": previousAddresses.count == 0 ? NSNull() : previousAddresses] as [String:Any]
         
         APIRouter.sharedInstance.executeAPI(type: .addUpdateBorrowerDetail, method: .post, params: params) { status, result, message in
@@ -1368,6 +1414,18 @@ extension BorrowerInformationViewController: UnmarriedFollowUpQuestionsViewContr
     }
 }
 
+extension BorrowerInformationViewController: PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate{
+    func savePrimaryBorrowerMartialStatus(status: MaritalStatus) {
+        borrowerInformationModel.maritalStatus = status
+    }
+}
+
+extension BorrowerInformationViewController: CoBorrowerMarriedAndSepartedFollowUpQuestionViewControllerDelegate{
+    func saveMaritalStatusMarriedOrSeparated(status: MaritalStatus) {
+        borrowerInformationModel.maritalStatus = status
+    }
+}
+
 extension BorrowerInformationViewController: NonPermanentResidenceFollowUpQuestionsViewControllerDelegate{
     func setResidencyStatus(citizenship: BorrowerCitizenship) {
         citizenshipStatus = 3
@@ -1414,84 +1472,3 @@ extension BorrowerInformationViewController: AddPreviousResidenceViewControllerD
         setBorrowerInformation()
     }
 }
-
-//"currentAddress": {
-//    "loanApplicationId": 5,
-//    "borrowerId": 5,
-//    "id": 2,
-//    "housingStatusId": 1,
-//    "monthlyRent": 100,
-//    "fromDate": "2021-01-01T00:00:00",
-//    "addressModel": {
-//        "street": "11111 Research Blvd Edited",
-//        "unit": "424",
-//        "city": "Austin",
-//        "stateId": 45,
-//        "zipCode": "78717",
-//        "countryId": 1,
-//        "countryName": "United States",
-//        "stateName": "Texas",
-//        "countyId": null,
-//        "countyName": null
-//    },
-//    "isMailingAddressDifferent": false,
-//    "mailingAddressModel": null
-//},
-//"previousAddresses": [
-//    {
-//        "id": 1024,
-//        "housingStatusId": 2,
-//        "monthlyRent": 4545.0,
-//        "fromDate": "2021-10-01T00:00:00",
-//        "toDate": "2021-10-08T00:00:00",
-//        "addressModel": {
-//            "street": "6 Vingelodden",
-//            "unit": "66",
-//            "city": "København",
-//            "stateId": 0,
-//            "zipCode": "2200",
-//            "countryId": 60,
-//            "countryName": "Denmark",
-//            "stateName": "None",
-//            "countyId": null,
-//            "countyName": null
-//        }
-//        
-//    },
-//     {
-//        "id": null,
-//        "housingStatusId": 2,
-//        "monthlyRent": 4545.0,
-//        "fromDate": "2021-10-01T00:00:00",
-//        "toDate": "2021-10-08T00:00:00",
-//        "addressModel": {
-//            "street": "6 Vingelodden",
-//            "unit": "66",
-//            "city": "København",
-//            "stateId": 0,
-//            "zipCode": "2200",
-//            "countryId": 60,
-//            "countryName": "Denmark",
-//            "stateName": "None",
-//            "countyId": null,
-//            "countyName": null
-//        }
-//        
-//    }
-//],
-
-
-//{
-//    "reserveEverActivated": true,
-//    "militaryAffiliationId": 3
-//},
-//{
-//    "militaryAffiliationId": 1
-//},
-//{
-//    "militaryAffiliationId": 2
-//},
-//{
-//    "expirationDateUtc": "2021-10-15T00:00:00",
-//    "militaryAffiliationId": 4
-//}

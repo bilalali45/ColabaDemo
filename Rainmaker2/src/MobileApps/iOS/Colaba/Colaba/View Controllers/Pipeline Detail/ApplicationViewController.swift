@@ -865,6 +865,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
         if (collectionView == borrowerCollectionView){
             let vc = Utility.getBorrowerInformationVC()
             vc.loanApplicationId = self.loanApplicationId
+            vc.hasCoBorrowers = loanApplicationDetail.borrowersInformation.count > 1
             if (indexPath.row < loanApplicationDetail.borrowersInformation.count){
                 vc.borrowerId = self.loanApplicationDetail.borrowersInformation[indexPath.row].borrowerId
             }
