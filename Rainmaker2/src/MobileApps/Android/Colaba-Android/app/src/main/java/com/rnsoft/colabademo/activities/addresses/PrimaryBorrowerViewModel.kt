@@ -23,8 +23,8 @@ class PrimaryBorrowerViewModel @Inject constructor(
     private val commonRepo : CommonRepo
 ) : ViewModel() {
 
-    private val _borrowerDetail : MutableLiveData<PrimaryBorrowerResponse> = MutableLiveData()
-    val borrowerDetail : LiveData<PrimaryBorrowerResponse> get() = _borrowerDetail
+    private val _borrowerDetail : MutableLiveData<PrimaryBorrowerResponse?> = MutableLiveData()
+    val borrowerDetail : LiveData<PrimaryBorrowerResponse?> get() = _borrowerDetail
 
     private val _countries : MutableLiveData<ArrayList<CountriesModel>> =   MutableLiveData()
     val countries: LiveData<ArrayList<CountriesModel>> get() = _countries
@@ -48,6 +48,11 @@ class PrimaryBorrowerViewModel @Inject constructor(
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
+    }
+
+    fun refreshBorrowerInfo(){
+        _borrowerDetail.value = null
+        _borrowerDetail.postValue(null)
     }
 
 

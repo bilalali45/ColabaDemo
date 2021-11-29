@@ -40,15 +40,14 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
-    private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
+    private var borrowerInfoAdapter = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
     var saveBorrowerId:Int = 0
     var borrowerName : String? = null
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -236,7 +235,16 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     override fun getSingleItemIndex(position: Int) {}
 
     override fun navigateTo(position: Int) {
-        startActivity(Intent(requireActivity(), BorrowerAddressActivity::class.java))
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let {
+            val intent = Intent(requireActivity(), BorrowerAddressActivity::class.java)
+            intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+            intent.putExtra(AppConstant.borrowerId,saveBorrowerId)
+            intent.putExtra(AppConstant.borrowerName, borrowerName)
+            intent.putExtra(AppConstant.addBorrower,borrowerInfoList.get(position).isFooter)
+            startActivity(intent)
+
+        }
     }
 
     override fun onRealEstateClick(position: Int) {
@@ -296,35 +304,28 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
                     appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
                         val builder = StringBuilder()
-                        it.street.let {
-                            if(it != null)
-                                builder.append(it)
-                        }
-                        it.unit.let {
-                            if(it != null)
-                                builder.append(" ").append(it).append(",")
-                        }
-                        it.city.let {
-                            if(it != null)
-                                builder.append("\n").append(it).append(",").append(" ")
-                            else
-                                builder.append("\n")
-                        } ?: run { builder.append("\n") }
-
-                        it.stateName.let {
-                            if(it != null)
+                        it.street?.let {
+                            if(it != "null")
                                 builder.append(it).append(" ")
                         }
-                        it.zipCode.let {
-                            if(it != null)
+                        it.unit?.let {
+                            if(it != "null")
+                                builder.append(it).append(",")
+                            else
+                                builder.append(",")
+                        } ?: run { builder.append(",") }
+                        it.city?.let {
+                            if(it != "null")
+                                builder.append("\n").append(it).append(",").append(" ")
+                        } ?: run { builder.append("\n") }
+                        it.stateName?.let {
+                            if(it !="null") builder.append(it).append(" ")
+                        }
+                        it.zipCode?.let {
+                            if(it != "null")
                                 builder.append(it)
                         }
-                        it.countryName.let {
-                            if(it !=null)
-                                builder.append(" ").append(it)
-                        }
                         binding.bAppAddress.text = builder
-
                         // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                     }
 

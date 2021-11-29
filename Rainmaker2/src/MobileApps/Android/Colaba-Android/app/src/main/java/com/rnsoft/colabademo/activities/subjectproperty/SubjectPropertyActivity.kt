@@ -60,6 +60,7 @@ class SubjectPropertyActivity : BaseActivity() {
                             val call4 = async {
                                 viewModel.getRefinanceDetails(authToken, loanApplicationId!!)
                             }
+                            call4.await()
                             navController.navigate(R.id.nav_sub_property_refinance)
                         }
                     }

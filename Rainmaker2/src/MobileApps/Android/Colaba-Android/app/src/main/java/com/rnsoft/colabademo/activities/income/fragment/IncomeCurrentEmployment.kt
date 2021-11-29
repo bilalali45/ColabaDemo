@@ -286,16 +286,21 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
 
     private fun displayAddress(it: AddressData) {
         //Log.e("displayAddress", ""+ it)
-        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+        if(it.street == null && it.city==null && it.zipCode==null)
             showHideAddress(false,true)
         else {
             val builder = StringBuilder()
-            it.street?.let { builder.append(it).append(" ") }
-            it.unit?.let { builder.append(it).append("\n") }
-            it.city?.let { builder.append(it).append(" ") }
-            it.stateName?.let { builder.append(it).append(" ") }
-            it.zipCode?.let { builder.append(it) }
-            it.countryName?.let { builder.append(" ").append(it) }
+            it.street?.let {
+                if(it != "null") builder.append(it).append(" ") }
+            it.unit?.let {
+                if(it != "null") builder.append(it).append(",") } ?: run { builder.append(",") }
+            it.city?.let {
+                if(it != "null") builder.append("\n").append(it).append(",").append(" ") } ?: run { builder.append("\n") }
+            it.stateName?.let {
+                if(it !="null") builder.append(it).append(" ") }
+            it.zipCode?.let {
+                if(it != "null") builder.append(it) }
+
             binding.textviewCurrentEmployerAddress.text = builder
             showHideAddress(true,false)
         }

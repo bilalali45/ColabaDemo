@@ -66,6 +66,7 @@ class IncomeTabFragment : BaseFragment() {
                     }
                 }
 
+
                 binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout

@@ -146,7 +146,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun getBusinessDetails(){
-        Timber.e( "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
+        //Timber.e( "borrowerId:  " + borrowerId + "incomeInfoId: " + incomeInfoId )
         lifecycleScope.launchWhenStarted{
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (borrowerId != null && incomeInfoId != null && incomeInfoId !=null) {
@@ -366,12 +366,16 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
             showHideAddress(false,true)
         else {
             val builder = StringBuilder()
-            it.street?.let { builder.append(it).append(" ") }
-            it.unit?.let { builder.append(it).append("\n") }
-            it.city?.let { builder.append(it).append(" ") }
-            it.stateName?.let { builder.append(it).append(" ") }
-            it.zipCode?.let { builder.append(it) }
-            it.countryName?.let { builder.append(" ").append(it) }
+            it.street?.let {
+                if(it != "null") builder.append(it).append(" ") }
+            it.unit?.let {
+                if(it != "null") builder.append(it).append(",") } ?: run { builder.append(",") }
+            it.city?.let {
+                if(it != "null") builder.append("\n").append(it).append(",").append(" ") } ?: run { builder.append("\n") }
+            it.stateName?.let {
+                if(it !="null") builder.append(it).append(" ") }
+            it.zipCode?.let {
+                if(it != "null") builder.append(it) }
             binding.textviewBusinessAddress.text = builder
             showHideAddress(true,false)
         }

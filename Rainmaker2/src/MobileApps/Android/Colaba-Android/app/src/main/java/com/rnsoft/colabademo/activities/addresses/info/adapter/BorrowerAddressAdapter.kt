@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,14 +45,16 @@ class BorrowerAddressAdapter(var context: Context) :
     inner class AddressViewHolder(val binding : ResidenceItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(address: PrimaryBorrowerAddress, position: Int){
-          // val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
+        fun bind(address: PrimaryBorrowerAddress, position: Int) {
+            // val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
             binding.tvAddress.text = address.addressDesc
-
-            if (address.isCurrentAddress) {
-                binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
+            /*if (address.isCurrentAddress){
+                //binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
                 address.fromDate?.let {
-                    binding.tvResidenceDate.text = "From ".plus(AppSetting.getMonthAndYearValue(it))
+                    if(it.length >0) {
+                        binding.tvResidenceDate.text =
+                            "From ".plus(AppSetting.getMonthAndYearValue(it))
+                    }
                 }
 
                 address.monthlyRent?.let {
@@ -65,9 +68,30 @@ class BorrowerAddressAdapter(var context: Context) :
                 binding.tvHomerent.setVisibility(View.GONE)
                 val fromDate = address.fromDate?.let { AppSetting.getMonthAndYearValue(it) }
                 address.toDate?.let {
-                val toDate = AppSetting.getMonthAndYearValue(it)
-                    binding.tvResidenceDate.text = "From ".plus(fromDate).plus(" to ").plus(toDate)
+                    if (it.isNotBlank() && it.length > 0) {
+                        val toDate = AppSetting.getMonthAndYearValue(it)
+                        binding.tvResidenceDate.text =
+                            "From ".plus(fromDate).plus(" to ").plus(toDate)
+                    }
                 }
+            } */
+
+            try{
+                address.fromDate?.let {
+                    if (it.isNotBlank() && it.length > 0){
+                    val fromDate = AppSetting.getMonthAndYearValue(it)
+
+                        address.toDate?.let {
+                            if (it.isNotBlank() && it.length > 0) {
+                                val toDate = AppSetting.getMonthAndYearValue(it)
+                                binding.tvResidenceDate.text =
+                                    "From ".plus(fromDate).plus(" to ").plus(toDate)
+                            }
+                        }
+                    }
+                }
+            } catch (e : Exception){
+                Log.e("BorrowerAdapter","Exception Caught")
             }
         }
     }

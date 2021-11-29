@@ -151,21 +151,21 @@ class RealEstateDataSource @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addRealEstateDetails(newToken,data)
-            //Log.e("realEstate-respone","$response")
+            //Log.e("Send--realEstate-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                //Log.e("add-business-Error",e.localizedMessage)
+               // Log.e("add-business-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
 
     suspend fun deleteRealEstate(token: String,borrowerPropertyId: Int): Result<AddUpdateDataResponse> {
-        Log.e("-dataSource-Delete-borrowerPropertyId" , ""+ borrowerPropertyId)
+       // Log.e("-dataSource-Delete-borrowerPropertyId" , ""+ borrowerPropertyId)
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.deleteRealEstate(newToken, borrowerPropertyId)

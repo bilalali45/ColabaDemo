@@ -5,7 +5,7 @@
     android:id="@+id/top_container"
     android:layout_width="292dp"
     android:layout_height="wrap_content"
-    android:paddingStart="20dp">
+    android:paddingStart="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
