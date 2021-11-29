@@ -358,6 +358,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         for (item in propertyTypeList) {
                             if (item.id == selectedId) {
                                 binding.tvPropertyType.setText(item.name, false)
+                                showHideRental()
                                 CustomMaterialFields.setColor(
                                     binding.layoutPropertyType,
                                     R.color.grey_color_two,
@@ -373,6 +374,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         for (item in occupancyTypeList) {
                             if (item.id == selectedId) {
                                 binding.tvOccupancyType.setText(item.name, false)
+                                showHideRental()
                                 CustomMaterialFields.setColor(
                                     binding.layoutOccupancyType,
                                     R.color.grey_color_two,

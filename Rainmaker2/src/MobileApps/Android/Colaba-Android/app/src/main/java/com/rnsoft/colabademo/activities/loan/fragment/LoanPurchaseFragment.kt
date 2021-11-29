@@ -240,18 +240,13 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         }
 
         binding.edClosingDate.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.edClosingDate,
-                binding.layoutClosingDate,
-                requireContext()
-            )
-        )
+            CustomFocusListenerForEditText(binding.edClosingDate, binding.layoutClosingDate, requireContext()))
 
         binding.edPurchasePrice.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
+            if (hasFocus){
                 CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_two, requireContext())
             } else {
-                if (binding.edPurchasePrice.text?.length == 0) {
+                if (binding.edPurchasePrice.text?.length == 0){
                     CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_three, requireContext())
                 } else {
                     clearError(binding.layoutPurchasePrice)
@@ -291,8 +286,10 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
 
         binding.edLoanAmount.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
+                binding.edLoanAmount.addTextChangedListener(mTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two, requireContext())
             } else {
+                binding.edLoanAmount.removeTextChangedListener(mTextWatcher)
                 if (binding.edLoanAmount.text?.length == 0) {
                     CustomMaterialFields.setColor(binding.layoutLoanAmount, R.color.grey_color_three, requireContext())
                 } else {
@@ -330,6 +327,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
             override fun afterTextChanged(et: Editable?) {
                 when {
                     et === binding.edPurchasePrice.editableText -> {
+                        binding.edLoanAmount.removeTextChangedListener(this)
                         binding.edDownPayment.removeTextChangedListener(this)
                         binding.edPercent.removeTextChangedListener(this)
                         try {
@@ -350,7 +348,50 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                         }
                     }
 
+                    et === binding.edLoanAmount.editableText -> {
+                        binding.edPurchasePrice.removeTextChangedListener(this)
+                        binding.edDownPayment.removeTextChangedListener(this)
+                        binding.edPercent.removeTextChangedListener(this)
+                        try {
+                            var input = et.toString()
+                            if(!input.isEmpty()) {
+                                input = input.replace(",", "")
+                                val newPrice = format.format(input.toLong())
+                                binding.edLoanAmount.removeTextChangedListener(this) //To Prevent from Infinite Loop
+                                binding.edLoanAmount.setText(newPrice)
+                                binding.edLoanAmount.setSelection(newPrice.length)
+                                binding.edLoanAmount.addTextChangedListener(this)
+
+                                val edValue = binding.edPurchasePrice.text.toString()
+                                var purchasePrice = edValue.replace(",", "").toInt()
+                                if (purchasePrice > 0) {
+                                    val loanAmount = binding.edLoanAmount.text.toString()
+                                    val newLoanAmount = loanAmount.replace(",", "").toInt()
+                                    loanAmount.let {
+                                        val newDownPayment: Float = (purchasePrice.toFloat() - newLoanAmount.toFloat())
+                                        binding.edDownPayment.setText(Math.round(newDownPayment).toString())
+
+                                        val result: Float = (newDownPayment.toFloat() / purchasePrice.toFloat()) * 100
+                                        val convertResult: Int = Math.round(result)
+                                        //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
+                                        //Log.e("ConvertResult", ""+ convertResult)
+                                        binding.edPercent.setText(convertResult.toString())
+
+                                        // calculate loan amount
+                                        //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
+                                        //Log.e("LoanAmount", ""+ newLoanAmount)
+                                    }
+                                }
+                            }
+                        } catch (nfe: NumberFormatException) {
+                            nfe.printStackTrace()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
                     et === binding.edDownPayment.editableText -> {
+                        binding.edLoanAmount.removeTextChangedListener(this)
                         binding.edPercent.removeTextChangedListener(this)
                         try {
                             var input = et.toString()
@@ -365,7 +406,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
 
                             val edValue = binding.edPurchasePrice.text.toString()
                             var purchasePrice = edValue.replace(",", "").toInt()
-                            if (purchasePrice > 0 ) {
+                            if (purchasePrice > 0) {
                                 val downPayment = binding.edDownPayment.text.toString()
                                 val newDownPayment = downPayment.replace(",", "").toInt()
                                 downPayment.let {
@@ -433,6 +474,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
             }
         }
         binding.edPurchasePrice.addTextChangedListener(mTextWatcher)
+        binding.edLoanAmount.addTextChangedListener(mTextWatcher)
         binding.edDownPayment.addTextChangedListener(mTextWatcher)
         binding.edPercent.addTextChangedListener(mTextWatcher)
 
@@ -447,7 +489,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         }
     }
 
-    private fun calculateInitialDownPayment(value: String) {
+    private fun calculateInitialDownPayment(value: String){
         value.let {
             if (value.length > 0) {
                 val purchasePrice = value.replace(",", "")

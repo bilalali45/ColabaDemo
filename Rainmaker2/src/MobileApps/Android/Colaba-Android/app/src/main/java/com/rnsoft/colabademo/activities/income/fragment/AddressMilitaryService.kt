@@ -387,9 +387,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if(city.isEmpty() || city.length == 0) {
                 CustomMaterialFields.setError(binding.layoutCity,getString(R.string.error_field_required),requireActivity())
             }
-            if(county.isEmpty() || county.length == 0) {
-                CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
-            }
             if(zipCode.isEmpty() || zipCode.length == 0) {
                 CustomMaterialFields.setError(binding.layoutZipCode,getString(R.string.error_field_required),requireActivity())
             }
@@ -406,9 +403,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if(city.isNotEmpty() || city.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
             }
-            if(county.isNotEmpty() || county.length > 0) {
-                CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
-            }
             if(zipCode.isNotEmpty() || zipCode.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
             }
@@ -419,7 +413,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 CustomMaterialFields.clearError(binding.layoutState,requireActivity())
             }
         }
-        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && country.length > 0 && zipCode.length > 0) {
 
             val unit = if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
 
