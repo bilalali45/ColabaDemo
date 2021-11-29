@@ -771,12 +771,39 @@ extension RefinanceSubjectPropertyViewController: FirstMortgageFollowupQuestions
         isFirstMortgage = true
         changeMortgageStatus()
         
-        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0
+        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0, helocCreditLimit: Double = 0.0, propertyTaxesIncludeinPayment: Bool = false, homeOwnerInsuranceIncludeinPayment: Bool = false, floodInsuranceIncludeinPayment: Bool = false, paidAtClosing: Bool = false, isHeloc: Bool = false
+        
         if let firstMortgagePayment = firstMortgage["firstMortgagePayment"] as? Double{
             mortgagePayment = firstMortgagePayment
+            self.subjectPropertyDetail.firstMortgage?.firstMortgagePayment = mortgagePayment
         }
         if let unpaidFirstMortgagePayment = firstMortgage["unpaidFirstMortgagePayment"] as? Double{
             unpaidMortgagePayment = unpaidFirstMortgagePayment
+            self.subjectPropertyDetail.firstMortgage?.unpaidFirstMortgagePayment = unpaidMortgagePayment
+        }
+        if let creditLimit = firstMortgage["helocCreditLimit"] as? Double{
+            helocCreditLimit = creditLimit
+            self.subjectPropertyDetail.firstMortgage?.helocCreditLimit = helocCreditLimit
+        }
+        if let isPropertyTax = firstMortgage["propertyTaxesIncludeinPayment"] as? Bool{
+            propertyTaxesIncludeinPayment = isPropertyTax
+            self.subjectPropertyDetail.firstMortgage?.propertyTaxesIncludeinPayment = propertyTaxesIncludeinPayment
+        }
+        if let isHomeOwner = firstMortgage["homeOwnerInsuranceIncludeinPayment"] as? Bool{
+            homeOwnerInsuranceIncludeinPayment = isHomeOwner
+            self.subjectPropertyDetail.firstMortgage?.homeOwnerInsuranceIncludeinPayment = homeOwnerInsuranceIncludeinPayment
+        }
+        if let isFlood = firstMortgage["floodInsuranceIncludeinPayment"] as? Bool{
+            floodInsuranceIncludeinPayment = isFlood
+            self.subjectPropertyDetail.firstMortgage?.floodInsuranceIncludeinPayment = floodInsuranceIncludeinPayment
+        }
+        if let isPaid = firstMortgage["paidAtClosing"] as? Bool{
+            paidAtClosing = isPaid
+            self.subjectPropertyDetail.firstMortgage?.paidAtClosing = paidAtClosing
+        }
+        if let isHelocInclude = firstMortgage["isHeloc"] as? Bool{
+            isHeloc = isHelocInclude
+            self.subjectPropertyDetail.firstMortgage?.isHeloc = isHeloc
         }
         
         lblFirstMortgagePayment.text = Int(mortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")
@@ -790,12 +817,34 @@ extension RefinanceSubjectPropertyViewController: SecondMortgageFollowupQuestion
         isSecondMortgage = true
         changeMortgageStatus()
         
-        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0
+        var mortgagePayment: Double = 0.0, unpaidMortgagePayment: Double = 0.0, helocCreditLimit: Double = 0.0, isHeloc: Bool = false, paidAtClosing: Bool = false, wasSmTaken: Bool = false, combineWithNewFirstMortgage: Bool = false
         if let secondMortgagePayment = secondMortgage["secondMortgagePayment"] as? Double{
             mortgagePayment = secondMortgagePayment
+            self.subjectPropertyDetail.secondMortgage?.secondMortgagePayment = mortgagePayment
         }
         if let unpaidSecondMortgagePayment = secondMortgage["unpaidSecondMortgagePayment"] as? Double{
             unpaidMortgagePayment = unpaidSecondMortgagePayment
+            self.subjectPropertyDetail.secondMortgage?.unpaidSecondMortgagePayment = unpaidMortgagePayment
+        }
+        if let creditLimit = secondMortgage["helocCreditLimit"] as? Double{
+            helocCreditLimit = creditLimit
+            self.subjectPropertyDetail.secondMortgage?.helocCreditLimit = helocCreditLimit
+        }
+        if let isHelocInclude = secondMortgage["isHeloc"] as? Bool{
+            isHeloc = isHelocInclude
+            self.subjectPropertyDetail.secondMortgage?.isHeloc = isHeloc
+        }
+        if let isPaid = secondMortgage["paidAtClosing"] as? Bool{
+            paidAtClosing = isPaid
+            self.subjectPropertyDetail.secondMortgage?.paidAtClosing = paidAtClosing
+        }
+        if let wasSm = secondMortgage["wasSmTaken"] as? Bool{
+            wasSmTaken = wasSm
+            self.subjectPropertyDetail.secondMortgage?.wasSmTaken = wasSmTaken
+        }
+        if let isCombine = secondMortgage["combineWithNewFirstMortgage"] as? Bool{
+            combineWithNewFirstMortgage = isCombine
+            self.subjectPropertyDetail.secondMortgage?.combineWithNewFirstMortgage = combineWithNewFirstMortgage
         }
         
         lblSecondMortgagePayment.text = Int(mortgagePayment).withCommas().replacingOccurrences(of: ".00", with: "")

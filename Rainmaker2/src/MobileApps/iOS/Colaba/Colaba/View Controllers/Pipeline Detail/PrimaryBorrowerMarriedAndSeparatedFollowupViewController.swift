@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate: AnyObject {
+    func savePrimaryBorrowerMartialStatus(status: MaritalStatus)
+}
+
 class PrimaryBorrowerMarriedAndSeparatedFollowupViewController: UIViewController {
 
     //MARK:- Outlets and Properties
@@ -29,10 +33,13 @@ class PrimaryBorrowerMarriedAndSeparatedFollowupViewController: UIViewController
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
     var isMarried = 0 // 1 for yes 2 for no
+    var selectedMaritalStatus = MaritalStatus()
+    var borrowerName = ""
+    weak var delegate: PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        lblBorrowerName.text = borrowerName.uppercased()
         setTextFields()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))

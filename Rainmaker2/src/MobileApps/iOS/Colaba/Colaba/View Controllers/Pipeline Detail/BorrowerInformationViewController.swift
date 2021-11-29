@@ -113,6 +113,7 @@ class BorrowerInformationViewController: BaseViewController {
     var borrowerId = 0
     var selectedResidencyStatusId: Any = NSNull()
     var selectedResidencyStatusExplanation: Any = NSNull()
+    var hasCoBorrowers = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -440,12 +441,40 @@ class BorrowerInformationViewController: BaseViewController {
         maritalStatus = 2
         borrowerInformationModel.maritalStatus.maritalStatusId = 1
         changeMaritalStatus()
+//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
+//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
+//        else{
+//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
     }
     
     @objc func separatedTapped(){
         maritalStatus = 3
         borrowerInformationModel.maritalStatus.maritalStatusId = 2
         changeMaritalStatus()
+//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
+//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
+//        else{
+//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.delegate = self
+//            self.presentVC(vc: vc)
+//        }
     }
     
     func changeMaritalStatus(){
@@ -1385,6 +1414,18 @@ extension BorrowerInformationViewController: UnmarriedFollowUpQuestionsViewContr
     }
 }
 
+extension BorrowerInformationViewController: PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate{
+    func savePrimaryBorrowerMartialStatus(status: MaritalStatus) {
+        borrowerInformationModel.maritalStatus = status
+    }
+}
+
+extension BorrowerInformationViewController: CoBorrowerMarriedAndSepartedFollowUpQuestionViewControllerDelegate{
+    func saveMaritalStatusMarriedOrSeparated(status: MaritalStatus) {
+        borrowerInformationModel.maritalStatus = status
+    }
+}
+
 extension BorrowerInformationViewController: NonPermanentResidenceFollowUpQuestionsViewControllerDelegate{
     func setResidencyStatus(citizenship: BorrowerCitizenship) {
         citizenshipStatus = 3
@@ -1431,84 +1472,3 @@ extension BorrowerInformationViewController: AddPreviousResidenceViewControllerD
         setBorrowerInformation()
     }
 }
-
-//"currentAddress": {
-//    "loanApplicationId": 5,
-//    "borrowerId": 5,
-//    "id": 2,
-//    "housingStatusId": 1,
-//    "monthlyRent": 100,
-//    "fromDate": "2021-01-01T00:00:00",
-//    "addressModel": {
-//        "street": "11111 Research Blvd Edited",
-//        "unit": "424",
-//        "city": "Austin",
-//        "stateId": 45,
-//        "zipCode": "78717",
-//        "countryId": 1,
-//        "countryName": "United States",
-//        "stateName": "Texas",
-//        "countyId": null,
-//        "countyName": null
-//    },
-//    "isMailingAddressDifferent": false,
-//    "mailingAddressModel": null
-//},
-//"previousAddresses": [
-//    {
-//        "id": 1024,
-//        "housingStatusId": 2,
-//        "monthlyRent": 4545.0,
-//        "fromDate": "2021-10-01T00:00:00",
-//        "toDate": "2021-10-08T00:00:00",
-//        "addressModel": {
-//            "street": "6 Vingelodden",
-//            "unit": "66",
-//            "city": "København",
-//            "stateId": 0,
-//            "zipCode": "2200",
-//            "countryId": 60,
-//            "countryName": "Denmark",
-//            "stateName": "None",
-//            "countyId": null,
-//            "countyName": null
-//        }
-//        
-//    },
-//     {
-//        "id": null,
-//        "housingStatusId": 2,
-//        "monthlyRent": 4545.0,
-//        "fromDate": "2021-10-01T00:00:00",
-//        "toDate": "2021-10-08T00:00:00",
-//        "addressModel": {
-//            "street": "6 Vingelodden",
-//            "unit": "66",
-//            "city": "København",
-//            "stateId": 0,
-//            "zipCode": "2200",
-//            "countryId": 60,
-//            "countryName": "Denmark",
-//            "stateName": "None",
-//            "countyId": null,
-//            "countyName": null
-//        }
-//        
-//    }
-//],
-
-
-//{
-//    "reserveEverActivated": true,
-//    "militaryAffiliationId": 3
-//},
-//{
-//    "militaryAffiliationId": 1
-//},
-//{
-//    "militaryAffiliationId": 2
-//},
-//{
-//    "expirationDateUtc": "2021-10-15T00:00:00",
-//    "militaryAffiliationId": 4
-//}
