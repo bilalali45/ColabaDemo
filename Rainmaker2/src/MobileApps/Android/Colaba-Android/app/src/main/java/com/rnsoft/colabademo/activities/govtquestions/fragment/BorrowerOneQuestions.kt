@@ -25,28 +25,14 @@ import kotlinx.android.synthetic.main.common_govt_content_layout.view.detail_tit
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_detail_box
 import kotlinx.android.synthetic.main.common_govt_content_layout.view.govt_question
 import com.google.gson.Gson
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.utils.Common
-import com.rnsoft.colabademo.utils.JSONUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_text2
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_title2
 import kotlinx.android.synthetic.main.children_separate_layout.view.govt_detail_box2
-
-/*
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_text
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.govt_detail_box
-import kotlinx.android.synthetic.main.ownership_interest_layout.view.detail_title2
-
- */
-
-
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.*
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.american_or_indian_check_box
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.asian_check_box
@@ -57,10 +43,18 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
+import okio.utf8Size
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+import java.util.ArrayList
+
+
+
+
+
+
 
 
 
@@ -76,17 +70,12 @@ inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(t
 class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
     private lateinit var binding: BorrowerOneQuestionsLayoutBinding
+    private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
+    private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
+    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
-    private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
-    private var innerLayoutHashMap = HashMap<AppCompatTextView, ConstraintLayout>(0)
-    //private var openDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    //private var closeDetailBoxHashMap = HashMap<AppCompatRadioButton, ConstraintLayout>(0)
-    //private val tabArrayList:ArrayList<AppCompatTextView> = arrayListOf()
-
-    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     private var ethnicityChildNames = ""
     private var otherEthnicity = ""
@@ -97,38 +86,53 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
     private var asianChildNames = ""
     private var otherAsianRace = ""
 
-    private  var tabBorrowerId:Int? = null
+    private var demoGraphicScreenDisplaying: Boolean = false
+    private var ethnicityChildList: ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
+    private var asianChildList: ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+    private var nativeHawaiianChildList: ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+    private lateinit var variableDemoGraphicData: DemoGraphicData
+    private lateinit var variableRaceList: ArrayList<DemoGraphicRace>
+    private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
+    private var variableGender: Int? = null
 
-    //private var udateGovernmentQuestionsList:ArrayList<UpdateGovernmentQuestions> = arrayListOf()
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////s
+    private var tabBorrowerId: Int? = null
+    private var childSupportAnswerDataList: ArrayList<ChildAnswerData> = arrayListOf()
+    private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
+    private var ownerShipInnerScreenParams: ArrayList<String> = arrayListOf()
 
-    //companion object{
-    var childGlobalList:ArrayList<ChildAnswerData> = arrayListOf()
-    var bankruptcyGlobalData:BankruptcyAnswerData = BankruptcyAnswerData()
-    var ownerShipInnerScreenParams:ArrayList<String> = arrayListOf()
-    // }
+    private var governmentParams = GovernmentParams()
+    private var saveGovtQuestionForDetailAnswer: ArrayList<QuestionData>? = null
+    private lateinit var lastQData: QuestionData
 
-    private  lateinit var lastQData:QuestionData
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    private lateinit var ownerShipConstraintLayout: ConstraintLayout
+    private lateinit var childConstraintLayout: ConstraintLayout
+    private lateinit var undisclosedLayout: ConstraintLayout
+    private lateinit var bankruptcyConstraintLayout: ConstraintLayout
+    private lateinit var demoGraphLayout: ConstraintLayout
+    private val childGovtBoxes: ArrayList<ConstraintLayout> = arrayListOf()
+    //private lateinit var variableQuestionData: QuestionData
+
+
+    private lateinit var clickedContentCell: ConstraintLayout
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = BorrowerOneQuestionsLayoutBinding.inflate(inflater, container, false)
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
         binding.saveBtn.setOnClickListener {
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if (demoGraphicScreenDisplaying) {
-                        variableDemoGraphicData.genderId = variableGender
-                        variableDemoGraphicData.race = variableRaceList
-                        variableDemoGraphicData.ethnicity = variableEthnicityList
-                        borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
-                    } else {
-                        borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
-                    }
-                    EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
-                    requireActivity().finish()
-                }
-            }
+            if (demoGraphicScreenDisplaying)
+                updateDemoGraphicApiCall()
+            else
+                updateGovernmentQuestionApiCall()
+            //EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+            //requireActivity().finish()
         }
 
         setUpDynamicTabs()
@@ -136,15 +140,120 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         return binding.root
     }
 
+    private fun updateDemoGraphicApiCall() {
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                variableDemoGraphicData.genderId = variableGender
+                variableDemoGraphicData.race = variableRaceList
+                variableDemoGraphicData.ethnicity = variableEthnicityList
+                borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
+            }
+        }
+    }
 
-    private var governmentParams = GovernmentParams()
+    private fun showHideChildGovtBoxes(makeVisible: Int) {
+        for (item in childGovtBoxes) {
+            item.visibility = View.INVISIBLE
+        }
+        for (i in 0 until childSupportAnswerDataList.size) {
+            val item = childGovtBoxes[i]
+            item.visibility = makeVisible
+        }
+    }
 
-    private var saveGovtQuestionForDetailAnswer:ArrayList<QuestionData>? = null
+    private fun updateGovernmentQuestionApiCall() {
 
-    data class TestAnswerData(
-        val selectionOptionId: String,
-        val selectionOptionText: String
-    )
+        if(governmentParams.Questions.size>0)
+        {
+            //testGovernmentParams.BorrowerId = governmentParams.BorrowerId
+            //testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
+            for (question in governmentParams.Questions) {
+                if(question.id == 21){
+                    Timber.e("what is  "+question.answerData)
+                    if(ownershipInterestAnswerData1==null)
+                        question.answerData = null
+                    if(ownershipInterestAnswerData1?.selectionOptionId == null)
+                        question.answerData = null
+
+                     continue
+                }
+
+                if (question.parentQuestionId == 130) {
+                    if(bankruptcyMap.size==0)
+                        question.answerData = null
+                    else {
+                        val test = hashMapOf<String, String>()
+                        var newTestList = arrayListOf(HashMap<String, String>())
+                        for(item in bankruptcyMap){
+                            Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                            test.put(item.key, item.value)
+                            var json = Gson().toJson(test)
+                            var mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                            newTestList.add(mapCopy)
+                            test.clear()
+                        }
+                        newTestList.removeAt(0)
+                        question.answerData = newTestList
+                    }
+                    continue
+                }
+
+                if(question.id == 22){
+                    Timber.e("what is  "+question.answerData)
+                    if(ownershipInterestAnswerData2==null)
+                        question.answerData = null
+                    if(ownershipInterestAnswerData2?.selectionOptionId == null)
+                        question.answerData = null
+                    continue
+                }
+                question.answerData = null
+
+                /*
+                val newChild = ChildQuestionData(
+                    question.id,
+                    question.parentQuestionId,
+                    question.answer,
+                    question.answerDetail,
+                    question.headerText,
+                    answerData = null,
+                    question.firstName,
+                    question.lastName,
+                    question.ownTypeId,
+                    question.question,
+                    question.questionSectionId,
+                    question.selectionOptionId
+                )
+                 */
+                //testGovernmentParams.Questions.add(newChild)
+
+                if (question.id == 140) {
+                    //newChild.answerData = childSupportAnswerDataList
+                    question.answerData = childSupportAnswerDataList
+                }
+                else
+                if(question.id == 45){   //family
+                    //question.answerData = FamilyAnswerData()
+                }
+
+                // ownership interest, it is handled when sent back....
+                //if(question.parentQuestionId == 20){}
+
+                // Bankruptcy
+
+
+            }
+            //governmentParams.Questions.add(childQuestionData)
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
+                }
+            }
+            findNavController().popBackStack()
+        }
+
+
+    }
 
     private fun guessTheType(any: Any) = when (any){
         is Int -> Timber.e("It's an Integer !")
@@ -155,14 +264,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         is Gson-> Timber.e("It's an Gson !")
         is List<*> -> Timber.e("It's a List !")
         is Set<*> -> Timber.e("It's a Set !")
-        is TestAnswerData -> Timber.e("It's a TestAnswerData !")
+        is OwnershipInterestAnswerData -> Timber.e("It's a TestAnswerData !")
         is ChildAnswerData -> Timber.e("It's an ChildAnswerData !")
         is BankruptcyAnswerData -> Timber.e("It's an BankruptcyAnswerData !")
         else -> Timber.e("Error ! Type not recognized...")
     }
-
-
-
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -178,73 +284,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
-
-
-
-                                    for(question in questionDataList){
-
-
-
-                                        //var yourModel = gson.fromJson(yourJsonString, YourModel::class.java)
-
-                                        question.id?.let{ questionId->
-                                            if(questionId == 140 || questionId == 130 || questionId == 45)
-                                                question.answerData = null
-                                        }
-                                        question.parentQuestionId?.let { parentQuestionId ->
-                                            var validJson = false
-                                            question.answerData?.let {
-                                                validJson = JSONUtils.isJSONValid(it.toString())
-                                                Timber.e("bool is  $validJson")
-                                                question.headerText?.let{
-                                                    Timber.e(" header text = "+it)
-                                                }
-
-                                                guessTheType(it)
-                                            }
-
-                                            val gson = Gson()
-
-                                            if(parentQuestionId == 140 || parentQuestionId == 130)
-                                                question.answerData = null
-
-                                            if(parentQuestionId == 20){
-                                                //= question.answerData as answerData
-                                                question.answerData?.let {
-
-                                                    //val extractValue = (it as TestAnswerData).selectionOptionId
-                                                    //val listType: Type = object : TypeToken<ArrayList<TestAnswerData?>?>() {}.getType()
-                                                    //val yourClassList: List<TestAnswerData> = Gson().fromJson(jsonArray, listType)
-                                                    //val obj:TestAnswerData = Gson().fromJson(Gson().toJson(((LinkedTreeMap<String, Object>) TestAnswerData)), TestAnswerData.class)
-                                                    //= new Gson().fromJson(new Gson().toJson(((LinkedTreeMap<String, Object>) theLinkedTreeMapObject)), MyClass .class)
-
-
-                                                    val t: LinkedTreeMap<Any, Any> = it as LinkedTreeMap<Any, Any>
-                                                    val selectionOptionId = t["selectionOptionId"].toString()
-                                                    val selectionOptionText = t["selectionOptionText"].toString()
-
-                                                    Timber.e("selectionOptionId $selectionOptionId")
-
-                                                    if(validJson) {
-                                                        val yourModel = gson.fromJson(
-                                                            it.toString(),
-                                                            TestAnswerData::class.java
-                                                        )
-
-
-                                                        val yourObject = gson.fromJson( it.toString(), TestAnswerData::class.java)
-                                                        Timber.e("value is " + yourModel.selectionOptionId +" and "+
-                                                            yourModel.selectionOptionText
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                        }
-
-
-
-                                    }
-
                                     item.passedBorrowerId?.let { passedBorrowerId ->
                                         governmentParams =
                                             GovernmentParams(
@@ -272,8 +311,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                     val govtQuestionActivity = (activity as GovtQuestionActivity)
                     govtQuestionActivity.binding.govtDataLoader.visibility = View.INVISIBLE
                     var zeroIndexAppCompat:AppCompatTextView?= null
-                    childGlobalList= arrayListOf()
-                    bankruptcyGlobalData = BankruptcyAnswerData()
+                    childSupportAnswerDataList= arrayListOf()
+                    bankruptcyAnswerData = BankruptcyAnswerData()
                     ownerShipInnerScreenParams = arrayListOf()
 
                     selectedGovernmentQuestionModel.questionData?.let { questionData ->
@@ -329,25 +368,66 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                         Timber.e(qData.answerDetail.toString())
                                         var extractedAnswer = ""
                                         qData.answerData?.let {
-                                            val bankruptAnswerData = it as ArrayList<*>
+                                            val bankruptAnswerData: ArrayList<LinkedTreeMap<Any, Any>> = it as ArrayList<LinkedTreeMap<Any, Any>>
+                                            if (bankruptAnswerData.size > 0) {
+                                                for (i in 0 until bankruptAnswerData.size){
+                                                    val test = bankruptAnswerData[i]
+                                                    if(test.containsKey("1")){
+                                                        bankruptcyAnswerData.`1` = true
+                                                        extractedAnswer += "Chapter 7, "
+                                                        bankruptcyMap.put("1", "Chapter 7")
+                                                    }
+                                                    else if(test.containsKey("2")){
+                                                        bankruptcyAnswerData.`2` = true
+                                                        extractedAnswer += "Chapter 11, "
+                                                        bankruptcyMap.put("2", "Chapter 11")
+                                                    }
+                                                    else if(test.containsKey("3")){
+                                                        bankruptcyAnswerData.`3` = true
+                                                        extractedAnswer += "Chapter 12, "
+                                                        bankruptcyMap.put("3", "Chapter 12")
+                                                    }
+                                                    else if(test.containsKey("4")){
+                                                        bankruptcyAnswerData.`4` = true
+                                                        extractedAnswer += "Chapter 13, "
+                                                        bankruptcyMap.put("4", "Chapter 13")
+                                                    }
+                                                }
+
+                                                if(extractedAnswer.isNotBlank() && extractedAnswer.isNotEmpty()){
+                                                    extractedAnswer = extractedAnswer.removeRange(extractedAnswer.length-2, extractedAnswer.length)
+                                                }
+
+                                                bankruptcyConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                                bankruptcyConstraintLayout.detail_title.text = "Which Type?"
+                                                bankruptcyConstraintLayout.detail_text.text = extractedAnswer
+                                                bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                                bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+                                            }
+                                            /*
                                             if (bankruptAnswerData.size > 0) {
                                                 if (bankruptAnswerData[0] != null) {
                                                     val getrow: Any = bankruptAnswerData[0]
                                                     val t: LinkedTreeMap<Any, Any> =
                                                         getrow as LinkedTreeMap<Any, Any>
+                                                    t.
                                                     val chapter1 = t["`1`"].toString()
-                                                    extractedAnswer = chapter1
-                                                    bankruptcyGlobalData.value1 = true
+                                                    Timber.e("what i am getting in here = "+chapter1)
+
+                                                    extractedAnswer = "Chapter 7"
+                                                    bankruptcyAnswerData.`1` = true
                                                     Timber.e("1 = " + chapter1)
+                                                    bankruptcyMap.put("1", "Chapter 7")
                                                 }
                                                 if (bankruptAnswerData.size > 1 && bankruptAnswerData[1] != null) {
                                                     val getrow: Any = bankruptAnswerData[1]
                                                     val t: LinkedTreeMap<Any, Any> =
                                                         getrow as LinkedTreeMap<Any, Any>
                                                     val chapter2 = t["`2`"].toString()
-                                                    extractedAnswer = "$extractedAnswer, $chapter2"
-                                                    bankruptcyGlobalData.value2 = true
+                                                    extractedAnswer = "$extractedAnswer, Chapter 11,"
+                                                    bankruptcyAnswerData.`2` = true
                                                     Timber.e("2 = " + chapter2)
+                                                    bankruptcyMap.put("2", "Chapter 11")
 
                                                 }
 
@@ -356,9 +436,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                                     val t: LinkedTreeMap<Any, Any> =
                                                         getrow as LinkedTreeMap<Any, Any>
                                                     val chapter3 = t["`3`"].toString()
-                                                    extractedAnswer = "$extractedAnswer, $chapter3"
-                                                    bankruptcyGlobalData.value3 = true
+                                                    extractedAnswer = "$extractedAnswer, Chapter 12,"
+                                                    bankruptcyAnswerData.`3` = true
                                                     Timber.e("3 = " + chapter3)
+                                                    bankruptcyMap.put("3", "Chapter 12")
                                                 }
 
                                                 if (bankruptAnswerData.size > 3 && bankruptAnswerData[3] != null) {
@@ -366,25 +447,27 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                                     val t: LinkedTreeMap<Any, Any> =
                                                         getrow as LinkedTreeMap<Any, Any>
                                                     val chapter4 = t["`4`"].toString()
-                                                    bankruptcyGlobalData.value4 = true
-                                                    extractedAnswer = "$extractedAnswer, $chapter4"
+                                                    bankruptcyAnswerData.`4` = true
+                                                    extractedAnswer = "$extractedAnswer, Chapter 13"
                                                     Timber.e("4 = " + chapter4)
+                                                    bankruptcyMap.put("4", "Chapter 13")
                                                 }
 
-                                                Timber.e(" extracted answer = " + extractedAnswer)
-                                                bankruptcyConstraintLayout.detail_text.text =
-                                                    extractedAnswer
-                                                bankruptcyConstraintLayout.detail_title.setTypeface(
-                                                    null,
-                                                    Typeface.NORMAL
-                                                )
-                                                bankruptcyConstraintLayout.detail_text.setTypeface(
-                                                    null,
-                                                    Typeface.BOLD
-                                                )
-                                                bankruptcyConstraintLayout.govt_detail_box.visibility =
-                                                    View.VISIBLE
+                                                Timber.e(" extracted answer = $extractedAnswer")
+
+                                                bankruptcyConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                                                bankruptcyConstraintLayout.detail_title.text = "Which Type?"
+
+                                                bankruptcyConstraintLayout.detail_text.setText(extractedAnswer)
+                                                bankruptcyConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                                                bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
                                             }
+
+                                             */
+                                        }
+                                        qData.answerDetail?.let {
+                                            if(it.isNotEmpty() && it.isNotBlank())
+                                                bankruptcyAnswerData.extraDetail = it
                                         }
                                     }
                                 else
@@ -400,19 +483,53 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                                 ownerShipBoxOneEnabled = false
                                                 Timber.e("ownerShipConstraintLayout " + qData.question)
                                                 Timber.e(qData.answerDetail.toString())
+
+
+                                                val t: LinkedTreeMap<Any, Any> = qData.answerData as LinkedTreeMap<Any, Any>
+                                                //var selectionOptionText: String?
+                                                //var selectionOptionId: String? //t["selectionOptionId"].toString()
+
+                                                if(t["selectionOptionId"]!=null && t["selectionOptionText"]!=null) {
+                                                    val selectionOptionText = t["selectionOptionText"].toString()
+                                                    val selectionOptionId = t["selectionOptionId"].toString().toDouble().toInt()
+                                                    ownershipInterestAnswerData1 =
+                                                        OwnershipInterestAnswerData(
+                                                            selectionOptionId,
+                                                            selectionOptionText
+                                                        )
+                                                    ownerShipConstraintLayout.detail_text.text = selectionOptionText
+                                                    qData.answerData = ownershipInterestAnswerData1
+                                                    ownerShipInnerScreenParams.add(selectionOptionText)
+                                                }
+
                                                 ownerShipConstraintLayout.detail_title.text = qData.question
-                                                ownerShipConstraintLayout.detail_text.text = qData.answer
+
                                                 ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
                                                 ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                                                ownerShipInnerScreenParams.add(qData.answer!!)
+
                                                 ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
                                             }
                                             else{
+
+                                                val t: LinkedTreeMap<Any, Any> = qData.answerData as LinkedTreeMap<Any, Any>
+                                                if(t["selectionOptionId"]!=null && t["selectionOptionText"]!=null) {
+                                                    val selectionOptionText = t["selectionOptionText"].toString()
+                                                    val selectionOptionId = t["selectionOptionId"].toString().toDouble().toInt()
+                                                    ownershipInterestAnswerData2 =
+                                                        OwnershipInterestAnswerData(
+                                                            selectionOptionId,
+                                                            selectionOptionText
+                                                        )
+                                                    ownerShipConstraintLayout.detail_text2.text = selectionOptionText
+                                                    qData.answerData = ownershipInterestAnswerData2
+                                                    ownerShipInnerScreenParams.add(selectionOptionText)
+                                                }
+
                                                 ownerShipConstraintLayout.detail_title2.text = qData.question
-                                                ownerShipConstraintLayout.detail_text2.text = qData.answer
+
                                                 ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
                                                 ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-                                                ownerShipInnerScreenParams.add(qData.answer!!)
+
                                                 ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
                                             }
                                         }
@@ -425,7 +542,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                             Timber.e("undisclosedLayout " + qData.question)
                                             Timber.e(qData.answerDetail.toString())
                                             undisclosedLayout.detail_title.text = qData.question
-                                            undisclosedLayout.detail_text.text = answer
+                                            undisclosedLayout.detail_text.text = "$".plus(answer)
 
                                             //ownerShipGlobalData.add(qData.answer!!)
                                             undisclosedLayout.govt_detail_box.visibility = View.VISIBLE
@@ -478,30 +595,33 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         return appCompactTextView
     }
 
-    private lateinit var ownerShipConstraintLayout:ConstraintLayout
-    private lateinit var childConstraintLayout:ConstraintLayout
-    private lateinit var undisclosedLayout:ConstraintLayout
-    private lateinit var bankruptcyConstraintLayout:ConstraintLayout
-    private lateinit var dGlayout:ConstraintLayout
-
-    //private lateinit var variableQuestionData: QuestionData
-
-
-    private lateinit var clickedContentCell:ConstraintLayout
-
     private fun createContentLayoutForTab(questionData:QuestionData):ConstraintLayout{
         val variableQuestionData: QuestionData = questionData
         var childSupport = false
-        var ownerShip = false
         var headerTitle = ""
         val contentCell: ConstraintLayout
+
+        var questionId:Int = -100
+        questionData.id?.let {
+            questionId = it
+        }
+
         if(questionData.headerText == AppConstant.ownershipConstantValue) {
             ownerShipConstraintLayout = layoutInflater.inflate(R.layout.ownership_interest_layout, null) as ConstraintLayout
-            ownerShip = true
             contentCell = ownerShipConstraintLayout
             questionData.id?.let {
                 ownerShipConstraintLayout.id = it
                 contentCell.id = it
+            }
+
+            ownerShipConstraintLayout.govt_detail_box.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle , questionId)
+            }
+
+            ownerShipConstraintLayout.govt_detail_box2.setOnClickListener {
+                clickedContentCell = contentCell
+                navigateToInnerScreen(headerTitle , questionId)
             }
         }
         else
@@ -538,13 +658,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         else
         if(questionData.headerText?.trim() == AppConstant.demographicInformation) {
             contentCell = layoutInflater.inflate(R.layout.new_demo_graphic_show_layout, null) as ConstraintLayout
-            dGlayout = contentCell
+            demoGraphLayout = contentCell
             questionData.id?.let {
-                dGlayout.id = it
+                demoGraphLayout.id = it
                 contentCell.id = it
             }
             contentCell.visibility = View.INVISIBLE
-            dGlayout.visibility = View.INVISIBLE
+            demoGraphLayout.visibility = View.INVISIBLE
             observeDemoGraphicData(contentCell)
             return contentCell
         }
@@ -565,17 +685,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         questionData.answerDetail?.let {
             contentCell.detail_text.text = it
         }
-        var questionId:Int = -100
-        questionData.id?.let {
-            questionId = it
-        }
 
-        if(ownerShip) {
-            contentCell.govt_detail_box.setOnClickListener {
-                clickedContentCell = contentCell
-                navigateToInnerScreen(headerTitle , questionId)
-            }
-        }
+
+
 
         if(childSupport){
             contentCell.govt_detail_box.setOnClickListener {
@@ -590,35 +702,31 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle , questionId)
             }
-            val childInnerDetailQuestions:ArrayList<ConstraintLayout> = arrayListOf()
-            childInnerDetailQuestions.add(contentCell.govt_detail_box)
-            childInnerDetailQuestions.add(contentCell.govt_detail_box2)
-            childInnerDetailQuestions.add(contentCell.govt_detail_box3)
+
+            childGovtBoxes.add(contentCell.govt_detail_box)
+            childGovtBoxes.add(contentCell.govt_detail_box2)
+            childGovtBoxes.add(contentCell.govt_detail_box3)
+
+
             questionData.answerData?.let { notNullChildAnswerData->
                 val childAnswerData = notNullChildAnswerData as ArrayList<*>
                 if (childAnswerData.size > 0 && childAnswerData[0] != null) {
                     val getrow: Any = childAnswerData[0]
                     val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                     val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
+                    val monthlyPayment = t["monthlyPayment"].toString().toDouble().toInt()
+                    val liabilityTypeId = t["liabilityTypeId"].toString().toDouble().toInt()
                     val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
+                    val remainingMonth = t["remainingMonth"].toString().toDouble().toInt()
 
                     Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
                     contentCell.detail_title.text = liabilityName
-                    contentCell.detail_text.text = monthlyPayment
+                    contentCell.detail_text.text = "$".plus(monthlyPayment.toString())
 
                     contentCell.govt_detail_box.visibility = View.VISIBLE
 
-                    childGlobalList.add(ChildAnswerData(
-                            liabilityName,
-                            liabilityTypeId,
-                            monthlyPayment,
-                            name,
-                            remainingMonth
-                        )
-                    )
+                    childSupportAnswerDataList.add(ChildAnswerData(liabilityName, liabilityTypeId, monthlyPayment, name, remainingMonth))
+
 
                 }
 
@@ -626,24 +734,17 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                     val getrow: Any = childAnswerData[1]
                     val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                     val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
+                    val monthlyPayment = t["monthlyPayment"].toString().toDouble().toInt()
+                    val liabilityTypeId = t["liabilityTypeId"].toString().toDouble().toInt()
                     val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
+                    val remainingMonth = t["remainingMonth"].toString().toDouble().toInt()
 
-                    childGlobalList.add(
-                        ChildAnswerData(
-                            liabilityName,
-                            liabilityTypeId,
-                            monthlyPayment,
-                            name,
-                            remainingMonth
-                        )
-                    )
+                    childSupportAnswerDataList.add(ChildAnswerData(liabilityName, liabilityTypeId, monthlyPayment, name, remainingMonth))
+
 
                     Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
                     contentCell.detail_title2.text = liabilityName
-                    contentCell.detail_text2.text = monthlyPayment
+                    contentCell.detail_text2.text = "$".plus(monthlyPayment.toString())
 
 
                     contentCell.govt_detail_box2.visibility = View.VISIBLE
@@ -655,48 +756,33 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                     val getrow: Any = childAnswerData[2]
                     val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                     val liabilityName = t["liabilityName"].toString()
-                    val monthlyPayment = t["monthlyPayment"].toString()
-                    val liabilityTypeId = t["liabilityTypeId"].toString()
+                    val monthlyPayment = t["monthlyPayment"].toString().toDouble().toInt()
+                    val liabilityTypeId = t["liabilityTypeId"].toString().toDouble().toInt()
                     val name = t["name"].toString()
-                    val remainingMonth = t["remainingMonth"].toString()
-                    childGlobalList.add(
-                        ChildAnswerData(
-                            liabilityName,
-                            liabilityTypeId,
-                            monthlyPayment,
-                            name,
-                            remainingMonth
-                        )
-                    )
+                    val remainingMonth = t["remainingMonth"].toString().toDouble().toInt()
+                    childSupportAnswerDataList.add(ChildAnswerData(liabilityName, liabilityTypeId, monthlyPayment, name, remainingMonth))
 
                     Timber.e("liabilityName = " + liabilityName + "  " + t["name"] + "  " + t["monthlyPayment"])
 
                     contentCell.detail_title3.text = liabilityName
-                    contentCell.detail_text3.text = monthlyPayment
+                    contentCell.detail_text3.text = "$".plus(monthlyPayment.toString())
                     contentCell.govt_detail_box3.visibility = View.VISIBLE
 
                 }
 
                 if (questionData.answer.equals("no", true)) {
                     contentCell.ans_no.isChecked = true
-                    for (item in childInnerDetailQuestions)
-                        item.visibility = View.INVISIBLE
+                    showHideChildGovtBoxes(View.INVISIBLE)
                 } else {
                     contentCell.ans_yes.isChecked = true
-                    for (item in childInnerDetailQuestions)
-                        item.visibility = View.VISIBLE
+                    showHideChildGovtBoxes(View.VISIBLE)
                 }
             }
             contentCell.ans_no.setOnClickListener {
-                for (item in childInnerDetailQuestions)
-                    item.visibility = View.INVISIBLE
+                showHideChildGovtBoxes(View.INVISIBLE)
             }
             contentCell.ans_yes.setOnClickListener {
-                val count = childGlobalList.size-1
-                for (i in 0..count){
-                    val item = childInnerDetailQuestions[i]
-                    item.visibility = View.VISIBLE
-                }
+                showHideChildGovtBoxes(View.VISIBLE)
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle, questionId)
             }
@@ -707,18 +793,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 contentCell.ans_no.isChecked = true
                 contentCell.govt_detail_box.visibility = View.INVISIBLE
                 contentCell.govt_detail_box2?.visibility = View.INVISIBLE
+
                 contentCell.govt_detail_box3?.visibility = View.INVISIBLE
             }
+
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
                 if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty())
                     contentCell.govt_detail_box.visibility = View.VISIBLE
-            }
-
-            if(questionData.answer.equals("Yes", true) && questionData.answerDetail!=null && questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
-                contentCell.govt_detail_box.visibility = View.VISIBLE
-                contentCell.govt_detail_box2?.visibility = View.VISIBLE
-                contentCell.govt_detail_box3?.visibility = View.VISIBLE
             }
 
             contentCell.ans_no.setOnClickListener {
@@ -761,7 +843,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 clickedContentCell = contentCell
                 navigateToInnerScreen(headerTitle, questionId )
             }
-
             contentCell.govt_detail_box.setOnClickListener {
                 variableQuestionData.answer = "Yes"
                 updateGovernmentData(variableQuestionData)
@@ -802,15 +883,16 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
                "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
                "Party to Lawsuit" ->{
-                   bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
+
                    findNavController().navigate(R.id.action_party_to , bundle)
                }
                "Bankruptcy " ->{
-                   bundle.putParcelable(AppConstant.bankruptcyGlobalData, bankruptcyGlobalData)
+                   val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
+                   bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
                    findNavController().navigate(R.id.action_bankruptcy , bundle)
                }
                "Child Support, Alimony, etc." ->{
-                   bundle.putParcelableArrayList(AppConstant.childGlobalList, childGlobalList)
+                   bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
                    findNavController().navigate(R.id.action_child_support, bundle)
                }
                "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
@@ -843,110 +925,100 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         }
     }
 
-    private var demoGraphicScreenDisplaying:Boolean = false
 
-    private val ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
-    private var asianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
-
-    private val nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail> = arrayListOf()
-
-    private lateinit var variableDemoGraphicData:DemoGraphicData
-    private lateinit var variableRaceList:ArrayList<DemoGraphicRace>
-    private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
-    private var variableGender:Int? = null
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private fun showEthnicityInnerBox(){
         if(otherEthnicity.isNotEmpty() && otherEthnicity.isNotBlank()) {
             otherEthnicity = "Other Hispanic or Latino: $otherEthnicity"
-            dGlayout.other_ethnicity.text = otherEthnicity
-            dGlayout.other_ethnicity.visibility = View.VISIBLE
-            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.other_ethnicity.text = otherEthnicity
+            demoGraphLayout.other_ethnicity.visibility = View.VISIBLE
+            demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.other_ethnicity.visibility = View.GONE
+            demoGraphLayout.other_ethnicity.visibility = View.GONE
 
         if(ethnicityChildNames.isNotEmpty() && ethnicityChildNames.isNotBlank()) {
             //ethnicityChildNames = ethnicityChildNames.substring(0, ethnicityChildNames.length-2)
-            dGlayout.ethnicity_children.text = ethnicityChildNames
-            dGlayout.ethnicity_children.visibility = View.VISIBLE
-            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.ethnicity_children.text = ethnicityChildNames
+            demoGraphLayout.ethnicity_children.visibility = View.VISIBLE
+            demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.ethnicity_children.visibility = View.GONE
+            demoGraphLayout.ethnicity_children.visibility = View.GONE
     }
 
     private fun showNativeHawaiiInnerBox(){
         if(nativeHawaiiOtherRace.isNotEmpty() && nativeHawaiiOtherRace.isNotBlank()) {
             nativeHawaiiOtherRace = "Other Pacific Islander: $nativeHawaiiOtherRace"
 
-            dGlayout.other_typed_native_hawaiian.text = nativeHawaiiOtherRace
-            dGlayout.other_typed_native_hawaiian.visibility = View.VISIBLE
-            dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.other_typed_native_hawaiian.text = nativeHawaiiOtherRace
+            demoGraphLayout.other_typed_native_hawaiian.visibility = View.VISIBLE
+            demoGraphLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.other_typed_native_hawaiian.visibility = View.GONE
+            demoGraphLayout.other_typed_native_hawaiian.visibility = View.GONE
 
         if(nativeHawaiiChildNames.isNotEmpty() && nativeHawaiiChildNames.isNotBlank()) {
-            dGlayout.child_native_hawaiian.text = nativeHawaiiChildNames
-            dGlayout.child_native_hawaiian.visibility = View.VISIBLE
-            dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.child_native_hawaiian.text = nativeHawaiiChildNames
+            demoGraphLayout.child_native_hawaiian.visibility = View.VISIBLE
+            demoGraphLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.child_native_hawaiian.visibility = View.GONE
+            demoGraphLayout.child_native_hawaiian.visibility = View.GONE
     }
 
     private fun showAsianInnerBox(){
         if(otherAsianRace.isNotEmpty() && otherAsianRace.isNotBlank()) {
             otherAsianRace = "Other Asian: $otherAsianRace"
-            dGlayout.other_asian_race.text = otherAsianRace
-            dGlayout.other_asian_race.visibility = View.VISIBLE
-            dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.other_asian_race.text = otherAsianRace
+            demoGraphLayout.other_asian_race.visibility = View.VISIBLE
+            demoGraphLayout.asian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.other_asian_race.visibility = View.GONE
+            demoGraphLayout.other_asian_race.visibility = View.GONE
 
         if(asianChildNames.isNotEmpty() && asianChildNames.isNotBlank()) {
             //asianChildNames = asianChildNames.substring(0, asianChildNames.length-2)
-            dGlayout.asian_child_names.text = asianChildNames
-            dGlayout.asian_child_names.visibility = View.VISIBLE
-            dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+            demoGraphLayout.asian_child_names.text = asianChildNames
+            demoGraphLayout.asian_child_names.visibility = View.VISIBLE
+            demoGraphLayout.asian_child_box_layout.visibility = View.VISIBLE
         }
         else
-            dGlayout.asian_child_names.visibility = View.GONE
+            demoGraphLayout.asian_child_names.visibility = View.GONE
     }
 
     private fun addDemoGraphicEvents(){
 
-        dGlayout.do_not_wish_check_box.setOnClickListener{
-            dGlayout.white_check_box.isChecked = false
-            dGlayout.black_or_african_check_box.isChecked = false
-            dGlayout.american_or_indian_check_box.isChecked = false
-            dGlayout.native_hawaian_or_other_check_box.isChecked = false
-            dGlayout.asian_check_box.isChecked = false
+        demoGraphLayout.do_not_wish_check_box.setOnClickListener{
+            demoGraphLayout.white_check_box.isChecked = false
+            demoGraphLayout.black_or_african_check_box.isChecked = false
+            demoGraphLayout.american_or_indian_check_box.isChecked = false
+            demoGraphLayout.native_hawaian_or_other_check_box.isChecked = false
+            demoGraphLayout.asian_check_box.isChecked = false
 
-            if(dGlayout.do_not_wish_check_box.isChecked) {
-                dGlayout.asian_child_box_layout.visibility = View.GONE
-                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
+            if(demoGraphLayout.do_not_wish_check_box.isChecked) {
+                demoGraphLayout.asian_child_box_layout.visibility = View.GONE
+                demoGraphLayout.native_hawaian_child_box_layout.visibility = View.GONE
             }
 
         }
 
-        dGlayout.white_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
-        dGlayout.native_hawaian_or_other_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
-        dGlayout.black_or_african_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
-        dGlayout.asian_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
-        dGlayout.american_or_indian_check_box.setOnClickListener{ dGlayout.do_not_wish_check_box.isChecked = false }
+        demoGraphLayout.white_check_box.setOnClickListener{ demoGraphLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphLayout.native_hawaian_or_other_check_box.setOnClickListener{ demoGraphLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphLayout.black_or_african_check_box.setOnClickListener{ demoGraphLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphLayout.asian_check_box.setOnClickListener{ demoGraphLayout.do_not_wish_check_box.isChecked = false }
+        demoGraphLayout.american_or_indian_check_box.setOnClickListener{ demoGraphLayout.do_not_wish_check_box.isChecked = false }
 
     }
 
     private fun observeDemoGraphicData( contentCell:ConstraintLayout){
         borrowerAppViewModel.demoGraphicInfoList.observe(viewLifecycleOwner,{ demoGraphicInfoList->
 
-            dGlayout.asian_child_box_layout.visibility = View.GONE
-            dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
-            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+            demoGraphLayout.asian_child_box_layout.visibility = View.GONE
+            demoGraphLayout.native_hawaian_child_box_layout.visibility = View.GONE
+            demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
 
             if(demoGraphicInfoList.size>0){
                 var selectedDemoGraphicInfoList: DemoGraphicResponseModel? =null
@@ -956,9 +1028,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                         break
                     }
                 }
-
-
-
 
                 selectedDemoGraphicInfoList?.let {
                     it.demoGraphicData?.let { demoGraphicData ->
@@ -974,13 +1043,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                         demoGraphicData.genderId?.let { genderId ->
                             variableGender = genderId
                             if (genderId == 1)
-                                dGlayout.demo_male.isChecked = true
+                                demoGraphLayout.demo_male.isChecked = true
                             else
                             if (genderId == 2)
-                                dGlayout.demo_female.isChecked = true
+                                demoGraphLayout.demo_female.isChecked = true
                             else
                             if (genderId == 3)
-                                dGlayout.demo_do_not_wish_to_provide.isChecked = true
+                                demoGraphLayout.demo_do_not_wish_to_provide.isChecked = true
                         }
 
                         demoGraphicData.ethnicity?.let { ethnicityList ->
@@ -988,7 +1057,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                             if (ethnicityList.isNotEmpty()) {
                                 val selectedEthnicity = ethnicityList[0]
                                 if (selectedEthnicity.ethnicityId == 1) {
-                                    dGlayout.hispanic_or_latino.isChecked = true
+                                    demoGraphLayout.hispanic_or_latino.isChecked = true
                                     selectedEthnicity.ethnicityDetails?.let { theList ->
                                         for (item in theList) {
                                             ethnicityChildList.add(item)
@@ -1008,10 +1077,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                 }
                                 else
                                 if (selectedEthnicity.ethnicityId == 2)
-                                    dGlayout.not_hispanic.isChecked = true
+                                    demoGraphLayout.not_hispanic.isChecked = true
                                 else
                                 if (selectedEthnicity.ethnicityId == 3)
-                                    dGlayout.not_telling_ethnicity.isChecked = true
+                                    demoGraphLayout.not_telling_ethnicity.isChecked = true
                             }
                         }
 
@@ -1019,10 +1088,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                             variableRaceList = raceList
                             for (race in raceList) {
                                 if (race.raceId == 1) {
-                                    dGlayout.american_or_indian_check_box.isChecked = true
+                                    demoGraphLayout.american_or_indian_check_box.isChecked = true
                                 }
                                 if (race.raceId == 2) {
-                                    dGlayout.asian_check_box.isChecked = true
+                                    demoGraphLayout.asian_check_box.isChecked = true
                                     race.raceDetails?.let { asianChildList ->
 
                                         for (item in asianChildList) {
@@ -1041,11 +1110,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                     showAsianInnerBox()
                                 }
                                 if (race.raceId == 3) {
-                                    dGlayout.black_or_african_check_box.isChecked =
+                                    demoGraphLayout.black_or_african_check_box.isChecked =
                                         true
                                 }
                                 if (race.raceId == 4) {
-                                    dGlayout.native_hawaian_or_other_check_box.isChecked =
+                                    demoGraphLayout.native_hawaian_or_other_check_box.isChecked =
                                         true
 
                                     race.raceDetails?.let { nativeHawaianChildList ->
@@ -1068,10 +1137,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
                                 }
                                 if (race.raceId == 5) {
-                                    dGlayout.white_check_box.isChecked = true
+                                    demoGraphLayout.white_check_box.isChecked = true
                                 }
                                 if (race.raceId == 6) {
-                                    dGlayout.do_not_wish_check_box.performClick()
+                                    demoGraphLayout.do_not_wish_check_box.performClick()
                                 }
                             }
 
@@ -1090,18 +1159,18 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
     private fun setUpDemoGraphicScreen() {
 
-        dGlayout.american_or_indian_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+        demoGraphLayout.american_or_indian_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
             updateDemoGraphicRace(1, isChecked)
         }
 
-        dGlayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        demoGraphLayout.asian_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                if((dGlayout.asian_child_names.text.isNotEmpty() &&
-                        dGlayout.asian_check_box.text.isNotBlank()) ||
-                    (dGlayout.other_asian_race.text.isNotEmpty() &&
-                    dGlayout.other_asian_race.text.isNotBlank())
+                if((demoGraphLayout.asian_child_names.text.isNotEmpty() &&
+                        demoGraphLayout.asian_check_box.text.isNotBlank()) ||
+                    (demoGraphLayout.other_asian_race.text.isNotEmpty() &&
+                    demoGraphLayout.other_asian_race.text.isNotBlank())
                         )
-                dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+                demoGraphLayout.asian_child_box_layout.visibility = View.VISIBLE
 
                 val copyAsianChildList =  ArrayList(asianChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
@@ -1109,54 +1178,56 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 Timber.e("not accessible...")
             }
             else
-                dGlayout.asian_child_box_layout.visibility = View.GONE
+                demoGraphLayout.asian_child_box_layout.visibility = View.GONE
 
             updateDemoGraphicRace(2, isChecked)
 
         }
 
-        dGlayout.black_or_african_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
+        demoGraphLayout.black_or_african_check_box.setOnCheckedChangeListener{ buttonView, isChecked ->
             updateDemoGraphicRace(3, isChecked)
         }
 
-        dGlayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        demoGraphLayout.native_hawaian_or_other_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                if((dGlayout.child_native_hawaiian.text.isNotEmpty() &&
-                            dGlayout.child_native_hawaiian.text.isNotBlank()) ||
-                    (dGlayout.other_typed_native_hawaiian.text.isNotEmpty() &&
-                            dGlayout.other_typed_native_hawaiian.text.isNotBlank())
+                if((demoGraphLayout.child_native_hawaiian.text.isNotEmpty() &&
+                            demoGraphLayout.child_native_hawaiian.text.isNotBlank()) ||
+                    (demoGraphLayout.other_typed_native_hawaiian.text.isNotEmpty() &&
+                            demoGraphLayout.other_typed_native_hawaiian.text.isNotBlank())
                 )
-                    dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
-                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
+                    demoGraphLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                val copyNativeHawaiianChildList =  ArrayList(nativeHawaiianChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
             else
-                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
+                demoGraphLayout.native_hawaian_child_box_layout.visibility = View.GONE
             updateDemoGraphicRace(4, isChecked)
         }
 
-        dGlayout.white_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        demoGraphLayout.white_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             updateDemoGraphicRace(5, isChecked)
         }
 
 
-        dGlayout.do_not_wish_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
+        demoGraphLayout.do_not_wish_check_box.setOnCheckedChangeListener { buttonView, isChecked ->
             variableRaceList.clear()
             updateDemoGraphicRace(6, isChecked)
         }
 
-        dGlayout.native_hawaian_child_box_layout.setOnClickListener{
-            if (dGlayout.native_hawaian_or_other_check_box.isChecked) {
-                dGlayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
-                val bundle = bundleOf(AppConstant.nativeHawaianChildList to nativeHawaiianChildList)
+        demoGraphLayout.native_hawaian_child_box_layout.setOnClickListener{
+            if (demoGraphLayout.native_hawaian_or_other_check_box.isChecked) {
+                demoGraphLayout.native_hawaian_child_box_layout.visibility = View.VISIBLE
+                val copyNativeHawaiianChildList =  ArrayList(nativeHawaiianChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
             }
 
         }
 
-        dGlayout.asian_child_box_layout.setOnClickListener{
-            if ( dGlayout.asian_check_box.isChecked) {
-                dGlayout.asian_child_box_layout.visibility = View.VISIBLE
+        demoGraphLayout.asian_child_box_layout.setOnClickListener{
+            if ( demoGraphLayout.asian_check_box.isChecked) {
+                demoGraphLayout.asian_child_box_layout.visibility = View.VISIBLE
                 val copyAsianChildList =  ArrayList(asianChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
                 findNavController().navigate(R.id.action_asian , bundle)
@@ -1164,40 +1235,42 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
             }
         }
 
-        dGlayout.hispanic_or_latino.setOnClickListener {
-            val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
+        demoGraphLayout.hispanic_or_latino.setOnClickListener {
+            val copyEthnicityChildList =  ArrayList(ethnicityChildList.map { it.copy() })
+            val bundle = bundleOf(AppConstant.ethnicityChildList to copyEthnicityChildList)
             findNavController().navigate(R.id.action_hispanic , bundle)
-            dGlayout.not_hispanic.isChecked = false
-            dGlayout.not_telling_ethnicity.isChecked = false
+            demoGraphLayout.not_hispanic.isChecked = false
+            demoGraphLayout.not_telling_ethnicity.isChecked = false
             showEthnicityInnerBox()
             updateDemoGraphicEthnicity(1)
         }
 
-        dGlayout.hispanic_or_latino_child_box_layout.setOnClickListener {
-            val bundle = bundleOf(AppConstant.ethnicityChildList to ethnicityChildList)
+        demoGraphLayout.hispanic_or_latino_child_box_layout.setOnClickListener {
+            val copyEthnicityChildList =  ArrayList(ethnicityChildList.map { it.copy() })
+            val bundle = bundleOf(AppConstant.ethnicityChildList to copyEthnicityChildList)
             findNavController().navigate(R.id.action_hispanic, bundle)
-            dGlayout.not_hispanic.isChecked = false
-            dGlayout.not_telling_ethnicity.isChecked = false
+            demoGraphLayout.not_hispanic.isChecked = false
+            demoGraphLayout.not_telling_ethnicity.isChecked = false
         }
 
-        dGlayout.not_hispanic.setOnClickListener{
-            dGlayout.hispanic_or_latino.isChecked = false
-            dGlayout.not_telling_ethnicity.isChecked = false
-            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+        demoGraphLayout.not_hispanic.setOnClickListener{
+            demoGraphLayout.hispanic_or_latino.isChecked = false
+            demoGraphLayout.not_telling_ethnicity.isChecked = false
+            demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
             updateDemoGraphicEthnicity(2)
         }
 
-        dGlayout.not_telling_ethnicity.setOnClickListener{
-            dGlayout.hispanic_or_latino.isChecked = false
-            dGlayout.not_hispanic.isChecked = false
-            dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+        demoGraphLayout.not_telling_ethnicity.setOnClickListener{
+            demoGraphLayout.hispanic_or_latino.isChecked = false
+            demoGraphLayout.not_hispanic.isChecked = false
+            demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
             updateDemoGraphicEthnicity(3)
         }
 
 
-            dGlayout.demo_male.setOnClickListener { updateDemoGraphicGender(1)}
-            dGlayout.demo_female.setOnClickListener { updateDemoGraphicGender(2)}
-            dGlayout.demo_do_not_wish_to_provide.setOnClickListener { updateDemoGraphicGender(3)}
+        demoGraphLayout.demo_male.setOnClickListener { updateDemoGraphicGender(1)}
+        demoGraphLayout.demo_female.setOnClickListener { updateDemoGraphicGender(2)}
+        demoGraphLayout.demo_do_not_wish_to_provide.setOnClickListener { updateDemoGraphicGender(3)}
 
     }
 
@@ -1258,17 +1331,17 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
             }
             else
             {
-                dGlayout.asian_child_names.text =""
-                dGlayout.other_asian_race.text=""
-                dGlayout.asian_child_box_layout.visibility = View.GONE
-                dGlayout.asian_check_box.isChecked = false
+                demoGraphLayout.asian_child_names.text =""
+                demoGraphLayout.other_asian_race.text=""
+                demoGraphLayout.asian_child_box_layout.visibility = View.GONE
+                demoGraphLayout.asian_check_box.isChecked = false
             }
 
         }
 
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<DemoGraphicRaceDetail>>(AppConstant.selectedNativeHawaianChildList)?.observe(
             viewLifecycleOwner) { selectedNativeHawaianChildList ->
-
+            nativeHawaiianChildList = selectedNativeHawaianChildList
             if(selectedNativeHawaianChildList.size>0) {
                 nativeHawaiiChildNames = ""
                 nativeHawaiiOtherRace = ""
@@ -1294,10 +1367,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
             }
             else
             {
-                dGlayout.child_native_hawaiian.text =""
-                dGlayout.other_typed_native_hawaiian.text=""
-                dGlayout.native_hawaian_child_box_layout.visibility = View.GONE
-                dGlayout.native_hawaian_or_other_check_box.isChecked = false
+                demoGraphLayout.child_native_hawaiian.text =""
+                demoGraphLayout.other_typed_native_hawaiian.text=""
+                demoGraphLayout.native_hawaian_child_box_layout.visibility = View.GONE
+                demoGraphLayout.native_hawaian_or_other_check_box.isChecked = false
             }
 
         }
@@ -1305,6 +1378,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         navController.currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<EthnicityDetailDemoGraphic>>(AppConstant.selectedEthnicityChildList)?.observe(
             viewLifecycleOwner) { theList ->
             // Do something with the result.
+
+            ethnicityChildList = theList
             if(theList.size>0) {
                 ethnicityChildNames = ""
                 otherEthnicity = ""
@@ -1324,26 +1399,13 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
             }
             else
             {
-                dGlayout.ethnicity_children.text =""
-                dGlayout.other_ethnicity.text=""
-                dGlayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
-                dGlayout.hispanic_or_latino.isChecked = false
+                demoGraphLayout.ethnicity_children.text =""
+                demoGraphLayout.other_ethnicity.text=""
+                demoGraphLayout.hispanic_or_latino_child_box_layout.visibility = View.GONE
+                demoGraphLayout.hispanic_or_latino.isChecked = false
             }
         }
     }
-
-    private fun updateDemoGraphicService(){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                variableDemoGraphicData.genderId = variableGender
-                variableDemoGraphicData.race = variableRaceList
-                variableDemoGraphicData.ethnicity = variableEthnicityList
-                borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
-                //findNavController().popBackStack()
-            }
-        }
-    }
-
 
     override fun onStart() {
         super.onStart()
@@ -1385,63 +1447,109 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         }
     }
 
+
+    data class OwnershipInterestAnswerData(
+        val selectionOptionId: Int,
+        val selectionOptionText: String
+    )
+
+    data class FamilyAnswerData(
+        val IsAffiliatedWithSeller: Boolean = false,
+        val AffiliationDescription: String? = null
+    )
+
+
+    var ownershipInterestAnswerData1:OwnershipInterestAnswerData?= null
+    var ownershipInterestAnswerData2:OwnershipInterestAnswerData?= null
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateOwnershipInterest(updateEvent: OwnershipInterestUpdateEvent) {
         var secondMatched = true
         ownerShipInnerScreenParams.clear()
+
+        Timber.e(" 1- updateOwnershipInterest = "+ updateEvent.index1 +" = "+ updateEvent.answer1)
+        Timber.e(" 2- updateOwnershipInterest = "+ updateEvent.index2 +" = "+ updateEvent.answer2)
 
         governmentParams.Questions.let { questions ->
             for (item in questions) {
                 item.parentQuestionId?.let { parentQuestionId ->
                     if (parentQuestionId == ownerShipConstraintLayout.id) {
                         if (secondMatched) {
-                            clickedContentCell.govt_detail_box.detail_title.text =  OwnershipInterestInPropertyFragment.ownershipQuestionOne
-                            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-                            clickedContentCell.govt_detail_box.detail_text.text = updateEvent.answer1
-                            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-                            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
                             secondMatched = false
+
+
+                            ownerShipConstraintLayout.detail_title.text =  OwnershipInterestInPropertyFragment.ownershipQuestionOne
+                            ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
+                            ownerShipConstraintLayout.detail_text.text = updateEvent.answer1
+                            ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
+                            ownerShipConstraintLayout.visibility = View.VISIBLE
                             ownerShipInnerScreenParams.add(updateEvent.answer1)
-                            //item.answerData = TestAnswerData(updateEvent.index1.toString(), updateEvent.answer1)
+                            ownershipInterestAnswerData1 = OwnershipInterestAnswerData(updateEvent.index1, updateEvent.answer1)
+                            item.answerData = ownershipInterestAnswerData1
                         } else {
-                            clickedContentCell.detail_text2?.text =  OwnershipInterestInPropertyFragment.ownershipQuestionTwo
-                            clickedContentCell.detail_text2?.setTypeface(null, Typeface.NORMAL)
-                            clickedContentCell.detail_text2?.text = updateEvent.answer2
-                            clickedContentCell.detail_text2?.setTypeface(null, Typeface.BOLD)
-                            clickedContentCell.govt_detail_box2?.visibility = View.VISIBLE
+                            ownerShipConstraintLayout.detail_text2?.text =  OwnershipInterestInPropertyFragment.ownershipQuestionTwo
+                            ownerShipConstraintLayout.detail_text2?.setTypeface(null, Typeface.NORMAL)
+                            ownerShipConstraintLayout.detail_text2?.text = updateEvent.answer2
+                            ownerShipConstraintLayout.detail_text2?.setTypeface(null, Typeface.BOLD)
+                            ownerShipConstraintLayout.govt_detail_box2?.visibility = View.VISIBLE
                             ownerShipInnerScreenParams.add(updateEvent.answer2)
-                            //item.answerData = TestAnswerData(updateEvent.index2.toString(), updateEvent.answer2)
+                            ownershipInterestAnswerData2 = OwnershipInterestAnswerData(updateEvent.index2, updateEvent.answer2)
+                            item.answerData = OwnershipInterestAnswerData(updateEvent.index2, updateEvent.answer2)
                         }
                     }
                 }
             }
         }
-
-
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
-            }
-        }
-
+        //updateGovernmentQuestionApiCall()
     }
 
+
+    private var bankruptcyMap = hashMapOf<String, String>()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateBankruptcy(updateEvent: BankruptcyUpdateEvent) {
         val displayValue = updateEvent.detailDescription
         displayValue.trim()
-        clickedContentCell.govt_detail_box.detail_title.text = updateEvent.detailTitle
-        clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-        clickedContentCell.govt_detail_box.detail_text.text = displayValue
-        clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-        clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+        bankruptcyAnswerData = updateEvent.bankruptcyAnswerData
+        bankruptcyConstraintLayout.govt_detail_box.detail_title.text = updateEvent.detailTitle
+        bankruptcyConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+        bankruptcyConstraintLayout.govt_detail_box.detail_text.text = displayValue
+        bankruptcyConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+        bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
 
+
+        //val thelist: MutableList<String, String> = ArrayList<String>()
+        bankruptcyMap = hashMapOf<String, String>()
+        bankruptcyMap.clear()
+        //bankruptcyAnswerData = BankruptcyAnswerData()
         governmentParams.Questions.let { questions->
             for (question in questions) {
                 question.parentQuestionId?.let { parentQuestionId ->
                     if (parentQuestionId == bankruptcyConstraintLayout.id) {
+                        question.answer = "Yes"
+                        if(bankruptcyAnswerData.`1`) {
+                            bankruptcyMap.put("1", "Chapter 7")
+                           // bankruptcyAnswerData.`1` = true
+                        }
+
+                        if(bankruptcyAnswerData.`2`) {
+                            bankruptcyMap.put("2", "Chapter 11")
+                           // bankruptcyAnswerData.`2` = true
+                        }
+
+                        if(bankruptcyAnswerData.`3`) {
+                            bankruptcyMap.put("3", "Chapter 12")
+                            //bankruptcyAnswerData.`3` = true
+                        }
+
+
+                        if(bankruptcyAnswerData.`4`) {
+                            bankruptcyMap.put("4", "Chapter 13")
+                           // bankruptcyAnswerData.`4` = true
+                        }
+
+                        question.answerData = bankruptcyMap
 
                     }
+
                 }
             }
         }
@@ -1450,32 +1558,34 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateChildSupport(updateEvent: ChildSupportUpdateEvent) {
+
         val list = updateEvent.childAnswerList
-        childGlobalList.clear()
-        childGlobalList = list
+        childSupportAnswerDataList.clear()
+        childSupportAnswerDataList = list
         if(list.size>0){
-            clickedContentCell.govt_detail_box.detail_title.text = list[0].liabilityName
-            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.BOLD )
-            clickedContentCell.govt_detail_box.detail_text.text = "$".plus(Common.addNumberFormat(list[0].monthlyPayment.toDouble()))
-            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.NORMAL)
-            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+            childConstraintLayout.govt_detail_box.detail_title.text = list[0].liabilityName
+            childConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.BOLD )
+            childConstraintLayout.govt_detail_box.detail_text.text = "$".plus(Common.addNumberFormat(list[0].monthlyPayment.toDouble()))
+            childConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.NORMAL)
+            //clickedContentCell.govt_detail_box.visibility = View.VISIBLE
         }
         if(list.size>1){
-            clickedContentCell.govt_detail_box2.detail_title2.text = list[1].liabilityName
-            clickedContentCell.govt_detail_box2.detail_title2.setTypeface(null, Typeface.BOLD )
-            clickedContentCell.govt_detail_box2.detail_text2.text = "$".plus(Common.addNumberFormat(list[1].monthlyPayment.toDouble()))
-            clickedContentCell.govt_detail_box2.detail_text2.setTypeface(null, Typeface.NORMAL)
-            clickedContentCell.govt_detail_box2.visibility = View.VISIBLE
+            childConstraintLayout.govt_detail_box2.detail_title2.text = list[1].liabilityName
+            childConstraintLayout.govt_detail_box2.detail_title2.setTypeface(null, Typeface.BOLD )
+            childConstraintLayout.govt_detail_box2.detail_text2.text = "$".plus(Common.addNumberFormat(list[1].monthlyPayment.toDouble()))
+            childConstraintLayout.govt_detail_box2.detail_text2.setTypeface(null, Typeface.NORMAL)
+            //clickedContentCell.govt_detail_box2.visibility = View.VISIBLE
         }
 
         if(list.size>2){
-            clickedContentCell.govt_detail_box3.detail_title3.text = list[2].liabilityName
-            clickedContentCell.govt_detail_box3.detail_title3.setTypeface(null, Typeface.BOLD )
-            clickedContentCell.govt_detail_box3.detail_text3.text = "$".plus(Common.addNumberFormat(list[2].monthlyPayment.toDouble()))
-            clickedContentCell.govt_detail_box3.detail_text3.setTypeface(null, Typeface.NORMAL)
-            clickedContentCell.govt_detail_box3.visibility = View.VISIBLE
+            childConstraintLayout.govt_detail_box3.detail_title3.text = list[2].liabilityName
+            childConstraintLayout.govt_detail_box3.detail_title3.setTypeface(null, Typeface.BOLD )
+            childConstraintLayout.govt_detail_box3.detail_text3.text = "$".plus(Common.addNumberFormat(list[2].monthlyPayment.toDouble()))
+            childConstraintLayout.govt_detail_box3.detail_text3.setTypeface(null, Typeface.NORMAL)
+            //clickedContentCell.govt_detail_box3.visibility = View.VISIBLE
         }
 
+        showHideChildGovtBoxes(View.VISIBLE)
 
 
     }

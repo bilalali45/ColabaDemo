@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -61,9 +62,16 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 }
             }
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         setUpUI()
         super.addListeners(binding.root)
         return root
+    }
+
+    private val backToGovernmentScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack()
+        }
     }
 
 
@@ -75,7 +83,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 clearFocusFromFields()
                 val dollarAmount = Common.removeCommas(binding.annualBaseEditText.text.toString())
                 updateOwnerShipInterest( dollarAmount)
-                findNavController().popBackStack()
+                //findNavController().popBackStack()
             }
         }
         addFocusOutListenerToFields()
@@ -93,14 +101,16 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             }
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
+                    //borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
                     var detailTitle =  binding.edDetails.text.toString()
                     if(detailTitle.isEmpty() || detailTitle.isBlank())
                         detailTitle = ""
                     EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString))
-                    findNavController().popBackStack()
+
                 }
             }
+
+           //findNavController().popBackStack()
         }
     }
 

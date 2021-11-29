@@ -54,8 +54,9 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             assetTypeID = arguments.getInt(AppConstant.assetTypeID)
             listenerAttached = arguments.getInt(AppConstant.listenerAttached)
             assetBorrowerName = arguments.getString(AppConstant.assetBorrowerName , null)
-            observeGiftData()
+
             getGiftCategory()
+
         }
 
         assetBorrowerName?.let {
@@ -98,6 +99,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             if(assetTypesByCategoryItemList!=null && assetTypesByCategoryItemList.size>0){
                 giftAssetList = assetTypesByCategoryItemList
             }
+            observeGiftData()
         })
     }
 
@@ -125,6 +127,18 @@ class GiftsAssetsFragment:AssetBaseFragment() {
 
         assetUniqueId?.let { nonNullAssetUniqueId->
             if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        Timber.e("catching unique id $assetUniqueId")
+                        viewModel.getGiftAssetDetails(
+                            authToken,
+                            loanApplicationId!!,
+                            borrowerId!!,
+                            nonNullAssetUniqueId
+                        )
+                    }
+                }
 
                 viewModel.giftAssetDetail.observe(viewLifecycleOwner, { giftAssetDetail ->
                     if (giftAssetDetail?.code == AppConstant.RESPONSE_CODE_SUCCESS) {
@@ -188,18 +202,6 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                         }
                     }
                 })
-
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        Timber.e("catching unique id $assetUniqueId")
-                        viewModel.getGiftAssetDetails(
-                            authToken,
-                            loanApplicationId!!,
-                            borrowerId!!,
-                            nonNullAssetUniqueId
-                        )
-                    }
-                }
             }
         }
 
@@ -424,21 +426,21 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         else
             CustomMaterialFields.clearError(binding.giftSourceInputLayout,  requireContext())
 
-        /*
+
         if(binding.annualBaseEditText.text?.isEmpty() == true || binding.annualBaseEditText.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.annualBaseLayout, "This field is required." , requireContext())
             bool = false
         }
         else
             CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
-
-        if(binding.dateOfTransferEditText.text?.isEmpty() == true || binding.dateOfTransferEditText.text?.isBlank() == true) {
-            CustomMaterialFields.setError(binding.layoutTransferDate, "This field is required." , requireContext())
-            bool = false
-        }
-        else
-            CustomMaterialFields.clearError(binding.layoutTransferDate,  requireContext())
-         */
+        /*
+               if(binding.dateOfTransferEditText.text?.isEmpty() == true || binding.dateOfTransferEditText.text?.isBlank() == true) {
+                   CustomMaterialFields.setError(binding.layoutTransferDate, "This field is required." , requireContext())
+                   bool = false
+               }
+               else
+                   CustomMaterialFields.clearError(binding.layoutTransferDate,  requireContext())
+                */
         return bool
     }
 

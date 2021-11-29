@@ -162,7 +162,7 @@ object AppConstant {
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"
-        const val bankruptcyGlobalData : String = "bankruptcyGlobalData"
+        const val bankruptcyAnswerData : String = "bankruptcyGlobalData"
 
 
         const val  downloadedFileName:String = "pdfFileName"

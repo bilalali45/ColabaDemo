@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,6 +32,11 @@ open class GovtDetailBaseFragment: BaseFragment() {
         }
     }
 
+    protected val backToGovernmentScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack()
+        }
+    }
 
     protected fun updateGovernmentAndSaveData(getDetailString:String , govtTitleString:String = "Detail" ) {
 
@@ -42,11 +48,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
             }
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
-                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(
-                        authToken,
-                        updateGovernmentQuestionByBorrowerId
-                    )
+                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
                     EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString))
                     findNavController().popBackStack()
                 }
