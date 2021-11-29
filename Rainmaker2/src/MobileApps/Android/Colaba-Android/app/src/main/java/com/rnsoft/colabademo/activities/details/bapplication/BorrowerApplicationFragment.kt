@@ -40,15 +40,14 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
-    private var borrowerInfoAdapter  = CustomBorrowerAdapter(borrowerInfoList , this)
+    private var borrowerInfoAdapter = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
     var saveBorrowerId:Int = 0
     var borrowerName : String? = null
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -242,6 +241,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
             intent.putExtra(AppConstant.borrowerId,saveBorrowerId)
             intent.putExtra(AppConstant.borrowerName, borrowerName)
+            intent.putExtra(AppConstant.addBorrower,borrowerInfoList.get(position).isFooter)
             startActivity(intent)
 
         }

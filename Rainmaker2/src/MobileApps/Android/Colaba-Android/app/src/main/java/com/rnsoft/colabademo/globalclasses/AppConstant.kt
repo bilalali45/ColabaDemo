@@ -66,6 +66,7 @@ object AppConstant {
         const val borrowerId:String = "borrowerId"
         const val borrowerName:String = "borrowerName"
         const val propertyInfoId:String = "propertyInfoId"
+        const val addBorrower:String ="AddBorrower"
 
 
         const val assetUniqueId:String = "borrowerAssetId"

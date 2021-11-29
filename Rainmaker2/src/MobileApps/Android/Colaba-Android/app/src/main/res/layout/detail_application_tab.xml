@@ -162,6 +162,8 @@
                     android:text="Investment Property"
                     android:textColor="@color/grey_color_two"
                     android:textSize="13sp"
+                    android:drawableStart="@drawable/circle_grey"
+                    android:drawablePadding="10dp"
                     app:layout_constraintStart_toEndOf="@+id/bAppPropertyType"
                     app:layout_constraintTop_toTopOf="@+id/bAppPropertyType" />
 

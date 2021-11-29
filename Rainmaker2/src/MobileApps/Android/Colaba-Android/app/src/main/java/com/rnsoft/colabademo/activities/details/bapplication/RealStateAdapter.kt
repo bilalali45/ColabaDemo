@@ -29,11 +29,16 @@ class RealStateAdapter internal constructor(private var realStateDataList: Array
           item.propertyInfoId.toString()
             item.realStateAddress?.let {
                 //propertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-
                 val builder = StringBuilder()
                 it.street?.let { builder.append(it).append(" ") }
                 it.unit?.let { builder.append(it).append(",") } ?: run { builder.append(",")}
-                it.city?.let { builder.append("\n").append(it).append(",").append(" ") } ?: run {builder.append("\n")}
+                it.city?.let {
+                    if(it.length >0 )
+                        builder.append("\n").append(it).append(",").append(" ")
+                    else
+                        builder.append("\n")
+                } ?: run {builder.append("\n")}
+
                 it.stateName?.let { builder.append(it).append(" ") }
                 it.zipCode?.let { builder.append(it) }
                 propertyAddress.text = builder
