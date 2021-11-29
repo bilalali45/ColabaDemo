@@ -172,23 +172,36 @@ class BorrowerInformationViewController: BaseViewController {
     
     func setBorrowerInformation(){
         lblBorrowerName.text = "\(borrowerInformationModel.borrowerBasicDetails.firstName.uppercased()) \(borrowerInformationModel.borrowerBasicDetails.lastName.uppercased())"
-        txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
-        txtfieldMiddleName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.middleName)
-        txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
-        txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
-        txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
-        
-        let homePhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.homePhone)
-        txtfieldHomeNumber.setTextField(text: homePhoneNumber)
-        
-        let workPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.workPhone)
-        txtfieldWorkNumber.setTextField(text: workPhoneNumber)
-        
-        txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
-        
-        let cellPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.cellPhone)
-        txtfieldCellNumber.setTextField(text: cellPhoneNumber)
-        
+        if (txtfieldLegalFirstName.text == ""){
+            txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
+        }
+        if (txtfieldMiddleName.text == ""){
+            txtfieldMiddleName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.middleName)
+        }
+        if (txtfieldLegalLastName.text == ""){
+            txtfieldLegalLastName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.lastName)
+        }
+        if (txtfieldSuffix.text == ""){
+            txtfieldSuffix.setTextField(text: borrowerInformationModel.borrowerBasicDetails.suffix)
+        }
+        if (txtfieldEmail.text == ""){
+            txtfieldEmail.setTextField(text: borrowerInformationModel.borrowerBasicDetails.emailAddress)
+        }
+        if (txtfieldHomeNumber.text == ""){
+            let homePhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.homePhone)
+            txtfieldHomeNumber.setTextField(text: homePhoneNumber)
+        }
+        if (txtfieldWorkNumber.text == ""){
+            let workPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.workPhone)
+            txtfieldWorkNumber.setTextField(text: workPhoneNumber)
+        }
+        if (txtfieldExtensionNumber.text == ""){
+            txtfieldExtensionNumber.setTextField(text: borrowerInformationModel.borrowerBasicDetails.workPhoneExt)
+        }
+        if (txtfieldCellNumber.text == ""){
+            let cellPhoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: borrowerInformationModel.borrowerBasicDetails.cellPhone)
+            txtfieldCellNumber.setTextField(text: cellPhoneNumber)
+        }
         if (borrowerInformationModel.borrowerBasicDetails.firstName != ""){
             lblReserveNationalGuardQuestion.text =  "Was \(borrowerInformationModel.borrowerBasicDetails.firstName.capitalized) \(borrowerInformationModel.borrowerBasicDetails.lastName.capitalized) ever activated during their tour of duty?"
         }
@@ -425,11 +438,13 @@ class BorrowerInformationViewController: BaseViewController {
     
     @objc func marriedTapped(){
         maritalStatus = 2
+        borrowerInformationModel.maritalStatus.maritalStatusId = 1
         changeMaritalStatus()
     }
     
     @objc func separatedTapped(){
         maritalStatus = 3
+        borrowerInformationModel.maritalStatus.maritalStatusId = 2
         changeMaritalStatus()
     }
     
@@ -480,11 +495,13 @@ class BorrowerInformationViewController: BaseViewController {
     
     @objc func usCitizenTapped(){
         citizenshipStatus = 1
+        borrowerInformationModel.borrowerCitizenship.residencyTypeId = 1
         changeCitizenshipStatus()
     }
     
     @objc func permanentResidentTapped(){
         citizenshipStatus = 2
+        borrowerInformationModel.borrowerCitizenship.residencyTypeId = 1
         changeCitizenshipStatus()
     }
     
