@@ -1166,7 +1166,7 @@ class BorrowerInformationViewController: BaseViewController {
                       "maritalStatus": maritalStatusDetail,
                       "borrowerCitizenship": citizenshipDetail,
                       "militaryServiceDetails": militaryDetail,
-                      "currentAddress": currentAddress,
+                      "currentAddress": borrowerInformationModel.currentAddress.addressModel.street == "" ? NSNull() : currentAddress,
                       "previousAddresses": previousAddresses.count == 0 ? NSNull() : previousAddresses] as [String:Any]
         
         APIRouter.sharedInstance.executeAPI(type: .addUpdateBorrowerDetail, method: .post, params: params) { status, result, message in
