@@ -1,5 +1,5 @@
 //
-//  CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift
+//  SpouseBasicDetailViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 26/11/2021.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol CoBorrowerMarriedAndSepartedFollowUpQuestionViewControllerDelegate: AnyObject {
+protocol SpouseBasicDetailViewControllerDelegate: AnyObject {
     func saveMaritalStatusMarriedOrSeparated(status: MaritalStatus)
 }
 
-class CoBorrowerMarriedAndSepartedFollowUpQuestionViewController: UIViewController {
+class SpouseBasicDetailViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     
@@ -27,10 +27,12 @@ class CoBorrowerMarriedAndSepartedFollowUpQuestionViewController: UIViewControll
     
     var selectedMaritalStatus = MaritalStatus()
     var borrowerName = ""
-    weak var delegate: CoBorrowerMarriedAndSepartedFollowUpQuestionViewControllerDelegate?
+    weak var delegate: SpouseBasicDetailViewControllerDelegate?
+    var isForSeparated = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        lblTopHeading.text = isForSeparated ? "Separated"  :"Married"
         lblBorrowerName.text = borrowerName.uppercased()
         setTextFields()
         setMaritalStatusData()
@@ -40,13 +42,13 @@ class CoBorrowerMarriedAndSepartedFollowUpQuestionViewController: UIViewControll
     
     func setTextFields() {
         ///First Name
-        txtfieldSpouseFirstName.setTextField(placeholder: "Spouse's Legal First Name", controller: self, validationType: .noValidation)
+        txtfieldSpouseFirstName.setTextField(placeholder: isForSeparated ? "Legal Spouse First Name" : "Spouse First Name", controller: self, validationType: .noValidation)
         
         ///Middle Name
-        txtfieldSpouseMiddleName.setTextField(placeholder: "Middle Name", controller: self, validationType: .noValidation)
+        txtfieldSpouseMiddleName.setTextField(placeholder: isForSeparated ? "Legal Spouse Middle Name" : "Spouse Middle Name", controller: self, validationType: .noValidation)
         
         ///Last Name
-        txtfieldSpouseLastName.setTextField(placeholder: "Spouse's Legal Last Name", controller: self, validationType: .noValidation)
+        txtfieldSpouseLastName.setTextField(placeholder: isForSeparated ? "Legal Spouse Last Name" : "Spouse Last Name", controller: self, validationType: .noValidation)
     }
     
     func setMaritalStatusData(){
