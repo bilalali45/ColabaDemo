@@ -473,7 +473,7 @@ class OtherIncomeFragment : BaseFragment() {
         mainBorrowerList?.let { notNullMainBorrowerList->
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
+                   borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
                 }
             }
         }
