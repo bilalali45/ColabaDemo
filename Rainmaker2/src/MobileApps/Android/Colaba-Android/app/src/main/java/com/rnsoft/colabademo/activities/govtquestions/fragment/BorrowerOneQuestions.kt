@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.utils.Common
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_text2
 import kotlinx.android.synthetic.main.children_separate_layout.view.detail_title2
 import kotlinx.android.synthetic.main.children_separate_layout.view.govt_detail_box2
@@ -131,8 +133,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 updateDemoGraphicApiCall()
             else
                 updateGovernmentQuestionApiCall()
-            //EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
-            //requireActivity().finish()
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+            requireActivity().finish()
         }
 
         setUpDynamicTabs()
@@ -207,24 +209,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                     continue
                 }
                 question.answerData = null
-
-                /*
-                val newChild = ChildQuestionData(
-                    question.id,
-                    question.parentQuestionId,
-                    question.answer,
-                    question.answerDetail,
-                    question.headerText,
-                    answerData = null,
-                    question.firstName,
-                    question.lastName,
-                    question.ownTypeId,
-                    question.question,
-                    question.questionSectionId,
-                    question.selectionOptionId
-                )
-                 */
-                //testGovernmentParams.Questions.add(newChild)
 
                 if (question.id == 140) {
                     //newChild.answerData = childSupportAnswerDataList
@@ -320,7 +304,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
                         for (qData in questionData) {
                             lastQData = qData
+                            qData.question?.let {
+                                var questionReplaced = it
+                                qData.firstName?.let {
+                                    if (questionReplaced.contains("[Co-Applicant First Name]"))
+                                        questionReplaced = questionReplaced.replace("[Co-Applicant First Name]", it)
+                                }
+                                qData.lastName?.let {
+                                    if (questionReplaced.contains("[Co-Applicant Last Name]"))
+                                        questionReplaced =
+                                            questionReplaced.replace("[Co-Applicant Last Name]", it)
+                                }
+                                qData.question = questionReplaced
+                            }
+
                             qData.headerText?.let { tabTitle ->
+
                                 if (qData.parentQuestionId == null) {
                                     binding.parentContainer.visibility = View.INVISIBLE
                                     val appCompactTextView = createAppCompactTextView(tabTitle, 0)
@@ -364,8 +363,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                             qData.parentQuestionId?.let { parentQuestionId ->
                                 Timber.e("parentQuestionId...$parentQuestionId")
                                 if (parentQuestionId == bankruptcyConstraintLayout.id) {
-                                        Timber.e("bankruptcyConstraintLayout " + qData.question)
-                                        Timber.e(qData.answerDetail.toString())
+                                        Timber.e("bankruptcy = "+qData.answerDetail.toString())
                                         var extractedAnswer = ""
                                         qData.answerData?.let {
                                             val bankruptAnswerData: ArrayList<LinkedTreeMap<Any, Any>> = it as ArrayList<LinkedTreeMap<Any, Any>>
@@ -889,7 +887,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                "Bankruptcy " ->{
                    val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
                    bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
-                   findNavController().navigate(R.id.action_bankruptcy , bundle)
+                   findNavController().navigate(R.id.navigation_bankruptcy , bundle)
                }
                "Child Support, Alimony, etc." ->{
                    bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
@@ -1447,11 +1445,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         }
     }
 
-
+    @Parcelize
     data class OwnershipInterestAnswerData(
         val selectionOptionId: Int,
         val selectionOptionText: String
-    )
+    ): Parcelable
 
     data class FamilyAnswerData(
         val IsAffiliatedWithSeller: Boolean = false,
@@ -1506,8 +1504,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
     private var bankruptcyMap = hashMapOf<String, String>()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateBankruptcy(updateEvent: BankruptcyUpdateEvent) {
-        val displayValue = updateEvent.detailDescription
-        displayValue.trim()
+        var displayValue = updateEvent.detailDescription
+        displayValue = displayValue.trim()
+        displayValue = displayValue.removeRange(displayValue.length-1, displayValue.length)
         bankruptcyAnswerData = updateEvent.bankruptcyAnswerData
         bankruptcyConstraintLayout.govt_detail_box.detail_title.text = updateEvent.detailTitle
         bankruptcyConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
@@ -1525,6 +1524,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                 question.parentQuestionId?.let { parentQuestionId ->
                     if (parentQuestionId == bankruptcyConstraintLayout.id) {
                         question.answer = "Yes"
+                        question.answerDetail = bankruptcyAnswerData.extraDetail
                         if(bankruptcyAnswerData.`1`) {
                             bankruptcyMap.put("1", "Chapter 7")
                            // bankruptcyAnswerData.`1` = true

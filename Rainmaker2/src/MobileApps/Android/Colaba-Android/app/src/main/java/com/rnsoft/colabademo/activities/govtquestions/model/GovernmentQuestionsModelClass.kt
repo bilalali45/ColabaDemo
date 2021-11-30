@@ -21,17 +21,15 @@ data class QuestionData(
     val parentQuestionId:Int? = null,
     var answer: String?,
     var answerDetail: String?= "",
-    val headerText:String? = "title1",
+
     var answerData :  @RawValue Any? = null,
-
     val firstName: String?=null,
-
-
-
     val lastName: String?=null,
     val ownTypeId: Int?=null,
-    val question: String?=null,
+    var question: String?=null,
     val questionSectionId: Int?=null,
-    val selectionOptionId: Int?=null
+    val selectionOptionId: Int?=null,
+
+    val headerText:String? = "title1"
 ):Parcelable
 

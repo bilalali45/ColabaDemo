@@ -548,13 +548,22 @@ class BorrowerOneAssets : BaseFragment() {
                     assetReturnParams.assetCategoryName?.let { it1 ->
                         bundle.putString(AppConstant.assetCategoryName, it1)
                     }
+
+                    assetReturnParams.assetValue?.let { nonNullAssetValue->
+                        classCategoryTotal = nonNullAssetValue
+
+                    }
+
                     Timber.e(" content data - $assetReturnParams")
 
+                    var listenerAttached:Int? = null
                     assetReturnParams.listenerAttached?.let { it1 ->
                         bundle.putInt(AppConstant.listenerAttached, it1)
                         Timber.e("navigation = $it1")
-                        findNavController().navigate(it1, bundle)
+                        listenerAttached = it1
                     }
+                    if(listenerAttached!=null)
+                        findNavController().navigate(listenerAttached!!, bundle)
                 }
             }
 
@@ -608,6 +617,13 @@ class BorrowerOneAssets : BaseFragment() {
         }
     }
 
+
+
+}
+
+
+
+/*
     private fun addListenerToNewOrModifiedCell(assetReturnParams:AssetReturnParams , contentCell:View){
         contentCell.setOnClickListener {
             val parentActivity = activity as? AssetsActivity
@@ -627,5 +643,4 @@ class BorrowerOneAssets : BaseFragment() {
             }
         }
     }
-
-}
+ */
