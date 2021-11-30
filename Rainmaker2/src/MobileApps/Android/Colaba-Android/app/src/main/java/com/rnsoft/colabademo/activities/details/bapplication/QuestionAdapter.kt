@@ -18,6 +18,8 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
         private var questionTitle: TextView = view.findViewById(R.id.questionTitle)
         private var question: TextView = view.findViewById(R.id.question)
 
+        private var noAnswerImage: ImageView = view.findViewById(R.id.no_question_image)
+
         private var answer1Icon: ImageView = view.findViewById(R.id.answer1_icon)
         private var answer2Icon: ImageView = view.findViewById(R.id.answer2_icon)
         private var answer3Icon: ImageView = view.findViewById(R.id.answer3_icon)
@@ -43,6 +45,10 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
             question.text = item.questionDetail?.questionText
 
             item.questionResponses?.let { answers ->
+
+                if(answers.size==0)
+                    noAnswerImage.visibility = View.VISIBLE
+
 
                 var answer1 = ""
                 var answer2 = ""
@@ -78,7 +84,6 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
                         answer2Icon.visibility = View.GONE
                         answer2Name.visibility = View.GONE
                         answer2No.visibility = View.GONE
-
                 }
                 else
                     answer2Name.text = answer2
