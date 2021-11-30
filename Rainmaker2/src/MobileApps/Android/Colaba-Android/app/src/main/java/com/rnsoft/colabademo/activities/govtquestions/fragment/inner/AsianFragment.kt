@@ -25,25 +25,22 @@ class AsianFragment:BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = AsianLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         asianChildList = arguments?.getParcelableArrayList(AppConstant.asianChildList)!!
         setUpUI()
         super.addListeners(binding.root)
-
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
-
         return root
     }
 
     private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {  saveChildList() }
+        override fun handleOnBackPressed() {
+
+            findNavController().popBackStack()
+        }
     }
 
     private fun saveChildList(){
@@ -59,8 +56,11 @@ class AsianFragment:BaseFragment() {
     }
 
     private fun setUpUI() {
-        binding.edDetails.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.edDetails , binding.layoutDetail , requireContext()))
-        binding.backButton.setOnClickListener { findNavController().popBackStack() }
+        binding.edDetails.onFocusChangeListener = CustomFocusListenerForEditText( binding.edDetails , binding.layoutDetail , requireContext())
+        binding.backButton.setOnClickListener {
+
+            findNavController().popBackStack()
+        }
         binding.saveBtn.setOnClickListener { saveChildList() }
 
 

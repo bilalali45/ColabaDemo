@@ -45,7 +45,7 @@ class RetirementFragment:AssetBaseFragment() {
             assetCategoryName = assetCategoryName,
             listenerAttached = listenerAttached,
             assetAction = assetAction,
-            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+            assetValue = (Common.removeCommas(binding.annualBaseEditText.text.toString())).toDouble()
         )
     }
 
@@ -114,7 +114,7 @@ class RetirementFragment:AssetBaseFragment() {
                                     LoanApplicationId = notNullLoanApplicationId,
                                     AccountNumber = binding.accountNumberEdittext.text.toString(),
                                     InstitutionName = binding.financialEditText.text.toString(),
-                                    Value = binding.annualBaseEditText.text.toString().toInt(),
+                                    Value = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                     Id = assetUniqueId
                                 )
                             viewModel.addUpdateRetirement(authToken , retirementAddUpdateParams)

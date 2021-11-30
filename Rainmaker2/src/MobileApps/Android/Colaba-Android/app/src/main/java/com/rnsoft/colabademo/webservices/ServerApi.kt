@@ -603,7 +603,7 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
     suspend fun addOrUpdateGovernmentQuestions(
         @Header("Authorization" )  Authorization:String,
-        @Body addUpdateQuestionsParams: AddUpdateQuestionsParams
+        @Body questionParams: GovernmentParams
     ):GovernmentAddUpdateDataResponse
 
 

@@ -160,7 +160,7 @@ class StockBondsFragment:AssetBaseFragment() {
                                         BorrowerId = notNullBorrowerId,
                                         Id = assetUniqueId,
                                         AccountNumber = binding.accountNumberEdittext.text.toString(),
-                                        Balance = binding.annualBaseEditText.text.toString().toInt(),
+                                        Balance = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                         InstitutionName = binding.financialEditText.text.toString()
                                     )
                                 viewModel.addUpdateStockBonds(authToken , stocksBondsAddUpdateParams)

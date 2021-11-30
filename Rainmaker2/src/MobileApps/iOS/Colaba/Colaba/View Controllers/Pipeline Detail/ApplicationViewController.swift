@@ -286,7 +286,7 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if (collectionView == borrowerCollectionView){
-            return loanApplicationDetail.borrowersInformation.count + 1
+            return loanApplicationDetail.borrowersInformation.count < 5 ? loanApplicationDetail.borrowersInformation.count + 1 : loanApplicationDetail.borrowersInformation.count
         }
         else if (collectionView == realEstateCollectionView){
             return loanApplicationDetail.realEstatesOwned.count + 1
@@ -864,8 +864,9 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (collectionView == borrowerCollectionView){
             let vc = Utility.getBorrowerInformationVC()
+            vc.loanApplicationId = self.loanApplicationId
+            vc.hasCoBorrowers = loanApplicationDetail.borrowersInformation.count > 1
             if (indexPath.row < loanApplicationDetail.borrowersInformation.count){
-                vc.loanApplicationId = self.loanApplicationId
                 vc.borrowerId = self.loanApplicationDetail.borrowersInformation[indexPath.row].borrowerId
             }
             self.pushToVC(vc: vc)

@@ -29,35 +29,7 @@ class OtherAssetsFragment:AssetBaseFragment() {
     private lateinit var otherAssetAdapter : ArrayAdapter<String>
     private var otherAssetTypesByList: ArrayList<GetAssetTypesByCategoryItem> = arrayListOf()
 
-    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
-        var assetAction = AppConstant.assetAdded
-        if(assetDeleteBoolean)
-            assetAction = AppConstant.assetDeleted
-        else {
-            assetUniqueId?.let { nonNullAssetUniqueId ->
-                if (nonNullAssetUniqueId > 0)
-                    assetAction = AppConstant.assetUpdated
-            }
-        }
 
-        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
-        assetUniqueId?.let { notNullAssetUniqueId->
-            if(notNullAssetUniqueId<=0)
-                assetUniqueId = null
-        }
-
-        return AssetReturnParams(
-            assetName = binding.accountTypeCompleteView.text.toString(),
-            assetTypeName = binding.financialEditText.text.toString(),
-            assetTypeID = assetTypeID,
-            assetUniqueId = assetUniqueId,
-            assetCategoryId = assetCategoryId,
-            assetCategoryName = assetCategoryName,
-            listenerAttached = listenerAttached,
-            assetAction = assetAction,
-            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
-        )
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = OtherAssetsLayoutBinding.inflate(inflater, container, false)
@@ -173,8 +145,6 @@ class OtherAssetsFragment:AssetBaseFragment() {
 
     }
 
-
-
     private fun setUpUI(){
 
         otherAssetAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  otherAssetArray)
@@ -235,6 +205,36 @@ class OtherAssetsFragment:AssetBaseFragment() {
             }
             observeAddUpdateResponse(returnUpdatedParams())
         }
+    }
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else {
+            assetUniqueId?.let { nonNullAssetUniqueId ->
+                if (nonNullAssetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+        }
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
+
+        return AssetReturnParams(
+            assetName = binding.accountTypeCompleteView.text.toString(),
+            assetTypeName = binding.financialEditText.text.toString(),
+            assetTypeID = assetTypeID,
+            assetUniqueId = assetUniqueId,
+            assetCategoryId = assetCategoryId,
+            assetCategoryName = assetCategoryName,
+            listenerAttached = listenerAttached,
+            assetAction = assetAction,
+            assetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toDouble()
+        )
     }
 
     private fun visibleOtherFields(position:Int){

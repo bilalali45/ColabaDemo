@@ -422,5 +422,26 @@ extension AddPreviousEmploymentViewController: CurrentEmployerAddressViewControl
             zipCode = addressZipCode
         }
         lblAddress.text = "\(street) \(unit),\n\(city), \(stateName) \(zipCode)"
+        
+        if let stateId = address["stateId"] as? Int{
+            employmentDetail.employerAddress.stateId = stateId
+        }
+        if let countryId = address["countryId"] as? Int{
+            employmentDetail.employerAddress.countryId = countryId
+        }
+        if let countryName = address["countryName"] as? String{
+            employmentDetail.employerAddress.countryName = countryName
+        }
+        if let countyId = address["countyId"] as? Int{
+            employmentDetail.employerAddress.countyId = countyId
+        }
+        if let countyName = address["countyName"] as? String{
+            employmentDetail.employerAddress.countyName = countyName
+        }
+        employmentDetail.employerAddress.street = street
+        employmentDetail.employerAddress.unit = unit
+        employmentDetail.employerAddress.city = city
+        employmentDetail.employerAddress.stateName = stateName
+        employmentDetail.employerAddress.zipCode = zipCode
     }
 }

@@ -33,9 +33,6 @@ class NativeHawaiFragment:BaseFragment() {
         nativeHawaiianChildList = arguments?.getParcelableArrayList(AppConstant.nativeHawaianChildList)!!
         setUpUI()
         super.addListeners(binding.root)
-
-
-
         return root
     }
 
@@ -43,7 +40,7 @@ class NativeHawaiFragment:BaseFragment() {
 
     private fun setUpUI() {
         binding.edDetails.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.edDetails , binding.layoutDetail , requireContext()))
-        binding.backButton.setOnClickListener { findNavController().popBackStack() }
+        binding.backButton.setOnClickListener {  findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
             backToCallingScreen()
         }
@@ -104,7 +101,10 @@ class NativeHawaiFragment:BaseFragment() {
     }
 
     private val testCallback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() { backToCallingScreen() }
+        override fun handleOnBackPressed() {
+
+            findNavController().popBackStack()
+        }
     }
 
     private fun backToCallingScreen(){

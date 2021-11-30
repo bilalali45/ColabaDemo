@@ -67,6 +67,9 @@ class SaveAddressPopupViewController: BaseViewController {
     
     @objc func discardTapped(){
         dismissPopup()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationDiscardAddressChanges), object: nil)
+        }
     }
     
     @IBAction func btnCloseTapped(_ sender: UIButton) {

@@ -153,6 +153,14 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "UnmarriedFollowUpQuestionsViewController") as! UnmarriedFollowUpQuestionsViewController
     }
     
+    static func getPrimaryBorrowerMarriedAndSeparatedFollowupVC() -> PrimaryBorrowerMarriedAndSeparatedFollowupViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "PrimaryBorrowerMarriedAndSeparatedFollowupViewController") as! PrimaryBorrowerMarriedAndSeparatedFollowupViewController
+    }
+    
+    static func getCoBorrowerMarriedAndSepartedFollowUpQuestionVC() -> CoBorrowerMarriedAndSepartedFollowUpQuestionViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "CoBorrowerMarriedAndSepartedFollowUpQuestionViewController") as! CoBorrowerMarriedAndSepartedFollowUpQuestionViewController
+    }
+    
     static func getNonPermanentResidenceFollowUpQuestionsVC() -> NonPermanentResidenceFollowUpQuestionsViewController{
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "NonPermanentResidenceFollowUpQuestionsViewController") as! NonPermanentResidenceFollowUpQuestionsViewController
     }

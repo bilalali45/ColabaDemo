@@ -119,13 +119,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadBorrowerInfoController(){
-//        let vc = Utility.getSendDocumentRequestVC()
-//        //let vc = Utility.getTestVC()
-//        self.window?.rootViewController = vc
         
         let vc = Utility.getLoanDetailVC()
-        vc.loanApplicationId = 1108//1042    //1009 for Refinance with co borrower
-        vc.borrowerName = "Mark Stephen"//"flow check"//"Quentin Finley"//"flow check"
+        vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
+        vc.borrowerName = "Farhan Qadir"//"flow check"//"Quentin Finley"//"flow check"
         vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
         vc.phoneNumber = ""
         vc.email = ""
@@ -133,6 +130,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
         self.window?.rootViewController = navVC
+        
     }
     
     func loadLoginViewController(){

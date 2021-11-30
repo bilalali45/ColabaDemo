@@ -192,6 +192,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/error_field"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Choose one or more options."
+            android:textSize="13sp"
+            android:textColor="@color/colaba_red_color"
+            android:fontFamily="@font/rubik_regular"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chapter13" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

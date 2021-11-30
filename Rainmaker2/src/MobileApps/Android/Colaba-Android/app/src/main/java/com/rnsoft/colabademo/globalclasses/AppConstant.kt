@@ -164,7 +164,7 @@ object AppConstant {
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"
-        const val bankruptcyGlobalData : String = "bankruptcyGlobalData"
+        const val bankruptcyAnswerData : String = "bankruptcyGlobalData"
 
 
         const val  downloadedFileName:String = "pdfFileName"
@@ -190,6 +190,7 @@ object AppConstant {
 
         const val  ownershipConstantValue = "Ownership Interest in Property"
         const val  childConstantValue = "Child Support, Alimony, etc."
+        const val  UndisclosedBorrowerFunds = "Undisclosed Borrowered Funds"
         const val  Bankruptcy = "Bankruptcy"
         const val demographicInformation = "Demographic Information"
 

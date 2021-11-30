@@ -9,6 +9,10 @@ import UIKit
 import Material
 import MonthYearPicker
 
+protocol ActiveDutyPersonnelFollowUpQuestionViewControllerDelegate: AnyObject {
+    func saveLastDateOfService(date: String)
+}
+
 class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -23,6 +27,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
     
     var borrowerName = ""
     var selectedMilitary = Detail()
+    weak var delegate: ActiveDutyPersonnelFollowUpQuestionViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +53,8 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton) {
         if validate() {
-            if (txtfieldLastDate.text != ""){
-                self.dismissVC()
-            }
+            self.delegate?.saveLastDateOfService(date: txtfieldLastDate.text!)
+            self.dismissVC()
         }
     }
     

@@ -108,6 +108,8 @@
 		239983F426F9BA9200C0AFA7 /* StartNewApplicationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */; };
 		239B9FBD273A96D9008024F3 /* OccupancyStatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */; };
 		239B9FBE273A96D9008024F3 /* OccupancyStatusTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */; };
+		239BAE932750F77A00EEDA57 /* CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239BAE922750F77A00EEDA57 /* CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift */; };
+		239BAE9527510A1D00EEDA57 /* PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239BAE9427510A1D00EEDA57 /* PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift */; };
 		239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */; };
 		239DB536270C2D5F00977E20 /* BankStatementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB535270C2D5F00977E20 /* BankStatementViewController.swift */; };
 		239DB538270C369100977E20 /* CustomDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239DB537270C369100977E20 /* CustomDocumentViewController.swift */; };
@@ -385,6 +387,8 @@
 		239983F326F9BA9200C0AFA7 /* StartNewApplicationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewApplicationViewController.swift; sourceTree = "<group>"; };
 		239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccupancyStatusTableViewCell.swift; sourceTree = "<group>"; };
 		239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OccupancyStatusTableViewCell.xib; sourceTree = "<group>"; };
+		239BAE922750F77A00EEDA57 /* CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
+		239BAE9427510A1D00EEDA57 /* PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift; sourceTree = "<group>"; };
 		239CDD4C26807E3D00EC7E1A /* CreateNewPopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewPopupViewController.swift; sourceTree = "<group>"; };
 		239DB535270C2D5F00977E20 /* BankStatementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankStatementViewController.swift; sourceTree = "<group>"; };
 		239DB537270C369100977E20 /* CustomDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDocumentViewController.swift; sourceTree = "<group>"; };
@@ -873,6 +877,8 @@
 				23BDB1CC26F8615D00C73E33 /* DemographicInformationViewController.swift */,
 				23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */,
 				23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */,
+				239BAE922750F77A00EEDA57 /* CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift */,
+				239BAE9427510A1D00EEDA57 /* PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1480,6 +1486,7 @@
 				23EBC78C2732AA4C0063922C /* FinancialAccountDetailModel.swift in Sources */,
 				23B2148B270B153300215ACC /* SearchRequestDocumentViewController.swift in Sources */,
 				23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */,
+				239BAE9527510A1D00EEDA57 /* PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift in Sources */,
 				23E9C757269C6C140066C978 /* DocumentsDetailTableViewCell.swift in Sources */,
 				234DB4F226A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.swift in Sources */,
 				23BBADCE26EF2A6200813F04 /* IncomeDetailViewController.swift in Sources */,
@@ -1545,6 +1552,7 @@
 				2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */,
 				230B94D926E7A436004CBC83 /* AddStockBondViewController.swift in Sources */,
 				23B5E98126F46F0C00686B8E /* PreForceClosureViewController.swift in Sources */,
+				239BAE932750F77A00EEDA57 /* CoBorrowerMarriedAndSepartedFollowUpQuestionViewController.swift in Sources */,
 				2319224626E0BA6C00BE9F3D /* SubjectPropertyAddressViewController.swift in Sources */,
 				23AFA37727073EF000388905 /* CheckListViewController.swift in Sources */,
 				239CDD4D26807E3D00EC7E1A /* CreateNewPopupViewController.swift in Sources */,
@@ -1805,7 +1813,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1829,7 +1837,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
