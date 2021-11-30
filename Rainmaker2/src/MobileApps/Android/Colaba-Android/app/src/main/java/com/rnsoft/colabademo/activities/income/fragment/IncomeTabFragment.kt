@@ -1,7 +1,9 @@
 package com.rnsoft.colabademo
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,8 +40,17 @@ class IncomeTabFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var selectedPosition:Int = 0
     private lateinit var pageAdapter: IncomePagerAdapter
-    private lateinit var viewPager: ViewPager2
+    //private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
+
+    companion object{
+        private lateinit var viewPager: ViewPager2
+
+        fun selectTab(tabPosition: Int) {
+            viewPager.setCurrentItem(tabPosition)
+        }
+
+    }
 
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
@@ -66,34 +77,29 @@ class IncomeTabFragment : BaseFragment() {
                     }
                 }
 
-
                 binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
                 pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds,name)
                 viewPager.adapter = pageAdapter
                 viewPager.setPageTransformer(null)
-                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-                    override fun onPageScrolled(
-                        position: Int,
-                        positionOffset: Float,
-                        positionOffsetPixels: Int
-                    ) {
+                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int){
                         super.onPageScrolled(position, positionOffset, positionOffsetPixels)
                     }
 
-                    override fun onPageSelected(position: Int) {
+                    override fun onPageSelected(position: Int){
                         super.onPageSelected(position)
                         //Log.e("Selected_Page", position.toString())
                         selectedPosition = position
                     }
 
-                    override fun onPageScrollStateChanged(state: Int) {
+                    override fun onPageScrollStateChanged(state: Int){
                         super.onPageScrollStateChanged(state)
                     }
                 })
 
-                tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         tab?.let {
                             viewPager.adapter
@@ -108,6 +114,7 @@ class IncomeTabFragment : BaseFragment() {
                     tab.text = incomeTabArray[position]
                 }.attach()
             })
+
 
 
         binding.backButton.setOnClickListener {
@@ -125,6 +132,8 @@ class IncomeTabFragment : BaseFragment() {
         super.addListeners(binding.root)
         return root
     }
+
+
 
 
     override fun onDestroyView() {

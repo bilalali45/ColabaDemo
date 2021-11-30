@@ -121,9 +121,13 @@ class RetirementIncomeFragment : BaseFragment(){
                                 CustomMaterialFields.setColor(binding.layoutDesc, R.color.grey_color_two, requireContext())
                             }
                             info.monthlyBaseIncome?.let {
-                                binding.edMonthlyIncome.setText(it.toString())
-                                CustomMaterialFields.setColor(binding.layoutMonthlyIncome, R.color.grey_color_two, requireContext())
-
+                                if(binding.tvRetirementType.text.toString().equals("IRA / 401K",true)){
+                                    binding.edMonthlyWithdrawl.setText(it.toString())
+                                    CustomMaterialFields.setColor(binding.layoutMonthlyWithdrawal, R.color.grey_color_two, requireContext())
+                                } else {
+                                    binding.edMonthlyIncome.setText(it.toString())
+                                    CustomMaterialFields.setColor(binding.layoutMonthlyIncome, R.color.grey_color_two, requireContext())
+                                }
                             }
                         }
                     })
@@ -181,6 +185,7 @@ class RetirementIncomeFragment : BaseFragment(){
 
         // set input format
         binding.edMonthlyIncome.addTextChangedListener(NumberTextFormat(binding.edMonthlyIncome))
+        binding.edMonthlyWithdrawl.addTextChangedListener(NumberTextFormat(binding.edMonthlyWithdrawl))
 
         // set Dollar prifix
         CustomMaterialFields.setDollarPrefix(binding.layoutMonthlyIncome, requireContext())
@@ -312,8 +317,11 @@ class RetirementIncomeFragment : BaseFragment(){
             val retirementTypeId = if (matchedType.size > 0) matchedType.map { matchedType.get(0).id }.single() else null
 
             //val monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
-            val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+            var  newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
 
+            if(binding.layoutMonthlyWithdrawal.isVisible) {
+                newMonthlyIncome = if (mWithdrawal.length > 0) mWithdrawal.replace(",".toRegex(), "") else null
+            }
             val employerName = if (binding.edEmpName.text.toString().length > 0) binding.edEmpName.text.toString() else null
 
             val description = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
@@ -329,7 +337,7 @@ class RetirementIncomeFragment : BaseFragment(){
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerId != null) {
-                        Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
+                        //Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
                         Log.e("employmentData-snding to API", "" + data)
                         binding.loaderRetirementIncome.visibility = View.VISIBLE
                         viewModel.sendRetiremnentData(authToken, data)

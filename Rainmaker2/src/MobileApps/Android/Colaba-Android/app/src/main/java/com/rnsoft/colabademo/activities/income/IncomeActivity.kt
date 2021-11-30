@@ -3,11 +3,13 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.IncomeActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -37,21 +39,22 @@ class IncomeActivity : BaseActivity() {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList = it.getIntegerArrayList(AppConstant.incomeBorrowerList) as ArrayList<Int>
-            for (item in borrowerTabList!!) {
+            /*for (item in borrowerTabList!!) {
                 //Timber.d("item size " + item)
-            }
+            } */
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerTabList != null && loanApplicationId != null)
                         viewModel.getBorrowerWithIncome(authToken,  loanApplicationId!!, borrowerTabList!!)
-                    //incomeViewModel.getCurrentEmploymentDetail(authToken, loanApplicationId!!,borrowerId!!,incomeInfoId!!)
                     incomeViewModel.getRetirementIncomeTypes(authToken)
                     incomeViewModel.getOtherIncomeTypes(authToken)
                     incomeViewModel.getBusinessTypes(authToken)
                 }
             }
         }
+
+
 
         /*
         val host: NavHostFragment = supportFragmentManager

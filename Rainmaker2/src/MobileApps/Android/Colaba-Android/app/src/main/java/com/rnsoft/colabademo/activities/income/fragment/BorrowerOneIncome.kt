@@ -51,19 +51,29 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
 
 
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.income_update
-        )?.observe(viewLifecycleOwner) { result ->
+        /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<IncomeUpdateInfo>(AppConstant.income_update)?.observe(viewLifecycleOwner) { result ->
+            showUpdatedIncomeCell = result.incomeUpdateBox
+            Log.e("onCreate",showUpdatedIncomeCell + " " + result.incomeUpdateTab)
+            if(tabBorrowerId == result.incomeUpdateTab) {
+                Log.e("tab","id matched")
+
+               //IncomeTabFragment.selectTab(2)
+            }
+        } */
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.income_update)?.observe(viewLifecycleOwner) { result ->
             showUpdatedIncomeCell = result
+
         }
 
-        setupLayout()
+            setupLayout()
 
         return binding.root
     }
 
 
+
     private fun setupLayout(){
-        lifecycleScope.launchWhenStarted {
+        lifecycleScope.launchWhenStarted{
             viewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
                     val incomeActivity = (activity as? IncomeActivity)
                     incomeActivity?.let { incomeActivity->
@@ -125,7 +135,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                             //Log.e("contentData.incomeTypeDisplayName",""+contentData.incomeTypeDisplayName)
 
                                             if(showUpdatedIncomeCell.length >0 && modelData.headerTitle == showUpdatedIncomeCell) {
-                                                Log.e("borrowerOneIncome","updating list")
+                                                Log.e("updating list",showUpdatedIncomeCell)
                                                 contentCell.visibility = View.VISIBLE
                                                 topCell.arrow_up.visibility = View.VISIBLE
                                                 topCell.arrow_down.visibility = View.GONE
@@ -172,8 +182,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount))
                         grandTotalAmount += totalAmount
 
-                        val bottomCell: View =
-                            layoutInflater.inflate(R.layout.income_bottom_cell, null)
+                        val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
                         bottomCell.footer_title.text = modelData.footerTitle
                         bottomCell.visibility = View.GONE
                         showUpdatedIncomeCell?.let { cellName ->
@@ -188,11 +197,10 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                 val parentActivity = activity as? IncomeActivity
                                 parentActivity?.let {
                                     val bundle = Bundle()
-                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1)
-                                    }
-                                    tabBorrowerId?.let { it1 ->
-                                        bundle.putInt(AppConstant.borrowerId, it1)
-                                    }
+                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                    tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                    borrowerName.let { name -> bundle.putString(AppConstant.borrowerName,name)}
+
                                     findNavController().navigate(modelData.listenerAttached, bundle)
                                 }
                             }
@@ -283,7 +291,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         parentActivity?.let {
             parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
             tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
-            //bundle.putInt(AppConstant.incomeId,incomeInfoId)
+            borrowerName.let { name -> bundle.putString(AppConstant.borrowerName,name) }
         }
 
         if(eventAddEmployment.boolean) {

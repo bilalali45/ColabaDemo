@@ -124,6 +124,8 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                     CustomMaterialFields.setColor(binding.layoutLoanAmount,R.color.grey_color_two,requireActivity())
                 }
                 loanInfo.data?.downPayment?.let {
+                   // val value = Math.round(it).toString()
+                   // var formattedValue = format.format(value)
                     binding.edDownPayment.setText(Math.round(it).toString())
                     CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
                 }
@@ -132,7 +134,6 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                     binding.edClosingDate.setText(date)
                     CustomMaterialFields.setColor(binding.layoutClosingDate,R.color.grey_color_two,requireActivity())
                 }
-
                 loanInfo.data?.loanGoalId?.let { goalId ->
                     //Log.e("loanGoalId- ", ""+ goalId)
                     for (item in goalFullList) {
@@ -244,6 +245,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
 
         binding.edPurchasePrice.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus){
+                binding.edPurchasePrice.addTextChangedListener(mTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutPurchasePrice, R.color.grey_color_two, requireContext())
             } else {
                 if (binding.edPurchasePrice.text?.length == 0){
@@ -369,7 +371,12 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                                     val newLoanAmount = loanAmount.replace(",", "").toInt()
                                     loanAmount.let {
                                         val newDownPayment: Float = (purchasePrice.toFloat() - newLoanAmount.toFloat())
-                                        binding.edDownPayment.setText(Math.round(newDownPayment).toString())
+                                        val value = format.format(newDownPayment)
+                                        binding.edDownPayment.setText(value.toString())
+
+
+
+                                        //binding.edDownPayment.setText(Math.round(newDownPayment).toString())
 
                                         val result: Float = (newDownPayment.toFloat() / purchasePrice.toFloat()) * 100
                                         val convertResult: Int = Math.round(result)
@@ -377,9 +384,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                                         //Log.e("ConvertResult", ""+ convertResult)
                                         binding.edPercent.setText(convertResult.toString())
 
-                                        // calculate loan amount
-                                        //Log.e(""+ purchasePrice, " Downpayment " + downPayment  +" Result " + result)
-                                        //Log.e("LoanAmount", ""+ newLoanAmount)
+
                                     }
                                 }
                             }
@@ -437,7 +442,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                         try{
                             val edValue = binding.edPurchasePrice.text.toString()
                             val purchasePrice = edValue.replace(",", "").toInt()
-                            if (purchasePrice > 0) {
+                            if (purchasePrice > 0){
                                 val percent = binding.edPercent.text.toString()
                                 edValue.let {
                                     val result = (purchasePrice * Integer.parseInt(percent)) / 100
@@ -449,7 +454,7 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                                     binding.edLoanAmount.setText(Math.round(newLoanAmount).toString())
                                 }
                             }
-                        } catch (nfe: NumberFormatException) {
+                        } catch (nfe: NumberFormatException){
                             nfe.printStackTrace()
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -468,6 +473,15 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
                             binding.edPercent.setText("0")
                             binding.edDownPayment.setText("0")
                             binding.edLoanAmount.setText("0")
+                        }
+                    }
+
+                    s === binding.edLoanAmount.editableText -> {
+                        val value = binding.edLoanAmount.text.toString()
+                        if (value?.length == 0) {
+                            binding.edPercent.setText("0")
+                            binding.edDownPayment.setText("0")
+                            //binding.edLoanAmount.setText("0")
                         }
                     }
                 }

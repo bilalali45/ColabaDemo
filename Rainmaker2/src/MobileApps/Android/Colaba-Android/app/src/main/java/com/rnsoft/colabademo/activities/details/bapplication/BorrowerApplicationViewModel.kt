@@ -157,10 +157,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
 
 
 
-
-
-
-
     suspend fun addOrUpdateGovernmentQuestions(token:String, addUpdateQuestionsParams:AddUpdateQuestionsParams ) {
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = bAppRepo.addOrUpdateGovernmentQuestions(token = token,  addUpdateQuestionsParams = addUpdateQuestionsParams)
