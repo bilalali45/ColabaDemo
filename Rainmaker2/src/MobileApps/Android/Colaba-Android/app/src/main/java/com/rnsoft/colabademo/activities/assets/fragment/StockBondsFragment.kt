@@ -49,6 +49,7 @@ class StockBondsFragment:AssetBaseFragment() {
         return AssetReturnParams(
             assetName = binding.accountTypeCompleteView.text.toString(),
             assetTypeName =binding.financialEditText.text.toString(),
+            assetBorrowerName = assetBorrowerName,
             assetTypeID = assetTypeID,
             assetUniqueId = assetUniqueId,
             assetCategoryId = assetCategoryId,
