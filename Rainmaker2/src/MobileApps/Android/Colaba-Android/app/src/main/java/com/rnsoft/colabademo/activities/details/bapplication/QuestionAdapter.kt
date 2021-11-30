@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class QuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel> ,  private val governmentQuestionClickListener: GovernmentQuestionClickListener) :
     RecyclerView.Adapter<QuestionAdapter.BaseViewHolder>(){
@@ -46,8 +47,12 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
 
             item.questionResponses?.let { answers ->
 
-                if(answers.size==0)
+                if(answers.isEmpty()) {
+                    Timber.e(" question = "+   item.questionDetail?.questionHeader)
                     noAnswerImage.visibility = View.VISIBLE
+                }
+                else
+                    noAnswerImage.visibility = View.INVISIBLE
 
 
                 var answer1 = ""
