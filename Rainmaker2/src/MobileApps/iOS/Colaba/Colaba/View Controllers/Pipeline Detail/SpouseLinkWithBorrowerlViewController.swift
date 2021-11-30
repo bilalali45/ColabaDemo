@@ -1,5 +1,5 @@
 //
-//  PrimaryBorrowerMarriedAndSeparatedFollowupViewController.swift
+//  SpouseLinkWithBorrowerlViewController.swift
 //  Colaba
 //
 //  Created by Muhammad Murtaza on 26/11/2021.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-protocol PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate: AnyObject {
+protocol SpouseLinkWithBorrowerlViewControllerDelegate: AnyObject {
     func savePrimaryBorrowerMartialStatus(status: MaritalStatus)
 }
 
-class PrimaryBorrowerMarriedAndSeparatedFollowupViewController: UIViewController {
+class SpouseLinkWithBorrowerlViewController: UIViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!
@@ -35,10 +35,12 @@ class PrimaryBorrowerMarriedAndSeparatedFollowupViewController: UIViewController
     var isMarried = 0 // 1 for yes 2 for no
     var selectedMaritalStatus = MaritalStatus()
     var borrowerName = ""
-    weak var delegate: PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate?
+    var isForSeparated = false
+    weak var delegate: SpouseLinkWithBorrowerlViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        lblTopHeading.text = isForSeparated ? "Separated"  :"Married"
         lblBorrowerName.text = borrowerName.uppercased()
         setTextFields()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))

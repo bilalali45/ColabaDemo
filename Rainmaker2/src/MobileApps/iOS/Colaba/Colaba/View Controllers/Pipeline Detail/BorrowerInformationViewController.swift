@@ -442,14 +442,14 @@ class BorrowerInformationViewController: BaseViewController {
         borrowerInformationModel.maritalStatus.maritalStatusId = 1
         changeMaritalStatus()
 //        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
-//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            let vc = Utility.getSpouseLinkWithBorrowerVC()
 //            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
 //            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
 //            vc.delegate = self
 //            self.presentVC(vc: vc)
 //        }
 //        else{
-//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            let vc = Utility.getSpouseBasicDetailVC()
 //            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
 //            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
 //            vc.delegate = self
@@ -462,16 +462,17 @@ class BorrowerInformationViewController: BaseViewController {
         borrowerInformationModel.maritalStatus.maritalStatusId = 2
         changeMaritalStatus()
 //        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
-//            let vc = Utility.getPrimaryBorrowerMarriedAndSeparatedFollowupVC()
+//            let vc = Utility.getSpouseLinkWithBorrowerVC()
 //            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
 //            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
 //            vc.delegate = self
 //            self.presentVC(vc: vc)
 //        }
 //        else{
-//            let vc = Utility.getCoBorrowerMarriedAndSepartedFollowUpQuestionVC()
+//            let vc = Utility.getSpouseBasicDetailVC()
 //            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
 //            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+//            vc.isForSeparated = true
 //            vc.delegate = self
 //            self.presentVC(vc: vc)
 //        }
@@ -1112,9 +1113,9 @@ class BorrowerInformationViewController: BaseViewController {
                                    "firstName": "",
                                    "middleName": "",
                                    "lastName": "",
-                                   "relationWithPrimaryId": NSNull(),
+                                   /*"relationWithPrimaryId": NSNull(),*/
                                    "spouseBorrowerId": NSNull(),
-                                   "spouseMaritalStatusId": NSNull(),
+                                   /*"spouseMaritalStatusId": NSNull(),*/
                                    "isInRelationship": borrowerInformationModel.maritalStatus.isInRelationship,
                                    "relationFormedStateId": borrowerInformationModel.maritalStatus.isInRelationship == true ? borrowerInformationModel.maritalStatus.relationFormedStateId : NSNull(),
                                    "relationshipTypeId": borrowerInformationModel.maritalStatus.isInRelationship == true ? borrowerInformationModel.maritalStatus.relationshipTypeId : NSNull(),
@@ -1125,17 +1126,17 @@ class BorrowerInformationViewController: BaseViewController {
             maritalStatusDetail = ["loanApplicationId": loanApplicationId,
                                    "borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
                                    "maritalStatusId": maritalStatusId,
-                                   "firstName": "",
-                                   "middleName": "",
-                                   "lastName": "",
-                                   "relationWithPrimaryId": NSNull(),
-                                   "spouseBorrowerId": NSNull(),
-                                   "spouseMaritalStatusId": NSNull(),
+                                   "firstName": borrowerInformationModel.maritalStatus.firstName,
+                                   "middleName": borrowerInformationModel.maritalStatus.middleName,
+                                   "lastName": borrowerInformationModel.maritalStatus.lastName,
+                                   /*"relationWithPrimaryId": borrowerInformationModel.maritalStatus.relationWithPrimaryId == 0 ? NSNull() : borrowerInformationModel.maritalStatus.relationWithPrimaryId,*/
+                                   "spouseBorrowerId": borrowerInformationModel.maritalStatus.spouseBorrowerId == 0 ? NSNull() : borrowerInformationModel.maritalStatus.spouseBorrowerId,
+                                   /*"spouseMaritalStatusId": borrowerInformationModel.maritalStatus.spouseMaritalStatusId == 0 ? NSNull() : borrowerInformationModel.maritalStatus.spouseMaritalStatusId,*/
                                    "isInRelationship": NSNull(),
                                    "relationFormedStateId": NSNull(),
                                    "relationshipTypeId": NSNull(),
                                    "otherRelationshipExplanation": NSNull(),
-                                   "spouseLoanContactId": NSNull()]
+                                   "spouseLoanContactId": borrowerInformationModel.maritalStatus.spouseLoanContactId == 0 ? NSNull() : borrowerInformationModel.maritalStatus.spouseLoanContactId]
         }
         
         let citizenshipDetail = ["borrowerId": borrowerId == 0 ? NSNull() : borrowerId,
@@ -1414,13 +1415,13 @@ extension BorrowerInformationViewController: UnmarriedFollowUpQuestionsViewContr
     }
 }
 
-extension BorrowerInformationViewController: PrimaryBorrowerMarriedAndSeparatedFollowupViewControllerDelegate{
+extension BorrowerInformationViewController: SpouseLinkWithBorrowerlViewControllerDelegate{
     func savePrimaryBorrowerMartialStatus(status: MaritalStatus) {
         borrowerInformationModel.maritalStatus = status
     }
 }
 
-extension BorrowerInformationViewController: CoBorrowerMarriedAndSepartedFollowUpQuestionViewControllerDelegate{
+extension BorrowerInformationViewController: SpouseBasicDetailViewControllerDelegate{
     func saveMaritalStatusMarriedOrSeparated(status: MaritalStatus) {
         borrowerInformationModel.maritalStatus = status
     }
