@@ -11,6 +11,7 @@ import GooglePlaces
 
 protocol AddPreviousResidenceViewControllerDelegate: AnyObject {
     func savePreviousAddress(address: BorrowerAddress)
+    func deletePreviousAddress()
 }
 
 class AddPreviousResidenceViewController: BaseViewController {
@@ -471,6 +472,7 @@ class AddPreviousResidenceViewController: BaseViewController {
             DispatchQueue.main.async {
                 Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
+                    self.delegate?.deletePreviousAddress()
                     self.dismissVC()
                 }
                 else{
