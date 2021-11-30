@@ -258,6 +258,7 @@ import java.util.ArrayList
                     }
                     R.id.radioButton2 -> {
                         binding.whichAssetInputLayout.visibility = View.GONE
+                        binding.layoutDetail.visibility = View.GONE
                     }
                     else -> {
                     }
@@ -363,6 +364,13 @@ import java.util.ArrayList
                             securedByColletral = true
                     }
 
+                    if(binding.radioButton2.isChecked){
+                        binding.edDetails.setText("")
+                        colletralAssetTypeId = null
+                        securedByColletral = null
+
+                    }
+
                     //var defaultCollateralAssetDescription = ""
                     //if(binding.edDetails.text.toString().isNotEmpty() && binding.edDetails.text.toString().isNotBlank())
                         //defaultCollateralAssetDescription = binding.edDetails.text.toString()
@@ -421,14 +429,12 @@ import java.util.ArrayList
                                     BorrowerId = notNullBorrowerId,
                                     LoanApplicationId = notNullLoanApplicationId,
                                     AssetCategoryId = assetCategoryId,
+                                    BorrowerAssetId = assetUniqueId,
                                     AssetTypeId = assetTypeId,
                                     AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                     Description = defaultDescription,
                                 )
-                            viewModel.addUpdateAssetsRealStateOrNonRealState(
-                                authToken,
-                                addUpdateRealStateParams
-                            )
+                            viewModel.addUpdateAssetsRealStateOrNonRealState(authToken, addUpdateRealStateParams)
                         }
                     }
                 }
@@ -457,6 +463,7 @@ import java.util.ArrayList
                 assetTypeName = binding.edDetails.text.toString(),
                 assetTypeID = assetTypeID,
                 assetUniqueId = assetUniqueId,
+
                 assetCategoryId = assetCategoryId,
                 assetCategoryName = assetCategoryName,
                 listenerAttached = listenerAttached,
