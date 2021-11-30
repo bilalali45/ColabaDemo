@@ -86,7 +86,7 @@ class CommonDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getStates(newToken)
-            Timber.e(" GetStates " + response.toString())
+            //Timber.e(" GetStates " + response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

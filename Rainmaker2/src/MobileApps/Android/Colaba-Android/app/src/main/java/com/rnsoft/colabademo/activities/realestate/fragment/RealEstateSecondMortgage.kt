@@ -18,6 +18,7 @@ import com.rnsoft.colabademo.utils.NumberTextFormat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.NullPointerException
 
 class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
@@ -37,6 +38,7 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
         val title = arguments?.getString(AppConstant.address).toString()
         title.let {
+            if(it != "null")
             binding.borrowerPurpose.setText(title)
         }
 
@@ -55,13 +57,17 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
     }
 
     private fun getSecondMortgageDetails() {
-
-        secondMortgageModel = arguments?.getParcelable(AppConstant.secMortgage)!!
-
-        secondMortgageModel.let {
+        try {
+            secondMortgageModel = arguments?.getParcelable(AppConstant.secMortgage)!!
+            secondMortgageModel.let {
                 it.secondMortgagePayment?.let {
                     binding.edSecMortgagePayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(binding.layoutSecPayment, R.color.grey_color_two, requireActivity()) }
+                    CustomMaterialFields.setColor(
+                        binding.layoutSecPayment,
+                        R.color.grey_color_two,
+                        requireActivity()
+                    )
+                }
 
                 it.unpaidSecondMortgagePayment?.let {
                     binding.edUnpaidBalance.setText(Math.round(it).toString())
@@ -71,15 +77,19 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                         requireActivity()
                     )
                 }
-                it.isHeloc?.let { isHeloc->
-                    if(isHeloc == true) {
+                it.isHeloc?.let { isHeloc ->
+                    if (isHeloc == true) {
                         binding.switchCreditLimit.isChecked = true
                         binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                         binding.layoutCreditLimit.visibility = View.VISIBLE
 
                         it.helocCreditLimit?.let {
                             binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
+                            CustomMaterialFields.setColor(
+                                binding.layoutCreditLimit,
+                                R.color.grey_color_two,
+                                requireActivity()
+                            )
                         }
 
                     } else {
@@ -99,7 +109,9 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                 }
 
             }
+        } catch (e :NullPointerException){
 
+        }
     }
 
     private fun saveData() {
@@ -131,7 +143,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         findNavController().popBackStack()
 
     }
-
 
     override fun onClick(view: View?) {
         when (view?.getId()) {
@@ -168,7 +179,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                 }
         }
     }
-
 
     private fun setInputFields(){
 

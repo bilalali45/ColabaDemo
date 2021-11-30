@@ -180,13 +180,16 @@ object AppSetting {
         return output
     }
 
-    fun getMonthAndYear(dateString : String) : String{
+    fun getMonthAndYear(dateString : String, isReturnFormatSlash: Boolean) : String{
         val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
         val oldDate: Date? = formatter.parse(dateString)
         val oldMillis = oldDate?.time
         var finalTimeInFormat = ""
          oldMillis?.let {
-            finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
+             if(isReturnFormatSlash)
+                 finalTimeInFormat = getDate(oldMillis, "MM / yyyy")
+             else
+                finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
         }
         return finalTimeInFormat
     }

@@ -27,6 +27,8 @@ class BorrowerAddressActivity : BaseActivity() {
     private val viewModel : PrimaryBorrowerViewModel by viewModels()
     var loanApplicationId: Int? = null
     var borrowerId: Int? = null
+    var isAddBorrower: Boolean? = null
+    var borrowerName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,17 +41,19 @@ class BorrowerAddressActivity : BaseActivity() {
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             borrowerId = it.getInt(AppConstant.borrowerId)
+            isAddBorrower = it.getBoolean(AppConstant.addBorrower)
         }
 
-        loanApplicationId = 5
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-
-                if (loanApplicationId != null) {
+                if (loanApplicationId != null && borrowerId !=null) {
                     coroutineScope {
-                        binding.loaderInfo.visibility = View.VISIBLE
-                        delay(2000)
-                        viewModel.getBasicBorrowerDetail(authToken,5,5)
+                        if(isAddBorrower!!){
+                            viewModel.refreshBorrowerInfo()
+                        } else {
+                            binding.loaderInfo.visibility = View.VISIBLE
+                            viewModel.getBasicBorrowerDetail(authToken, loanApplicationId!!, borrowerId!!)
+                        }
 
                     }
                 }

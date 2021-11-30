@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -30,6 +31,7 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.CommonAddressLayoutBinding
 
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -61,7 +63,10 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
     private var predicationList: ArrayList<String> = ArrayList()
-    private var addressList : ArrayList<AddressData> = ArrayList()
+    private var countyList: ArrayList<CountiesModel> = arrayListOf()
+    private var countryList: ArrayList<CountriesModel> = arrayListOf()
+    private var stateList: ArrayList<StatesModel> = arrayListOf()
+    private var addressList : AddressData? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,50 +102,82 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             findNavController().popBackStack()
         }
 
+        val  activity = (activity as? SubjectPropertyActivity)
+        activity?.binding?.loaderSubjectProperty?.visibility = View.GONE
+
         super.addListeners(binding.root)
         return binding.root
 
     }
 
     private fun setData() {
-        addressList = arguments?.getParcelableArrayList(AppConstant.address)!!
-        if (addressList.size > 0) {
-            addressList[0].street?.let {
-                binding.tvSearch.setText(it)
-                CustomMaterialFields.setColor(
-                    binding.layoutSearchAddress,
-                    R.color.grey_color_two,
-                    requireActivity()
-                )
+        try {
+            addressList = arguments?.getParcelable(AppConstant.address)!!
+            addressList?.let {
+                it.street?.let {
+                    if (it != "null") {
+                        binding.tvSearch.setText(it)
+                        CustomMaterialFields.setColor(
+                            binding.layoutSearchAddress,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                }
+                it.street?.let {
+                    if (it != "null") {
+                        binding.edStreetAddress.setText(it)
+                    }
+                }
+                it.city?.let {
+                    if (it != "null") {
+                        binding.edCity.setText(it)
+                    }
+                }
+                it.countryName?.let {
+                    if (it != "null") {
+                        binding.tvCountry.setText(it)
+                        CustomMaterialFields.setColor(
+                            binding.layoutCountry,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                }
+                it.zipCode?.let {
+                    if (it != "null") {
+                        binding.edZipcode.setText(it)
+                    }
+                }
+                it.stateName?.let {
+                    if (it != "null") {
+                        binding.tvState.setText(it)
+                        CustomMaterialFields.setColor(
+                            binding.layoutState,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                }
+                it.countyName?.let {
+                    if (it != "null") {
+                        binding.tvCounty.setText(it)
+                        CustomMaterialFields.setColor(
+                            binding.layoutCounty,
+                            R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                }
+                it.unit?.let {
+                    if (it != "null") {
+                        binding.edUnitAtpNo.setText(it)
+                    }
+                }
+                visibleAllFields()
             }
-            addressList[0].street?.let { binding.edStreetAddress.setText(it) }
-            addressList[0].city?.let { binding.edCity.setText(it) }
-            addressList[0].countryName?.let {
-                binding.tvCountry.setText(it)
-                binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_color_two
-                    )
-                )
-            }
-            addressList[0].zipCode?.let { binding.edZipcode.setText(it) }
-            addressList[0].stateName?.let {
-                binding.tvState.setText(it)
-                binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-            }
-            addressList[0].countyName?.let {
-                binding.tvCounty.setText(it)
-                binding.layoutCounty.defaultHintTextColor = ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.grey_color_two
-                    )
-                )
-            }
-            addressList[0].unit?.let { binding.edUnitAtpNo.setText(it) }
-            visibleAllFields()
+
+        } catch (e: NullPointerException){
         }
     }
 
@@ -157,45 +194,28 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                  }
              }
              lifecycleScope.launchWhenStarted {
-
                  viewModel.states.observe(viewLifecycleOwner, {  states ->
                      if (states != null && states.size > 0) {
                          val itemList: ArrayList<String> = arrayListOf()
-                         for (item in states) {
+                         for(item in states){
                              itemList.add(item.name)
+                             stateList.add(item)
                          }
-                         val stateAdapter =
-                             ArrayAdapter(
-                                 requireContext(),
-                                 R.layout.autocomplete_text_view,
-                                 itemList
-                             )
+                         val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
                          binding.tvState.setAdapter(stateAdapter)
 
-                         binding.tvState.setOnFocusChangeListener { _, _ ->
-                             binding.tvState.showDropDown()
-                             HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
-                         }
-                         binding.tvState.setOnClickListener {
-                             binding.tvState.showDropDown()
+                         /*binding.tvState.setOnClickListener {
+                             //binding.tvState.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                         }
+                         } */
 
                          binding.tvState.onItemClickListener =
                              object : AdapterView.OnItemClickListener {
                                  override fun onItemClick(
                                      p0: AdapterView<*>?,
-                                     p1: View?,
-                                     position: Int,
-                                     id: Long
-                                 ) {
+                                     p1: View?, position: Int, id: Long) {
                                      binding.layoutState.defaultHintTextColor =
-                                         ColorStateList.valueOf(
-                                             ContextCompat.getColor(
-                                                 requireContext(),
-                                                 R.color.grey_color_two
-                                             )
-                                         )
+                                         ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                                      HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
                                  }
                              }
@@ -207,15 +227,13 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          val itemList: ArrayList<String> = arrayListOf()
                          for (item in countries) {
                              itemList.add(item.name)
+                             countryList.add(item)
                          }
                          val countryAdapter =
-                             ArrayAdapter(
-                                 requireContext(),
-                                 R.layout.autocomplete_text_view,
-                                 itemList
-                             )
+                             ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
                          binding.tvCountry.setAdapter(countryAdapter)
 
+                         /*
                          binding.tvCountry.setOnFocusChangeListener { _, _ ->
                              binding.tvCountry.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
@@ -223,7 +241,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          binding.tvCountry.setOnClickListener {
                              binding.tvCountry.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutCountry)
-                         }
+                         } */
 
                          binding.tvCountry.onItemClickListener =
                              object : AdapterView.OnItemClickListener {
@@ -251,6 +269,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          val itemList: ArrayList<String> = arrayListOf()
                          for (item in counties) {
                              itemList.add(item.name)
+                             countyList.add(item)
                          }
                          val countyAdapter = ArrayAdapter(
                              requireContext(),
@@ -259,7 +278,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          )
                          binding.tvCounty.setAdapter(countyAdapter)
 
-                         binding.tvCounty.setOnFocusChangeListener { _, _ ->
+                         /*binding.tvCounty.setOnFocusChangeListener { _, _ ->
                              binding.tvCounty.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                          }
@@ -267,23 +286,13 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          binding.tvCounty.setOnClickListener {
                              binding.tvCounty.showDropDown()
                              HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
-                         }
+                         } */
 
                          binding.tvCounty.onItemClickListener =
                              object : AdapterView.OnItemClickListener {
-                                 override fun onItemClick(
-                                     p0: AdapterView<*>?,
-                                     p1: View?,
-                                     position: Int,
-                                     id: Long
-                                 ) {
+                                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                                      binding.layoutCounty.defaultHintTextColor =
-                                         ColorStateList.valueOf(
-                                             ContextCompat.getColor(
-                                                 requireContext(),
-                                                 R.color.grey_color_two
-                                             )
-                                         )
+                                         ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                                      HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
                                  }
                              }
@@ -302,7 +311,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
     private fun setInputFields(){
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
-            if (hasFocus) {
+            if (hasFocus){
                 //binding.searchSeparator.minimumHeight = 2
                 binding.searchSeparator.layoutParams.height = 1
                 binding.searchSeparator.setBackgroundColor(resources.getColor(R.color.colaba_apptheme_blue, requireActivity().theme))
@@ -314,24 +323,73 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
                 val search: String = binding.tvSearch.text.toString()
                 if (search.length == 0) {
+                    setError()
                     CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_three, requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutSearchAddress, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
                 }
             }
         }
 
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo, binding.layoutUnitAptNo, requireContext()))
-        binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress , requireContext()))
-        binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext()))
+        binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext(),getString(R.string.error_field_required)))
+        binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext(),getString(R.string.error_field_required)))
         //binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty, requireContext()))
-        binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode, requireContext()))
+        binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode, requireContext(),getString(R.string.error_field_required)))
+
+        binding.tvState.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            //binding.tvState.showDropDown()
+            //HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+
+            if(!hasFocus){
+                if (binding.tvState.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.layoutState,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutState, requireActivity())
+                }
+            }
+        }
+
+        binding.tvCountry.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            //binding.tvState.showDropDown()
+            //HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+
+            if(!hasFocus){
+                if (binding.tvCountry.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.layoutCountry,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutCountry, requireActivity())
+                }
+            }
+        }
+
+        binding.tvCounty.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            //binding.tvState.showDropDown()
+            //HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+
+            if(!hasFocus){
+                if (binding.tvCounty.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
+                }
+            }
+        }
+
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edUnitAtpNo, binding.layoutUnitAptNo)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edStreetAddress, binding.layoutStreetAddress)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCity, binding.layoutCity)
         //CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edCounty, binding.layoutCounty)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(),binding.edZipcode, binding.layoutZipCode)
+
     }
 
     private fun checkValidations() {
@@ -353,9 +411,9 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             if(city.isEmpty() || city.length == 0) {
                 CustomMaterialFields.setError(binding.layoutCity,getString(R.string.error_field_required),requireActivity())
             }
-            if(county.isEmpty() || county.length == 0) {
+            /*if(county.isEmpty() || county.length == 0) {
                 CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
-            }
+            } */
             if(zipCode.isEmpty() || zipCode.length == 0) {
                 CustomMaterialFields.setError(binding.layoutZipCode,getString(R.string.error_field_required),requireActivity())
             }
@@ -372,9 +430,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             if(city.isNotEmpty() || city.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
             }
-            if(county.isNotEmpty() || county.length > 0) {
-                CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
-            }
+
             if(zipCode.isNotEmpty() || zipCode.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
             }
@@ -386,8 +442,23 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             }
 
         }
-        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0){
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && country.length > 0 && zipCode.length > 0){
             val unit = if(binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+
+            val countyName : String = binding.tvCounty.getText().toString().trim()
+            val matchedCounty =  countyList.filter { p -> p.name.equals(countyName,true)}
+            val countyId = if(matchedCounty.size > 0)
+                 matchedCounty.get(0).id else null
+
+            val countryName : String = binding.tvCountry.getText().toString().trim()
+            val matchedCountry =  countryList.filter { p -> p.name.equals(countryName,true)}
+            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+
+            val stateName : String = binding.tvState.getText().toString().trim()
+            val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
+            val stateId = if(matchedState.size > 0)
+                matchedState.get(0).id else null
+
 
             val address = AddressData(
                 street = street,
@@ -396,58 +467,16 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                 stateName = state,
                 countryName = country,
                 countyName = county,
-                countyId = 1,
-                stateId = 1,
-                countryId = 1,
+                countyId = countyId,
+                stateId = stateId,
+                countryId = countryId,
                 zipCode = zipCode)
 
-            viewModel.savePurchaseAddress(address)
-            viewModel.saveRefinanceAddress(address)
-
+            //viewModel.savePurchaseAddress(address)
+            //viewModel.saveRefinanceAddress(address)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.address, address)
             findNavController().popBackStack()
         }
-    }
-
-
-    private fun setStateAndCountyDropDown(){
-
-        val countryAdapter =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
-        binding.tvCountry.setAdapter(countryAdapter)
-
-        binding.tvCountry.setOnFocusChangeListener { _, _ ->
-            binding.tvCountry.showDropDown()
-        }
-        binding.tvCountry.setOnClickListener {
-            binding.tvCountry.showDropDown()
-        }
-
-        binding.tvCountry.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.layoutCountry.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                }
-            }
-
-
-        val stateAdapter =
-            ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
-        binding.tvState.setAdapter(stateAdapter)
-
-        binding.tvState.setOnFocusChangeListener { _, _ ->
-            binding.tvState.showDropDown()
-        }
-        binding.tvState.setOnClickListener {
-            binding.tvState.showDropDown()
-        }
-
-        binding.tvState.onItemClickListener =
-            object : AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    binding.layoutState.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                }
-            }
-
     }
 
     private fun setUpCompleteViewForPlaces() {
@@ -467,7 +496,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
 
         binding.tvSearch.dropDownHeight = 0
-        binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
+        /*binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 CustomMaterialFields.setColor(binding.layoutSearchAddress,R.color.grey_color_two, requireActivity())
                 binding.tvSearch.addTextChangedListener(placeTextWatcher)
@@ -481,9 +510,9 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     CustomMaterialFields.clearError(binding.layoutSearchAddress, requireActivity())
                 }
             }
-        }
+        } */
 
-        binding.tvSearch.setOnClickListener { }
+        //binding.tvSearch.setOnClickListener { }
     }
 
     private val placeTextWatcher = (object : TextWatcher {
@@ -554,7 +583,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         predictAdapter.setPredictions(null)
         //binding.searchSeparator.visibility = View.GONE
         val placeSelected = place.getFullText(null).toString()
-        binding.tvSearch.clearFocus()
         HideSoftkeyboard.hide(requireActivity(),binding.tvSearch)
         binding.tvSearch.removeTextChangedListener(placeTextWatcher)
         binding.tvSearch.setText(placeSelected)
@@ -576,9 +604,15 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
 
 
             locality?.let { binding.edCity.setText(it) }
-            subLocality?.let { binding.tvCountry.setText(it) }
+            subLocality?.let {
+                binding.tvCounty.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+            }
             postalCode?.let { binding.edZipcode.setText(it) }
-            countryName?.let { binding.tvCountry.setText(it) }
+            countryName?.let {
+                binding.tvCountry.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+            }
             binding.edStreetAddress.setText(place.getPrimaryText(null))
             premises?.let { binding.edUnitAtpNo.setText(it) }
 
@@ -594,12 +628,15 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         //Log.e("stateCode ", " = $stateCode")
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
-        if(map.get(stateCode)!=null)
+        if(map.get(stateCode)!=null) {
             binding.tvState.setText(map.get(stateCode))
+            CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+        }
         else
             binding.tvState.setText("")
 
         visibleAllFields()
+        clearAllError()
     }
 
     private fun visibleAllFields() {
@@ -666,6 +703,15 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
         map.put("WV", "West Virginia")
         map.put("WI", "Wisconsin")
         map.put("WY", "Wyoming")
+    }
+
+    private fun clearAllError(){
+        CustomMaterialFields.clearError(binding.layoutStreetAddress,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCountry,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutState,requireActivity())
     }
 
     private fun setError(){

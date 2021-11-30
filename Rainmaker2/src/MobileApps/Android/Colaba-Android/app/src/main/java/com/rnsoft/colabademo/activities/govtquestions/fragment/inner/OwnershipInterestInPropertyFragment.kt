@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,6 +21,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import java.util.ArrayList
 import javax.inject.Inject
 
@@ -29,19 +31,23 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
     private var _binding: OwnershipInterestInPropertyLayoutBinding? = null
     private val binding get() = _binding!!
-    private var ownerShipGlobalData:ArrayList<String> = arrayListOf()
+    private var ownerShipInnerScreenParams:ArrayList<String> = arrayListOf()
 
     companion object{
         const val ownershipQuestionOne =    "What type of property did you own?"
         const val ownershipQuestionTwo =    "How did you hold title to the property?"
     }
 
-    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
-    private var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
+     private var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     private var questionId:Int = 0
 
-    private val dataArray: ArrayList<String> = arrayListOf("Primary Residence", "Second Home", "Investment Property")
+    private val dataArray: ArrayList<String> = arrayListOf("Primary Residence",   "Second Home", "Investment Property",)
+
     private val dataArray2: ArrayList<String> = arrayListOf("By Yourself", "Jointly with your spouse", "Jointly with another person")
+
+    private val array1 = HashMap<String, Int>()
+
+    private val array2 = HashMap<String, Int>()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -54,17 +60,34 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
         _binding = OwnershipInterestInPropertyLayoutBinding.inflate(inflater, container, false)
         arguments?.let { arguments->
-            ownerShipGlobalData = arguments.getStringArrayList(AppConstant.ownerShipGlobalData)!!
+            ownerShipInnerScreenParams = arguments.getStringArrayList(AppConstant.ownerShipGlobalData)!!
             questionId = arguments.getInt(AppConstant.questionId)
             updateGovernmentQuestionByBorrowerId = arguments.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
         return root
     }
 
+    private val backToGovernmentScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack()
+        }
+    }
+
     private fun setUpUI(){
+
+        array1.put(dataArray[0] , 1 )
+        array1.put( dataArray[1] , 3)
+        array1.put(dataArray[2] , 4 )
+
+
+        array2.put( dataArray2[0], 1)
+        array2.put( dataArray2[1] ,2)
+        array2.put( dataArray2[2], 4)
+
 
         val stateNamesAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  dataArray)
         binding.transactionAutoCompleteTextView.setAdapter(stateNamesAdapter)
@@ -141,14 +164,18 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
-                    val answerIndex1 = dataArray.indexOf(binding.transactionAutoCompleteTextView.text.toString())+1
-                    val answerIndex2 =dataArray2.indexOf( binding.whichAssetsCompleteView.text.toString())+1
+                    val answer1 = binding.transactionAutoCompleteTextView.text.toString()
+                    val answer2 = binding.whichAssetsCompleteView.text.toString()
 
                     EventBus.getDefault().post(
-                        OwnershipInterestUpdateEvent(ownershipQuestionOne, binding.transactionAutoCompleteTextView.text.toString(), answerIndex1,
-                            ownershipQuestionTwo, binding.whichAssetsCompleteView.text.toString(), answerIndex2)
+                        OwnershipInterestUpdateEvent(ownershipQuestionOne, answer1 , array1.getValue(answer1),
+                            ownershipQuestionTwo, answer2,  array2.getValue(answer2))
+
                     )
-                    findNavController().popBackStack()
+
+                    Timber.e(" Now = "+array1.getValue(answer1) + " = "+array2.getValue(answer2))
+
+
                 }
             }
         }
@@ -156,10 +183,10 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
 
     private fun fillWithGlobalData(){
-        if(ownerShipGlobalData.size>0)
-            binding.transactionAutoCompleteTextView.setText(ownerShipGlobalData[0], false)
-        if(ownerShipGlobalData.size>1)
-            binding.whichAssetsCompleteView.setText(ownerShipGlobalData[1], false)
+        if(ownerShipInnerScreenParams.size>0)
+            binding.transactionAutoCompleteTextView.setText(ownerShipInnerScreenParams[0], false)
+        if(ownerShipInnerScreenParams.size>1)
+            binding.whichAssetsCompleteView.setText(ownerShipInnerScreenParams[1], false)
     }
 
     private fun checkEmptyFields():Boolean{

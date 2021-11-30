@@ -27,6 +27,7 @@ import com.google.android.libraries.places.api.model.TypeFilter
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +53,9 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private var predicationList: ArrayList<String> = ArrayList()
     private val viewModel : CommonViewModel by activityViewModels()
     private var militaryAddress = AddressData()
+    private var countyList: ArrayList<CountiesModel> = arrayListOf()
+    private var countryList: ArrayList<CountriesModel> = arrayListOf()
+    private var stateList: ArrayList<StatesModel> = arrayListOf()
 
 
     override fun onCreateView(
@@ -118,6 +122,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in states) {
                         itemList.add(item.name)
+                        stateList.add(item)
                     }
                     val stateAdapter =
                         ArrayAdapter(
@@ -162,6 +167,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in countries) {
                         itemList.add(item.name)
+                        countryList.add(item)
                     }
                     val countryAdapter =
                         ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
@@ -194,6 +200,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                     val itemList: ArrayList<String> = arrayListOf()
                     for (item in counties) {
                         itemList.add(item.name)
+                        countyList.add(item)
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
@@ -296,7 +303,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.tvState.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.tvState.showDropDown()
+                //binding.tvState.showDropDown()
                 binding.tvState.addTextChangedListener(stateTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
 
@@ -315,7 +322,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.tvCountry.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.tvCountry.showDropDown()
+                //binding.tvCountry.showDropDown()
                 binding.tvCountry.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
 
@@ -331,6 +338,20 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 }
             }
         }
+
+        binding.tvCounty.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            if(!hasFocus){
+                if (binding.tvCounty.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
+                }
+            }
+        }
+
+
 
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext(),getString(R.string.error_field_required)))
@@ -366,9 +387,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if(city.isEmpty() || city.length == 0) {
                 CustomMaterialFields.setError(binding.layoutCity,getString(R.string.error_field_required),requireActivity())
             }
-            if(county.isEmpty() || county.length == 0) {
-                CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
-            }
             if(zipCode.isEmpty() || zipCode.length == 0) {
                 CustomMaterialFields.setError(binding.layoutZipCode,getString(R.string.error_field_required),requireActivity())
             }
@@ -385,9 +403,6 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if(city.isNotEmpty() || city.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
             }
-            if(county.isNotEmpty() || county.length > 0) {
-                CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
-            }
             if(zipCode.isNotEmpty() || zipCode.length > 0) {
                 CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
             }
@@ -398,9 +413,24 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 CustomMaterialFields.clearError(binding.layoutState,requireActivity())
             }
         }
-        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0) {
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && country.length > 0 && zipCode.length > 0) {
 
             val unit = if (binding.edUnitAtpNo.text.toString().length > 0) binding.edUnitAtpNo.text.toString() else null
+
+            val countyName : String = binding.tvCounty.getText().toString().trim()
+            val matchedCounty =  countyList.filter { p -> p.name.equals(countyName,true)}
+            val countyId = if(matchedCounty.size > 0)
+                matchedCounty.get(0).id else null
+
+            val countryName : String = binding.tvCountry.getText().toString().trim()
+            val matchedCountry =  countryList.filter { p -> p.name.equals(countryName,true)}
+            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+
+            val stateName : String = binding.tvState.getText().toString().trim()
+            val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
+            val stateId = if(matchedState.size > 0)
+                matchedState.get(0).id else null
+
             val address = AddressData(
                 street = street,
                 unit = unit,
@@ -408,9 +438,9 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 stateName = state,
                 countryName = country,
                 countyName = county,
-                countyId = 1,
-                stateId = 1,
-                countryId = 1,
+                countyId = countyId,
+                stateId = stateId,
+                countryId = countryId,
                 zipCode = zipCode
             )
 
@@ -529,13 +559,28 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             //val addressLine: String? = addresses?.get(0)?.getAddressLine(0)
             //val countryCode: String? = addresses?.get(0)?.countryCode
             //val stateName: String? = addresses?.get(0)?.locale
-
+/*
             locality?.let { binding.edCity.setText(it) }
             subLocality?.let { binding.tvCounty.setText(it) }
             postalCode?.let { binding.edZipcode.setText(it) }
             countryName?.let { binding.tvCountry.setText(it) }
             binding.edStreetAddress.setText(place.getPrimaryText(null))
+            premises?.let { binding.edUnitAtpNo.setText(it) } */
+
+
+            locality?.let { binding.edCity.setText(it) }
+            subLocality?.let {
+                binding.tvCounty.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+            }
+            postalCode?.let { binding.edZipcode.setText(it) }
+            countryName?.let {
+                binding.tvCountry.setText(it)
+                CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())
+            }
+            binding.edStreetAddress.setText(place.getPrimaryText(null))
             premises?.let { binding.edUnitAtpNo.setText(it) }
+
 
         } catch (e: IOException) {
             e.printStackTrace()
@@ -557,6 +602,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             binding.tvState.setText("")
 
         visibleAllFields()
+        clearAllError()
     }
 
     private fun visibleAllFields() {
@@ -568,6 +614,16 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         binding.layoutStreetAddress.visibility = View.VISIBLE
         binding.layoutState.visibility = View.VISIBLE
     }
+
+    private fun clearAllError(){
+        CustomMaterialFields.clearError(binding.layoutStreetAddress,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCity,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCounty,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutZipCode,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutCountry,requireActivity())
+        CustomMaterialFields.clearError(binding.layoutState,requireActivity())
+    }
+
 
     private var map: HashMap<String, String> = HashMap()
 

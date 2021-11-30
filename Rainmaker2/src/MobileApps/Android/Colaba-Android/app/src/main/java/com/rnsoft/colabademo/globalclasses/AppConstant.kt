@@ -66,6 +66,7 @@ object AppConstant {
         const val borrowerId:String = "borrowerId"
         const val borrowerName:String = "borrowerName"
         const val propertyInfoId:String = "propertyInfoId"
+        const val addBorrower:String ="AddBorrower"
 
 
         const val assetUniqueId:String = "borrowerAssetId"
@@ -162,11 +163,12 @@ object AppConstant {
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"
-        const val bankruptcyGlobalData : String = "bankruptcyGlobalData"
+        const val bankruptcyAnswerData : String = "bankruptcyGlobalData"
 
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val mixedPropertyDetails: String = "mixed_property_details"
         const val application_tab_updated: String = "tab_data_updated"
         const val income_delete_text: String = "Are you sure you want to remove this income source?"
         const val MIXED_USE_PROPERTY_DESC: String = "mixed_property_explaination"

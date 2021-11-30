@@ -32,6 +32,7 @@ class PreForeclosureFragment:GovtDetailBaseFragment() {
             questionId = it.getInt(AppConstant.questionId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         fillWithData(binding.edDetails)
         setUpUI()
         super.addListeners(binding.root)

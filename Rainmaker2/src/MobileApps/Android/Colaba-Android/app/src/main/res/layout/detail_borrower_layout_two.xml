@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colaba_loan_background">
 
+    <!--
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/borrower_top_constraintLayout"
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:fontFamily="@font/rubik_light"
             android:maxLines="1"
             android:singleLine="true"
-            android:text=" "
+            android:text="adfncddf"
             android:textColor="@color/grey_color_two"
             android:textSize="13sp"
             android:visibility="gone"
@@ -54,7 +55,7 @@
             android:text="Loan#"
             android:textColor="@color/grey_color_two"
             android:textSize="14sp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="@+id/coBorrowerNames"
             app:layout_constraintTop_toBottomOf="@+id/coBorrowerNames" />
 
@@ -82,7 +83,83 @@
             app:layout_constraintStart_toEndOf="@+id/bytesTick"
             app:layout_constraintTop_toBottomOf="@+id/loanId" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout> -->
+
+    <LinearLayout
+        android:id="@+id/borrower_top_constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/borrower_overview_background"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/mainBorrowerName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text=""
+            android:textColor="@color/grey_color_one"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/coBorrowerNames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/rubik_light"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/loanId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text=""
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <!--  <ImageView
+              android:id="@+id/bytesTick"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:visibility="visible"
+              android:layout_marginTop="20dp"
+              android:layout_marginStart="18dp"
+              app:srcCompat="@drawable/green_right_icon" /> -->
+
+        <TextView
+            android:id="@+id/bytesPosted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="18dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Posted "
+            android:drawablePadding="5dp"
+            android:textColor="@color/green_circle"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableLeftCompat="@drawable/green_right_icon" />
+
+
+    </LinearLayout>
 
     <View
         android:id="@+id/view1"
@@ -114,7 +191,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="21dp"
             android:fontFamily="@font/rubik_light"
-            android:text="Application Status"
+            android:text="APPLICATION STATUS"
             android:textColor="@color/grey_color_three"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"

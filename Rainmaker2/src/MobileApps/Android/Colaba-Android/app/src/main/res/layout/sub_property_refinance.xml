@@ -122,6 +122,7 @@
                     android:text="@string/subject_property_address"
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
+                    android:clickable="true"
                     app:layout_constraintBottom_toBottomOf="@+id/radio_sub_property_address"
                     app:layout_constraintStart_toEndOf="@+id/radio_sub_property_address"
                     app:layout_constraintTop_toTopOf="@+id/radio_sub_property_address" />
@@ -131,20 +132,17 @@
                     android:id="@+id/tv_sub_property_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="15dp"
                     android:paddingBottom="15dp"
-                    android:ellipsize="end"
                     android:fontFamily="@font/rubik_regular"
-                    android:lineSpacingExtra="8dp"
                     android:maxLines="2"
-                    android:text="5915 Trussville Crossings Pkwy, Birmingham AL 35235"
+                    android:text=""
                     android:textColor="@color/grey_color_one"
                     android:textSize="15sp"
                     android:layout_marginEnd="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/radio_txt_property_add"
                     app:layout_constraintTop_toBottomOf="@+id/radio_txt_property_add" />
-
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -789,7 +787,6 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textview_sec_mortgage_payment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -800,7 +797,7 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/textview_sec_mortgage_balance"
+                        android:id="@+id/textview_sec_mortgage_payment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
@@ -821,6 +818,7 @@
                         android:textSize="13sp" />
 
                     <TextView
+                        android:id="@+id/textview_sec_mortgage_balance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"

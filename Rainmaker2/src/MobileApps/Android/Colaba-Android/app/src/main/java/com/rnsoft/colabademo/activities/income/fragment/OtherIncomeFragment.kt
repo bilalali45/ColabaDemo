@@ -106,8 +106,8 @@ class OtherIncomeFragment : BaseFragment() {
                         itemList.add(item.name)
                         incomeTypes.add(item)
                     }
-                    Timber.e("itemList- $itemList")
-                    Timber.e("RetirementTypes- $incomeTypes")
+                    //Timber.e("itemList- $itemList")
+                    //Timber.e("RetirementTypes- $incomeTypes")
                     val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                     binding.tvIncomeType.setAdapter(adapter)
 
@@ -138,6 +138,7 @@ class OtherIncomeFragment : BaseFragment() {
                         for (item in incomeTypes)
                             if (incomeTypeId == item.id) {
                                 binding.tvIncomeType.setText(item.name, false)
+                                CustomMaterialFields.setColor(binding.layoutIncomeType, R.color.grey_color_two, requireContext())
                                 toggleOtherFields()
                                 break
                             }
@@ -181,7 +182,7 @@ class OtherIncomeFragment : BaseFragment() {
         }
 
         if (binding.tvIncomeType.text.isNotEmpty() && binding.tvIncomeType.text.isNotBlank()) {
-            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+            CustomMaterialFields.clearError(binding.layoutIncomeType,requireActivity())
         }
     }
 
@@ -221,12 +222,12 @@ class OtherIncomeFragment : BaseFragment() {
 
         if (incomeType.isEmpty() || incomeType.length == 0) {
             isDataEntered = false
-            CustomMaterialFields.setError(binding.layoutRetirement,getString(R.string.error_field_required),requireActivity())
+            CustomMaterialFields.setError(binding.layoutIncomeType,getString(R.string.error_field_required),requireActivity())
         }
 
         if (incomeType.isNotEmpty() || incomeType.length > 0) {
             isDataEntered = true
-            CustomMaterialFields.clearError(binding.layoutRetirement,requireActivity())
+            CustomMaterialFields.clearError(binding.layoutIncomeType,requireActivity())
         }
 
         if(binding.layoutAnnualIncome.isVisible) {
@@ -266,16 +267,27 @@ class OtherIncomeFragment : BaseFragment() {
             // get incomeType id
             val type : String = binding.tvIncomeType.getText().toString().trim()
             val matchedList =  incomeTypes.filter { p -> p.name.equals(type,true)}
-            //Log.e("matchedList",""+matchedList1)
+            //Log.e("matchedList",""+matchedList)
             val incomeTypeId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
-            //Log.e("propertyId",""+propertyId)
+            //Log.e("propertyId",""+matchedList)
 
-            val monthlyIncome : String = binding.edMonthlyIncome.text.toString().trim()
-            val newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+            var monthlyIncome = binding.edMonthlyIncome.text.toString().trim()
+            var newMonthlyIncome : String? = null
+            if(binding.layoutMonthlyIncome.isVisible) {
+                newMonthlyIncome = if (monthlyIncome.length > 0) monthlyIncome.replace(",".toRegex(), "") else null
+            }
 
             val annualIncome = binding.edAnnualIncome.text.toString().trim()
-            val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
-            val desc = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+            var newAnnualIncome : String? = null
+
+            if(binding.layoutAnnualIncome.isVisible){
+                 newAnnualIncome = if (annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
+             }
+
+            var desc :String?= null
+            if(binding.layoutDesc.isVisible) {
+                desc = if (binding.edDesc.text.toString().length > 0) binding.edDesc.text.toString() else null
+            }
 
             val data = AddOtherIncomeInfo(
                 loanApplicationId=loanApplicationId,incomeInfoId=incomeInfoId,borrowerId=borrowerId,monthlyBaseIncome = newMonthlyIncome?.toDouble(),annualBaseIncome = newAnnualIncome?.toDouble(),
@@ -285,7 +297,7 @@ class OtherIncomeFragment : BaseFragment() {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if (loanApplicationId != null && borrowerId != null) {
                        // Log.e("sending", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
-                        //Log.e("employmentData-snding to API", "" + data)
+                        Log.e("employmentData-snding to API", "" + data)
                         binding.loaderOtherIncome.visibility = View.VISIBLE
                         viewModel.sendOtherIncome(authToken, data)
                     }
@@ -371,7 +383,7 @@ class OtherIncomeFragment : BaseFragment() {
         binding.tvIncomeType.onItemClickListener = object :
             AdapterView.OnItemClickListener {
             override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                binding.layoutRetirement.defaultHintTextColor = ColorStateList.valueOf(
+                binding.layoutIncomeType.defaultHintTextColor = ColorStateList.valueOf(
                     ContextCompat.getColor(
                         requireContext(), R.color.grey_color_two))
                 toggleOtherFields()

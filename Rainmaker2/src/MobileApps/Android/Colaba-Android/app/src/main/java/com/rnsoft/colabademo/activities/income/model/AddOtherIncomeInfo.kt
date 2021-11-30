@@ -4,7 +4,7 @@ package com.rnsoft.colabademo
  * Created by Anita Kiran on 11/15/2021.
  */
 data class AddOtherIncomeInfo(
-    val description: String?,
+    val description: String? = null,
     //val fieldInfo: String?,
     //val incomeGroupId: Int?,
     //val incomeGroupName: String?,
@@ -12,7 +12,7 @@ data class AddOtherIncomeInfo(
     val incomeInfoId: Int?,
     val incomeTypeId: Int?,
     val loanApplicationId: Int?,
-    val monthlyBaseIncome: Double?,
-    val annualBaseIncome: Double?
+    val monthlyBaseIncome: Double? = null,
+    val annualBaseIncome: Double? = null
 
     )

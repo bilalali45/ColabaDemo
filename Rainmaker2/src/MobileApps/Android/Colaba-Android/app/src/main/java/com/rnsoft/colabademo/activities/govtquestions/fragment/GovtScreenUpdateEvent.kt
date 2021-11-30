@@ -8,5 +8,5 @@ class OwnershipInterestUpdateEvent(val question1: String  , val answer1:String ,
 
 class ChildSupportUpdateEvent(val childAnswerList:ArrayList<ChildAnswerData>)
 
-class BankruptcyUpdateEvent(val detailTitle: String = "Which Type?", val detailDescription:String )
+class BankruptcyUpdateEvent(val detailTitle: String = "Which Type?", val detailDescription:String, val bankruptcyAnswerData:BankruptcyAnswerData )
 

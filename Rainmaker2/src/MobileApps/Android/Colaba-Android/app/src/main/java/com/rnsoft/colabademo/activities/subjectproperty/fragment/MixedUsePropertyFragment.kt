@@ -51,8 +51,9 @@ class MixedUsePropertyFragment : BaseFragment() {
             if (details.isEmpty() || details.length == 0) {
                 CustomMaterialFields.setError(binding.layoutDetail,getString(R.string.error_field_required),requireActivity())
             } else{
-                viewModel.updateMixUsePropertyDesc(details)
-                viewModel.updateMixUsePropertyRefinance(details)
+                //viewModel.updateMixUsePropertyDesc(details)
+                //viewModel.updateMixUsePropertyRefinance(details)
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.mixedPropertyDetails, details)
                 findNavController().popBackStack()
             }
         }

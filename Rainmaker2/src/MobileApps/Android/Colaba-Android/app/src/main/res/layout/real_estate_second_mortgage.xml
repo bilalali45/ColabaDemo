@@ -193,7 +193,7 @@
                 android:fontFamily="@font/rubik_light"
                 android:hint="@string/credit_limit"
                 android:textColorHint="@color/primary_info_label_color"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
@@ -215,7 +215,7 @@
                     android:inputType="number"
                     android:paddingStart="0dp"
                     android:singleLine="true"
-                    android:textColor="@color/grey_color_two"
+                    android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info" />
             </com.google.android.material.textfield.TextInputLayout>
 

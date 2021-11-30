@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 
@@ -27,20 +28,28 @@ class ChildSupportFragment:BaseFragment() {
     private var _binding: ChildSupportLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private  var childGlobalList:ArrayList<ChildAnswerData> = arrayListOf()
+    private  var childSelectionList:ArrayList<ChildAnswerData> = arrayListOf()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChildSupportLayoutBinding.inflate(inflater, container, false)
         arguments?.let { arguments->
-            childGlobalList = arguments.getParcelableArrayList(AppConstant.childGlobalList)!!
+            childSelectionList = arguments.getParcelableArrayList(AppConstant.childGlobalList)!!
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
         return root
     }
+
+    private val backToGovernmentScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            findNavController().popBackStack()
+        }
+    }
+
 
     private var dataArray: ArrayList<String> = arrayListOf()
 
@@ -164,28 +173,28 @@ class ChildSupportFragment:BaseFragment() {
                 if(binding.childSupportCheckBox.isChecked){
                     childAnswerList.add(ChildAnswerData(
                         liabilityName = binding.childSupportCheckBox.text.toString(),
-                        name =  binding.childSupportCheckBox.text.toString(),
-                        remainingMonth = binding.paymentRemainingTextView.text.toString(),
-                        monthlyPayment = Common.removeCommas(binding.monthlyPaymentEditText.text.toString()),
-                        liabilityTypeId = binding.paymentReceiptEditText.text.toString()
+                        name = binding.paymentReceiptEditText.text.toString(),
+                        remainingMonth = binding.paymentRemainingTextView.text.toString().toDouble().toInt(),
+                        monthlyPayment = Common.removeCommas(binding.monthlyPaymentEditText.text.toString()).toDouble().toInt(),
+                        liabilityTypeId =  1.toInt()
                     ))
                 }
                 if(binding.separateMaintenanceCheckBox.isChecked){
                     childAnswerList.add(ChildAnswerData(
                         liabilityName =  binding.separateMaintenanceCheckBox.text.toString(),
-                        name = binding.separateMaintenanceCheckBox.text.toString(),
-                        remainingMonth = binding.separateMaintenancePaymentRemainingTextView.text.toString(),
-                        monthlyPayment = Common.removeCommas(binding.separateMonthlyPaymentEditText.text.toString()),
-                        liabilityTypeId = binding.separatePaymentReceiptEditText.text.toString()
+                        name = binding.separatePaymentReceiptEditText.text.toString(),
+                        remainingMonth = binding.separateMaintenancePaymentRemainingTextView.text.toString().toDouble().toInt().toInt(),
+                        monthlyPayment = Common.removeCommas(binding.separateMonthlyPaymentEditText.text.toString()).toDouble().toInt(),
+                        liabilityTypeId = 2.toInt()
                     ))
                 }
                 if(binding.alimonyCheckBox.isChecked){
                     childAnswerList.add(ChildAnswerData(
                         liabilityName = binding.alimonyCheckBox.text.toString(),
-                        name =binding.alimonyCheckBox.text.toString(),
-                        remainingMonth = binding.alimonyPaymentRemainingTextView.text.toString(),
-                        monthlyPayment =  binding.alimonyMonthlyPaymentEditText.text.toString(),
-                        liabilityTypeId = binding.alimonyPaymentReceiptEditText.text.toString()
+                        name = binding.alimonyPaymentReceiptEditText.text.toString(),
+                        remainingMonth = binding.alimonyPaymentRemainingTextView.text.toString().toDouble().toInt(),
+                        monthlyPayment =  binding.alimonyMonthlyPaymentEditText.text.toString().toDouble().toInt(),
+                        liabilityTypeId = 8.toInt()
                     ))
                 }
 
@@ -210,48 +219,37 @@ class ChildSupportFragment:BaseFragment() {
         binding.monthlyPaymentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyPaymentEditText, binding.monthlyPaymentLayout, requireContext()))
         binding.paymentReceiptEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.paymentReceiptEditText, binding.paymentReceiptLayout, requireContext()))
 
-        fillGlobalData()
+        fillChildData()
     }
 
-    data class InnerBoxType(
-        val categoryName:String ,
-        val paymentRemaining: Int,
-        val monthlyPayment: Double,
-        val paymentRecipient: String)
+    private fun fillChildData(){
+        if(childSelectionList.size>0){
+            for(item in childSelectionList) {
+                if(item.liabilityName.equals(binding.childSupportCheckBox.text.toString(), true)){
+                    binding.childSupportCheckBox.performClick()
+                    Timber.e("remainingMonth - "+item.remainingMonth)
+                    Timber.e("monthlyPayment - "+item.monthlyPayment)
+                    Timber.e("liabilityTypeId - "+item.liabilityTypeId)
+                    binding.paymentRemainingTextView.setText(item.remainingMonth.toString() , false)
+                    binding.monthlyPaymentEditText.setText(item.monthlyPayment.toString())
+                    binding.paymentReceiptEditText.setText(returnStringWithZero(item.name))
+                }
+                else if(item.liabilityName.equals(binding.alimonyCheckBox.text.toString(), true)){
+                    binding.alimonyCheckBox.performClick()
+                    binding.alimonyPaymentRemainingTextView.setText(item.remainingMonth.toString() , false)
+                    binding.alimonyMonthlyPaymentEditText.setText(item.monthlyPayment.toString())
+                    binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(item.name))
+                }
+                else if(item.liabilityName.equals(binding.separateMaintenanceCheckBox.text.toString(), true)){
+                    //binding.separateMaintenanceCheckBox.isChecked = true
+                    binding.separateMaintenanceCheckBox.performClick()
+                    binding.separateMaintenancePaymentRemainingTextView.setText(item.remainingMonth.toString() , false)
+                    binding.separateMonthlyPaymentEditText.setText(item.monthlyPayment.toString())
+                    binding.separatePaymentReceiptEditText.setText(returnStringWithZero(item.name))
+                }
 
-
-
-    private fun fillGlobalData(){
-            if(childGlobalList.size>0){
-                val test = childGlobalList[0]
-                //binding.childSupportCheckBox.isChecked = true
-
-                binding.childSupportCheckBox.performClick()
-                Timber.e("remainingMonth - "+returnStringWithZero(test.remainingMonth))
-                Timber.e("monthlyPayment - "+returnStringWithZero(test.monthlyPayment))
-                Timber.e("liabilityTypeId - "+returnStringWithZero(test.liabilityTypeId))
-                binding.paymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
-                binding.monthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.paymentReceiptEditText.setText(returnStringWithZero(test.name))
             }
-
-            if(childGlobalList.size>1){
-                val test = childGlobalList[1]
-                //binding.alimonyCheckBox.isChecked = true
-                binding.alimonyCheckBox.performClick()
-                binding.alimonyPaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
-                binding.alimonyMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.alimonyPaymentReceiptEditText.setText(returnStringWithZero(test.name))
-            }
-
-            if(childGlobalList.size>2){
-                val test = childGlobalList[2]
-                //binding.separateMaintenanceCheckBox.isChecked = true
-                binding.separateMaintenanceCheckBox.performClick()
-                binding.separateMaintenancePaymentRemainingTextView.setText(returnStringWithZero(test.remainingMonth) , false)
-                binding.separateMonthlyPaymentEditText.setText(returnStringWithZero(test.monthlyPayment))
-                binding.separatePaymentReceiptEditText.setText(returnStringWithZero(test.name))
-            }
+        }
     }
 
     private fun returnStringWithZero(str: String): String {
@@ -264,11 +262,12 @@ class ChildSupportFragment:BaseFragment() {
 
     private fun checkEmptyFields():Boolean{
         var bool =  false
+        var isFalse = true
         if(binding.separateMaintenanceCheckBox.isChecked){
-            bool = true
             if(binding.separateMonthlyPaymentEditText.text?.isEmpty() == true || binding.separateMonthlyPaymentEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.separateMonthlyPaymentLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.separateMonthlyPaymentLayout,  requireContext())
@@ -276,6 +275,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.separateMaintenancePaymentRemainingTextView.text?.isEmpty() == true || binding.separateMaintenancePaymentRemainingTextView.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.separateMaintenancePaymentRemainingLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.separateMaintenancePaymentRemainingLayout,  requireContext())
@@ -283,6 +283,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.separatePaymentReceiptEditText.text?.isEmpty() == true || binding.separatePaymentReceiptEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.separatePaymentReceiptLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.separatePaymentReceiptLayout,  requireContext())
@@ -294,6 +295,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.alimonyMonthlyPaymentEditText.text?.isEmpty() == true || binding.alimonyMonthlyPaymentEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.alimonyMonthlyPaymentLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.alimonyMonthlyPaymentLayout,  requireContext())
@@ -301,6 +303,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.alimonyPaymentReceiptEditText.text?.isEmpty() == true || binding.alimonyPaymentReceiptEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.alimonyPaymentReceiptLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.alimonyPaymentReceiptLayout,  requireContext())
@@ -308,6 +311,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.alimonyPaymentRemainingTextView.text?.isEmpty() == true || binding.alimonyPaymentRemainingTextView.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.alimonyPaymentRemainingLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.alimonyPaymentRemainingLayout,  requireContext())
@@ -319,6 +323,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.paymentRemainingTextView.text?.isEmpty() == true || binding.paymentRemainingTextView.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.paymentRemainingLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.paymentRemainingLayout,  requireContext())
@@ -326,6 +331,7 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.monthlyPaymentEditText.text?.isEmpty() == true || binding.monthlyPaymentEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.monthlyPaymentLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.monthlyPaymentLayout,  requireContext())
@@ -333,12 +339,13 @@ class ChildSupportFragment:BaseFragment() {
             if(binding.paymentReceiptEditText.text?.isEmpty() == true || binding.paymentReceiptEditText.text?.isBlank() == true) {
                 CustomMaterialFields.setError(binding.paymentReceiptLayout, "This field is required." , requireContext())
                 bool = false
+                isFalse = false
             }
             else
                 CustomMaterialFields.clearError(binding.paymentReceiptLayout,  requireContext())
         }
 
-        return bool
+        return isFalse
     }
 
     private fun removeErrorFromFields(){

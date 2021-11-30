@@ -77,33 +77,33 @@ import java.util.ArrayList
                 }
             }
 
-                    viewModel.assetTypesByCategoryItemList.observe(
-                        viewLifecycleOwner,
-                        { assetTypesByCategoryItemList ->
-                            if (assetTypesByCategoryItemList != null && assetTypesByCategoryItemList.size > 0) {
-                                categoryList = assetTypesByCategoryItemList
-                                assetUniqueId?.let { assetUniqueId ->
-                                    if (assetUniqueId > 0) {
-                                        for (item in categoryList) {
-                                            if (item.id == assetTypeID) {
-                                                binding.transactionAutoCompleteTextView.setText(
-                                                    item.name,
-                                                    false
-                                                )
-                                                if (item.id == 12) {
-                                                    getProceedsFromLoan(0)
-                                                } else if (item.id == AppConstant.assetNonRealStateId) {
-                                                    getProceedsFromNonRealEstateDetail(1)
-                                                } else if (item.id == AppConstant.assetRealStateId) {
-                                                    getProceedsFromRealEstateDetail(2)
-                                                }
-                                                break
-                                            }
+            viewModel.assetTypesByCategoryItemList.observe(
+                viewLifecycleOwner,
+                { assetTypesByCategoryItemList ->
+                    if (assetTypesByCategoryItemList != null && assetTypesByCategoryItemList.size > 0) {
+                        categoryList = assetTypesByCategoryItemList
+                        assetUniqueId?.let { assetUniqueId ->
+                            if (assetUniqueId > 0) {
+                                for (item in categoryList) {
+                                    if (item.id == assetTypeID) {
+                                        binding.transactionAutoCompleteTextView.setText(
+                                            item.name,
+                                            false
+                                        )
+                                        if (item.id == 12) {
+                                            getProceedsFromLoan(0)
+                                        } else if (item.id == AppConstant.assetNonRealStateId) {
+                                            getProceedsFromNonRealEstateDetail(1)
+                                        } else if (item.id == AppConstant.assetRealStateId) {
+                                            getProceedsFromRealEstateDetail(2)
                                         }
+                                        break
                                     }
                                 }
                             }
-                        })
+                        }
+                    }
+                })
 
 
         }
@@ -301,7 +301,7 @@ import java.util.ArrayList
             val fieldsValidated = checkEmptyFields()
             if(fieldsValidated) {
                 clearFocusFromFields()
-                for(item in categoryList){
+                myloop@ for(item in categoryList){
                     Timber.e("name = "+item.name +"  = "+binding.transactionAutoCompleteTextView.text.toString())
                     if(item.name.equals(binding.transactionAutoCompleteTextView.text.toString(),true)) {
                         if (item.id == 12)
@@ -310,7 +310,7 @@ import java.util.ArrayList
                             item.displayName?.let {
                                 addUpdateAssetsRealStateOrNonRealState(item.id, it)
                             }
-                        break
+                        break@myloop
                     }
                 }
             }
