@@ -1471,4 +1471,8 @@ extension BorrowerInformationViewController: AddPreviousResidenceViewControllerD
         }
         setBorrowerInformation()
     }
+    
+    func deletePreviousAddress() {
+        self.getBorrowerDetail()
+    }
 }
