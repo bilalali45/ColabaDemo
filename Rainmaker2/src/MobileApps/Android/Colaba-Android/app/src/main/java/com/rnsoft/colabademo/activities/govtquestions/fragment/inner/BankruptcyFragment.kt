@@ -22,11 +22,7 @@ class BankruptcyFragment:BaseFragment() {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = BankruptcyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -59,7 +55,6 @@ class BankruptcyFragment:BaseFragment() {
         }
     }
 
-
     private fun fillGlobalData(){
         if(answerData.`1`)
             binding.chapter7.isChecked = true
@@ -87,8 +82,6 @@ class BankruptcyFragment:BaseFragment() {
 
         }
     }
-
-
 
     private fun returnSelectedValues():String{
         var bool = false

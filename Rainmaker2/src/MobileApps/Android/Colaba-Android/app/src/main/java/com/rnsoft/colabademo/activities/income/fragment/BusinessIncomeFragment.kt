@@ -469,7 +469,6 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -519,7 +518,9 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
 
     private fun updateMainIncome(){
         borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_business)
+
+            val incomeUpdate = IncomeUpdateInfo(AppConstant.income_business,borrowerId!!)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
             findNavController().popBackStack()
         })
         val incomeActivity = (activity as? IncomeActivity)

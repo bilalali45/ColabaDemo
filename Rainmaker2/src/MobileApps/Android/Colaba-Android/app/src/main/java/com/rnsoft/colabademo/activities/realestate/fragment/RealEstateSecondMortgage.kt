@@ -23,7 +23,6 @@ import java.lang.NullPointerException
 class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : RealEstateSecondMortgageBinding
-    private val viewModel : RealEstateViewModel by activityViewModels()
     lateinit var sharedPreferences : SharedPreferences
     var secondMortgageModel = SecondMortgageModel()
 
@@ -128,16 +127,16 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         var newCreditLimit = if(creditLimit.length > 0) creditLimit.replace(",".toRegex(), "") else null
 
         val isHeloc = if(binding.switchCreditLimit.isChecked)true else false
-        var isCombinedWithFirstMortgage : Boolean? = null
+        var isPaidAtClosing : Boolean? = null
 
         if(binding.rbPaidClosingYes.isChecked)
-            isCombinedWithFirstMortgage = true
+            isPaidAtClosing = true
 
         if(binding.rbPaidClosingNo.isChecked)
-            isCombinedWithFirstMortgage = false
+            isPaidAtClosing = false
 
         val secMortgageDetail = SecondMortgageModel(secondMortgagePayment = newSecMortgagePayment?.toDouble(),unpaidSecondMortgagePayment = newUnpaidBalance?.toDouble(),
-            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,combineWithNewFirstMortgage = isCombinedWithFirstMortgage,wasSmTaken = null)
+            helocCreditLimit = newCreditLimit?.toDoubleOrNull(), isHeloc = isHeloc,paidAtClosing = isPaidAtClosing,wasSmTaken = null)
 
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.secMortgage,secMortgageDetail)
         findNavController().popBackStack()

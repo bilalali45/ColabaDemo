@@ -84,12 +84,9 @@ import java.util.ArrayList
                         categoryList = assetTypesByCategoryItemList
                         assetUniqueId?.let { assetUniqueId ->
                             if (assetUniqueId > 0) {
-                                for (item in categoryList) {
+                                myLoop@ for (item in categoryList) {
                                     if (item.id == assetTypeID) {
-                                        binding.transactionAutoCompleteTextView.setText(
-                                            item.name,
-                                            false
-                                        )
+                                        binding.transactionAutoCompleteTextView.setText(item.name, false)
                                         if (item.id == 12) {
                                             getProceedsFromLoan(0)
                                         } else if (item.id == AppConstant.assetNonRealStateId) {
@@ -97,7 +94,7 @@ import java.util.ArrayList
                                         } else if (item.id == AppConstant.assetRealStateId) {
                                             getProceedsFromRealEstateDetail(2)
                                         }
-                                        break
+                                        break@myLoop
                                     }
                                 }
                             }
@@ -176,20 +173,32 @@ import java.util.ArrayList
                         binding.edDetails.setText(it)
                     }
 
-                    proceedFromLoanData.securedByCollateral?.let {
-                        if(it)
-                            binding.radioButton.isChecked = true
-                        else
-                            binding.radioButton2.isChecked = true
+                    proceedFromLoanData.collateralAssetTypeId?.let {
+
                     }
 
                     proceedFromLoanData.collateralAssetOtherDescription?.let {
                         binding.edDetails.setText(it)
                     }
 
-                    proceedFromLoanData.collateralAssetName?.let{
-                        binding.whichAssetsCompleteView.setText(it, false)
+                    proceedFromLoanData.collateralAssetName?.let{ collateralAssetName->
+                        binding.whichAssetsCompleteView.setText(collateralAssetName, false)
+                        if(financialArray.indexOf(collateralAssetName) == financialArray.size-1){
+                            binding.layoutDetail.visibility = View.VISIBLE
+                        }
+
+                        proceedFromLoanData.collateralAssetTypeId?.let {
+                            if (it>0 && it<5) {
+                                binding.radioButton.isChecked = true
+                                if(it == 4)
+                                    binding.layoutDetail.visibility = View.VISIBLE
+                            }
+
+                        }
                     }
+
+                    if(!binding.radioButton.isChecked)
+                        binding.radioButton2.isChecked = true
                 }
             })
         }
@@ -249,12 +258,12 @@ import java.util.ArrayList
                     }
                     R.id.radioButton2 -> {
                         binding.whichAssetInputLayout.visibility = View.GONE
+                        binding.layoutDetail.visibility = View.GONE
                     }
                     else -> {
                     }
                 }
             }
-
             financialAdapter = ArrayAdapter(binding.root.context, android.R.layout.simple_list_item_1,  financialArray)
             binding.whichAssetsCompleteView.setAdapter(financialAdapter)
             binding.whichAssetsCompleteView.setOnFocusChangeListener { _, _ ->
@@ -306,15 +315,24 @@ import java.util.ArrayList
                     if(item.name.equals(binding.transactionAutoCompleteTextView.text.toString(),true)) {
                         if (item.id == 12)
                             addUpdateProceedFromLoan(item.id)
-                        else if (item.id == AppConstant.assetRealStateId || item.id == AppConstant.assetNonRealStateId)
+                        else
+                        if (item.id == AppConstant.assetRealStateId) {
                             item.displayName?.let {
                                 addUpdateAssetsRealStateOrNonRealState(item.id, it)
                             }
+                        }
+                        else
+                         if(item.id == AppConstant.assetNonRealStateId){
+                             item.displayName?.let {
+                                 addUpdateAssetsRealStateOrNonRealState(item.id, it)
+                             }
+                         }
                         break@myloop
                     }
                 }
             }
         }
+
 
 
         private fun addUpdateProceedFromLoan(assetTypeId:Int){
@@ -327,11 +345,7 @@ import java.util.ArrayList
                             paramBorrowerAssetId = assetUniqueId
                     }
 
-                    var securedByColletral:Boolean? = null
-                    if(radioButton.isChecked)
-                        securedByColletral = true
-                    if(radioButton2.isChecked)
-                        securedByColletral = false
+
 
                     var colletralAssetTypeId:Int? = null
                     for(item in financialArray) {
@@ -340,6 +354,26 @@ import java.util.ArrayList
                             break
                         }
                     }
+
+
+                    var securedByColletral: Boolean? = null
+                    colletralAssetTypeId?.let {  colletralAssetTypeId->
+                        if (colletralAssetTypeId == 4)
+                            securedByColletral = false
+                        else
+                            securedByColletral = true
+                    }
+
+                    if(binding.radioButton2.isChecked){
+                        binding.edDetails.setText("")
+                        colletralAssetTypeId = null
+                        securedByColletral = null
+
+                    }
+
+                    //var defaultCollateralAssetDescription = ""
+                    //if(binding.edDetails.text.toString().isNotEmpty() && binding.edDetails.text.toString().isNotBlank())
+                        //defaultCollateralAssetDescription = binding.edDetails.text.toString()
 
                     loanApplicationId?.let { notNullLoanApplicationId ->
                         borrowerId?.let { notNullBorrowerId ->
@@ -357,18 +391,21 @@ import java.util.ArrayList
                                 )
                             viewModel.addUpdateProceedFromLoan(authToken, addUpdateProceedLoanParams)
 
+
                             colletralAssetTypeId?.let { notNullColletralAssetTypeId->
-                                val addUpdateProceedFromLoanOtherParams =
-                                    AddUpdateProceedFromLoanOtherParams(
-                                        BorrowerId = notNullBorrowerId,
-                                        LoanApplicationId = notNullLoanApplicationId,
-                                        AssetCategoryId = assetCategoryId,
-                                        AssetTypeId = assetTypeId,
-                                        AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
-                                        CollateralAssetDescription = binding.edDetails.text.toString(),
-                                        ColletralAssetTypeId = notNullColletralAssetTypeId,
-                                    )
-                                viewModel.addUpdateProceedFromLoanOther(authToken, addUpdateProceedFromLoanOtherParams)
+                                if(notNullColletralAssetTypeId == 4 && binding.edDetails.text.toString().isNotEmpty() && binding.edDetails.text.toString().isNotBlank()) {
+                                    val addUpdateProceedFromLoanOtherParams =
+                                        AddUpdateProceedFromLoanOtherParams(
+                                            BorrowerId = notNullBorrowerId,
+                                            LoanApplicationId = notNullLoanApplicationId,
+                                            AssetCategoryId = assetCategoryId,
+                                            AssetTypeId = assetTypeId,
+                                            AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                            CollateralAssetDescription =  binding.edDetails.text.toString(),
+                                            ColletralAssetTypeId = notNullColletralAssetTypeId,
+                                        )
+                                    viewModel.addUpdateProceedFromLoanOther(authToken, addUpdateProceedFromLoanOtherParams)
+                                }
                             }
                         }
                     }
@@ -379,6 +416,10 @@ import java.util.ArrayList
 
         private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
 
+            var defaultDescription = ""
+            if(binding.edDetails.text.toString().isNotEmpty() && binding.edDetails.text.toString().isNotBlank())
+                defaultDescription = binding.edDetails.text.toString()
+
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     loanApplicationId?.let { notNullLoanApplicationId ->
@@ -388,14 +429,12 @@ import java.util.ArrayList
                                     BorrowerId = notNullBorrowerId,
                                     LoanApplicationId = notNullLoanApplicationId,
                                     AssetCategoryId = assetCategoryId,
+                                    BorrowerAssetId = assetUniqueId,
                                     AssetTypeId = assetTypeId,
                                     AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
-                                    Description = binding.edDetails.text.toString(),
+                                    Description = defaultDescription,
                                 )
-                            viewModel.addUpdateAssetsRealStateOrNonRealState(
-                                authToken,
-                                addUpdateRealStateParams
-                            )
+                            viewModel.addUpdateAssetsRealStateOrNonRealState(authToken, addUpdateRealStateParams)
                         }
                     }
                 }
@@ -424,6 +463,7 @@ import java.util.ArrayList
                 assetTypeName = binding.edDetails.text.toString(),
                 assetTypeID = assetTypeID,
                 assetUniqueId = assetUniqueId,
+
                 assetCategoryId = assetCategoryId,
                 assetCategoryName = assetCategoryName,
                 listenerAttached = listenerAttached,

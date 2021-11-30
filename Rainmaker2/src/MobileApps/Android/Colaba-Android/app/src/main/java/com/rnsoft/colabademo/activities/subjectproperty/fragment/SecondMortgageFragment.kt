@@ -174,7 +174,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-
     private fun saveData() {
 
         // first mortgage
