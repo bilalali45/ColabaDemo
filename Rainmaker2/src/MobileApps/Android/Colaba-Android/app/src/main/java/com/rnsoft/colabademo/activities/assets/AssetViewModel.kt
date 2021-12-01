@@ -97,9 +97,10 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
         }
     }
 
-    fun setGiftDetailToNull(){
-        //_giftAssetDetail.value = GiftAssetResponse(null, null, null,null)
-        _giftAssetDetail.postValue( GiftAssetResponse(null, null, null,null))
+    fun setProccedFromLaonToNull(){
+        _proceedFromLoanModel.value = null
+        _proceedFromLoanModel.postValue(null)
+
     }
 
     suspend fun getProceedsFromLoan(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {

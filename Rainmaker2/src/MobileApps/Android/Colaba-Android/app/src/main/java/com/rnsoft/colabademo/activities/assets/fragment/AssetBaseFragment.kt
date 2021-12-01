@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,6 +26,7 @@ open class AssetBaseFragment: BaseFragment() {
     protected var listenerAttached:Int? = null
     protected var assetBorrowerName:String? = null
 
+    private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -50,21 +52,24 @@ open class AssetBaseFragment: BaseFragment() {
         if(evt.bool){
             assetUniqueId?.let { nonNullUniqueId ->
                 if (loanApplicationId != null && borrowerId != null && nonNullUniqueId > 0) {
-                    viewModel.genericAddUpdateAssetResponse.observe(
-                        viewLifecycleOwner,
-                        { genericAddUpdateAssetResponse ->
-                            val codeString = genericAddUpdateAssetResponse?.code.toString()
-                            if (codeString == "400") {
+                viewModel.genericAddUpdateAssetResponse.observe(
+                    viewLifecycleOwner,
+                    { genericAddUpdateAssetResponse ->
+                        val codeString = genericAddUpdateAssetResponse?.code.toString()
+                        if (codeString == "400") {
+                            /*
+                           evt.assetReturnParams.assetAction = AppConstant.assetDeleted
+                           Timber.e("catching unique id in Response 3 = " + evt.assetReturnParams.assetUniqueId)
+                           viewModel.resetChildFragmentToNull()
+                           EventBus.getDefault().post(AssetUpdateEvent(evt.assetReturnParams))
+                           findNavController().navigateUp()
+                            */
 
-                                evt.assetReturnParams.assetAction = AppConstant.assetDeleted
-                                Timber.e("catching unique id in Response 3 = " + evt.assetReturnParams.assetUniqueId)
-                                viewModel.resetChildFragmentToNull()
-                                EventBus.getDefault().post(AssetUpdateEvent(evt.assetReturnParams))
-                                findNavController().navigateUp()
-                                //updateMainAsset()
-                                //findNavController().popBackStack()
-                            }
-                        })
+                            viewModel.resetChildFragmentToNull()
+                            updateMainAsset()
+                            //findNavController().navigateUp()
+                        }
+                    })
 
                     lifecycleScope.launchWhenStarted {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -94,18 +99,22 @@ open class AssetBaseFragment: BaseFragment() {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                             addUpdateResponse?.assetUniqueId?.let { nonNullAssetUniqueData->
 
-                                if( assetReturnParams.assetUniqueId!=null)
-                                Timber.e("catching passed - unique new id = "+assetReturnParams.assetUniqueId)
+                                    /*
                                     assetReturnParams.assetUniqueId = nonNullAssetUniqueData
-                                Timber.e("catching response - unique new id = $nonNullAssetUniqueData")
-                                viewModel.resetChildFragmentToNull()
-                                EventBus.getDefault().post(AssetUpdateEvent(assetReturnParams))
+                                    Timber.e("catching response - unique new id = $nonNullAssetUniqueData")
+                                    viewModel.resetChildFragmentToNull()
+                                    EventBus.getDefault().post(AssetUpdateEvent(assetReturnParams))
+                                    findNavController().navigateUp()
+                                    */
 
 
-                                findNavController().navigateUp()
+                                    viewModel.resetChildFragmentToNull()
+                                    updateMainAsset()
+                                    //findNavController().navigateUp()
+
+
                             }
-                            //updateMainAsset()
-                            //findNavController().popBackStack()
+
                         }
                     }
                 }
@@ -122,11 +131,13 @@ open class AssetBaseFragment: BaseFragment() {
     }
 
 
-    /*
+
     private fun updateMainAsset(){
+        /*
         borrowerApplicationViewModel.assetsModelDataClass.observe(viewLifecycleOwner, { observableSampleContent ->
             findNavController().popBackStack()
         })
+        */
         val assetsActivity = (activity as? AssetsActivity)
         var mainBorrowerList:ArrayList<Int>? = null
         assetsActivity?.let { assetsActivity ->
@@ -135,13 +146,18 @@ open class AssetBaseFragment: BaseFragment() {
         mainBorrowerList?.let { notNullMainBorrowerList->
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithAssets(
-                        authToken, loanApplicationId!!, notNullMainBorrowerList , borrowerId!!
+                   val bool = borrowerApplicationViewModel.getBorrowerWithAssets(
+                        authToken, loanApplicationId!!, notNullMainBorrowerList ,
+
+                       updateBorrowerId = borrowerId!!, visibleCategoryName = assetCategoryName!!
                     )
+
+                    if(bool)
+                        findNavController().navigateUp()
                 }
             }
         }
     }
-    */
+
 
 }

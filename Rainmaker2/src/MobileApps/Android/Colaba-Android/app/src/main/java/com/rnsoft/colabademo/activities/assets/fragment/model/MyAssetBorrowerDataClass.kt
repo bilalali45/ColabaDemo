@@ -11,7 +11,9 @@ data class MyAssetBorrowerDataClass(
     val message: String?,
     val status: String?,
     var passedBorrowerId:Int?,
-    var updateBorrowerId:Int = -1
+    var updateBorrowerId:Int = -1,
+    var visibleCategoryName:String = "TingPing"
+    //var refreshTab:Boolean = true
 )
 
 
