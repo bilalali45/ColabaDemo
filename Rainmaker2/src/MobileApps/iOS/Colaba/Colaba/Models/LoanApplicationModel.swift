@@ -106,6 +106,7 @@ class BorrowerInfoModel: NSObject{
     var firstName:String = ""
     var genderId : Int!
     var genderName:String = ""
+    var middleName: String = ""
     var lastName:String = ""
     var ownTypeName:String = ""
     var ownTypeId: Int = 0
@@ -126,6 +127,7 @@ class BorrowerInfoModel: NSObject{
         firstName = json["firstName"].stringValue
         genderId = json["genderId"].intValue
         genderName = json["genderName"].stringValue
+        middleName = json["middleName"].stringValue
         lastName = json["lastName"].stringValue
         ownTypeName = json["ownTypeName"].stringValue
         ownTypeId = json["owntypeId"].intValue

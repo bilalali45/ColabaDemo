@@ -125,8 +125,10 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         if let selectedRelationshipType = relationshipTypeArray.filter({$0.optionId == selectedMaritalStatus.relationshipTypeId}).first{
             txtfieldTypeOfRelation.setTextField(text: selectedRelationshipType.optionName)
         }
-        if let selectedState = statesArray.filter({$0.id == selectedMaritalStatus.relationFormedStateId}).first{
-            txtfieldState.setTextField(text: selectedState.name)
+        if (selectedMaritalStatus.relationFormedStateId > 0){
+            if let selectedState = statesArray.filter({$0.id == selectedMaritalStatus.relationFormedStateId}).first{
+                txtfieldState.setTextField(text: selectedState.name)
+            }
         }
         txtViewRelationshipDetail.textView.text = selectedMaritalStatus.otherRelationshipExplanation
         
@@ -206,8 +208,12 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
                         self.statesArray.append(model)
                     }
                     self.txtfieldState.setDropDownDataSource(self.statesArray.map{$0.name})
-                    if let selectedState = self.statesArray.filter({$0.id == self.selectedMaritalStatus.relationFormedStateId}).first{
-                        self.txtfieldState.setTextField(text: selectedState.name)
+                    if (self.selectedMaritalStatus.relationFormedStateId > 0){
+                        if let selectedState = self.statesArray.filter({$0.id == self.selectedMaritalStatus.relationFormedStateId}).first{
+                            if (self.selectedMaritalStatus.relationFormedStateId > 0){
+                            self.txtfieldState.setTextField(text: selectedState.name)
+                        }
+                      }
                     }
                 }
                 else{

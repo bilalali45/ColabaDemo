@@ -113,7 +113,7 @@ class BorrowerInformationViewController: BaseViewController {
     var borrowerId = 0
     var selectedResidencyStatusId: Any = NSNull()
     var selectedResidencyStatusExplanation: Any = NSNull()
-    var hasCoBorrowers = false
+    var totalBorrowers = [BorrowerInfoModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -441,41 +441,90 @@ class BorrowerInformationViewController: BaseViewController {
         maritalStatus = 2
         borrowerInformationModel.maritalStatus.maritalStatusId = 1
         changeMaritalStatus()
-//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
-//            let vc = Utility.getSpouseLinkWithBorrowerVC()
-//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
-//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
-//            vc.delegate = self
-//            self.presentVC(vc: vc)
-//        }
-//        else{
-//            let vc = Utility.getSpouseBasicDetailVC()
-//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
-//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
-//            vc.delegate = self
-//            self.presentVC(vc: vc)
-//        }
+        
+        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1){
+            if (totalBorrowers.count == 1){
+                let vc = Utility.getSpouseBasicDetailVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+            else{
+                let vc = Utility.getSpouseLinkWithBorrowerVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.totalBorrowers = self.totalBorrowers
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+        }
+        else{
+            if (borrowerInformationModel.maritalStatus.spouseBorrowerId == 0){
+                let vc = Utility.getSpouseBasicDetailVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+            else{
+                let vc = Utility.getSpouseLinkWithBorrowerVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.totalBorrowers = self.totalBorrowers
+                vc.isForSecondaryBorrower = true
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+        }
+
     }
     
     @objc func separatedTapped(){
         maritalStatus = 3
         borrowerInformationModel.maritalStatus.maritalStatusId = 2
         changeMaritalStatus()
-//        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 && hasCoBorrowers){
-//            let vc = Utility.getSpouseLinkWithBorrowerVC()
-//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
-//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
-//            vc.delegate = self
-//            self.presentVC(vc: vc)
-//        }
-//        else{
-//            let vc = Utility.getSpouseBasicDetailVC()
-//            vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
-//            vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
-//            vc.isForSeparated = true
-//            vc.delegate = self
-//            self.presentVC(vc: vc)
-//        }
+        
+        if (borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1){
+            if (totalBorrowers.count == 1){
+                let vc = Utility.getSpouseBasicDetailVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.isForSeparated =  true
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+            else{
+                let vc = Utility.getSpouseLinkWithBorrowerVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.isForSeparated = true
+                vc.totalBorrowers = self.totalBorrowers
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+        }
+        else{
+            if (borrowerInformationModel.maritalStatus.spouseBorrowerId == 0){
+                let vc = Utility.getSpouseBasicDetailVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.isForSeparated = true
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+            else{
+                let vc = Utility.getSpouseLinkWithBorrowerVC()
+                vc.borrowerName = "\(self.borrowerInformationModel.borrowerBasicDetails.firstName) \(self.borrowerInformationModel.borrowerBasicDetails.lastName)"
+                vc.selectedMaritalStatus = borrowerInformationModel.maritalStatus
+                vc.isForSeparated = true
+                vc.totalBorrowers = self.totalBorrowers
+                vc.isForSecondaryBorrower = true
+                vc.delegate = self
+                self.presentVC(vc: vc)
+            }
+        }
+        
     }
     
     func changeMaritalStatus(){

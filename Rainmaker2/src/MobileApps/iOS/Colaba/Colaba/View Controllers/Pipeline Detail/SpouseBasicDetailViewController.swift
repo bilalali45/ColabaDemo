@@ -61,6 +61,7 @@ class SpouseBasicDetailViewController: UIViewController {
         selectedMaritalStatus.firstName = txtfieldSpouseFirstName.text!
         selectedMaritalStatus.middleName = txtfieldSpouseMiddleName.text!
         selectedMaritalStatus.lastName = txtfieldSpouseLastName.text!
+        selectedMaritalStatus.spouseBorrowerId = 0
         self.delegate?.saveMaritalStatusMarriedOrSeparated(status: selectedMaritalStatus)
         self.dismissVC()
     }
