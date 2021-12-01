@@ -35,7 +35,19 @@
             android:drawablePadding="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:drawableRightCompat="@drawable/toast_err" />
+             />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/no_question_image"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/toast_err"
+            app:layout_constraintBottom_toBottomOf="@+id/questionTitle"
+            app:layout_constraintStart_toEndOf="@+id/questionTitle"
+            app:layout_constraintTop_toTopOf="@+id/questionTitle" />
+
 
         <TextView
             android:id="@+id/question"

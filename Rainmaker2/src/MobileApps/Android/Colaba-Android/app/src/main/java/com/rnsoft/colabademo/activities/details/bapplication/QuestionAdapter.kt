@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class QuestionAdapter internal constructor(private var questionsModel: ArrayList<BorrowerQuestionsModel> ,  private val governmentQuestionClickListener: GovernmentQuestionClickListener) :
     RecyclerView.Adapter<QuestionAdapter.BaseViewHolder>(){
@@ -17,6 +18,8 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
     inner class GovtQuestionViewHolder(view: View) : BaseViewHolder(view) {
         private var questionTitle: TextView = view.findViewById(R.id.questionTitle)
         private var question: TextView = view.findViewById(R.id.question)
+
+        private var noAnswerImage: ImageView = view.findViewById(R.id.no_question_image)
 
         private var answer1Icon: ImageView = view.findViewById(R.id.answer1_icon)
         private var answer2Icon: ImageView = view.findViewById(R.id.answer2_icon)
@@ -43,6 +46,14 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
             question.text = item.questionDetail?.questionText
 
             item.questionResponses?.let { answers ->
+
+                if(answers.isEmpty()) {
+                    Timber.e(" question = "+   item.questionDetail?.questionHeader)
+                    noAnswerImage.visibility = View.VISIBLE
+                }
+                else
+                    noAnswerImage.visibility = View.INVISIBLE
+
 
                 var answer1 = ""
                 var answer2 = ""
@@ -78,7 +89,6 @@ class QuestionAdapter internal constructor(private var questionsModel: ArrayList
                         answer2Icon.visibility = View.GONE
                         answer2Name.visibility = View.GONE
                         answer2No.visibility = View.GONE
-
                 }
                 else
                     answer2Name.text = answer2

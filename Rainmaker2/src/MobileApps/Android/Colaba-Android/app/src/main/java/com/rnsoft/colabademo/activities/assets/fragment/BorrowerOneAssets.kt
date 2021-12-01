@@ -553,6 +553,9 @@ class BorrowerOneAssets : BaseFragment() {
                         classCategoryTotal = nonNullAssetValue
 
                     }
+                    assetReturnParams.assetBorrowerName?.let { nonNullAssetName ->
+                        bundle.putString(AppConstant.assetBorrowerName, nonNullAssetName)
+                    }
 
                     Timber.e(" content data - $assetReturnParams")
 

@@ -378,6 +378,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         return AssetReturnParams(
              assetName = binding.giftSourceAutoCompeleteView.text.toString(),
              assetTypeName = getAssetTypeName(),
+            assetBorrowerName = assetBorrowerName,
              assetTypeID = assetTypeID,
              assetUniqueId = assetUniqueId,
              assetCategoryId = assetCategoryId,
