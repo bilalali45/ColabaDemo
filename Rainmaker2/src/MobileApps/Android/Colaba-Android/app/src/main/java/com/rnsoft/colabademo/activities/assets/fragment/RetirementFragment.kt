@@ -20,41 +20,13 @@ class RetirementFragment:AssetBaseFragment() {
     private var _binding: RetirementLayoutBinding? = null
     private val binding get() = _binding!!
 
-    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
-        var assetAction = AppConstant.assetAdded
-        if(assetDeleteBoolean)
-            assetAction = AppConstant.assetDeleted
-        else
-        assetUniqueId?.let { assetUniqueId ->
-            if (assetUniqueId > 0)
-                assetAction = AppConstant.assetUpdated
-        }
-
-        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
-        assetUniqueId?.let { notNullAssetUniqueId->
-            if(notNullAssetUniqueId<=0)
-                assetUniqueId = null
-        }
-
-        return AssetReturnParams(
-            assetName = binding.financialEditText.text.toString(),
-            assetTypeName =assetCategoryName,
-            assetBorrowerName = assetBorrowerName,
-            assetTypeID = assetTypeID,
-            assetUniqueId = assetUniqueId,
-            assetCategoryId = assetCategoryId,
-            assetCategoryName = assetCategoryName,
-            listenerAttached = listenerAttached,
-            assetAction = assetAction,
-            assetValue = (Common.removeCommas(binding.annualBaseEditText.text.toString())).toDouble()
-        )
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = RetirementLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
         super.addListeners(binding.root)
+        Timber.e("RetirementFragment has been loaded....")
         arguments?.let { arguments->
             loanApplicationId = arguments.getInt(AppConstant.loanApplicationId)
             loanPurpose = arguments.getString(AppConstant.loanPurpose)
@@ -197,8 +169,7 @@ class RetirementFragment:AssetBaseFragment() {
                                 val value = retirementAccountData.value.toString()
                                 binding.annualBaseEditText.setText(value)
                             }
-                        } else
-                            findNavController().popBackStack()
+                        }
                     })
 
                 lifecycleScope.launchWhenStarted {
@@ -214,6 +185,37 @@ class RetirementFragment:AssetBaseFragment() {
             }
         }
     }
+
+    private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
+        var assetAction = AppConstant.assetAdded
+        if(assetDeleteBoolean)
+            assetAction = AppConstant.assetDeleted
+        else
+            assetUniqueId?.let { assetUniqueId ->
+                if (assetUniqueId > 0)
+                    assetAction = AppConstant.assetUpdated
+            }
+
+        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+        assetUniqueId?.let { notNullAssetUniqueId->
+            if(notNullAssetUniqueId<=0)
+                assetUniqueId = null
+        }
+
+        return AssetReturnParams(
+            assetName = binding.financialEditText.text.toString(),
+            assetTypeName =assetCategoryName,
+            assetBorrowerName = assetBorrowerName,
+            assetTypeID = assetTypeID,
+            assetUniqueId = assetUniqueId,
+            assetCategoryId = assetCategoryId,
+            assetCategoryName = assetCategoryName,
+            listenerAttached = listenerAttached,
+            assetAction = assetAction,
+            assetValue = (Common.removeCommas(binding.annualBaseEditText.text.toString())).toDouble()
+        )
+    }
+
 
 
 }
