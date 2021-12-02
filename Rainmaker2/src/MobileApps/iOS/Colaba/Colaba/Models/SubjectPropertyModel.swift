@@ -10,6 +10,7 @@ import SwiftyJSON
 
 class SubjectPropertyModel: NSObject{
     
+    var subjectPropertyTbd: Bool = false
     var address: AddressModel?
     var appraisedPropertyValue: Double = 0.0
     var floodInsurance: Double = 0.0
@@ -23,6 +24,7 @@ class SubjectPropertyModel: NSObject{
     
     func updateModelWithJSON(json: JSON){
         
+        subjectPropertyTbd = json["subjectPropertyTbd"].boolValue
         let addressJson = json["address"]
         let model = AddressModel()
         model.updateModelWithJSON(json: addressJson)

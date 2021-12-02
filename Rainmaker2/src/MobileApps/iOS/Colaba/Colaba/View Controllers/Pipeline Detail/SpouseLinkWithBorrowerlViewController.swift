@@ -32,10 +32,13 @@ class SpouseLinkWithBorrowerlViewController: UIViewController {
     @IBOutlet weak var txtfieldSpouseLastName: ColabaTextField!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
     
-    var isMarried = 0 // 1 for yes 2 for no
+    var inRelationWithCoBorrower = 0 // 1 for yes 2 for no
     var selectedMaritalStatus = MaritalStatus()
     var borrowerName = ""
     var isForSeparated = false
+    var totalBorrowers = [BorrowerInfoModel]()
+    var isForSecondaryBorrower = false
+    var selectedPrimaryBorrowerId = 0
     weak var delegate: SpouseLinkWithBorrowerlViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -45,15 +48,16 @@ class SpouseLinkWithBorrowerlViewController: UIViewController {
         setTextFields()
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        setMaritalStatus()
     }
     
     //MARK:- Methods and Actions
     
     func setTextFields() {
         ///Co Borrower Name
-        txtfieldCoBorrowerName.setTextField(placeholder: "Which One?", controller: self, validationType: .noValidation)
+        txtfieldCoBorrowerName.setTextField(placeholder: "Which One?", controller: self, validationType: .required)
+        txtfieldCoBorrowerName.setIsValidateOnEndEditing(validate: true)
         txtfieldCoBorrowerName.type = .dropdown
-        txtfieldCoBorrowerName.setDropDownDataSource(["Test"])
         
         ///First Name
         txtfieldSpouseFirstName.setTextField(placeholder: "Spouse's Legal First Name", controller: self, validationType: .noValidation)
@@ -65,26 +69,142 @@ class SpouseLinkWithBorrowerlViewController: UIViewController {
         txtfieldSpouseLastName.setTextField(placeholder: "Spouse's Legal Last Name", controller: self, validationType: .noValidation)
     }
     
+    func setMaritalStatus(){
+        if (isForSecondaryBorrower){
+            if let primaryBorrower = totalBorrowers.filter({$0.borrowerId == selectedMaritalStatus.spouseBorrowerId}).first{
+                lblQuestion.text = isForSeparated ? "Is \(primaryBorrower.firstName) your legal spouse" : "Are you married with \(primaryBorrower.firstName)"
+                selectedPrimaryBorrowerId = primaryBorrower.borrowerId
+                inRelationWithCoBorrower = 1
+                txtfieldSpouseFirstName.setTextField(text: primaryBorrower.firstName)
+                txtfieldSpouseMiddleName.setTextField(text: primaryBorrower.middleName)
+                txtfieldSpouseLastName.setTextField(text: primaryBorrower.lastName)
+                txtfieldSpouseFirstName.isEnabled = false
+                txtfieldSpouseMiddleName.isEnabled = false
+                txtfieldSpouseLastName.isEnabled = false
+                changeRelationStatus()
+            }
+        }
+        else{
+            lblQuestion.text = isForSeparated ? "Is Co-borrower your legal spouse?" : "Are you married to a co-borrower?"
+            let coBorrowers = totalBorrowers.filter({$0.borrowerId != selectedMaritalStatus.borrowerId})
+            txtfieldCoBorrowerName.setDropDownDataSource(coBorrowers.map({$0.borrowerFullName}))
+            if let selectedCoBorrower = coBorrowers.filter({$0.borrowerId == selectedMaritalStatus.spouseBorrowerId}).first{
+                txtfieldCoBorrowerName.setTextField(text: selectedCoBorrower.borrowerFullName)
+            }
+            txtfieldSpouseFirstName.setTextField(text: selectedMaritalStatus.firstName)
+            txtfieldSpouseMiddleName.setTextField(text: selectedMaritalStatus.middleName)
+            txtfieldSpouseLastName.setTextField(text: selectedMaritalStatus.lastName)
+            if (selectedMaritalStatus.spouseBorrowerId > 0){
+                inRelationWithCoBorrower = 1
+            }
+            else if (selectedMaritalStatus.firstName != "" || selectedMaritalStatus.middleName != "" || selectedMaritalStatus.lastName != ""){
+                inRelationWithCoBorrower = 2
+            }
+            changeRelationStatus()
+        }
+    }
+    
     @objc func yesStackViewTapped(){
-        isMarried = 1
-        changeMarriedStatus()
+        inRelationWithCoBorrower = 1
+        changeRelationStatus()
     }
     
     @objc func noStackViewTapped(){
-        isMarried = 2
-        changeMarriedStatus()
+        inRelationWithCoBorrower = 2
+        changeRelationStatus()
     }
     
-    func changeMarriedStatus(){
-        btnYes.setImage(UIImage(named: isMarried == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMarried == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isMarried == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = isMarried == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+    func changeRelationStatus(){
+        btnYes.setImage(UIImage(named: inRelationWithCoBorrower == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblYes.font = inRelationWithCoBorrower == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnNo.setImage(UIImage(named: inRelationWithCoBorrower == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        lblNo.font = inRelationWithCoBorrower == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
-        txtfieldCoBorrowerName.isHidden = isMarried == 2
-        txtfieldSpouseFirstName.isHidden = isMarried == 1
-        txtfieldSpouseMiddleName.isHidden = isMarried == 1
-        txtfieldSpouseLastName.isHidden = isMarried == 1
+        if (isForSecondaryBorrower){
+            txtfieldCoBorrowerName.isHidden = true
+            txtfieldSpouseFirstName.isHidden = false
+            txtfieldSpouseMiddleName.isHidden = false
+            txtfieldSpouseLastName.isHidden = false
+            if (inRelationWithCoBorrower == 1){
+                if let primaryBorrower = totalBorrowers.filter({$0.borrowerId == selectedMaritalStatus.spouseBorrowerId}).first{
+                    txtfieldSpouseFirstName.setTextField(text: primaryBorrower.firstName)
+                    txtfieldSpouseMiddleName.setTextField(text: primaryBorrower.middleName)
+                    txtfieldSpouseLastName.setTextField(text: primaryBorrower.lastName)
+                    txtfieldSpouseFirstName.isEnabled = false
+                    txtfieldSpouseMiddleName.isEnabled = false
+                    txtfieldSpouseLastName.isEnabled = false
+                }
+            }
+            else if (inRelationWithCoBorrower == 2){
+                txtfieldSpouseFirstName.setTextField(text: "")
+                txtfieldSpouseMiddleName.setTextField(text: "")
+                txtfieldSpouseLastName.setTextField(text: "")
+                txtfieldSpouseFirstName.isEnabled = true
+                txtfieldSpouseMiddleName.isEnabled = true
+                txtfieldSpouseLastName.isEnabled = true
+            }
+        }
+        else{
+            if (inRelationWithCoBorrower == 1){
+                txtfieldCoBorrowerName.isHidden = false
+                txtfieldSpouseFirstName.isHidden = true
+                txtfieldSpouseMiddleName.isHidden = true
+                txtfieldSpouseLastName.isHidden = true
+            }
+            else if (inRelationWithCoBorrower == 2){
+                txtfieldCoBorrowerName.isHidden = true
+                txtfieldSpouseFirstName.isHidden = false
+                txtfieldSpouseMiddleName.isHidden = false
+                txtfieldSpouseLastName.isHidden = false
+            }
+        }
+        
+    }
+    
+    func validate() -> Bool{
+        if (inRelationWithCoBorrower == 1 && !txtfieldCoBorrowerName.isHidden){
+            return txtfieldCoBorrowerName.validate()
+        }
+        else{
+            return true
+        }
+    }
+    
+    func saveMaritalStatus(){
+        
+        if (isForSecondaryBorrower){
+            if (inRelationWithCoBorrower == 1){
+                selectedMaritalStatus.spouseBorrowerId = selectedPrimaryBorrowerId
+                selectedMaritalStatus.firstName = ""
+                selectedMaritalStatus.middleName = ""
+                selectedMaritalStatus.lastName = ""
+            }
+            else if (inRelationWithCoBorrower == 2){
+                selectedMaritalStatus.spouseBorrowerId = 0
+                selectedMaritalStatus.firstName = txtfieldSpouseFirstName.text!
+                selectedMaritalStatus.middleName = txtfieldSpouseMiddleName.text!
+                selectedMaritalStatus.lastName = txtfieldSpouseLastName.text!
+            }
+        }
+        else{
+            if (inRelationWithCoBorrower == 1){
+                if let selectedBorrower = totalBorrowers.filter({$0.borrowerFullName == txtfieldCoBorrowerName.text!}).first{
+                    selectedMaritalStatus.spouseBorrowerId = selectedBorrower.borrowerId
+                }
+                selectedMaritalStatus.firstName = ""
+                selectedMaritalStatus.middleName = ""
+                selectedMaritalStatus.lastName = ""
+                
+            }
+            else if (inRelationWithCoBorrower == 2){
+                selectedMaritalStatus.spouseBorrowerId = 0
+                selectedMaritalStatus.firstName = txtfieldSpouseFirstName.text!
+                selectedMaritalStatus.middleName = txtfieldSpouseMiddleName.text!
+                selectedMaritalStatus.lastName = txtfieldSpouseLastName.text!
+            }
+        }
+        self.delegate?.savePrimaryBorrowerMartialStatus(status: selectedMaritalStatus)
+        self.dismissVC()
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
@@ -92,6 +212,8 @@ class SpouseLinkWithBorrowerlViewController: UIViewController {
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
-        self.dismissVC()
+        if (validate()){
+            saveMaritalStatus()
+        }
     }
 }

@@ -127,7 +127,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     func setSubjectPropertyData(){
-        isTBDProperty = self.subjectPropertyDetail.address == nil
+        isTBDProperty = self.subjectPropertyDetail.subjectPropertyTbd
         if let subjectPropertyAddress = self.subjectPropertyDetail.address{
             lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
         }
