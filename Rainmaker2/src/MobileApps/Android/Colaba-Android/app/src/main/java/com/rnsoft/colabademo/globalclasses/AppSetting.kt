@@ -205,6 +205,16 @@ object AppSetting {
         return output
     }
 
+    fun reverseDateFormat(dateString : String) : String{
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+        val oldDate: Date? = formatter.parse(dateString)
+        val postFormater = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val newDateStr = postFormater.format(oldDate)
+
+        return newDateStr
+
+    }
+
     fun returnLongTimeNow(input: String): String {
 
         var lastSeen = input
@@ -307,12 +317,7 @@ object AppSetting {
         }
     }
 
-    fun showBadge(
-        context: Context?,
-        bottomNavigationView: BottomNavigationView,
-        @IdRes itemId: Int,
-        value: String?
-    ) {
+    fun showBadge(context: Context?, bottomNavigationView: BottomNavigationView, @IdRes itemId: Int, value: String?) {
         removeBadge(bottomNavigationView, itemId)
         val itemView: BottomNavigationItemView = bottomNavigationView.findViewById(itemId)
         val badge: View = LayoutInflater.from(context)

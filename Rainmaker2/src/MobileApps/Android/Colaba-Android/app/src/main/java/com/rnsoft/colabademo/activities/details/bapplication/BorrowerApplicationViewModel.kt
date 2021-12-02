@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,8 +21,8 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _incomeDetails : MutableLiveData<ArrayList<IncomeDetailsResponse>> =   MutableLiveData()
     val incomeDetails: LiveData<ArrayList<IncomeDetailsResponse>> get() = _incomeDetails
 
-
-
+    private var _singleIncomeDetail : MutableLiveData<IncomeDetailsResponse?> =   MutableLiveData()
+    val singleIncomeDetail: LiveData<IncomeDetailsResponse?> get() = _singleIncomeDetail
 
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
@@ -29,16 +30,11 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _governmentQuestionsModelClassList : MutableLiveData<ArrayList<GovernmentQuestionsModelClass>> =   MutableLiveData()
     val governmentQuestionsModelClassList: LiveData<ArrayList<GovernmentQuestionsModelClass>> get() = _governmentQuestionsModelClassList
 
-
-
-
     private var _demoGraphicInfo : MutableLiveData<DemoGraphicResponseModel> =   MutableLiveData()
     val demoGraphicInfo: LiveData<DemoGraphicResponseModel> get() = _demoGraphicInfo
 
     private var _demoGraphicInfoList : MutableLiveData<ArrayList<DemoGraphicResponseModel>> =   MutableLiveData()
     val demoGraphicInfoList: LiveData<ArrayList<DemoGraphicResponseModel>> get() = _demoGraphicInfoList
-
-
 
     private val _propertyType: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val propertyType: LiveData<ArrayList<DropDownResponse>> get() = _propertyType
@@ -80,8 +76,13 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     val addUpdateDemoGraphicResponse: LiveData<AddUpdateDemoGraphicResponse> get() = _addUpdateDemoGraphicResponse
 
 
-
-
+    fun resetSingleIncomeTab(){
+        //Log.e("Reset","tab called")
+        _singleIncomeDetail.value = null
+        _singleIncomeDetail.postValue(null)
+        //_incomeDetails.value = null
+        // _incomeDetails.postValue(null)
+    }
 
     suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int> , updateBorrowerId:Int = -1) {
         var errorResult:Result.Error?=null
@@ -119,22 +120,34 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-    suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>) {
+    suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>){
         val borrowerIncomeList: ArrayList<IncomeDetailsResponse> = ArrayList()
         val errorResult:Result.Error?=null
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
-                borrowerIds.forEach { id ->
-                    launch {
-                        val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
-                        if (responseResult is Result.Success){
-                            responseResult.data.passedBorrowerId = id
+                /* borrowerIds.forEach { id ->
+                        launch {
+                            val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
+                            if (responseResult is Result.Success){
+                                responseResult.data.passedBorrowerId = id
+                                //Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
+                                borrowerIncomeList.add(responseResult.data)
+                            }
+                        }
+                    } */
+                for(item in borrowerIds.indices){
+                    val apiCall = async {
+                        val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = borrowerIds[item])
+                        if (responseResult is Result.Success) {
+                            responseResult.data.passedBorrowerId = borrowerIds[item]
                             //Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.incomeData)
                             borrowerIncomeList.add(responseResult.data)
                         }
                     }
+                    apiCall.await()
                 }
             }
+
             withContext(Dispatchers.Main) {
                 _incomeDetails.value = borrowerIncomeList
             }
@@ -145,6 +158,25 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                     EventBus.getDefault().post(WebServiceErrorEvent(null, false))
         }
     }
+
+    suspend fun getSingleTabIncomeDetail(token:String, loanApplicationId:Int , borrowerId: Int){
+        val errorResult:Result.Error?=null
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = bAppRepo.getBorrowerIncomeDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = borrowerId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _singleIncomeDetail.value = (responseResult.data)
+                    EventBus.getDefault().post(OnUpdateMainIncomeReceived(true))
+                }
+                if (errorResult != null)
+                    EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+                else
+                // if (borrowerIncomeList.size == 0) // service working without error but no results....
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, false))
+            }
+        }
+    }
+
 
     fun resetAssetModelClass(){
         _assetsModelDataClass  =   MutableLiveData()
@@ -418,6 +450,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         }
     }
+
 
     suspend fun getGenderList(token: String) {
         viewModelScope.launch(Dispatchers.IO) {

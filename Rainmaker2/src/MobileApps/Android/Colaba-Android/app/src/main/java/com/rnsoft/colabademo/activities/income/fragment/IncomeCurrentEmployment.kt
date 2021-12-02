@@ -24,6 +24,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -74,7 +75,7 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             //Log.e("Current Employment-oncreate", "Loan Application Id " + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
 
             borrowerName?.let {
-                toolbar.borrowerPurpose.setText(it)
+                //toolbar.borrowerPurpose.setText(it)
             }
 
             if (loanApplicationId != null && borrowerId != null){
@@ -883,106 +884,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
-   /* private fun processSendData(){
-
-        val empName: String = binding.editTextEmpName.text.toString()
-        //val jobTitle: String = binding.editTextJobTitle.text.toString()
-        val startDate: String = binding.editTextStartDate.text.toString()
-        //val profYears: String = binding.editTextProfYears.text.toString()
-
-        if (empName.isEmpty() || empName.length == 0) {
-            CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
-        }
-
-        if (startDate.isEmpty() || startDate.length == 0) {
-            CustomMaterialFields.setError(binding.layoutStartDate, getString(R.string.error_field_required),requireActivity())
-        }
-
-        if (empName.isNotEmpty() || empName.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
-        }
-        if (startDate.isNotEmpty() || startDate.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutStartDate,requireActivity())
-        }
-        if (empName.length > 0 &&  startDate.length >0 ){
-            lifecycleScope.launchWhenStarted{
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if(loanApplicationId != null && borrowerId !=null) {
-                        Log.e("Loan Application Id", "" +loanApplicationId + " borrowerId:  " + borrowerId)
-
-                        val phoneNum = if(binding.editTextEmpPhnum.text.toString().trim().length > 0) binding.editTextEmpPhnum.text.toString() else null
-                        var isOwnershipInterest : Boolean ? = null
-                        if(binding.rbOwnershipYes.isChecked)
-                            isOwnershipInterest = true
-
-                        if(binding.rbOwnershipNo.isChecked)
-                            isOwnershipInterest = false
-
-                        var isEmployedByFamily : Boolean ? = null
-                        if(binding.rbEmployedByFamilyYes.isChecked)
-                            isEmployedByFamily = true
-
-                        if(binding.rbEmployedByFamilyNo.isChecked)
-                            isEmployedByFamily = false
-
-                        val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().trim().length > 0) binding.edOwnershipPercent.text.toString() else null
-
-                        val employerInfo = EmploymentInfo(
-                            borrowerId = borrowerId,incomeInfoId= incomeInfoId, employerName=empName, employerPhoneNumber=phoneNum, jobTitle=jobTitle,startDate=startDate,endDate =null, yearsInProfession = profYears.toInt(),
-                            hasOwnershipInterest = isOwnershipInterest, ownershipInterest = null,employedByFamilyOrParty = isEmployedByFamily)
-
-                        // check values for wasys of income
-                        var isPaidByMonthlySalary : Boolean? = null
-                        var annualSalary : String = "0"
-                        var hourlyRate : String = "0"
-                        var avgHourWeeks : String= "0"
-
-                        if(binding.paytypeSalary.isChecked){
-                            isPaidByMonthlySalary = true
-                            val salary = binding.edAnnualSalary.text.toString().trim()
-                            annualSalary = if(salary.length > 0) salary.replace(",".toRegex(), "") else "0"
-                        }
-
-                        if(binding.paytypeHourly.isChecked){
-                            isPaidByMonthlySalary = false
-                            val value = binding.edHourlyRate.text.toString().trim()
-                            hourlyRate = if(value.length > 0) value.replace(",".toRegex(), "") else "0"
-                            avgHourWeeks = if(binding.editTextWeeklyHours.text.toString().trim().length >0) binding.editTextWeeklyHours.text.toString() else "0"
-                        }
-
-                        val wayOfIncome = WayOfIncome(isPaidByMonthlySalary=isPaidByMonthlySalary,employerAnnualSalary=annualSalary?.toDouble(),hourlyRate= hourlyRate?.toDouble(),hoursPerWeek=avgHourWeeks.toInt())
-
-                        // get other income types
-                        if (binding.cbBonus.isChecked){
-                            val bonus = binding.editTextBonusIncome.text.toString().trim()
-                            val incomeBonus = if (bonus.length > 0) bonus.replace(",".toRegex(), "") else null
-                            incomeListForApi.add(EmploymentOtherIncomes(incomeTypeId = 2, annualIncome = incomeBonus?.toDouble()))
-                        }
-
-                        if (binding.cbCommission.isChecked) {
-                            val commission = binding.editTextCommission.text.toString().trim()
-                            val incomeCommission = if (commission.length > 0) commission.replace(",".toRegex(), "") else null
-                            incomeListForApi.add(EmploymentOtherIncomes(incomeTypeId = 3, annualIncome = incomeCommission?.toDouble()))
-                        }
-                        if (binding.cbOvertime.isChecked) {
-                            val overtime = binding.editTextOvertimeIncome.text.toString().trim()
-                            val incomeOvertime = if (overtime.length > 0) overtime.replace(",".toRegex(), "") else null
-                            incomeListForApi.add(EmploymentOtherIncomes(incomeTypeId = 1, annualIncome = incomeOvertime?.toDouble()))
-                        }
-
-                        val employmentData = AddCurrentEmploymentModel(
-                            loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome,employmentOtherIncomes = incomeListForApi)
-                        Log.e("incomeOther", "" + incomeListForApi)
-                        Log.e("employmentData-snding to API", "" + employmentData)
-
-                        binding.loaderEmployment.visibility = View.VISIBLE
-                       // viewModel.sendCurrentEmploymentData(authToken, employmentData)
-                    }
-                }
-            }
-        }
-    } */
-
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -1012,43 +913,44 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent){
         if(evt.isDeleteIncome){
-            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
-                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse?.code.toString()
-                    if(codeString == "400" || codeString == "200"){
-                        viewModel.resetChildFragmentToNull()
-                        updateMainIncome()
-                    }
-                })
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
-                    }
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    val call = async{  viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!) }
+                    call.await()
+                }
+                if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                    viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                        val codeString = genericAddUpdateAssetResponse?.code.toString()
+                        if(codeString == "400" || codeString == "200"){
+                            updateMainIncome()
+                            viewModel.resetChildFragmentToNull()
+                        }
+                    })
                 }
             }
         }
     }
 
-    private fun updateMainIncome(){
-        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_employment)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMainIncomeUpdate(evt: OnUpdateMainIncomeReceived){
+        if(evt.isMainIncomeUpdateReceived){
+            IncomeTabFragment.isStartIncomeTab = false
+            val incomeUpdate = IncomeUpdateInfo(AppConstant.income_employment,borrowerId!!)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
             findNavController().popBackStack()
-        })
-        val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList: java.util.ArrayList<Int>? = null
-        incomeActivity?.let { it ->
-            mainBorrowerList =  it.borrowerTabList
-        }
-        mainBorrowerList?.let { notNullMainBorrowerList->
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
-                }
-            }
         }
     }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.resetSingleIncomeTab()
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                borrowerApplicationViewModel.getSingleTabIncomeDetail(authToken, loanApplicationId!!, borrowerId!!) }
+        }
+    }
+
 
     private fun setInputFields() {
 

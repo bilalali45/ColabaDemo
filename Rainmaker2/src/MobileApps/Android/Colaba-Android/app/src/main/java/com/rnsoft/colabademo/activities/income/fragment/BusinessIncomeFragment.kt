@@ -24,6 +24,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -80,7 +81,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
               }
 
               borrowerName?.let {
-                  toolbarBinding.borrowerPurpose.setText(it)
+                  //toolbarBinding.borrowerPurpose.setText(it)
               }
 
               initViews()
@@ -356,11 +357,6 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         }
     } */
 
-
-
-
-
-
     private fun displayAddress(it: AddressData){
         if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
             showHideAddress(false,true)
@@ -460,7 +456,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
             AppConstant.address)?.observe(viewLifecycleOwner) { result -> businessAddress = result
@@ -478,10 +474,11 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         super.onStop()
         EventBus.getDefault().unregister(this)
     }
+
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
+    fun onSentData(event: SendDataEvent){
         binding.loaderIncomeBusiness.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             updateMainIncome()
@@ -496,45 +493,55 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent){
         if(evt.isDeleteIncome){
-            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
-                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse?.code.toString()
-                    if(codeString == "400" || codeString == "200"){
-                        updateMainIncome()
-                        viewModel.resetChildFragmentToNull()
-
-                    }
-                })
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
-                    }
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    val call = async{  viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!) }
+                    call.await()
+                }
+                    if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                        viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                            val codeString = genericAddUpdateAssetResponse?.code.toString()
+                            if(codeString == "400" || codeString == "200"){
+                                updateMainIncome()
+                                viewModel.resetChildFragmentToNull()
+                            }
+                        })
                 }
             }
         }
     }
 
-    private fun updateMainIncome(){
-        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMainIncomeUpdate(evt: OnUpdateMainIncomeReceived){
+        //Log.e("received","updtedRecieved")
+        IncomeTabFragment.isStartIncomeTab = false
+        if(evt.isMainIncomeUpdateReceived){
             val incomeUpdate = IncomeUpdateInfo(AppConstant.income_business,borrowerId!!)
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
-            findNavController().popBackStack()
-        })
-        val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList: java.util.ArrayList<Int>? = null
-        incomeActivity?.let { it ->
-            mainBorrowerList =  it.borrowerTabList
+            findNavController().navigateUp()
         }
-        mainBorrowerList?.let { notNullMainBorrowerList->
+    }
+
+    private fun updateMainIncome(){
+        //borrowerApplicationViewModel.resetIncomeModelClass()
+        borrowerApplicationViewModel.resetSingleIncomeTab()
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
-                }
+
+                 //val call = async{
+                     borrowerApplicationViewModel.getSingleTabIncomeDetail(authToken, loanApplicationId!!, borrowerId!!) }
+                    //call.await() }
+
+                /*borrowerApplicationViewModel.singleIncomeDetail.observe(viewLifecycleOwner, { observableSampleContent ->
+                    //IncomeTabFragment.isStartIncomeTab = false
+                    val incomeUpdate = IncomeUpdateInfo(AppConstant.income_business,borrowerId!!)
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
+                    findNavController().navigateUp()
+                }) */
             }
-        }
+
     }
 
 
@@ -546,19 +553,6 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        //val newMonth = month + 1
-
-        /*
-        val dpd = DatePickerDialog(
-            requireActivity(), {
-                view, year, monthOfYear, dayOfMonth -> binding.edStartDate.setText("" + newMonth + "/" + dayOfMonth + "/" + year)
-                val cal = Calendar.getInstance()
-                cal.set(year, newMonth, dayOfMonth)
-                val date = DateFormat.format("dd-MM-yyyy", cal).toString()
-                maxDate = convertDateToLong(date)
-            }, year, month, day)
-         */
-
 
         val datePickerDialog = DatePickerDialog(
             requireActivity(), R.style.MySpinnerDatePickerStyle,

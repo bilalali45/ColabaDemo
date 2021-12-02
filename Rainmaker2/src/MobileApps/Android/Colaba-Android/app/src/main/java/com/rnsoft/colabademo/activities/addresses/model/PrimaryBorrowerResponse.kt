@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class PrimaryBorrowerResponse(
     val code: String?,
@@ -48,18 +50,18 @@ data class BorrowerCitizenship(
     val ssn: String?
 )
 
-
+@Parcelize
 data class CurrentAddress(
-    val loanApplicationId: Int,
-    val borrowerId: Int,
-    val id: Int?,
-    val housingStatusId: Int?,
-    val addressModel: AddressModel?,
-    val fromDate: String?,
-    val isMailingAddressDifferent: Boolean?,
-    val mailingAddressModel: Any?,
-    val monthlyRent: Double?
-)
+    val loanApplicationId: Int? = null,
+    val borrowerId: Int? = null,
+    val id: Int? = null,
+    val housingStatusId: Int? = null,
+    val addressModel: AddressModel? = null,
+    val fromDate: String? = null,
+    val isMailingAddressDifferent: Boolean? = null,
+    val mailingAddressModel: AddressModel? = null,
+    val monthlyRent: Double? = null
+) : Parcelable
 
 data class PreviousAddresses(
     val id: Int?,
@@ -72,18 +74,19 @@ data class PreviousAddresses(
     val mailingAddressModel: Any?,
 )
 
+@Parcelize
 data class AddressModel(
-    val city: String?,
-    val countryId: Int?,
-    val countryName: String?,
-    val countyId: Int?,
-    val countyName: String?,
-    val stateId: Int?,
-    val stateName: String?,
-    val street: String?,
-    val unit: String?,
-    val zipCode: String?
-)
+    val city: String? = null,
+    val countryId: Int? = null,
+    val countryName: String? = null,
+    val countyId: Int? = null,
+    val countyName: String? = null,
+    val stateId: Int? = null,
+    val stateName: String? = null,
+    val street: String? = null,
+    val unit: String? = null,
+    val zipCode: String? = null
+) : Parcelable
 
 data class MaritalStatus(
     val loanApplicationId: Int,

@@ -69,6 +69,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     var listAddress: ArrayList<PrimaryBorrowerAddress> = ArrayList()
     private var loanApplicationId: Int? = null
     private var borrowerId :Int? = null
+    private var currentAddressModel = AddressModel()
+    private var currentAddressDetail = CurrentAddress()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -130,15 +132,17 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
     }
 
-
     private fun setData(){
         viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
-            if (detail != null) {
+            if (detail != null){
                 detail.borrowerData?.currentAddress?.let { currentAddress->
                     try {
                         val fromDate = if (currentAddress.fromDate != null && currentAddress.fromDate.length > 0) currentAddress.fromDate else ""
                         currentAddress.addressModel?.let { address ->
                             displayAddress(address)
+                            currentAddressModel = address
+                            currentAddressDetail = currentAddress
+
                             bi.tvResidenceDate.text = "From ".plus(AppSetting.getMonthAndYearValue(fromDate))
 
                             currentAddress.monthlyRent?.let {
@@ -302,7 +306,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             })
     }
 
-    private fun sendBorrowerData() {
+    private fun sendBorrowerData(){
+        //var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
+        //var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
+        //Log.e("NewDate",newDate)
         val firstName: String = bi.edFirstName.text.toString()
         val lastName: String = bi.edLastName.text.toString()
         val email: String = bi.edEmail.text.toString()
@@ -346,9 +353,9 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
 
         if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && LoginUtil.isValidEmailAddress(email.trim()) &&
-            loanApplicationId !=null && borrowerId !=null ){
+            loanApplicationId !=null && borrowerId !=null )
+            {
             // borrower basic details
-
             val middleName = if(bi.edMiddleName.text.toString().trim().length >0) bi.edMiddleName.text.toString() else null // get middle name
             val suffix = if(bi.edSuffix.text.toString().trim().length >0) bi.edSuffix.text.toString() else null  // suffix
             val workPhoneNumber = if(bi.edWorkNum.text.toString().trim().length >0) bi.edWorkNum.text.toString() else null // work number
@@ -356,21 +363,37 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             val cellPhone = if(bi.edCellNum.text.toString().trim().length >0) bi.edCellNum.text.toString() else null
             // add own type id
 
-            lifecycleScope.launchWhenStarted {
+
+            // current address
+
+            //var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
+           // var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
+          //  Log.e("NewDate",newDate)
+//            val current = CurrentAddress(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!, addressModel = currentAddressModel
+//
+//            )
+//
+//            val id: Int?,
+//            val housingStatusId: Int?,
+//            val fromDate: String?,
+//            val isMailingAddressDifferent: Boolean?,
+//            val mailingAddressModel: Any?,
+//            val monthlyRent: Double?
+
+
+
+            lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     val basicDetails = BorrowerBasicDetails(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!,
                         firstName = firstName,lastName = lastName,middleName = middleName,suffix = suffix,emailAddress = email,homePhone = homeNum,
                         workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = 0
-
                     )
-
-
                 }
             }
         }
     }
 
-    private fun addEmptyDependentField() {
+    private fun addEmptyDependentField(){
         if(listItems.size < 99) {
             if (listItems.size > 0) {
                 var ordinal = getOrdinal(listItems.size + 1)
@@ -451,7 +474,17 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
     }
 
+    private fun openCurrentAddress(){
+
+    }
+
     private fun setupUI(){
+
+        bi.currentAddressLayout.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(AppConstant.address,currentAddressDetail)
+            findNavController().navigate(R.id.action_info_current_address,bundle)
+        }
 
         bi.btnSaveInfo.setOnClickListener { sendBorrowerData() }
 

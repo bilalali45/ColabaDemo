@@ -83,8 +83,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     private fun setData(){
 
-        if(arguments !=null) {
-            viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
+        if(arguments !=null){
+            /*
+           viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
                 if (detail != null) {
                     detail.borrowerData?.currentAddress?.housingStatusId?.let { id ->
                         if (id == 1)
@@ -137,7 +138,24 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
                 }
             })
+
+            */
+
+
+
+
+
+
+
+
+
+
+
         }
+
+
+
+
     }
 
     private fun getDropDownData(){
