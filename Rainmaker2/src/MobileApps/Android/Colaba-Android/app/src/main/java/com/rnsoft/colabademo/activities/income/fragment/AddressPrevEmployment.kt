@@ -277,7 +277,6 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
         }
     }
 
-
     private fun setInputFields() {
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
@@ -343,10 +342,10 @@ class AddressPrevEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceClic
             if(!hasFocus){
                 if (binding.tvCounty.text.toString().length == 0) {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
-                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+                    //CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
-                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
+                   // CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
                 }
             }
         }

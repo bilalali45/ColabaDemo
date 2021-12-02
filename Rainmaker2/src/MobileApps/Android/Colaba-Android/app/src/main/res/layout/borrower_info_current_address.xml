@@ -55,7 +55,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/borrower_name_greeting" />
 
-        <ImageView
+    <!--    <ImageView
             android:id="@+id/top_del_imageview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_grey_del" />
+            app:srcCompat="@drawable/ic_grey_del" /> -->
 
         <View
             android:id="@+id/tab_top_border"
@@ -357,7 +357,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/countyLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
@@ -685,17 +685,33 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox_is_mailing_address_diff"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginStart="22dp"
+                android:text="@string/is_mailing_address_different"
+                android:textColor="@color/colaba_primary_color"
+                app:buttonCompat="@drawable/cb_selector"
+                android:fontFamily="@font/rubik_medium"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:paddingStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout"/>
+
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:layout_marginTop="31dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
+                android:layout_marginStart="22dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout">
+                app:layout_constraintTop_toBottomOf="@+id/checkbox_is_mailing_address_diff">
 
                 <ImageView
                     android:id="@+id/imageView33"
@@ -721,25 +737,25 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:visibility="visible"
                 android:id="@+id/showAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_marginStart="22dp"
                 android:layout_marginTop="35dp"
                 android:layout_marginEnd="22dp"
-                android:background="@drawable/white_blue_border"
+                android:background="@drawable/content_bg_with_drop_shadow"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout">
+                app:layout_constraintTop_toBottomOf="@+id/addAddressLayout">
 
                 <TextView
-                    android:id="@+id/temp_address"
+                    android:id="@+id/textview_mailing_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="22dp"
                     android:background="@null"
@@ -755,14 +771,14 @@
                     android:id="@+id/textView28"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Mailing Address"
                     android:textColor="@color/grey_color_two"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/temp_address" />
+                    app:layout_constraintTop_toBottomOf="@+id/textview_mailing_address" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

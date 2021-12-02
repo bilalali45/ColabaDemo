@@ -25,7 +25,6 @@ import com.google.android.libraries.places.api.net.PlacesClient
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.temp_residence_layout.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -46,6 +45,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private lateinit var placesClient: PlacesClient
     private lateinit var predictAdapter: PlacePredictionAdapter
     private var map: HashMap<String, String> = HashMap()
+    private var mailingAddressModel : AddressModel? = null
 
 
     override fun onCreateView(
@@ -67,7 +67,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         setDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
-
+        setAddressData()
 
         binding.backButton.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Mailing Address?"
@@ -86,7 +86,6 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             )
         }
 
-
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -94,8 +93,44 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         super.addListeners(binding.root)
 
         return root
-
     }
+
+    private fun setAddressData(){
+        try {
+            if (arguments != null) {
+                mailingAddressModel = arguments?.getParcelable(AppConstant.mailing_address)!!
+                mailingAddressModel?.let {
+                    it.street?.let {
+                        binding.topSearchAutoTextView.setText(it)
+                        binding.streetAddressEditText.setText(it)
+                        //setColor(binding.layoutSearchField)
+                        //setColor(binding.streetAddressLayout)
+                    }
+
+                    it.city?.let { binding.cityEditText.setText(it) }
+                    it.countryName?.let {
+                        binding.countryCompleteTextView.setText(it)
+                        //setColor(binding.countryCompleteLayout)
+                    }
+                    it.zipCode?.let {
+                        binding.zipcodeEditText.setText(it)
+                    }
+                    it.stateName?.let {
+                        binding.stateCompleteTextView.setText(it)
+                        //setColor(binding.stateCompleteTextInputLayout)
+                    }
+                    it.countyName?.let {
+                        binding.countyEditText.setText(it)
+                        //  setColor(binding.countyLayout)
+                    }
+                    it.unit?.let {
+                        binding.unitAptInputEditText.setText(it)
+                    }
+                    visibleAllFields()
+                }
+             }
+            } catch (e: NullPointerException){}
+        }
 
     private fun setUpUI() {
 
@@ -122,18 +157,10 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 val search: String = binding.topSearchAutoTextView.text.toString()
                 if (search.length == 0) {
                     setError()
-                    CustomMaterialFields.setColor(
-                        binding.layoutSearchField,
-                        R.color.grey_color_three,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_three, requireActivity())
                 } else {
                     removeError()
-                    CustomMaterialFields.setColor(
-                        binding.layoutSearchField,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutSearchField, R.color.grey_color_two, requireActivity())
                 }
             }
         }
@@ -142,36 +169,17 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if (hasFocus) {
                 binding.stateCompleteTextView.showDropDown()
                 binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
-                CustomMaterialFields.setColor(
-                    binding.stateCompleteTextInputLayout,
-                    R.color.grey_color_two,
-                    requireActivity()
-                )
+                CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
 
             } else {
                 binding.stateCompleteTextView.removeTextChangedListener(stateTextWatcher)
                 val state: String = binding.stateCompleteTextView.text.toString()
                 if (state.length == 0) {
-                    CustomMaterialFields.setError(
-                        binding.stateCompleteTextInputLayout,
-                        getString(R.string.error_field_required),
-                        requireActivity()
-                    )
-                    CustomMaterialFields.setColor(
-                        binding.stateCompleteTextInputLayout,
-                        R.color.grey_color_three,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setError(binding.stateCompleteTextInputLayout, getString(R.string.error_field_required),requireActivity())
+                    CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_three, requireActivity())
                 } else {
-                    CustomMaterialFields.clearError(
-                        binding.stateCompleteTextInputLayout,
-                        requireActivity()
-                    )
-                    CustomMaterialFields.setColor(
-                        binding.stateCompleteTextInputLayout,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout, requireActivity())
+                    CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
                 }
             }
         }
@@ -180,11 +188,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if (hasFocus) {
                 binding.countryCompleteTextView.showDropDown()
                 binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
-                CustomMaterialFields.setColor(
-                    binding.countryCompleteLayout,
-                    R.color.grey_color_two,
-                    requireActivity()
-                )
+                CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
 
             } else {
                 binding.countryCompleteTextView.removeTextChangedListener(countryTextWatcher)
@@ -279,7 +283,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
     }
 
-    private fun setDropDownData() {
+    private fun setDropDownData(){
         val countryAdapter =
             ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
         binding.countryCompleteTextView.setAdapter(countryAdapter)
@@ -527,14 +531,14 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         stateCode = stateCode.capitalize()
 
         if (map.get(stateCode) != null)
-            stateCompleteTextView.setText(map.get(stateCode))
+            binding.stateCompleteTextView.setText(map.get(stateCode))
         else
-            stateCompleteTextView.setText("")
+            binding.stateCompleteTextView.setText("")
 
         visibleAllFields()
     }
 
-    private fun checkValidations() {
+    private fun checkValidations(){
 
         val searchBar: String = binding.topSearchAutoTextView.text.toString()
         val country: String = binding.countryCompleteTextView.text.toString()
@@ -543,87 +547,76 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         val city = binding.cityEditText.text.toString()
         val county = binding.countyEditText.text.toString()
         val zipCode = binding.zipcodeEditText.text.toString()
-        //val moveInDate = binding.moveInEditText.text.toString()
-        //val housingStatus = binding.housingCompleteTextView.text.toString()
 
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }
+        if(binding.streetAddressLayout.visibility == View.VISIBLE){
+            if(street.isEmpty() || street.length == 0) {
+                CustomMaterialFields.setError(binding.streetAddressLayout,getString(R.string.error_field_required),requireActivity())
+            }
+            if(city.isEmpty() || city.length == 0) {
+                CustomMaterialFields.setError(binding.cityLayout,getString(R.string.error_field_required),requireActivity())
+            }
 
-//        if (moveInDate.isEmpty() || moveInDate.length == 0) {
-//            CustomMaterialFields.setError(binding.moveInLayout,getString(R.string.error_field_required), requireActivity())
-//        }
-        //if (housingStatus.isEmpty() || housingStatus.length == 0) {
-        //  CustomMaterialFields.setError(binding.housingLayout,getString(R.string.error_field_required), requireActivity()) }
-
-        if (binding.streetAddressLayout.visibility == View.VISIBLE) {
-            if (street.isEmpty() || street.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.streetAddressLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+            if(zipCode.isEmpty() || zipCode.length == 0) {
+                CustomMaterialFields.setError(binding.zipcodeLayout,getString(R.string.error_field_required),requireActivity())
             }
-            if (city.isEmpty() || city.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.cityLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+            if(country.isEmpty() || country.length == 0) {
+                CustomMaterialFields.setError(binding.countryCompleteLayout,getString(R.string.error_field_required),requireActivity())
             }
-            if (county.isEmpty() || county.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.countyLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
-            }
-            if (zipCode.isEmpty() || zipCode.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.zipcodeLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
-            }
-            if (country.isEmpty() || country.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.countryCompleteLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
-            }
-            if (state.isEmpty() || state.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.stateCompleteTextInputLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+            if(state.isEmpty() || state.length == 0) {
+                CustomMaterialFields.setError(binding.stateCompleteTextInputLayout,getString(R.string.error_field_required),requireActivity())
             }
             // clear error
-            if (street.isNotEmpty() || street.length > 0) {
-                CustomMaterialFields.clearError(binding.streetAddressLayout, requireActivity())
+            if(street.isNotEmpty() || street.length > 0) {
+                CustomMaterialFields.clearError(binding.streetAddressLayout,requireActivity())
             }
-            if (city.isNotEmpty() || city.length > 0) {
-                CustomMaterialFields.clearError(binding.cityLayout, requireActivity())
+            if(city.isNotEmpty() || city.length > 0) {
+                CustomMaterialFields.clearError(binding.cityLayout,requireActivity())
             }
-            if (county.isNotEmpty() || county.length > 0) {
-                CustomMaterialFields.clearError(binding.countyLayout, requireActivity())
-            }
-            if (zipCode.isNotEmpty() || zipCode.length > 0) {
-                CustomMaterialFields.clearError(binding.zipcodeLayout, requireActivity())
-            }
-            if (country.isNotEmpty() || country.length > 0) {
-                CustomMaterialFields.clearError(binding.countryCompleteLayout, requireActivity())
-            }
-            if (state.isNotEmpty() || state.length > 0) {
-                CustomMaterialFields.clearError(
-                    binding.stateCompleteTextInputLayout,
-                    requireActivity()
-                )
-            }
-        }
 
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length > 0 && country.length > 0 && zipCode.length > 0) {
+            if(zipCode.isNotEmpty() || zipCode.length > 0) {
+                CustomMaterialFields.clearError(binding.zipcodeLayout,requireActivity())
+            }
+            if(country.isNotEmpty() || country.length > 0) {
+                CustomMaterialFields.clearError(binding.countryCompleteLayout,requireActivity())
+            }
+            if(state.isNotEmpty() || state.length > 0) {
+                CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout,requireActivity())
+            }
+
+        }
+        if(searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && country.length > 0 && zipCode.length > 0){
+            val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
+
+            val countyName : String = binding.countryCompleteTextView.getText().toString().trim()
+           // val matchedCounty =  countyList.filter { p -> p.name.equals(countyName,true)}
+           // val countyId = if(matchedCounty.size > 0)
+           //     matchedCounty.get(0).id else null
+
+            val countryName : String = binding.countryCompleteTextView.getText().toString().trim()
+           /// val matchedCountry =  countryList.filter { p -> p.name.equals(countryName,true)}
+          //  val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+
+            val stateName : String = binding.stateCompleteTextView.getText().toString().trim()
+           // val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
+           /* val stateId = if(matchedState.size > 0)
+           //     matchedState.get(0).id else null
+
+              mailingAddressModel = AddressModel(
+                street = street,
+                unit = unit,
+                city = city,
+                stateName = state,
+                countryName = country,
+                countyName = county,
+                countyId = countyId,
+                stateId = stateId,
+                countryId = countryId,
+                zipCode = zipCode) */
+
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.mailing_address, mailingAddressModel)
             findNavController().popBackStack()
         }
 

@@ -102,35 +102,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             savedViewInstance
         }
     }
-    private fun displayAddress(address: AddressModel){
-        val builder = StringBuilder()
-        address.street?.let {
-            if(it != "null")
-                builder.append(it).append(" ")
-        }
-        address.unit?.let {
-            if(it != "null")
-                builder.append(it).append(",")
-            else
-                builder.append(",")
-
-        } ?: run { builder.append(",") }
-
-        address.city?.let {
-            if(it != "null")
-                builder.append("\n").append(it).append(",").append(" ")
-        } ?: run { builder.append("\n") }
-
-        address.stateName?.let {
-            if(it !="null") builder.append(it).append(" ")
-        }
-        address.zipCode?.let {
-            if(it != "null")
-                builder.append(it)
-        }
-        bi.textviewCurrentAddress.text = builder
-
-    }
 
     private fun setData(){
         viewModel.borrowerDetail.observe(viewLifecycleOwner, { detail ->
@@ -366,13 +337,13 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             // current address
 
-            //var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
-           // var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
-          //  Log.e("NewDate",newDate)
-//            val current = CurrentAddress(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!, addressModel = currentAddressModel
-//
-//            )
-//
+            var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
+            var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
+            Log.e("NewDate",newDate)
+            val current = CurrentAddress(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!, addressModel = currentAddressModel
+
+            )
+
 //            val id: Int?,
 //            val housingStatusId: Int?,
 //            val fromDate: String?,
@@ -482,7 +453,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         bi.currentAddressLayout.setOnClickListener {
             val bundle = Bundle()
-            bundle.putParcelable(AppConstant.address,currentAddressDetail)
+            bundle.putParcelable(AppConstant.current_address,currentAddressDetail)
             findNavController().navigate(R.id.action_info_current_address,bundle)
         }
 
@@ -905,6 +876,36 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             override fun afterTextChanged(s: Editable) {}
         })
+
+    }
+
+    private fun displayAddress(address: AddressModel){
+        val builder = StringBuilder()
+        address.street?.let {
+            if(it != "null")
+                builder.append(it).append(" ")
+        }
+        address.unit?.let {
+            if(it != "null")
+                builder.append(it).append(",")
+            else
+                builder.append(",")
+
+        } ?: run { builder.append(",") }
+
+        address.city?.let {
+            if(it != "null")
+                builder.append("\n").append(it).append(",").append(" ")
+        } ?: run { builder.append("\n") }
+
+        address.stateName?.let {
+            if(it !="null") builder.append(it).append(" ")
+        }
+        address.zipCode?.let {
+            if(it != "null")
+                builder.append(it)
+        }
+        bi.textviewCurrentAddress.text = builder
 
     }
 

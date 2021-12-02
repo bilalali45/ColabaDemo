@@ -169,6 +169,8 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val current_address: String = "address"
+        const val mailing_address: String = "mailing_address"
         const val mixedPropertyDetails: String = "mixed_property_details"
         const val application_tab_updated: String = "tab_data_updated"
         const val income_delete_text: String = "Are you sure you want to remove this income source?"

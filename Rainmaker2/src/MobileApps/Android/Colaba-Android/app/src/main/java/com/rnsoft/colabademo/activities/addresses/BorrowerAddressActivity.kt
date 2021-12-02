@@ -48,6 +48,7 @@ class BorrowerAddressActivity : BaseActivity() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 if (loanApplicationId != null && borrowerId !=null) {
                     coroutineScope {
+                        viewModel.getHousingStatus(authToken)
                         if(isAddBorrower!!){
                             viewModel.refreshBorrowerInfo()
                         } else {

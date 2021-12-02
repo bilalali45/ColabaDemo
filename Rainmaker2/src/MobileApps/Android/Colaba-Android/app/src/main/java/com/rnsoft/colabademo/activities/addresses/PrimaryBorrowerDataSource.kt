@@ -18,7 +18,7 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getPrimaryBorrowerDetail(newToken, loanApplicationId,borrowerId)
-            Log.e("Pri-Borrower-Details------", response.toString())
+            //Log.e("Pri-Borrower-Details------", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

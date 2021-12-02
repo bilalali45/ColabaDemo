@@ -394,6 +394,7 @@
     <string name="annual_property_taxes">Annual Property Taxes</string>
     <string name="homeowner_insurances">Annual Homeowner"\'\s Insurance</string>
     <string name="annual_flood_insurance">Annual Flood Insurance</string>
+    <string name="is_mailing_address_different">Mailing Address is different from Current Address</string>
     <string name="occupancy_status">Co-Borrower Occupancy Status</string>
     <string name="occupying">Occupying</string>
     <string name="non_occupying">Non-Occupying</string>

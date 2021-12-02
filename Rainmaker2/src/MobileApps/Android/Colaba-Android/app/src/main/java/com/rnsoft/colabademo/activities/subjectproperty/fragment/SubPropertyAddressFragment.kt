@@ -38,7 +38,6 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.doc_request_sent_layout.view.*
 
-import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.android.synthetic.main.view_placesearch.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay

@@ -281,81 +281,7 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
     }
 
 
-    /*private fun processSendData(){
 
-        val businessType: String = binding.tvBusinessType.text.toString()
-        val businessName: String = binding.edBusinessName.text.toString()
-        val jobTitle: String = binding.edJobTitle.text.toString()
-        val startDate: String = binding.edBstartDate.text.toString()
-        val percentage: String = binding.edOwnershipPercent.text.toString()
-        val netIncome: String = binding.editTextAnnualIncome.text.toString()
-
-        if (businessType.isEmpty() || businessType.length == 0) {
-            CustomMaterialFields.setError(binding.layoutBusinessType, getString(R.string.error_field_required),requireActivity())
-        }
-        if (businessName.isEmpty() || businessName.length == 0) {
-            CustomMaterialFields.setError(binding.layoutBusinessName, getString(R.string.error_field_required),requireActivity())
-        }
-        if (jobTitle.isEmpty() || jobTitle.length == 0) {
-            CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
-        }
-        if (startDate.isEmpty() || startDate.length == 0) {
-            CustomMaterialFields.setError(binding.layoutBStartDate, getString(R.string.error_field_required),requireActivity())
-        }
-        if (netIncome.isEmpty() || netIncome.length == 0) {
-            CustomMaterialFields.setError(binding.layoutNetIncome, getString(R.string.error_field_required),requireActivity())
-        }
-        if (percentage.isEmpty() || percentage.length == 0) {
-            CustomMaterialFields.setError(binding.layoutOwnershipPercentage, getString(R.string.error_field_required),requireActivity())
-        }
-        if (businessName.isNotEmpty() || businessName.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutBusinessName,requireActivity())
-        }
-        if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
-        }
-        if (startDate.isNotEmpty() || startDate.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
-        }
-        if (netIncome.isNotEmpty() || netIncome.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
-        }
-        if (percentage.isNotEmpty() || percentage.length > 0) {
-            CustomMaterialFields.clearError(binding.layoutOwnershipPercentage,requireActivity())
-        }
-        if (businessType.length > 0 && businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0  && percentage.length > 0){
-
-            lifecycleScope.launchWhenStarted{
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    if(loanApplicationId != null && borrowerId !=null) {
-                        //Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
-                        // get business type id
-                        val type : String = binding.tvBusinessType.getText().toString().trim()
-                        val matchedType =  businessTypes.filter { p -> p.name.equals(type,true)}
-                        //Log.e("matchedType",""+matchedType)
-                        val businessTypeId = if(matchedType.size > 0) matchedType.map { matchedType.get(0).id }.single() else null
-                       // Log.e("businesId",""+businessTypeId)
-
-                        val phoneNum = if(binding.edBusPhoneNum.text.toString().length > 0) binding.edBusPhoneNum.text.toString() else null
-                        val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
-                        val annualIncome = binding.editTextAnnualIncome.text.toString().trim()
-                        val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
-
-
-                        val businessData = BusinessData(
-                            loanApplicationId = loanApplicationId,borrowerId= borrowerId,businessName=businessName,businessPhone=phoneNum,startDate=startDate,
-                            jobTitle = jobTitle,ownershipPercentage = ownershipPercentage?.toDouble(),annualIncome=newAnnualIncome?.toDouble(),address = businessAddress,id=incomeInfoId,
-                            incomeTypeId =businessTypeId)
-
-                        Log.e("businessDate-snding to API", "" + businessData)
-
-                        binding.loaderIncomeBusiness.visibility = View.VISIBLE
-                        viewModel.sendBusinessData(authToken, businessData)
-                    }
-                }
-            }
-        }
-    } */
 
     private fun displayAddress(it: AddressData){
         if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
@@ -593,4 +519,80 @@ class BusinessIncomeFragment : BaseFragment(), View.OnClickListener {
         )
         dpd.show()
     } */
+
+    /*private fun processSendData(){
+
+     val businessType: String = binding.tvBusinessType.text.toString()
+     val businessName: String = binding.edBusinessName.text.toString()
+     val jobTitle: String = binding.edJobTitle.text.toString()
+     val startDate: String = binding.edBstartDate.text.toString()
+     val percentage: String = binding.edOwnershipPercent.text.toString()
+     val netIncome: String = binding.editTextAnnualIncome.text.toString()
+
+     if (businessType.isEmpty() || businessType.length == 0) {
+         CustomMaterialFields.setError(binding.layoutBusinessType, getString(R.string.error_field_required),requireActivity())
+     }
+     if (businessName.isEmpty() || businessName.length == 0) {
+         CustomMaterialFields.setError(binding.layoutBusinessName, getString(R.string.error_field_required),requireActivity())
+     }
+     if (jobTitle.isEmpty() || jobTitle.length == 0) {
+         CustomMaterialFields.setError(binding.layoutJobTitle, getString(R.string.error_field_required),requireActivity())
+     }
+     if (startDate.isEmpty() || startDate.length == 0) {
+         CustomMaterialFields.setError(binding.layoutBStartDate, getString(R.string.error_field_required),requireActivity())
+     }
+     if (netIncome.isEmpty() || netIncome.length == 0) {
+         CustomMaterialFields.setError(binding.layoutNetIncome, getString(R.string.error_field_required),requireActivity())
+     }
+     if (percentage.isEmpty() || percentage.length == 0) {
+         CustomMaterialFields.setError(binding.layoutOwnershipPercentage, getString(R.string.error_field_required),requireActivity())
+     }
+     if (businessName.isNotEmpty() || businessName.length > 0) {
+         CustomMaterialFields.clearError(binding.layoutBusinessName,requireActivity())
+     }
+     if (jobTitle.isNotEmpty() || jobTitle.length > 0) {
+         CustomMaterialFields.clearError(binding.layoutJobTitle,requireActivity())
+     }
+     if (startDate.isNotEmpty() || startDate.length > 0) {
+         CustomMaterialFields.clearError(binding.layoutBStartDate,requireActivity())
+     }
+     if (netIncome.isNotEmpty() || netIncome.length > 0) {
+         CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
+     }
+     if (percentage.isNotEmpty() || percentage.length > 0) {
+         CustomMaterialFields.clearError(binding.layoutOwnershipPercentage,requireActivity())
+     }
+     if (businessType.length > 0 && businessName.length > 0 && jobTitle.length > 0 &&  startDate.length > 0 && netIncome.length > 0  && percentage.length > 0){
+
+         lifecycleScope.launchWhenStarted{
+             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                 if(loanApplicationId != null && borrowerId !=null) {
+                     //Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+                     // get business type id
+                     val type : String = binding.tvBusinessType.getText().toString().trim()
+                     val matchedType =  businessTypes.filter { p -> p.name.equals(type,true)}
+                     //Log.e("matchedType",""+matchedType)
+                     val businessTypeId = if(matchedType.size > 0) matchedType.map { matchedType.get(0).id }.single() else null
+                    // Log.e("businesId",""+businessTypeId)
+
+                     val phoneNum = if(binding.edBusPhoneNum.text.toString().length > 0) binding.edBusPhoneNum.text.toString() else null
+                     val ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
+                     val annualIncome = binding.editTextAnnualIncome.text.toString().trim()
+                     val newAnnualIncome = if(annualIncome.length > 0) annualIncome.replace(",".toRegex(), "") else null
+
+
+                     val businessData = BusinessData(
+                         loanApplicationId = loanApplicationId,borrowerId= borrowerId,businessName=businessName,businessPhone=phoneNum,startDate=startDate,
+                         jobTitle = jobTitle,ownershipPercentage = ownershipPercentage?.toDouble(),annualIncome=newAnnualIncome?.toDouble(),address = businessAddress,id=incomeInfoId,
+                         incomeTypeId =businessTypeId)
+
+                     Log.e("businessDate-snding to API", "" + businessData)
+
+                     binding.loaderIncomeBusiness.visibility = View.VISIBLE
+                     viewModel.sendBusinessData(authToken, businessData)
+                 }
+             }
+         }
+     }
+ } */
 }

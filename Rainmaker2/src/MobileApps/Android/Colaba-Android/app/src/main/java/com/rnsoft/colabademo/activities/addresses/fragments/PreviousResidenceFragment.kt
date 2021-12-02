@@ -35,7 +35,6 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.gifts_asset_layout.*
-import kotlinx.android.synthetic.main.temp_residence_layout.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
@@ -198,7 +197,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 binding.loaderPrevAddress.visibility = View.VISIBLE
-                delay(2000)
+                //delay(2000)
                 coroutineScope {
                     setData()
 
@@ -617,19 +616,11 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
                     binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.grey_color_two
-                        )
-                    )
+                        ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                     if (position == houseLivingTypeArray.size - 2) {
                         binding.monthlyRentLayout.visibility = View.VISIBLE
                         binding.housingLayout.defaultHintTextColor = ColorStateList.valueOf(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.grey_color_two
-                            )
-                        )
+                            ContextCompat.getColor(requireContext(), R.color.grey_color_two))
                     } else
                         binding.monthlyRentLayout.visibility = View.GONE
 
@@ -1002,9 +993,9 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         stateCode = stateCode.capitalize()
 
         if (map.get(stateCode) != null)
-            stateCompleteTextView.setText(map.get(stateCode))
+            binding.stateCompleteTextView.setText(map.get(stateCode))
         else
-            stateCompleteTextView.setText("")
+            binding.stateCompleteTextView.setText("")
 
         visibleAllFields()
     }

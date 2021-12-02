@@ -24,6 +24,9 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
     private var _singleIncomeDetail : MutableLiveData<IncomeDetailsResponse?> =   MutableLiveData()
     val singleIncomeDetail: LiveData<IncomeDetailsResponse?> get() = _singleIncomeDetail
 
+    private var _incomeTabDetails : MutableLiveData<ArrayList<IncomeDetailsResponse>> =   MutableLiveData()
+    val incomeTabDetails: LiveData<ArrayList<IncomeDetailsResponse>> get() = _incomeTabDetails
+
     private var _governmentQuestionsModelClass : MutableLiveData<GovernmentQuestionsModelClass> =   MutableLiveData()
     val governmentQuestionsModelClass: LiveData<GovernmentQuestionsModelClass> get() = _governmentQuestionsModelClass
 
@@ -149,6 +152,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
 
             withContext(Dispatchers.Main) {
+                _incomeTabDetails.value = borrowerIncomeList
                 _incomeDetails.value = borrowerIncomeList
             }
             if(errorResult!=null)

@@ -608,9 +608,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
             R.id.rb_ownership_no -> quesTwoClicked()
             R.id.paytype_hourly -> payTypeClicked()
             R.id.paytype_salary ->payTypeClicked()
-            //R.id.cb_bonus -> bonusClicked()
-            //R.id.cb_overtime -> overtimeClicked()
-            //R.id.cb_commission -> commissionClicked()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.current_emp_layout -> {
