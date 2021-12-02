@@ -39,6 +39,7 @@ class RetirementFragment:AssetBaseFragment() {
         return AssetReturnParams(
             assetName = binding.financialEditText.text.toString(),
             assetTypeName =assetCategoryName,
+            assetBorrowerName = assetBorrowerName,
             assetTypeID = assetTypeID,
             assetUniqueId = assetUniqueId,
             assetCategoryId = assetCategoryId,

@@ -21,7 +21,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
 
@@ -40,6 +42,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
+    private var newQuestionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
     private var borrowerInfoAdapter = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
     private var questionAdapter  = QuestionAdapter(questionList, this)
@@ -443,10 +446,23 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     realStateRecyclerView.adapter = realStateAdapter
                     realStateAdapter.notifyDataSetChanged()
 
+                    var counter = 0
+                    var noAnswerArrayList:ArrayList<Int> = arrayListOf()
+                    for(item in questionList){
+                        if(item.questionResponses?.size == 0)
+                            noAnswerArrayList.add(questionList.indexOf(item))
+                    }
+
+                    for(item in noAnswerArrayList){
+                        Collections.swap(questionList, item, counter++)
+                    }
+
+                    Timber.e(" print arraylist = "+questionList)
 
                     questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities))
                     questionAdapter =
                         QuestionAdapter(questionList, this@BorrowerApplicationFragment)
+
                     questionsRecyclerView.adapter = questionAdapter
                     questionAdapter.notifyDataSetChanged()
 

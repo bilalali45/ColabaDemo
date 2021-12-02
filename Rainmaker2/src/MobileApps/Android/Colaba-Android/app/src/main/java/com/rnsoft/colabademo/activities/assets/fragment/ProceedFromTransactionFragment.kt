@@ -101,9 +101,20 @@ import java.util.ArrayList
                         }
                     }
                 })
-
-
         }
+
+
+        private fun returnAssetTypeIdBasedOnUserSelection():Int{
+            var currentAssetTypeId  = 0
+            myLoop@ for (item in categoryList) {
+                if (item.name.equals(binding.transactionAutoCompleteTextView.text.toString(), true)){
+                    currentAssetTypeId = item.id!!
+                    break@myLoop
+                }
+            }
+            return currentAssetTypeId
+        }
+
 
         private fun getProceedsFromLoan(position:Int) {
             assetUniqueId?.let { assetUniqueId ->
@@ -127,8 +138,8 @@ import java.util.ArrayList
         private fun getProceedsFromNonRealEstateDetail(position:Int){
 
             assetUniqueId?.let { nonNullAssetUniqueId ->
-
                 if (loanApplicationId != null && borrowerId != null && assetTypeID != null && nonNullAssetUniqueId > 0) {
+                    observeChanges(position)
                     lifecycleScope.launchWhenStarted {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
@@ -138,7 +149,6 @@ import java.util.ArrayList
                             )
                         }
                     }
-                    observeChanges(position)
                 }
             }
         }
@@ -158,7 +168,6 @@ import java.util.ArrayList
                     }
                 }
             }
-
         }
 
         private fun observeChanges(position:Int){
@@ -171,6 +180,7 @@ import java.util.ArrayList
                     }
                     proceedFromLoanData.description?.let {
                         binding.edDetails.setText(it)
+                        binding.layoutDetail.visibility = View.VISIBLE
                     }
 
                     proceedFromLoanData.collateralAssetTypeId?.let {
@@ -179,6 +189,7 @@ import java.util.ArrayList
 
                     proceedFromLoanData.collateralAssetOtherDescription?.let {
                         binding.edDetails.setText(it)
+                        binding.layoutDetail.visibility = View.VISIBLE
                     }
 
                     proceedFromLoanData.collateralAssetName?.let{ collateralAssetName->
@@ -253,10 +264,13 @@ import java.util.ArrayList
 
             binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
+
                     R.id.radioButton -> {
+                        binding.radioLabelErrorView.visibility = View.INVISIBLE
                         binding.whichAssetInputLayout.visibility = View.VISIBLE
                     }
                     R.id.radioButton2 -> {
+                        binding.radioLabelErrorView.visibility = View.INVISIBLE
                         binding.whichAssetInputLayout.visibility = View.GONE
                         binding.layoutDetail.visibility = View.GONE
                     }
@@ -314,17 +328,17 @@ import java.util.ArrayList
                     Timber.e("name = "+item.name +"  = "+binding.transactionAutoCompleteTextView.text.toString())
                     if(item.name.equals(binding.transactionAutoCompleteTextView.text.toString(),true)) {
                         if (item.id == 12)
-                            addUpdateProceedFromLoan(item.id)
+                            addUpdateProceedFromLoan(12)
                         else
                         if (item.id == AppConstant.assetRealStateId) {
                             item.displayName?.let {
-                                addUpdateAssetsRealStateOrNonRealState(item.id, it)
+                                addUpdateAssetsRealStateOrNonRealState(AppConstant.assetRealStateId, it)
                             }
                         }
                         else
                          if(item.id == AppConstant.assetNonRealStateId){
                              item.displayName?.let {
-                                 addUpdateAssetsRealStateOrNonRealState(item.id, it)
+                                 addUpdateAssetsRealStateOrNonRealState(AppConstant.assetNonRealStateId, it)
                              }
                          }
                         break@myloop
@@ -335,7 +349,7 @@ import java.util.ArrayList
 
 
 
-        private fun addUpdateProceedFromLoan(assetTypeId:Int){
+        private fun addUpdateProceedFromLoan(selectedAssetTypeId:Int){
 
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -368,7 +382,6 @@ import java.util.ArrayList
                         binding.edDetails.setText("")
                         colletralAssetTypeId = null
                         securedByColletral = null
-
                     }
 
                     //var defaultCollateralAssetDescription = ""
@@ -382,7 +395,7 @@ import java.util.ArrayList
                                     BorrowerId = notNullBorrowerId,
                                     LoanApplicationId = notNullLoanApplicationId,
                                     AssetCategoryId = assetCategoryId,
-                                    AssetTypeId = assetTypeId,
+                                    AssetTypeId = returnAssetTypeIdBasedOnUserSelection(),
                                     BorrowerAssetId = paramBorrowerAssetId,
                                     AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                     SecuredByColletral = securedByColletral,
@@ -397,9 +410,10 @@ import java.util.ArrayList
                                     val addUpdateProceedFromLoanOtherParams =
                                         AddUpdateProceedFromLoanOtherParams(
                                             BorrowerId = notNullBorrowerId,
+                                            BorrowerAssetId = paramBorrowerAssetId,
                                             LoanApplicationId = notNullLoanApplicationId,
                                             AssetCategoryId = assetCategoryId,
-                                            AssetTypeId = assetTypeId,
+                                            AssetTypeId = returnAssetTypeIdBasedOnUserSelection(),
                                             AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                             CollateralAssetDescription =  binding.edDetails.text.toString(),
                                             ColletralAssetTypeId = notNullColletralAssetTypeId,
@@ -414,7 +428,7 @@ import java.util.ArrayList
             observeAddUpdateResponse(returnUpdatedParams())
         }
 
-        private fun  addUpdateAssetsRealStateOrNonRealState(assetTypeId:Int, assetTypeDisplayName:String){
+        private fun  addUpdateAssetsRealStateOrNonRealState(selectedAssetTypeId:Int, assetTypeDisplayName:String){
 
             var defaultDescription = ""
             if(binding.edDetails.text.toString().isNotEmpty() && binding.edDetails.text.toString().isNotBlank())
@@ -430,7 +444,7 @@ import java.util.ArrayList
                                     LoanApplicationId = notNullLoanApplicationId,
                                     AssetCategoryId = assetCategoryId,
                                     BorrowerAssetId = assetUniqueId,
-                                    AssetTypeId = assetTypeId,
+                                    AssetTypeId = returnAssetTypeIdBasedOnUserSelection(),
                                     AssetValue = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
                                     Description = defaultDescription,
                                 )
@@ -461,7 +475,8 @@ import java.util.ArrayList
             return AssetReturnParams(
                 assetName = binding.transactionAutoCompleteTextView.text.toString(),
                 assetTypeName = binding.edDetails.text.toString(),
-                assetTypeID = assetTypeID,
+                assetBorrowerName = assetBorrowerName,
+                assetTypeID = returnAssetTypeIdBasedOnUserSelection(),
                 assetUniqueId = assetUniqueId,
 
                 assetCategoryId = assetCategoryId,
@@ -491,6 +506,14 @@ import java.util.ArrayList
             else
                 CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
 
+            if(binding.radioGroup.visibility == View.VISIBLE){
+                if(!binding.radioButton.isChecked && !binding.radioButton2.isChecked) {
+                    binding.radioLabelErrorView.visibility = View.VISIBLE
+                    bool = false
+                }
+            }
+            else
+                binding.radioLabelErrorView.visibility = View.INVISIBLE
 
             if((binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true)
                 && binding.layoutDetail.isVisible) {

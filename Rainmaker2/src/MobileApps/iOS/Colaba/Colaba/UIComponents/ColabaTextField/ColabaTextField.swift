@@ -367,7 +367,7 @@ extension ColabaTextField {
             self.text = text
         }
         if (text == ""){
-            self.placeholderLabel.textColor = Theme.getAppGreyColor()
+            self.placeholderLabel.textColor = Theme.getButtonGreyTextColor()
         }
     }
     

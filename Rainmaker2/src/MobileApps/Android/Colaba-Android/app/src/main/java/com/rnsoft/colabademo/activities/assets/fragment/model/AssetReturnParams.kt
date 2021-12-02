@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 data class AssetReturnParams(
     val assetCategoryId: Int? = null,
     val assetCategoryName: String? = null,
+    val assetBorrowerName: String? = null,
     val assetId: Int? = null,
     val assetName: String? = null,
     val assetTypeID: Int? = null,

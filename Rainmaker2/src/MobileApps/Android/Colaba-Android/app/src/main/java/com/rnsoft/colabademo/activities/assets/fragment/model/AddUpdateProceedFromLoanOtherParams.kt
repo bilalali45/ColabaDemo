@@ -5,6 +5,7 @@ data class AddUpdateProceedFromLoanOtherParams(
     val AssetTypeId: Int,
     val AssetValue: Int,
     val BorrowerId: Int,
+    val BorrowerAssetId: Int?=null,
     val CollateralAssetDescription: String,
     val ColletralAssetTypeId: Int,
     val LoanApplicationId: Int
