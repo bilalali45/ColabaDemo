@@ -177,17 +177,10 @@ class ApplicationViewController: BaseViewController {
         questionsCollectionViewLayout.itemSize = CGSize(width: itemWidth, height: 212)
         self.questionsCollectionView.collectionViewLayout = questionsCollectionViewLayout
         
-//        self.borrowerCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
-//        self.realEstateCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
-//        if (loanApplicationDetail.governmentQuestions.count > 0){
-//            self.questionsCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .left, animated: true)
-//        }
-        
-        if (self.loanApplicationDetail.realEstatesOwned.count == 0){
-            addRealStateOwnedView.isHidden = false
-            realEstateCollectionView.isHidden = true
-        }
-        
+        addRealStateOwnedView.isHidden = self.loanApplicationDetail.realEstatesOwned.count > 0
+        realEstateCollectionView.isHidden = self.loanApplicationDetail.realEstatesOwned.count == 0
+        realEstateHeightConstraint.constant = self.loanApplicationDetail.realEstatesOwned.count == 0 ? 132 : 182
+        self.view.layoutSubviews()
         
     }
     
