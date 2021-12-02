@@ -26,6 +26,9 @@ class GovernmentQuestionsCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var iconAns4: UIImageView!
     @IBOutlet weak var lblAns4: UILabel!
     @IBOutlet weak var lblUser4: UILabel!
+    @IBOutlet weak var iconAns5: UIImageView!
+    @IBOutlet weak var lblAns5: UILabel!
+    @IBOutlet weak var lblUser5: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
