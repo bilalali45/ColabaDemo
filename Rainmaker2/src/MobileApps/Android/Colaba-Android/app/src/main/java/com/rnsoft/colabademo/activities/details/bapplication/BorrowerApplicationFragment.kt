@@ -45,7 +45,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var newQuestionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
     private var borrowerInfoAdapter = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
-    private var questionAdapter  = QuestionAdapter(questionList, this)
+    private var questionAdapter  = QuestionAdapter(questionList, this, 0)
     var saveBorrowerId:Int = 0
     var borrowerName : String? = null
     @Inject
@@ -394,8 +394,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         }
                     }
 
-
-
                     appTabModel.borrowerAppData?.let { bAppData ->
                         bAppData.realStateOwns?.let {
                             for (item in it) {
@@ -421,18 +419,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     //////////////////////////////////////////////////////////////////////////////////////////////////
                     // add add-more last cell to the adapters
                     borrowerInfoList.add(
-                        BorrowersInformation(
-                            -1,
-                            "",
-                            0,
-                            "",
-                            "",
-                            "",
-                            0,
-                            null,
-                            null,
-                            true
-                        )
+                        BorrowersInformation(-1, "", 0, "", "", "", 0, null, null, true)
                     )
                     borrowerInfoAdapter =
                         CustomBorrowerAdapter(borrowerInfoList, this@BorrowerApplicationFragment)
@@ -457,14 +444,17 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         Collections.swap(questionList, item, counter++)
                     }
 
-                    Timber.e(" print arraylist = "+questionList)
+                    Timber.e(" print arraylist = $questionList")
 
                     questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities))
-                    questionAdapter =
-                        QuestionAdapter(questionList, this@BorrowerApplicationFragment)
-
-                    questionsRecyclerView.adapter = questionAdapter
-                    questionAdapter.notifyDataSetChanged()
+                    appTabModel.borrowerAppData?.let { bAppData ->
+                        bAppData.borrowersInformation?.let { totalBorrowers->
+                            questionAdapter =
+                                QuestionAdapter(questionList, this@BorrowerApplicationFragment , totalBorrowers.size)
+                                questionsRecyclerView.adapter = questionAdapter
+                                questionAdapter.notifyDataSetChanged()
+                        }
+                    }
 
                 } else
                     binding.applicationTabLayout.visibility = View.INVISIBLE

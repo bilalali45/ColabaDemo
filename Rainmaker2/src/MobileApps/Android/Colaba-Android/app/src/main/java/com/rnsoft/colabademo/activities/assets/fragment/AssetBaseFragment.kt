@@ -133,11 +133,11 @@ open class AssetBaseFragment: BaseFragment() {
 
 
     private fun updateMainAsset(){
-        /*
+
         borrowerApplicationViewModel.assetsModelDataClass.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().popBackStack()
+            //findNavController().popBackStack()
         })
-        */
+
         val assetsActivity = (activity as? AssetsActivity)
         var mainBorrowerList:ArrayList<Int>? = null
         assetsActivity?.let { assetsActivity ->
@@ -152,8 +152,8 @@ open class AssetBaseFragment: BaseFragment() {
                        updateBorrowerId = borrowerId!!, visibleCategoryName = assetCategoryName!!
                     )
 
-                    if(bool)
-                        findNavController().navigateUp()
+                   if(bool)
+                    findNavController().navigateUp()
                 }
             }
         }

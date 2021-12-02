@@ -109,11 +109,11 @@ class BorrowerOneAssets : BaseFragment() {
     }
 
     private val navigateToBank = R.id.action_assets_bank_account //View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
-    private val navigateToRetirement = R.id.action_assets_retirement  //View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
-    private val navigateToStockBonds = R.id.action_assets_stocks_bond  // View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
-    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction  //View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
-    private val navigateToGiftAsset = R.id.action_assets_gift  //View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
-    private val navigateToOtherAsset = R.id.action_assets_other  //View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
+    private val navigateToRetirement = R.id.action_assets_retirement
+    private val navigateToStockBonds = R.id.action_assets_stocks_bond
+    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction
+    private val navigateToGiftAsset = R.id.action_assets_gift
+    private val navigateToOtherAsset = R.id.action_assets_other
 
 
     //private var totalAmount = 0.0
@@ -313,7 +313,7 @@ class BorrowerOneAssets : BaseFragment() {
                     }
                     borrowerIdToNavigate = -1
                 }
-                
+
                  */
 
             })
