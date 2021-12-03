@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class BorrowerApplicationTabModel(
     val code: String,
@@ -23,41 +25,46 @@ data class AssetAndIncome(
     val totalMonthyIncome: Double
 )
 
+@Parcelize
 data class BorrowersInformation(
     val borrowerId: Int,
-    val firstName: String,
-    val genderId: Int,
-    val genderName: String,
-    val lastName: String,
-    val ownTypeName: String,
+    val firstName: String?,
+    val genderId: Int?,
+    val genderName: String?,
+    val lastName: String?,
+    val ownTypeName: String?,
     val owntypeId: Int,
     val ethnicities: ArrayList<Ethnicity>?,
     val races: ArrayList<Race>?,
     val isFooter:Boolean = false
-)
+) : Parcelable
 
+@Parcelize
 data class Ethnicity(
     val id: Int?,
     val name: String?,
     val ethnicityDetails: ArrayList<EthnicityDetail>?
-)
+) : Parcelable
 
+@Parcelize
 data class EthnicityDetail(
-    val id: Int,
-    val name: String
-)
+    val id: Int?,
+    val name: String?
+) : Parcelable
 
 
+@Parcelize
 data class Race(
-    val id: Int,
-    val name: String,
+    val id: Int?,
+    val name: String?,
     val raceDetails: ArrayList<RaceDetail>
-)
+) : Parcelable
 
+@Parcelize
 data class RaceDetail(
-    val id: Int,
-    val name: String
-)
+    val id: Int?,
+    val name: String?
+) : Parcelable
 
 data class LoanInformation(
     val downPayment: Double,

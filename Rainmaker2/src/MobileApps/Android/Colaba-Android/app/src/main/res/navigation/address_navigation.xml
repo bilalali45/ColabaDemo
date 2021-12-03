@@ -32,6 +32,11 @@
             app:enterAnim="@anim/slide_up" />
 
         <action
+            android:id="@+id/action_marriage_info"
+            app:destination="@id/navigation_marriage_detail"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
             android:id="@+id/action_info_active_duty"
             app:destination="@id/navigation_active_duty"
             app:enterAnim="@anim/slide_up" />
@@ -97,6 +102,12 @@
         android:name="com.rnsoft.colabademo.UnMarriedFragment"
         android:label="@string/unmarried_addendum"
         tools:layout="@layout/unmarried_layout" />
+
+    <fragment
+        android:id="@+id/navigation_marriage_detail"
+        android:name="com.rnsoft.colabademo.MarriageDetailFragment"
+        android:label="@string/unmarried_addendum"
+        tools:layout="@layout/spouse_detail_layout" />
 
     <fragment
         android:id="@+id/navigation_active_duty"

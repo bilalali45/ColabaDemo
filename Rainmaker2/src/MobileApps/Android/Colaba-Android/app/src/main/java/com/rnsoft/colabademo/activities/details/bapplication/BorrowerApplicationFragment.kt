@@ -235,9 +235,9 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-    override fun getSingleItemIndex(position: Int) {}
+    override fun getSingleItemIndex(position: Int){}
 
-    override fun navigateTo(position: Int) {
+    override fun navigateTo(position: Int){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val intent = Intent(requireActivity(), BorrowerAddressActivity::class.java)
@@ -245,6 +245,9 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             intent.putExtra(AppConstant.borrowerId,saveBorrowerId)
             intent.putExtra(AppConstant.borrowerName, borrowerName)
             intent.putExtra(AppConstant.addBorrower,borrowerInfoList.get(position).isFooter)
+            intent.putParcelableArrayListExtra(AppConstant.coborrowers,borrowerInfoList)
+
+            Log.e("size",""+borrowerInfoList)
             startActivity(intent)
 
         }
@@ -272,7 +275,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-    override fun navigateToGovernmentActivity(position: Int) {
+    override fun navigateToGovernmentActivity(position: Int){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val govtQuestionActivity = Intent(requireActivity(), GovtQuestionActivity::class.java)

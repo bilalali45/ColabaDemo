@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -29,19 +30,25 @@ class BorrowerAddressActivity : BaseActivity() {
     var borrowerId: Int? = null
     var isAddBorrower: Boolean? = null
     var borrowerName: String? = null
+    var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
-        val extras = intent.extras
-        extras?.let {
-            loanApplicationId = it.getInt(AppConstant.loanApplicationId)
-            borrowerId = it.getInt(AppConstant.borrowerId)
-            isAddBorrower = it.getBoolean(AppConstant.addBorrower)
+        try {
+            val extras = intent.extras
+            extras?.let {
+                loanApplicationId = it.getInt(AppConstant.loanApplicationId)
+                borrowerId = it.getInt(AppConstant.borrowerId)
+                isAddBorrower = it.getBoolean(AppConstant.addBorrower)
+                borrowerInfoList = it.getParcelableArrayList(AppConstant.coborrowers)!!
+                //Log.e("coborrower list", "" + borrowerInfoList.size)
+            }
+        } catch (e:Exception){
+
         }
 
         lifecycleScope.launchWhenStarted {

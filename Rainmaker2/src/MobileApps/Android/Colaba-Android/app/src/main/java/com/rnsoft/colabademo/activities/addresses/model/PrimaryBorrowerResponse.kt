@@ -91,19 +91,20 @@ data class AddressModel(
 data class MaritalStatus(
     val loanApplicationId: Int,
     val borrowerId: Int,
-    val firstName: String?,
-    val isInRelationship: Any?,
-    val lastName: String?,
     val maritalStatusId: Int?,
+    val firstName: String?,
     val middleName: String?,
-    val otherRelationshipExplanation: Any?,
-    val relationFormedStateId: Any?,
+    val lastName: String?,
     val relationWithPrimaryId: Int?,
-    val relationshipTypeId: Any?,
+    val isInRelationship: Boolean?,
+    val otherRelationshipExplanation: String?,
+    val relationFormedStateId: Int?,
+    val relationshipTypeId: Int?,
     val spouseBorrowerId: Int?,
-    val spouseLoanContactId: Any?,
+    val spouseLoanContactId: Int?,
     val spouseMaritalStatusId: Int?
 )
+
 
 data class MilitaryServiceDetails(
     val details: List<MilitaryServiceDetail>?,

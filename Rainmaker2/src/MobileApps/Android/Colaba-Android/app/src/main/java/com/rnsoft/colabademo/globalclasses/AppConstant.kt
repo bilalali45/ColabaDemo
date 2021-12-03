@@ -25,6 +25,10 @@ object AppConstant {
         const val income_retirement: String = "Retirement"
         const val income_other: String = "Other"
 
+        const val married: String = "Married"
+        const val separated: String = "Separated"
+        const val marriage_type: String = "Marriage_type"
+
         const val RESPONSE_CODE_SUCCESS = "200"
         const val IS_LOGGED_IN:String ="IS_LOGGED_IN"
         const val RACE_DETAILS : String = "race_details"
@@ -68,6 +72,7 @@ object AppConstant {
         const val borrowerName:String = "borrowerName"
         const val propertyInfoId:String = "propertyInfoId"
         const val addBorrower:String ="AddBorrower"
+        const val coborrowers:String ="CoBorrower"
 
 
         const val assetUniqueId:String = "borrowerAssetId"

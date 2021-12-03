@@ -779,12 +779,18 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
             msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
+            val bundle = Bundle()
+            bundle.putString(AppConstant.marriage_type,AppConstant.married)
+            findNavController().navigate(R.id.action_marriage_info,bundle)
         }
         if (isDivorced) {
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
+            val bundle = Bundle()
+            bundle.putString(AppConstant.marriage_type,AppConstant.separated)
+            findNavController().navigate(R.id.action_marriage_info,bundle)
         }
     }
 
