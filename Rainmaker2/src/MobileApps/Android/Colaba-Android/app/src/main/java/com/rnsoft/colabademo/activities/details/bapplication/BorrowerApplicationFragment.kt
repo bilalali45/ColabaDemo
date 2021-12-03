@@ -246,8 +246,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             intent.putExtra(AppConstant.borrowerName, borrowerName)
             intent.putExtra(AppConstant.addBorrower,borrowerInfoList.get(position).isFooter)
             intent.putParcelableArrayListExtra(AppConstant.coborrowers,borrowerInfoList)
-
-            Log.e("size",""+borrowerInfoList)
+            //Log.e("size",""+borrowerInfoList)
             startActivity(intent)
 
         }

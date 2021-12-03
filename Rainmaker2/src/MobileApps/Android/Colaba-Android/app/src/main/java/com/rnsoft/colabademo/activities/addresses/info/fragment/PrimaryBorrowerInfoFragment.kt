@@ -71,6 +71,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private var borrowerId :Int? = null
     private var currentAddressModel = AddressModel()
     private var currentAddressDetail = CurrentAddress()
+    private var maritalStatus : MaritalStatus? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -194,6 +195,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 }
 
                 detail.borrowerData?.maritalStatus?.let {
+                    maritalStatus = it
                     if (it.maritalStatusId == 1)
                         msBinding.rbMarried.isChecked = true
                     if (it.maritalStatusId == 2)
@@ -765,7 +767,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), colorIdRes))
     }
 
-    private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean) {
+    private fun setMaritalStatus(isUnmarried: Boolean, isMarried: Boolean, isDivorced: Boolean){
         if (isUnmarried) {
             findNavController().navigate(R.id.action_info_unmarried_addendum)
             msBinding.unmarriedAddendum.visibility = View.VISIBLE
@@ -781,6 +783,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
             val bundle = Bundle()
             bundle.putString(AppConstant.marriage_type,AppConstant.married)
+            bundle.putParcelable(AppConstant.marital_status,maritalStatus)
             findNavController().navigate(R.id.action_marriage_info,bundle)
         }
         if (isDivorced) {
@@ -955,6 +958,14 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     override fun onResume() {
         super.onResume()
         touchListener?.let { bi.recyclerview.addOnItemTouchListener(it) }
+
+
+        // marital status
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<MaritalStatus>(AppConstant.marital_status)?.observe(
+            viewLifecycleOwner) { result ->
+            maritalStatus = result
+
+        }
     }
 
     override fun onStart() {

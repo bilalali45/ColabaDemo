@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SpouseDetailLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import java.lang.Exception
 import kotlin.concurrent.fixedRateTimer
 
 
@@ -23,6 +24,7 @@ class MarriageDetailFragment : BaseFragment() {
     var loanApplicationId : Int? = null
     var borrowerId : Int?= null
     val coborrowerList: ArrayList<CoborrowerList> = arrayListOf()
+    private var maritalStatus : MaritalStatus? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -45,11 +47,52 @@ class MarriageDetailFragment : BaseFragment() {
 
         initViews()
         setCoBorrowers()
+        setData()
 
         return binding.root
     }
 
-    private fun setCoBorrowers() {
+    private fun setData(){
+        try {
+            maritalStatus = arguments?.getParcelable(AppConstant.marital_status)!!
+            if(maritalStatus != null){
+                maritalStatus?.spouseBorrowerId?.let { selectedId->
+                    for(item in coborrowerList){
+                        if (item.borrowerId == selectedId){
+                            binding.yesRadioBtn.isChecked = true
+                            binding.tvCoborrower.setText(item.coborrowerFirstName.plus( " ").plus(item.coborrowerLastName), false)
+                            CustomMaterialFields.setColor(binding.layoutCoborrower, R.color.grey_color_two, requireActivity())
+                            break
+                        }
+                    }
+                }
+                maritalStatus?.firstName?.let { firstName->
+                    binding.noRadioBtn.isChecked = true
+                    if(firstName.isNotEmpty() && firstName.isNotBlank()){
+                        binding.etFirstName.setText(firstName)
+                    }
+                }
+                maritalStatus?.middleName?.let { middleName->
+                    binding.noRadioBtn.isChecked = true
+                    if(middleName.isNotEmpty() && middleName.isNotBlank()){
+                        binding.etMiddleName.setText(middleName)
+                    }
+                }
+                maritalStatus?.lastName?.let { lastName->
+                    binding.noRadioBtn.isChecked = true
+                    if(lastName.isNotEmpty() && lastName.isNotBlank()){
+                        binding.etLastName.setText(lastName)
+                    }
+                }
+
+                // if spouse borrower id null && names are also null
+
+            }
+        } catch (e:Exception){ }
+
+    }
+
+    private fun setCoBorrowers(){
         val activity = (activity as? BorrowerAddressActivity)
         activity?.borrowerInfoList?.let { list->
             if(list.size >0){
@@ -114,43 +157,62 @@ class MarriageDetailFragment : BaseFragment() {
                 activity?.borrowerId?.let { bId ->
                     borrowerId = bId
                 }
-                if(loanApplicationId != null && borrowerId !=null){
+                if(loanApplicationId != null){
 
-                    var firstName = binding.etFirstName.text.toString().trim()
-                     firstName = if(firstName.isNotEmpty() && firstName.length > 0) firstName else
+                    var firstName: String? = null
+                    var lastName: String? = null
+                    var middleName: String? = null
+                    var spouseBorrowerId: Int? = null
+                    if(binding.spouseInfoLayout.isVisible){
+                        firstName = if (binding.etFirstName.text.toString().trim().length > 0) binding.etFirstName.text.toString() else null
+                        lastName = if (binding.etLastName.text.toString().trim().length > 0) binding.etLastName.text.toString() else null
+                        middleName = if (binding.etMiddleName.text.toString().trim().length > 0) binding.etMiddleName.text.toString() else null
+                    }
 
+                    if(binding.layoutCoborrower.isVisible){
+                        val coborrowerName : String = binding.tvCoborrower.getText().toString().trim()
+                        if(coborrowerName.length > 0 && coborrowerList.size > 0){
+                            for(i in coborrowerList.indices){
+                                var name: String =  coborrowerList.get(i).coborrowerFirstName.plus(" ").plus(coborrowerList.get(i).coborrowerLastName)
+                                if(name.equals(coborrowerName,true)){
+                                    spouseBorrowerId = coborrowerList.get(i).borrowerId // get borrower id coborrower
+                                    break
+                                }
+                            }
+                        }
+                        Log.e("SpouseId",  ""+spouseBorrowerId)
+                    }
+
+                    // don't sent   relationWithPrimaryId = null, spouseMaritalStatusId for updated
 
                     val maritalStatus = MaritalStatus(
                         loanApplicationId = loanApplicationId!!,
                         borrowerId = borrowerId!!,
-                        firstName = ,
-                        middleName = ,
-                        lastName = ,
-                        relationWithPrimaryId = ,
-                        isInRelationship =,
-                        otherRelationshipExplanation = ,
+                        firstName = firstName,
+                        middleName = middleName ,
+                        lastName = lastName,
+                        isInRelationship = null,
+                        otherRelationshipExplanation = null ,
                         relationFormedStateId = null,
                         relationshipTypeId = null,
-                        spouseBorrowerId = ,
-                        spouseLoanContactId = ,
-                        spouseMaritalStatusId =
-                    )
+                        spouseBorrowerId = spouseBorrowerId,
+                        spouseLoanContactId = null,
+                        maritalStatusId = 1 )
+
+                   // findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.marital_status, maritalStatus)
+                   // findNavController().popBackStack()
                 }
-
             }
-
-
         }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
 
-
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.layoutCoborrower.visibility = View.VISIBLE
-                binding.tvCoborrower.setText("")
+                //binding.tvCoborrower.setText("")
                 binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
             }
             else {

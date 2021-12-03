@@ -88,6 +88,8 @@ data class AddressModel(
     val zipCode: String? = null
 ) : Parcelable
 
+
+@Parcelize
 data class MaritalStatus(
     val loanApplicationId: Int,
     val borrowerId: Int,
@@ -95,15 +97,15 @@ data class MaritalStatus(
     val firstName: String?,
     val middleName: String?,
     val lastName: String?,
-    val relationWithPrimaryId: Int?,
+    val relationWithPrimaryId: Int? = null,
     val isInRelationship: Boolean?,
     val otherRelationshipExplanation: String?,
     val relationFormedStateId: Int?,
     val relationshipTypeId: Int?,
     val spouseBorrowerId: Int?,
     val spouseLoanContactId: Int?,
-    val spouseMaritalStatusId: Int?
-)
+    val spouseMaritalStatusId: Int? = null
+) : Parcelable
 
 
 data class MilitaryServiceDetails(
