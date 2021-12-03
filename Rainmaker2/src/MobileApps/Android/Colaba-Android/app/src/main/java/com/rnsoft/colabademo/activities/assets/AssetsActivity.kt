@@ -83,7 +83,8 @@ class AssetsActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onErrorEvent(event: WebServiceErrorEvent) {
         binding.assetDataLoader.visibility = View.INVISIBLE
-        finish()
+        SandbarUtils.showError(this, AppConstant.WEB_SERVICE_ERR_MSG )
+        //finish()
 
     }
 }

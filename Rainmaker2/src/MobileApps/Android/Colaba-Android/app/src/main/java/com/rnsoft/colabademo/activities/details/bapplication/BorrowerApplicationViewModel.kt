@@ -87,23 +87,25 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         // _incomeDetails.postValue(null)
     }
 
-    suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int> , updateBorrowerId:Int = -1) {
+    suspend fun getBorrowerWithAssets(token:String, loanApplicationId:Int ,
+                                      borrowerIds:ArrayList<Int> , updateBorrowerId:Int = -1 , visibleCategoryName:String = "TingPing")
+    : Boolean {
         var errorResult:Result.Error?=null
         val borrowerAssetList: ArrayList<MyAssetBorrowerDataClass> = ArrayList()
         viewModelScope.launch(Dispatchers.IO) {
             coroutineScope {
 
+
+
+                /*
                 borrowerIds.forEach { id ->
                     Timber.e("borrowerIds.id -> "+id)
                     launch { // this will allow us to run multiple tasks in parallel
-                        val responseResult = bAppRepo.getBorrowerAssetsDetail(
-                            token = token,
-                            loanApplicationId = loanApplicationId,
-                            borrowerId = id
-                        )
+                        val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = id)
                         if (responseResult is Result.Success) {
                             responseResult.data.passedBorrowerId = id
                             responseResult.data.updateBorrowerId = updateBorrowerId
+                            responseResult.data.refreshTab = refreshTab
                             Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
                             borrowerAssetList.add(responseResult.data)
                         }
@@ -111,16 +113,45 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                             errorResult = responseResult
                     }
                 }
-            }  // coroutineScope block will wait here until all child tasks are completed
+                 */
+
+                for(item in borrowerIds.indices){
+                    Timber.e("item = ",""+item)
+                    Timber.e("borrowerIds[item] = ",""+borrowerIds[item])
+                    val apiCall = async {
+                        val responseResult = bAppRepo.getBorrowerAssetsDetail(token = token, loanApplicationId = loanApplicationId, borrowerId = borrowerIds[item])
+                        if (responseResult is Result.Success) {
+                            responseResult.data.passedBorrowerId = borrowerIds[item]
+                            responseResult.data.updateBorrowerId = updateBorrowerId
+                            responseResult.data.visibleCategoryName = visibleCategoryName
+                            Timber.e("borrowerIds.data.passedBorrowerId -> "+responseResult.data.passedBorrowerId)
+                            borrowerAssetList.add(responseResult.data)
+                        }
+                        else if(responseResult is Result.Error)
+                            errorResult = responseResult
+                        else
+                        {}
+                    }
+                    apiCall.await()
+                }
+            }
+
+                // coroutineScope block will wait here until all child tasks are completed
             withContext(Dispatchers.Main) {
                 _assetsModelDataClass.value = borrowerAssetList
             }
-            if(errorResult!=null) // if service not working.....
+            if(errorResult!=null) {
+                // if service not working.....
                 EventBus.getDefault().post(WebServiceErrorEvent(errorResult, false))
+
+            }
             else
-            if(borrowerAssetList.size == 0) // service working without error but no results....
+            if(borrowerAssetList.size == 0) { // service working without error but no results....
                 EventBus.getDefault().post(WebServiceErrorEvent(null, false))
+            }
         }
+
+        return true
     }
 
     suspend fun getBorrowerWithIncome(token:String, loanApplicationId:Int , borrowerIds:ArrayList<Int>){

@@ -244,7 +244,7 @@ class StockBondsFragment:AssetBaseFragment() {
                     binding.accountTypeCompleteView.setAdapter(bankAdapter)
                 }
                 else
-                    findNavController().popBackStack()
+                    SandbarUtils.showError(requireActivity(),AppConstant.WEB_SERVICE_ERR_MSG)
             })
         }
         assetUniqueId?.let { assetUniqueId ->
@@ -265,8 +265,7 @@ class StockBondsFragment:AssetBaseFragment() {
                                 }
                             }
                         }
-                    } else
-                        findNavController().popBackStack()
+                    }
                 })
 
                 lifecycleScope.launchWhenStarted {

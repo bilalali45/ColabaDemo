@@ -84,7 +84,14 @@
             app:layout_constraintTop_toBottomOf="@+id/loanId" />
 
     </androidx.constraintlayout.widget.ConstraintLayout> -->
-
+    <FrameLayout
+        android:id="@+id/test_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
     <LinearLayout
         android:id="@+id/borrower_top_constraintLayout"
         android:layout_width="match_parent"
@@ -160,13 +167,13 @@
 
 
     </LinearLayout>
-
+    </FrameLayout>
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colaba_app_border_color"
-        app:layout_constraintBottom_toBottomOf="@+id/borrower_top_constraintLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/test_frame"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

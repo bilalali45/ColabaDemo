@@ -14,11 +14,8 @@ import com.rnsoft.colabademo.utils.Common
 import kotlinx.android.synthetic.main.assets_bottom_cell.view.*
 import kotlinx.android.synthetic.main.assets_middle_cell.view.*
 import kotlinx.android.synthetic.main.assets_top_cell.view.*
-import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import androidx.navigation.fragment.findNavController
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 
 class BorrowerOneAssets : BaseFragment() {
@@ -112,11 +109,11 @@ class BorrowerOneAssets : BaseFragment() {
     }
 
     private val navigateToBank = R.id.action_assets_bank_account //View.OnClickListener { findNavController().navigate(R.id.action_assets_bank_account) }
-    private val navigateToRetirement = R.id.action_assets_retirement  //View.OnClickListener { findNavController().navigate(R.id.action_assets_retirement) }
-    private val navigateToStockBonds = R.id.action_assets_stocks_bond  // View.OnClickListener { findNavController().navigate(R.id.action_assets_stocks_bond) }
-    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction  //View.OnClickListener { findNavController().navigate(R.id.action_assets_proceeds_transaction) }
-    private val navigateToGiftAsset = R.id.action_assets_gift  //View.OnClickListener { findNavController().navigate(R.id.action_assets_gift) }
-    private val navigateToOtherAsset = R.id.action_assets_other  //View.OnClickListener { findNavController().navigate(R.id.action_assets_other) }
+    private val navigateToRetirement = R.id.action_assets_retirement
+    private val navigateToStockBonds = R.id.action_assets_stocks_bond
+    private val navigateToTransactionAsset = R.id.action_assets_proceeds_transaction
+    private val navigateToGiftAsset = R.id.action_assets_gift
+    private val navigateToOtherAsset = R.id.action_assets_other
 
 
     //private var totalAmount = 0.0
@@ -139,11 +136,15 @@ class BorrowerOneAssets : BaseFragment() {
                     assetsActivity.binding.assetDataLoader.visibility = View.INVISIBLE
                 }
 
+                var shikra = false
+
+                var visibleCategoryName = "TingPing"
                 var observerCounter = 0
                 var getBorrowerAssets: ArrayList<BorrowerAsset> = arrayListOf()
                 var assetBorrowerName = ""
                 while (observerCounter < observableSampleContent.size) {
                     val webAssets = observableSampleContent[observerCounter]
+                    visibleCategoryName = webAssets.visibleCategoryName
                     if (tabBorrowerId == webAssets.passedBorrowerId) {
                         webAssets.bAssetData?.borrower?.borrowerAssets?.let { webBorrowerAssets ->
                             getBorrowerAssets = webBorrowerAssets
@@ -154,205 +155,181 @@ class BorrowerOneAssets : BaseFragment() {
                     }
                     observerCounter++
                 }
+                var borrowerIdToNavigate:Int = -1
+                for (tab in observableSampleContent) {
+                    borrowerIdToNavigate = tab.updateBorrowerId
+                }
 
-                    val sampleAssets = getSampleAssets()
-                    for (m in 0 until sampleAssets.size) {
-                        val modelData = sampleAssets[m]
-                        //Timber.e("header", modelData.headerTitle)
-                        //Timber.e("h-amount", modelData.headerAmount)
-                        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
-                        val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
-                        topCell.header_title.text = modelData.headerTitle
-                        topCell.header_amount.text = modelData.headerAmount
-                        topCell.tag = R.string.asset_top_cell
-                        mainCell.addView(topCell)
+                while (observerCounter < observableSampleContent.size) {
+                    val webAssets = observableSampleContent[observerCounter]
+                    webAssets.visibleCategoryName = "TingPing"
+                }
 
 
-                        var totalAmount = 0.0
-                        var currentAssetTypeID:Int? = 0
-                        for (i in 0 until getBorrowerAssets.size) {
-                            val webModelData = getBorrowerAssets[i]
-                            webModelData.assetsCategory?.let { assetsCategory ->
-                                if (assetsCategory == modelData.headerTitle) {
-                                    webModelData.assets?.let { it ->
-                                        //savedAssets = it
-                                        for (j in 0 until it.size) {
-                                            val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
+                val sampleAssets = getSampleAssets()
+                for (m in 0 until sampleAssets.size) {
+                    val modelData = sampleAssets[m]
+                    //Timber.e("header", modelData.headerTitle)
+                    //Timber.e("h-amount", modelData.headerAmount)
+                    val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
+                    val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
+                    topCell.header_title.text = modelData.headerTitle
+                    topCell.header_amount.text = modelData.headerAmount
+                    topCell.tag = R.string.asset_top_cell
+                    mainCell.addView(topCell)
 
-                                            val contentData = webModelData.assets[j]
 
-                                            contentCell.tag = R.string.asset_middle_cell
-                                            contentData.assetUniqueId.let { uniqueAssetId->
-                                                contentCell.content_id_cell.setText( uniqueAssetId.toString())
-                                            }
-                                            if (contentData.assetName.isNullOrBlank() || contentData.assetName.isNullOrEmpty())
-                                                contentCell.content_title.text = contentData.assetTypeName
-                                            else
-                                                contentCell.content_title.text = contentData.assetName
-                                            contentCell.content_desc.text = contentData.assetTypeName
-                                            contentData.assetValue?.let { assetValue ->
-                                                totalAmount += assetValue
-                                                contentCell.content_amount.text =
-                                                    "$".plus(Common.addNumberFormat(assetValue))
-                                            }
-                                            contentCell.visibility = View.GONE
-                                            contentCell.setOnClickListener {
-                                                val parentActivity = activity as? AssetsActivity
-                                                parentActivity?.let {
-                                                    val bundle = Bundle()
-                                                    parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
-                                                    tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
-                                                    contentData.assetUniqueId.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
-                                                    contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
-                                                    bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
-                                                    contentData.assetTypeID?.let { it1->
-                                                        currentAssetTypeID = it1
-                                                        bundle.putInt(AppConstant.assetTypeID, it1)
-                                                    }
-                                                    parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
-                                                    contentData.assetCategoryName?.let { it1-> bundle.putString(AppConstant.assetCategoryName, it1) }
-                                                    Timber.e(" content data - $contentData")
-                                                    bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
-                                                    contentData.assetValue?.let { nonNullAssetValue->
-                                                        //val assetTypeValue = topCell.header_amount.text.toString()
-                                                        //val newValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
-                                                        //Timber.e("newValue is $newValue")
-                                                        classCategoryTotal = nonNullAssetValue
+                    var totalAmount = 0.0
+                    var currentAssetTypeID:Int? = 0
+                    for (i in 0 until getBorrowerAssets.size) {
+                        val webModelData = getBorrowerAssets[i]
+                        webModelData.assetsCategory?.let { assetsCategory ->
+                            if (assetsCategory == modelData.headerTitle) {
+                                webModelData.assets?.let { it ->
+                                    //savedAssets = it
+                                    for (j in 0 until it.size) {
+                                        val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
 
-                                                    }
+                                        val contentData = webModelData.assets[j]
 
-                                                    findNavController().navigate(modelData.listenerAttached, bundle)
-                                                }
-                                            }
-
-                                            mainCell.addView(contentCell)
+                                        contentCell.tag = R.string.asset_middle_cell
+                                        contentData.assetUniqueId.let { uniqueAssetId->
+                                            contentCell.content_id_cell.setText( uniqueAssetId.toString())
                                         }
+                                        if (contentData.assetName.isNullOrBlank() || contentData.assetName.isNullOrEmpty())
+                                            contentCell.content_title.text = contentData.assetTypeName
+                                        else
+                                            contentCell.content_title.text = contentData.assetName
+                                        contentCell.content_desc.text = contentData.assetTypeName
+                                        contentData.assetValue?.let { assetValue ->
+                                            totalAmount += assetValue
+                                            contentCell.content_amount.text =
+                                                "$".plus(Common.addNumberFormat(assetValue))
+                                        }
+                                        if(contentData.assetCategoryName == visibleCategoryName && tabBorrowerId == borrowerIdToNavigate)
+                                            contentCell.visibility = View.VISIBLE
+                                        else
+                                            contentCell.visibility = View.GONE
+
+                                        contentCell.setOnClickListener {
+                                            val parentActivity = activity as? AssetsActivity
+                                            parentActivity?.let {
+                                                val bundle = Bundle()
+                                                parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                                                tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                                                contentData.assetUniqueId.let { it1 -> bundle.putInt(AppConstant.assetUniqueId, it1) }
+                                                contentData.assetCategoryId?.let { it1 -> bundle.putInt(AppConstant.assetCategoryId, it1) }
+                                                bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
+                                                contentData.assetTypeID?.let { it1->
+                                                    currentAssetTypeID = it1
+                                                    bundle.putInt(AppConstant.assetTypeID, it1)
+                                                }
+                                                parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
+                                                contentData.assetCategoryName?.let { it1-> bundle.putString(AppConstant.assetCategoryName, it1) }
+                                                Timber.e(" content data - $contentData")
+                                                bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
+                                                contentData.assetValue?.let { nonNullAssetValue->
+                                                    //val assetTypeValue = topCell.header_amount.text.toString()
+                                                    //val newValue = Common.removeCommas(assetTypeValue.replace("$","")).toDouble()
+                                                    //Timber.e("newValue is $newValue")
+                                                    classCategoryTotal = nonNullAssetValue
+
+                                                }
+
+                                                findNavController().navigate(modelData.listenerAttached, bundle)
+                                            }
+                                        }
+
+                                        mainCell.addView(contentCell)
                                     }
                                 }
                             }
                         }
-
-                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount)) //"$"+totalAmount.roundToInt().toString()
-                        grandTotalAmount += totalAmount
-
-                        val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
-                        bottomCell.footer_title.text = modelData.footerTitle
-                        //bottomCell.tag = R.string.asset_bottom_cell
-                        bottomCell.visibility = View.GONE
-                        bottomCell.setOnClickListener {
-                            val parentActivity = activity as? AssetsActivity
-                            parentActivity?.let {
-                                val bundle = Bundle()
-                                classCategoryTotal = 0.0
-                                parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
-                                currentAssetTypeID?.let { it1 -> bundle.putInt(AppConstant.assetTypeID, it1) }
-                                tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
-                                parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
-                                bundle.putInt(AppConstant.assetUniqueId, -1)
-                                bundle.putString(AppConstant.assetCategoryName, modelData.headerTitle)
-                                bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
-                                bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
-                                findNavController().navigate(modelData.listenerAttached, bundle)
-
-                            }
-
-                        }
-
-                        mainCell.addView(bottomCell)
-
-                        binding.assetParentContainer.addView(mainCell)
-
-                        //val drawable = R.drawable.toast_err
-
-                        topCell.setOnClickListener {
-                            hideOtherBoxes() // if you want to hide other boxes....
-                            topCell.arrow_up.visibility = View.VISIBLE
-                            topCell.arrow_down.visibility = View.GONE
-                            toggleContentCells(mainCell, View.VISIBLE)
-                            //bottomCell.visibility = View.VISIBLE
-                        }
-
-                        topCell.arrow_up.setOnClickListener {
-                            topCell.arrow_up.visibility = View.GONE
-                            topCell.arrow_down.visibility = View.VISIBLE
-                            //contentCell.visibility = View.GONE
-                            toggleContentCells(mainCell, View.GONE)
-                            //bottomCell.visibility = View.GONE
-                        }
                     }
+
+                    topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount)) //"$"+totalAmount.roundToInt().toString()
+                    grandTotalAmount += totalAmount
+
+                    val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
+                    bottomCell.footer_title.text = modelData.footerTitle
+                    //bottomCell.tag = R.string.asset_bottom_cell
+                    val parentActivity = activity as? AssetsActivity
+
+                    if (modelData.headerTitle == visibleCategoryName && tabBorrowerId == borrowerIdToNavigate) {
+                        shikra = true
+                        bottomCell.visibility = View.VISIBLE
+                    }
+                    else
+                        bottomCell.visibility = View.GONE
+
+                    bottomCell.setOnClickListener {
+                        val parentActivity = activity as? AssetsActivity
+                        parentActivity?.let {
+                            val bundle = Bundle()
+                            classCategoryTotal = 0.0
+                            parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
+                            currentAssetTypeID?.let { it1 -> bundle.putInt(AppConstant.assetTypeID, it1) }
+                            tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
+                            parentActivity.loanPurpose?.let { it1 -> bundle.putString(AppConstant.loanPurpose, it1) }
+                            bundle.putInt(AppConstant.assetUniqueId, -1)
+                            bundle.putString(AppConstant.assetCategoryName, modelData.headerTitle)
+                            bundle.putInt(AppConstant.listenerAttached, modelData.listenerAttached)
+                            bundle.putString(AppConstant.assetBorrowerName, assetBorrowerName)
+                            findNavController().navigate(modelData.listenerAttached, bundle)
+
+                        }
+
+                    }
+
+                    mainCell.addView(bottomCell)
+
+                    binding.assetParentContainer.addView(mainCell)
+
+                    topCell.setOnClickListener {
+                        hideOtherBoxes() // if you want to hide other boxes....
+                        topCell.arrow_up.visibility = View.VISIBLE
+                        topCell.arrow_down.visibility = View.GONE
+                        toggleContentCells(mainCell, View.VISIBLE)
+                        //bottomCell.visibility = View.VISIBLE
+                    }
+
+                    topCell.arrow_up.setOnClickListener {
+                        topCell.arrow_up.visibility = View.GONE
+                        topCell.arrow_down.visibility = View.VISIBLE
+                        //contentCell.visibility = View.GONE
+                        toggleContentCells(mainCell, View.GONE)
+                        //bottomCell.visibility = View.GONE
+                    }
+
+                }
 
                 //EventBus.getDefault().post(GrandTotalEvent("$".plus(Common.addNumberFormat(grandTotalAmount))))
                 binding.grandTotalTextView.text = "$".plus(Common.addNumberFormat(grandTotalAmount))
 
+                /*
+                if(shikra){
+                    for (tab in observableSampleContent) {
+                        tab.updateBorrowerId = -1
+                    }
+                    borrowerIdToNavigate = -1
+                }
+
+                 */
+
             })
+
+        if(binding.assetParentContainer== null)
+            Timber.e("binding.assetParentContainer = null ")
+
+        Timber.e("total child = "+ binding.assetParentContainer.childCount.toString())
+        binding.assetParentContainer.refreshDrawableState()
+        binding.scroll.refreshDrawableState()
+
         super.addListeners(binding.root)
         return binding.root
     }
 
 
-
-    private fun setupLayout() {
-
-        Timber.d("setupLayout onCreateView function")
-
-        val sampleAssets = getSampleAssets()
-
-        for (i in 0 until sampleAssets.size) {
-
-            val modelData = sampleAssets[i]
-            val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.asset_top_main_cell, null) as LinearLayoutCompat
-            val topCell: View = layoutInflater.inflate(R.layout.assets_top_cell, null)
-            topCell.header_title.text = modelData.headerTitle
-            topCell.header_amount.setText(modelData.headerAmount)
-            topCell.tag = R.string.asset_top_cell
-            mainCell.addView(topCell)
-
-            for (j in 0 until modelData.contentCell.size) {
-                val contentCell: View =
-                    layoutInflater.inflate(R.layout.assets_middle_cell, null)
-                val contentData = modelData.contentCell[j]
-                contentCell.content_title.text = contentData.title
-                contentCell.content_desc.text = contentData.description
-                contentCell.content_amount.text = contentData.contentAmount
-                contentCell.visibility = View.GONE
-                contentCell.setOnClickListener {
-                    findNavController().navigate(modelData.listenerAttached)
-                }
-                mainCell.addView(contentCell)
-            }
-
-
-            val bottomCell: View = layoutInflater.inflate(R.layout.assets_bottom_cell, null)
-            bottomCell.footer_title.text = modelData.footerTitle
-            //bottomCell.tag = R.string.asset_bottom_cell
-            bottomCell.visibility = View.GONE
-            bottomCell.setOnClickListener {
-                findNavController().navigate(modelData.listenerAttached)
-            }
-
-            mainCell.addView(bottomCell)
-
-            binding.assetParentContainer.addView(mainCell)
-
-            val drawable = R.drawable.toast_err
-
-            topCell.setOnClickListener {
-                hideOtherBoxes() // if you want to hide other boxes....
-                topCell.arrow_up.visibility = View.VISIBLE
-                topCell.arrow_down.visibility = View.GONE
-                toggleContentCells(mainCell, View.VISIBLE)
-                //bottomCell.visibility = View.VISIBLE
-            }
-
-            topCell.arrow_up.setOnClickListener {
-                topCell.arrow_up.visibility = View.GONE
-                topCell.arrow_down.visibility = View.VISIBLE
-                //contentCell.visibility = View.GONE
-                toggleContentCells(mainCell, View.GONE)
-                //bottomCell.visibility = View.GONE
-            }
-        }
-    }
 
     private fun toggleContentCells(mainCell: LinearLayoutCompat, display: Int) {
         for (j in 0 until mainCell.childCount) {
@@ -391,6 +368,8 @@ class BorrowerOneAssets : BaseFragment() {
     }
 
 
+
+    /*
     override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
@@ -504,9 +483,7 @@ class BorrowerOneAssets : BaseFragment() {
         if(foundMainCell) {
             val contentCell: View = layoutInflater.inflate(R.layout.assets_middle_cell, null)
             contentCell.tag = R.string.asset_middle_cell
-            assetReturnParams.assetId?.let { uniqueAssetId ->
-                contentCell.content_id_cell.text = uniqueAssetId.toString()
-            }
+
             if (assetReturnParams.assetName.isNullOrBlank() || assetReturnParams.assetName.isNullOrEmpty())
                 contentCell.content_title.text = assetReturnParams.assetTypeName
             else
@@ -516,7 +493,6 @@ class BorrowerOneAssets : BaseFragment() {
 
             contentCell.content_desc.text = assetReturnParams.assetTypeName
             assetReturnParams.assetValue?.let { assetValue ->
-
 
                 updateAssetCategoryTotal(assetReturnParams)
                 contentCell.content_amount.text = "$".plus(Common.addNumberFormat(assetValue))
@@ -619,6 +595,8 @@ class BorrowerOneAssets : BaseFragment() {
 
         }
     }
+
+     */
 
 
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
+import androidx.core.os.HandlerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -44,6 +45,8 @@ class AssetsTabFragment : BaseFragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
 
+    private  var borrowerIdToNavigate = -1
+
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -62,51 +65,86 @@ class AssetsTabFragment : BaseFragment() {
             viewLifecycleOwner,
             Observer { observableSampleContent ->
 
-               var index =0
-                val tabIds:ArrayList<Int> = arrayListOf()
-                for(tab in observableSampleContent) {
-                    tab.passedBorrowerId?.let {
-                        tabIds.add(it)
-                        tab.bAssetData?.borrower?.borrowerName?.let { borrowerName ->
-                            assetsTabArray[index] = borrowerName
-                            index++
+                borrowerIdToNavigate = -1
+
+               if(observableSampleContent.size>0){
+                   for (tab in observableSampleContent) {
+                       borrowerIdToNavigate = tab.updateBorrowerId
+                   }
+                   //for (tab in observableSampleContent) { tab.updateBorrowerId = -1 }
+               }
+
+
+
+
+
+                    var index = 0
+                    val tabIds: ArrayList<Int> = arrayListOf()
+                    for (tab in observableSampleContent) {
+                        tab.passedBorrowerId?.let {
+
+                            tabIds.add(it)
+                            tab.bAssetData?.borrower?.borrowerName?.let { borrowerName ->
+                                assetsTabArray[index] = borrowerName
+                                index++
+                            }
                         }
                     }
+
+                    binding.viewpagerLine.visibility = View.VISIBLE
+                    viewPager = binding.assetViewPager
+                    tabLayout = binding.assetTabLayout
+                    Timber.e("tabIds in AssetTab", tabIds.size)
+                    pageAdapter = AssetsPagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
+                    viewPager.adapter = pageAdapter
+                    viewPager.setPageTransformer(null)
+
+                    viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+                        override fun onPageScrolled(
+                            position: Int,
+                            positionOffset: Float,
+                            positionOffsetPixels: Int
+                        ) {
+                            super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                        }
+
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+                            Log.e("Selected_Page", position.toString())
+                            selectedPosition = position
+                        }
+
+                        override fun onPageScrollStateChanged(state: Int) {
+                            super.onPageScrollStateChanged(state)
+                        }
+                    })
+
+                    tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                        override fun onTabSelected(tab: TabLayout.Tab?) {
+                            tab?.let {
+                                viewPager.adapter
+                                viewPager.currentItem
+                            }
+                        }
+
+                        override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                        override fun onTabReselected(tab: TabLayout.Tab?) {}
+                    })
+                    TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
+
+
+                if(tabIds.size>0) {
+                   if(borrowerIdToNavigate>0) {
+                       viewPager.currentItem = tabIds.indexOf(borrowerIdToNavigate)
+                       binding.viewpagerLine.postDelayed({
+                           for (tab in observableSampleContent) {
+                               tab.updateBorrowerId = -1
+                               tab.visibleCategoryName = "tingPing"
+                           }
+                       },1000)
+                   }
                 }
 
-                binding.viewpagerLine.visibility = View.VISIBLE
-                viewPager = binding.assetViewPager
-                tabLayout = binding.assetTabLayout
-                Timber.e("tabIds in AssetTab", tabIds.size)
-                pageAdapter = AssetsPagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds)
-                viewPager.adapter = pageAdapter
-                viewPager.setPageTransformer(null)
-
-                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
-                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
-                    }
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        Log.e("Selected_Page", position.toString())
-                        selectedPosition = position
-                    }
-                    override fun onPageScrollStateChanged(state: Int) {
-                        super.onPageScrollStateChanged(state)
-                    }
-                })
-
-                tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                    override fun onTabSelected(tab: TabLayout.Tab?) {
-                        tab?.let {
-                            viewPager.adapter
-                            viewPager.currentItem
-                        }
-                    }
-                    override fun onTabUnselected(tab: TabLayout.Tab?) {}
-                    override fun onTabReselected(tab: TabLayout.Tab?) {}
-                })
-                TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = assetsTabArray[position] }.attach()
 
             })
 
