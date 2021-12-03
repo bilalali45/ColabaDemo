@@ -86,6 +86,7 @@ import java.util.ArrayList
                             if (assetUniqueId > 0) {
                                 myLoop@ for (item in categoryList) {
                                     if (item.id == assetTypeID) {
+                                        //viewModel.setProccedFromLaonToNull()
                                         binding.transactionAutoCompleteTextView.setText(item.name, false)
                                         if (item.id == 12) {
                                             getProceedsFromLoan(0)
@@ -139,7 +140,7 @@ import java.util.ArrayList
 
             assetUniqueId?.let { nonNullAssetUniqueId ->
                 if (loanApplicationId != null && borrowerId != null && assetTypeID != null && nonNullAssetUniqueId > 0) {
-                    observeChanges(position)
+
                     lifecycleScope.launchWhenStarted {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
 
@@ -149,6 +150,8 @@ import java.util.ArrayList
                             )
                         }
                     }
+
+                    observeChanges(position)
                 }
             }
         }
@@ -156,7 +159,6 @@ import java.util.ArrayList
         private fun getProceedsFromRealEstateDetail(position:Int){
             assetUniqueId?.let { assetUniqueId->
                 if (loanApplicationId != null && borrowerId != null && assetTypeID != null && assetUniqueId > 0) {
-                    observeChanges(position)
 
                     lifecycleScope.launchWhenStarted {
                         sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -166,6 +168,8 @@ import java.util.ArrayList
                             )
                         }
                     }
+
+                    observeChanges(position)
                 }
             }
         }
@@ -180,7 +184,7 @@ import java.util.ArrayList
                     }
                     proceedFromLoanData.description?.let {
                         binding.edDetails.setText(it)
-                        binding.layoutDetail.visibility = View.VISIBLE
+                        //binding.layoutDetail.visibility = View.VISIBLE
                     }
 
                     proceedFromLoanData.collateralAssetTypeId?.let {
@@ -189,13 +193,13 @@ import java.util.ArrayList
 
                     proceedFromLoanData.collateralAssetOtherDescription?.let {
                         binding.edDetails.setText(it)
-                        binding.layoutDetail.visibility = View.VISIBLE
+                        //binding.layoutDetail.visibility = View.VISIBLE
                     }
 
                     proceedFromLoanData.collateralAssetName?.let{ collateralAssetName->
                         binding.whichAssetsCompleteView.setText(collateralAssetName, false)
                         if(financialArray.indexOf(collateralAssetName) == financialArray.size-1){
-                            binding.layoutDetail.visibility = View.VISIBLE
+                            //binding.layoutDetail.visibility = View.VISIBLE
                         }
 
                         proceedFromLoanData.collateralAssetTypeId?.let {
@@ -231,6 +235,7 @@ import java.util.ArrayList
                 binding.layoutDetail.visibility = View.GONE
 
                 binding.whichAssetsCompleteView.setText("")
+                binding.edDetails.setText("")
                 binding.annualBaseLayout.visibility = View.VISIBLE
                 binding.radioGroup.clearCheck()
                 binding.radioLabelTextView.visibility = View.VISIBLE
@@ -239,11 +244,13 @@ import java.util.ArrayList
             }
             else{
                 binding.whichAssetsCompleteView.setText("")
+                binding.edDetails.setText("")
                 binding.whichAssetInputLayout.visibility = View.GONE
                 binding.radioLabelTextView.visibility = View.GONE
                 binding.radioGroup.visibility = View.GONE
                 binding.annualBaseLayout.visibility = View.VISIBLE
                 binding.layoutDetail.visibility = View.VISIBLE
+
             }
         }
 
@@ -256,11 +263,8 @@ import java.util.ArrayList
             }
             binding.transactionAutoCompleteTextView.setOnClickListener { binding.transactionAutoCompleteTextView.showDropDown() }
 
-            binding.transactionAutoCompleteTextView.onItemClickListener = object: AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    visibleOtherFields(position)
-                }
-            }
+            binding.transactionAutoCompleteTextView.onItemClickListener =
+                AdapterView.OnItemClickListener { p0, p1, position, id -> visibleOtherFields(position) }
 
             binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
@@ -273,6 +277,7 @@ import java.util.ArrayList
                         binding.radioLabelErrorView.visibility = View.INVISIBLE
                         binding.whichAssetInputLayout.visibility = View.GONE
                         binding.layoutDetail.visibility = View.GONE
+                        binding.edDetails.setText("")
                     }
                     else -> {
                     }
@@ -298,6 +303,7 @@ import java.util.ArrayList
                             CustomMaterialFields.clearError(binding.whichAssetInputLayout, requireContext())
                     }
                     if(position==financialArray.size-1) {
+                        binding.edDetails.setText("")
                         binding.layoutDetail.visibility = View.VISIBLE
                     } else{
                         binding.layoutDetail.visibility = View.INVISIBLE

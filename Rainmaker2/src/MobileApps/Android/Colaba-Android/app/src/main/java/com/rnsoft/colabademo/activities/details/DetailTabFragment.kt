@@ -59,6 +59,8 @@ class DetailTabFragment : BaseFragment() {
         pageAdapter = DetailPagerAdapter(requireActivity().supportFragmentManager, lifecycle)
         viewPager.adapter = pageAdapter
 
+
+        // navigate to the relevant fragment screen....
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let { detailActivity->
             detailActivity.innerScreenName?.let {
