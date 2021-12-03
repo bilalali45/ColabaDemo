@@ -172,6 +172,7 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     func setBorrowerInformation(){
+        
         lblBorrowerName.text = "\(borrowerInformationModel.borrowerBasicDetails.firstName.uppercased()) \(borrowerInformationModel.borrowerBasicDetails.lastName.uppercased())"
         if (txtfieldLegalFirstName.text == ""){
             txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)
@@ -1042,6 +1043,9 @@ class BorrowerInformationViewController: BaseViewController {
                     model.updateModelWithJSON(json: result["data"])
                     self.borrowerInformationModel = model
                     self.getAllVisaStatus(residencyTypeId: self.borrowerInformationModel.borrowerCitizenship.residencyTypeId)
+                    if (self.borrowerInformationModel.borrowerBasicDetails.ownTypeId != 1) && (self.borrowerInformationModel.maritalStatus.relationWithPrimaryId > 0) && (self.borrowerInformationModel.maritalStatus.spouseMaritalStatusId > 0){
+                        self.borrowerInformationModel.maritalStatus.maritalStatusId = self.borrowerInformationModel.maritalStatus.spouseMaritalStatusId
+                    }
                     self.setBorrowerInformation()
                 }
                 else{
