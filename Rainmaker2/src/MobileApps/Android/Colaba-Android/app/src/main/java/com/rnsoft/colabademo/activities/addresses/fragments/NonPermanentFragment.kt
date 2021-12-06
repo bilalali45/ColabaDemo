@@ -16,6 +16,8 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 
 @AndroidEntryPoint
@@ -23,6 +25,8 @@ class NonPermanentFragment : BaseFragment() {
 
     private var _binding: NonPermenantResidentLayoutBinding? = null
     private val binding get() = _binding!!
+    private var citizenship : BorrowerCitizenship? = null
+
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -66,16 +70,104 @@ class NonPermanentFragment : BaseFragment() {
             findNavController().popBackStack()
         }
 
+        binding.btnSave.setOnClickListener {
+            saveData()
+        }
+
+        setData()
+
         super.addListeners(binding.root)
 
         return root
     }
 
+    private fun setData(){
+        try {
+            if (arguments != null) {
+                citizenship = arguments?.getParcelable(AppConstant.borrower_citizenship)!!
+                citizenship?.let {
+                    it.residencyStatusId?.let {
+                        if(id==4)
+                            binding.visaStatusCompleteView.setText("I am a temporary worker (H-2A, etc.)")
+
+                        if(id==3)
+                            binding.visaStatusCompleteView.setText("I hold a valid work visa (H1, L1, etc.)")
+
+                        if(id==5)
+                            binding.visaStatusCompleteView.setText("Other")
+                    }
+
+                    it.residencyStatusExplanation?.let {
+                        if(it.isNotEmpty() && it.isNotBlank() && it.length >0 ){
+                            binding.relationshipEditText.setText(it)
+                            binding.relationshipDetailLayout.visibility = View.VISIBLE
+                        }
+                    }
+                }
 
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
 
+
+
+
+
+
+
+            }
+        } catch (e: Exception) {
+        }
     }
 
-}
+     private fun saveData(){
+         var isDataEntered : Boolean = false
+         val visaStatus = binding.visaStatusCompleteView.text.toString()
+         var desc = binding.relationshipEditText.text.toString()
+
+         if (visaStatus.isEmpty() || visaStatus.length == 0) {
+             isDataEntered = false
+             CustomMaterialFields.setError(binding.visaStatusViewLayout,getString(R.string.error_field_required), requireActivity())
+         }
+
+         if (visaStatus.length > 0) {
+             isDataEntered = true
+             CustomMaterialFields.clearError(binding.visaStatusViewLayout, requireActivity())
+         }
+
+         if(binding.relationshipDetailLayout.isVisible){
+             if (desc.isEmpty() || desc.length == 0) {
+                 isDataEntered = false
+                 CustomMaterialFields.setError(binding.relationshipDetailLayout,getString(R.string.error_field_required), requireActivity())
+             }
+
+             if (desc.length > 0) {
+                 isDataEntered = true
+                 CustomMaterialFields.clearError(binding.relationshipDetailLayout, requireActivity())
+             }
+         }
+
+         if(isDataEntered){
+             var statusId: Int? = null
+
+             if(binding.visaStatusCompleteView.text.toString().equals("I am a temporary worker (H-2A, etc.)")){
+                 statusId = 4
+             }
+
+             if(binding.visaStatusCompleteView.text.toString().equals("I hold a valid work visa (H1, L1, etc.)")){
+                 statusId = 3
+             }
+
+             if(binding.visaStatusCompleteView.text.toString().equals("Other")){
+                 statusId = 5
+             }
+
+            desc = if(binding.relationshipEditText.text.toString().length > 0 ) desc else ""
+
+             citizenship = BorrowerCitizenship(residencyStatusId = statusId,residencyStatusExplanation =  desc)
+
+             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.borrower_citizenship, citizenship)
+             findNavController().popBackStack()
+         }
+     }
+
+
+ }

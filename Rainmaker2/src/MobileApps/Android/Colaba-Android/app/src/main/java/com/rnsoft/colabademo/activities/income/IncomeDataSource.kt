@@ -91,7 +91,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getRetirementIncomeTypes(newToken)
-            Timber.e("retirement-income-types-- $response")
+            //Timber.e("retirement-income-types-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

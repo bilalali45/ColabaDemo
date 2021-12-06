@@ -123,7 +123,7 @@
     <string name="test_id">test1</string>
     <string name="empty"> </string>
     <string name="ipsum_dolor">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum ultrices magna ornare eu.</string>
-    <string name="in_what_state">In What State Was This Relationship Formed?</string>
+    <string name="in_what_state">In what state was this relationship formed?</string>
 
     <string name="was_richard">Was Richard Glenn Randall ever activated during their tour of duty?</string>
     <string name="last_date_of_service">Last date of service / tour</string>
@@ -193,6 +193,8 @@
     <string name="loan_info_purchase">Purchase Loan Information</string>
     <string name="loan_info_refinance">Refinance Loan Information</string>
 
+    <string name="married_to_coborower">Are you married to a co-borrower?</string>
+    <string name="coborower_legal_spouse">Is Co-borrower your legal Spouse?</string>
 
     <string name="request_docs">Request Document</string>
 
@@ -394,6 +396,7 @@
     <string name="annual_property_taxes">Annual Property Taxes</string>
     <string name="homeowner_insurances">Annual Homeowner"\'\s Insurance</string>
     <string name="annual_flood_insurance">Annual Flood Insurance</string>
+    <string name="is_mailing_address_different">Mailing Address is different from Current Address</string>
     <string name="occupancy_status">Co-Borrower Occupancy Status</string>
     <string name="occupying">Occupying</string>
     <string name="non_occupying">Non-Occupying</string>

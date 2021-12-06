@@ -234,18 +234,24 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-    override fun getSingleItemIndex(position: Int) {}
+    override fun getSingleItemIndex(position: Int){}
 
-    override fun navigateTo(position: Int) {
+    override fun navigateTo(position: Int){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val intent = Intent(requireActivity(), BorrowerAddressActivity::class.java)
+
             intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
-            intent.putExtra(AppConstant.borrowerId,saveBorrowerId)
+            intent.putExtra(AppConstant.borrowerId,borrowerInfoList.get(position).borrowerId)
             intent.putExtra(AppConstant.borrowerName, borrowerName)
             intent.putExtra(AppConstant.addBorrower,borrowerInfoList.get(position).isFooter)
+            intent.putParcelableArrayListExtra(AppConstant.coborrowers,borrowerInfoList)
+            intent.putExtra(AppConstant.owntypeid, borrowerInfoList.get(position).owntypeId)
+            intent.putExtra(AppConstant.firstName, borrowerInfoList.get(position).firstName)
+            intent.putExtra(AppConstant.lastName, borrowerInfoList.get(position).lastName)
+            intent.putExtra(AppConstant.middleName, borrowerInfoList.get(position).middleName)
+            //Log.e("size",""+borrowerInfoList)
             startActivity(intent)
-
         }
     }
 
@@ -271,7 +277,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
     }
 
-    override fun navigateToGovernmentActivity(position: Int) {
+    override fun navigateToGovernmentActivity(position: Int){
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
             val govtQuestionActivity = Intent(requireActivity(), GovtQuestionActivity::class.java)
@@ -418,7 +424,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     //////////////////////////////////////////////////////////////////////////////////////////////////
                     // add add-more last cell to the adapters
                     borrowerInfoList.add(
-                        BorrowersInformation(-1, "", 0, "", "", "", 0, null, null, true)
+                        BorrowersInformation(-1, "", 0, "", "", "", "",0, null, null, true)
                     )
                     borrowerInfoAdapter =
                         CustomBorrowerAdapter(borrowerInfoList, this@BorrowerApplicationFragment)
@@ -443,7 +449,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                         Collections.swap(questionList, item, counter++)
                     }
 
-                    Timber.e(" print arraylist = $questionList")
+                    //Timber.e(" print arraylist = $questionList")
 
                     questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities, ))
 

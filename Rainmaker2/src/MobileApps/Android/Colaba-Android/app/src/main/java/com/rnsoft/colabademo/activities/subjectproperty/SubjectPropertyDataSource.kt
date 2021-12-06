@@ -55,7 +55,7 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
             //val passJson = g.toJson(data)
             val newToken = "Bearer $token"
             serverResponse = serverApi.addOrUpdateSubjectPropertyDetail(newToken , data)
-            Log.e("SendDataResponse","$serverResponse")
+            //Log.e("SendDataResponse","$serverResponse")
             if(serverResponse.status.equals("OK", true) )
                 Result.Success(serverResponse)
             else {

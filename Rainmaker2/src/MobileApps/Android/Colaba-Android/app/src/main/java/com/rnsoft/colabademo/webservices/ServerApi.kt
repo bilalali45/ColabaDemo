@@ -46,13 +46,18 @@ interface ServerApi{
         @Query("borrowerId")  borrowerId:Int
     ) : PrimaryBorrowerResponse
 
+    @POST("api/mcu/mobile/loanapplication/Borrower/AddOrUpdateBorrowerDetails")
+    suspend fun addUpdateBorrowerInfo(@Header("Authorization")  Authorization:String, @Body data: PrimaryBorrowerData): AddUpdateDataResponse
+
+
+
     @GET("api/mcu/mobile/loanapplication/Loan/GetHousingStatus")
     suspend fun getHousingStatus(
         @Header("Authorization") Authorization:String) : ArrayList<OptionsResponse>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetRelationshipTypes")
     suspend fun getRelationshipTypes(
-        @Header("Authorization") Authorization:String) : ArrayList<RelationTypesResponse>
+        @Header("Authorization") Authorization:String) : ArrayList<DropDownResponse>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetCitizenship")
     suspend fun getCitizenship(
