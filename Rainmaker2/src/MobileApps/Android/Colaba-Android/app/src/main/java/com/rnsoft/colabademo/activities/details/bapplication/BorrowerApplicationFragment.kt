@@ -42,10 +42,9 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
     private var realStateList: ArrayList<RealStateOwn> = ArrayList()
     private var questionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
-    private var newQuestionList: ArrayList<BorrowerQuestionsModel> = ArrayList()
     private var borrowerInfoAdapter = CustomBorrowerAdapter(borrowerInfoList , this)
     private var realStateAdapter  = RealStateAdapter(realStateList,this)
-    private var questionAdapter  = QuestionAdapter(questionList, this, 0)
+    private var questionAdapter  = QuestionAdapter(questionList, this, null)
     var saveBorrowerId:Int = 0
     var borrowerName : String? = null
     @Inject
@@ -452,11 +451,12 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
                     //Timber.e(" print arraylist = $questionList")
 
-                    questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities))
+                    questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities, ))
+
                     appTabModel.borrowerAppData?.let { bAppData ->
-                        bAppData.borrowersInformation?.let { totalBorrowers->
+                        bAppData.borrowersInformation?.let { eachBorrowerRaceEthnicity ->
                             questionAdapter =
-                                QuestionAdapter(questionList, this@BorrowerApplicationFragment , totalBorrowers.size)
+                                QuestionAdapter(questionList, this@BorrowerApplicationFragment , eachBorrowerRaceEthnicity)
                                 questionsRecyclerView.adapter = questionAdapter
                                 questionAdapter.notifyDataSetChanged()
                         }
@@ -485,57 +485,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
 
 
-    /*
-    private fun setUpGovtQuestionsRecycleView(passedList: ArrayList<BorrowerQuestionsModel>) {
-        val simpleItemsList: ArrayList<GovtQuestionsHorizontal> = ArrayList()
-        for (eachItem in passedList) {
-            val simpleItem = GovtQuestionsHorizontal()
-            simpleItem.questionTitle = eachItem.questionDetail?.questionHeader
-            simpleItem.question = eachItem.questionDetail?.questionText
-            eachItem.questionResponses?.let { answers->
-               for(answer in answers){
-                   if(answer.questionResponseText.equals("Yes", true))
-                       simpleItem.answer1 = "- "+answer.borrowerFirstName
-                   else
-                   if(answer.questionResponseText.equals("No", true))
-                        simpleItem.answer2 = "- "+answer.borrowerFirstName
-                   else
-                       simpleItem.answer3 = "- "+answer.borrowerFirstName
-               }
-            }
-            simpleItemsList.add(simpleItem)
-        }
-
-        val itemAdapter = ItemAdapter<GovtQuestionsHorizontal>()
-        val fastAdapter = FastAdapter.with(itemAdapter)
-        govtQuestionsRecyclerView.adapter = fastAdapter
-        itemAdapter.add(simpleItemsList)
-
-        val snapHelper = GravitySnapHelper(Gravity.START)
-        snapHelper.attachToRecyclerView(govtQuestionsRecyclerView)
-
-        govtQuestionsRecyclerView.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        fastAdapter.notifyAdapterDataSetChanged()
-
-        fastAdapter.addEventHook(object : ClickEventHook<GovtQuestionsHorizontal>() {
-            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-                //return the views on which you want to bind this event
-                return if (viewHolder is GovtQuestionsHorizontal.ViewHolder) {
-                    //Log.e("viewHolder", viewHolder.toString())
-                    viewHolder.itemView
-
-                } else
-                    null
-            }
-
-            override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<GovtQuestionsHorizontal>, item: GovtQuestionsHorizontal) {}
-
-
-        })
-    }
-
-     */
 
 }
 

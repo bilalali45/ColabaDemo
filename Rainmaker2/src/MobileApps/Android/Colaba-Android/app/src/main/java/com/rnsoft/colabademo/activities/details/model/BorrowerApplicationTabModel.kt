@@ -81,7 +81,8 @@ data class BorrowerQuestionsModel(
     val questionResponses: ArrayList<QuestionResponse>?,
     val isDemoGraphic:Boolean = false,
     val races: ArrayList<Race>?,
-    val ethnicities: ArrayList<Ethnicity>?
+    val ethnicities: ArrayList<Ethnicity>?,
+    val eachBorrowerRaceEthnicity: ArrayList<BorrowersInformation>?= null
 )
 
 data class QuestionDetail(
