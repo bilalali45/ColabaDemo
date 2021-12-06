@@ -42,29 +42,26 @@ class IncomeTabFragment : BaseFragment() {
     private lateinit var pageAdapter: IncomePagerAdapter
     //private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout:TabLayout
+    private var savedViewInstance: View? = null
+    private lateinit var viewPager: ViewPager2
 
     companion object{
-        private lateinit var viewPager: ViewPager2
-
-        fun selectTab(tabPosition: Int) {
-            viewPager.setCurrentItem(tabPosition)
-        }
-
+        var isStartIncomeTab : Boolean = true
     }
 
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by activityViewModels()
 
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?)
+    : View {
         _binding = IncomeTabLayoutBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+           val root: View = binding.root
 
-        borrowerApplicationViewModel.incomeDetails.observe(
+              // if(isStartIncomeTab) {
+        borrowerApplicationViewModel.incomeTabDetails.observe(
             viewLifecycleOwner,
             Observer { observableSampleContent ->
                 var index = 0
-                var name : String = ""
+                var name: String = ""
                 val tabIds: ArrayList<Int> = arrayListOf()
                 for (tab in observableSampleContent) {
                     tab.passedBorrowerId?.let {
@@ -80,26 +77,33 @@ class IncomeTabFragment : BaseFragment() {
                 binding.viewpagerLine.visibility = View.VISIBLE
                 viewPager = binding.assetViewPager
                 tabLayout = binding.assetTabLayout
-                pageAdapter = IncomePagerAdapter(requireActivity().supportFragmentManager, lifecycle, tabIds,name)
+                pageAdapter = IncomePagerAdapter(
+                    requireActivity().supportFragmentManager,
+                    lifecycle,
+                    tabIds,
+                    name
+                )
                 viewPager.adapter = pageAdapter
                 viewPager.setPageTransformer(null)
-                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
-                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int){
-                        super.onPageScrolled(position, positionOffset, positionOffsetPixels)
+                viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+                    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                        super.onPageScrolled(position, positionOffset,
+                            positionOffsetPixels)
                     }
 
-                    override fun onPageSelected(position: Int){
+                    override fun onPageSelected(position: Int) {
                         super.onPageSelected(position)
                         //Log.e("Selected_Page", position.toString())
                         selectedPosition = position
                     }
 
-                    override fun onPageScrollStateChanged(state: Int){
+                    override fun onPageScrollStateChanged(state: Int) {
                         super.onPageScrollStateChanged(state)
                     }
                 })
 
-                tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+                tabLayout.addOnTabSelectedListener(object :
+                    TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab?) {
                         tab?.let {
                             viewPager.adapter
@@ -117,36 +121,39 @@ class IncomeTabFragment : BaseFragment() {
 
 
 
+
         binding.backButton.setOnClickListener {
-            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-        }
+                EventBus.getDefault()
+                    .postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+            }
 
-        requireActivity().onBackPressedDispatcher.addCallback {
-            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
-            requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
-        }
+            requireActivity().onBackPressedDispatcher.addCallback {
+                EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+                requireActivity().finish()
+                requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+            }
 
-        super.addListeners(binding.root)
-        return root
+            super.addListeners(binding.root)
+            return root
+          //  savedViewInstance
+
     }
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        isStartIncomeTab = true
     }
 
-    /*
-    override fun onStart() {
-        super.onStart()
-        EventBus.getDefault().register(this)
-    }
 
+    override fun onResume() {
+        super.onResume()
+        //Log.e("IncomeTabFragment","OnResume")
+
+    }
+/*
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)

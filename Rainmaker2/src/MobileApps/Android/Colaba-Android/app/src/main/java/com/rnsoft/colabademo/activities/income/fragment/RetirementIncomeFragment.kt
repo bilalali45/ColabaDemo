@@ -23,6 +23,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import kotlinx.coroutines.processNextEventInCurrentThread
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -72,7 +73,7 @@ class RetirementIncomeFragment : BaseFragment(){
         }
 
         borrowerName?.let {
-            toolbarBinding.borrowerPurpose.setText(it)
+           // toolbarBinding.borrowerPurpose.setText(it)
         }
 
             setRetirementType()
@@ -452,42 +453,44 @@ class RetirementIncomeFragment : BaseFragment(){
         }
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent){
         if(evt.isDeleteIncome){
-            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
-                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse?.code.toString()
-                    if(codeString == "400" || codeString == "200"){
-                        updateMainIncome()
-                        viewModel.resetChildFragmentToNull()
-                    }
-                })
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
-                    }
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    val call = async{  viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!) }
+                    call.await()
+                }
+                if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                    viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                        val codeString = genericAddUpdateAssetResponse?.code.toString()
+                        if(codeString == "400" || codeString == "200"){
+                            updateMainIncome()
+                            viewModel.resetChildFragmentToNull()
+                        }
+                    })
                 }
             }
         }
     }
 
-    private fun updateMainIncome(){
-        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_retirement)
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMainIncomeUpdate(evt: OnUpdateMainIncomeReceived){
+        if(evt.isMainIncomeUpdateReceived){
+            IncomeTabFragment.isStartIncomeTab = false
+            val incomeUpdate = IncomeUpdateInfo(AppConstant.income_retirement,borrowerId!!)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
             findNavController().popBackStack()
-        })
-        val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList: java.util.ArrayList<Int>? = null
-        incomeActivity?.let { it ->
-            mainBorrowerList =  it.borrowerTabList
-        }
-        mainBorrowerList?.let { notNullMainBorrowerList->
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
-                }
-            }
         }
     }
+
+    private fun updateMainIncome(){
+        borrowerApplicationViewModel.resetSingleIncomeTab()
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                borrowerApplicationViewModel.getSingleTabIncomeDetail(authToken, loanApplicationId!!, borrowerId!!) }
+        }
+    }
+
 }

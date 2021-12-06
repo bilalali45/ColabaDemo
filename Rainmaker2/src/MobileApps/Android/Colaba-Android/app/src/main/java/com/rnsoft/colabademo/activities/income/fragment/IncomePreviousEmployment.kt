@@ -23,6 +23,7 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import okhttp3.internal.wait
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -70,7 +71,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             }
             //Log.e("Current Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
             borrowerName?.let {
-                toolbar.borrowerPurpose.setText(it)
+               // toolbar.borrowerPurpose.setText(it)
             }
 
             initViews()
@@ -444,45 +445,45 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
         }
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent) {
+    fun onIncomeDeleteReceived(evt: IncomeDeleteEvent){
         if(evt.isDeleteIncome){
-            if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
-                viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
-                    val codeString = genericAddUpdateAssetResponse?.code.toString()
-                    if(codeString == "400" || codeString == "200"){
-                        viewModel.resetChildFragmentToNull()
-                        updateMainIncome()
-                    }
-                })
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!)
-                    }
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    val call = async{  viewModel.deleteIncome(authToken, incomeInfoId!!, borrowerId!!, loanApplicationId!!) }
+                    call.await()
+                }
+                if (loanApplicationId != null && borrowerId != null && incomeInfoId!! > 0) {
+                    viewModel.addUpdateIncomeResponse.observe(viewLifecycleOwner, { genericAddUpdateAssetResponse ->
+                        val codeString = genericAddUpdateAssetResponse?.code.toString()
+                        if(codeString == "400" || codeString == "200"){
+                            updateMainIncome()
+                            viewModel.resetChildFragmentToNull()
+                        }
+                    })
                 }
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMainIncomeUpdate(evt: OnUpdateMainIncomeReceived){
+        if(evt.isMainIncomeUpdateReceived){
+            IncomeTabFragment.isStartIncomeTab = false
+            val incomeUpdate = IncomeUpdateInfo(AppConstant.income_employment,borrowerId!!)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update,incomeUpdate)
+            findNavController().popBackStack()
         }
     }
 
     private fun updateMainIncome(){
-        borrowerApplicationViewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.income_update, AppConstant.income_employment)
-            findNavController().popBackStack()
-        })
-        val incomeActivity = (activity as? IncomeActivity)
-        var mainBorrowerList: java.util.ArrayList<Int>? = null
-        incomeActivity?.let { it ->
-            mainBorrowerList =  it.borrowerTabList
-        }
-        mainBorrowerList?.let { notNullMainBorrowerList->
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerApplicationViewModel.getBorrowerWithIncome(authToken, loanApplicationId!!, notNullMainBorrowerList)
-                }
-            }
+        borrowerApplicationViewModel.resetSingleIncomeTab()
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                borrowerApplicationViewModel.getSingleTabIncomeDetail(authToken, loanApplicationId!!, borrowerId!!) }
         }
     }
+
 
     var maxDate:Long = 0
     var minDate:Long = 0

@@ -17,7 +17,7 @@ import java.util.ArrayList
 class BorrowerAddressAdapter(var context: Context) :
     RecyclerView.Adapter<BorrowerAddressAdapter.AddressViewHolder>() {
 
-    var address: List<PrimaryBorrowerAddress> = arrayListOf()
+    var address: List<PreviousAddresses> = arrayListOf()
    /* private var clickEvent: AddressClickListener = clickListner
 
     init {
@@ -45,9 +45,9 @@ class BorrowerAddressAdapter(var context: Context) :
     inner class AddressViewHolder(val binding : ResidenceItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(address: PrimaryBorrowerAddress, position: Int) {
-            // val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-            binding.tvAddress.text = address.addressDesc
+        fun bind(address: PreviousAddresses, position: Int) {
+             //val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
+            ///binding.tvAddress.text = address.addressModel
             /*if (address.isCurrentAddress){
                 //binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
                 address.fromDate?.let {
@@ -75,6 +75,22 @@ class BorrowerAddressAdapter(var context: Context) :
                     }
                 }
             } */
+            address.addressModel?.let {
+                val builder = StringBuilder()
+                it.street?.let { builder.append(it).append(" ") }
+                it.unit?.let { builder.append(it).append(",") } ?: run { builder.append(",")}
+                it.city?.let { builder.append("\n").append(it).append(",").append(" ") } ?: run {builder.append("\n")}
+                it.stateName?.let { builder.append(it).append(" ") }
+                it.zipCode?.let { builder.append(it) }
+                binding.tvAddress.text = builder
+            }
+
+            address.monthlyRent?.let {
+                if(it > 0) {
+                    //binding.textviewRent.text = "Rent $".plus(Math.round(it).toString())
+                    //bi.textviewRent.visibility = View.VISIBLE
+                }
+            }
 
             try{
                 address.fromDate?.let {
@@ -98,9 +114,10 @@ class BorrowerAddressAdapter(var context: Context) :
 
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setTaskList(addressList: ArrayList<PrimaryBorrowerAddress>){
+    fun setTaskList(addressList: ArrayList<PreviousAddresses>){
         address = addressList
         notifyDataSetChanged()
     }
+
 
 }

@@ -17,7 +17,7 @@ class PrimaryBorrowerRepo @Inject constructor(private val dataSource : PrimaryBo
         return dataSource.getHousingStatus(token = token)
     }
 
-    suspend fun getRelationshipTypes(token: String): Result<ArrayList<RelationTypesResponse>> {
+    suspend fun getRelationshipTypes(token: String): Result<ArrayList<DropDownResponse>> {
         return dataSource.getRelationshipTypes(token = token)
     }
 
@@ -31,6 +31,10 @@ class PrimaryBorrowerRepo @Inject constructor(private val dataSource : PrimaryBo
 
     suspend fun getVisaStatus(token: String, residencyTypeId : Int): Result<ArrayList<OptionsResponse>> {
         return dataSource.getVisaStatus(token = token,residencyTypeId)
+    }
+
+    suspend fun sendBorrowerInfo(token: String, data: PrimaryBorrowerData): Result<AddUpdateDataResponse> {
+        return dataSource.addUpdateBorrowerInfo(token,data)
     }
 
 }

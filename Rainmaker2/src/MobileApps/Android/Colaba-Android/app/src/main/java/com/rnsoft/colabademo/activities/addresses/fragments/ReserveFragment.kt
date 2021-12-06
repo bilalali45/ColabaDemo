@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.dialog_add_emplyment.view.*
 import javax.inject.Inject
 
 
@@ -50,6 +51,19 @@ class ReserveFragment : BaseFragment() {
                 binding.radioButton2No.setTypeface(null, Typeface.BOLD)
             else
                 binding.radioButton2No.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.btnSave.setOnClickListener {
+            var activated :String? = null
+            if(binding.radioButtonYes.isChecked)
+                activated = "Yes"
+
+            if(binding.radioButton2No.isChecked)
+                activated = "No"
+
+
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.RESERVE_ACTIVATED, activated)
+            findNavController().popBackStack()
         }
 
         setData()

@@ -36,6 +36,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     private var grandTotalAmount:Double = 0.0
     val Employment = "EmploymentInfo"
     var showUpdatedIncomeCell : String =""
+    var updatedTabId : Int? = null
 
 
     override fun onCreateView(
@@ -51,34 +52,208 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
 
 
-        /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<IncomeUpdateInfo>(AppConstant.income_update)?.observe(viewLifecycleOwner) { result ->
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<IncomeUpdateInfo>(AppConstant.income_update)?.observe(viewLifecycleOwner){ result ->
             showUpdatedIncomeCell = result.incomeUpdateBox
-            Log.e("onCreate",showUpdatedIncomeCell + " " + result.incomeUpdateTab)
-            if(tabBorrowerId == result.incomeUpdateTab) {
-                Log.e("tab","id matched")
-
-               //IncomeTabFragment.selectTab(2)
-            }
-        } */
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.income_update)?.observe(viewLifecycleOwner) { result ->
-            showUpdatedIncomeCell = result
-
+            updatedTabId = result.incomeUpdateTab
+            updateSingleTab()
         }
 
+        if(IncomeTabFragment.isStartIncomeTab){
+            //Log.e("set up layout", "CALLING FROM HERE 111 ")
             setupLayout()
+        }
 
         return binding.root
     }
 
+    private fun updateSingleTab(){
+        //Log.e("Updated Single","tab SUCCESS")
+        binding.incomeParentContainer.removeAllViews()
 
+        if(updatedTabId !=null && tabBorrowerId == updatedTabId){
+            //Log.e("updatedTabId " + updatedTabId , "BorrowerTabId: " + tabBorrowerId)
+           // Log.e("matced","matched")
+            updatedTabId = null
+            lifecycleScope.launchWhenStarted {
+                viewModel.singleIncomeDetail.observe(viewLifecycleOwner, { observableSampleContent ->
+                    observableSampleContent?.incomeData?.borrower?.borrowerIncomes?.let { webBorrowerIncome ->
+                        var getBorrowerIncome = webBorrowerIncome
+                        //Log.e("BorrrowerIncomeSize",""+getBorrowerIncome.size)
+
+                            val sampleIncome = getSampleIncome()
+                            for (m in 0 until sampleIncome.size) {
+                                val modelData = sampleIncome[m]
+                                //Timber.e("header", modelData.headerTitle)
+                                //Timber.e("h-amount", modelData.headerAmount)
+                                val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.income_main_cell, null) as LinearLayoutCompat
+                                val topCell: View = layoutInflater.inflate(R.layout.income_top_cell, null)
+                                topCell.header_title.text = modelData.headerTitle
+                                topCell.header_amount.setText(modelData.headerAmount)
+                                topCell.tag = R.string.asset_top_cell
+                                mainCell.addView(topCell)
+
+                                var totalAmount = 0.0
+                                for (i in 0 until getBorrowerIncome.size) {
+                                    val webModelData = getBorrowerIncome[i]
+                                    webModelData.incomeCategory?.let { incomeCategory ->
+                                        if (incomeCategory == modelData.headerTitle) {
+                                            webModelData.incomes?.let {
+                                                for (j in 0 until it.size) {
+                                                   // Log.e("list-size", "" + it.size)
+                                                    val contentCell: View = layoutInflater.inflate(R.layout.income_middle_cell, null)
+                                                    val contentData = webModelData.incomes[j]
+                                                    contentCell.content_title.text =
+                                                        contentData.incomeName
+                                                    contentCell.content_desc.text =
+                                                        contentData.jobTitle
+                                                    var startDate: String = ""
+                                                    var endDate: String = ""
+                                                    contentData.startDate?.let {
+                                                        startDate = "From ".plus(
+                                                            AppSetting.getMonthAndYearValue(it)
+                                                        )
+                                                        contentCell.tenureTextView.setText(startDate)
+                                                    }
+                                                    contentData.endDate?.let {
+                                                        endDate = AppSetting.getMonthAndYearValue(it)
+                                                        contentCell.tenureTextView.setText(startDate.plus(" To " + endDate))
+                                                    }
+
+                                                    contentData.incomeValue?.let { incomeValue ->
+                                                        totalAmount += incomeValue
+                                                        // val formattedValue = Common.addNumberFormat(incomeValue)
+                                                        contentCell.content_amount.text = "$".plus(Common.addNumberFormat(incomeValue))
+                                                    }
+                                                   // Log.e("contentData.incomeTypeDisplayName", "" + contentData.incomeTypeDisplayName)
+
+                                                    if (showUpdatedIncomeCell.length > 0 && modelData.headerTitle == showUpdatedIncomeCell) {
+                                                       // Log.e("updating list", showUpdatedIncomeCell + " Tab Id" + tabBorrowerId)
+                                                        contentCell.visibility = View.VISIBLE
+                                                        topCell.arrow_up.visibility = View.VISIBLE
+                                                        topCell.arrow_down.visibility = View.GONE
+                                                    } else {
+                                                        contentCell.visibility = View.GONE
+                                                    }
+
+
+                                                    val parentActivity = activity as? IncomeActivity
+                                                    val bundle = Bundle()
+                                                    parentActivity?.let {
+                                                        parentActivity.loanApplicationId?.let { it1 ->
+                                                            bundle.putInt(AppConstant.loanApplicationId, it1)
+                                                        }
+                                                        tabBorrowerId?.let { it1 ->
+                                                            bundle.putInt(AppConstant.borrowerId, it1)
+                                                        }
+                                                        contentData.incomeId?.let { it1 ->
+                                                            bundle.putInt(AppConstant.incomeId, it1)
+                                                        }
+                                                        contentData.employmentCategory?.categoryId?.let { it1 ->
+                                                            bundle.putInt(
+                                                                AppConstant.incomeCategoryId,
+                                                                it1
+                                                            )
+                                                        }
+                                                        contentData.incomeTypeId?.let { it1 ->
+                                                            bundle.putInt(AppConstant.incomeTypeID, it1)
+                                                            borrowerName.let { name ->
+                                                                bundle.putString(AppConstant.borrowerName, name)
+                                                            }
+                                                        }
+                                                        //Timber.e(" content data - " + contentData)
+                                                    }
+                                                    if (contentData.endDate == null && contentData.incomeTypeDisplayName == Employment) {
+                                                        contentCell.setOnClickListener { findNavController().navigate(R.id.action_current_employement, bundle)
+                                                        }
+                                                    } else
+                                                        contentCell.setOnClickListener {
+                                                            findNavController().navigate(
+                                                                modelData.listenerAttached,
+                                                                bundle
+                                                            )
+                                                        }
+                                                    mainCell.addView(contentCell)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                topCell.header_amount.text =
+                                    "$".plus(Common.addNumberFormat(totalAmount))
+                                grandTotalAmount += totalAmount
+
+                                val bottomCell: View =
+                                    layoutInflater.inflate(R.layout.income_bottom_cell, null)
+                                bottomCell.footer_title.text = modelData.footerTitle
+                                bottomCell.visibility = View.GONE
+                                showUpdatedIncomeCell?.let { cellName ->
+                                    if (modelData.headerTitle.equals(cellName, true))
+                                        bottomCell.visibility = View.VISIBLE
+                                }
+                                if (modelData.footerTitle == AppConstant.footerAddEmployment) {
+                                    bottomCell.setOnClickListener(bottomEmploymentListener)
+                                } else
+                                    bottomCell.setOnClickListener {
+                                        val parentActivity = activity as? IncomeActivity
+                                        parentActivity?.let {
+                                            val bundle = Bundle()
+                                            parentActivity.loanApplicationId?.let { it1 ->
+                                                bundle.putInt(AppConstant.loanApplicationId, it1)
+                                            }
+                                            tabBorrowerId?.let { it1 ->
+                                                bundle.putInt(AppConstant.borrowerId, it1)
+                                            }
+                                            borrowerName.let { name ->
+                                                bundle.putString(AppConstant.borrowerName, name)
+                                            }
+
+                                            findNavController().navigate(modelData.listenerAttached, bundle)
+                                        }
+                                    }
+
+                                mainCell.addView(bottomCell)
+                                binding.incomeParentContainer.addView(mainCell)
+
+                                topCell.setOnClickListener {
+                                    hideOtherBoxes() // if you want to hide other boxes....
+                                    topCell.arrow_up.visibility = View.VISIBLE
+                                    topCell.arrow_down.visibility = View.GONE
+                                    toggleContentCells(mainCell, View.VISIBLE)
+                                }
+
+                                topCell.arrow_up.setOnClickListener {
+                                    topCell.arrow_up.visibility = View.GONE
+                                    topCell.arrow_down.visibility = View.VISIBLE
+                                    toggleContentCells(mainCell, View.GONE)
+                                }
+                            }
+
+                            //EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
+                            binding.grandTotalTextView.text =
+                                "$".plus(Common.addNumberFormat(grandTotalAmount))
+                        }
+                    })
+            }
+
+
+        }
+
+        else {
+            Log.e("NOT","NOt matched 2222")
+            setupLayout()
+        }
+    }
 
     private fun setupLayout(){
+        Log.e("set up layout", "CALLED")
+       // binding.incomeParentContainer.removeAllViews()
         lifecycleScope.launchWhenStarted{
             viewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
-                    val incomeActivity = (activity as? IncomeActivity)
-                    incomeActivity?.let { incomeActivity->
-                        incomeActivity.binding.incomeDataLoader.visibility = View.INVISIBLE
-                    }
+                val incomeActivity = (activity as? IncomeActivity)
+                incomeActivity?.let { incomeActivity->
+                    incomeActivity.binding.incomeDataLoader.visibility = View.INVISIBLE
+                }
 
                     var observerCounter = 0
                     var getBorrowerIncome: ArrayList<BorrowerIncome> = arrayListOf()
@@ -87,12 +262,13 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         if (tabBorrowerId == webIncome.passedBorrowerId) {
                             webIncome.incomeData?.borrower?.borrowerIncomes?.let { webBorrowerIncome ->
                                 getBorrowerIncome = webBorrowerIncome
+                                Log.e("BorrrowerIncomeSize",""+getBorrowerIncome.size)
                             }
                         }
                         observerCounter++
                     }
                     val sampleIncome = getSampleIncome()
-                    for(m in 0 until sampleIncome.size) {
+                    for(m in 0 until sampleIncome.size){
                         val modelData = sampleIncome[m]
                         //Timber.e("header", modelData.headerTitle)
                         //Timber.e("h-amount", modelData.headerAmount)
@@ -134,21 +310,20 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                             }
                                             //Log.e("contentData.incomeTypeDisplayName",""+contentData.incomeTypeDisplayName)
 
-                                            if(showUpdatedIncomeCell.length >0 && modelData.headerTitle == showUpdatedIncomeCell) {
-                                                Log.e("updating list",showUpdatedIncomeCell)
-                                                contentCell.visibility = View.VISIBLE
-                                                topCell.arrow_up.visibility = View.VISIBLE
-                                                topCell.arrow_down.visibility = View.GONE
-                                            } else {
-                                                contentCell.visibility = View.GONE }
-
-                                            /*showUpdatedIncomeCell?.let { cellName ->
-                                                Log.e("update","update not null")
-                                                if(modelData.headerTitle.equals(cellName,true)) {
-                                                    Log.e("updating-CELL", cellName)
+                                            /*if(showUpdatedIncomeCell.length > 0 && modelData.headerTitle == showUpdatedIncomeCell){
+                                                //Log.e("@@@@@@","BorrowerID" + tabBorrowerId + "Current Tab : "+ IncomeTabFragment.viewPager.currentItem + " Passed Tab Id " + updatedTabId )
+                                                Log.e("updating list",showUpdatedIncomeCell + " Tab Id" + tabBorrowerId)
+                                                Log.e("Id ","matched")
+                                                //Log.e("tabId", ""+IncomeTabFragment.viewPager.currentItem)
                                                     contentCell.visibility = View.VISIBLE
-                                                }
+                                                    topCell.arrow_up.visibility = View.VISIBLE
+                                                    topCell.arrow_down.visibility = View.GONE
+                                            }
+                                            else {
+                                                contentCell.visibility = View.GONE
                                             } */
+
+                                            contentCell.visibility = View.GONE
 
                                             val parentActivity = activity as? IncomeActivity
                                             val bundle = Bundle()
@@ -158,11 +333,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                                 contentData.incomeId?.let { it1 -> bundle.putInt(AppConstant.incomeId, it1) }
                                                 contentData.employmentCategory?.categoryId?.let { it1 -> bundle.putInt(AppConstant.incomeCategoryId, it1) }
                                                 contentData.incomeTypeId?.let { it1 -> bundle.putInt(AppConstant.incomeTypeID, it1)
-                                                borrowerName.let {name -> bundle.putString(AppConstant.borrowerName,name) }
+                                                borrowerName.let { name -> bundle.putString(AppConstant.borrowerName,name) }
                                                 }
                                                 //Timber.e(" content data - " + contentData)
                                             }
-                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment) {
+                                            if(contentData.endDate == null && contentData.incomeTypeDisplayName == Employment){
                                                 contentCell.setOnClickListener {
                                                     findNavController().navigate(R.id.action_current_employement, bundle)
                                                 }
@@ -185,28 +360,28 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)
                         bottomCell.footer_title.text = modelData.footerTitle
                         bottomCell.visibility = View.GONE
-                        showUpdatedIncomeCell?.let { cellName ->
+                        /*showUpdatedIncomeCell?.let { cellName ->
                             if(modelData.headerTitle.equals(cellName,true))
                                 bottomCell.visibility = View.VISIBLE
-                        }
+                        } */
                         if(modelData.footerTitle == AppConstant.footerAddEmployment) {
                             bottomCell.setOnClickListener(bottomEmploymentListener)
                         }
                         else
-                            bottomCell.setOnClickListener {
+                            bottomCell.setOnClickListener{
                                 val parentActivity = activity as? IncomeActivity
                                 parentActivity?.let {
                                     val bundle = Bundle()
                                     parentActivity.loanApplicationId?.let { it1 -> bundle.putInt(AppConstant.loanApplicationId, it1) }
                                     tabBorrowerId?.let { it1 -> bundle.putInt(AppConstant.borrowerId, it1) }
-                                    borrowerName.let { name -> bundle.putString(AppConstant.borrowerName,name)}
+                                    borrowerName.let { name -> bundle.putString(AppConstant.borrowerName,name) }
 
                                     findNavController().navigate(modelData.listenerAttached, bundle)
                                 }
                             }
 
                         mainCell.addView(bottomCell)
-                        binding.assetParentContainer.addView(mainCell)
+                        binding.incomeParentContainer.addView(mainCell)
 
                         topCell.setOnClickListener {
                             hideOtherBoxes() // if you want to hide other boxes....
@@ -225,13 +400,15 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                 //EventBus.getDefault().post(GrandTotalEvent("$"+grandTotalAmount.roundToInt().toString()))
                 binding.grandTotalTextView.text = "$".plus(Common.addNumberFormat(grandTotalAmount))
 
-
-                }) }
+                /*if(updatedTabId != null && showUpdatedIncomeCell.length >0){
+                    Log.e("****TabIdSelected***", ""+updatedTabId)
+                   // IncomeTabFragment.selectTab(updatedTabId!!)
+                } */
+            })
+        }
     }
 
-    val currentEmploymentListener:View.OnClickListener= View.OnClickListener {
-
-    }
+    val currentEmploymentListener:View.OnClickListener= View.OnClickListener {}
 
     val bottomEmploymentListener:View.OnClickListener= View.OnClickListener {
         BottomDialogSelectEmployment.newInstance().show(childFragmentManager, BottomDialogSelectEmployment::class.java.canonicalName)
@@ -247,7 +424,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
     }
 
     private fun hideOtherBoxes(){
-        val layout = binding.assetParentContainer
+        val layout = binding.incomeParentContainer
         var mainCell: LinearLayoutCompat?
         for (i in 0 until layout.childCount) {
             mainCell = layout[i] as LinearLayoutCompat
@@ -271,6 +448,11 @@ class BorrowerOneIncome : IncomeBaseFragment() {
             bottomCell.visibility = View.GONE
              */
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
     }
 
    override fun onStart() {
@@ -302,3 +484,14 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
     }
 }
+
+/*
+
+
+        else if(isUpdateSingleTab){
+            Log.e("Updated Single2","tab SUCCESS")
+            updateSingleTab()
+            isUpdateSingleTab = false
+
+        }
+ */

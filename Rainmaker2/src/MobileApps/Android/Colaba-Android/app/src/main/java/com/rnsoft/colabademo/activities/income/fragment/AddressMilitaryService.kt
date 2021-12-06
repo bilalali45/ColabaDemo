@@ -343,20 +343,18 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             if(!hasFocus){
                 if (binding.tvCounty.text.toString().length == 0) {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
-                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
+                    //CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
-                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
+                    //CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
                 }
             }
         }
 
 
-
         binding.edUnitAtpNo.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edUnitAtpNo,binding.layoutUnitAptNo, requireContext()))
         binding.edStreetAddress.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edStreetAddress, binding.layoutStreetAddress, requireContext(),getString(R.string.error_field_required)))
         binding.edCity.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCity, binding.layoutCity, requireContext(),getString(R.string.error_field_required)))
-        //binding.edCounty.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edCounty, binding.layoutCounty,requireContext(),getString(R.string.error_field_required)))
         binding.edZipcode.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edZipcode, binding.layoutZipCode,requireContext(),getString(R.string.error_field_required)))
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.edUnitAtpNo, binding.layoutUnitAptNo)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.edUnitAtpNo, binding.layoutUnitAptNo)

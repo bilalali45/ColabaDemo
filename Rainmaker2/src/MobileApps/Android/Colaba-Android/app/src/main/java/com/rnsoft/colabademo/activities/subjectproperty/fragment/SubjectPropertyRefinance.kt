@@ -238,13 +238,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.radioHasFirstMortgageYes.setOnClickListener {
             onFirstMortgageYes()
             if(firstMortgageModel != null){
-                Log.e("not null","true")
                 binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
                 binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
             } else{
-                Log.e(" null","First mortgage")
                 binding.radioHasFirstMortgageYes.isChecked = false
                 binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
                 binding.radioHasFirstMortgageNo.isChecked = true
@@ -359,9 +357,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                             if (item.id == selectedId) {
                                 binding.tvPropertyType.setText(item.name, false)
                                 showHideRental()
-                                CustomMaterialFields.setColor(
-                                    binding.layoutPropertyType,
-                                    R.color.grey_color_two,
+                                CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two,
                                     requireActivity()
                                 )
                                 break
@@ -375,11 +371,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                             if (item.id == selectedId) {
                                 binding.tvOccupancyType.setText(item.name, false)
                                 showHideRental()
-                                CustomMaterialFields.setColor(
-                                    binding.layoutOccupancyType,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
@@ -388,20 +380,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     details.subPropertyData?.dateAcquired?.let {
                         val date = AppSetting.getMonthAndYear(it, true)
                         binding.edDateOfHomePurchase.setText(date)
-                        CustomMaterialFields.setColor(
-                            binding.layoutDateOfHomepurchase,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutDateOfHomepurchase, R.color.grey_color_two, requireActivity())
                     }
                     // property value
                     details.subPropertyData?.propertyValue?.let { value ->
                         binding.edPropertyValue.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(
-                            binding.layoutPropertyValue,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutPropertyValue, R.color.grey_color_two, requireActivity())
                     }
                     // hoa dues
                     details.subPropertyData?.hoaDues?.let { value ->

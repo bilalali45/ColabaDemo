@@ -25,6 +25,16 @@ object AppConstant {
         const val income_retirement: String = "Retirement"
         const val income_other: String = "Other"
 
+        const val previous_address: String = "prev_address"
+        const val owntypeid: String = "owntype_id"
+
+        const val service_date: String = "service_date"
+        const val borrower_citizenship: String = "borrower_citizenship"
+
+        const val married: String = "Married"
+        const val separated: String = "Separated"
+        const val marriage_type: String = "Marriage_type"
+
         const val RESPONSE_CODE_SUCCESS = "200"
         const val IS_LOGGED_IN:String ="IS_LOGGED_IN"
         const val RACE_DETAILS : String = "race_details"
@@ -37,6 +47,7 @@ object AppConstant {
         const val userName:String = "userName"
         const val firstName:String = "firstName"
         const val lastName:String = "lastName"
+        const val middleName:String = "middleName"
         const val validFrom:String = "validFrom"
         const val validTo:String = "validTo"
         const val refreshTokenValidTo:String = "refreshTokenValidTo"
@@ -68,6 +79,7 @@ object AppConstant {
         const val borrowerName:String = "borrowerName"
         const val propertyInfoId:String = "propertyInfoId"
         const val addBorrower:String ="AddBorrower"
+        const val coborrowers:String ="CoBorrower"
 
 
         const val assetUniqueId:String = "borrowerAssetId"
@@ -169,6 +181,10 @@ object AppConstant {
 
         const val  downloadedFileName:String = "pdfFileName"
         const val address: String = "address"
+        const val current_address: String = "address"
+        const val mailing_address: String = "mailing_address"
+        const val marital_status: String = "marital_status"
+
         const val mixedPropertyDetails: String = "mixed_property_details"
         const val application_tab_updated: String = "tab_data_updated"
         const val income_delete_text: String = "Are you sure you want to remove this income source?"

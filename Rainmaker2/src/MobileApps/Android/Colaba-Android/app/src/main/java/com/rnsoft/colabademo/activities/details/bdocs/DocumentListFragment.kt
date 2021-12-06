@@ -125,7 +125,7 @@ class DocumentListFragment : BaseFragment(), DocsViewClickListener {
         detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
                 if (it != null && it.size > 0) {
                     var percentage = ((it[0]* 100) / it[1]).toInt()
-                    Log.e("Ui-percentage--", ""+percentage)
+                    //Log.e("Ui-percentage--", ""+percentage)
                     loader_percentage.text = "$percentage%"
                 }
         })

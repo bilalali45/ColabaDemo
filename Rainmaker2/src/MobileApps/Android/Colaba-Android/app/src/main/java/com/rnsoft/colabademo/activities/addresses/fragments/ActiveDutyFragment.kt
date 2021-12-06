@@ -22,6 +22,7 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: ActiveDutyLayoutBinding? = null
     private val binding get() = _binding!!
+     var militarySericeDate : String? =null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -45,7 +46,39 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
             findNavController().popBackStack()
         }
 
-        super.addListeners(binding.root)
+        binding.btnSave.setOnClickListener {
+            val date = binding.edEmail.text.toString()
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.service_date, date)
+            findNavController().popBackStack()
+        }
+
+        try {
+            if (arguments != null) {
+                militarySericeDate = arguments?.getString(AppConstant.service_date)
+                militarySericeDate?.let {
+                    if (it.isNullOrBlank() && it.length >0) {
+                       binding.edEmail.setText(militarySericeDate)
+                    }
+                }
+            }
+        } catch(e:Exception){
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                super.addListeners(binding.root)
 
         return root
 

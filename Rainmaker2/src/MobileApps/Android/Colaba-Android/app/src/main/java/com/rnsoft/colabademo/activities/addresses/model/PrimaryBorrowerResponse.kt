@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class PrimaryBorrowerResponse(
     val code: String?,
@@ -12,12 +14,12 @@ data class PrimaryBorrowerResponse(
 
 data class PrimaryBorrowerData(
     val loanApplicationId: Int,
-    val borrowerId: Int,
-    val borrowerBasicDetails: BorrowerBasicDetails,
-    val borrowerCitizenship: BorrowerCitizenship,
+    val borrowerId: Int?,
+    val borrowerBasicDetails: BorrowerBasicDetails?,
+    val borrowerCitizenship: BorrowerCitizenship?,
     val currentAddress: CurrentAddress?,
-    val maritalStatus: MaritalStatus,
-    val militaryServiceDetails: MilitaryServiceDetails,
+    val maritalStatus: MaritalStatus?,
+    val militaryServiceDetails: MilitaryServiceDetails? = null,
     val previousAddresses: List<PreviousAddresses>?
 )
 
@@ -36,71 +38,78 @@ data class BorrowerBasicDetails(
     val workPhoneExt: String?
 )
 
+@Parcelize
 data class BorrowerCitizenship(
-    val borrowerId: Int,
-    val loanApplicationId: Int,
-    val dependentAges: String?,
-    val dependentCount: Int?,
-    val dobUtc: String?,
-    val residencyStatusExplanation: String?,
-    val residencyStatusId: Int?,
-    val residencyTypeId: Int?,
-    val ssn: String?
-)
+    val borrowerId: Int? = null,
+    val loanApplicationId: Int? = null,
+    val dependentAges: String? = null,
+    val dependentCount: Int? = null,
+    val dobUtc: String? = null,
+    val residencyStatusExplanation: String? = null,
+    val residencyStatusId: Int? = null,
+    val residencyTypeId: Int? = null,
+    val ssn: String? = null
+) : Parcelable
 
-
+@Parcelize
 data class CurrentAddress(
-    val loanApplicationId: Int,
-    val borrowerId: Int,
-    val id: Int?,
-    val housingStatusId: Int?,
-    val addressModel: AddressModel?,
-    val fromDate: String?,
-    val isMailingAddressDifferent: Boolean?,
-    val mailingAddressModel: Any?,
-    val monthlyRent: Double?
-)
+    val loanApplicationId: Int? = null,
+    val borrowerId: Int? = null,
+    val id: Int? = null,
+    val housingStatusId: Int? = null,
+    val addressModel: AddressModel? = null,
+    val fromDate: String? = null,
+    val isMailingAddressDifferent: Boolean? = null,
+    val mailingAddressModel: AddressModel? = null,
+    val monthlyRent: Double? = null
+) : Parcelable
 
+@Parcelize
 data class PreviousAddresses(
-    val id: Int?,
-    val housingStatusId: Int?,
-    val monthlyRent: Double?,
-    val fromDate: String?,
-    val toDate: String?,
-    val addressModel: AddressModel?,
-    val isMailingAddressDifferent: Boolean?,
-    val mailingAddressModel: Any?,
-)
+    val position: Int? = null,
+    val id: Int? = null,
+    val housingStatusId: Int? = null,
+    val monthlyRent: Double? = null,
+    val fromDate: String? = null,
+    val toDate: String? = null,
+    val addressModel: AddressModel? = null,
+    val isMailingAddressDifferent: Boolean? = null,
+    val mailingAddressModel: AddressModel? = null
+) :Parcelable
 
+@Parcelize
 data class AddressModel(
-    val city: String?,
-    val countryId: Int?,
-    val countryName: String?,
-    val countyId: Int?,
-    val countyName: String?,
-    val stateId: Int?,
-    val stateName: String?,
-    val street: String?,
-    val unit: String?,
-    val zipCode: String?
-)
+    val city: String? = null,
+    val countryId: Int? = null,
+    val countryName: String? = null,
+    val countyId: Int? = null,
+    val countyName: String? = null,
+    val stateId: Int? = null,
+    val stateName: String? = null,
+    val street: String? = null,
+    val unit: String? = null,
+    val zipCode: String? = null
+) : Parcelable
 
+
+@Parcelize
 data class MaritalStatus(
     val loanApplicationId: Int,
-    val borrowerId: Int,
-    val firstName: String?,
-    val isInRelationship: Any?,
-    val lastName: String?,
+    val borrowerId: Int? = null,
     val maritalStatusId: Int?,
+    val firstName: String?,
     val middleName: String?,
-    val otherRelationshipExplanation: Any?,
-    val relationFormedStateId: Any?,
-    val relationWithPrimaryId: Int?,
-    val relationshipTypeId: Any?,
+    val lastName: String?,
+    val relationWithPrimaryId: Int? = null,
+    val isInRelationship: Boolean?,
+    val otherRelationshipExplanation: String?,
+    val relationFormedStateId: Int?,
+    val relationshipTypeId: Int?,
     val spouseBorrowerId: Int?,
-    val spouseLoanContactId: Any?,
-    val spouseMaritalStatusId: Int?
-)
+    val spouseLoanContactId: Int?,
+    val spouseMaritalStatusId: Int? = null
+) : Parcelable
+
 
 data class MilitaryServiceDetails(
     val details: List<MilitaryServiceDetail>?,
@@ -108,7 +117,7 @@ data class MilitaryServiceDetails(
 )
 
 data class MilitaryServiceDetail(
-    val expirationDateUtc: String?,
+    val expirationDateUtc: String? ,
     val militaryAffiliationId: Int?,
     val reserveEverActivated: Boolean?
 )
