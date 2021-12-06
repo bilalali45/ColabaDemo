@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.rnsoft.colabademo.databinding.BorrowerAddressLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.income_military_pay.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
@@ -31,12 +32,12 @@ class BorrowerAddressActivity : BaseActivity() {
     var isAddBorrower: Boolean? = null
     var borrowerName: String? = null
     var borrowerInfoList: ArrayList<BorrowersInformation> = ArrayList()
+    var ownTypeId: Int?= null
+    var firstName: String?= null
+    var lastName:String ? = null
+    var middleName:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         try {
             val extras = intent.extras
@@ -45,11 +46,22 @@ class BorrowerAddressActivity : BaseActivity() {
                 borrowerId = it.getInt(AppConstant.borrowerId)
                 isAddBorrower = it.getBoolean(AppConstant.addBorrower)
                 borrowerInfoList = it.getParcelableArrayList(AppConstant.coborrowers)!!
+                ownTypeId = it.getInt(AppConstant.owntypeid)
+                firstName = it.getString(AppConstant.firstName)
+                lastName = it.getString(AppConstant.lastName)
+                middleName = it.getString(AppConstant.middleName)
                 //Log.e("coborrower list", "" + borrowerInfoList.size)
+                //Log.e("owntypeId","borrowerId: " + borrowerId + "OwnTypeId: " + ownTypeId)
+                //Log.e("firstName",firstName+ "lastname: " + lastName)
             }
         } catch (e:Exception){
 
         }
+
+        super.onCreate(savedInstanceState)
+        binding = BorrowerAddressLayoutBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -60,6 +72,7 @@ class BorrowerAddressActivity : BaseActivity() {
                             viewModel.refreshBorrowerInfo()
                         } else {
                             binding.loaderInfo.visibility = View.VISIBLE
+
                             viewModel.getBasicBorrowerDetail(authToken, loanApplicationId!!, borrowerId!!)
                         }
 

@@ -32,6 +32,7 @@ data class BorrowersInformation(
     val genderId: Int?,
     val genderName: String?,
     val lastName: String?,
+    val middleName:String?,
     val ownTypeName: String?,
     val owntypeId: Int,
     val ethnicities: ArrayList<Ethnicity>?,

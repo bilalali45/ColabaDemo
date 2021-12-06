@@ -14,12 +14,12 @@ data class PrimaryBorrowerResponse(
 
 data class PrimaryBorrowerData(
     val loanApplicationId: Int,
-    val borrowerId: Int,
-    val borrowerBasicDetails: BorrowerBasicDetails,
-    val borrowerCitizenship: BorrowerCitizenship,
+    val borrowerId: Int?,
+    val borrowerBasicDetails: BorrowerBasicDetails?,
+    val borrowerCitizenship: BorrowerCitizenship?,
     val currentAddress: CurrentAddress?,
-    val maritalStatus: MaritalStatus,
-    val militaryServiceDetails: MilitaryServiceDetails,
+    val maritalStatus: MaritalStatus?,
+    val militaryServiceDetails: MilitaryServiceDetails? = null,
     val previousAddresses: List<PreviousAddresses>?
 )
 
@@ -38,17 +38,18 @@ data class BorrowerBasicDetails(
     val workPhoneExt: String?
 )
 
+@Parcelize
 data class BorrowerCitizenship(
-    val borrowerId: Int,
-    val loanApplicationId: Int,
-    val dependentAges: String?,
-    val dependentCount: Int?,
-    val dobUtc: String?,
-    val residencyStatusExplanation: String?,
-    val residencyStatusId: Int?,
-    val residencyTypeId: Int?,
-    val ssn: String?
-)
+    val borrowerId: Int? = null,
+    val loanApplicationId: Int? = null,
+    val dependentAges: String? = null,
+    val dependentCount: Int? = null,
+    val dobUtc: String? = null,
+    val residencyStatusExplanation: String? = null,
+    val residencyStatusId: Int? = null,
+    val residencyTypeId: Int? = null,
+    val ssn: String? = null
+) : Parcelable
 
 @Parcelize
 data class CurrentAddress(
@@ -63,16 +64,18 @@ data class CurrentAddress(
     val monthlyRent: Double? = null
 ) : Parcelable
 
+@Parcelize
 data class PreviousAddresses(
-    val id: Int?,
-    val housingStatusId: Int?,
-    val monthlyRent: Double?,
-    val fromDate: String?,
-    val toDate: String?,
-    val addressModel: AddressModel?,
-    val isMailingAddressDifferent: Boolean?,
-    val mailingAddressModel: Any?,
-)
+    val position: Int? = null,
+    val id: Int? = null,
+    val housingStatusId: Int? = null,
+    val monthlyRent: Double? = null,
+    val fromDate: String? = null,
+    val toDate: String? = null,
+    val addressModel: AddressModel? = null,
+    val isMailingAddressDifferent: Boolean? = null,
+    val mailingAddressModel: AddressModel? = null
+) :Parcelable
 
 @Parcelize
 data class AddressModel(
@@ -92,7 +95,7 @@ data class AddressModel(
 @Parcelize
 data class MaritalStatus(
     val loanApplicationId: Int,
-    val borrowerId: Int,
+    val borrowerId: Int? = null,
     val maritalStatusId: Int?,
     val firstName: String?,
     val middleName: String?,
@@ -114,7 +117,7 @@ data class MilitaryServiceDetails(
 )
 
 data class MilitaryServiceDetail(
-    val expirationDateUtc: String?,
+    val expirationDateUtc: String? ,
     val militaryAffiliationId: Int?,
     val reserveEverActivated: Boolean?
 )

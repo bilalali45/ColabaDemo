@@ -271,7 +271,6 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
     override fun onResume() {
         super.onResume()
-        Log.e("onResume","true")
         if(docsArrayList.size ==0){
             showHideLayout(false)
         }
@@ -444,7 +443,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         if(dataLayout){
             layout_docData.visibility = View.VISIBLE
             layout_noDocFound.visibility = View.GONE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
         else {
             layout_docData.visibility = View.GONE
@@ -473,10 +472,10 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
                 filterDocsList.add(doc)
             }
         }
-        Log.e("Filterlist size", ""+filterDocsList.size)
+        //Log.e("Filterlist size", ""+filterDocsList.size)
         if(filterDocsList.size > 0) {
             layout_noDocFound.visibility = View.GONE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
             docsRecycler.visibility=View.VISIBLE
             populateRecyclerview(filterDocsList)
         } else{

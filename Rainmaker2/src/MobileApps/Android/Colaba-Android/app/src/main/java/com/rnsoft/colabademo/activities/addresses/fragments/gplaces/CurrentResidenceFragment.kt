@@ -37,6 +37,7 @@ import android.location.Geocoder
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputLayout
+import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.BorrowerInfoCurrentAddressBinding
 import java.io.IOException
 import java.util.*
@@ -62,6 +63,13 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
     private var currentAddressDetail = CurrentAddress()
     private var housingStatusList:ArrayList<OptionsResponse> = arrayListOf()
     private var mailingAddressModel : AddressModel? = null
+    private var currentAddressModel : AddressModel? = null
+    private var countyFullList: ArrayList<CountiesModel> = arrayListOf()
+    private var countryFullList: ArrayList<CountriesModel> = arrayListOf()
+    private var stateFullList: ArrayList<StatesModel> = arrayListOf()
+    var loanApplicationId : Int? = null
+    var borrowerId : Int?= null
+    var addressId : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +79,14 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         _binding = BorrowerInfoCurrentAddressBinding.inflate(inflater, container, false)
         val root: View = binding.root
         super.addListeners(binding.root)
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.loanApplicationId?.let { loanId ->
+            loanApplicationId = loanId }
+
+        activity?.borrowerId?.let { bId ->
+            borrowerId = bId
+        }
 
         setUpUI()
         getDropDownData()
@@ -118,7 +134,13 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             try {
                 if (arguments != null) {
                     currentAddressDetail = arguments?.getParcelable(AppConstant.current_address)!!
+                    currentAddressDetail.id?.let  { id->
+                        addressId = id  // set this id if present in get api other wise send null
+                    }
+
                     currentAddressDetail.addressModel?.let {
+                        currentAddressModel = it
+
                         it.street?.let {
                             binding.topSearchAutoTextView.setText(it)
                             binding.streetAddressEditText.setText(it)
@@ -144,13 +166,16 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         it.unit?.let {
                             binding.unitAptInputEditText.setText(it)
                         }
+
                         visibleAllFields()
                     }
                     currentAddressDetail.fromDate?.let {
-                        binding.moveInEditText.setText(it)
-                        setColor(binding.moveInLayout)
+                        if(it.isNotEmpty() && it.isNotBlank() && it.length > 0) {
+                            val date = AppSetting.getMonthAndYear(it, true)
+                            binding.moveInEditText.setText(date)
+                            setColor(binding.moveInLayout)
+                        }
                     }
-
                     currentAddressDetail.housingStatusId?.let { housingId ->
                         for (item in housingStatusList) {
                             if (item.id == housingId) {
@@ -185,8 +210,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
                 }
 
-            } catch (e: NullPointerException) {
-            }
+            } catch (e: Exception){}
         }
     }
 
@@ -210,11 +234,12 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in states) {
                             itemList.add(item.name)
+                            stateFullList.add(item)
                         }
                         val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
                         binding.stateCompleteTextView.setAdapter(stateAdapter)
 
-                        binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
+                        /*binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
                             //binding.stateCompleteTextView.showDropDown()
                             HideSoftkeyboard.hide(requireActivity(),
                                 binding.stateCompleteTextInputLayout
@@ -226,7 +251,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                                 requireActivity(),
                                 binding.stateCompleteTextInputLayout
                             )
-                        }
+                        } */
 
                         binding.stateCompleteTextView.onItemClickListener =
                             object : AdapterView.OnItemClickListener {
@@ -257,6 +282,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in countries) {
                             itemList.add(item.name)
+                            countryFullList.add(item)
                         }
                         val countryAdapter = ArrayAdapter(
                             requireContext(),
@@ -303,6 +329,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         val itemList: ArrayList<String> = arrayListOf()
                         for (item in counties) {
                             itemList.add(item.name)
+                            countyFullList.add(item)
                         }
                         val countyAdapter = ArrayAdapter(
                             requireContext(),
@@ -394,7 +421,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
              binding.checkboxIsMailingAddressDiff.isChecked = true
          }
      }
-
 
     private fun displayAddress(it: AddressModel){
         val builder = StringBuilder()
@@ -507,7 +533,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.unitAptInputEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
         //binding.countyEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.countyEditText, binding.countyLayout, requireContext()))
         binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
-        binding.monthlyRentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyRentEditText, binding.monthlyRentLayout, requireContext()))
+        binding.etMonthlyRent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMonthlyRent, binding.monthlyRentLayout, requireContext()))
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.unitAptInputEditText, binding.unitAptInputLayout)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.streetAddressEditText, binding.streetAddressLayout)
@@ -554,23 +580,21 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
         }
-
         if (moveInDate.isEmpty() || moveInDate.length == 0) {
             CustomMaterialFields.setError(binding.moveInLayout,getString(R.string.error_field_required), requireActivity())
+        }
+        if(moveInDate.isNotEmpty() || moveInDate.length > 0) {
+            CustomMaterialFields.clearError(binding.moveInLayout,requireActivity())
         }
         if (housingStatus.isEmpty() || housingStatus.length == 0) {
             CustomMaterialFields.setError(binding.housingLayout,getString(R.string.error_field_required), requireActivity())
         }
-
         if(binding.streetAddressLayout.visibility == View.VISIBLE){
             if(street.isEmpty() || street.length == 0) {
                 CustomMaterialFields.setError(binding.streetAddressLayout,getString(R.string.error_field_required),requireActivity())
             }
             if(city.isEmpty() || city.length == 0) {
                 CustomMaterialFields.setError(binding.cityLayout,getString(R.string.error_field_required),requireActivity())
-            }
-            if(county.isEmpty() || county.length == 0) {
-                CustomMaterialFields.setError(binding.countyLayout,getString(R.string.error_field_required),requireActivity())
             }
             if(zipCode.isEmpty() || zipCode.length == 0) {
                 CustomMaterialFields.setError(binding.zipcodeLayout,getString(R.string.error_field_required),requireActivity())
@@ -588,9 +612,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(city.isNotEmpty() || city.length > 0) {
                 CustomMaterialFields.clearError(binding.cityLayout,requireActivity())
             }
-            if(county.isNotEmpty() || county.length > 0) {
-                CustomMaterialFields.clearError(binding.countyLayout,requireActivity())
-            }
+
             if(zipCode.isNotEmpty() || zipCode.length > 0) {
                 CustomMaterialFields.clearError(binding.zipcodeLayout,requireActivity())
             }
@@ -606,8 +628,64 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         }
 
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && county.length>0  && country.length > 0 && zipCode.length > 0
-            && housingStatus.length>0) {
+        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0  && country.length > 0 && zipCode.length > 0
+            && housingStatus.length>0 && moveInDate.length>0) {
+
+            val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
+
+            val countyName : String = binding.countryCompleteTextView.getText().toString().trim()
+            val matchedCounty =  countyFullList.filter { p -> p.name.equals(countyName,true)}
+            val countyId = if(matchedCounty.size > 0)
+                matchedCounty.get(0).id else null
+
+            val countryName : String = binding.countryCompleteTextView.getText().toString().trim()
+            val matchedCountry =  countryFullList.filter { p -> p.name.equals(countryName,true)}
+            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+
+            val stateName : String = binding.stateCompleteTextView.getText().toString().trim()
+            val matchedState =  stateFullList.filter { p -> p.name.equals(stateName,true)}
+            val stateId = if(matchedState.size > 0) matchedState.get(0).id else null
+
+            val matchedList =  housingStatusList.filter { p -> p.description.equals(housingStatus,true)}
+            val housingStatusId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+
+            var isMailingAddressDifferent : Boolean? = null
+            if(binding.checkboxIsMailingAddressDiff.isChecked)
+                isMailingAddressDifferent = true
+            else {
+                isMailingAddressDifferent = false
+                mailingAddressModel = null
+            }
+
+            var monthlyRent = binding.etMonthlyRent.text.toString()
+            monthlyRent = if(monthlyRent.length > 0) monthlyRent else "0.0"
+
+            currentAddressModel = AddressModel(   // current address
+                street = street,
+                unit = unit,
+                city = city,
+                stateName = state,
+                countryName = country,
+                countyName = county,
+                countyId = countyId,
+                stateId = stateId,
+                countryId = countryId,
+                zipCode = zipCode)
+
+
+            currentAddressDetail = CurrentAddress(
+                loanApplicationId = loanApplicationId,
+                borrowerId = if(borrowerId != null) borrowerId else null,
+                id = addressId,
+                fromDate = moveInDate,
+                housingStatusId = housingStatusId,
+                addressModel = currentAddressModel ,
+                isMailingAddressDifferent = isMailingAddressDifferent,
+                mailingAddressModel = mailingAddressModel,
+                monthlyRent = monthlyRent.toDouble())
+
+
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.current_address, currentAddressDetail)
             findNavController().popBackStack()
         }
 

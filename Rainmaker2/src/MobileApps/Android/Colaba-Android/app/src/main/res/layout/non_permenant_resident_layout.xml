@@ -136,7 +136,6 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/relationshipDetailLayout"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginStart="22dp"
         android:layout_marginTop="30dp"
@@ -193,18 +192,20 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <ImageView
-        android:id="@+id/phone_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_save_icon"
-        app:elevation="3dp"
-        android:translationX="18dp"
-        android:translationY="20dp"
+    <ImageButton
+        android:id="@+id/btn_save"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="20dp"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/rubik_regular"
+        android:src="@drawable/ic_save"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

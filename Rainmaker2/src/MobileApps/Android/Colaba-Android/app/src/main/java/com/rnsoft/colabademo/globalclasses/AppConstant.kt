@@ -25,6 +25,12 @@ object AppConstant {
         const val income_retirement: String = "Retirement"
         const val income_other: String = "Other"
 
+        const val previous_address: String = "prev_address"
+        const val owntypeid: String = "owntype_id"
+
+        const val service_date: String = "service_date"
+        const val borrower_citizenship: String = "borrower_citizenship"
+
         const val married: String = "Married"
         const val separated: String = "Separated"
         const val marriage_type: String = "Marriage_type"
@@ -41,6 +47,7 @@ object AppConstant {
         const val userName:String = "userName"
         const val firstName:String = "firstName"
         const val lastName:String = "lastName"
+        const val middleName:String = "middleName"
         const val validFrom:String = "validFrom"
         const val validTo:String = "validTo"
         const val refreshTokenValidTo:String = "refreshTokenValidTo"

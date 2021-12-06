@@ -38,6 +38,9 @@ class PrimaryBorrowerViewModel @Inject constructor(
     private val _housingStatus: MutableLiveData<ArrayList<OptionsResponse>> = MutableLiveData()
     val housingStatus: LiveData<ArrayList<OptionsResponse>> get() = _housingStatus
 
+    private val _relationships: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
+    val relationships: LiveData<ArrayList<DropDownResponse>> get() = _relationships
+
     suspend fun getBasicBorrowerDetail(token : String, loanApplicationId : Int, borrowerId : Int) {
         viewModelScope.launch(Dispatchers.IO){
             val responseResult = repo.getPrimaryBorrowerDetails(token = token, loanApplicationId = loanApplicationId,borrowerId = borrowerId)
@@ -57,7 +60,23 @@ class PrimaryBorrowerViewModel @Inject constructor(
         _borrowerDetail.postValue(null)
     }
 
-    suspend fun getHousingStatus(token: String) {
+    suspend fun addUpdateBorrowerInfo(token: String,data: PrimaryBorrowerData) {
+        //Log.e("ViewModel", "inside-SendData")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.sendBorrowerInfo(token = token, data)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+            }
+        }
+    }
+
+    suspend fun getHousingStatus(token: String){
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getHousingStatus(token = token)
             withContext(Dispatchers.Main) {
@@ -68,6 +87,20 @@ class PrimaryBorrowerViewModel @Inject constructor(
                      else if (responseResult is Result.Error)
                         EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
                     */
+            }
+        }
+    }
+
+    suspend fun getRelationshipTypes(token:String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val response = repo.getRelationshipTypes(token = token )
+            withContext(Dispatchers.Main) {
+                if (response is Result.Success)
+                    _relationships.value = (response.data)
+                else if (response is Result.Error && response.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (response is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             }
         }
     }

@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -10,9 +11,12 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.common.api.ApiException
@@ -22,9 +26,11 @@ import com.google.android.libraries.places.api.model.*
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
+import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.MailingAddressLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -46,7 +52,10 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private lateinit var predictAdapter: PlacePredictionAdapter
     private var map: HashMap<String, String> = HashMap()
     private var mailingAddressModel : AddressModel? = null
-
+    private var countyFullList: ArrayList<CountiesModel> = arrayListOf()
+    private var countryFullList: ArrayList<CountriesModel> = arrayListOf()
+    private var stateFullList: ArrayList<StatesModel> = arrayListOf()
+    private val viewModel : RealEstateViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,15 +65,16 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
         _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        super.addListeners(binding.root)
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
-        binding.saveBtn.setOnClickListener {
+        binding.btnSaveMailingAddress.setOnClickListener {
             checkValidations()
         }
 
         setUpUI()
-        setDropDownData()
+        getDropDownData()
         setUpCompleteViewForPlaces()
         initializeUSAstates()
         setAddressData()
@@ -89,8 +99,6 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-
-        super.addListeners(binding.root)
 
         return root
     }
@@ -129,8 +137,151 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                     visibleAllFields()
                 }
              }
-            } catch (e: NullPointerException){}
+            } catch (e: Exception){}
         }
+
+
+    private fun getDropDownData(){
+        lifecycleScope.launchWhenStarted {
+            var dataCounter : Int = 0
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                binding.loaderMailingAddress.visibility = View.VISIBLE
+                coroutineScope {
+
+                    viewModel.getStates(authToken)
+                    // get countries
+                    viewModel.getCountries(authToken)
+                    // get county
+                    viewModel.getCounty(authToken)
+                }
+            }
+            lifecycleScope.launchWhenStarted {
+                viewModel.states.observe(viewLifecycleOwner, { states ->
+                    if (states != null && states.size > 0) {
+                        val itemList: ArrayList<String> = arrayListOf()
+                        for (item in states) {
+                            itemList.add(item.name)
+                            stateFullList.add(item)
+                        }
+                        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        binding.stateCompleteTextView.setAdapter(stateAdapter)
+
+                       /* binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
+                            //binding.stateCompleteTextView.showDropDown()
+                            HideSoftkeyboard.hide(requireActivity(),
+                                binding.stateCompleteTextInputLayout
+                            )
+                        }
+                        binding.stateCompleteTextView.setOnClickListener {
+                            binding.stateCompleteTextView.showDropDown()
+                            HideSoftkeyboard.hide(
+                                requireActivity(),
+                                binding.stateCompleteTextInputLayout
+                            )
+                        } */
+
+                        binding.stateCompleteTextView.onItemClickListener =
+                            object : AdapterView.OnItemClickListener {
+                                override fun onItemClick(
+                                    p0: AdapterView<*>?,
+                                    p1: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    binding.stateCompleteTextInputLayout.defaultHintTextColor =
+                                        ColorStateList.valueOf(ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.grey_color_two
+                                            )
+                                        )
+                                    HideSoftkeyboard.hide(
+                                        requireActivity(),
+                                        binding.stateCompleteTextInputLayout
+                                    )
+                                }
+                            }
+                    }
+                })
+
+                viewModel.countries.observe(viewLifecycleOwner, { countries ->
+                    if (countries != null && countries.size > 0) {
+                        val itemList: ArrayList<String> = arrayListOf()
+                        for (item in countries) {
+                            itemList.add(item.name)
+                            countryFullList.add(item)
+                        }
+                        val countryAdapter = ArrayAdapter(
+                            requireContext(),
+                            R.layout.autocomplete_text_view,
+                            itemList
+                        )
+                        binding.countryCompleteTextView.setAdapter(countryAdapter)
+
+                        /*binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
+                            binding.countryCompleteTextView.showDropDown()
+                            HideSoftkeyboard.hide(requireActivity(), binding.countryCompleteLayout)
+                        }
+                        binding.countryCompleteTextView.setOnClickListener {
+                            binding.countryCompleteTextView.showDropDown()
+                            HideSoftkeyboard.hide(requireActivity(), binding.countryCompleteLayout)
+                        } */
+
+                        binding.countryCompleteTextView.onItemClickListener =
+                            object : AdapterView.OnItemClickListener {
+                                override fun onItemClick(
+                                    p0: AdapterView<*>?,
+                                    p1: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    binding.countryCompleteLayout.defaultHintTextColor =
+                                        ColorStateList.valueOf(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.grey_color_two
+                                            )
+                                        )
+                                    HideSoftkeyboard.hide(
+                                        requireActivity(),
+                                        binding.countryCompleteLayout
+                                    )
+                                }
+                            }
+                    }
+                })
+
+                viewModel.counties.observe(viewLifecycleOwner, { counties ->
+                    if (counties != null && counties.size > 0) {
+                        val itemList: ArrayList<String> = arrayListOf()
+                        for (item in counties) {
+                            itemList.add(item.name)
+                            countyFullList.add(item)
+                        }
+                        val countyAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        binding.countyEditText.setAdapter(countyAdapter)
+
+                        binding.countyEditText.onItemClickListener =
+                            object : AdapterView.OnItemClickListener {
+                                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                                    binding.countyLayout.defaultHintTextColor =
+                                        ColorStateList.valueOf(
+                                            ContextCompat.getColor(
+                                                requireContext(),
+                                                R.color.grey_color_two
+                                            )
+                                        )
+                                    HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
+                                }
+                            }
+                    }
+
+                })
+
+                binding.loaderMailingAddress.visibility = View.GONE
+                setAddressData()
+            }
+        }
+    }
 
     private fun setUpUI() {
 
@@ -189,41 +340,36 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 binding.countryCompleteTextView.showDropDown()
                 binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
-
             } else {
                 binding.countryCompleteTextView.removeTextChangedListener(countryTextWatcher)
                 val country: String = binding.countryCompleteTextView.text.toString()
                 if (country.length == 0) {
-                    CustomMaterialFields.setError(
-                        binding.countryCompleteLayout,
-                        getString(R.string.error_field_required),
-                        requireActivity()
-                    )
-                    CustomMaterialFields.setColor(
-                        binding.countryCompleteLayout,
-                        R.color.grey_color_three,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setError(binding.countryCompleteLayout, getString(R.string.error_field_required), requireActivity())
+                    CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_three, requireActivity())
                 } else {
-                    CustomMaterialFields.clearError(
-                        binding.countryCompleteLayout,
-                        requireActivity()
-                    )
-                    CustomMaterialFields.setColor(
-                        binding.countryCompleteLayout,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.clearError(binding.countryCompleteLayout, requireActivity())
+                    CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
+        binding.cityEditText.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            //binding.tvState.showDropDown()
+            //HideSoftkeyboard.hide(requireActivity(), binding.layoutCounty)
+
+            if(!hasFocus){
+                if (binding.cityEditText.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.countyLayout, R.color.grey_color_three, requireActivity())
+                    CustomMaterialFields.setError(binding.countyLayout,getString(R.string.error_field_required),requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.countyLayout, R.color.grey_color_two, requireActivity())
+                    CustomMaterialFields.clearError(binding.countyLayout, requireActivity())
                 }
             }
         }
 
         binding.cityEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.cityEditText,
-                binding.cityLayout,
-                requireContext()
-            )
+            CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext())
         )
         binding.streetAddressEditText.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
@@ -239,13 +385,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 requireContext()
             )
         )
-        binding.countyEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.countyEditText,
-                binding.countyLayout,
-                requireContext()
-            )
-        )
+
         binding.zipcodeEditText.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
                 binding.zipcodeEditText,
@@ -268,11 +408,6 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             requireActivity(),
             binding.cityEditText,
             binding.cityLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.countyEditText,
-            binding.countyLayout
         )
         CustomMaterialFields.onTextChangedLableColor(
             requireActivity(),
@@ -591,18 +726,17 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
 
             val countyName : String = binding.countryCompleteTextView.getText().toString().trim()
-           // val matchedCounty =  countyList.filter { p -> p.name.equals(countyName,true)}
-           // val countyId = if(matchedCounty.size > 0)
-           //     matchedCounty.get(0).id else null
+            val matchedCounty =  countyFullList.filter { p -> p.name.equals(countyName,true)}
+            val countyId = if(matchedCounty.size > 0)
+                matchedCounty.get(0).id else null
 
             val countryName : String = binding.countryCompleteTextView.getText().toString().trim()
-           /// val matchedCountry =  countryList.filter { p -> p.name.equals(countryName,true)}
-          //  val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+           val matchedCountry =  countryFullList.filter { p -> p.name.equals(countryName,true)}
+            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
 
             val stateName : String = binding.stateCompleteTextView.getText().toString().trim()
-           // val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
-           /* val stateId = if(matchedState.size > 0)
-           //     matchedState.get(0).id else null
+            val matchedState =  stateFullList.filter { p -> p.name.equals(stateName,true)}
+            val stateId = if(matchedState.size > 0) matchedState.get(0).id else null
 
               mailingAddressModel = AddressModel(
                 street = street,
@@ -614,12 +748,11 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 countyId = countyId,
                 stateId = stateId,
                 countryId = countryId,
-                zipCode = zipCode) */
+                zipCode = zipCode)
 
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.mailing_address, mailingAddressModel)
             findNavController().popBackStack()
         }
-
     }
 
     private fun setError() {

@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -9,6 +10,24 @@ import javax.inject.Inject
  * Created by Anita Kiran on 10/29/2021.
  */
 class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: ServerApi) {
+
+
+    suspend fun addUpdateBorrowerInfo(token: String, data: PrimaryBorrowerData): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.addUpdateBorrowerInfo(newToken,data)
+            Log.e("Send--borrInfo-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                // Log.e("add-business-Error",e.localizedMessage)
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
 
     suspend fun getPrimaryBorrowerDetails(
         token : String,
@@ -42,11 +61,11 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
-    suspend fun getRelationshipTypes(token: String) : Result<ArrayList<RelationTypesResponse>> {
+    suspend fun getRelationshipTypes(token: String) : Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getRelationshipTypes(newToken)
-            Timber.e("relationship-types-Response - $response")
+            //Timber.e("relationship-types-Response - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

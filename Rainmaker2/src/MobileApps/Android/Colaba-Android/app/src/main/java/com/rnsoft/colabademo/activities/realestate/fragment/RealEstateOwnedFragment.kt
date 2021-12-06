@@ -490,7 +490,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                     firstMortgageModel = firstMortgageModel, secondMortgageModel = secondMortgageModel, rentalIncome = newRentalIncome?.toDouble(),
                     borrowerPropertyId = borrowerPropertyId, borrowerId = borrowerId, propertyInfoId = propertyInfoId)
 
-                Log.e("RealEstateDataApi", "" + data)
+                //Log.e("RealEstateDataApi", "" + data)
                 binding.loaderRealEstate.visibility = View.VISIBLE
                 viewModel.sendRealEstate(authToken,data)
             }
