@@ -85,9 +85,10 @@
         android:layout_marginTop="20dp">
 
         <TextView
+            android:id="@+id/tv_ques"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Was Richard glenn ever activated during their tour of duty?"
+            android:text="Was he ever activated during their tour of duty?"
             android:layout_marginStart="25dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="40dp"

@@ -49,6 +49,12 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/Borrower/AddOrUpdateBorrowerDetails")
     suspend fun addUpdateBorrowerInfo(@Header("Authorization")  Authorization:String, @Body data: PrimaryBorrowerData): AddUpdateDataResponse
 
+    @DELETE("api/mcu/mobile/loanapplication/Borrower/DeleteBorrowerPreviousAddress")
+    suspend fun deletePreviousAddress(
+        @Header("Authorization") Authorization: String,
+        @Query("id") addressId:Int) : AddUpdateDataResponse
+
+
 
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetHousingStatus")

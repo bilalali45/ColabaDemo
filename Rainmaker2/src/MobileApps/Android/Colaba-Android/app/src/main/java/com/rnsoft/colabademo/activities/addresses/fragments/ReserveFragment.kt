@@ -25,6 +25,8 @@ class ReserveFragment : BaseFragment() {
     //private val viewModel : PrimaryBorrowerViewModel by viewModels()
     private var _binding: ReserveLayoutBinding? = null
     private val binding get() = _binding!!
+    var firstName : String? = null
+    var lastName : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +36,23 @@ class ReserveFragment : BaseFragment() {
         _binding = ReserveLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         super.addListeners(binding.root)
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            var name = firstName.plus(" ").plus(lastName)
+            if(name.isNotEmpty() && name.isNotBlank() && name.length >0) {
+                binding.borrowerName.setText(name)
+                binding.tvQues.text =
+                    "Was ".plus(name) + " ever activated during their tour of duty?"
+            }
+        }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

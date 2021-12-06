@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ class NonPermanentFragment : BaseFragment() {
     private var _binding: NonPermenantResidentLayoutBinding? = null
     private val binding get() = _binding!!
     private var citizenship : BorrowerCitizenship? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
 
     @Inject
@@ -38,6 +41,19 @@ class NonPermanentFragment : BaseFragment() {
 
         _binding = NonPermenantResidentLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
+
 
         binding.visaStatusCompleteView.requestFocus()
         val visaStatusArray:ArrayList<String> = arrayListOf("I am a temporary worker (H-2A, etc.)", "I hold a valid work visa (H1, L1, etc.)", "Other")
@@ -86,32 +102,32 @@ class NonPermanentFragment : BaseFragment() {
             if (arguments != null) {
                 citizenship = arguments?.getParcelable(AppConstant.borrower_citizenship)!!
                 citizenship?.let {
+                    //Log.e("OtherFrag","$it")
                     it.residencyStatusId?.let {
-                        if(id==4)
-                            binding.visaStatusCompleteView.setText("I am a temporary worker (H-2A, etc.)")
+                        if(it==4) {
+                            binding.visaStatusCompleteView.setText(
+                                "I am a temporary worker (H-2A, etc.)",
+                                false
+                            )
+                        }
+                        if(it==3)
+                            binding.visaStatusCompleteView.setText("I hold a valid work visa (H1, L1, etc.)",false)
 
-                        if(id==3)
-                            binding.visaStatusCompleteView.setText("I hold a valid work visa (H1, L1, etc.)")
-
-                        if(id==5)
-                            binding.visaStatusCompleteView.setText("Other")
+                        if(it==5) {
+                            binding.visaStatusCompleteView.setText("Other", false)
+                            binding.relationshipDetailLayout.visibility = View.VISIBLE
+                        }
+                        CustomMaterialFields.setColor(binding.visaStatusViewLayout, R.color.grey_color_two, requireActivity())
                     }
 
                     it.residencyStatusExplanation?.let {
                         if(it.isNotEmpty() && it.isNotBlank() && it.length >0 ){
                             binding.relationshipEditText.setText(it)
                             binding.relationshipDetailLayout.visibility = View.VISIBLE
+                            CustomMaterialFields.setColor(binding.relationshipDetailLayout, R.color.grey_color_two, requireActivity())
                         }
                     }
                 }
-
-
-
-
-
-
-
-
 
             }
         } catch (e: Exception) {
