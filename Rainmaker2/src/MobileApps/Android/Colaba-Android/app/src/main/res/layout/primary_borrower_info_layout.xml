@@ -558,7 +558,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Add Previous Residence"
+                        android:text="Add Current Residence"
                         android:textAlignment="center"
                         android:textColor="@color/colaba_apptheme_blue"
                         android:textSize="13sp" />

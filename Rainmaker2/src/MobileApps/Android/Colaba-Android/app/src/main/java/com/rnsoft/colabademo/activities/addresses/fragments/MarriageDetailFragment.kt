@@ -27,6 +27,8 @@ class MarriageDetailFragment : BaseFragment() {
     var ownTypeId : Int = 0
     val coborrowerList: ArrayList<CoborrowerList> = arrayListOf()
     private var maritalStatus : MaritalStatus? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

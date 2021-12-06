@@ -46,6 +46,8 @@ class UnMarriedFragment : BaseFragment() {
     var loanApplicationId : Int? = null
     var borrowerId : Int?= null
     private var maritalStatus : MaritalStatus? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
 
     //private val relationshipTypes = listOf("Civil Unions", "Domestic Partners", "Registered Reciprocal", "Other")

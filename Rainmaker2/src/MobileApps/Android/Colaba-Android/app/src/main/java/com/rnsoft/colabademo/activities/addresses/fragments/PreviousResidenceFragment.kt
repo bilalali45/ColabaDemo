@@ -70,6 +70,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     var addressPosition : Int? = 0
     private var previousAddressDetail = PreviousAddresses()
     private var previousAddressModel : AddressModel? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
 
     override fun onCreateView(
@@ -79,6 +81,21 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     ): View {
         _binding = PreviousResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        super.addListeners(binding.root)
+
+        val activity = (activity as? BorrowerAddressActivity)
+
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
+
 
         binding.moveInEditText.showSoftInputOnFocus = false
         binding.moveInEditText.setOnClickListener {
@@ -132,7 +149,11 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 AddressNotSavingDialogFragment::class.java.canonicalName
             )
         }
-        super.addListeners(binding.root)
+
+        binding.prevAddressParentLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.prevAddressParentLayout)
+            super.removeFocusFromAllFields(binding.prevAddressParentLayout)
+        }
 
         return root
     }

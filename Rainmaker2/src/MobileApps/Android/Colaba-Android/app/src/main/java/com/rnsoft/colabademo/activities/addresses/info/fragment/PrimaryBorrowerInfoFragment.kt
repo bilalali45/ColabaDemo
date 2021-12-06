@@ -121,7 +121,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
 
             if(firstName !=null && lastName !=null){
-                Log.e("fra","name not null")
                 bi.name.setText(firstName.plus(" ").plus(lastName))
             }
 
@@ -480,6 +479,22 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             }
         }
+
+        // non permanent other
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BorrowerCitizenship>(AppConstant.borrower_citizenship)?.observe(
+            viewLifecycleOwner) { result ->
+            result?.let {
+                //citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+                //citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+                //citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+                citizenship = it
+                result.residencyStatusExplanation?.let {
+                    citizenshipBinding.visaStatusDesc.setText(it)
+                    citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
+                }
+            }
+        }
+
     }
 
     private fun setCurrentAddressDetails(currentAddress : CurrentAddress ){
@@ -974,7 +989,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
     }
 
-    private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean) {
+    private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean){
         if (usCitizen) {
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
