@@ -40,6 +40,20 @@ class MarriageDetailFragment : BaseFragment() {
             ownTypeId = arguments.getInt(AppConstant.owntypeid)
             binding.marriageType.text = marriage_type
         }
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
+
+
         initViews()
         setCoBorrowers()
 

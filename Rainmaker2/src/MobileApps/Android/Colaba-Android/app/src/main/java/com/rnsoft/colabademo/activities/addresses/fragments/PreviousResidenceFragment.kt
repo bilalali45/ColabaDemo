@@ -129,9 +129,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         getDropDownData()
         setUpCompleteViewForPlaces()
 
-        binding.addAddressLayout.setOnClickListener {
-            findNavController().navigate(R.id.action_info_mailing_address)
-        }
 
         binding.backButton.setOnClickListener {
             val message = "Are you sure you want to delete Richard's Current Residence?"
@@ -1032,11 +1029,11 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {
-                    Log.e(TAG, "Place not found: " + exception.statusCode)
+                   // Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
 
-        Log.e("predicationList", predicationList.size.toString())
+       // Log.e("predicationList", predicationList.size.toString())
 
 
         //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))
@@ -1123,8 +1120,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         binding.streetAddressLayout.visibility = View.VISIBLE
         binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
 
-
-        binding.addAddressLayout.visibility = View.VISIBLE
         //binding.showAddressLayout.visibility = View.VISIBLE  // condition visibility
         //binding.monthlyRentLayout.visibility = View.VISIBLE
 

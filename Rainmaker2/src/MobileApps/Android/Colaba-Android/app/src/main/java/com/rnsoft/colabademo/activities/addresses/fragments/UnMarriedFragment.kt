@@ -68,6 +68,17 @@ class UnMarriedFragment : BaseFragment() {
             borrowerId = bId
         }
 
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
+
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.yesRadioBtn -> {

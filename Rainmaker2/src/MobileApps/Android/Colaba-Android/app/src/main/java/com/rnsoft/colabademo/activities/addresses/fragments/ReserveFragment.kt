@@ -46,7 +46,12 @@ class ReserveFragment : BaseFragment() {
         }
 
         if(firstName !=null && lastName !=null){
-            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+            var name = firstName.plus(" ").plus(lastName)
+            if(name.isNotEmpty() && name.isNotBlank() && name.length >0) {
+                binding.borrowerName.setText(name)
+                binding.tvQues.text =
+                    "Was ".plus(name) + " ever activated during their tour of duty?"
+            }
         }
 
         binding.backButton.setOnClickListener {

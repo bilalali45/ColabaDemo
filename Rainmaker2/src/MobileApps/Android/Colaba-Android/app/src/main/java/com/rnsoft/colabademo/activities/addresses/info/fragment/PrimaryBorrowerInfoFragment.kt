@@ -74,7 +74,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private var currentAddressModel = AddressModel()
     private var currentAddressFullDetail = CurrentAddress()
     private var maritalStatus : MaritalStatus? = null
-    private var citizenship : BorrowerCitizenship? = null
+    private var citizenship : BorrowerCitizenship? = null // make separate class for only two parameters of inner screen later
+    private var citizenshipForApi : BorrowerCitizenship? = null
     private var militaryServiceDate : String? =null
     var militaryAffliation: ArrayList<MilitaryServiceDetail> = ArrayList()
    // private var militaryDetails = MilitaryServiceDetails()
@@ -87,7 +88,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (savedViewInstance != null) {
             savedViewInstance
-
         } else {
             bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = bi.root
@@ -119,9 +119,15 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 middleName = it
             }
 
+           // bindingMilitary.tvQues.text = "Was".plus()  ever activated during their tour of duty?"
+
 
             if(firstName !=null && lastName !=null){
-                bi.name.setText(firstName.plus(" ").plus(lastName))
+                var name = firstName.plus(" ").plus(lastName)
+                if(name.isNotEmpty() && name.isNotBlank() && name.length >0) {
+                    bi.name.setText(name)
+                    bindingMilitary.tvQues.text = "Was ".plus(name) + " ever activated during their tour of duty?"
+                }
             }
 
             //listAddress.clear()
@@ -218,8 +224,9 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 }
 
                 detail.borrowerData?.borrowerCitizenship?.let {
-                        //Timber.e("residency type id" + it.residencyTypeId)
-                        citizenship = it
+                    //Timber.e("residency type id" + it.residencyTypeId)
+                    citizenship = it
+                    //citizenshipForApi = it
                         it.ssn?.let { ssn->
                             bi.edSecurityNum.setText(ssn)
                         }
@@ -342,8 +349,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             checkDependentData()
         }
 
-        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && LoginUtil.isValidEmailAddress(email.trim()) &&
-            loanApplicationId !=null) {
+        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && LoginUtil.isValidEmailAddress(email.trim()) && loanApplicationId !=null) {
             // borrower basic details
             val middleName = if(bi.edMiddleName.text.toString().trim().length >0) bi.edMiddleName.text.toString() else null // get middle name
             val suffix = if(bi.edSuffix.text.toString().trim().length >0) bi.edSuffix.text.toString() else null  // suffix
@@ -362,33 +368,54 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 //citizenship
 
                 /*
-                "borrowerCitizenship": {
-                "borrowerId": 1,
-                "loanApplicationId": 1,
-                "residencyTypeId": 3,
-                "residencyStatusId": 4,
-                "residencyStatusExplanation": "",
+
                 "dependentCount": 2,
                 "dependentAges": "25,26",
-                "dobUtc": "2001-01-01T00:00:00",
-                "ssn": "484-89-4984"
+
             }, */
 
 
-          if(bindingMilitary.chbDutyPersonel.isChecked){
-              militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4,expirationDateUtc = militaryServiceDate,reserveEverActivated =null))
-          }
-        if(bindingMilitary.chbResNationalGuard.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3,expirationDateUtc = null,reserveEverActivated = reserveEverActivated))
-        }
+            var residencyTypeId:Int? = null
+            var residencyStatusId:Int? = null
+            var visaStatusDesc : String? = null
 
-        if(bindingMilitary.chbVeteran.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2,expirationDateUtc = null,reserveEverActivated =null))
-        }
+            if(citizenshipBinding.rbUsCitizen.isChecked)
+                residencyTypeId = 1
 
-        if(bindingMilitary.chbSurvivingSpouse.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1,expirationDateUtc = null,reserveEverActivated =null))
-        }
+            if(citizenshipBinding.rbPr.isChecked)
+                residencyTypeId = 2
+
+            if(citizenshipBinding.rbNonPrOther.isChecked)
+                residencyTypeId = 3
+
+            citizenship?.let {
+                residencyStatusId =  it.residencyStatusId
+                visaStatusDesc = it.residencyStatusExplanation
+            }
+
+            val dob = if(bi.edDateOfBirth.text.toString().trim().length > 0) bi.edDateOfBirth.text.toString() else null
+            val securityNum = if(bi.edSecurityNum.text.toString().trim().length > 0) bi.edSecurityNum.text.toString() else null
+
+
+            citizenshipForApi = BorrowerCitizenship(loanApplicationId= loanApplicationId,
+             borrowerId= if(borrowerId != null) borrowerId else null,residencyTypeId=residencyTypeId,residencyStatusId = residencyStatusId,residencyStatusExplanation=visaStatusDesc,dobUtc=dob,ssn = securityNum,
+            )
+
+
+            if (bindingMilitary.chbDutyPersonel.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4, expirationDateUtc = militaryServiceDate, reserveEverActivated = null))
+            }
+            if (bindingMilitary.chbResNationalGuard.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3, expirationDateUtc = null, reserveEverActivated = reserveEverActivated))
+            }
+
+            if (bindingMilitary.chbVeteran.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2, expirationDateUtc = null, reserveEverActivated = null))
+            }
+
+            if (bindingMilitary.chbSurvivingSpouse.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1, expirationDateUtc = null, reserveEverActivated = null))
+            }
 
          val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
 
