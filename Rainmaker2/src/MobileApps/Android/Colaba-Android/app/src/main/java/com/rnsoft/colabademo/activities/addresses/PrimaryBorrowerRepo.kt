@@ -37,4 +37,8 @@ class PrimaryBorrowerRepo @Inject constructor(private val dataSource : PrimaryBo
         return dataSource.addUpdateBorrowerInfo(token,data)
     }
 
+    suspend fun deletePreviousAddress(token: String, id:Int): Result<AddUpdateDataResponse>{
+        return dataSource.deletePreviousAddress(token,id)
+    }
+
 }

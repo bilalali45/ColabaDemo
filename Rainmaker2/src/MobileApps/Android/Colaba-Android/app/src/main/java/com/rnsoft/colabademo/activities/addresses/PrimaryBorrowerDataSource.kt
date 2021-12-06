@@ -29,6 +29,22 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
         }
     }
 
+
+    suspend fun deletePreviousAddress(token: String,id: Int): Result<AddUpdateDataResponse> {
+        // Log.e("-dataSource-Delete-borrowerPropertyId" , ""+ borrowerPropertyId)
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.deletePreviousAddress(newToken, id)
+            Timber.e("deletePreviousAddress = $response")
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
     suspend fun getPrimaryBorrowerDetails(
         token : String,
         loanApplicationId : Int,

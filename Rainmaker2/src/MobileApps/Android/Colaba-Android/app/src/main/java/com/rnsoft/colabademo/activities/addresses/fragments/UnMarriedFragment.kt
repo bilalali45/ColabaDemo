@@ -191,7 +191,7 @@ class UnMarriedFragment : BaseFragment() {
 
             if(relation.length > 0 && state.length > 0){
                 var isDataEntered: Boolean = true
-                if(binding.tvDesc.isVisible && desc.length == 0){
+                if(binding.layouDesc.isVisible && desc.length == 0){
                     isDataEntered = false
                 }
                 if(isDataEntered){

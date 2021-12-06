@@ -41,6 +41,23 @@ class PrimaryBorrowerViewModel @Inject constructor(
     private val _relationships: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
     val relationships: LiveData<ArrayList<DropDownResponse>> get() = _relationships
 
+    private val _addUpdateDeleteResponse: MutableLiveData<AddUpdateDataResponse> = MutableLiveData()
+    val addUpdateDeleteResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDeleteResponse
+
+    suspend fun deletePreviousAddress(token: String, id: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = repo.deletePreviousAddress(token = token,id)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _addUpdateDeleteResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
     suspend fun getBasicBorrowerDetail(token : String, loanApplicationId : Int, borrowerId : Int) {
         viewModelScope.launch(Dispatchers.IO){
             val responseResult = repo.getPrimaryBorrowerDetails(token = token, loanApplicationId = loanApplicationId,borrowerId = borrowerId)

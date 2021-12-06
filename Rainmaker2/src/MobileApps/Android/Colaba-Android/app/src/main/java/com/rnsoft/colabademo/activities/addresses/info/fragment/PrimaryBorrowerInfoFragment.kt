@@ -219,8 +219,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         msBinding.rbMarried.isChecked = true
                     if (it.maritalStatusId == 2)
                         msBinding.rbSeparated.isChecked = true
-                    if (it.maritalStatusId == 9)
+                    if (it.maritalStatusId == 9){
                         msBinding.rbUnmarried.isChecked = true
+                        setMaritalStatus(it)
+                    }
                 }
 
                 detail.borrowerData?.borrowerCitizenship?.let {
@@ -307,6 +309,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         //var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
         //var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
         //Log.e("NewDate",newDate)
+        //Log.e("dependenat","$listItems")
         val firstName: String = bi.edFirstName.text.toString()
         val lastName: String = bi.edLastName.text.toString()
         val email: String = bi.edEmail.text.toString()
@@ -331,7 +334,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             clearError(bi.layoutLastName)
         }
         if (email.isNotEmpty() && email.length > 0){
-            if (!LoginUtil.isValidEmailAddress(email.trim())) {
+            if (!isValidEmailAddress(email.trim())) {
                 setError(bi.layoutEmail, getString(R.string.invalid_email))
             } else {
                 clearError(bi.layoutEmail)
@@ -349,7 +352,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             checkDependentData()
         }
 
-        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && LoginUtil.isValidEmailAddress(email.trim()) && loanApplicationId !=null) {
+        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && isValidEmailAddress(email.trim()) && loanApplicationId !=null) {
             // borrower basic details
             val middleName = if(bi.edMiddleName.text.toString().trim().length >0) bi.edMiddleName.text.toString() else null // get middle name
             val suffix = if(bi.edSuffix.text.toString().trim().length >0) bi.edSuffix.text.toString() else null  // suffix
@@ -393,12 +396,27 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 visaStatusDesc = it.residencyStatusExplanation
             }
 
-            val dob = if(bi.edDateOfBirth.text.toString().trim().length > 0) bi.edDateOfBirth.text.toString() else null
-            val securityNum = if(bi.edSecurityNum.text.toString().trim().length > 0) bi.edSecurityNum.text.toString() else null
+           // try {
+                val dob = if (bi.edDateOfBirth.text.toString().trim().length > 0) bi.edDateOfBirth.text.toString() else null
+                val securityNum = if (bi.edSecurityNum.text.toString().trim().length > 0) bi.edSecurityNum.text.toString() else null
+                val dependentCount = bi.tvDependentCount.text.toString()
+                val dependentAges = StringBuilder()
+                if (listItems.size > 0) {
+                    for (i in 0 until listItems.size) {
+                        dependentAges.append(listItems.get(i).age)
+                        if (i + 1 < listItems.size) dependentAges.append(",")
+                    }
+                    //Log.e("age Str",dependentAges.toString())
+                }
+
+
+           // val dependentAges: String? = null,
+           // val dependentCount: Int? = null,
 
 
             citizenshipForApi = BorrowerCitizenship(loanApplicationId= loanApplicationId,
              borrowerId= if(borrowerId != null) borrowerId else null,residencyTypeId=residencyTypeId,residencyStatusId = residencyStatusId,residencyStatusExplanation=visaStatusDesc,dobUtc=dob,ssn = securityNum,
+                dependentCount = dependentCount.toInt(),dependentAges = dependentAges.toString()
             )
 
 
@@ -417,21 +435,21 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1, expirationDateUtc = null, reserveEverActivated = null))
             }
 
-         val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
+           val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
 
             lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     val basicDetails = BorrowerBasicDetails(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!,
                         firstName = firstName,lastName = lastName,middleName = middleName,suffix = suffix,emailAddress = email,homePhone = homeNum,
-                        workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = 1
+                        workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = ownTypeId
                     )
 
                     val responseBody = PrimaryBorrowerData(loanApplicationId= loanApplicationId!!, borrowerId= if(borrowerId != null) borrowerId else null,
-                        borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = listAddress,borrowerCitizenship = citizenship,maritalStatus = maritalStatus)
+                        borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = listAddress,borrowerCitizenship = citizenship,maritalStatus = maritalStatus,
+                        militaryServiceDetails = militaryServiceDetail)
 
-
-                   // viewModel.addUpdateBorrowerInfo(authToken,responseBody)
-
+                    ///Log.e("AddResponseBody","$responseBody")
+                    viewModel.addUpdateBorrowerInfo(authToken,responseBody)
 
                 }
             }
@@ -483,9 +501,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         // marital status
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<MaritalStatus>(AppConstant.marital_status)?.observe(
             viewLifecycleOwner) { result ->
-            maritalStatus?.let {
+            setMaritalStatus(result)
+
+        /*maritalStatus?.let {
                 setMaritalStatus(it)
-            }
+            } */
         }
 
         // active duty
@@ -982,7 +1002,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
     }
 
-    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int) {
+    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int){
         textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), colorIdRes))
     }
 
@@ -1155,20 +1175,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        /*
-
-        //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
-
-        val dpd = DatePickerDialog(requireActivity(), { view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + monthOfYear + "-" + dayOfMonth + "-" + selectedYear) },
-            year,
-            month,
-            day
-        )
-        dpd.datePicker.spinnersShown = true
-        dpd.getDatePicker().setCalendarViewShown(false);
-        dpd.show()
-        */
-
         // New Style Calendar Added....
         val datePickerDialog = DatePickerDialog(
             requireActivity(), R.style.MySpinnerDatePickerStyle,
@@ -1208,6 +1214,23 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent){
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            bi.loaderBorrowerInfo.visibility = View.GONE
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        bi.loaderBorrowerInfo.visibility = View.GONE
+        requireActivity().finish()
+    }
+
 
     fun getOrdinal(i: Int): String? {
         val mod100 = i % 100

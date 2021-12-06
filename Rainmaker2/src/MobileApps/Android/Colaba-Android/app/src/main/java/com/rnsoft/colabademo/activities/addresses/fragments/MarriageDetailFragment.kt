@@ -37,7 +37,7 @@ class MarriageDetailFragment : BaseFragment() {
 
         arguments?.let { arguments ->
             marriage_type = arguments.getString(AppConstant.marriage_type)
-            ownTypeId = arguments.getInt(AppConstant.owntypeid)
+            //ownTypeId = arguments.getInt(AppConstant.owntypeid)
             binding.marriageType.text = marriage_type
         }
 
@@ -48,6 +48,9 @@ class MarriageDetailFragment : BaseFragment() {
         activity?.lastName?.let {
             lastName = it
         }
+        activity?.ownTypeId?.let {
+            ownTypeId = it
+        }
 
         if(firstName !=null && lastName !=null){
             binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
@@ -57,7 +60,7 @@ class MarriageDetailFragment : BaseFragment() {
         initViews()
         setCoBorrowers()
 
-        if(ownTypeId == 1) {
+        if(ownTypeId == 1){
             if (coBorrowerCount == 0){
                 binding.layoutQuestion.visibility = View.GONE // don't ask ques only ask names
                 binding.spouseInfoLayout.visibility = View.VISIBLE
@@ -71,12 +74,23 @@ class MarriageDetailFragment : BaseFragment() {
                     binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
                     binding.layoutLastName.hint = "Legal Spouse Last Name"
                 }
-            } else
-                binding.tvQuestion.text = getString(R.string.married_to_coborower)
-
-        } else if(ownTypeId == 2){
-
+            } else {
+                if (marriage_type.equals(AppConstant.married)) {
+                    binding.tvQuestion.text = getString(R.string.married_to_coborower)
+                }
+                if (marriage_type.equals(AppConstant.separated)) {
+                    binding.tvQuestion.text = getString(R.string.coborower_legal_spouse)
+                }
+            }
         }
+        /*if(ownTypeId == 2) {
+            if (marriage_type.equals(AppConstant.married)) {
+
+
+            }
+
+        } */
+
 
         setData()
 
@@ -117,6 +131,35 @@ class MarriageDetailFragment : BaseFragment() {
                 }
 
                 // if spouse borrower id null && names are also null
+                if(ownTypeId == 2){
+                    maritalStatus?.spouseBorrowerId?.let { spouseBorrowerId->
+                        if(spouseBorrowerId ==0){
+                            binding.layoutQuestion.visibility = View.GONE
+                            if (marriage_type.equals(AppConstant.married)) {
+                                binding.layoutFirstName.hint = "Spouse First Name"
+                                binding.layoutMiddleName.hint = "Spouse Middle Name"
+                                binding.layoutLastName.hint = "Spouse Last Name"
+                            }
+                            if (marriage_type.equals(AppConstant.separated)) {
+                                binding.layoutFirstName.hint = "Legal Spouse First Name"
+                                binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
+                                binding.layoutLastName.hint = "Legal Spouse Last Name"
+                            }
+                        }
+                    } ?:run {
+                        binding.layoutQuestion.visibility = View.GONE
+                        if (marriage_type.equals(AppConstant.married)) {
+                            binding.layoutFirstName.hint = "Spouse First Name"
+                            binding.layoutMiddleName.hint = "Spouse Middle Name"
+                            binding.layoutLastName.hint = "Spouse Last Name"
+                        }
+                        if (marriage_type.equals(AppConstant.separated)) {
+                            binding.layoutFirstName.hint = "Legal Spouse First Name"
+                            binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
+                            binding.layoutLastName.hint = "Legal Spouse Last Name"
+                        }
+                    }
+                }
             }
         } catch (e:Exception){ }
 
