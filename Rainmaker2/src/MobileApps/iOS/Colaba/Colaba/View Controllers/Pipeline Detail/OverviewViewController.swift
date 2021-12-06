@@ -178,6 +178,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (indexPath.row == 1){
             let vc = Utility.getApplicationStatusVC()
+            vc.loanApplicationId = self.loanApplicationId
             self.pushToVC(vc: vc)
         }
     }

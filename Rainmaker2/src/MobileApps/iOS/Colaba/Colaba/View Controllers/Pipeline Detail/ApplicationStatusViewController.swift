@@ -12,18 +12,17 @@ class ApplicationStatusViewController: BaseViewController {
     @IBOutlet weak var btnBack: UIButton!
     @IBOutlet weak var tblViewStatus: UITableView!
     
-    var applicationStatus = [String]()
-    var statusTime = [String]()
+    var loanApplicationId = 0
+    
+    var milestones = [ApplicationStatusModel]()
     
     var isShowDeniedStatus = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        applicationStatus = ["Application Started", "Application Submitted", "Processing", "Underwriting", "Approvals", "Closing", "Completed"]
-        statusTime = ["05 Dec 2020, 15:23", "12 Jan 2021, 22:16", "15 Jan 2021, 18:21", "15 Jan 2021, 18:21", "", "", ""]
         tblViewStatus.register(UINib(nibName: "ApplicationStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "ApplicationStatusTableViewCell")
         tblViewStatus.contentInset = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 0)
+        getApplicationStatus()
     }
     
     //MARK:- Methods and Actions
@@ -31,19 +30,51 @@ class ApplicationStatusViewController: BaseViewController {
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.goBack()
     }
+    
+    //MARK:- API's
+    
+    func getApplicationStatus(){
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "loanApplicationId=1047"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getApplicationStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let applicationMilestones = result["data"].arrayValue
+                    for milestone in applicationMilestones{
+                        let model = ApplicationStatusModel()
+                        model.updateModelWithJSON(json: milestone)
+                        self.milestones.append(model)
+                    }
+                    self.tblViewStatus.reloadData()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
 }
 
 extension ApplicationStatusViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isShowDeniedStatus ? 4 : 7
+        return milestones.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ApplicationStatusTableViewCell", for: indexPath) as! ApplicationStatusTableViewCell
         
-        cell.lblApplicationStatus.text = applicationStatus[indexPath.row]
-        cell.lblTime.text = statusTime[indexPath.row]
+        let milestone = milestones[indexPath.row]
+        cell.lblApplicationStatus.text = milestone.name
+        cell.lblTime.text = Utility.getApplicationStatusDate(milestone.createdDate)
         cell.statusView.layer.borderWidth = 2
         
         if (isShowDeniedStatus){
@@ -55,18 +86,18 @@ extension ApplicationStatusViewController: UITableViewDataSource, UITableViewDel
             cell.lblApplicationStatus.textColor = indexPath.row > 2 ? Theme.getSeparatorErrorColor() : Theme.getAppBlackColor()
         }
         else{
-            cell.dottedLine.isHidden = indexPath.row == 6
-            cell.iconTick.isHidden = indexPath.row > 2
-            cell.statusView.layer.borderColor = indexPath.row > 3 ? Theme.getSeparatorNormalColor().cgColor : Theme.getButtonBlueColor().cgColor
-            cell.statusView.backgroundColor = indexPath.row > 3 ? .white : Theme.getButtonBlueColor()
-            cell.dottedLine.backgroundColor = indexPath.row > 2 ? Theme.getSeparatorNormalColor() : Theme.getButtonBlueColor()
+            cell.dottedLine.isHidden = indexPath.row == milestones.count - 1
+            cell.iconTick.isHidden = !milestone.isCurrent
+            cell.statusView.layer.borderColor = milestone.isCurrent ? Theme.getButtonBlueColor().cgColor : Theme.getSeparatorNormalColor().cgColor
+            cell.statusView.backgroundColor = milestone.isCurrent ? Theme.getButtonBlueColor() : .white
+            cell.dottedLine.backgroundColor = milestone.isCurrent ?  Theme.getButtonBlueColor() : Theme.getSeparatorNormalColor()
             cell.lblApplicationStatus.textColor = Theme.getAppBlackColor()
-            if (indexPath.row > 2){
-                cell.dottedLine.backgroundColor = .clear
-                cell.dottedLine.createDottedLine(width: 2.0, color: Theme.getSeparatorNormalColor().cgColor)
+            if (milestone.isCurrent){
+                cell.dottedLine.backgroundColor = Theme.getButtonBlueColor()
             }
             else{
-                cell.dottedLine.backgroundColor = Theme.getButtonBlueColor()
+                cell.dottedLine.backgroundColor = .clear
+                cell.dottedLine.createDottedLine(width: 2.0, color: Theme.getSeparatorNormalColor().cgColor)
             }
         }
         
@@ -74,14 +105,14 @@ extension ApplicationStatusViewController: UITableViewDataSource, UITableViewDel
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        isShowDeniedStatus = !isShowDeniedStatus
-        if (isShowDeniedStatus){
-            applicationStatus = ["Application Started", "Application Submitted", "Processing", "Application Denied"]
-        }
-        else{
-            applicationStatus = ["Application Started", "Application Submitted", "Processing", "Underwriting", "Approvals", "Closing", "Completed"]
-        }
-        self.tblViewStatus.reloadData()
+//        isShowDeniedStatus = !isShowDeniedStatus
+//        if (isShowDeniedStatus){
+//            applicationStatus = ["Application Started", "Application Submitted", "Processing", "Application Denied"]
+//        }
+//        else{
+//            applicationStatus = ["Application Started", "Application Submitted", "Processing", "Underwriting", "Approvals", "Closing", "Completed"]
+//        }
+//        self.tblViewStatus.reloadData()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

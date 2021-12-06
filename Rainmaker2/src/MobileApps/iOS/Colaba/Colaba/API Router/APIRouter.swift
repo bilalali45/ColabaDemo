@@ -34,6 +34,7 @@ enum EndPoint:String{
     case seenNotification = "Notification/notification/Seen"
     case deleteNotifications = "Notification/notification/Delete"
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
+    case getApplicationStatus = "Milestone/Milestone/GetMilestoneForLoanCenter?"
     case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
     case viewLoanDocument = "documentmanagement/mcudocument/View?"
     case getLoanApplicationData = "loanapplication/Loan/GetLoanApplicationSummary?"
@@ -115,6 +116,7 @@ enum EndPoint:String{
     case addUpdateGovernmentQuestion = "loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions"
     case addUpdateBorrowerDetail = "loanapplication/Borrower/AddOrUpdateBorrowerDetails"
     case deleteBorrowerPreviousAddress = "loanapplication/Borrower/DeleteBorrowerPreviousAddress?"
+    case findBorrowerContact = "loanapplication/loan/FindBorrowerContact?"
     case logout = "identity/mcuaccount/Logout"
     
 }

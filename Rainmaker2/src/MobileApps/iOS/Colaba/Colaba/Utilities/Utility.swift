@@ -24,6 +24,7 @@ struct Utility {
     static private var monthYearFormatter: DateFormatter?
     static private var dayMonthYearFormatter: DateFormatter?
     static private var incomeDateFormatter: DateFormatter?
+    static private var applicationStatusDateFormatter: DateFormatter?
     
     static func getLoginNavigationVC() -> LoginNavigationViewController{
         return authStoryboard.instantiateViewController(withIdentifier: "LoginNavigationViewController")  as! LoginNavigationViewController
@@ -548,6 +549,20 @@ struct Utility {
         }
     }
     
+    static var localApplicationStatusDateFormatter: DateFormatter{
+        get{
+            if (applicationStatusDateFormatter == nil){
+                applicationStatusDateFormatter = DateFormatter()
+                applicationStatusDateFormatter?.locale = .current
+                applicationStatusDateFormatter?.dateFormat = "dd MMM yyyy, HH:mm"
+            }
+            return applicationStatusDateFormatter!
+        }
+        set{
+            
+        }
+    }
+    
     static func checkDeviceAuthType() -> String {
          let authType = LocalAuthManager.shared.biometricType
             switch authType {
@@ -686,6 +701,24 @@ struct Utility {
         }
         else{
             return 0
+        }
+    }
+    
+    static func getApplicationStatusDate(_ dateString: String) -> String{
+        var actualDate = ""
+        let loanDate = dateString.components(separatedBy: "T")
+        if loanDate.count > 1{
+            let loanTime = loanDate[1].components(separatedBy: ".")
+            if loanTime.first != nil{
+                actualDate = "\(loanDate.first!) \(loanTime.first!)"
+            }
+        }
+        
+        if let date = localLoanApplicationDateFormatter.date(from: actualDate){
+            return localApplicationStatusDateFormatter.string(from: date)
+        }
+        else{
+            return ""
         }
     }
     
