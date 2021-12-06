@@ -36,7 +36,7 @@ class ApplicationStatusViewController: BaseViewController {
     func getApplicationStatus(){
         Utility.showOrHideLoader(shouldShow: true)
         
-        let extraData = "loanApplicationId=1047"
+        let extraData = "loanApplicationId=\(loanApplicationId)"
         
         APIRouter.sharedInstance.executeAPI(type: .getApplicationStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
             
