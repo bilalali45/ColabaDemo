@@ -526,6 +526,26 @@ interface ServerApi{
             :ArrayList<SearchItem>
 
 
+    @GET("api/mcu/mobile/loanapplication/loan/FindBorrowerContact")
+    suspend fun searchByBorrowerContact(
+        @Header("Authorization" )  Authorization:String,
+        @Query("keyword")  keyword:String)
+            :SearchResultResponse
+
+
+    @GET("api/mcu/mobile/loanapplication/loan/LookUpBorrowerContact")
+    suspend fun lookUpBorrowerContact(
+        @Header("Authorization" )  Authorization:String,
+        @Query("email")  email:String,
+        @Query("phone")  phone:String)
+            :LookUpBorrowerContactResponse
+
+    @POST("api/mcu/mobile/loanapplication/loan/CreateApplication")
+    suspend fun createApplication(
+        @Header("Authorization" )  Authorization:String,
+        @Body createNewApplicationParams: CreateNewApplicationParams
+    ):Response<Any>
+
 
     @GET("api/mcu/mobile/Notification/notification/GetPaged")
     suspend fun getNotificationListing(
