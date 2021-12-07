@@ -70,6 +70,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
     var loanApplicationId : Int? = null
     var borrowerId : Int?= null
     var addressId : Int? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,6 +88,17 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         activity?.borrowerId?.let { bId ->
             borrowerId = bId
+        }
+
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
         setUpUI()
@@ -563,6 +576,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.currentResidenceParentLayout.setOnClickListener{
            // binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
             binding.topSearchAutoTextView.clearFocus()
+            HideSoftkeyboard.hide(requireActivity(),binding.currentResidenceParentLayout)
+            super.removeFocusFromAllFields(binding.currentResidenceParentLayout)
         }
     }
 

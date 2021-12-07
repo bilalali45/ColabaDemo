@@ -2,44 +2,40 @@ package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
-import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
-
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
-import timber.log.Timber
 import java.util.regex.Pattern
-import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
-/**
- * Created by Anita Kiran on 9/17/2021.
- */
+@AndroidEntryPoint
 class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     private lateinit var binding: StartApplicationFragLayoutBinding
     private var savedViewInstance: View? = null
     private lateinit var adapter : ContactsAdapter
-    val searchList = ArrayList<Contacts>()
+    private var searchList = ArrayList<SearchResultResponseItem>()
+
+    private val viewModel: StartNewAppViewModel by activityViewModels()
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,14 +47,10 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         } else {
             binding = StartApplicationFragLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = binding.root
-
             binding.btnCreateApplication.isEnabled = false
-
-
             setupUI()
             setLabelFocus()
             super.addListeners(binding.root)
-
             savedViewInstance
         }
     }
@@ -66,42 +58,63 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     private fun setupUI() {
 
+        /*
         binding.searchEdittext.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEdittext.clearFocus()
                 binding.searchEdittext.hideKeyboard()
                 val searchWord = binding.searchEdittext.text.toString()
-                if(searchWord.isNotEmpty() && searchWord.isNotBlank()) {
-                    adapter.showResult(searchList)
-                    binding.recyclerviewContacts.adapter = adapter
-                    binding.layoutFindContact.visibility = View.VISIBLE
-                    binding.recyclerviewContacts.visibility = View.VISIBLE
-                    binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
-                }
+                if (searchWord.isNotEmpty() && searchWord.isNotBlank()) {
+                    lifecycleScope.launchWhenStarted {
+                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                            startNewAppViewModel.searchByBorrowerContact(authToken, searchWord)
+                        }
+                    }
 
-                return@OnEditorActionListener true
+                    return@OnEditorActionListener true
+                }
             }
-            false
+           false
+        })
+         */
+
+
+        binding.searchEdittext.doOnTextChanged { text, start, before, count ->
+            if(count>1) {
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.searchByBorrowerContact(authToken, text.toString())
+                    }
+                }
+            }
+        }
+
+
+
+
+
+        viewModel.searchResultResponse.observe(viewLifecycleOwner, {
+            searchList = it
+            adapter.showResult(searchList)
+            binding.recyclerviewContacts.adapter = adapter
+            binding.layoutFindContact.visibility = View.VISIBLE
+            binding.recyclerviewContacts.visibility = View.VISIBLE
+            binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
         })
         
 
-        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Arnold Richard","arnold634@gmail.com","(121) 353 1343"))
-        searchList.add(Contacts("Richard Glenn Randall","richard.glenn@gmail.com","(121) 353 1343"))
+        searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
+        searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
+        searchList.add(SearchResultResponseItem(3,"richard.glenn@gmail.com", "Richard Glenn Randall", mobileNumber = "(121) 353 1343"))
 
         adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
-
-
-
 
         binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
             override fun onTouch(v: View, m: MotionEvent): Boolean {
                 //binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
                 //binding.scrollviewStartApplication.setOnTouchListener(disableScrollViewListener)
-                binding.scrollviewStartApplication.setEnableScrolling(false); //
+                binding.scrollviewStartApplication.setEnableScrolling(false) //
                 //binding.recyclerviewContacts.isEnabled = false
                 return false
             }
@@ -157,8 +170,28 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
         binding.btnCreateApplication.setOnClickListener {
-            BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if(emailPhoneValidated()) {
+                        val phoneNumber = binding.edMobile.text.toString()
+                        var correctPhoneNumber = phoneNumber.replace(" ", "")
+                        correctPhoneNumber = correctPhoneNumber.replace("+1", "")
+                        correctPhoneNumber = correctPhoneNumber.replace("-", "")
+                        correctPhoneNumber = correctPhoneNumber.replace("(", "")
+                        correctPhoneNumber = correctPhoneNumber.replace(")", "")
+                        viewModel.lookUpBorrowerContact(authToken, binding.edEmail.text.toString(), correctPhoneNumber)
+                    }
+                }
+            }
         }
+
+        viewModel.lookUpBorrowerContactResponse.observe(viewLifecycleOwner, {
+            if(it.code == "200" || it.status.equals("OK", true)) {
+                if (it.borrowerData != null) {
+                    BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
+                }
+            }
+        })
 
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
@@ -194,6 +227,25 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     }
 
+    private fun emailPhoneValidated():Boolean{
+
+        val phoneNumber = binding.edMobile.text.toString()
+        if(phoneNumber.length!=14)
+            return false
+
+        val emailString = binding.edEmail.text.toString()
+        if(emailString.isNotBlank() && emailString.isNotEmpty()) {
+            if (!isValidEmailAddress(binding.edEmail.text.toString().trim()))
+                return false
+        }
+        else
+            return  false
+
+        return true
+    }
+
+
+
     private val disableScrollViewListener  = object : View.OnTouchListener {
         override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
             return true
@@ -209,18 +261,15 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     };
 
     private fun checkRequiredFields() {
-        if (!binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
-            !binding.edEmail.text.toString().isEmpty()) {
-            binding.btnCreateApplication.isEnabled = true
-        }
-        else
-            binding.btnCreateApplication.isEnabled = false
+        binding.btnCreateApplication.isEnabled =
+            !binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
+                !binding.edEmail.text.toString().isEmpty()
     }
 
     override fun onItemClick(position: Int) {
-        binding.searchedContactName.text = searchList.get(position).contactName
-        binding.searchedContactEmail.text = searchList.get(position).contactEmail
-        binding.searchedContactPhone.text = searchList.get(position).contactNumber
+        binding.searchedContactName.text = searchList.get(position).firstName
+        binding.searchedContactEmail.text = searchList.get(position).emailAddress
+        binding.searchedContactPhone.text = searchList.get(position).mobileNumber
 
         binding.layoutResult.visibility = View.VISIBLE
         binding.searchEdittext.visibility = View.GONE

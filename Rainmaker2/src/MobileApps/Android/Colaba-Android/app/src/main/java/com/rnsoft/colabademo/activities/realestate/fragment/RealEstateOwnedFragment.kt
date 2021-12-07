@@ -16,8 +16,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
-import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
-import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.RealEstateOwnedLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -530,14 +528,14 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onRealEstateDeleteReceived(evt: RealEstateDeleteEvent){
-            if (loanApplicationId != null && borrowerId != null && borrowerPropertyId!! > 0) {
-                viewModel.addUpdateDeleteResponse.observe(viewLifecycleOwner, { response ->
-                    val codeString = response.code.toString()
-                    if(codeString == "400" || codeString == "200"){
-                        EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
-                        requireActivity().finish()
+        if (loanApplicationId != null && borrowerId != null && borrowerPropertyId!! > 0) {
+            viewModel.addUpdateDeleteResponse.observe(viewLifecycleOwner, { response ->
+                val codeString = response.code.toString()
+                if(codeString == "400" || codeString == "200"){
+                    EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+                    requireActivity().finish()
                     }
-                })
+            })
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         if(borrowerPropertyId != null && borrowerPropertyId !=0)

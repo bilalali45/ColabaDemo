@@ -488,7 +488,7 @@
                         android:ellipsize="end"
                         android:fontFamily="@font/rubik_regular"
                         android:maxLines="2"
-                        android:text="5915 Trussvile adjfdfllmmmm"
+                        android:text=""
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp" />
 
@@ -505,7 +505,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik_regular"
-                            android:text="From December 2020"
+                            android:text=""
                             android:textColor="@color/grey_color_two"
                             android:textSize="13sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -517,7 +517,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/rubik_regular"
-                            android:text="Rental $6,000"
+                            android:text=""
                             android:textColor="@color/grey_color_two"
                             android:textSize="13sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -558,7 +558,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Add Previous Residence"
+                        android:text="Add Current Residence"
                         android:textAlignment="center"
                         android:textColor="@color/colaba_apptheme_blue"
                         android:textSize="13sp" />
@@ -672,7 +672,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_dependents"
+                    android:text="@string/no_of_dependents"
                     android:layout_marginTop="37dp"
                     android:textStyle="bold"
                     android:textAlignment="center"
@@ -768,5 +768,20 @@
         android:src="@drawable/ic_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/loader_borrower_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:elevation="1dp"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

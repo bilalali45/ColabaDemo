@@ -69,7 +69,7 @@ class RealEstateViewModel @Inject constructor(private val repo: RealEstateRepo, 
     }
 
     suspend fun getRealEstateDetails(token:String, loanApplicationId:Int,borrowerPropertyId:Int) {
-        Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
+        //Timber.e("loanAppliactionId " + loanApplicationId + "propertyId : " + borrowerPropertyId + "Token: "  + token)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.getRealEstateDetails(token = token, loanApplicationId = loanApplicationId, borrowerPropertyId = borrowerPropertyId)
             withContext(Dispatchers.Main) {

@@ -40,12 +40,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/borrower_purpose"
+            android:id="@+id/borrower_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/rubik_light"
-            android:text="@string/richard"
+            android:text=""
             android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="11sp"
@@ -76,6 +76,7 @@
         android:text="@string/legal_spouse"
         android:textColor="@color/grey_color_two"
         android:textSize="13sp"
+        android:lineSpacingExtra="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assets_top_container" />

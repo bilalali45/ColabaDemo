@@ -49,6 +49,12 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/Borrower/AddOrUpdateBorrowerDetails")
     suspend fun addUpdateBorrowerInfo(@Header("Authorization")  Authorization:String, @Body data: PrimaryBorrowerData): AddUpdateDataResponse
 
+    @DELETE("api/mcu/mobile/loanapplication/Borrower/DeleteBorrowerPreviousAddress")
+    suspend fun deletePreviousAddress(
+        @Header("Authorization") Authorization: String,
+        @Query("id") addressId:Int) : AddUpdateDataResponse
+
+
 
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetHousingStatus")
@@ -525,6 +531,26 @@ interface ServerApi{
         @Query("searchTerm")  searchTerm:String)
             :ArrayList<SearchItem>
 
+
+    @GET("api/mcu/mobile/loanapplication/loan/FindBorrowerContact")
+    suspend fun searchByBorrowerContact(
+        @Header("Authorization" )  Authorization:String,
+        @Query("keyword")  keyword:String)
+            :SearchResultResponse
+
+
+    @GET("api/mcu/mobile/loanapplication/loan/LookUpBorrowerContact")
+    suspend fun lookUpBorrowerContact(
+        @Header("Authorization" )  Authorization:String,
+        @Query("email")  email:String,
+        @Query("phone")  phone:String)
+            :LookUpBorrowerContactResponse
+
+    @POST("api/mcu/mobile/loanapplication/loan/CreateApplication")
+    suspend fun createApplication(
+        @Header("Authorization" )  Authorization:String,
+        @Body createNewApplicationParams: CreateNewApplicationParams
+    ):Response<Any>
 
 
     @GET("api/mcu/mobile/Notification/notification/GetPaged")

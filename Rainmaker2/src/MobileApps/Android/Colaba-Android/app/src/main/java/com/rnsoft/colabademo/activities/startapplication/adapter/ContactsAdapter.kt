@@ -6,22 +6,18 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.rnsoft.colabademo.Contacts
 import com.rnsoft.colabademo.RecyclerviewClickListener
+import com.rnsoft.colabademo.SearchResultResponseItem
 import com.rnsoft.colabademo.databinding.ContactListItemBinding
 import java.util.HashMap
 
-/**
- * Created by Anita Kiran on 9/20/2021.
- */
 class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListener) :    //, var contact: List<Contacts> = arrayListOf()
     RecyclerView.Adapter<ContactsAdapter.EpisodeViewHolder>() {
 
-    var contact: List<Contacts> = arrayListOf()
+    private var searchResultResponseItemList: List<SearchResultResponseItem> = arrayListOf()
     private var clickEvent: RecyclerviewClickListener = clickListner
 
     init {
@@ -37,7 +33,7 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
     }
 
     override fun onBindViewHolder(holder: EpisodeViewHolder, position: Int) {
-        holder.bind(contact.get(position), position)
+        holder.bind(searchResultResponseItemList.get(position), position)
 
         holder.itemView.setOnClickListener {
             clickEvent.onItemClick(position)
@@ -45,15 +41,15 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
 
     }
 
-    override fun getItemCount() = contact.size
+    override fun getItemCount() = searchResultResponseItemList.size
 
     inner class EpisodeViewHolder(val binding :ContactListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(contact: Contacts, position: Int) {
-            binding.contactName.text = contact.contactName
-            binding.contactEmail.text = contact.contactEmail
-            binding.contactNum.text = contact.contactNumber
+        fun bind(contact: SearchResultResponseItem, position: Int) {
+            binding.contactName.text = contact.firstName
+            binding.contactEmail.text = contact.emailAddress
+            binding.contactNum.text = contact.mobileNumber
 
             var search = "richard"
             val searchMap: HashMap<String,List<String>> = HashMap()
@@ -87,8 +83,8 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun showResult(contact: List<Contacts>) {
-        this.contact = contact
+    fun showResult(contact: ArrayList<SearchResultResponseItem>) {
+        this.searchResultResponseItemList = contact
         notifyDataSetChanged()
     }
 }

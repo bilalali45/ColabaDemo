@@ -56,6 +56,8 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private var countryFullList: ArrayList<CountriesModel> = arrayListOf()
     private var stateFullList: ArrayList<StatesModel> = arrayListOf()
     private val viewModel : RealEstateViewModel by activityViewModels()
+    var firstName : String? = null
+    var lastName : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +68,18 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         _binding = MailingAddressLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         super.addListeners(binding.root)
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
 
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 

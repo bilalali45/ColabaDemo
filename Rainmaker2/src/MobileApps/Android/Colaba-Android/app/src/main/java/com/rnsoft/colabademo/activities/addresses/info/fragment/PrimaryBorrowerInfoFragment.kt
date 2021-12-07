@@ -74,7 +74,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private var currentAddressModel = AddressModel()
     private var currentAddressFullDetail = CurrentAddress()
     private var maritalStatus : MaritalStatus? = null
-    private var citizenship : BorrowerCitizenship? = null
+    private var citizenship : BorrowerCitizenship? = null // make separate class for only two parameters of inner screen later
+    private var citizenshipForApi : BorrowerCitizenship? = null
     private var militaryServiceDate : String? =null
     var militaryAffliation: ArrayList<MilitaryServiceDetail> = ArrayList()
    // private var militaryDetails = MilitaryServiceDetails()
@@ -87,7 +88,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (savedViewInstance != null) {
             savedViewInstance
-
         } else {
             bi = PrimaryBorrowerInfoLayoutBinding.inflate(inflater, container, false)
             savedViewInstance = bi.root
@@ -119,10 +119,15 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 middleName = it
             }
 
+           // bindingMilitary.tvQues.text = "Was".plus()  ever activated during their tour of duty?"
+
 
             if(firstName !=null && lastName !=null){
-                Log.e("fra","name not null")
-                bi.name.setText(firstName.plus(" ").plus(lastName))
+                var name = firstName.plus(" ").plus(lastName)
+                if(name.isNotEmpty() && name.isNotBlank() && name.length >0) {
+                    bi.name.setText(name)
+                    bindingMilitary.tvQues.text = "Was ".plus(name) + " ever activated during their tour of duty?"
+                }
             }
 
             //listAddress.clear()
@@ -214,13 +219,16 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         msBinding.rbMarried.isChecked = true
                     if (it.maritalStatusId == 2)
                         msBinding.rbSeparated.isChecked = true
-                    if (it.maritalStatusId == 9)
+                    if (it.maritalStatusId == 9){
                         msBinding.rbUnmarried.isChecked = true
+                        setMaritalStatus(it)
+                    }
                 }
 
                 detail.borrowerData?.borrowerCitizenship?.let {
-                        //Timber.e("residency type id" + it.residencyTypeId)
-                        citizenship = it
+                    //Timber.e("residency type id" + it.residencyTypeId)
+                    citizenship = it
+                    //citizenshipForApi = it
                         it.ssn?.let { ssn->
                             bi.edSecurityNum.setText(ssn)
                         }
@@ -301,6 +309,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         //var currentAddressFromDate = bi.tvResidenceDate.text.toString().trim()
         //var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
         //Log.e("NewDate",newDate)
+        //Log.e("dependenat","$listItems")
         val firstName: String = bi.edFirstName.text.toString()
         val lastName: String = bi.edLastName.text.toString()
         val email: String = bi.edEmail.text.toString()
@@ -325,7 +334,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             clearError(bi.layoutLastName)
         }
         if (email.isNotEmpty() && email.length > 0){
-            if (!LoginUtil.isValidEmailAddress(email.trim())) {
+            if (!isValidEmailAddress(email.trim())) {
                 setError(bi.layoutEmail, getString(R.string.invalid_email))
             } else {
                 clearError(bi.layoutEmail)
@@ -343,8 +352,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             checkDependentData()
         }
 
-        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && LoginUtil.isValidEmailAddress(email.trim()) &&
-            loanApplicationId !=null) {
+        if(firstName.length >0 && lastName.length > 0 && homeNum.length > 0 && isValidEmailAddress(email.trim()) && loanApplicationId !=null) {
             // borrower basic details
             val middleName = if(bi.edMiddleName.text.toString().trim().length >0) bi.edMiddleName.text.toString() else null // get middle name
             val suffix = if(bi.edSuffix.text.toString().trim().length >0) bi.edSuffix.text.toString() else null  // suffix
@@ -363,49 +371,85 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 //citizenship
 
                 /*
-                "borrowerCitizenship": {
-                "borrowerId": 1,
-                "loanApplicationId": 1,
-                "residencyTypeId": 3,
-                "residencyStatusId": 4,
-                "residencyStatusExplanation": "",
+
                 "dependentCount": 2,
                 "dependentAges": "25,26",
-                "dobUtc": "2001-01-01T00:00:00",
-                "ssn": "484-89-4984"
+
             }, */
 
 
-          if(bindingMilitary.chbDutyPersonel.isChecked){
-              militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4,expirationDateUtc = militaryServiceDate,reserveEverActivated =null))
-          }
-        if(bindingMilitary.chbResNationalGuard.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3,expirationDateUtc = null,reserveEverActivated = reserveEverActivated))
-        }
+            var residencyTypeId:Int? = null
+            var residencyStatusId:Int? = null
+            var visaStatusDesc : String? = null
 
-        if(bindingMilitary.chbVeteran.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2,expirationDateUtc = null,reserveEverActivated =null))
-        }
+            if(citizenshipBinding.rbUsCitizen.isChecked)
+                residencyTypeId = 1
 
-        if(bindingMilitary.chbSurvivingSpouse.isChecked){
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1,expirationDateUtc = null,reserveEverActivated =null))
-        }
+            if(citizenshipBinding.rbPr.isChecked)
+                residencyTypeId = 2
 
-         val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
+            if(citizenshipBinding.rbNonPrOther.isChecked)
+                residencyTypeId = 3
+
+            citizenship?.let {
+                residencyStatusId =  it.residencyStatusId
+                visaStatusDesc = it.residencyStatusExplanation
+            }
+
+           // try {
+                val dob = if (bi.edDateOfBirth.text.toString().trim().length > 0) bi.edDateOfBirth.text.toString() else null
+                val securityNum = if (bi.edSecurityNum.text.toString().trim().length > 0) bi.edSecurityNum.text.toString() else null
+                val dependentCount = bi.tvDependentCount.text.toString()
+                val dependentAges = StringBuilder()
+                if (listItems.size > 0) {
+                    for (i in 0 until listItems.size) {
+                        dependentAges.append(listItems.get(i).age)
+                        if (i + 1 < listItems.size) dependentAges.append(",")
+                    }
+                    //Log.e("age Str",dependentAges.toString())
+                }
+
+
+           // val dependentAges: String? = null,
+           // val dependentCount: Int? = null,
+
+
+            citizenshipForApi = BorrowerCitizenship(loanApplicationId= loanApplicationId,
+             borrowerId= if(borrowerId != null) borrowerId else null,residencyTypeId=residencyTypeId,residencyStatusId = residencyStatusId,residencyStatusExplanation=visaStatusDesc,dobUtc=dob,ssn = securityNum,
+                dependentCount = dependentCount.toInt(),dependentAges = dependentAges.toString()
+            )
+
+
+            if (bindingMilitary.chbDutyPersonel.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4, expirationDateUtc = militaryServiceDate, reserveEverActivated = null))
+            }
+            if (bindingMilitary.chbResNationalGuard.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3, expirationDateUtc = null, reserveEverActivated = reserveEverActivated))
+            }
+
+            if (bindingMilitary.chbVeteran.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2, expirationDateUtc = null, reserveEverActivated = null))
+            }
+
+            if (bindingMilitary.chbSurvivingSpouse.isChecked) {
+                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1, expirationDateUtc = null, reserveEverActivated = null))
+            }
+
+           val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
 
             lifecycleScope.launchWhenStarted{
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     val basicDetails = BorrowerBasicDetails(loanApplicationId=loanApplicationId!!,borrowerId = borrowerId!!,
                         firstName = firstName,lastName = lastName,middleName = middleName,suffix = suffix,emailAddress = email,homePhone = homeNum,
-                        workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = 1
+                        workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = ownTypeId
                     )
 
                     val responseBody = PrimaryBorrowerData(loanApplicationId= loanApplicationId!!, borrowerId= if(borrowerId != null) borrowerId else null,
-                        borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = listAddress,borrowerCitizenship = citizenship,maritalStatus = maritalStatus)
+                        borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = listAddress,borrowerCitizenship = citizenship,maritalStatus = maritalStatus,
+                        militaryServiceDetails = militaryServiceDetail)
 
-
-                   // viewModel.addUpdateBorrowerInfo(authToken,responseBody)
-
+                    ///Log.e("AddResponseBody","$responseBody")
+                    viewModel.addUpdateBorrowerInfo(authToken,responseBody)
 
                 }
             }
@@ -457,9 +501,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         // marital status
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<MaritalStatus>(AppConstant.marital_status)?.observe(
             viewLifecycleOwner) { result ->
-            maritalStatus?.let {
+            setMaritalStatus(result)
+
+        /*maritalStatus?.let {
                 setMaritalStatus(it)
-            }
+            } */
         }
 
         // active duty
@@ -480,6 +526,22 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             }
         }
+
+        // non permanent other
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BorrowerCitizenship>(AppConstant.borrower_citizenship)?.observe(
+            viewLifecycleOwner) { result ->
+            result?.let {
+                //citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+                //citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+                //citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+                citizenship = it
+                result.residencyStatusExplanation?.let {
+                    citizenshipBinding.visaStatusDesc.setText(it)
+                    citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
+                }
+            }
+        }
+
     }
 
     private fun setCurrentAddressDetails(currentAddress : CurrentAddress ){
@@ -940,7 +1002,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
     }
 
-    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int) {
+    private fun setTextInputLayoutHintColor(textInputLayout: TextInputLayout, @ColorRes colorIdRes: Int){
         textInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), colorIdRes))
     }
 
@@ -974,7 +1036,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
     }
 
-    private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean) {
+    private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean){
         if (usCitizen) {
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
@@ -1113,20 +1175,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        /*
-
-        //  datePicker.findViewById(Resources.getSystem().getIdentifier("day", "id", "android")).setVisibility(View.GONE);
-
-        val dpd = DatePickerDialog(requireActivity(), { view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + monthOfYear + "-" + dayOfMonth + "-" + selectedYear) },
-            year,
-            month,
-            day
-        )
-        dpd.datePicker.spinnersShown = true
-        dpd.getDatePicker().setCalendarViewShown(false);
-        dpd.show()
-        */
-
         // New Style Calendar Added....
         val datePickerDialog = DatePickerDialog(
             requireActivity(), R.style.MySpinnerDatePickerStyle,
@@ -1166,6 +1214,23 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         }
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSentData(event: SendDataEvent){
+        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+            bi.loaderBorrowerInfo.visibility = View.GONE
+            requireActivity().finish()
+        }
+        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+        else
+            if (event.addUpdateDataResponse.message != null)
+                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+        bi.loaderBorrowerInfo.visibility = View.GONE
+        requireActivity().finish()
+    }
+
 
     fun getOrdinal(i: Int): String? {
         val mod100 = i % 100

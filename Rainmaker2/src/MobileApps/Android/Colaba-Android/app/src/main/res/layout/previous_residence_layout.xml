@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/half_white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/prev_address_parent_layout">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/assets_top_container"
@@ -41,12 +42,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/borrower_purpose"
+            android:id="@+id/borrower_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/rubik_light"
-            android:text="@string/richard"
+            android:text=""
             android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="11sp"
@@ -720,7 +721,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+       <!--     <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addAddressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -754,7 +755,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/imageView33"
                     app:layout_constraintStart_toEndOf="@+id/imageView33"
                     app:layout_constraintTop_toTopOf="@+id/imageView33" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout> -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

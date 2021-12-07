@@ -22,7 +22,9 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
     private var _binding: ActiveDutyLayoutBinding? = null
     private val binding get() = _binding!!
-     var militarySericeDate : String? =null
+    var militarySericeDate : String? =null
+    var firstName : String? = null
+    var lastName : String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -35,6 +37,18 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
         _binding = ActiveDutyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+        }
 
         createCustomDialog()
 

@@ -46,6 +46,8 @@ class UnMarriedFragment : BaseFragment() {
     var loanApplicationId : Int? = null
     var borrowerId : Int?= null
     private var maritalStatus : MaritalStatus? = null
+    var firstName : String? = null
+    var lastName : String? = null
 
 
     //private val relationshipTypes = listOf("Civil Unions", "Domestic Partners", "Registered Reciprocal", "Other")
@@ -64,6 +66,17 @@ class UnMarriedFragment : BaseFragment() {
 
         activity?.borrowerId?.let { bId ->
             borrowerId = bId
+        }
+
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+
+        if(firstName !=null && lastName !=null){
+            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
         binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
@@ -178,7 +191,7 @@ class UnMarriedFragment : BaseFragment() {
 
             if(relation.length > 0 && state.length > 0){
                 var isDataEntered: Boolean = true
-                if(binding.tvDesc.isVisible && desc.length == 0){
+                if(binding.layouDesc.isVisible && desc.length == 0){
                     isDataEntered = false
                 }
                 if(isDataEntered){

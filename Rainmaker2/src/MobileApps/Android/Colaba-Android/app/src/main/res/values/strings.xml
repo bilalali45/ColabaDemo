@@ -125,7 +125,7 @@
     <string name="ipsum_dolor">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum ultrices magna ornare eu.</string>
     <string name="in_what_state">In what state was this relationship formed?</string>
 
-    <string name="was_richard">Was Richard Glenn Randall ever activated during their tour of duty?</string>
+    <string name="was_richard">Was he ever activated during their tour of duty?</string>
     <string name="last_date_of_service">Last date of service / tour</string>
 
     <string name="test_password">123</string>
@@ -341,7 +341,7 @@
     <string name="martial_status_unmarried">Unmarried</string>
     <string name="martial_status_separated">Separated</string>
     <string name="unmarried_addendum">Unmarried Addendum</string>
-    <string name="unmarried_addendum_ques">Is there a persoon who is not your legal spouse but who currently has real property rights similar to...</string>
+    <string name="unmarried_addendum_ques">Is there a person who is not your legal spouse but who currently has real property rights similar to...</string>
     <string name="citizenship">Citizenship</string>
     <string name="us_citizen">US Citizen</string>
     <string name="pr_green_card">Permanent Resident Alien (Green Card)</string>
