@@ -16,6 +16,8 @@ class LoanOfficerListViewController: BaseViewController {
     var isForPopup = false
     var selectedIndex: IndexPath?
     var selectedRole = LoanOfficersModel()
+    var isForSearch = false
+    var searchedMCUs = [Mcu]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,7 @@ class LoanOfficerListViewController: BaseViewController {
         if (isForPopup){
             self.view.backgroundColor = .clear
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(showSearchResult(notification:)), name: NSNotification.Name(rawValue: kNotificationSearchOfficers), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +50,26 @@ class LoanOfficerListViewController: BaseViewController {
         self.collectionView.isScrollEnabled = !isForPopup
     }
     
+    @objc func showSearchResult(notification: Notification){
+        if let searchUserInfo = notification.userInfo{
+            if let searchText = searchUserInfo["searchText"] as? String{
+                if (!isForPopup){
+                    if (searchText == ""){
+                        isForSearch = false
+                        searchedMCUs.removeAll()
+                        self.collectionView.reloadData()
+                    }
+                    else{
+                        isForSearch = true
+                        searchedMCUs = selectedRole.mcus.filter({$0.fullName.localizedCaseInsensitiveContains(searchText)})
+                        self.collectionView.reloadData()
+                    }
+                    
+                }
+            }
+        }
+    }
+    
 }
 
 extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectionViewDelegate{
@@ -57,7 +80,7 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             return selectedRole.mcus.count > 3 ? 4 : selectedRole.mcus.count
         }
         else{
-            return selectedRole.mcus.count
+            return isForSearch ? searchedMCUs.count : selectedRole.mcus.count
         }
     }
     
@@ -72,7 +95,7 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             cell.seeMoreImage.isHidden = false
         }
         else{
-            let mcu = selectedRole.mcus[indexPath.row]
+            let mcu = isForSearch ? searchedMCUs[indexPath.row] : selectedRole.mcus[indexPath.row]
             cell.userImageView.sd_setImage(with: URL(string: mcu.profileimageurl), completed: nil)
             cell.lblUsername.text = mcu.fullName
             cell.lblTenant.text = mcu.branchName
@@ -88,11 +111,12 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
         }
         else{
-            let selectedMCU = ["branchId": selectedRole.mcus[indexPath.row].branchId,
-                               "branchName": selectedRole.mcus[indexPath.row].branchName,
-                               "userId": selectedRole.mcus[indexPath.row].userId,
-                               "fullName": selectedRole.mcus[indexPath.row].fullName,
-                               "profileimageurl": selectedRole.mcus[indexPath.row].profileimageurl] as [String: Any]
+            let mcu = isForSearch ? searchedMCUs[indexPath.row] : selectedRole.mcus[indexPath.row]
+            let selectedMCU = ["branchId": mcu.branchId,
+                               "branchName": mcu.branchName,
+                               "userId": mcu.userId,
+                               "fullName": mcu.fullName,
+                               "profileimageurl": mcu.profileimageurl] as [String: Any]
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil, userInfo: selectedMCU)
             if (!isForPopup){
                 self.dismissVC()

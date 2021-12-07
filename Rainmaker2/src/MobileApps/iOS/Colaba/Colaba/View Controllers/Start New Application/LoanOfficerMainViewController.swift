@@ -27,6 +27,7 @@ class LoanOfficerMainViewController: BaseViewController {
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
         txtfieldSearch.delegate = self
         txtfieldSearch.returnKeyType = .search
+        txtfieldSearch.addTarget(self, action: #selector(searchOfficers), for: .editingChanged)
         getAllLoanOfficers()
         if (isForPopup){
             self.view.backgroundColor = .clear
@@ -68,6 +69,11 @@ class LoanOfficerMainViewController: BaseViewController {
             carbonTabSwipeNavigation.insert(intoRootViewController: self, andTargetView: self.tabView)
             
         }
+    }
+    
+    @objc func searchOfficers(){
+        let searchUserInfo = ["searchText": txtfieldSearch.text!]
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationSearchOfficers), object: nil, userInfo: searchUserInfo)
     }
     
     //MARK:- API
@@ -121,6 +127,9 @@ extension LoanOfficerMainViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (isForPopup){
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+        }
+        else{
+            searchOfficers()
         }
         return true
     }
