@@ -333,28 +333,32 @@ class StartNewApplicationViewController: BaseViewController {
         
         if (isCreateNewContact){
             if (txtfieldFirstName.text! != "" && txtfieldLastName.text! != "" && txtfieldEmail.text! != "" && loanGoal != nil && !loanOfficerView.isHidden){
-                btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
-                btnCreateApplication.setTitleColor(.white, for: .normal)
-                btnCreateApplication.isEnabled = true
+                enableCreateApplicationButton()
             }
             else{
-                btnCreateApplication.backgroundColor = Theme.getButtonGreyColor()
-                btnCreateApplication.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
-                btnCreateApplication.isEnabled = false
+                disableCreateApplicationButton()
             }
         }
         else{
             if (!borrowerInfoView.isHidden && loanGoal != nil && !loanOfficerView.isHidden){
-                btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
-                btnCreateApplication.setTitleColor(.white, for: .normal)
-                btnCreateApplication.isEnabled = true
+                enableCreateApplicationButton()
             }
             else{
-                btnCreateApplication.backgroundColor = Theme.getButtonGreyColor()
-                btnCreateApplication.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
-                btnCreateApplication.isEnabled = false
+                disableCreateApplicationButton()
             }
         }
+    }
+    
+    func enableCreateApplicationButton(){
+        btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
+        btnCreateApplication.setTitleColor(.white, for: .normal)
+        btnCreateApplication.isEnabled = true
+    }
+    
+    func disableCreateApplicationButton(){
+        btnCreateApplication.backgroundColor = Theme.getButtonGreyColor()
+        btnCreateApplication.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
+        btnCreateApplication.isEnabled = false
     }
     
     @objc func loanApplicationCreated(){
