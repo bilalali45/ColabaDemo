@@ -59,8 +59,8 @@
     <string name="ethnicity">Ethnicity</string>
     <string name="sex">Sex</string>
 
-    <string name="add_current_address">Add Current Address</string>
-    <string name="add_previous_address">Add Previous Address</string>
+    <string name="add_current_address">Add Current Residence</string>
+    <string name="add_previous_address">Add Previous Residence</string>
 
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>

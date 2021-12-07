@@ -30,6 +30,10 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.textfield.TextInputLayout
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
+import com.rnsoft.colabademo.activities.addresses.info.fragment.DeletePreviousAddressDailog
+import com.rnsoft.colabademo.activities.addresses.info.fragment.PreviousAddressDeleteEvent
+import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.PreviousResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -68,10 +72,12 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     var borrowerId : Int?= null
     var addressId : Int? = null
     var addressPosition : Int? = 0
-    private var previousAddressDetail = PreviousAddresses()
+    private var previousAddressDetail :  PreviousAddresses? = null
     private var previousAddressModel : AddressModel? = null
     var firstName : String? = null
     var lastName : String? = null
+    var addressType : String? = null
+    //var borrowerName : String? = null
 
 
     override fun onCreateView(
@@ -136,15 +142,14 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 childFragmentManager,
                 AddressNotSavingDialogFragment::class.java.canonicalName
             )
-            //findNavController().popBackStack()
         }
 
         binding.delImageview.setOnClickListener {
-            val message = "Are you sure you want to delete Richard's Current Residence?"
-            AddressNotSavingDialogFragment.newInstance(message).show(
-                childFragmentManager,
-                AddressNotSavingDialogFragment::class.java.canonicalName
-            )
+            var message : String = "Are you sure you want to delete Previous Residence?"
+            if(firstName != null) {
+                 message = "Are you sure you want to delete ".plus(firstName).plus("'s Previous Residence?")
+            }
+            DeletePreviousAddressDailog.newInstance(message).show(childFragmentManager, DeletePreviousAddressDailog::class.java.canonicalName)
         }
 
         binding.prevAddressParentLayout.setOnClickListener {
@@ -155,74 +160,98 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         return root
     }
 
-    private fun setData(counter : Int) {
+    private fun setData(counter : Int){
         if(counter == 1) {
             try {
-                if (arguments != null) {
+                if(arguments != null) {
                     addressPosition = arguments?.getInt("position")!!
-                    previousAddressDetail = arguments?.getParcelable(AppConstant.previous_address)!!
-                    previousAddressDetail.id?.let { id ->
-                        addressId = id  // set this id if present in get api other wise send null
-                    }
-
-                    previousAddressDetail.addressModel?.let {
-                        previousAddressModel = it
-
-                        it.street?.let {
-                            binding.topSearchAutoTextView.setText(it)
-                            binding.streetAddressEditText.setText(it)
-                            setColor(binding.layoutSearchField)
-                            setColor(binding.streetAddressLayout)
-                        }
-                        it.city?.let { binding.cityEditText.setText(it) }
-                        it.countryName?.let {
-                            binding.countryCompleteTextView.setText(it)
-                            setColor(binding.countryCompleteLayout)
-                        }
-                        it.zipCode?.let {
-                            binding.zipcodeEditText.setText(it)
-                        }
-                        it.stateName?.let {
-                            binding.stateCompleteTextView.setText(it)
-                            setColor(binding.stateCompleteTextInputLayout)
-                        }
-                        it.countyName?.let {
-                            binding.countyEditText.setText(it)
-                            setColor(binding.countyLayout)
-                        }
-                        it.unit?.let {
-                            binding.unitAptInputEditText.setText(it)
-                        }
-
-                        visibleAllFields()
-                    }
-
-                    previousAddressDetail.fromDate?.let {
-                        if(it.isNotBlank() && it.isNotEmpty()){
-                            binding.moveInEditText.setText(it)
-                            setColor(binding.moveInLayout)
-                        }
-                    }
-                    previousAddressDetail.toDate?.let{
-                        if(it.isNotEmpty() && it.isNotBlank()){
-                            binding.moveOutEditText.setText(it)
-                            setColor(binding.moveOutLayout)
-                        }
-                    }
-
-                    previousAddressDetail.housingStatusId?.let { housingId ->
-                        for (item in housingStatusList) {
-                            if (item.id == housingId) {
-                                binding.housingCompleteTextView.setText(item.description, false)
-                                setColor(binding.housingLayout)
-                                break
+                    addressType = arguments?.getString("type")
+                    if(addressType == "update_previous") {
+                        previousAddressDetail =
+                            arguments?.getParcelable(AppConstant.previous_address)!!
+                        if (previousAddressDetail != null) {
+                            previousAddressDetail?.id?.let { id ->
+                                addressId =
+                                    id  // set this id if present in get api other wise send null
                             }
+
+                            previousAddressDetail?.addressModel?.let {
+                                previousAddressModel = it
+
+                                it.street?.let {
+                                    binding.topSearchAutoTextView.setText(it)
+                                    binding.streetAddressEditText.setText(it)
+                                    setColor(binding.layoutSearchField)
+                                    setColor(binding.streetAddressLayout)
+                                }
+                                it.city?.let { binding.cityEditText.setText(it) }
+                                it.countryName?.let {
+                                    binding.countryCompleteTextView.setText(it)
+                                    setColor(binding.countryCompleteLayout)
+                                }
+                                it.zipCode?.let {
+                                    binding.zipcodeEditText.setText(it)
+                                }
+                                it.stateName?.let {
+                                    binding.stateCompleteTextView.setText(it)
+                                    setColor(binding.stateCompleteTextInputLayout)
+                                }
+                                it.countyName?.let {
+                                    binding.countyEditText.setText(it)
+                                    setColor(binding.countyLayout)
+                                }
+                                it.unit?.let {
+                                    binding.unitAptInputEditText.setText(it)
+                                }
+
+                                visibleAllFields()
+                            }
+
+                            previousAddressDetail?.fromDate?.let {
+                                if (it.isNotBlank() && it.isNotEmpty()) {
+                                    binding.moveInEditText.setText(
+                                        AppSetting.getMonthAndYear(
+                                            it,
+                                            true
+                                        )
+                                    )
+                                    setColor(binding.moveInLayout)
+                                }
+                            }
+
+                            previousAddressDetail?.toDate?.let {
+                                if (it.isNotEmpty() && it.isNotBlank()) {
+                                    binding.moveOutEditText.setText(
+                                        AppSetting.getMonthAndYear(
+                                            it,
+                                            true
+                                        )
+                                    )
+                                    setColor(binding.moveOutLayout)
+                                }
+                            }
+
+                            previousAddressDetail?.housingStatusId?.let { housingId ->
+                                for (item in housingStatusList) {
+                                    if (item.id == housingId) {
+                                        binding.housingCompleteTextView.setText(
+                                            item.description,
+                                            false
+                                        )
+                                        setColor(binding.housingLayout)
+                                        break
+                                    }
+                                }
+                            }
+
                         }
                     }
 
                 }
 
-            } catch (e:Exception){}
+            } catch (e:Exception){
+                Log.e("Exception","exception")
+            }
         }
     }
 
@@ -484,7 +513,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
         binding.stateCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.stateCompleteTextView.showDropDown()
+                //binding.stateCompleteTextView.showDropDown()
                 binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
                 CustomMaterialFields.setColor(
                     binding.stateCompleteTextInputLayout,
@@ -522,7 +551,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
         binding.countryCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.countryCompleteTextView.showDropDown()
+                //binding.countryCompleteTextView.showDropDown()
                 binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(
                     binding.countryCompleteLayout,
@@ -786,10 +815,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 CustomMaterialFields.clearError(binding.countryCompleteLayout, requireActivity())
             }
             if (state.isNotEmpty() || state.length > 0) {
-                CustomMaterialFields.clearError(
-                    binding.stateCompleteTextInputLayout,
-                    requireActivity()
-                )
+                CustomMaterialFields.clearError(binding.stateCompleteTextInputLayout, requireActivity())
             }
             if (housingStatus.isNotEmpty() || housingStatus.length > 0) {
                 CustomMaterialFields.clearError(binding.housingLayout, requireActivity())
@@ -802,8 +828,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0  && country.length > 0 && zipCode.length > 0 && housingStatus.length > 0)
-        {
+        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0  && country.length > 0 && zipCode.length > 0 && housingStatus.length > 0) {
 
             val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
 
@@ -823,8 +848,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             val matchedList =  housingStatusList.filter { p -> p.description.equals(housingStatus,true)}
             val housingStatusId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
 
-            val fromDate = if(moveInDate.length > 0 ) moveInDate else null
-            val toDate = if(moveOutDate.length > 0 ) moveOutDate else null
+            val fromDate = if(moveInDate.length > 0 ) "01/"+moveInDate else null
+            val toDate = if(moveOutDate.length > 0 ) "01/"+moveOutDate else null
 
             var monthlyRent = binding.monthlyRentEditText.text.toString()
             monthlyRent = if(monthlyRent.length > 0) monthlyRent else "0.0"
@@ -853,9 +878,24 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 //mailingAddressModel = mailingAddressModel,
                 monthlyRent = monthlyRent.toDouble())
 
-            //Log.e("PreviousDetail","$previousAddressDetail")
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.previous_address, previousAddressDetail)
-            findNavController().popBackStack()
+            Log.e("PreviousDetail","$previousAddressDetail")
+            if(addressType == "update_previous") {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                    AppConstant.previous_address,
+                    previousAddressDetail
+                )
+                findNavController().popBackStack()
+            } else {
+
+                if(addressType == "add_new") {
+                    findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                        AppConstant.add_previous_address,
+                        previousAddressDetail
+                    )
+                    findNavController().popBackStack()
+                }
+
+            }
         }
     }
 
@@ -864,6 +904,16 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             binding.monthlyRentLayout.visibility = View.VISIBLE
         }  else
             binding.monthlyRentLayout.visibility = View.GONE
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onSwipeDeleteReceivedEvent(event: PreviousAddressDeleteEvent){
+        if(event.boolean){
+            //Log.e("PreviousAddressEvent","Received")
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.delete_previous_address, addressPosition)
+            findNavController().popBackStack()
+
+        }
     }
 
     private fun setError() {
@@ -1010,9 +1060,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 .build()
 
 
-
-
-
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
@@ -1139,6 +1186,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
         if (event.boolean) {
+            checkValidations()
+        } else {
             findNavController().popBackStack()
         }
     }
@@ -1154,7 +1203,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         if (p2 < 10)
             stringMonth = "0$p2"
 
-        val sampleDate = "$stringMonth / $p1"
+        val sampleDate = "$stringMonth/$p1"
         if (outInSelection) {
             binding.moveOutEditText.setText(sampleDate)
             CustomMaterialFields.clearError(binding.moveOutLayout, requireActivity())

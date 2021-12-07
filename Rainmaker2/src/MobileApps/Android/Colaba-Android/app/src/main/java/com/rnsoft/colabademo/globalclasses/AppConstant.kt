@@ -26,6 +26,8 @@ object AppConstant {
         const val income_other: String = "Other"
 
         const val previous_address: String = "prev_address"
+        const val add_previous_address: String = "add_prev_address"
+        const val delete_previous_address: String = "delete_prev_address"
         const val owntypeid: String = "owntype_id"
 
         const val service_date: String = "service_date"

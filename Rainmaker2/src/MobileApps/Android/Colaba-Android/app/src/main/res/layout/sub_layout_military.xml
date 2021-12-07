@@ -101,7 +101,7 @@
             android:id="@+id/res_national_guard_ans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text=""
             android:textStyle="bold"
             android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"

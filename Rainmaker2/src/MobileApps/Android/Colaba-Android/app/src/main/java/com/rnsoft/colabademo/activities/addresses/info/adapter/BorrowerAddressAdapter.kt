@@ -87,8 +87,8 @@ class BorrowerAddressAdapter(var context: Context) :
 
             address.monthlyRent?.let {
                 if(it > 0) {
-                    //binding.textviewRent.text = "Rent $".plus(Math.round(it).toString())
-                    //bi.textviewRent.visibility = View.VISIBLE
+                    binding.tvHomerent.text = "Rental $".plus(Math.round(it).toString())
+                    binding.tvHomerent.visibility = View.VISIBLE
                 }
             }
 

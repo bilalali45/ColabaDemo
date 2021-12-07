@@ -109,7 +109,7 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
         if(p2<10)
             stringMonth = "0$p2"
 
-        val sampleDate = "$stringMonth / $p1"
+        val sampleDate = "$stringMonth/$p1"
         binding.edEmail.setText(sampleDate)
     }
 

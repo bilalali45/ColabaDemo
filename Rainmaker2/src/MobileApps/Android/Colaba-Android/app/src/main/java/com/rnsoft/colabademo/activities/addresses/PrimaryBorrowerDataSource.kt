@@ -30,14 +30,15 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
     }
 
 
-    suspend fun deletePreviousAddress(token: String,id: Int): Result<AddUpdateDataResponse> {
+    suspend fun deletePreviousAddress(token: String,loanApplicationId:Int, id: Int): Result<AddUpdateDataResponse> {
         // Log.e("-dataSource-Delete-borrowerPropertyId" , ""+ borrowerPropertyId)
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.deletePreviousAddress(newToken, id)
+            val response = serverApi.deletePreviousAddress(newToken,loanApplicationId, id)
             Timber.e("deletePreviousAddress = $response")
             Result.Success(response)
         } catch (e: Throwable) {
+           // Timber.e("deletePreviousAddress = " + e.localizedMessage)
             if (e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
@@ -53,7 +54,7 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getPrimaryBorrowerDetail(newToken, loanApplicationId,borrowerId)
-            //Log.e("Pri-Borrower-Details------", response.toString())
+            Log.e("Pri-Borrower-Details------", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -67,7 +68,7 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getHousingStatus(newToken)
-            Timber.e("Housing-Status-Response - $response")
+            //Timber.e("Housing-Status-Response - $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

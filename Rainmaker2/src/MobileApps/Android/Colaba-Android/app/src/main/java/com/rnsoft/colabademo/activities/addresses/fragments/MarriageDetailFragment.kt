@@ -29,6 +29,7 @@ class MarriageDetailFragment : BaseFragment() {
     private var maritalStatus : MaritalStatus? = null
     var firstName : String? = null
     var lastName : String? = null
+    var relationLayout : Boolean = false
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -61,6 +62,7 @@ class MarriageDetailFragment : BaseFragment() {
         setCoBorrowers()
 
         if(ownTypeId == 1){
+            Log.e("coBoorrowerCount",""+coBorrowerCount)
             if (coBorrowerCount == 0){
                 binding.layoutQuestion.visibility = View.GONE // don't ask ques only ask names
                 binding.spouseInfoLayout.visibility = View.VISIBLE
@@ -132,34 +134,70 @@ class MarriageDetailFragment : BaseFragment() {
 
                 // if spouse borrower id null && names are also null
                 if(ownTypeId == 2){
-                    maritalStatus?.spouseBorrowerId?.let { spouseBorrowerId->
-                        if(spouseBorrowerId ==0){
-                            binding.layoutQuestion.visibility = View.GONE
-                            if (marriage_type.equals(AppConstant.married)) {
+                    //maritalStatus?.spouseBorrowerId?.let { spouseBorrowerId->
+                     if(maritalStatus?.spouseBorrowerId ==0  || maritalStatus?.spouseBorrowerId == null){
+                         if (marriage_type.equals(AppConstant.married)) {
                                 binding.layoutFirstName.hint = "Spouse First Name"
                                 binding.layoutMiddleName.hint = "Spouse Middle Name"
                                 binding.layoutLastName.hint = "Spouse Last Name"
-                            }
-                            if (marriage_type.equals(AppConstant.separated)) {
+                         }
+                         if (marriage_type.equals(AppConstant.separated)) {
                                 binding.layoutFirstName.hint = "Legal Spouse First Name"
                                 binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
                                 binding.layoutLastName.hint = "Legal Spouse Last Name"
-                            }
-                        }
-                    } ?:run {
-                        binding.layoutQuestion.visibility = View.GONE
-                        if (marriage_type.equals(AppConstant.married)) {
-                            binding.layoutFirstName.hint = "Spouse First Name"
-                            binding.layoutMiddleName.hint = "Spouse Middle Name"
-                            binding.layoutLastName.hint = "Spouse Last Name"
-                        }
-                        if (marriage_type.equals(AppConstant.separated)) {
-                            binding.layoutFirstName.hint = "Legal Spouse First Name"
-                            binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
-                            binding.layoutLastName.hint = "Legal Spouse Last Name"
-                        }
-                    }
+                         }
+                     } else if(maritalStatus?.spouseBorrowerId != 0  || maritalStatus?.spouseBorrowerId != null){
+                            // co borrower and primary borrower relationship
+                            if(maritalStatus?.relationWithPrimaryId !=0 && maritalStatus?.relationWithPrimaryId !=null )
+                                 maritalStatus?.spouseBorrowerId?.let{
+                                 Log.e("scondtion ","matched")
+                                     // get primary borrower name
+                                     val activity = (activity as? BorrowerAddressActivity)
+                                     activity?.borrowerInfoList?.let { list->
+                                         for(i in 0 until list.size ){
+                                                 if(list.get(i).borrowerId == it) {
+                                                     relationLayout = true
+                                                     binding.yesRadioBtn.isChecked = true
+                                                     binding.layoutCoborrower.visibility = View.GONE
+                                                     binding.spouseInfoLayout.visibility = View.GONE
+                                                     binding.primaryRelationInfoLayout.visibility = View.VISIBLE
+                                                     list.get(i).firstName?.let { fname->
+
+                                                         if(marriage_type.equals(AppConstant.married)) {
+                                                             binding.tvQuestion.text =
+                                                                 "Are you married with ".plus(fname).plus("?")
+                                                         }
+                                                         else if(marriage_type.equals(AppConstant.separated)) {
+                                                                 binding.tvQuestion.text = "Is ".plus(fname).plus(" your legal spouse?")
+                                                             }
+
+
+                                                         binding.etSpouseFirstName.setText(fname)
+                                                         binding.etSpouseFirstName.isEnabled = false
+                                                     }
+                                                     list.get(i).middleName?.let { mname->
+                                                         binding.etSpouseMiddleName.setText(mname)
+                                                         binding.etSpouseMiddleName.isEnabled = false
+                                                     }
+                                                     list.get(i).lastName?.let { lname->
+                                                         binding.etSpouseLastName.setText(lname)
+                                                         binding.etSpouseLastName.isEnabled = false
+                                                     }
+                                                     break
+                                                 }
+                                            // }
+                                         }
+                                     }
+                             }
+
+
+                     }
+
+
+                   // }
                 }
+
+
             }
         } catch (e:Exception){ }
 
@@ -168,7 +206,7 @@ class MarriageDetailFragment : BaseFragment() {
     private fun setCoBorrowers(){
         val activity = (activity as? BorrowerAddressActivity)
         activity?.borrowerInfoList?.let { list->
-            coBorrowerCount = list.size
+
             if(list.size > 0){
                 val itemList: ArrayList<String> = arrayListOf()
                 for(item in list.indices) {
@@ -177,6 +215,8 @@ class MarriageDetailFragment : BaseFragment() {
                         coborrowerList.add(CoborrowerList(list.get(item).borrowerId, list.get(item).owntypeId, list.get(item).firstName!!, list.get(item).lastName!!))
                     }
                 }
+                coBorrowerCount = coborrowerList.size
+
                 //Log.e("coborrowerList",""+coborrowerList)
 
 
@@ -293,9 +333,14 @@ class MarriageDetailFragment : BaseFragment() {
 
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.layoutCoborrower.visibility = View.VISIBLE
-                //binding.tvCoborrower.setText("")
-                binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
+                if(relationLayout){
+                    binding.layoutCoborrower.visibility = View.GONE
+                    binding.primaryRelationInfoLayout.visibility = View.VISIBLE
+                } else {
+                    binding.layoutCoborrower.visibility = View.VISIBLE
+                    binding.primaryRelationInfoLayout.visibility = View.GONE
+                    //binding.tvCoborrower.setText("")
+                }
             }
             else {
                 binding.layoutCoborrower.visibility = View.GONE
@@ -306,6 +351,7 @@ class MarriageDetailFragment : BaseFragment() {
         binding.noRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.spouseInfoLayout.visibility = View.VISIBLE
+                binding.primaryRelationInfoLayout.visibility = View.GONE
                 binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
             }
             else {

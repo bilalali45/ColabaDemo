@@ -147,6 +147,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             try {
                 if (arguments != null) {
                     currentAddressDetail = arguments?.getParcelable(AppConstant.current_address)!!
+                    Log.e("Current Fragment","$currentAddressDetail")
                     currentAddressDetail.id?.let  { id->
                         addressId = id  // set this id if present in get api other wise send null
                     }
@@ -193,14 +194,14 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         for (item in housingStatusList) {
                             if (item.id == housingId) {
                                 binding.housingCompleteTextView.setText(item.description, false)
-                                CustomMaterialFields.setColor(
-                                    binding.housingLayout,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                showHideRentField()
+                                CustomMaterialFields.setColor(binding.housingLayout, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
+                    }
+                    currentAddressDetail.monthlyRent?.let {
+                        binding.etMonthlyRent.setText(it.toString())
                     }
                     currentAddressDetail.isMailingAddressDifferent?.let {
                         if(it == true){
@@ -223,7 +224,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     }
                 }
 
-            } catch (e: Exception){}
+            } catch (e: Exception){
+                Log.e("EXception",e.toString())
+            }
         }
     }
 
@@ -646,62 +649,79 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0  && country.length > 0 && zipCode.length > 0
             && housingStatus.length>0 && moveInDate.length>0) {
 
-            val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
+            try {
+                val unit =
+                    if (binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
 
-            val countyName : String = binding.countryCompleteTextView.getText().toString().trim()
-            val matchedCounty =  countyFullList.filter { p -> p.name.equals(countyName,true)}
-            val countyId = if(matchedCounty.size > 0)
-                matchedCounty.get(0).id else null
+                val countyName: String = binding.countryCompleteTextView.getText().toString().trim()
+                val matchedCounty = countyFullList.filter { p -> p.name.equals(countyName, true) }
+                val countyId = if (matchedCounty.size > 0)
+                    matchedCounty.get(0).id else null
 
-            val countryName : String = binding.countryCompleteTextView.getText().toString().trim()
-            val matchedCountry =  countryFullList.filter { p -> p.name.equals(countryName,true)}
-            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+                val countryName: String =
+                    binding.countryCompleteTextView.getText().toString().trim()
+                val matchedCountry =
+                    countryFullList.filter { p -> p.name.equals(countryName, true) }
+                val countryId = if (matchedCountry.size > 0) matchedCountry.get(0).id else null
 
-            val stateName : String = binding.stateCompleteTextView.getText().toString().trim()
-            val matchedState =  stateFullList.filter { p -> p.name.equals(stateName,true)}
-            val stateId = if(matchedState.size > 0) matchedState.get(0).id else null
+                val stateName: String = binding.stateCompleteTextView.getText().toString().trim()
+                val matchedState = stateFullList.filter { p -> p.name.equals(stateName, true) }
+                val stateId = if (matchedState.size > 0) matchedState.get(0).id else null
 
-            val matchedList =  housingStatusList.filter { p -> p.description.equals(housingStatus,true)}
-            val housingStatusId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+                val matchedList =
+                    housingStatusList.filter { p -> p.description.equals(housingStatus, true) }
+                val housingStatusId =
+                    if (matchedList.size > 0) matchedList.map { matchedList.get(0).id }
+                        .single() else null
 
-            var isMailingAddressDifferent : Boolean? = null
-            if(binding.checkboxIsMailingAddressDiff.isChecked)
-                isMailingAddressDifferent = true
-            else {
-                isMailingAddressDifferent = false
-                mailingAddressModel = null
-            }
+                var isMailingAddressDifferent: Boolean? = null
+                if (binding.checkboxIsMailingAddressDiff.isChecked)
+                    isMailingAddressDifferent = true
+                else {
+                    isMailingAddressDifferent = false
+                    mailingAddressModel = null
+                }
 
-            var monthlyRent = binding.etMonthlyRent.text.toString()
-            monthlyRent = if(monthlyRent.length > 0) monthlyRent else "0.0"
+                var monthlyRent = binding.etMonthlyRent.text.toString()
+                monthlyRent = if (monthlyRent.length > 0) monthlyRent else "0.0"
 
-            currentAddressModel = AddressModel(   // current address
-                street = street,
-                unit = unit,
-                city = city,
-                stateName = state,
-                countryName = country,
-                countyName = county,
-                countyId = countyId,
-                stateId = stateId,
-                countryId = countryId,
-                zipCode = zipCode)
-
-
-            currentAddressDetail = CurrentAddress(
-                loanApplicationId = loanApplicationId,
-                borrowerId = if(borrowerId != null) borrowerId else null,
-                id = addressId,
-                fromDate = moveInDate,
-                housingStatusId = housingStatusId,
-                addressModel = currentAddressModel ,
-                isMailingAddressDifferent = isMailingAddressDifferent,
-                mailingAddressModel = mailingAddressModel,
-                monthlyRent = monthlyRent.toDouble())
+                currentAddressModel = AddressModel(   // current address
+                    street = street,
+                    unit = unit,
+                    city = city,
+                    stateName = state,
+                    countryName = country,
+                    countyName = county,
+                    countyId = countyId,
+                    stateId = stateId,
+                    countryId = countryId,
+                    zipCode = zipCode
+                )
 
 
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.current_address, currentAddressDetail)
-            findNavController().popBackStack()
+                var reverseDateFormat = "01/" + moveInDate
+                var newDate = AppSetting.reverseDateFormat(reverseDateFormat)
+
+
+                currentAddressDetail = CurrentAddress(
+                    loanApplicationId = loanApplicationId,
+                    borrowerId = if (borrowerId != null) borrowerId else null,
+                    id = addressId,
+                    fromDate = newDate,
+                    housingStatusId = housingStatusId,
+                    addressModel = currentAddressModel,
+                    isMailingAddressDifferent = isMailingAddressDifferent,
+                    mailingAddressModel = mailingAddressModel,
+                    monthlyRent = monthlyRent.toDouble()
+                )
+
+
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                    AppConstant.current_address,
+                    currentAddressDetail
+                )
+                findNavController().popBackStack()
+            } catch (e : Exception){}
         }
 
     }
@@ -1106,6 +1126,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
        // binding.topDelImageview.setColorFilter(resources.getColor(R.color.grey_color_three, activity?.theme))
 
         if (event.boolean) {
+            checkValidations()
+        }
+        else {
             findNavController().popBackStack()
         }
     }

@@ -50,7 +50,7 @@ class BorrowerAddressActivity : BaseActivity() {
                 firstName = it.getString(AppConstant.firstName)
                 lastName = it.getString(AppConstant.lastName)
                 middleName = it.getString(AppConstant.middleName)
-                //Log.e("coborrower list", "" + borrowerInfoList.size)
+                Log.e("coborrower list", "" + borrowerInfoList)
                 //Log.e("owntypeId","borrowerId: " + borrowerId + "OwnTypeId: " + ownTypeId)
                 //Log.e("firstName",firstName+ "lastname: " + lastName)
             }

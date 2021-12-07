@@ -58,7 +58,7 @@ class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
 
         binding.discardChangesLayout.setOnClickListener {
             dismiss()
-            EventBus.getDefault().post(NotSavingAddressEvent(true))
+            EventBus.getDefault().post(NotSavingAddressEvent(false))
         }
 
         setInitialSelection()
