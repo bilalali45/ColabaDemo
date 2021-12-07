@@ -27,12 +27,14 @@ class OverviewViewController: BaseViewController {
         super.viewDidLoad()
         
         tableViewOverView.register(UINib(nibName: "BorrowerOverviewTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerOverviewTableViewCell")
-//        tableViewOverView.register(UINib(nibName: "BorrowerAddressTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressTableViewCell")
-//        tableViewOverView.register(UINib(nibName: "BorrowerLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerLoanInfoTableViewCell")
-//        tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
+        tableViewOverView.register(UINib(nibName: "BorrowerOverviewInvitationTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerOverviewInvitationTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerAddressAndLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressAndLoanInfoTableViewCell")
         
         tableViewOverView.coverableCellsIdentifiers = ["BorrowerOverviewTableViewCell", "BorrowerApplicationStatusButtonTableViewCell", "BorrowerAddressAndLoanInfoTableViewCell"]
+//        tableViewOverView.register(UINib(nibName: "BorrowerAddressTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressTableViewCell")
+//        tableViewOverView.register(UINib(nibName: "BorrowerLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerLoanInfoTableViewCell")
+//        tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -90,7 +92,7 @@ class OverviewViewController: BaseViewController {
 extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -135,11 +137,20 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             
             return cell
         }
-//        else if (indexPath.row == 1){
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
-//            cell.lblApplicationStatus.text = loanInfoData.milestone
-//            return cell
-//        }
+        else if (indexPath.row == 1){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerOverviewInvitationTableViewCell", for: indexPath) as! BorrowerOverviewInvitationTableViewCell
+            cell.collectionView.register(UINib(nibName: "InvitationCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "InvitationCollectionViewCell")
+            let layout = UICollectionViewFlowLayout()
+            layout.scrollDirection = .horizontal
+            layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+            layout.minimumLineSpacing = 10
+            let itemWidth = UIScreen.main.bounds.width * 0.7
+            layout.itemSize = CGSize(width: itemWidth, height: 80)
+            cell.collectionView.collectionViewLayout = layout
+            cell.collectionView.dataSource = self
+            cell.collectionView.delegate = self
+            return cell
+        }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressAndLoanInfoTableViewCell", for: indexPath) as! BorrowerAddressAndLoanInfoTableViewCell
             cell.mainView.layer.cornerRadius = 6
@@ -224,10 +235,38 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
                 }
             }
         }
+        else if (indexPath.row == 1){
+            return 106
+        }
         else{
-            return  Utility.checkIsSmallDevice() ? 335 : 278
+            return  Utility.checkIsSmallDevice() ? 355 : 320
         }
     }
+}
+
+extension OverviewViewController: UICollectionViewDataSource, UICollectionViewDelegate{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InvitationCollectionViewCell", for: indexPath) as! InvitationCollectionViewCell
+        cell.mainView.layer.cornerRadius = 6
+        cell.mainView.layer.borderWidth = 1
+        cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        cell.mainView.dropShadowToCollectionViewCell()
+        cell.lblTopHeading.text = indexPath.row == 0 ? "PRIMARY BORROWER" : "DOCUMENTS"
+        cell.lblType.text = indexPath.row == 0 ? "Send Invitation" : "Review Documents"
+        cell.icon.image = UIImage(named: indexPath.row == 0 ? "sendInvitation" : "reviewDocument")
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if (indexPath.row == 1){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)
+        }
+    }
+    
 }
 
 extension OverviewViewController: BorrowerOverviewTableViewCellDelegate{

@@ -47,6 +47,7 @@ class LoanDetailViewController: BaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBar), name: NSNotification.Name(rawValue: kNotificationShowNavigationBar), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationShowRequestDocumentFooterButton), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showDocumentTab), name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)
         
     }
     
@@ -170,6 +171,11 @@ class LoanDetailViewController: BaseViewController {
     
     @objc func hideRequestDocumentFooterButton(){
         btnRequestDocument.isHidden = true
+    }
+    
+    @objc func showDocumentTab(){
+        selectedTab = 2
+        setupHeaderAndFooter()
     }
     
     private func createEmailUrl(to: String, subject: String, body: String) -> URL? {
