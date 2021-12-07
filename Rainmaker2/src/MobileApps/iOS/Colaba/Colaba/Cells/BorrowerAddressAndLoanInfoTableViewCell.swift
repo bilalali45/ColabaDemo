@@ -29,6 +29,8 @@ class BorrowerAddressAndLoanInfoTableViewCell: UITableViewCell {
     @IBOutlet weak var lblBottomDownPaymentPercentage: UILabel!
     @IBOutlet weak var mapIconTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var lblAddressTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var emptyStateLoanPurposeView: UIView!
+    @IBOutlet weak var lblEmptyStateLoanPurpose: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
