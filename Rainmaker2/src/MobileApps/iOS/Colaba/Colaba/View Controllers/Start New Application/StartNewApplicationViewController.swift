@@ -116,6 +116,9 @@ class StartNewApplicationViewController: BaseViewController {
         createContactView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         //createContactView.dropShadowToCollectionViewCell()
         
+        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getAppGreyColor(), NSAttributedString.Key.font: Theme.getRubikRegularFont(size: 14)], for: .normal)
+        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getButtonBlueColor(), NSAttributedString.Key.font: Theme.getRubikMediumFont(size: 14)], for: .selected)
+        
         stackViewLowerPayments.layer.cornerRadius = 5
         stackViewLowerPayments.layer.borderWidth = 1
         stackViewLowerPayments.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
@@ -531,11 +534,11 @@ class StartNewApplicationViewController: BaseViewController {
                         
                         let vc = Utility.getLoanDetailVC()
                         vc.isAfterCreateNewApplication = true
-                        vc.loanApplicationId = result["data"].intValue
-                        vc.borrowerName = self.isCreateNewContact ? "\(self.txtfieldFirstName.text!) \(self.txtfieldLastName.text!)" : "\(self.selectedContactModel.firstName) \(self.selectedContactModel.lastName)"
+                        vc.loanApplicationId = result["data"]["loanApplicationId"].intValue
+                        vc.borrowerName = "\(result["data"]["firstName"].stringValue) \(result["data"]["lastName"].stringValue)"
                         vc.loanPurpose = self.segmentLoanPurpose.selectedSegmentIndex == 0 ? "Purchase" : "Refinance"
-                        vc.phoneNumber = self.isCreateNewContact ? cleanString(string: self.txtfieldPhone.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: "") : self.selectedContactModel.mobileNumber
-                        vc.email = self.isCreateNewContact ? self.txtfieldEmail.text! : self.selectedContactModel.emailAddress
+                        vc.phoneNumber = result["data"]["mobileNumber"].stringValue
+                        vc.email = result["data"]["emailAddress"].stringValue
                         let navVC = UINavigationController(rootViewController: vc)
                         navVC.navigationBar.isHidden = true
                         navVC.modalPresentationStyle = .fullScreen
