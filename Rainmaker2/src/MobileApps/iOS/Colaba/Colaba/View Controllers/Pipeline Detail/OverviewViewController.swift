@@ -29,7 +29,7 @@ class OverviewViewController: BaseViewController {
         tableViewOverView.register(UINib(nibName: "BorrowerOverviewTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerOverviewTableViewCell")
 //        tableViewOverView.register(UINib(nibName: "BorrowerAddressTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressTableViewCell")
 //        tableViewOverView.register(UINib(nibName: "BorrowerLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerLoanInfoTableViewCell")
-        tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
+//        tableViewOverView.register(UINib(nibName: "BorrowerApplicationStatusButtonTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerApplicationStatusButtonTableViewCell")
         tableViewOverView.register(UINib(nibName: "BorrowerAddressAndLoanInfoTableViewCell", bundle: nil), forCellReuseIdentifier: "BorrowerAddressAndLoanInfoTableViewCell")
         
         tableViewOverView.coverableCellsIdentifiers = ["BorrowerOverviewTableViewCell", "BorrowerApplicationStatusButtonTableViewCell", "BorrowerAddressAndLoanInfoTableViewCell"]
@@ -90,7 +90,7 @@ class OverviewViewController: BaseViewController {
 extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -111,28 +111,35 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             var secondaryBorrowerNames = [String]()
             secondaryBorrowerNames = secondaryBorrowers.map{"\($0.firstName) \($0.lastName)"}
             
+            cell.delegate = self
             cell.lblCoBorrowerName.text = secondaryBorrowerNames.joined(separator: ", ")
             cell.lblCoBorrowerName.isHidden = secondaryBorrowers.count == 0
             cell.lblCoBorrowerTopConstraint.constant = secondaryBorrowers.count == 0 ? 0 : 10
             cell.lblCoBorrowerHeightConstraint.constant = secondaryBorrowers.count == 0 ? 0 : 16
             cell.lblLoanNo.text = "Loan No. \(loanInfoData.loanNumber)"
             cell.lblLoanNo.isHidden = loanInfoData.loanNumber == ""
-            cell.lblLoanNoTopConstraint.constant = loanInfoData.loanNumber == "" ? 0 : 15
-            cell.lblLoanNoHeightConstraint.constant = loanInfoData.loanNumber == "" ? 0 : 18
             cell.iconByte.isHidden = loanInfoData.postedOn == ""
             cell.lblByte.text = loanInfoData.postedOn
-            cell.lblByteTopConstraint.constant = loanInfoData.postedOn == "" ? 0 : 15
+            cell.lblApplicationStatus.text = loanInfoData.milestone
+            if (loanInfoData.loanNumber == "" && loanInfoData.postedOn == ""){
+                cell.applicationStatusViewHeightConstraint.constant = 61
+                cell.applicationStatusSeparatorView.isHidden = true
+            }
+            else{
+                cell.applicationStatusViewHeightConstraint.constant = 116
+                cell.applicationStatusSeparatorView.isHidden = false
+            }
             
             cell.updateConstraintsIfNeeded()
             cell.layoutSubviews()
             
             return cell
         }
-        else if (indexPath.row == 1){
-            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
-            cell.lblApplicationStatus.text = loanInfoData.milestone
-            return cell
-        }
+//        else if (indexPath.row == 1){
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerApplicationStatusButtonTableViewCell", for: indexPath) as! BorrowerApplicationStatusButtonTableViewCell
+//            cell.lblApplicationStatus.text = loanInfoData.milestone
+//            return cell
+//        }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "BorrowerAddressAndLoanInfoTableViewCell", for: indexPath) as! BorrowerAddressAndLoanInfoTableViewCell
             cell.mainView.layer.cornerRadius = 6
@@ -190,24 +197,43 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.row == 1){
-            let vc = Utility.getApplicationStatusVC()
-            vc.loanApplicationId = self.loanApplicationId
-            self.pushToVC(vc: vc)
-        }
+//        if (indexPath.row == 1){
+//            let vc = Utility.getApplicationStatusVC()
+//            vc.loanApplicationId = self.loanApplicationId
+//            self.pushToVC(vc: vc)
+//        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if (indexPath.row == 1){
-            return 106
-        }
-        else if (indexPath.row == 2){
-            return  Utility.checkIsSmallDevice() ? 335 : 278
+        if (indexPath.row == 0){
+            if (loanInfoData.borrowers.count > 1){
+                if (loanInfoData.loanNumber == "" && loanInfoData.postedOn == ""){
+                    return 170
+                }
+                else{
+                    return 220
+                }
+            }
+            else{
+                if (loanInfoData.loanNumber == "" && loanInfoData.postedOn == ""){
+                    return 142
+                }
+                else{
+                    return 197
+                }
+            }
         }
         else{
-            return UITableView.automaticDimension
+            return  Utility.checkIsSmallDevice() ? 335 : 278
         }
-        
+    }
+}
+
+extension OverviewViewController: BorrowerOverviewTableViewCellDelegate{
+    func applicationStatusViewTapped() {
+        let vc = Utility.getApplicationStatusVC()
+        vc.loanApplicationId = self.loanApplicationId
+        self.pushToVC(vc: vc)
     }
 }
