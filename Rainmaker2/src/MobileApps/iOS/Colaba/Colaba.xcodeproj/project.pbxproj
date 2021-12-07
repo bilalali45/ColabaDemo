@@ -33,6 +33,7 @@
 		2321247726C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321247526C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift */; };
 		2321247826C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2321247626C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib */; };
 		2321247A26C17A0F00439A44 /* AddResidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321247926C17A0E00439A44 /* AddResidenceViewController.swift */; };
+		232AF5A7275E552B006C4DA3 /* LoanOfficersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */; };
 		2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */; };
 		2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */; };
 		2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */; };
@@ -314,6 +315,7 @@
 		2321247526C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressInfoTableViewCell.swift; sourceTree = "<group>"; };
 		2321247626C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2321247926C17A0E00439A44 /* AddResidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddResidenceViewController.swift; sourceTree = "<group>"; };
+		232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanOfficersModel.swift; sourceTree = "<group>"; };
 		2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_bold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_bold.ttf"; sourceTree = "<group>"; };
 		2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageTableViewCell.swift; sourceTree = "<group>"; };
 		2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentMessageTableViewCell.xib; sourceTree = "<group>"; };
@@ -659,6 +661,7 @@
 				2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */,
 				23A03061275DF13900A9D26D /* BorrowerContactModel.swift */,
 				23A03063275E034F00A9D26D /* ApplicationStatusModel.swift */,
+				232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1453,6 +1456,7 @@
 				7186AD5B2653CD6800E740D3 /* Utility.swift in Sources */,
 				23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */,
 				230B94D526E77AAA004CBC83 /* AddBankAccountViewController.swift in Sources */,
+				232AF5A7275E552B006C4DA3 /* LoanOfficersModel.swift in Sources */,
 				23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */,
 				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,

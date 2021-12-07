@@ -37,6 +37,7 @@ class LoanDetailViewController: BaseViewController {
     var email = ""
     var documentCounterView = UIView()
     var selectedTab = 0
+    var isAfterCreateNewApplication = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,7 +196,12 @@ class LoanDetailViewController: BaseViewController {
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
-        self.dismissVC()
+        if (isAfterCreateNewApplication){
+            self.goToDashboard()
+        }
+        else{
+            self.dismissVC()
+        }
     }
     
     @IBAction func btnOptionsTapped(_ sender: UIButton) {

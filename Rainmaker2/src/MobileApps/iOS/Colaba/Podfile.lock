@@ -62,6 +62,9 @@ PODS:
   - Realm/Headers (10.7.6)
   - RealmSwift (10.7.6):
     - Realm (= 10.7.6)
+  - SDWebImage (5.12.1):
+    - SDWebImage/Core (= 5.12.1)
+  - SDWebImage/Core (5.12.1)
   - SVGKit (3.0.0):
     - CocoaLumberjack (~> 3.0)
   - SwiftyJSON (5.0.0)
@@ -80,6 +83,7 @@ DEPENDENCIES:
   - MonthYearPicker
   - NVActivityIndicatorView (= 4.8.0)
   - RealmSwift
+  - SDWebImage
   - SVGKit (= 3.0.0)
   - SwiftyJSON (= 5.0.0)
 
@@ -102,6 +106,7 @@ SPEC REPOS:
     - NVActivityIndicatorView
     - Realm
     - RealmSwift
+    - SDWebImage
     - SVGKit
     - SwiftyJSON
 
@@ -123,9 +128,10 @@ SPEC CHECKSUMS:
   NVActivityIndicatorView: d24b7ebcf80af5dcd994adb650e2b6c93379270f
   Realm: ed860452717c8db8f4bf832b6807f7f2ce708839
   RealmSwift: e31c4ddbcc42ac879313d656b86f9ca539f6f4f4
+  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   SVGKit: 1ad7513f8c74d9652f94ed64ddecda1a23864dea
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 9727c19c80f8ef103eb6c27c2dacbc7310fa4816
+PODFILE CHECKSUM: 7bdc84be8575680fdc69bd2c4e4c04df5645321e
 
 COCOAPODS: 1.10.1

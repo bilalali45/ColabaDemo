@@ -18,10 +18,16 @@ class LoanOfficerMainViewController: BaseViewController {
     @IBOutlet weak var tabView: UIView!
     
     var isForPopup = false
+    var loanOfficers = [LoanOfficersModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupHeader()
+        searchView.layer.cornerRadius = 5
+        searchView.layer.borderWidth = 1
+        searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
+        txtfieldSearch.delegate = self
+        txtfieldSearch.returnKeyType = .search
+        getAllLoanOfficers()
         if (isForPopup){
             self.view.backgroundColor = .clear
         }
@@ -30,12 +36,6 @@ class LoanOfficerMainViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     func setupHeader(){
-        
-        searchView.layer.cornerRadius = 5
-        searchView.layer.borderWidth = 1
-        searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
-        txtfieldSearch.delegate = self
-        txtfieldSearch.returnKeyType = .search
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
             let tabItems = ["Loan Officer", "Loan Coordinator", "Pre Processor", "Loan Processor"]
@@ -69,6 +69,39 @@ class LoanOfficerMainViewController: BaseViewController {
             
         }
     }
+    
+    //MARK:- API
+    
+    func getAllLoanOfficers(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let extraData = "filterLoanOfficer=true"
+        
+        APIRouter.sharedInstance.executeAPI(type: .getLoanOfficers, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    let officers = result["data"]["roles"].arrayValue
+                    for officer in officers{
+                        let model = LoanOfficersModel()
+                        model.updateModelWithJSON(json: officer)
+                        self.loanOfficers.append(model)
+                    }
+                    self.setupHeader()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
+                        
+                    }
+                }
+                
+            }
+            
+        }
+    }
 
 }
 
@@ -77,6 +110,7 @@ extension LoanOfficerMainViewController: CarbonTabSwipeNavigationDelegate{
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
         let vc = Utility.getLoanOfficerListVC()
         vc.isForPopup = isForPopup
+        vc.selectedRole = index == 0 ? loanOfficers.filter({$0.roleName.localizedCaseInsensitiveContains("Loan Officer")}).first! : LoanOfficersModel()
         return vc
     }
     

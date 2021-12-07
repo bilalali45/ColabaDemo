@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class LoanOfficerListViewController: BaseViewController {
 
@@ -14,6 +15,7 @@ class LoanOfficerListViewController: BaseViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     var isForPopup = false
     var selectedIndex: IndexPath?
+    var selectedRole = LoanOfficersModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,14 +52,17 @@ class LoanOfficerListViewController: BaseViewController {
 extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isForPopup ? 4 : 14
+        
+        if (isForPopup){
+            return selectedRole.mcus.count > 3 ? 4 : selectedRole.mcus.count
+        }
+        else{
+            return selectedRole.mcus.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoanOfficerCollectionViewCell", for: indexPath) as! LoanOfficerCollectionViewCell
-        cell.userImageView.image = UIImage(named: indexPath.row % 2 == 0 ? "LoanOfficer1" : "LoanOfficer2")
-        cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
-        cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
         cell.selectedView.isHidden = selectedIndex != indexPath
         if isForPopup && indexPath.row == 3{
             cell.lblUsername.text = "See more"
@@ -67,8 +72,10 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             cell.seeMoreImage.isHidden = false
         }
         else{
-            cell.lblUsername.text = indexPath.row % 2 == 0 ? "John Doe" : "Jacky Doe"
-            cell.lblTenant.text = indexPath.row % 2 == 0 ? "Texas Trust Home" : "AHC Lending"
+            let mcu = selectedRole.mcus[indexPath.row]
+            cell.userImageView.sd_setImage(with: URL(string: mcu.profileimageurl), completed: nil)
+            cell.lblUsername.text = mcu.fullName
+            cell.lblTenant.text = mcu.branchName
             cell.seeMoreImage.isHidden = true
         }
         return cell
@@ -81,7 +88,12 @@ extension LoanOfficerListViewController: UICollectionViewDataSource, UICollectio
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
         }
         else{
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+            let selectedMCU = ["branchId": selectedRole.mcus[indexPath.row].branchId,
+                               "branchName": selectedRole.mcus[indexPath.row].branchName,
+                               "userId": selectedRole.mcus[indexPath.row].userId,
+                               "fullName": selectedRole.mcus[indexPath.row].fullName,
+                               "profileimageurl": selectedRole.mcus[indexPath.row].profileimageurl] as [String: Any]
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil, userInfo: selectedMCU)
             if (!isForPopup){
                 self.dismissVC()
             }
