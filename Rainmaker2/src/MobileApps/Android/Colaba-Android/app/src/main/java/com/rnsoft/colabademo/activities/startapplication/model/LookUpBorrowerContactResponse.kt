@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class LookUpBorrowerContactResponse(
     val code: String,
-    @SerializedName("data") val borrowerData: BorrowerExistData? = null,
+    @SerializedName("data") val borrowerData: ArrayList<BorrowerExistData>? = null,
     val message: String,
     val status: String
 )

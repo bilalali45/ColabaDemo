@@ -20,8 +20,6 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
         }
     }
 
-
-
     suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String):Result<LookUpBorrowerContactResponse>{
         return try {
             val newToken = "Bearer $token"
@@ -35,6 +33,38 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
                 Result.Error(IOException("Error searchByBorrowerContact -", e))
         }
     }
+
+    suspend fun createApplication(token:String, createNewApplicationParams: CreateNewApplicationParams):Result<CreateNewApplicationResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.createApplication(newToken , createNewApplicationParams = createNewApplicationParams)
+            Log.e("createNewApplicationParams-", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error searchByBorrowerContact -", e))
+        }
+    }
+
+
+    suspend fun getMcusByRoleId(token:String, filterLoanOfficer:Boolean):Result<LoanOfficerApiResponse>{
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getMcusByRoleId(newToken , filterLoanOfficer = filterLoanOfficer)
+            Log.e("getMcusByRoleId-", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error searchByBorrowerContact -", e))
+        }
+    }
+
+
+
 
 
 }

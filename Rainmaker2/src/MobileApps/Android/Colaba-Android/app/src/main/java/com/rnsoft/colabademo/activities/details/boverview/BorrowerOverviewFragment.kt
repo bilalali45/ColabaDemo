@@ -29,7 +29,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
 
-                binding.constraintLayout4.setOnClickListener {
+                binding.userLayout3.setOnClickListener {
                     findNavController().navigate(R.id.borrower_app_status_fragment)
                 }
 

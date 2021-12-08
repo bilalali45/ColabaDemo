@@ -17,14 +17,14 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout6"
+            android:id="@+id/userLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
 
-
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout4"
+            app:layout_constraintEnd_toStartOf="@+id/userLayout3"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout3"
+            app:layout_constraintStart_toEndOf="@+id/userLayout1"
             app:layout_constraintTop_toTopOf="parent">
 
 
@@ -79,11 +79,11 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout3"
+            android:id="@+id/userLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout6"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/userLayout2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,14 +141,13 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout4"
+            android:id="@+id/userLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
-
-            app:layout_constraintEnd_toStartOf="@+id/constraintLayout7"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/userLayout4"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout6"
+            app:layout_constraintStart_toEndOf="@+id/userLayout2"
             app:layout_constraintTop_toTopOf="parent">
 
 
@@ -203,14 +202,13 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
-            android:id="@+id/constraintLayout7"
+            android:id="@+id/userLayout4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/constraintLayout4"
+            app:layout_constraintStart_toEndOf="@+id/userLayout3"
             app:layout_constraintTop_toTopOf="parent">
 
 

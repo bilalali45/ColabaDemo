@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
@@ -9,39 +8,45 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import androidx.core.widget.doAfterTextChanged
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import java.util.regex.Pattern
 import androidx.activity.addCallback
+import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.rnsoft.colabademo.databinding.StartApplicationFragLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private lateinit var binding: StartApplicationFragLayoutBinding
     private var savedViewInstance: View? = null
     private lateinit var adapter : ContactsAdapter
     private var searchList = ArrayList<SearchResultResponseItem>()
-
     private val viewModel: StartNewAppViewModel by activityViewModels()
 
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
+    private val _createNewApplicationParams : MutableLiveData<CreateNewApplicationParams> =   MutableLiveData()
+    private val createNewApplicationParams: LiveData<CreateNewApplicationParams> get() = _createNewApplicationParams
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (savedViewInstance != null) {
             savedViewInstance
         } else {
@@ -57,52 +62,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     private fun setupUI() {
-
-        /*
-        binding.searchEdittext.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                binding.searchEdittext.clearFocus()
-                binding.searchEdittext.hideKeyboard()
-                val searchWord = binding.searchEdittext.text.toString()
-                if (searchWord.isNotEmpty() && searchWord.isNotBlank()) {
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            startNewAppViewModel.searchByBorrowerContact(authToken, searchWord)
-                        }
-                    }
-
-                    return@OnEditorActionListener true
-                }
-            }
-           false
-        })
-         */
-
-
-        binding.searchEdittext.doOnTextChanged { text, start, before, count ->
-            if(count>1) {
-                lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.searchByBorrowerContact(authToken, text.toString())
-                    }
-                }
-            }
-        }
-
-
-
-
-
-        viewModel.searchResultResponse.observe(viewLifecycleOwner, {
-            searchList = it
-            adapter.showResult(searchList)
-            binding.recyclerviewContacts.adapter = adapter
-            binding.layoutFindContact.visibility = View.VISIBLE
-            binding.recyclerviewContacts.visibility = View.VISIBLE
-            binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
-        })
-        
-
         searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
         searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
         searchList.add(SearchResultResponseItem(3,"richard.glenn@gmail.com", "Richard Glenn Randall", mobileNumber = "(121) 353 1343"))
@@ -120,55 +79,140 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
         })
 
-        binding.parentLayout.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View, m: MotionEvent): Boolean {
-                binding.scrollviewStartApplication.setEnableScrolling(true); //
-                return false
-            }
-        })
-
-       /* binding.recyclerviewContacts.setOnTouchListener(object : View.OnTouchListener {
-            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-                when (event?.action) {
-                    MotionEvent.ACTION_DOWN ->   binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
-                }
-
-                return v?.onTouchEvent(event) ?: false
-            }
-        }) */
+        binding.parentLayout.setOnTouchListener { v, m ->
+            binding.scrollviewStartApplication.setEnableScrolling(true); //
+            false
+        }
 
         binding.findContactBtn.setOnClickListener { findOrCreateContactClick() }
 
         binding.createContactBtn.setOnClickListener { findOrCreateContactClick() }
 
-        binding.btnLoanPurchase.setOnClickListener { onLoanPurposeClick() }
+        binding.rgLoanPurpose.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
+            // Respond to button selection
+            if(isChecked) {
+               toggleButton.isEnabled
+            }
 
-        binding.btnLoanRefinance.setOnClickListener { onLoanPurposeClick() }
+            Timber.e(" toggleButton, checkedId, isChecked ",toggleButton.toString(), checkedId.toString(), isChecked.toString())
 
-        binding.btnLowerPaymentTerms.setOnClickListener { onLoanGoalClick() }
+            //Timber.e(" binding.btnLoanPurchase.isSelected "+binding.btnLoanPurchase.isSelected)
 
-        binding.btnCashout.setOnClickListener { onLoanGoalClick() }
+            //Timber.e(" binding.btnLoanRefinance.isSelected "+binding.btnLoanRefinance.isSelected)
 
-        binding.btnDebtConsolidation.setOnClickListener { onLoanGoalClick() }
+            onLoanPurposeClick()
+        }
+
+
+        /*
+        binding.btnLoanPurchase.setOnClickListener {
+
+            binding.btnLoanRefinance.isSelected = false
+            binding.btnLoanRefinance.isClickable = true
+
+            binding.btnLoanPurchase.isClickable = false
+            onLoanPurposeClick()
+
+        }
+
+        binding.btnLoanRefinance.setOnClickListener {
+            binding.btnLoanPurchase.isSelected = false
+            binding.btnLoanPurchase.isClickable = true
+
+            binding.btnLoanRefinance.isClickable = false
+            onLoanPurposeClick()
+        }
+
+         */
+
+        binding.btnLowerPaymentTerms.setOnClickListener {
+            preSelectInitialization()
+            binding.btnLowerPaymentTerms.isChecked = true
+            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.BOLD)
+        }
+
+        binding.btnCashout.setOnClickListener {
+            preSelectInitialization()
+            binding.btnCashout.isChecked = true
+            binding.btnCashout.setTypeface(null, Typeface.BOLD)
+        }
+
+        binding.btnDebtConsolidation.setOnClickListener {
+            preSelectInitialization()
+            binding.btnDebtConsolidation.isChecked = true
+            binding.btnDebtConsolidation.setTypeface(null, Typeface.BOLD)
+        }
 
         binding.btnPreApproval.setOnClickListener {
             binding.btnPreApproval.setTypeface(null, Typeface.BOLD)
             binding.btnPropertyUnderCont.setTypeface(null, Typeface.NORMAL)
+            binding.btnPropertyUnderCont.isChecked = false
         }
 
         binding.btnPropertyUnderCont.setOnClickListener {
             binding.btnPreApproval.setTypeface(null, Typeface.NORMAL)
             binding.btnPropertyUnderCont.setTypeface(null, Typeface.BOLD)
+            binding.btnPreApproval.isChecked = false
         }
+
+
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
-            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left) }
+            requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        binding.assignLoanOfficer.setOnClickListener {
-            AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
+        createNewApplicationParams.observe(viewLifecycleOwner,{
+
+        })
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /*
+       binding.searchEdittext.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+           if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+               binding.searchEdittext.clearFocus()
+               binding.searchEdittext.hideKeyboard()
+               val searchWord = binding.searchEdittext.text.toString()
+               if (searchWord.isNotEmpty() && searchWord.isNotBlank()) {
+                   lifecycleScope.launchWhenStarted {
+                       sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                           startNewAppViewModel.searchByBorrowerContact(authToken, searchWord)
+                       }
+                   }
+
+                   return@OnEditorActionListener true
+               }
+           }
+          false
+       })
+        */
+
+        binding.searchEdittext.doOnTextChanged { text, start, before, count ->
+            if(count>1) {
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        viewModel.searchByBorrowerContact(authToken, text.toString())
+                    }
+                }
+            }
         }
 
+        viewModel.searchResultResponse.observe(viewLifecycleOwner, {
+            searchList = it
+            adapter.showResult(searchList)
+            binding.recyclerviewContacts.adapter = adapter
+            binding.layoutFindContact.visibility = View.VISIBLE
+            binding.recyclerviewContacts.visibility = View.VISIBLE
+            binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
+        })
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         binding.btnCreateApplication.setOnClickListener {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -192,6 +236,30 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 }
             }
         })
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        binding.loanOfficerAssigned.setOnClickListener{
+            AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
+        }
+
+        binding.assignLoanOfficer.setOnClickListener {
+            AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
+        }
+
+        // Pre-call Loan officer service..
+        /*
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                viewModel.getMcusByRoleId(authToken, filterLoanOfficer = true)
+            }
+        }
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
@@ -227,6 +295,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     }
 
+    @Throws(IllegalAccessException::class)
+    fun checkNull(): Boolean {
+        for (f in javaClass.declaredFields) if (f[this] != null) return false
+        return true
+    }
+
     private fun emailPhoneValidated():Boolean{
 
         val phoneNumber = binding.edMobile.text.toString()
@@ -244,22 +318,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         return true
     }
 
-
-
-    private val disableScrollViewListener  = object : View.OnTouchListener {
-        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-            return true
-        }
-
-    }
-
-    private val enableScrollViewListener  = object : View.OnTouchListener {
-        override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-            return true
-        }
-
-    };
-
     private fun checkRequiredFields() {
         binding.btnCreateApplication.isEnabled =
             !binding.edFirstName.text.toString().isEmpty() && !binding.edLastName.text.toString().isEmpty() && !binding.edMobile.text.toString().isEmpty() &&
@@ -267,9 +325,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
     override fun onItemClick(position: Int) {
-        binding.searchedContactName.text = searchList.get(position).firstName
-        binding.searchedContactEmail.text = searchList.get(position).emailAddress
-        binding.searchedContactPhone.text = searchList.get(position).mobileNumber
+        binding.searchedContactName.text = searchList[position].firstName
+        binding.searchedContactEmail.text = searchList[position].emailAddress
+        binding.searchedContactPhone.text = searchList[position].mobileNumber
 
         binding.layoutResult.visibility = View.VISIBLE
         binding.searchEdittext.visibility = View.GONE
@@ -282,12 +340,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     private fun setLabelFocus(){
         // set lable focus
-        binding.edFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required)))
-        binding.edLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required)))
-        binding.edMobile.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext(),getString(R.string.invalid_phone_num)))
+        binding.edFirstName.onFocusChangeListener = CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required))
+        binding.edLastName.onFocusChangeListener = CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required))
+        binding.edMobile.onFocusChangeListener = CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext(),getString(R.string.invalid_phone_num))
         binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
 
-        binding.edEmail.setOnFocusChangeListener { view, hasFocus ->
+        binding.edEmail.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
             } else {
@@ -334,36 +392,33 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
     private fun onLoanPurposeClick(){
-        if(binding.btnLoanPurchase.isChecked){
-            binding.btnLoanPurchase.setTypeface(null, Typeface.BOLD)
-            binding.btnLoanRefinance.setTypeface(null, Typeface.NORMAL)
+
+        //Timber.e(" binding.btnLoanPurchase.isSelected "+binding.btnLoanPurchase.isSelected)
+
+        //Timber.e(" binding.btnLoanRefinance.isSelected "+binding.btnLoanRefinance.isSelected)
+
+        if(binding.btnLoanPurchase.isPressed){
+            //binding.btnLoanPurchase.setTypeface(null, Typeface.BOLD)
+            //binding.btnLoanRefinance.setTypeface(null, Typeface.NORMAL)
             binding.rgPurchaseLoanGoal.visibility= View.VISIBLE
             binding.rgRefinanceLoanGoal.visibility = View.GONE
         }
         else {
-            binding.btnLoanPurchase.setTypeface(null, Typeface.NORMAL)
-            binding.btnLoanRefinance.setTypeface(null, Typeface.BOLD)
+            //binding.btnLoanPurchase.setTypeface(null, Typeface.NORMAL)
+            //binding.btnLoanRefinance.setTypeface(null, Typeface.BOLD)
             binding.rgPurchaseLoanGoal.visibility= View.GONE
             binding.rgRefinanceLoanGoal.visibility = View.VISIBLE
         }
     }
 
-    private fun onLoanGoalClick(){
-        if(binding.btnLowerPaymentTerms.isChecked){
-            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.BOLD)
-            binding.btnCashout.setTypeface(null, Typeface.NORMAL)
-            binding.btnDebtConsolidation.setTypeface(null, Typeface.NORMAL)
-        }
-        else if(binding.btnCashout.isChecked) {
-            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.NORMAL)
-            binding.btnCashout.setTypeface(null, Typeface.BOLD)
-            binding.btnDebtConsolidation.setTypeface(null, Typeface.NORMAL)
-        }
-        else if (binding.btnDebtConsolidation.isChecked){
-            binding.btnLowerPaymentTerms.setTypeface(null, Typeface.NORMAL)
-            binding.btnCashout.setTypeface(null, Typeface.NORMAL)
-            binding.btnDebtConsolidation.setTypeface(null, Typeface.BOLD)
-        }
+    private fun preSelectInitialization(){
+        binding.btnLowerPaymentTerms.setTypeface(null, Typeface.NORMAL)
+        binding.btnCashout.setTypeface(null, Typeface.NORMAL)
+        binding.btnDebtConsolidation.setTypeface(null, Typeface.NORMAL)
+
+        binding.btnLowerPaymentTerms.isChecked = false
+        binding.btnCashout.isChecked = false
+        binding.btnDebtConsolidation.isChecked = false
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {
@@ -375,30 +430,43 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
 
-   // fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
 
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onLoanOfficerSelected(loanOfficerSelectedEvent: LoanOfficerSelectedEvent) {
+
+        Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
+        binding.assignLoanOfficer.visibility = View.GONE
+        binding.loanOfficerAssigned.visibility = View.VISIBLE
+        Glide.with(requireActivity())
+            .load(loanOfficerSelectedEvent.mcu.profileimageurl)
+            .circleCrop()
+            .into(binding.loImage)
+        binding.loName.text = loanOfficerSelectedEvent.mcu.fullName
+        binding.loDetail.text = loanOfficerSelectedEvent.mcu.branchName
+        //SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+
+    }
+
+}
+
+
+/*
 
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-}
+    private val disableScrollViewListener  = View.OnTouchListener { p0, p1 -> true }
 
-
-/*binding.searchEdittext.addTextChangedListener(object : TextWatcher {
-           override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-           override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-           override fun afterTextChanged(s: Editable) {
-               adapter.showResult(searchList)
-               binding.recyclerviewContacts.adapter = adapter
-
-               binding.layoutFindContact.visibility = View.VISIBLE
-               binding.recyclerviewContacts.visibility = View.VISIBLE
-               binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
-
-               //binding.searchEdittext.setBackground(requireActivity().resources.getDrawable(R.drawable.layout_style_flat_bottom))
-               //HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
-
-           }
-       }) */
+    private val enableScrollViewListener  = View.OnTouchListener { p0, p1 -> true };
+ */

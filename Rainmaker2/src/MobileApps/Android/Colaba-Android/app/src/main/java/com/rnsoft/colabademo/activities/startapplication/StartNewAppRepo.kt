@@ -13,4 +13,13 @@ class StartNewAppRepo  @Inject constructor(private val newAppDataSource: StartNe
         return newAppDataSource.lookUpBorrowerContact(token = token, borrowerEmail = borrowerEmail, borrowerPhone = borrowerPhone)
     }
 
+    suspend fun createApplication(token:String, createNewApplicationParams: CreateNewApplicationParams):Result<CreateNewApplicationResponse>{
+        return newAppDataSource.createApplication(token = token, createNewApplicationParams = createNewApplicationParams)
+    }
+
+    suspend fun getMcusByRoleId(token:String, filterLoanOfficer:Boolean):Result<LoanOfficerApiResponse>{
+        return newAppDataSource.getMcusByRoleId(token = token, filterLoanOfficer = filterLoanOfficer)
+    }
+
+
 }

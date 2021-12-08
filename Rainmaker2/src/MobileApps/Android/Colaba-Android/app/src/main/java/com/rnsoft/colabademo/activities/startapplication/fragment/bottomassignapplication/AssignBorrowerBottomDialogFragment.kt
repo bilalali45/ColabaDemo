@@ -35,6 +35,8 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: AssignBorrowerModalBottomSheetBinding
 
+
+
     private var selectedPosition:Int = 0
     private lateinit var pageAdapter:BottomBorrowerPagerAdapter
     private lateinit var viewPager: ViewPager2
@@ -162,7 +164,12 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onDismissEvent(event: OnDismissBottomDialogEvent) {
+    fun onDismissEvent(evt: OnDismissBottomDialogEvent) {
         navigateToAssignBorrowerScreen()
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun dismissBottomBoxEvent(evt:DismissBoxEvent){
+        dismiss()
     }
 }
