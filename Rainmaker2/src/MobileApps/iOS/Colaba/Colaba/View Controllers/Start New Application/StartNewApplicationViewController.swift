@@ -117,7 +117,18 @@ class StartNewApplicationViewController: BaseViewController {
         //createContactView.dropShadowToCollectionViewCell()
         
         segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getAppGreyColor(), NSAttributedString.Key.font: Theme.getRubikRegularFont(size: 14)], for: .normal)
-        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getButtonBlueColor(), NSAttributedString.Key.font: Theme.getRubikMediumFont(size: 14)], for: .selected)
+        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getButtonBlueColor(), NSAttributedString.Key.font: Theme.getRubikRegularFont(size: 14)], for: .selected)
+        segmentLoanPurpose.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            //just to be sure it is full loaded
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                for i in 0...(self.segmentLoanPurpose.numberOfSegments-1)  {
+                    let backgroundSegmentView = self.segmentLoanPurpose.subviews[i]
+                    //it is not enogh changing the background color. It has some kind of shadow layer
+                    backgroundSegmentView.isHidden = true
+                }
+            }
+        }
         
         stackViewLowerPayments.layer.cornerRadius = 5
         stackViewLowerPayments.layer.borderWidth = 1

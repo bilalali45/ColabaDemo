@@ -387,8 +387,9 @@
                                                             </label>
                                                         </subviews>
                                                     </stackView>
-                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bordered" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="f9m-GL-fnq">
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="f9m-GL-fnq">
                                                         <rect key="frame" x="20" y="28" width="335" height="41"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="sei-I6-6xf"/>
                                                         </constraints>
@@ -396,6 +397,8 @@
                                                             <segment title="Purchase"/>
                                                             <segment title="Refinance"/>
                                                         </segments>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <color key="selectedSegmentTintColor" red="0.26666666666666666" green="0.51764705882352946" blue="0.95686274509803926" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="segmentLoanPurposeChanged:" destination="s3w-cJ-8mx" eventType="valueChanged" id="UpW-Jy-Oyg"/>
                                                         </connections>
