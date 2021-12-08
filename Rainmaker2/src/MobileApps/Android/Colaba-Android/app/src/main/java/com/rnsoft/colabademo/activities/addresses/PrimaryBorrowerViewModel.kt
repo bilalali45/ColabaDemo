@@ -46,7 +46,7 @@ class PrimaryBorrowerViewModel @Inject constructor(
     val addUpdateDeleteResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDeleteResponse
 
     suspend fun deletePreviousAddress(token: String, loanApplicationId: Int,id: Int){
-        Log.e("delete Address","loan id "+ loanApplicationId+"Id " + id)
+        //Log.e("delete Address","loan id "+ loanApplicationId+"Id " + id)
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = repo.deletePreviousAddress(token = token,loanApplicationId,id)
             withContext(Dispatchers.Main) {

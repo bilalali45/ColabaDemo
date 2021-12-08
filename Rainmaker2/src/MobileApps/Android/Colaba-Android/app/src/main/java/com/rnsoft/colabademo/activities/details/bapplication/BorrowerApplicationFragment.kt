@@ -250,12 +250,12 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             intent.putExtra(AppConstant.firstName, borrowerInfoList.get(position).firstName)
             intent.putExtra(AppConstant.lastName, borrowerInfoList.get(position).lastName)
             intent.putExtra(AppConstant.middleName, borrowerInfoList.get(position).middleName)
-            //Log.e("size",""+borrowerInfoList)
+            //Log.e("Application-Frag",""+borrowerInfoList.get(position).isFooter)
             startActivity(intent)
         }
     }
 
-    override fun onRealEstateClick(position: Int) {
+    override fun onRealEstateClick(position: Int){
 
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {

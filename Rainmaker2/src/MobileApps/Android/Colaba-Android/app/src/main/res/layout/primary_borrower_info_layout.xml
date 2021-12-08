@@ -26,12 +26,12 @@
             app:srcCompat="@drawable/search_back" />
 
         <TextView
-            android:id="@+id/titleTextView"
+            android:id="@+id/borrower_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="@string/heading_borrower_info"
+            android:text="@string/primary_borrower_info"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -51,7 +51,7 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+            app:layout_constraintTop_toBottomOf="@+id/borrower_type" />
 
         <View
             android:id="@+id/tab_top_border"
@@ -121,7 +121,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
@@ -153,7 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
@@ -201,7 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"

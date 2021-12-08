@@ -15,6 +15,15 @@ object AppConstant {
 
         //const val  LOGIN_NAME:String = "khatri03.mcu@mailinator.com"
         //const val  PASSWORD:String = "test123"
+
+
+        const val MARITAL_STATUS_MARRIED: Int = 1
+        const val MARITAL_STATUS_SEPARATED: Int = 2
+        const val MARITAL_STATUS_UNMARRIED: Int = 9
+
+        const val PRIMARY_BORROWER_ID: Int = 1
+        const val SECONDARY_BORROWER_ID: Int = 2
+
         const val real_estate_delete_text: String = "Are you sure you want to delete this property?"
         const val income_borrowerId: String = "income-borrower-id"
         const val income_update: String = "income-update"

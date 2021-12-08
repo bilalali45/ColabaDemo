@@ -87,7 +87,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             loanApplicationId = loanId }
 
         activity?.borrowerId?.let { bId ->
-            borrowerId = bId
+            if(bId != -1) {
+                borrowerId = bId
+            }
         }
 
         activity?.firstName?.let {
@@ -683,7 +685,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                 }
 
                 var monthlyRent = binding.etMonthlyRent.text.toString()
-                monthlyRent = if (monthlyRent.length > 0) monthlyRent else "0.0"
+                monthlyRent = if (monthlyRent.length > 0) monthlyRent else "0"
 
                 currentAddressModel = AddressModel(   // current address
                     street = street,
@@ -951,7 +953,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         if (p2 < 10)
             stringMonth = "0$p2"
 
-        val sampleDate = "$stringMonth / $p1"
+        val sampleDate = "$stringMonth/$p1"
         binding.moveInEditText.setText(sampleDate)
         CustomMaterialFields.clearError(binding.moveInLayout,requireActivity())
 

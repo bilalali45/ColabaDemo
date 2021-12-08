@@ -38,7 +38,6 @@ class MarriageDetailFragment : BaseFragment() {
 
         arguments?.let { arguments ->
             marriage_type = arguments.getString(AppConstant.marriage_type)
-            //ownTypeId = arguments.getInt(AppConstant.owntypeid)
             binding.marriageType.text = marriage_type
         }
 
@@ -77,6 +76,7 @@ class MarriageDetailFragment : BaseFragment() {
                     binding.layoutLastName.hint = "Legal Spouse Last Name"
                 }
             } else {
+                Log.e("CoBorrowercount","not 0")
                 if (marriage_type.equals(AppConstant.married)) {
                     binding.tvQuestion.text = getString(R.string.married_to_coborower)
                 }
@@ -85,13 +85,6 @@ class MarriageDetailFragment : BaseFragment() {
                 }
             }
         }
-        /*if(ownTypeId == 2) {
-            if (marriage_type.equals(AppConstant.married)) {
-
-
-            }
-
-        } */
 
 
         setData()
@@ -135,8 +128,13 @@ class MarriageDetailFragment : BaseFragment() {
                 // if spouse borrower id null && names are also null
                 if(ownTypeId == 2){
                     //maritalStatus?.spouseBorrowerId?.let { spouseBorrowerId->
+                     Log.e("SetData",""+ownTypeId)
+                    Log.e("MarriageType",""+marriage_type)
                      if(maritalStatus?.spouseBorrowerId ==0  || maritalStatus?.spouseBorrowerId == null){
-                         if (marriage_type.equals(AppConstant.married)) {
+                         binding.layoutCoborrower.visibility = View.GONE
+                         binding.spouseInfoLayout.visibility = View.VISIBLE
+
+                         if (marriage_type.equals(AppConstant.married)){
                                 binding.layoutFirstName.hint = "Spouse First Name"
                                 binding.layoutMiddleName.hint = "Spouse Middle Name"
                                 binding.layoutLastName.hint = "Spouse Last Name"
@@ -148,6 +146,7 @@ class MarriageDetailFragment : BaseFragment() {
                          }
                      } else if(maritalStatus?.spouseBorrowerId != 0  || maritalStatus?.spouseBorrowerId != null){
                             // co borrower and primary borrower relationship
+                                Log.e()
                             if(maritalStatus?.relationWithPrimaryId !=0 && maritalStatus?.relationWithPrimaryId !=null )
                                  maritalStatus?.spouseBorrowerId?.let{
                                  Log.e("scondtion ","matched")
@@ -209,15 +208,36 @@ class MarriageDetailFragment : BaseFragment() {
 
             if(list.size > 0){
                 val itemList: ArrayList<String> = arrayListOf()
-                for(item in list.indices) {
-                    if (list.get(item).owntypeId == 2) {
-                        itemList.add(list.get(item).firstName + " " + list.get(item).lastName)
-                        coborrowerList.add(CoborrowerList(list.get(item).borrowerId, list.get(item).owntypeId, list.get(item).firstName!!, list.get(item).lastName!!))
+                try {
+                    for (item in list.indices) {
+                        if (list.get(item).owntypeId == 2) {
+                            var fName: String? = null
+                            var lName: String? = null
+                            list.get(item).firstName?.let {
+                                fName = it
+                            }
+                            list.get(item).lastName?.let {
+                                lName = it
+                            }
+                            if (fName !=null && fName !="null" && lName !=null && lName !="null") {
+                                itemList.add(list.get(item).firstName + " " + list.get(item).lastName)
+                                coborrowerList.add(
+                                    CoborrowerList(
+                                        list.get(item).borrowerId,
+                                        list.get(item).owntypeId,
+                                        firstName!!,
+                                        lName!!
+                                    )
+                                )
+                            }
+                        }
                     }
+                } catch (e:Exception){
+                    Log.e("exception found","setting co-borrowers")
                 }
                 coBorrowerCount = coborrowerList.size
 
-                //Log.e("coborrowerList",""+coborrowerList)
+                Log.e("coborrowerList",""+coborrowerList)
 
 
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)

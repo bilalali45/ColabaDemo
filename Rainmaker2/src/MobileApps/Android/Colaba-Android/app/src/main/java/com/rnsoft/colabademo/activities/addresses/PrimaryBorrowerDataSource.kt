@@ -19,11 +19,11 @@ class PrimaryBorrowerDataSource @Inject constructor(private val serverApi: Serve
             Log.e("Send--borrInfo-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
+            Log.e("add-business-Error",e.localizedMessage)
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                // Log.e("add-business-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
