@@ -238,6 +238,10 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: AddProceedsFromTransactionViewController.self)) as! AddProceedsFromTransactionViewController
     }
     
+    static func getInvitePrimaryBorrowerVC() -> InvitePrimaryBorrowerViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: String(describing: InvitePrimaryBorrowerViewController.self)) as! InvitePrimaryBorrowerViewController
+    }
+    
     static func getAddGiftFundsVC() -> AddGiftFundsViewController{
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: AddGiftFundsViewController.self)) as! AddGiftFundsViewController
     }

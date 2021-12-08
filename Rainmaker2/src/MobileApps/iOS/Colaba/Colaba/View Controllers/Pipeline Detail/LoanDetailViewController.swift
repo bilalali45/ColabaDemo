@@ -48,6 +48,7 @@ class LoanDetailViewController: BaseViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(showRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationShowRequestDocumentFooterButton), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(hideRequestDocumentFooterButton), name: NSNotification.Name(rawValue: kNotificationHideRequestDocumentFooterButton), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showDocumentTab), name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showInviteSendPopup), name: NSNotification.Name(rawValue: kNotificationShowInviteSendPopup), object: nil)
         
     }
     
@@ -127,6 +128,11 @@ class LoanDetailViewController: BaseViewController {
             button.layer.borderWidth = 1
             button.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
             button.roundButtonWithShadow()
+        }
+    }
+    
+    @objc func showInviteSendPopup(){
+        self.showPopup(message: "\(borrowerName) has been invited to this loan application", popupState: .success, popupDuration: .custom(3)) { reason in
         }
     }
     

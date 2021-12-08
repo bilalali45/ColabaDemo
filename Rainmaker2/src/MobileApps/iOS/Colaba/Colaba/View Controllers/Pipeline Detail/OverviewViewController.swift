@@ -262,7 +262,11 @@ extension OverviewViewController: UICollectionViewDataSource, UICollectionViewDe
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if (indexPath.row == 1){
+        if (indexPath.row == 0){
+            let vc = Utility.getInvitePrimaryBorrowerVC()
+            self.presentVC(vc: vc)
+        }
+        else if (indexPath.row == 1){
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)
         }
     }
