@@ -178,7 +178,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
+        android:id="@+id/userLayout3"
         android:layout_width="match_parent"
         android:layout_height="86dp"
         android:layout_marginStart="16dp"
@@ -252,7 +252,7 @@
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4">
+        app:layout_constraintTop_toBottomOf="@+id/userLayout3">
 
         <TextView
             android:id="@+id/loanPurpose"

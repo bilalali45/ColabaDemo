@@ -550,7 +550,16 @@ interface ServerApi{
     suspend fun createApplication(
         @Header("Authorization" )  Authorization:String,
         @Body createNewApplicationParams: CreateNewApplicationParams
-    ):Response<Any>
+    ):CreateNewApplicationResponse
+
+
+
+    @GET(" api/mcu/mobile/loanapplication/MCU/GetMcusByRoleId")
+    suspend fun getMcusByRoleId(
+        @Header("Authorization" )  Authorization:String,
+        @Query("filterLoanOfficer")  filterLoanOfficer:Boolean
+    ):LoanOfficerApiResponse
+
 
 
     @GET("api/mcu/mobile/Notification/notification/GetPaged")

@@ -21,6 +21,16 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
     private val _lookUpBorrowerContactResponse : MutableLiveData<LookUpBorrowerContactResponse> =   MutableLiveData()
     val lookUpBorrowerContactResponse: LiveData<LookUpBorrowerContactResponse> get() = _lookUpBorrowerContactResponse
 
+    private val _createNewAppResponse : MutableLiveData<CreateNewApplicationResponse> =   MutableLiveData()
+    val createNewAppResponse: LiveData<CreateNewApplicationResponse> get() = _createNewAppResponse
+
+
+
+
+    private val _getLoanOfficerResponse : MutableLiveData<LoanOfficerApiResponse> =   MutableLiveData()
+    val getLoanOfficerResponse: LiveData<LoanOfficerApiResponse> get() = _getLoanOfficerResponse
+
+
     suspend fun searchByBorrowerContact(token:String, searchKeyword:String){
         viewModelScope.launch(Dispatchers.IO) {
             val result = startNewAppRepo.searchByBorrowerContact(token = token, searchKeyword = searchKeyword)
@@ -41,6 +51,35 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
             withContext(Dispatchers.Main) {
                 if (result is Result.Success)
                     _lookUpBorrowerContactResponse.value = result.data
+                else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (result is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(result))
+            }
+        }
+    }
+
+    suspend fun createApplication(token:String, createNewApplicationParams: CreateNewApplicationParams){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = startNewAppRepo.createApplication(token = token, createNewApplicationParams = createNewApplicationParams)
+            withContext(Dispatchers.Main) {
+                if (result is Result.Success)
+                    _createNewAppResponse.value = result.data
+                else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (result is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(result))
+            }
+        }
+    }
+
+
+    suspend fun getMcusByRoleId(token:String, filterLoanOfficer:Boolean){
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = startNewAppRepo.getMcusByRoleId(token = token, filterLoanOfficer= filterLoanOfficer)
+            withContext(Dispatchers.Main) {
+                if (result is Result.Success)
+                    _getLoanOfficerResponse.value = result.data
                 else if (result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (result is Result.Error)

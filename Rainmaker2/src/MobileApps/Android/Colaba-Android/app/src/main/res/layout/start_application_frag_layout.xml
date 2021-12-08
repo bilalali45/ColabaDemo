@@ -80,15 +80,19 @@
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/find_contact_btn"
+                android:text="@string/find_contact"
                 android:layout_width="match_parent"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
                 android:layout_height="50dp"
+                android:layoutDirection="rtl"
                 android:background="@drawable/content_background_halfwhite"
                 android:button="@null"
                 android:drawableStart="@drawable/radiodraw"
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/rubik_regular"
-                android:paddingStart="15dp"
-                android:text="@string/find_contact"
+
+
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
 
@@ -113,7 +117,7 @@
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/radiobtn"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:layout_marginTop="17dp"
                         android:button="@null"
@@ -122,7 +126,11 @@
                         android:drawablePadding="15dp"
                         android:fontFamily="@font/rubik_regular"
                         android:paddingStart="15dp"
+                        android:paddingEnd="15dp"
+                        android:layoutDirection="rtl"
                         android:text="@string/find_contact"
+                        app:layout_constraintEnd_toEndOf="parent"
+
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -247,6 +255,9 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/create_contact_btn"
                         android:layout_width="match_parent"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:layoutDirection="rtl"
                         android:layout_height="50dp"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/content_background_halfwhite"
@@ -254,7 +265,7 @@
                         android:drawableStart="@drawable/radiodraw"
                         android:drawablePadding="15dp"
                         android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
+
                         android:text="@string/create_new_contact"
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp" />
@@ -271,8 +282,9 @@
                         android:visibility="gone">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="25dp"
+
                             android:layout_marginStart="3dp"
                             android:layout_marginTop="17dp"
                             android:button="@null"
@@ -281,7 +293,11 @@
                             android:drawablePadding="15dp"
                             android:fontFamily="@font/rubik_regular"
                             android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:layoutDirection="rtl"
                             android:text="@string/create_new_contact"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
                             android:textColor="@color/grey_color_one"
                             android:textSize="15sp" />
 
@@ -440,20 +456,22 @@
                     android:id="@+id/heading_loan_purpose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="40dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/loan_purpose"
                     android:textColor="@color/grey_color_two"
-                    android:textSize="14sp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/create_contact" />
 
+
+                <!--
                 <RadioGroup
                     android:id="@+id/rg_loan_purpose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:layout_marginTop="15dp"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
@@ -482,102 +500,217 @@
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp" />
                 </RadioGroup>
+            -->
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/rg_loan_purpose"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/heading_loan_purpose">
+
+                    <Button
+                        android:id="@+id/btn_loan_purchase"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Purchase"
+
+                        android:textAllCaps="false" />
+
+                    <Button
+                        android:id="@+id/btn_loan_refinance"
+                        android:layout_weight="1"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Refinance"
+                        android:textAllCaps="false" />
+
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
                 <TextView
                     android:id="@+id/heading_loan_goal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:layout_marginTop="50dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/loan_goal"
+                    android:textStyle="bold"
                     android:textColor="@color/grey_color_two"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rg_loan_purpose"/>
+                    app:layout_constraintTop_toBottomOf="@+id/rg_loan_purpose" />
 
                 <RadioGroup
                     android:id="@+id/rg_purchase_loan_goal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:layout_marginTop="15dp"
+                    android:visibility="visible"
+
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/heading_loan_goal">
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_pre_approval"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="Pre-Approval"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:paddingEnd="16dp"
+                        android:background="@drawable/content_background_fullwhite">
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/btn_pre_approval"
+                            android:text="Pre-Approval"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:button="@drawable/radiodraw"
+                            android:fontFamily="@font/rubik_regular"
+                            android:layoutDirection="rtl"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
 
+                            android:textAlignment="textStart"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="15sp"
+
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:paddingEnd="16dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/content_background_fullwhite">
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/btn_property_under_cont"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
+                        android:text=" Property Under Contract"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
                         android:button="@drawable/radiodraw"
                         android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text=" Property Under Contract"
+                        android:layoutDirection="rtl"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textAlignment="textStart"
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="RtlSymmetry" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </RadioGroup>
 
 
                 <RadioGroup
-                    android:visibility="gone"
                     android:id="@+id/rg_refinance_loan_goal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
                     android:layout_marginTop="15dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/heading_loan_goal">
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_lower_payment_terms"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/lower_payments_term"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:background="@drawable/content_background_fullwhite"
+                        android:paddingEnd="16dp">
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_cashout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/cash_out"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp"
-                        tools:ignore="RtlSymmetry" />
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/btn_lower_payment_terms"
+                            android:layout_width="match_parent"
 
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_debt_consolidation"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/debt_consolidated"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp"
-                        tools:ignore="RtlSymmetry" />
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:button="@drawable/radiodraw"
+                            android:fontFamily="@font/rubik_regular"
+                            android:layoutDirection="rtl"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@string/lower_payments_term"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/content_background_fullwhite"
+                        android:paddingEnd="16dp">
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/btn_cashout"
+                            android:layout_width="match_parent"
+
+
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:button="@drawable/radiodraw"
+                            android:fontFamily="@font/rubik_regular"
+                            android:layoutDirection="rtl"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@string/cash_out"
+                            android:textAlignment="textStart"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/content_background_fullwhite"
+                        android:paddingEnd="16dp">
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/btn_debt_consolidation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:button="@drawable/radiodraw"
+                            android:fontFamily="@font/rubik_regular"
+                            android:layoutDirection="rtl"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp"
+                            android:text="@string/debt_consolidated"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="15sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="RtlSymmetry" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </RadioGroup>
 
 
@@ -586,18 +719,15 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginEnd="20dp"
                 android:background="@color/colaba_app_border_color" />
 
             <LinearLayout
                 android:id="@+id/assign_loan_officer"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
-                android:layout_marginEnd="20dp"
                 android:background="@drawable/content_background_fullwhite"
                 android:clickable="true"
                 android:gravity="start|center">
@@ -619,6 +749,69 @@
                     android:textSize="15sp" />
             </LinearLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/loan_officer_assigned"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/content_background_fullwhite"
+                android:clickable="true"
+                android:gravity="start|center"
+                android:padding="16dp"
+                android:visibility="invisible">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/lo_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:src="@drawable/ic_svg_circle_plus" />
+
+                <TextView
+                    android:id="@+id/lo_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/rubik_regular"
+                    android:gravity="start"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="John Doe"
+                    android:textColor="@color/grey_color_two"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toTopOf="@+id/lo_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/lo_image"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/lo_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+
+                    android:fontFamily="@font/rubik_regular"
+                    android:gravity="start"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Texas Trust Hom.."
+                    android:textColor="@color/grey_color_three"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@+id/lo_name"
+                    app:layout_constraintTop_toBottomOf="@+id/lo_name" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </com.rnsoft.colabademo.CustomScrollView>
 

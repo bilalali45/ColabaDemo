@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.test_material_toggle_buttons)
         setContentView(R.layout.splash_layout)
 
         activityScope.launch {
@@ -39,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
 
-            finish()
+           finish()
          }
 
     }
