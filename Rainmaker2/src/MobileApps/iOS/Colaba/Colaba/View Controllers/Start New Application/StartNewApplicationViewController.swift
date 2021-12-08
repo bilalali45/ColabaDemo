@@ -38,6 +38,7 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var txtfieldEmail: ColabaTextField!
     @IBOutlet weak var txtfieldPhone: ColabaTextField!
     @IBOutlet weak var loanPurposeView: UIView!
+    @IBOutlet weak var segmentLoanPurpose: UISegmentedControl!
     @IBOutlet weak var stackViewPurchase: UIStackView!
     @IBOutlet weak var btnPurchase: UIButton!
     @IBOutlet weak var lblPurchase: UILabel!
@@ -60,12 +61,16 @@ class StartNewApplicationViewController: BaseViewController {
     @IBOutlet weak var loanOfficerImage: UIImageView!
     @IBOutlet weak var lblLoanOfficerName: UILabel!
     @IBOutlet weak var lblLoanOfficerTenant: UILabel!
-    
     @IBOutlet weak var btnCreateApplication: UIButton!
     
     var isCreateNewContact = false
     var loanPurpose: Int?
     var loanGoal: Int?
+    var borrowerContacts = [BorrowerContactModel]()
+    var selectedContactModel = BorrowerContactModel()
+    var selectedLoanGoal = 0
+    var selectedLoanOfficerId = 0
+    var selectedLoanOfficerBranchId = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,9 +85,8 @@ class StartNewApplicationViewController: BaseViewController {
         stackViewCashOut.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cashOutStackViewTapped)))
         stackViewDebt.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(debtStackViewTapped)))
         NotificationCenter.default.addObserver(self, selector: #selector(seeMoreTapped), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(loanOfficerSelected), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(loanApplicationCreated), name: NSNotification.Name(rawValue: kNotificationLoanApplicationCreated), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(loanOfficerSelected(notification:)), name: NSNotification.Name(rawValue: kNotificationLoanOfficerSelected), object: nil)
+        purchaseStackViewTapped()
     }
     
     //MARK:- Methods and Actions
@@ -90,7 +94,7 @@ class StartNewApplicationViewController: BaseViewController {
     func setupViewsAndTextfields(){
         findBorrowerView.layer.cornerRadius = 8
         findBorrowerView.layer.borderWidth = 1
-        findBorrowerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        findBorrowerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         findBorrowerView.dropShadowToCollectionViewCell()
         
         searchView.layer.cornerRadius = 5
@@ -105,18 +109,27 @@ class StartNewApplicationViewController: BaseViewController {
         
         contactListView.roundOnlyBottomCorners(radius: 5)
         contactListView.layer.borderWidth = 1
-        contactListView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        
-        let bororwerEmailAndPhone = "richard.glenn@gmail.com  ·  (121) 353 1343"
-        let bororwerEmailAndPhoneAttributedText = NSMutableAttributedString(string: bororwerEmailAndPhone)
-        let range1 = bororwerEmailAndPhone.range(of: "·")
-        bororwerEmailAndPhoneAttributedText.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: bororwerEmailAndPhone.nsRange(from: range1!))
-        self.lblBorrowerEmailAndPhone.attributedText = bororwerEmailAndPhoneAttributedText
+        contactListView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         
         createContactView.layer.cornerRadius = 8
         createContactView.layer.borderWidth = 1
-        createContactView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        createContactView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         //createContactView.dropShadowToCollectionViewCell()
+        
+        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getAppGreyColor(), NSAttributedString.Key.font: Theme.getRubikRegularFont(size: 14)], for: .normal)
+        segmentLoanPurpose.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: Theme.getButtonBlueColor(), NSAttributedString.Key.font: Theme.getRubikMediumFont(size: 14)], for: .selected)
+        
+        stackViewLowerPayments.layer.cornerRadius = 5
+        stackViewLowerPayments.layer.borderWidth = 1
+        stackViewLowerPayments.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
+        
+        stackViewCashOut.layer.cornerRadius = 5
+        stackViewCashOut.layer.borderWidth = 1
+        stackViewCashOut.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
+        
+        stackViewDebt.layer.cornerRadius = 5
+        stackViewDebt.layer.borderWidth = 1
+        stackViewDebt.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         
         ///First Name Text Field
         txtfieldFirstName.setTextField(placeholder: "First Name", controller: self, validationType: .required)
@@ -134,8 +147,9 @@ class StartNewApplicationViewController: BaseViewController {
         
         loanOfficerView.layer.cornerRadius = 8
         loanOfficerView.layer.borderWidth = 1
-        loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         loanOfficerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(assignLoanOfficerViewTapped)))
+        loanOfficerImage.layer.cornerRadius = loanOfficerImage.frame.height / 2
         
         btnCreateApplication.layer.cornerRadius = 5
         btnCreateApplication.isEnabled = false
@@ -145,7 +159,7 @@ class StartNewApplicationViewController: BaseViewController {
         let findBorrowerHeight = findBorrowerView.frame.height
         let createNewContactHeight = createContactView.frame.height
         let loanGoalViewHeight = loanGoalView.frame.height
-        self.mainViewHeightConstraint.constant = findBorrowerHeight + createNewContactHeight + loanGoalViewHeight + 310
+        self.mainViewHeightConstraint.constant = findBorrowerHeight + createNewContactHeight + loanGoalViewHeight + 350
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
@@ -158,6 +172,8 @@ class StartNewApplicationViewController: BaseViewController {
         searchView.layer.cornerRadius = 5
         borrowerInfoView.isHidden = true
         contactListView.isHidden = true
+        selectedContactModel = BorrowerContactModel()
+        changeCreateApplicationButtonState()
     }
     
     @objc func createContactStackViewTapped(){
@@ -167,24 +183,28 @@ class StartNewApplicationViewController: BaseViewController {
         searchView.layer.cornerRadius = 5
         borrowerInfoView.isHidden = true
         contactListView.isHidden = true
+        selectedContactModel = BorrowerContactModel()
+        changeCreateApplicationButtonState()
     }
     
     @objc func txtfieldSearchTextChanged(){
-        searchView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        searchView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.2).cgColor
         searchView.roundOnlyTopCorners(radius: 5)
-        contactListView.isHidden = false
+        findBorrowerWith(keyword: txtfieldSearch.text!)
     }
     
     func changeBorrowerContactType(){
         findBorrowerViewHeightConstraint.constant = isCreateNewContact ? 50 : 110
-        findBorrowerView.backgroundColor = isCreateNewContact ? .clear : .white
-        btnFindBorrower.setImage(UIImage(named: isCreateNewContact ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
+ //       findBorrowerView.backgroundColor = isCreateNewContact ? .clear : .white
+        findBorrowerView.backgroundColor = .white
+        btnFindBorrower.setImage(UIImage(named: isCreateNewContact ? "radioUnslected" : "RadioButtonSelected"), for: .normal)
         lblFindBorrower.font = isCreateNewContact ? Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
         searchView.isHidden = isCreateNewContact
         createContactViewHeightConstarint.constant = isCreateNewContact ? 335 : 50
-        btnCreateContact.setImage(UIImage(named: isCreateNewContact ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnCreateContact.setImage(UIImage(named: isCreateNewContact ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblCreateContact.font = isCreateNewContact ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        createContactView.backgroundColor = isCreateNewContact ? .white : .clear
+//        createContactView.backgroundColor = isCreateNewContact ? .white : .clear
+        createContactView.backgroundColor = .white
         txtfieldFirstName.isHidden = !isCreateNewContact
         txtfieldLastName.isHidden = !isCreateNewContact
         txtfieldEmail.isHidden = !isCreateNewContact
@@ -210,28 +230,30 @@ class StartNewApplicationViewController: BaseViewController {
     
     @objc func purchaseStackViewTapped(){
         loanPurpose = 0
+        loanGoal = nil
         changeLoanPurpose()
+        changeCreateApplicationButtonState()
     }
     
     @objc func refinanceStackViewTapped(){
         loanPurpose = 1
+        loanGoal = nil
         changeLoanPurpose()
+        changeCreateApplicationButtonState()
     }
     
     func changeLoanPurpose(){
-        btnPurchase.setImage(UIImage(named: loanPurpose == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnPurchase.setImage(UIImage(named: loanPurpose == 0 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblPurchase.font = loanPurpose == 0 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnRefinance.setImage(UIImage(named: loanPurpose == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnRefinance.setImage(UIImage(named: loanPurpose == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblRefinance.font = loanPurpose == 1 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
-        btnCreateApplication.setTitleColor(.white, for: .normal)
-        btnCreateApplication.isEnabled = true
         loanGoalView.isHidden = false
-        loanGoalViewHeightConstraint.constant = loanPurpose == 0 ? 100 : 140
+        loanGoalViewHeightConstraint.constant = loanPurpose == 0 ? 130 : 190
         stackViewDebt.isHidden = loanPurpose == 0
         lblLowerPayment.text = loanPurpose == 0 ? "Pre-Approval" : "Lower Payments or Term"
         lblCashOut.text = loanPurpose == 0 ? "Property Under Contract" : "Cash-Out"
         lblDebt.text = "Debt Consolidation"
+        changeLoanGoal()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
@@ -240,28 +262,28 @@ class StartNewApplicationViewController: BaseViewController {
     @objc func lowerPaymentsStackViewTapped(){
         loanGoal = 0
         changeLoanGoal()
+        changeCreateApplicationButtonState()
     }
     
     @objc func cashOutStackViewTapped(){
         loanGoal = 1
         changeLoanGoal()
+        changeCreateApplicationButtonState()
     }
     
     @objc func debtStackViewTapped(){
         loanGoal = 2
         changeLoanGoal()
+        changeCreateApplicationButtonState()
     }
     
     func changeLoanGoal(){
-        btnLowerPayment.setImage(UIImage(named: loanGoal == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnLowerPayment.setImage(UIImage(named: loanGoal == 0 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblLowerPayment.font = loanGoal == 0 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnCashOut.setImage(UIImage(named: loanGoal == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnCashOut.setImage(UIImage(named: loanGoal == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblCashOut.font = loanGoal == 1 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnDebt.setImage(UIImage(named: loanGoal == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
+        btnDebt.setImage(UIImage(named: loanGoal == 2 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
         lblDebt.font = loanGoal == 2 ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
-        btnCreateApplication.setTitleColor(.white, for: .normal)
-        btnCreateApplication.isEnabled = true
     }
     
     @objc func assignLoanOfficerViewTapped(){
@@ -274,12 +296,69 @@ class StartNewApplicationViewController: BaseViewController {
         self.presentVC(vc: vc)
     }
     
-    @objc func loanOfficerSelected(){
+    @objc func loanOfficerSelected(notification: Notification){
         assignLoanOfficerView.isHidden = true
         loanOfficerView.isHidden = false
+        changeCreateApplicationButtonState()
+        if let mcu = notification.userInfo{
+            if let userId = mcu["userId"] as? Int{
+                selectedLoanOfficerId = userId
+            }
+            if let branchId = mcu["branchId"] as? Int{
+                selectedLoanOfficerBranchId = branchId
+            }
+            if let userName = mcu["fullName"] as? String{
+                lblLoanOfficerName.text = userName
+            }
+            if let branchName = mcu["branchName"] as? String{
+                lblLoanOfficerTenant.text = branchName
+            }
+            if let userImage = mcu["profileimageurl"] as? String{
+                loanOfficerImage.sd_setImage(with: URL(string: userImage), completed: nil)
+            }
+        }
+//        if (isCreateNewContact || !borrowerInfoView.isHidden){
+//            btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
+//            btnCreateApplication.setTitleColor(.white, for: .normal)
+//            btnCreateApplication.isEnabled = true
+//        }
+//        else{
+//            btnCreateApplication.backgroundColor = Theme.getButtonGreyColor()
+//            btnCreateApplication.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
+//            btnCreateApplication.isEnabled = false
+//        }
+    }
+    
+    func changeCreateApplicationButtonState(){
+        
+        if (isCreateNewContact){
+            if (txtfieldFirstName.text! != "" && txtfieldLastName.text! != "" && txtfieldEmail.text! != "" && loanGoal != nil && !loanOfficerView.isHidden){
+                enableCreateApplicationButton()
+            }
+            else{
+                disableCreateApplicationButton()
+            }
+        }
+        else{
+            if (!borrowerInfoView.isHidden && loanGoal != nil && !loanOfficerView.isHidden){
+                enableCreateApplicationButton()
+            }
+            else{
+                disableCreateApplicationButton()
+            }
+        }
+    }
+    
+    func enableCreateApplicationButton(){
         btnCreateApplication.backgroundColor = Theme.getButtonBlueColor()
         btnCreateApplication.setTitleColor(.white, for: .normal)
         btnCreateApplication.isEnabled = true
+    }
+    
+    func disableCreateApplicationButton(){
+        btnCreateApplication.backgroundColor = Theme.getButtonGreyColor()
+        btnCreateApplication.setTitleColor(Theme.getButtonGreyTextColor(), for: .normal)
+        btnCreateApplication.isEnabled = false
     }
     
     @objc func loanApplicationCreated(){
@@ -297,8 +376,10 @@ class StartNewApplicationViewController: BaseViewController {
             if (!txtfieldEmail.validate()) {
                 return false
             }
-            if (!txtfieldPhone.validate()) {
-                return false
+            if (txtfieldPhone.text != ""){
+                if (!txtfieldPhone.validate()) {
+                    return false
+                }
             }
             return true
         }
@@ -311,6 +392,16 @@ class StartNewApplicationViewController: BaseViewController {
     
     @IBAction func btnBorrowerInfoCloseTapped(_ sender: UIButton){
         findBorrowerStackViewTapped()
+        changeCreateApplicationButtonState()
+    }
+    
+    @IBAction func segmentLoanPurposeChanged(_ sender: UISegmentedControl) {
+        if (sender.selectedSegmentIndex == 0){
+            purchaseStackViewTapped()
+        }
+        else{
+            refinanceStackViewTapped()
+        }
     }
     
     @IBAction func btnCreateApplicationTapped(_ sender: UIButton) {
@@ -318,53 +409,233 @@ class StartNewApplicationViewController: BaseViewController {
             txtfieldFirstName.validate()
             txtfieldLastName.validate()
             txtfieldEmail.validate()
-            txtfieldPhone.validate()
+            if (txtfieldPhone.text != ""){
+                txtfieldPhone.validate()
+            }
+            if(validate()){
+                checkBorrowerAlreadyExist()
+            }
         }
-        if (validate()){
-            //self.dismissVC()
-            let vc = Utility.getDuplicateContactPopupVC()
-            self.present(vc, animated: false, completion: nil)
+        else{
+            createNewApplication()
         }
+        
+    }
+    
+    //MARK:- API's
+    
+    func findBorrowerWith(keyword: String){
+        
+        let extraData = "keyword=\(keyword)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .findBorrowerContact, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    self.borrowerContacts.removeAll()
+                    let contacts = result.arrayValue
+                    for contact in contacts{
+                        let model = BorrowerContactModel()
+                        model.updateModelWithJSON(json: contact)
+                        self.borrowerContacts.append(model)
+                    }
+                    self.contactListView.isHidden = self.borrowerContacts.count == 0
+                    self.tableViewContactList.reloadData()
+                }
+                
+                else{
+                    self.contactListView.isHidden = true
+                }
+            }
+            
+        }
+        
+    }
+    
+    func checkBorrowerAlreadyExist(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let phoneNumber = cleanString(string: txtfieldPhone.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: "")
+        
+        let extraData = "email=\(txtfieldEmail.text!)&phone=\(phoneNumber)"
+        
+        APIRouter.sharedInstance.executeAPI(type: .checkBorrowerAlreadyExist, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let model = BorrowerContactModel()
+                    model.updateModelWithJSON(json: result["data"])
+                    self.selectedContactModel = model
+                    
+                    if (self.selectedContactModel.contactId == 0){
+                        self.createNewApplication()
+                    }
+                    else{
+                        let vc = Utility.getDuplicateContactPopupVC()
+                        vc.selectedContact = self.selectedContactModel
+                        vc.delegate = self
+                        self.present(vc, animated: false, completion: nil)
+                    }
+                }
+                
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
+                        
+                    }
+                }
+            }
+        }
+    }
+    
+    func createNewApplication(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var loanGoalId = 0
+        
+        if (segmentLoanPurpose.selectedSegmentIndex == 0){
+            if (loanGoal == 0){ //Pre Approval
+                loanGoalId = 3
+            }
+            else if (loanGoal == 1){ //Property Under Contract
+                 loanGoalId = 4
+            }
+        }
+        else{
+            if (loanGoal == 0){ //Lower Payment
+                loanGoalId = 5
+            }
+            else if (loanGoal == 1){ //Cash Out
+                 loanGoalId = 6
+            }
+            else if (loanGoal == 2){ //Debt Conso
+                loanGoalId = 7
+            }
+        }
+        
+        let params = ["contactId": selectedContactModel.contactId == 0 ? NSNull() : selectedContactModel.contactId,
+                      "FirstName": isCreateNewContact ? txtfieldFirstName.text! : selectedContactModel.firstName,
+                      "LastName": isCreateNewContact ? txtfieldLastName.text! : selectedContactModel.lastName,
+                      "MobileNumber":isCreateNewContact ? cleanString(string: txtfieldPhone.text!, replaceCharacters: ["(", ")", " ", "-"], replaceWith: "") : selectedContactModel.mobileNumber,
+                      "EmailAddress": isCreateNewContact ? txtfieldEmail.text! : selectedContactModel.emailAddress,
+                      "LoanGoal": loanGoalId,
+                      "LoanPurpose": segmentLoanPurpose.selectedSegmentIndex == 0 ? 1 : 2,
+                      "branchId": selectedLoanOfficerBranchId,
+                      "LoanOfficerUserId": selectedLoanOfficerId] as [String: Any]
+        
+        print(params)
+        
+        APIRouter.sharedInstance.executeAPI(type: .createNewApplication, method: .post, params: params) { status, result, message in
+            
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    self.showPopup(message: "New application has been created", popupState: .success, popupDuration: .custom(2)) { reason in
+                        
+                        let vc = Utility.getLoanDetailVC()
+                        vc.isAfterCreateNewApplication = true
+                        vc.loanApplicationId = result["data"]["loanApplicationId"].intValue
+                        vc.borrowerName = "\(result["data"]["firstName"].stringValue) \(result["data"]["lastName"].stringValue)"
+                        vc.loanPurpose = self.segmentLoanPurpose.selectedSegmentIndex == 0 ? "Purchase" : "Refinance"
+                        vc.phoneNumber = result["data"]["mobileNumber"].stringValue
+                        vc.email = result["data"]["emailAddress"].stringValue
+                        let navVC = UINavigationController(rootViewController: vc)
+                        navVC.navigationBar.isHidden = true
+                        navVC.modalPresentationStyle = .fullScreen
+                        self.presentVC(vc: navVC)
+                    }
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
+                        
+                    }
+                }
+            }
+            
+        }
+        
     }
 }
 
 extension StartNewApplicationViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return borrowerContacts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactListTableViewCell", for: indexPath) as! ContactListTableViewCell
         
-        let borrowerName = indexPath.row % 2 == 0 ? "Richard Glenn Randall" : "Arnold Richard"
+        let contact = borrowerContacts[indexPath.row]
+        let borrowerName = "\(contact.firstName) \(contact.lastName)"
         let attributedBorrowerName = NSMutableAttributedString(string: borrowerName)
-        let range = borrowerName.range(of: indexPath.row % 2 == 0 ? "Richard" : "Richard")
-        attributedBorrowerName.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 15)], range: borrowerName.nsRange(from: range!))
-        cell.lblName.attributedText = attributedBorrowerName
+        let range = borrowerName.range(of: txtfieldSearch.text!, options: .caseInsensitive)
+        if (range == nil){
+            cell.lblName.text = borrowerName
+        }
+        else{
+            attributedBorrowerName.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 15)], range: borrowerName.nsRange(from: range!))
+            cell.lblName.attributedText = attributedBorrowerName
+        }
         
-        let borrowerEmailAndPhone = indexPath.row % 2 == 0 ? "richard.glenn@gmail.com  ·  (121) 353 1343" : "arnold634@gmail.com  ·  (121) 353 1343"
+        let mobileNumber = formatNumber(with: "(XXX) XXX-XXXX", number: contact.mobileNumber)
+        let borrowerEmailAndPhone = "\(contact.emailAddress)  ·  \(mobileNumber)"
         let attributedBorrowerEmailAndPhone = NSMutableAttributedString(string: borrowerEmailAndPhone)
-        let rangeOfName = borrowerEmailAndPhone.range(of: indexPath.row % 2 == 0 ? "richard" : " ")
+        let rangeOfName = borrowerEmailAndPhone.range(of: txtfieldSearch.text!, options: .caseInsensitive)
         let range2 = borrowerEmailAndPhone.range(of: "·")
-        attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 13)], range: borrowerEmailAndPhone.nsRange(from: rangeOfName!))
-        attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: borrowerEmailAndPhone.nsRange(from: range2!))
-        cell.lblEmailPhoneNumber.attributedText = attributedBorrowerEmailAndPhone
+        if (rangeOfName == nil || range2 == nil){
+            cell.lblEmailPhoneNumber.text = borrowerEmailAndPhone
+        }
+        else{
+            attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.foregroundColor : Theme.getAppBlackColor(), NSAttributedString.Key.font : Theme.getRubikMediumFont(size: 13)], range: borrowerEmailAndPhone.nsRange(from: rangeOfName!))
+            attributedBorrowerEmailAndPhone.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: borrowerEmailAndPhone.nsRange(from: range2!))
+            cell.lblEmailPhoneNumber.attributedText = attributedBorrowerEmailAndPhone
+        }
         
         return cell
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedContact = borrowerContacts[indexPath.row]
+        selectedContactModel = selectedContact
         contactListView.isHidden = true
         searchView.isHidden = true
         searchView.layer.borderColor = Theme.getSearchBarBorderColor().cgColor
         searchView.layer.cornerRadius = 5
         borrowerInfoView.isHidden = false
         findBorrowerViewHeightConstraint.constant = 140
+        let mobileNumber = formatNumber(with: "(XXX) XXX-XXXX", number: selectedContact.mobileNumber)
+        let bororwerEmailAndPhone = "\(selectedContact.emailAddress)  ·  \(mobileNumber)"
+        let bororwerEmailAndPhoneAttributedText = NSMutableAttributedString(string: bororwerEmailAndPhone)
+        let range1 = bororwerEmailAndPhone.range(of: "·")
+        bororwerEmailAndPhoneAttributedText.addAttributes([NSAttributedString.Key.font: Theme.getRubikBoldFont(size: 20), NSAttributedString.Key.foregroundColor : Theme.getButtonBlueColor()], range: bororwerEmailAndPhone.nsRange(from: range1!))
+        self.lblBorrowerName.text = "\(selectedContact.firstName.capitalized) \(selectedContact.lastName.capitalized)"
+        self.lblBorrowerEmailAndPhone.attributedText = bororwerEmailAndPhoneAttributedText
+        txtfieldSearch.text = ""
+        changeCreateApplicationButtonState()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
+        
     }
+}
+
+extension StartNewApplicationViewController: ColabaTextFieldDelegate{
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        changeCreateApplicationButtonState()
+    }
+}
+
+extension StartNewApplicationViewController: DuplicateContactPopupViewControllerDelegate{
+    
+    func createLoanApplicationWithExistingContact() {
+        createNewApplication()
+    }
+    
 }

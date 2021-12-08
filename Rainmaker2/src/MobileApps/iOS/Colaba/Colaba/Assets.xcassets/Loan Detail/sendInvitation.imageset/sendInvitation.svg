@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="23.25" height="15.43" viewBox="0 0 23.25 15.43">
+  <g id="Group_20344" data-name="Group 20344" transform="translate(-293.75 -203)">
+    <path id="Subtraction_33" data-name="Subtraction 33" d="M13.98,11.971h-5.1V10.262h5.1a.6.6,0,0,0,.557-.617V2.806L8.663,7.45a.859.859,0,0,1-1.063,0L1.712,2.8V9.21H0V2.336A2.318,2.318,0,0,1,2.266,0H13.98a2.318,2.318,0,0,1,2.266,2.336v7.3A2.311,2.311,0,0,1,13.98,11.971ZM3.086,1.712h0L8.134,5.7l4.99-3.984H3.086Z" transform="translate(300.754 203)" fill="#4484f4"/>
+    <g id="Group_20343" data-name="Group 20343" transform="translate(297.203 211.92)">
+      <line id="Line_400" data-name="Line 400" x1="9.997" transform="translate(0 2.59)" fill="none" stroke="#4484f4" stroke-linecap="round" stroke-width="1.8"/>
+      <path id="Path_13816" data-name="Path 13816" d="M-14855.043-5150.312l2.6,2.663-2.6,2.574" transform="translate(14862.697 5150.312)" fill="none" stroke="#4484f4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+    </g>
+    <path id="Path_13817" data-name="Path 13817" d="M8.13,2H3.855a.855.855,0,1,0,0,1.71H8.13A.855.855,0,0,0,8.13,2Z" transform="translate(290.75 204.42)" fill="#4484f4"/>
+    <path id="Path_13818" data-name="Path 13818" d="M8.418,6H4.855a.855.855,0,1,0,0,1.71H8.418a.855.855,0,0,0,0-1.71Z" transform="translate(290.462 203.84)" fill="#4484f4"/>
+  </g>
+</svg>

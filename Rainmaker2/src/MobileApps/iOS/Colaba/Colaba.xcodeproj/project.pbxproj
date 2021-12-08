@@ -33,6 +33,7 @@
 		2321247726C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321247526C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift */; };
 		2321247826C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2321247626C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib */; };
 		2321247A26C17A0F00439A44 /* AddResidenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321247926C17A0E00439A44 /* AddResidenceViewController.swift */; };
+		232AF5A7275E552B006C4DA3 /* LoanOfficersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */; };
 		2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */; };
 		2330CD2526B000ED00FF3C43 /* DocumentMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */; };
 		2330CD2626B000ED00FF3C43 /* DocumentMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */; };
@@ -46,6 +47,10 @@
 		235BBD6E2698736200687174 /* APIRouterUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6D2698736200687174 /* APIRouterUnitTest.swift */; };
 		235BBD7126988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */; };
 		235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */; };
+		23667A62275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23667A60275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.swift */; };
+		23667A63275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23667A61275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.xib */; };
+		23667A66275F9C11001325E0 /* InvitationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23667A64275F9C11001325E0 /* InvitationCollectionViewCell.swift */; };
+		23667A67275F9C11001325E0 /* InvitationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23667A65275F9C11001325E0 /* InvitationCollectionViewCell.xib */; };
 		2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368799B26BC173E0045D294 /* BorrowerInformationViewController.swift */; };
 		2368799F26BC35360045D294 /* DemographicInformationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2368799D26BC35360045D294 /* DemographicInformationCollectionViewCell.swift */; };
 		236879A026BC35360045D294 /* DemographicInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */; };
@@ -166,6 +171,7 @@
 		23B5E98726F4A96E00686B8E /* BankruptcyFollowupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */; };
 		23B5E98926F4C85E00686B8E /* ChildSupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */; };
 		23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */; };
+		23B91CD627609647006F24ED /* InvitePrimaryBorrowerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B91CD527609647006F24ED /* InvitePrimaryBorrowerViewController.swift */; };
 		23B9277F2716B6E1009B460A /* LoanInfoDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */; };
 		23B927812716B7AF009B460A /* LoanGoalModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927802716B7AF009B460A /* LoanGoalModel.swift */; };
 		23B927832716F7E4009B460A /* RealEstateDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B927822716F7E4009B460A /* RealEstateDetailModel.swift */; };
@@ -314,6 +320,7 @@
 		2321247526C10F4100439A44 /* BorrowerAddressInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerAddressInfoTableViewCell.swift; sourceTree = "<group>"; };
 		2321247626C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerAddressInfoTableViewCell.xib; sourceTree = "<group>"; };
 		2321247926C17A0E00439A44 /* AddResidenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddResidenceViewController.swift; sourceTree = "<group>"; };
+		232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanOfficersModel.swift; sourceTree = "<group>"; };
 		2330CD2126AFEBDF00FF3C43 /* rubik_bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_bold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_bold.ttf"; sourceTree = "<group>"; };
 		2330CD2326B000ED00FF3C43 /* DocumentMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageTableViewCell.swift; sourceTree = "<group>"; };
 		2330CD2426B000ED00FF3C43 /* DocumentMessageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentMessageTableViewCell.xib; sourceTree = "<group>"; };
@@ -327,6 +334,10 @@
 		235BBD6D2698736200687174 /* APIRouterUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouterUnitTest.swift; sourceTree = "<group>"; };
 		235BBD6F26988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerApplicationStatusButtonTableViewCell.swift; sourceTree = "<group>"; };
 		235BBD7026988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerApplicationStatusButtonTableViewCell.xib; sourceTree = "<group>"; };
+		23667A60275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerOverviewInvitationTableViewCell.swift; sourceTree = "<group>"; };
+		23667A61275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerOverviewInvitationTableViewCell.xib; sourceTree = "<group>"; };
+		23667A64275F9C11001325E0 /* InvitationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationCollectionViewCell.swift; sourceTree = "<group>"; };
+		23667A65275F9C11001325E0 /* InvitationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InvitationCollectionViewCell.xib; sourceTree = "<group>"; };
 		2368799B26BC173E0045D294 /* BorrowerInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInformationViewController.swift; sourceTree = "<group>"; };
 		2368799D26BC35360045D294 /* DemographicInformationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicInformationCollectionViewCell.swift; sourceTree = "<group>"; };
 		2368799E26BC35360045D294 /* DemographicInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DemographicInformationCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -447,6 +458,7 @@
 		23B5E98626F4A96E00686B8E /* BankruptcyFollowupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BankruptcyFollowupViewController.swift; sourceTree = "<group>"; };
 		23B5E98826F4C85E00686B8E /* ChildSupportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportViewController.swift; sourceTree = "<group>"; };
 		23B5E98A26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildSupportFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
+		23B91CD527609647006F24ED /* InvitePrimaryBorrowerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitePrimaryBorrowerViewController.swift; sourceTree = "<group>"; };
 		23B9277E2716B6E1009B460A /* LoanInfoDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanInfoDetailModel.swift; sourceTree = "<group>"; };
 		23B927802716B7AF009B460A /* LoanGoalModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanGoalModel.swift; sourceTree = "<group>"; };
 		23B927822716F7E4009B460A /* RealEstateDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEstateDetailModel.swift; sourceTree = "<group>"; };
@@ -659,6 +671,7 @@
 				2393362427354A48003D71F8 /* OtherIncomeDetailModel.swift */,
 				23A03061275DF13900A9D26D /* BorrowerContactModel.swift */,
 				23A03063275E034F00A9D26D /* ApplicationStatusModel.swift */,
+				232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -726,6 +739,10 @@
 				2338DB72270DA26E00658C2A /* EmailTemplateTableViewCell.xib */,
 				239B9FBB273A96D9008024F3 /* OccupancyStatusTableViewCell.swift */,
 				239B9FBC273A96D9008024F3 /* OccupancyStatusTableViewCell.xib */,
+				23667A60275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.swift */,
+				23667A61275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.xib */,
+				23667A64275F9C11001325E0 /* InvitationCollectionViewCell.swift */,
+				23667A65275F9C11001325E0 /* InvitationCollectionViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -885,6 +902,7 @@
 				23EB9B1D27268CF1005EBBFB /* FamilyOrBusinessAffliationViewController.swift */,
 				239BAE922750F77A00EEDA57 /* SpouseBasicDetailViewController.swift */,
 				239BAE9427510A1D00EEDA57 /* SpouseLinkWithBorrowerlViewController.swift */,
+				23B91CD527609647006F24ED /* InvitePrimaryBorrowerViewController.swift */,
 			);
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
@@ -1234,6 +1252,7 @@
 				235BBD7226988EEB00687174 /* BorrowerApplicationStatusButtonTableViewCell.xib in Resources */,
 				239570E826E8E78700B2B0A7 /* Test.storyboard in Resources */,
 				23BDB1D126F865EA00C73E33 /* DemographicQuestionsTableViewCell.xib in Resources */,
+				23667A67275F9C11001325E0 /* InvitationCollectionViewCell.xib in Resources */,
 				2320138E2698324800F500E2 /* BorrowerAddressTableViewCell.xib in Resources */,
 				7186ACBC2653B25B00E740D3 /* LaunchScreen.storyboard in Resources */,
 				7186ACB92653B25B00E740D3 /* Assets.xcassets in Resources */,
@@ -1243,6 +1262,7 @@
 				2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */,
 				2330CD2226AFEBDF00FF3C43 /* rubik_bold.ttf in Resources */,
 				2338DB74270DA26E00658C2A /* EmailTemplateTableViewCell.xib in Resources */,
+				23667A63275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.xib in Resources */,
 				230B94CF26E7496E004CBC83 /* AssetsDetailTableViewCell.xib in Resources */,
 				23AFA3752707208900388905 /* DocumentsTemplatesTableViewCell.xib in Resources */,
 				23E9C752269C3F980066C978 /* DocumentsTableViewCell.xib in Resources */,
@@ -1453,6 +1473,7 @@
 				7186AD5B2653CD6800E740D3 /* Utility.swift in Sources */,
 				23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */,
 				230B94D526E77AAA004CBC83 /* AddBankAccountViewController.swift in Sources */,
+				232AF5A7275E552B006C4DA3 /* LoanOfficersModel.swift in Sources */,
 				23F23B4526CA592800AEF33E /* DeleteAddressPopupViewController.swift in Sources */,
 				23DF0CF0269F022B00F29B70 /* LoanDocumentModel.swift in Sources */,
 				23DBAD26269714A800119680 /* ApplicationViewController.swift in Sources */,
@@ -1471,6 +1492,7 @@
 				239DFD582727DCAD0052E391 /* EthnicityModel.swift in Sources */,
 				7186AD742653FBB500E740D3 /* ResetPasswordSuccessfullViewController.swift in Sources */,
 				23EBC7902732CAAF0063922C /* OtherAssetsDetailModel.swift in Sources */,
+				23667A66275F9C11001325E0 /* InvitationCollectionViewCell.swift in Sources */,
 				23EBC7922732D9C60063922C /* GiftDetailModel.swift in Sources */,
 				71B19458265CF9C80017955B /* APIRouter.swift in Sources */,
 				238E0F9526F37F430025FF06 /* PriorityLiensViewController.swift in Sources */,
@@ -1568,6 +1590,7 @@
 				23DA70E8270EF07500912804 /* TestViewController.swift in Sources */,
 				23A56C592685B017005CE6F4 /* Manager.swift in Sources */,
 				23B5E97926F46DA200686B8E /* OutstandingJudgementsViewController.swift in Sources */,
+				23667A62275F98B5001325E0 /* BorrowerOverviewInvitationTableViewCell.swift in Sources */,
 				23B5E98B26F4CB4500686B8E /* ChildSupportFollowupQuestionsViewController.swift in Sources */,
 				23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */,
 				23A70A9D2733F807002C5656 /* EmployementDetailModel.swift in Sources */,
@@ -1625,6 +1648,7 @@
 				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */,
 				23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */,
+				23B91CD627609647006F24ED /* InvitePrimaryBorrowerViewController.swift in Sources */,
 				23BE064D26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
 				23A70A9B2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift in Sources */,

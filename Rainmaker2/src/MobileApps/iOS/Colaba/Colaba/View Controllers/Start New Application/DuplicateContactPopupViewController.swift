@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol DuplicateContactPopupViewControllerDelegate: AnyObject {
+    func createLoanApplicationWithExistingContact()
+}
+
 class DuplicateContactPopupViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -19,6 +23,9 @@ class DuplicateContactPopupViewController: BaseViewController {
     @IBOutlet weak var lblEmailPhoneNumber: UILabel!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var btnYes: UIButton!
+    
+    var selectedContact = BorrowerContactModel()
+    weak var delegate: DuplicateContactPopupViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +58,10 @@ class DuplicateContactPopupViewController: BaseViewController {
         loanOfficerView.layer.borderWidth = 1
         loanOfficerView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         
-        let loanOfficerEmailAndPhone = "richard.glenn@gmail.com  ·  (121) 353 1343"
+        lblName.text = "\(selectedContact.firstName.capitalized) \(selectedContact.lastName.capitalized)"
+        
+        let phoneNumber = formatNumber(with: "(XXX) XXX-XXXX", number: selectedContact.mobileNumber)
+        let loanOfficerEmailAndPhone = "\(selectedContact.emailAddress)  ·  \(phoneNumber)"
         let loanOfficerEmailAndPhoneAttributedString = NSMutableAttributedString(string: loanOfficerEmailAndPhone)
         let range1 = loanOfficerEmailAndPhone.range(of: "·")
         loanOfficerEmailAndPhoneAttributedString.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikBoldFont(size: 15), range: loanOfficerEmailAndPhone.nsRange(from: range1!))
@@ -81,10 +91,8 @@ class DuplicateContactPopupViewController: BaseViewController {
     }
     
     @IBAction func btnYesTapped(_ sender: UIButton) {
+        self.delegate?.createLoanApplicationWithExistingContact()
         self.dismissPopup()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.32) {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanApplicationCreated), object: nil)
-        }
     }
     
     

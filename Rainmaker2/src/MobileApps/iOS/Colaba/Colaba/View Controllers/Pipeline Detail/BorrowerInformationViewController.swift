@@ -117,6 +117,7 @@ class BorrowerInformationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        lblBorrowerType.text = borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
         setViews()
         getAllMaritalStatus()
     }
@@ -173,6 +174,7 @@ class BorrowerInformationViewController: BaseViewController {
     
     func setBorrowerInformation(){
         
+        lblBorrowerType.text = borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
         lblBorrowerName.text = "\(borrowerInformationModel.borrowerBasicDetails.firstName.uppercased()) \(borrowerInformationModel.borrowerBasicDetails.lastName.uppercased())"
         if (txtfieldLegalFirstName.text == ""){
             txtfieldLegalFirstName.setTextField(text: borrowerInformationModel.borrowerBasicDetails.firstName)

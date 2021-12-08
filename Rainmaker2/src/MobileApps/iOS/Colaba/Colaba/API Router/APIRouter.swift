@@ -117,6 +117,9 @@ enum EndPoint:String{
     case addUpdateBorrowerDetail = "loanapplication/Borrower/AddOrUpdateBorrowerDetails"
     case deleteBorrowerPreviousAddress = "loanapplication/Borrower/DeleteBorrowerPreviousAddress?"
     case findBorrowerContact = "loanapplication/loan/FindBorrowerContact?"
+    case checkBorrowerAlreadyExist = "loanapplication/loan/LookUpBorrowerContact?"
+    case createNewApplication = "loanapplication/Loan/CreateApplication"
+    case getLoanOfficers = "loanapplication/MCU/GetMcusByRoleId?"
     case logout = "identity/mcuaccount/Logout"
     
 }
