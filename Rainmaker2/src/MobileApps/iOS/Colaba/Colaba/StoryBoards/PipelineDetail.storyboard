@@ -2117,10 +2117,10 @@
                         <color key="backgroundColor" name="DashboardBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Ybv-uj-LPK" firstAttribute="trailing" secondItem="aHp-Yc-xhp" secondAttribute="trailing" id="1do-ib-O0G"/>
+                            <constraint firstAttribute="bottom" secondItem="Kie-cy-ixb" secondAttribute="bottom" id="3VD-Wm-rjZ"/>
                             <constraint firstItem="Ybv-uj-LPK" firstAttribute="trailing" secondItem="Kie-cy-ixb" secondAttribute="trailing" id="AM8-fx-hGk"/>
                             <constraint firstItem="aHp-Yc-xhp" firstAttribute="leading" secondItem="Ybv-uj-LPK" secondAttribute="leading" id="NeS-zK-oc4"/>
                             <constraint firstItem="Ybv-uj-LPK" firstAttribute="trailing" secondItem="a5c-UQ-RQh" secondAttribute="trailing" id="Xxp-E7-Jdi"/>
-                            <constraint firstItem="Ybv-uj-LPK" firstAttribute="bottom" secondItem="Kie-cy-ixb" secondAttribute="bottom" id="avg-q7-j48"/>
                             <constraint firstItem="a5c-UQ-RQh" firstAttribute="leading" secondItem="Ybv-uj-LPK" secondAttribute="leading" id="bty-V1-PyR"/>
                             <constraint firstItem="a5c-UQ-RQh" firstAttribute="top" secondItem="Ybv-uj-LPK" secondAttribute="top" id="koK-02-8Df"/>
                             <constraint firstItem="aHp-Yc-xhp" firstAttribute="top" secondItem="a5c-UQ-RQh" secondAttribute="bottom" id="mKB-D3-q9f"/>
@@ -3843,13 +3843,13 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="206"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save Current Residence?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rlg-Fn-tvr">
-                                        <rect key="frame" x="28" y="28" width="218.5" height="21.5"/>
+                                        <rect key="frame" x="28" y="28" width="205" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ajz-Xf-Dd1">
-                                        <rect key="frame" x="321" y="19" width="40" height="40"/>
+                                        <rect key="frame" x="321" y="18.5" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="PiA-UG-tli"/>
                                             <constraint firstAttribute="height" constant="40" id="fAE-PH-4Za"/>
@@ -3860,14 +3860,14 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TaN-hj-MmV">
-                                        <rect key="frame" x="0.0" y="69.5" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="69" width="375" height="1"/>
                                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="fhi-Ho-lXH"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="znP-oo-fcp">
-                                        <rect key="frame" x="28" y="98.5" width="138" height="22"/>
+                                        <rect key="frame" x="28" y="98" width="135" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="49h-SJ-5K9">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
@@ -3877,7 +3877,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save &amp; Continue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUO-GK-1vv">
-                                                <rect key="frame" x="23" y="0.0" width="115" height="22"/>
+                                                <rect key="frame" x="23" y="0.0" width="112" height="22"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppGreyColor"/>
                                                 <nil key="highlightedColor"/>
@@ -3885,7 +3885,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="tvj-O4-4WB">
-                                        <rect key="frame" x="28" y="150.5" width="140.5" height="22"/>
+                                        <rect key="frame" x="28" y="150" width="138.5" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4n7-hw-FXX">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
@@ -3895,7 +3895,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discard Changes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t3L-cT-A1b">
-                                                <rect key="frame" x="23" y="0.0" width="117.5" height="22"/>
+                                                <rect key="frame" x="23" y="0.0" width="115.5" height="22"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" red="1" green="0.33725490196078434" blue="0.32156862745098036" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>

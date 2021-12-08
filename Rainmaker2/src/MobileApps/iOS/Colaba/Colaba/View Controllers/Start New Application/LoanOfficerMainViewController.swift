@@ -124,6 +124,14 @@ extension LoanOfficerMainViewController: CarbonTabSwipeNavigationDelegate{
 
 extension LoanOfficerMainViewController: UITextFieldDelegate{
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        if (isForPopup){
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
+            return false
+        }
+        return true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if (isForPopup){
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationLoanOfficerSeeMoreTapped), object: nil)
