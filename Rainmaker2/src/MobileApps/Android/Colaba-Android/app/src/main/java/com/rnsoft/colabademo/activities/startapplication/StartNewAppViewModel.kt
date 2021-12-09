@@ -24,12 +24,16 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
     private val _createNewAppResponse : MutableLiveData<CreateNewApplicationResponse> =   MutableLiveData()
     val createNewAppResponse: LiveData<CreateNewApplicationResponse> get() = _createNewAppResponse
 
-
-
-
     private val _getLoanOfficerResponse : MutableLiveData<LoanOfficerApiResponse> =   MutableLiveData()
     val getLoanOfficerResponse: LiveData<LoanOfficerApiResponse> get() = _getLoanOfficerResponse
 
+    private val _createNewApplicationParams : MutableLiveData<CreateNewApplicationParams> =   MutableLiveData()
+    val createNewApplicationParams: LiveData<CreateNewApplicationParams> get() = _createNewApplicationParams
+
+
+    fun setCreateNewParams(createNewApplicationParams:CreateNewApplicationParams){
+        _createNewApplicationParams.value = createNewApplicationParams
+    }
 
     suspend fun searchByBorrowerContact(token:String, searchKeyword:String){
         viewModelScope.launch(Dispatchers.IO) {
@@ -45,7 +49,7 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
         }
     }
 
-    suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String){
+    suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String?=null){
         viewModelScope.launch(Dispatchers.IO) {
             val result = startNewAppRepo.lookUpBorrowerContact(token = token, borrowerEmail = borrowerEmail, borrowerPhone = borrowerPhone)
             withContext(Dispatchers.Main) {

@@ -20,11 +20,11 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
         }
     }
 
-    suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String):Result<LookUpBorrowerContactResponse>{
+    suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String?=null):Result<LookUpBorrowerContactResponse>{
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.lookUpBorrowerContact(newToken , email = borrowerEmail, phone = borrowerPhone)
-            Log.e("lookUpBorrowerContact-", response.toString())
+            //Log.e("lookUpBorrowerContact-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if(e is NoConnectivityException)

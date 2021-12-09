@@ -760,7 +760,7 @@
                 android:clickable="true"
                 android:gravity="start|center"
                 android:padding="16dp"
-                android:visibility="invisible">
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/lo_image"
