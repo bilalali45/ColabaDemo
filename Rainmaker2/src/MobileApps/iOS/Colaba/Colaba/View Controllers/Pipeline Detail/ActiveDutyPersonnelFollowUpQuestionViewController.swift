@@ -33,7 +33,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
         super.viewDidLoad()
         setTextFields()
         lblBorrowerName.text = borrowerName.uppercased()
-        txtfieldLastDate.setTextField(text: Utility.getMonthYear(selectedMilitary.expirationDateUtc))
+        
     }
     
     //MARK:- Methods and Actions
@@ -41,6 +41,7 @@ class ActiveDutyPersonnelFollowUpQuestionViewController: BaseViewController {
         ///Last Date of Service Text Field
         txtfieldLastDate.setTextField(placeholder: "Last date of service / tour", controller: self, validationType: .required)
         txtfieldLastDate.type = .monthlyDatePicker
+        txtfieldLastDate.setTextField(text: Utility.getMonthYear(selectedMilitary.expirationDateUtc))
         if (selectedMilitary.expirationDateUtc == ""){
             _ = txtfieldLastDate.becomeFirstResponder()
         }
