@@ -543,7 +543,7 @@ interface ServerApi{
     suspend fun lookUpBorrowerContact(
         @Header("Authorization" )  Authorization:String,
         @Query("email")  email:String,
-        @Query("phone")  phone:String)
+        @Query("phone")  phone:String?=null)
             :LookUpBorrowerContactResponse
 
     @POST("api/mcu/mobile/loanapplication/loan/CreateApplication")

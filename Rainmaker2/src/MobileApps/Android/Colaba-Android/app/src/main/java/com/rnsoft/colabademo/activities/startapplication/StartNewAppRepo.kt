@@ -9,7 +9,7 @@ class StartNewAppRepo  @Inject constructor(private val newAppDataSource: StartNe
         return newAppDataSource.searchByBorrowerContact(token = token, searchKeyword = searchKeyword)
     }
 
-    suspend fun lookUpBorrowerContact(token:String,  borrowerEmail:String, borrowerPhone:String):Result<LookUpBorrowerContactResponse>{
+    suspend fun lookUpBorrowerContact(token:String,  borrowerEmail:String, borrowerPhone:String?=null):Result<LookUpBorrowerContactResponse>{
         return newAppDataSource.lookUpBorrowerContact(token = token, borrowerEmail = borrowerEmail, borrowerPhone = borrowerPhone)
     }
 
