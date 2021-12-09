@@ -556,25 +556,6 @@
     </ScrollView>
 
 
-    <!--<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_save_icon"
-            android:translationX="18dp"
-            android:translationY="20dp"
-            app:elevation="3dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-    </LinearLayout> -->
-
     <ImageButton
         android:id="@+id/btn_save_mailing_address"
         android:layout_width="70dp"

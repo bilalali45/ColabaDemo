@@ -42,8 +42,9 @@ import com.rnsoft.colabademo.databinding.BorrowerInfoCurrentAddressBinding
 import java.io.IOException
 import java.util.*
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import kotlinx.coroutines.coroutineScope
-
+import java.text.DecimalFormat
 
 
 @AndroidEntryPoint
@@ -52,8 +53,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    private var _binding: BorrowerInfoCurrentAddressBinding? = null
-    private val binding get() = _binding!!
+    val numberFormatter =  DecimalFormat("#,###,###")
+    private lateinit var binding : BorrowerInfoCurrentAddressBinding
+    private var savedViewInstance: View? = null
     private var predicationList: ArrayList<String> = ArrayList()
     private lateinit var token: AutocompleteSessionToken
     private lateinit var placesClient: PlacesClient
@@ -77,71 +79,75 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = BorrowerInfoCurrentAddressBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        super.addListeners(binding.root)
+    ): View? {
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            binding = BorrowerInfoCurrentAddressBinding.inflate(inflater, container, false)
+            savedViewInstance = binding.root
+            super.addListeners(binding.root)
 
-        val activity = (activity as? BorrowerAddressActivity)
-        activity?.loanApplicationId?.let { loanId ->
-            loanApplicationId = loanId }
-
-        activity?.borrowerId?.let { bId ->
-            if(bId != -1) {
-                borrowerId = bId
+            val activity = (activity as? BorrowerAddressActivity)
+            activity?.loanApplicationId?.let { loanId ->
+                loanApplicationId = loanId
             }
-        }
 
-        activity?.firstName?.let {
-            firstName = it
-        }
-        activity?.lastName?.let {
-            lastName = it
-        }
-
-        if(firstName !=null && lastName !=null){
-            binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
-        }
-
-        setUpUI()
-        getDropDownData()
-        setUpCompleteViewForPlaces()
-        //initializeUSAstates()
-
-        /*binding.checkboxIsMailingAddressDiff.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.addAddressLayout.visibility = View.VISIBLE
-            } else {
-                binding.addAddressLayout.visibility = View.GONE
-                binding.showAddressLayout.visibility = View.GONE
+            activity?.borrowerId?.let { bId ->
+                if (bId != -1) {
+                    borrowerId = bId
+                }
             }
-        } */
 
-        binding.checkboxIsMailingAddressDiff.setOnClickListener {
-            if(binding.checkboxIsMailingAddressDiff.isChecked){
-                if(mailingAddressModel != null)
-                    binding.showAddressLayout.visibility = View.VISIBLE
-                else
-                   binding.addAddressLayout.visibility = View.VISIBLE
-            }else {
-                binding.addAddressLayout.visibility = View.GONE
-                binding.showAddressLayout.visibility = View.GONE
+            activity?.firstName?.let {
+                firstName = it
             }
-        }
+            activity?.lastName?.let {
+                lastName = it
+            }
 
-        binding.addAddressLayout.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(AppConstant.mailing_address,mailingAddressModel)
-            findNavController().navigate(R.id.action_info_mailing_address)
-        }
+            if (firstName != null && lastName != null) {
+                binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
+            }
 
-        binding.showAddressLayout.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(AppConstant.mailing_address,mailingAddressModel)
-            findNavController().navigate(R.id.action_info_mailing_address,bundle)
-        }
+            setUpUI()
+            getDropDownData()
+            setUpCompleteViewForPlaces()
+            //initializeUSAstates()
 
-        return root
+            /*binding.checkboxIsMailingAddressDiff.setOnCheckedChangeListener { _, isChecked ->
+          if(isChecked){
+              binding.addAddressLayout.visibility = View.VISIBLE
+          } else {
+              binding.addAddressLayout.visibility = View.GONE
+              binding.showAddressLayout.visibility = View.GONE
+          }
+      } */
+
+            binding.checkboxIsMailingAddressDiff.setOnClickListener {
+                if (binding.checkboxIsMailingAddressDiff.isChecked) {
+                    if (mailingAddressModel != null)
+                        binding.showAddressLayout.visibility = View.VISIBLE
+                    else
+                        binding.addAddressLayout.visibility = View.VISIBLE
+                } else {
+                    binding.addAddressLayout.visibility = View.GONE
+                    binding.showAddressLayout.visibility = View.GONE
+                }
+            }
+
+            binding.addAddressLayout.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putParcelable(AppConstant.mailing_address, mailingAddressModel)
+                findNavController().navigate(R.id.action_info_mailing_address)
+            }
+
+            binding.showAddressLayout.setOnClickListener {
+                val bundle = Bundle()
+                bundle.putParcelable(AppConstant.mailing_address, mailingAddressModel)
+                findNavController().navigate(R.id.action_info_mailing_address, bundle)
+            }
+            savedViewInstance
+        }
     }
 
     private fun setData(counter : Int){
@@ -149,7 +155,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             try {
                 if (arguments != null) {
                     currentAddressDetail = arguments?.getParcelable(AppConstant.current_address)!!
-                    Log.e("Current Fragment","$currentAddressDetail")
+                    //Log.e("Current Fragment","$currentAddressDetail")
                     currentAddressDetail.id?.let  { id->
                         addressId = id  // set this id if present in get api other wise send null
                     }
@@ -203,7 +209,13 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         }
                     }
                     currentAddressDetail.monthlyRent?.let {
-                        binding.etMonthlyRent.setText(it.toString())
+                        //binding.etMonthlyRent.setText(it.toString())
+                        if(it > 0) {
+                            val value: String = numberFormatter.format(Math.round(it))
+                            binding.etMonthlyRent.setText(value)
+                            binding.etMonthlyRent.visibility = View.VISIBLE
+                            setColor(binding.monthlyRentLayout)
+                        }
                     }
                     currentAddressDetail.isMailingAddressDifferent?.let {
                         if(it == true){
@@ -227,7 +239,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                 }
 
             } catch (e: Exception){
-                Log.e("EXception",e.toString())
+                //Log.e("EXception",e.toString())
             }
         }
     }
@@ -309,14 +321,14 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         )
                         binding.countryCompleteTextView.setAdapter(countryAdapter)
 
-                        binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
+                        /*binding.countryCompleteTextView.setOnFocusChangeListener { _, _ ->
                             binding.countryCompleteTextView.showDropDown()
                             HideSoftkeyboard.hide(requireActivity(), binding.countryCompleteLayout)
                         }
                         binding.countryCompleteTextView.setOnClickListener {
                             binding.countryCompleteTextView.showDropDown()
                             HideSoftkeyboard.hide(requireActivity(), binding.countryCompleteLayout)
-                        }
+                        } */
 
                         binding.countryCompleteTextView.onItemClickListener =
                             object : AdapterView.OnItemClickListener {
@@ -356,6 +368,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         )
                         binding.countyEditText.setAdapter(countyAdapter)
 
+                        /*
                         binding.countyEditText.setOnFocusChangeListener { _, _ ->
                             binding.countyEditText.showDropDown()
                             HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
@@ -364,7 +377,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         binding.countyEditText.setOnClickListener {
                             binding.countyEditText.showDropDown()
                             HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
-                        }
+                        } */
 
                         binding.countyEditText.onItemClickListener =
                             object : AdapterView.OnItemClickListener {
@@ -428,16 +441,43 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
     }
 
-     override fun onResume() {
+    override fun onResume(){
          super.onResume()
-         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressModel>(
+         /*findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressModel>(
              AppConstant.mailing_address)?.observe(viewLifecycleOwner) { result ->
              mailingAddressModel = result
              displayAddress(result)
              binding.addAddressLayout.visibility = View.GONE
              binding.showAddressLayout.visibility = View.VISIBLE
              binding.checkboxIsMailingAddressDiff.isChecked = true
-         }
+
+             SandbarUtils.showSuccess(requireActivity(), getString(R.string.mailing_address_added))
+         } */
+
+
+        // observe previous add
+        viewModel.mailingAddress.observe(viewLifecycleOwner, { result ->
+            result?.let {
+                mailingAddressModel = result
+                displayAddress(result)
+                binding.addAddressLayout.visibility = View.GONE
+                binding.showAddressLayout.visibility = View.VISIBLE
+                binding.checkboxIsMailingAddressDiff.isChecked = true
+                SandbarUtils.showSuccess(requireActivity(), getString(R.string.mailing_address_added))
+                viewModel.emptyMailingAddress()
+            }
+        })
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Boolean>(
+            AppConstant.delete_mailing_address)?.observe(viewLifecycleOwner) { result ->
+            if(result) {
+                mailingAddressModel = null
+                binding.addAddressLayout.visibility = View.VISIBLE
+                binding.showAddressLayout.visibility = View.GONE
+                binding.checkboxIsMailingAddressDiff.isChecked = false
+            }
+        }
+
      }
 
     private fun displayAddress(it: AddressModel){
@@ -464,6 +504,10 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     private fun setUpUI(){
+
+        binding.etMonthlyRent.addTextChangedListener(NumberTextFormat(binding.etMonthlyRent))
+        CustomMaterialFields.setDollarPrefix(binding.monthlyRentLayout, requireContext())
+
 
         binding.moveInEditText.setOnClickListener {
             createCustomDialog()
@@ -510,7 +554,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         binding.stateCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.stateCompleteTextView.showDropDown()
+                //binding.stateCompleteTextView.showDropDown()
                 binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
                 CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
 
@@ -529,7 +573,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         binding.countryCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.countryCompleteTextView.showDropDown()
+                //binding.countryCompleteTextView.showDropDown()
                 binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
 
@@ -684,8 +728,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     mailingAddressModel = null
                 }
 
-                var monthlyRent = binding.etMonthlyRent.text.toString()
-                monthlyRent = if (monthlyRent.length > 0) monthlyRent else "0"
+                var monthlyRent = binding.etMonthlyRent.text.toString().trim()
+                monthlyRent = if (monthlyRent.length > 0) monthlyRent.replace(",".toRegex(), "") else "0"
+
 
                 currentAddressModel = AddressModel(   // current address
                     street = street,
@@ -703,7 +748,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
                 var reverseDateFormat = "01/" + moveInDate
                 var newDate = AppSetting.reverseDateFormat(reverseDateFormat)
-
 
                 currentAddressDetail = CurrentAddress(
                     loanApplicationId = loanApplicationId,
@@ -723,7 +767,9 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                     currentAddressDetail
                 )
                 findNavController().popBackStack()
-            } catch (e : Exception){}
+            } catch (e : Exception){
+                //Log.e("Current Address Exception",e.toString())
+            }
         }
 
     }
@@ -840,12 +886,12 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
-                    Log.e(TAG, prediction.placeId)
+                    //Log.e(TAG, prediction.placeId)
 
                     response.autocompletePredictions
 
                     predicationList.add(prediction.getFullText(null).toString())
-                    Log.e(TAG, prediction.getFullText(null).toString())
+                    //Log.e(TAG, prediction.getFullText(null).toString())
 
 
                 }
@@ -853,11 +899,11 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {
-                    Log.e(TAG, "Place not found: " + exception.statusCode)
+                   // Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
 
-        Log.e("predicationList", predicationList.size.toString())
+        //Log.e("predicationList", predicationList.size.toString())
 
 
         //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))

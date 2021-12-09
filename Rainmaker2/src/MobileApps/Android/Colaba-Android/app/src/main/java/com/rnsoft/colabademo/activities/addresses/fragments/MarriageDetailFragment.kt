@@ -129,9 +129,10 @@ class MarriageDetailFragment : BaseFragment() {
                 if(ownTypeId == 2){
                     //maritalStatus?.spouseBorrowerId?.let { spouseBorrowerId->
                      Log.e("SetData",""+ownTypeId)
-                    Log.e("MarriageType",""+marriage_type)
+                     Log.e("MarriageType",""+marriage_type)
                      if(maritalStatus?.spouseBorrowerId ==0  || maritalStatus?.spouseBorrowerId == null){
                          binding.layoutCoborrower.visibility = View.GONE
+                         binding.layoutQuestion.visibility = View.GONE
                          binding.spouseInfoLayout.visibility = View.VISIBLE
 
                          if (marriage_type.equals(AppConstant.married)){
@@ -144,9 +145,10 @@ class MarriageDetailFragment : BaseFragment() {
                                 binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
                                 binding.layoutLastName.hint = "Legal Spouse Last Name"
                          }
-                     } else if(maritalStatus?.spouseBorrowerId != 0  || maritalStatus?.spouseBorrowerId != null){
+                     }
+                     else if(maritalStatus?.spouseBorrowerId != 0  || maritalStatus?.spouseBorrowerId != null){
+                         Log.e("If-Else","True")
                             // co borrower and primary borrower relationship
-                                Log.e()
                             if(maritalStatus?.relationWithPrimaryId !=0 && maritalStatus?.relationWithPrimaryId !=null )
                                  maritalStatus?.spouseBorrowerId?.let{
                                  Log.e("scondtion ","matched")
@@ -173,14 +175,17 @@ class MarriageDetailFragment : BaseFragment() {
 
                                                          binding.etSpouseFirstName.setText(fname)
                                                          binding.etSpouseFirstName.isEnabled = false
+                                                         binding.etSpouseMiddleName.isEnabled = false
+                                                         binding.etSpouseLastName.isEnabled = false
+                                                         CustomMaterialFields.setColor(binding.layoutSpouseFirstName, R.color.grey_color_two, requireActivity())
                                                      }
                                                      list.get(i).middleName?.let { mname->
                                                          binding.etSpouseMiddleName.setText(mname)
-                                                         binding.etSpouseMiddleName.isEnabled = false
+                                                         CustomMaterialFields.setColor(binding.layoutSpouseMiddleName, R.color.grey_color_two, requireActivity())
                                                      }
                                                      list.get(i).lastName?.let { lname->
                                                          binding.etSpouseLastName.setText(lname)
-                                                         binding.etSpouseLastName.isEnabled = false
+                                                         CustomMaterialFields.setColor(binding.layoutSpouseLastName, R.color.grey_color_two, requireActivity())
                                                      }
                                                      break
                                                  }
@@ -191,9 +196,11 @@ class MarriageDetailFragment : BaseFragment() {
 
 
                      }
+                     else {
+                         //Log.e("Else","unexpected")
 
+                     }
 
-                   // }
                 }
 
 
@@ -222,11 +229,7 @@ class MarriageDetailFragment : BaseFragment() {
                             if (fName !=null && fName !="null" && lName !=null && lName !="null") {
                                 itemList.add(list.get(item).firstName + " " + list.get(item).lastName)
                                 coborrowerList.add(
-                                    CoborrowerList(
-                                        list.get(item).borrowerId,
-                                        list.get(item).owntypeId,
-                                        firstName!!,
-                                        lName!!
+                                    CoborrowerList(list.get(item).borrowerId, list.get(item).owntypeId, fName!!, lName!!
                                     )
                                 )
                             }
@@ -276,6 +279,10 @@ class MarriageDetailFragment : BaseFragment() {
         }
 
         if(binding.spouseInfoLayout.isVisible){
+            isDataEntered = true
+        }
+
+        if(binding.primaryRelationInfoLayout.isVisible){
             isDataEntered = true
         }
 
@@ -340,9 +347,9 @@ class MarriageDetailFragment : BaseFragment() {
     }
 
     private fun initViews(){
-        binding.etFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required)))
-        binding.etMiddleName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMiddleName, binding.layoutMiddleName, requireContext(),getString(R.string.error_field_required)))
-        binding.etLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required)))
+        binding.etFirstName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etFirstName, binding.layoutFirstName, requireContext()))
+        binding.etMiddleName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMiddleName, binding.layoutMiddleName, requireContext()))
+        binding.etLastName.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etLastName, binding.layoutLastName, requireContext()))
 
         binding.btnSave.setOnClickListener{
             saveData()

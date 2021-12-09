@@ -95,7 +95,7 @@
             android:textColor="@color/grey_color_two"
             android:fontFamily="@font/rubik_regular"
             android:textSize="13sp"
-            android:lineSpacingExtra="10dp" />
+            android:lineSpacingExtra="5dp" />
 
         <TextView
             android:id="@+id/res_national_guard_ans"

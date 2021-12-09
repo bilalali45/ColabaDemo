@@ -559,7 +559,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/rubik_medium"
-                        android:text="Add Current Residence"
+                        android:text="@string/add_previous_address"
+                        android:textStyle="bold"
                         android:textAlignment="center"
                         android:textColor="@color/colaba_apptheme_blue"
                         android:textSize="13sp" />
@@ -662,6 +663,7 @@
                         android:fontFamily="@font/rubik_regular"
                         android:inputType="numberPassword"
                         android:paddingStart="0dp"
+                        android:maxLength="11"
                         android:singleLine="true"
                         android:digits="1234567890-"
                         android:textColor="@color/grey_color_one"

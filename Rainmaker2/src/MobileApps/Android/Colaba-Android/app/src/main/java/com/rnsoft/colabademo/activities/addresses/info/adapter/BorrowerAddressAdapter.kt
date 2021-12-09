@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.activities.addresses.info.AddressClickListener
 import com.rnsoft.colabademo.databinding.ResidenceItemBinding
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 /**
@@ -18,6 +19,7 @@ class BorrowerAddressAdapter(var context: Context) :
     RecyclerView.Adapter<BorrowerAddressAdapter.AddressViewHolder>() {
 
     var address: List<PreviousAddresses> = arrayListOf()
+    val numberFormatter =  DecimalFormat("#,###,###")
    /* private var clickEvent: AddressClickListener = clickListner
 
     init {
@@ -87,7 +89,8 @@ class BorrowerAddressAdapter(var context: Context) :
 
             address.monthlyRent?.let {
                 if(it > 0) {
-                    binding.tvHomerent.text = "Rental $".plus(Math.round(it).toString())
+                    val value: String = numberFormatter.format(Math.round(it))
+                    binding.tvHomerent.text = "Rental $".plus(value)
                     binding.tvHomerent.visibility = View.VISIBLE
                 }
             }

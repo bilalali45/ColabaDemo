@@ -56,7 +56,7 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, View.OnClickListener, AddressClickListener {
 
-    val format =  DecimalFormat("#,###,###")
+    val numberFormatter =  DecimalFormat("#,###,###")
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val viewModel : PrimaryBorrowerViewModel by activityViewModels()
@@ -141,6 +141,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     bindingMilitary.tvQues.text = "Was ".plus(name) + " ever activated during their tour of duty?"
                 }
             }
+
+            adapter = BorrowerAddressAdapter(requireActivity())
 
             setData()
 
@@ -449,7 +451,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = if(listAddress.size > 0) listAddress else null,borrowerCitizenship = citizenshipForApi,
                     maritalStatus = maritalStatus, militaryServiceDetails = militaryServiceDetail)
 
-                Log.e("AddResponseBody","$responseBody")
+                //Log.e("AddResponseBody","$responseBody")
                 viewModel.addUpdateBorrowerInfo(authToken,responseBody)
 
             /* empty parameter validation
@@ -472,106 +474,198 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 setCurrentAddressDetails(result)
         }
 
+        // observe previous add
+        viewModel.updatedAddress.observe(viewLifecycleOwner, { result ->
+          //Log.e("Frag Info onResume","observedAddress")
+
+            result?.let {
+
+                //Log.e("result","found")
+                try {
+                    val listPosition = it.position
+                    //Log.e("listAdd size", "" + listAddress.size)
+                   // Log.e("position", "" + listPosition)
+
+                    if (listAddress.size > 0){
+
+                        if(listPosition!! < listAddress.size ){
+                            listAddress.removeAt(listPosition!!)
+                        }
+
+                        var fromDate: String? = null
+                        result.fromDate?.let {
+                            if (it.length > 0)
+                                fromDate = AppSetting.reverseDateFormat(it)
+                        }
+                        var toDate: String? = null
+                        result.toDate?.let {
+                            if (it.length > 0)
+                                toDate = AppSetting.reverseDateFormat(it)
+                        }
+
+                        //val toDate = if(result.toDate != null) result.toDate else null
+                        val prevId = if (result.id != null) result.id else null
+                        val housingStatus =
+                            if (result.housingStatusId != null) result.housingStatusId else null
+                        val rent = if (result.monthlyRent != null) result.monthlyRent else null
+                        var prevAddressModel: AddressModel? = null
+                        result.addressModel?.let { model ->
+                            prevAddressModel = model
+                        }
+
+                       // Log.e("listAdd  modified item", "" + listAddress)
+
+
+                        listAddress.add(
+                            listPosition!!,
+                            PreviousAddresses(
+                                id = prevId,
+                                housingStatusId = housingStatus,
+                                monthlyRent = rent,
+                                fromDate = fromDate,
+                                toDate = toDate,
+                                addressModel = prevAddressModel
+                            )
+                        )
+                        adapter.setTaskList(listAddress)
+                        viewModel.emptyAddress()
+                    } // if
+
+                    else {
+
+                       // Log.e("address is ","null-true")
+                        var fromDate: String? = null
+                        result.fromDate?.let {
+                            if (it.length > 0)
+                                fromDate = AppSetting.reverseDateFormat(it)
+                        }
+                        var toDate: String? = null
+                        result.toDate?.let {
+                            if (it.length > 0)
+                                toDate = AppSetting.reverseDateFormat(it)
+                        }
+
+                        //val toDate = if(result.toDate != null) result.toDate else null
+                        val prevId = if (result.id != null) result.id else null
+                        val housingStatus =
+                            if (result.housingStatusId != null) result.housingStatusId else null
+                        val rent = if (result.monthlyRent != null) result.monthlyRent else null
+                        var prevAddressModel: AddressModel? = null
+                        result.addressModel?.let { model ->
+                            prevAddressModel = model
+                        }
+
+                       // Log.e("listAdd  add new ", "" + listAddress)
+                        listAddress.add(listPosition!!,
+                            PreviousAddresses(id = prevId, housingStatusId = housingStatus, monthlyRent = rent, fromDate = fromDate, toDate = toDate, addressModel = prevAddressModel))
+                        setResidence()
+                        viewModel.emptyAddress()
+                    }
+                }
+                catch (e:Exception){
+                    //Log.e("prev add exception",e.toString())
+                }
+            }
+
+        })
+
         // previous address
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<PreviousAddresses>(AppConstant.previous_address)?.observe(
             viewLifecycleOwner) { result ->
+            //Log.e("Previous address receive","true")
             result?.let {
+
                 try {
                     val listPosition = it.position
-                    //Log.e("listAdd size",""+listAddress.size )
-                    //Log.e("delete posi",""+ listPosition )
-                    listAddress.removeAt(listPosition!!)
+                    //Log.e("listAdd size", "" + listAddress.size)
+                   // Log.e("position", "" + listPosition)
 
-                    //var currentAddressFromDate = "11/1950"
-                    //var newDate = AppSetting.reverseDateFormat(currentAddressFromDate)
-                    //Log.e("NewDate",newDate)
+                    if (listAddress.size > 0) {
 
-                    var fromDate : String? = null
-                    result.fromDate?.let{
-                        if(it.length > 0)
-                           fromDate = AppSetting.reverseDateFormat(it)
+                        if(listAddress.size < listPosition!!) {
+                            listAddress.removeAt(listPosition!!)
+                        }
+
+                        var fromDate: String? = null
+                        result.fromDate?.let {
+                            if (it.length > 0)
+                                fromDate = AppSetting.reverseDateFormat(it)
+                        }
+                        var toDate: String? = null
+                        result.toDate?.let {
+                            if (it.length > 0)
+                                toDate = AppSetting.reverseDateFormat(it)
+                        }
+
+                        //val toDate = if(result.toDate != null) result.toDate else null
+                        val prevId = if (result.id != null) result.id else null
+                        val housingStatus =
+                            if (result.housingStatusId != null) result.housingStatusId else null
+                        val rent = if (result.monthlyRent != null) result.monthlyRent else null
+                        var prevAddressModel: AddressModel? = null
+                        result.addressModel?.let { model ->
+                            prevAddressModel = model
+                        }
+
+                        Log.e("listAdd  modified item", "" + listAddress)
+
+
+                        listAddress.add(
+                            listPosition!!,
+                            PreviousAddresses(
+                                id = prevId,
+                                housingStatusId = housingStatus,
+                                monthlyRent = rent,
+                                fromDate = fromDate,
+                                toDate = toDate,
+                                addressModel = prevAddressModel
+                            )
+                        )
+                        adapter.setTaskList(listAddress)
+                    } // if
+
+                    else {
+                        var fromDate: String? = null
+                        result.fromDate?.let {
+                            if (it.length > 0)
+                                fromDate = AppSetting.reverseDateFormat(it)
+                        }
+                        var toDate: String? = null
+                        result.toDate?.let {
+                            if (it.length > 0)
+                                toDate = AppSetting.reverseDateFormat(it)
+                        }
+
+                        //val toDate = if(result.toDate != null) result.toDate else null
+                        val prevId = if (result.id != null) result.id else null
+                        val housingStatus =
+                            if (result.housingStatusId != null) result.housingStatusId else null
+                        val rent = if (result.monthlyRent != null) result.monthlyRent else null
+                        var prevAddressModel: AddressModel? = null
+                        result.addressModel?.let { model ->
+                            prevAddressModel = model
+                        }
+
+                        Log.e("listAdd  add new ", "" + listAddress)
+                        listAddress.add(listPosition!!,
+                            PreviousAddresses(id = prevId, housingStatusId = housingStatus, monthlyRent = rent, fromDate = fromDate, toDate = toDate, addressModel = prevAddressModel))
+                        setResidence()
+
+
+
+
                     }
-
-                    var toDate : String? = null
-                    result.toDate?.let{
-                        if(it.length >0)
-                            toDate = AppSetting.reverseDateFormat(it)
-                    }
-
-
-                    //val toDate = if(result.toDate != null) result.toDate else null
-                    val prevId = if(result.id != null) result.id else null
-                    val housingStatus= if(result.housingStatusId !=null) result.housingStatusId else null
-                    val rent = if(result.monthlyRent !=null) result.monthlyRent else null
-                    var prevAddressModel : AddressModel? = null
-                    result.addressModel?.let{ model->
-                        prevAddressModel = model
-                    }
-                    //val desc = address.street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-                    listAddress.add(listPosition,
-                        PreviousAddresses(id=prevId, housingStatusId = housingStatus,monthlyRent = rent, fromDate=fromDate,toDate=toDate,
-                            addressModel = prevAddressModel))
-
-                           //Log.e( "listAdd  new",""+listAddress)
-
-                    adapter.setTaskList(listAddress)
-                    bi.recyclerview.setAdapter(adapter)
-
-                } catch (e:Exception){
-                    //Log.e("prev add exception","add")
                 }
-         }
-        }
-
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<PreviousAddresses>(AppConstant.add_previous_address)?.observe(
-            viewLifecycleOwner) { result ->
-            result?.let {
-                try {
-                    val listPosition = it.position
-                    //Log.e("listAdd size",""+listAddress.size )
-                    //Log.e("delete posi",""+ listPosition )
-                    var fromDate : String? = null
-                    result.fromDate?.let{
-                        if(it.length >0)
-                            fromDate = AppSetting.reverseDateFormat(it)
-                    }
-
-                    var toDate : String? = null
-                    result.toDate?.let{
-                        if(it.length >0)
-                            toDate = AppSetting.reverseDateFormat(it)
-                    }
-
-                    val prevId = if(result.id != null) result.id else null
-                    val housingStatus= if(result.housingStatusId !=null) result.housingStatusId else null
-                    val rent = if(result.monthlyRent !=null) result.monthlyRent else null
-                    var prevAddressModel : AddressModel? = null
-                    result.addressModel?.let{ model->
-                        prevAddressModel = model
-                    }
-                    //val desc = address.street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-                    listAddress.add(listPosition!!,
-                        PreviousAddresses(id=prevId, housingStatusId = housingStatus,monthlyRent = rent, fromDate=fromDate,toDate=toDate,
-                            addressModel = prevAddressModel))
-
-                    Log.e( "listAdd  new",""+listAddress )
-
-                    adapter.setTaskList(listAddress)
-                    //bi.recyclerview.setAdapter(adapter)
-                } catch (e:Exception){
-                    Log.e("prev add exception","add")
+                 catch (e:Exception){
+                    Log.e("prev add exception",e.toString())
                 }
-            }
+           }
         }
 
         // marital status
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<MaritalStatus>(AppConstant.marital_status)?.observe(
-            viewLifecycleOwner) { result ->
+            viewLifecycleOwner){ result ->
             setMaritalStatus(result)
-
-        /*maritalStatus?.let {
-                setMaritalStatus(it)
-            } */
         }
 
         // active duty
@@ -634,10 +728,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private fun setCurrentAddressDetails(currentAddress : CurrentAddress){
         try {
             currentAddressFullDetail = currentAddress
-
-            //val fromDate = if (currentAddress.fromDate != null && currentAddress.fromDate.length > 0) currentAddress.fromDate else ""
             currentAddress.addressModel?.let { address ->
-
                 currentAddressModel = address
                 if (address.street != null && address.city !=null){
                     bi.currentAddressLayout.visibility = View.VISIBLE
@@ -648,13 +739,14 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             bi.tvResidenceDate.text = "From ".plus(AppSetting.getMonthAndYearValue(it))
                     }
 
-
                     currentAddress.monthlyRent?.let {
-                        if (it > 0) {
-                            //var newValue = Math.round(it).toString()
-                            bi.textviewRent.text = "Rental $".plus(Math.round(it).toString())
-                            bi.textviewRent.visibility = View.VISIBLE
-                        }
+                        try {
+                            if (it > 0) {
+                                val value: String = numberFormatter.format(Math.round(it))
+                                bi.textviewRent.text = "Rental $".plus(value)
+                                bi.textviewRent.visibility = View.VISIBLE
+                            }
+                        } catch(e:Exception){}
                     }
                     bi.tvResidence.setText(requireContext().getString(R.string.add_previous_address))
             }
@@ -954,10 +1046,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
         // set btn text
+        Log.e("SetResidence","True")
 
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
-        adapter = BorrowerAddressAdapter(requireActivity())
+
         adapter.setTaskList(listAddress)
         bi.recyclerview.setAdapter(adapter)
 
@@ -984,7 +1077,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                     val bundle = Bundle()
                     bundle.putInt("position",position)
-                    bundle.putString("type","update_previous")
+                    //bundle.putString("type","idontknow")
                     selectedPosition = position
                     bundle.putParcelable(AppConstant.previous_address,listAddress.get(position))
                     //Log.e("Prevaddress",""+listAddress.get(position))

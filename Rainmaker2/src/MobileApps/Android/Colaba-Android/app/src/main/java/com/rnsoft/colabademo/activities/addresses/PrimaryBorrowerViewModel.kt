@@ -45,6 +45,31 @@ class PrimaryBorrowerViewModel @Inject constructor(
     private val _addUpdateDeleteResponse: MutableLiveData<AddUpdateDataResponse> = MutableLiveData()
     val addUpdateDeleteResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDeleteResponse
 
+    private val _updatedAddress : MutableLiveData<PreviousAddresses?> = MutableLiveData()
+    val updatedAddress : LiveData<PreviousAddresses?> get() = _updatedAddress
+
+    private val _mailingAddress : MutableLiveData<AddressModel?> = MutableLiveData()
+    val mailingAddress : LiveData<AddressModel?> get() = _mailingAddress
+
+
+    fun savePreviousAddress(address: PreviousAddresses) {
+        _updatedAddress.postValue(address)
+    }
+
+    fun saveMailingAddress(address: AddressModel) {
+        _mailingAddress.postValue(address)
+    }
+
+    fun emptyMailingAddress(){
+        _mailingAddress.value = null
+        _mailingAddress.postValue( null)
+    }
+
+    fun emptyAddress(){
+        _updatedAddress.value = null
+        _updatedAddress.postValue( null)
+    }
+
     suspend fun deletePreviousAddress(token: String, loanApplicationId: Int,id: Int){
         //Log.e("delete Address","loan id "+ loanApplicationId+"Id " + id)
         viewModelScope.launch(Dispatchers.IO) {

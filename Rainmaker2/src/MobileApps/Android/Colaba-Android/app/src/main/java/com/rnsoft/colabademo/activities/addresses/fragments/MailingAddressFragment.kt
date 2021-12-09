@@ -58,6 +58,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     private val viewModel : RealEstateViewModel by activityViewModels()
     var firstName : String? = null
     var lastName : String? = null
+    private val primaryInfoViewModel : PrimaryBorrowerViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -102,18 +103,17 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             //findNavController().popBackStack()
         }
 
-        binding.delImageview.setOnClickListener {
-            val message = "Are you sure you want to delete Richard's Mailing Address?"
-            AddressNotSavingDialogFragment.newInstance(message).show(
-                childFragmentManager,
-                AddressNotSavingDialogFragment::class.java.canonicalName
-            )
+        binding.btnDeleteMailingAddress.setOnClickListener {
+            var message = "Are you sure you want to delete Mailing Address?"
+            if(firstName != null) {
+                message = "Are you sure you want to delete ".plus(firstName).plus("'s Mailing Address?")
+            }
+            DeleteMailingAddressDailog.newInstance(message).show(childFragmentManager, DeleteMailingAddressDailog::class.java.canonicalName)
         }
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-
         return root
     }
 
@@ -153,7 +153,6 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
              }
             } catch (e: Exception){}
         }
-
 
     private fun getDropDownData(){
         lifecycleScope.launchWhenStarted {
@@ -592,12 +591,12 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response: FindAutocompletePredictionsResponse ->
                 for (prediction in response.autocompletePredictions) {
-                    Log.e(TAG, prediction.placeId)
+                    //Log.e(TAG, prediction.placeId)
 
                     response.autocompletePredictions
 
                     predicationList.add(prediction.getFullText(null).toString())
-                    Log.e(TAG, prediction.getFullText(null).toString())
+                   // Log.e(TAG, prediction.getFullText(null).toString())
 
 
                 }
@@ -605,11 +604,11 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
             }.addOnFailureListener { exception: Exception? ->
                 if (exception is ApiException) {
-                    Log.e(TAG, "Place not found: " + exception.statusCode)
+                    //Log.e(TAG, "Place not found: " + exception.statusCode)
                 }
             }
 
-        Log.e("predicationList", predicationList.size.toString())
+        //Log.e("predicationList", predicationList.size.toString())
 
 
         //var al2: ArrayList<String> = ArrayList<String>(predicationList.subList(1, 4))
@@ -764,8 +763,9 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                 countryId = countryId,
                 zipCode = zipCode)
 
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.mailing_address, mailingAddressModel)
-            findNavController().popBackStack()
+               primaryInfoViewModel.saveMailingAddress(mailingAddressModel!!)
+                //findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.mailing_address, mailingAddressModel)
+               findNavController().popBackStack()
         }
     }
 
@@ -804,6 +804,15 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onNotSavingAddressEvent(event: NotSavingAddressEvent) {
         if (event.boolean) {
+            findNavController().popBackStack()
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMailingAddressDelete(event: MailingAddressDeleteEVent){
+        if(event.boolean){
+            //Log.e("MailingAddressEvent","Received")
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.delete_mailing_address,true)
             findNavController().popBackStack()
         }
     }

@@ -30,7 +30,6 @@ import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRe
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentResidenceDialogFragment
 import com.rnsoft.colabademo.activities.addresses.info.fragment.DeletePreviousAddressDailog
 import com.rnsoft.colabademo.activities.addresses.info.fragment.PreviousAddressDeleteEvent
 import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
@@ -38,6 +37,7 @@ import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.databinding.PreviousResidenceLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.gifts_asset_layout.*
 import kotlinx.coroutines.coroutineScope
@@ -46,6 +46,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import java.io.IOException
+import java.text.DecimalFormat
 import java.util.*
 import javax.inject.Inject
 
@@ -76,8 +77,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     private var previousAddressModel : AddressModel? = null
     var firstName : String? = null
     var lastName : String? = null
-    var addressType : String? = null
-    //var borrowerName : String? = null
+    val numberFormatter =  DecimalFormat("#,###,###")
 
 
     override fun onCreateView(
@@ -165,8 +165,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             try {
                 if(arguments != null) {
                     addressPosition = arguments?.getInt("position")!!
-                    addressType = arguments?.getString("type")
-                    if(addressType == "update_previous") {
+                    //addressType = arguments?.getString("type")
+                   // if(addressType == "update_previous"){
                         previousAddressDetail =
                             arguments?.getParcelable(AppConstant.previous_address)!!
                         if (previousAddressDetail != null) {
@@ -239,14 +239,22 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                                             false
                                         )
                                         setColor(binding.housingLayout)
+                                        showHideRentField()
                                         break
                                     }
                                 }
                             }
 
+                            previousAddressDetail?.monthlyRent?.let {
+                                //binding.etMonthlyRent.setText(it.toString())
+                                if(it > 0) {
+                                    val value: String = numberFormatter.format(Math.round(it))
+                                    binding.monthlyRentEditText.setText(value)
+                                    binding.monthlyRentEditText.visibility = View.VISIBLE
+                                    setColor(binding.monthlyRentLayout)
+                                }
+                            }
                         }
-                    }
-
                 }
 
             } catch (e:Exception){
@@ -377,12 +385,12 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                             binding.countyEditText.setAdapter(countyAdapter)
 
                             binding.countyEditText.setOnFocusChangeListener { _, _ ->
-                                binding.countyEditText.showDropDown()
+                                //binding.countyEditText.showDropDown()
                                 HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
                             }
 
                             binding.countyEditText.setOnClickListener {
-                                binding.countyEditText.showDropDown()
+                                //binding.countyEditText.showDropDown()
                                 HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
                             }
 
@@ -395,16 +403,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                                         id: Long
                                     ) {
                                         binding.countyLayout.defaultHintTextColor =
-                                            ColorStateList.valueOf(
-                                                ContextCompat.getColor(
-                                                    requireContext(),
-                                                    R.color.grey_color_two
-                                                )
-                                            )
-                                        HideSoftkeyboard.hide(
-                                            requireActivity(),
-                                            binding.countyLayout
-                                        )
+                                            ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
+                                        HideSoftkeyboard.hide(requireActivity(), binding.countyLayout)
                                     }
                                 }
                         }
@@ -471,6 +471,10 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     }
 
     private fun setUpUI() {
+
+        binding.monthlyRentEditText.addTextChangedListener(NumberTextFormat(binding.monthlyRentEditText))
+        CustomMaterialFields.setDollarPrefix(binding.monthlyRentLayout, requireContext())
+
 
         binding.topSearchAutoTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
@@ -587,13 +591,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
-        binding.cityEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.cityEditText,
-                binding.cityLayout,
-                requireContext()
-            )
-        )
+        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
+
         binding.streetAddressEditText.setOnFocusChangeListener(
             CustomFocusListenerForEditText(
                 binding.streetAddressEditText,
@@ -618,12 +617,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             )
         )
         binding.monthlyRentEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.monthlyRentEditText,
-                binding.monthlyRentLayout,
-                requireContext()
-            )
-        )
+            CustomFocusListenerForEditText(binding.monthlyRentEditText,binding.monthlyRentLayout, requireContext()))
         //binding.housingEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.housingEditText, binding.housingLayout, requireContext()))
         //binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
         CustomMaterialFields.onTextChangedLableColor(
@@ -852,7 +846,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             val toDate = if(moveOutDate.length > 0 ) "01/"+moveOutDate else null
 
             var monthlyRent = binding.monthlyRentEditText.text.toString()
-            monthlyRent = if(monthlyRent.length > 0) monthlyRent else "0.0"
+            monthlyRent = if(monthlyRent.length > 0) monthlyRent.replace(",".toRegex(), "") else "0"
 
             previousAddressModel = AddressModel(   // current address
                 street = street,
@@ -866,7 +860,6 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 countryId = countryId,
                 zipCode = zipCode)
 
-
             previousAddressDetail = PreviousAddresses(
                 position = addressPosition,
                 id = addressId,
@@ -878,24 +871,16 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 //mailingAddressModel = mailingAddressModel,
                 monthlyRent = monthlyRent.toDouble())
 
-            Log.e("PreviousDetail","$previousAddressDetail")
-            if(addressType == "update_previous") {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                    AppConstant.previous_address,
-                    previousAddressDetail
-                )
-                findNavController().popBackStack()
-            } else {
+            //Log.e("PreviousDetail","$previousAddressDetail")
 
-                if(addressType == "add_new") {
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                        AppConstant.add_previous_address,
-                        previousAddressDetail
-                    )
-                    findNavController().popBackStack()
-                }
+            viewModel.savePreviousAddress(previousAddressDetail!!)
+            findNavController().popBackStack()
 
-            }
+            /*
+                 //findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.previous_address, previousAddressDetail)
+                //findNavController().popBackStack()
+
+            */
         }
     }
 
