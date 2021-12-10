@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import java.util.regex.Pattern
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -236,19 +235,30 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
        })
         */
 
-        binding.searchEdittext.doOnTextChanged { text, start, before, count ->
-            if(count>1) {
+        binding.searchEdittext.doAfterTextChanged {
+            if(it?.length!! >2) {
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        viewModel.searchByBorrowerContact(authToken, text.toString())
+                        viewModel.searchByBorrowerContact(authToken, it.toString())
                     }
                 }
             }
+            else{
+                searchList = arrayListOf()
+                adapter.showResult(searchList, binding.searchEdittext.text.toString())
+                binding.recyclerviewContacts.adapter = adapter
+                binding.layoutFindContact.visibility = View.VISIBLE
+                binding.recyclerviewContacts.visibility = View.INVISIBLE
+                binding.layoutEditText.setBackgroundResource(R.drawable.edittext_search_contact_style)
+            }
+
         }
+
+        //binding.searchEdittext.addTextChangedListener()
 
         viewModel.searchResultResponse.observe(viewLifecycleOwner, {
             searchList = it
-            adapter.showResult(searchList)
+            adapter.showResult(searchList, binding.searchEdittext.text.toString())
             binding.recyclerviewContacts.adapter = adapter
             binding.layoutFindContact.visibility = View.VISIBLE
             binding.recyclerviewContacts.visibility = View.VISIBLE
@@ -273,11 +283,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
         viewModel.lookUpBorrowerContactResponse.observe(viewLifecycleOwner, {
-            Timber.e("Atleast in look up observer....")
+            Timber.e("At least in look up observer....")
             if(it.code == "200" || it.status.equals("OK", true)) {
-                Timber.e("Atleast code is = 200....")
+                Timber.e("At least code is = 200....")
                 if (it.borrowerData != null) {
-                    Timber.e("Atleast borrowerData is not null....")
+                    Timber.e("At least borrowerData is not null....")
                     BottomEmailPhoneErrorFragment.newInstance(
                         emailParam = it.borrowerData.emailAddress,
                         phoneParam = it.borrowerData.mobileNumber,
@@ -311,14 +321,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             AssignBorrowerBottomDialogFragment.newInstance(this@StartNewApplicationFragment).show(childFragmentManager, AssignBorrowerBottomDialogFragment::class.java.canonicalName)
         }
 
-        // Pre-call Loan officer service..
-        /*
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                viewModel.getMcusByRoleId(authToken, filterLoanOfficer = true)
-            }
-        }
-         */
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -417,17 +419,17 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     private fun startDetailActivity(createAppResponse: CreateNewApplicationResponse){
         val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
-        createAppResponse.createNewAppData?.let { createAppResponse->
-            borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, createAppResponse.loanApplicationId)
-            borrowerDetailIntent.putExtra(AppConstant.loanPurposeNumber, createAppResponse.loanPurpose)
-            if(createAppResponse.loanPurpose ==1)
+        createAppResponse.createNewAppData?.let { createResponse->
+            borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, createResponse.loanApplicationId)
+            borrowerDetailIntent.putExtra(AppConstant.loanPurposeNumber, createResponse.loanPurpose)
+            if(createResponse.loanPurpose ==1)
                 borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "Purchase")
             else
                 borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "Refinance")
-            borrowerDetailIntent.putExtra(AppConstant.firstName, createAppResponse.firstName)
-            borrowerDetailIntent.putExtra(AppConstant.lastName, createAppResponse.lastName)
-            borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, createAppResponse.mobileNumber)
-            borrowerDetailIntent.putExtra(AppConstant.bEmail, createAppResponse.emailAddress)
+            borrowerDetailIntent.putExtra(AppConstant.firstName, createResponse.firstName)
+            borrowerDetailIntent.putExtra(AppConstant.lastName, createResponse.lastName)
+            borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, createResponse.mobileNumber)
+            borrowerDetailIntent.putExtra(AppConstant.bEmail, createResponse.emailAddress)
         }
         startActivity(borrowerDetailIntent)
         requireActivity().finish()

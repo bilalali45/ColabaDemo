@@ -8,6 +8,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.runtime.sourceInformationMarkerEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.RecyclerviewClickListener
 import com.rnsoft.colabademo.SearchResultResponseItem
@@ -19,6 +20,8 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
 
     private var searchResultResponseItemList: List<SearchResultResponseItem> = arrayListOf()
     private var clickEvent: RecyclerviewClickListener = clickListner
+
+    private var searchKeyword = "richard"
 
     init {
         this.clickEvent = clickListner
@@ -47,43 +50,86 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contact: SearchResultResponseItem, position: Int) {
-            binding.contactName.text = contact.firstName
-            binding.contactEmail.text = contact.emailAddress
-            binding.contactNum.text = contact.mobileNumber
 
-            var search = "richard"
-            val searchMap: HashMap<String,List<String>> = HashMap()
-            val values : List<String> = binding.contactName.text.split(" ")
-            for (i in 0 until values.size) {
-                 val singleWord = values[i]
-                 if(singleWord.equals(search, ignoreCase = true)) {
-                     //searchMap.put("", values)
 
-                     for (j in 0 until values.size) {
-                         val sentence = values[j]
-                         val startIndex = sentence.indexOf(search, 0, true)
-                         val endIndex = startIndex + singleWord.length
-                         val str = SpannableStringBuilder(singleWord)
-                         if (startIndex >= 0) {
-                             str.setSpan(
-                                 StyleSpan(Typeface.BOLD),
-                                 startIndex,
-                                 endIndex,
-                                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                             )
-                         }
+            binding.contactName.text = (contact.firstName+" "+contact.lastName)
+            binding.contactNum.text = (contact.mobileNumber)
+            binding.contactEmail.text = (contact.emailAddress)
 
-                         //binding.contactName.text = str
-                     }
-                 }
+
+            var sentence = binding.contactName.text.toString()
+            var startIndex = sentence.indexOf(searchKeyword, 0, true)
+            var endIndex = startIndex + searchKeyword.length
+            var str = SpannableStringBuilder(sentence)
+            if (startIndex >= 0) {
+                str.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
             }
+            binding.contactName.text = str
+
+
+            sentence = binding.contactNum.text.toString()
+            startIndex = sentence.indexOf(searchKeyword, 0, true)
+            endIndex = startIndex + searchKeyword.length
+            str = SpannableStringBuilder(sentence)
+            if (startIndex >= 0) {
+                str.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            binding.contactNum.text = str
+
+
+
+            sentence = binding.contactEmail.text.toString()
+            startIndex = sentence.indexOf(searchKeyword, 0, true)
+            endIndex = startIndex + searchKeyword.length
+            str = SpannableStringBuilder(sentence)
+            if (startIndex >= 0) {
+                str.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            binding.contactEmail.text = str
 
         }
 
     }
 
+    private fun boldSearchKeyword(sentence:String):String{
+        if(sentence.isNullOrBlank() || sentence.isNullOrEmpty())
+            return sentence
+         else
+        {
+            val startIndex = sentence.indexOf(searchKeyword, 0, true)
+            val endIndex = startIndex + searchKeyword.length
+            val str = SpannableStringBuilder(sentence)
+            if (startIndex >= 0) {
+                str.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+            return str.toString()
+        }
+
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun showResult(contact: ArrayList<SearchResultResponseItem>) {
+    fun showResult(contact: ArrayList<SearchResultResponseItem> , searchKey:String) {
+        searchKeyword = searchKey
         this.searchResultResponseItemList = contact
         notifyDataSetChanged()
     }
