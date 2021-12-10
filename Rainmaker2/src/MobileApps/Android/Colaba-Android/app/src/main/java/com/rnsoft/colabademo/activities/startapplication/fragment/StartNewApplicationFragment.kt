@@ -98,28 +98,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.createContactBtn.setOnClickListener {
             isFindContactSelected = false
             findOrCreateContactClick()
-
-            if (binding.edFirstName.text.isNullOrBlank() || binding.edFirstName.text.isNullOrEmpty())
-                createNewApplicationParams.FirstName = null
-            else
-                createNewApplicationParams.FirstName = binding.edFirstName.text.toString()
-
-            if (binding.edLastName.text.isNullOrBlank() || binding.edLastName.text.isNullOrEmpty())
-                createNewApplicationParams.LastName = null
-            else
-                createNewApplicationParams.LastName = binding.edLastName.text.toString()
-
-            if (binding.edMobile.text.isNullOrBlank() || binding.edMobile.text.isNullOrEmpty())
-                createNewApplicationParams.MobileNumber = null
-            else
-                createNewApplicationParams.MobileNumber = binding.edMobile.text.toString()
-
-            if (binding.edEmail.text.isNullOrBlank() || binding.edEmail.text.isNullOrEmpty())
-                createNewApplicationParams.EmailAddress = null
-            else
-                createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
-
-            viewModel.setCreateNewParams(createNewApplicationParams)
+            resetCreateFieldsToInitialState()
         }
 
         binding.rgLoanPurpose.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
@@ -299,7 +278,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 Timber.e("Atleast code is = 200....")
                 if (it.borrowerData != null) {
                     Timber.e("Atleast borrowerData is not null....")
-                    BottomEmailPhoneErrorFragment.newInstance().show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
+                    BottomEmailPhoneErrorFragment.newInstance(
+                        emailParam = it.borrowerData.emailAddress,
+                        phoneParam = it.borrowerData.mobileNumber,
+                        borrowerNameParam = it.borrowerData.firstName+ " "+it.borrowerData.lastName
+                    ).show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
                 }
                 else
                 {
@@ -313,7 +296,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         })
 
         viewModel.createNewAppResponse.observe(viewLifecycleOwner, {
-            Timber.e("Atleast in look up observer....")
+            Timber.e("At least in look up observer....")
             if(it.code == "200" || it.status.equals("OK", true)) {
                 startDetailActivity(it)
             }
@@ -376,7 +359,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
         binding.edEmail.doAfterTextChanged {
-            if (!isValidEmailAddress(binding.edEmail.text.toString().trim())) {
+            /*
+            if (binding.edEmail.text?.length!! >5 && !isValidEmailAddress(binding.edEmail.text.toString().trim())) {
                 createNewApplicationParams.EmailAddress = null
                 CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
             } else {
@@ -384,6 +368,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
             }
             viewModel.setCreateNewParams(createNewApplicationParams)
+
+             */
 
         }
 
@@ -433,7 +419,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
         createAppResponse.createNewAppData?.let { createAppResponse->
             borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, createAppResponse.loanApplicationId)
-            borrowerDetailIntent.putExtra(AppConstant.loanPurpose, createAppResponse.loanPurpose)
+            borrowerDetailIntent.putExtra(AppConstant.loanPurposeNumber, createAppResponse.loanPurpose)
+            if(createAppResponse.loanPurpose ==1)
+                borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "Purchase")
+            else
+                borrowerDetailIntent.putExtra(AppConstant.loanPurpose, "Refinance")
             borrowerDetailIntent.putExtra(AppConstant.firstName, createAppResponse.firstName)
             borrowerDetailIntent.putExtra(AppConstant.lastName, createAppResponse.lastName)
             borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, createAppResponse.mobileNumber)
@@ -467,31 +457,38 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
     private fun setLabelFocus(){
-        // set lable focus
         binding.edFirstName.onFocusChangeListener = CustomFocusListenerForEditText(binding.edFirstName, binding.layoutFirstName, requireContext(),getString(R.string.error_field_required))
         binding.edLastName.onFocusChangeListener = CustomFocusListenerForEditText(binding.edLastName, binding.layoutLastName, requireContext(),getString(R.string.error_field_required))
         binding.edMobile.onFocusChangeListener = CustomFocusListenerForEditText(binding.edMobile, binding.layoutMobileNum, requireContext(),getString(R.string.invalid_phone_num))
         binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
+        binding.edEmail.onFocusChangeListener = emailFocusChangeListener
+        //binding.edEmail.onFocusChangeListener = CustomFocusListenerForEditText(binding.edEmail, binding.layoutEmail, requireContext(),getString(R.string.error_field_required))
+    }
 
-        binding.edEmail.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+    private val emailFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+        if (hasFocus) {
+            CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+            createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
+            viewModel.setCreateNewParams(createNewApplicationParams)
+        } else {
+            if (binding.edEmail.text?.length == 0) {
+                CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.error_field_required),requireActivity())
+                CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
             } else {
-                if (binding.edEmail.text?.length == 0) {
-                    CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.error_field_required),requireActivity())
-                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
+                CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
+                if (!isValidEmailAddress(binding.edEmail.text.toString().trim())) {
+                    CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
                 } else {
-                    CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
-                    if (!isValidEmailAddress(binding.edEmail.text.toString().trim())) {
-                        CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
-                    } else {
-                        CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
-                    }
+                    CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
+                    createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
+                    viewModel.setCreateNewParams(createNewApplicationParams)
                 }
             }
         }
-
     }
+
+
+
 
     private fun findOrCreateContactClick(){
         if(binding.findContactBtn.isChecked) {
@@ -557,6 +554,56 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         return m.matches()
     }
 
+    private fun resetCreateFieldsToInitialState(){
+        /*
+        if (binding.edFirstName.text.isNullOrBlank() || binding.edFirstName.text.isNullOrEmpty())
+            createNewApplicationParams.FirstName = null
+        else
+            createNewApplicationParams.FirstName = binding.edFirstName.text.toString()
+
+        if (binding.edLastName.text.isNullOrBlank() || binding.edLastName.text.isNullOrEmpty())
+            createNewApplicationParams.LastName = null
+        else
+            createNewApplicationParams.LastName = binding.edLastName.text.toString()
+
+        if (binding.edMobile.text.isNullOrBlank() || binding.edMobile.text.isNullOrEmpty())
+            createNewApplicationParams.MobileNumber = null
+        else
+            if(binding.edMobile.text?.length==14) {
+                val phoneNumber = binding.edMobile.text.toString()
+                var correctPhoneNumber = phoneNumber.replace(" ", "")
+                correctPhoneNumber = correctPhoneNumber.replace("+1", "")
+                correctPhoneNumber = correctPhoneNumber.replace("-", "")
+                correctPhoneNumber = correctPhoneNumber.replace("(", "")
+                correctPhoneNumber = correctPhoneNumber.replace(")", "")
+                createNewApplicationParams.MobileNumber = correctPhoneNumber
+            }
+            else
+                createNewApplicationParams.MobileNumber = null
+
+        if (binding.edEmail.text.isNullOrBlank() || binding.edEmail.text.isNullOrEmpty())
+            createNewApplicationParams.EmailAddress = null
+        else
+            if(isValidEmailAddress(binding.edEmail.text.toString()))
+                createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
+            else
+                createNewApplicationParams.EmailAddress = null
+
+         */
+
+        binding.edFirstName.setText("")
+        binding.edLastName.setText("")
+        binding.edMobile.setText("")
+
+        binding.edEmail.setText("")
+
+        createNewApplicationParams.FirstName = null
+        createNewApplicationParams.LastName = null
+        createNewApplicationParams.MobileNumber = null
+        createNewApplicationParams.EmailAddress = null
+
+        viewModel.setCreateNewParams(createNewApplicationParams)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -586,7 +633,15 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
         viewModel.setCreateNewParams(createNewApplicationParams)
         //SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onCreateDuplicateEvent(allowDuplicateBorrowerEvent:AllowDuplicateBorrowerEvent ) {
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                viewModel.createApplication(authToken, createNewApplicationParams)
+            }
+        }
     }
 
 }

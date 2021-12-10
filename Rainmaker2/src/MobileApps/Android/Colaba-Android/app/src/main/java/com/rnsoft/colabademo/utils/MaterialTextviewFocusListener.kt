@@ -13,6 +13,8 @@ import com.rnsoft.colabademo.R
 /**
  * Created by Anita Kiran on 9/3/2021.
  */
+
+
 class MaterialTextviewFocusListener(private val mTextView: MaterialAutoCompleteTextView, private val mTextInputLayout: TextInputLayout, private val context: Context):
     View.OnFocusChangeListener {
     override fun onFocusChange(p0: View?, p1: Boolean) {

@@ -3,7 +3,7 @@ package com.rnsoft.colabademo
 import com.google.gson.annotations.SerializedName
 
 data class BorrowerOverviewModel(
-    @SerializedName("address") val webBorrowerAddress : WebBorrowerAddress?,
+    @SerializedName("address") val webBorrowerAddress : WebBorrowerAddress?=null,
     @SerializedName("borrowers") val coBorrowers : ArrayList<CoBorrower>?,
     val cellPhone: String? ="",
     val downPayment: Double?,

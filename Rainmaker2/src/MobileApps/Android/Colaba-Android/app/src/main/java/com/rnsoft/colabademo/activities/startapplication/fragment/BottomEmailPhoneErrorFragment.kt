@@ -9,6 +9,7 @@ import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.rnsoft.colabademo.databinding.BottomPhoneEmailErrorLayoutBinding
+import org.greenrobot.eventbus.EventBus
 
 class BottomEmailPhoneErrorFragment : BottomSheetDialogFragment() {
 
@@ -20,7 +21,15 @@ class BottomEmailPhoneErrorFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-             fun newInstance() = BottomEmailPhoneErrorFragment()
+        lateinit var email:String
+        lateinit var phone:String
+        lateinit var borrowerName:String
+        fun newInstance(emailParam:String,phoneParam:String?=null,borrowerNameParam:String) :BottomEmailPhoneErrorFragment{
+            email = emailParam
+            phone = phoneParam ?: ""
+            borrowerName = borrowerNameParam
+            return BottomEmailPhoneErrorFragment()
+        }
     }
 
     private fun setInitialSelection(){
@@ -31,7 +40,14 @@ class BottomEmailPhoneErrorFragment : BottomSheetDialogFragment() {
         binding.crossImageView.setOnClickListener{
             dismiss()
         }
+
+        binding.borrowerName.text = borrowerName
+        binding.emailTextView.text = email
+        binding.phoneTextView.text = phone
+
+
         binding.yesBtn.setOnClickListener{
+            EventBus.getDefault().post(AllowDuplicateBorrowerEvent())
             dismiss()
         }
         binding.noBtn.setOnClickListener{

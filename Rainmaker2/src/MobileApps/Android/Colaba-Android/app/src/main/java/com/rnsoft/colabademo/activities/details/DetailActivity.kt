@@ -25,6 +25,7 @@ class DetailActivity : BaseActivity() {
     var borrowerFirstName:String? = null
     var borrowerLastName:String? = null
     var borrowerLoanPurpose:String? = null
+    var borrowerLoanPurposeNumber:String? = null
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
     var innerScreenName:String? = null
@@ -39,11 +40,16 @@ class DetailActivity : BaseActivity() {
             borrowerFirstName = it.getString(AppConstant.firstName)
             borrowerLastName = it.getString(AppConstant.lastName)
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
+            borrowerLoanPurposeNumber = it.getString(AppConstant.loanPurposeNumber)
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
             borrowerEmail = it.getString(AppConstant.bEmail)
             innerScreenName = it.getString(AppConstant.innerScreenName)
             //Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
+
+        if(borrowerLoanPurposeNumber!=null)
+            SandbarUtils.showSuccess(this@DetailActivity,"New application has been created")
+
 
         super.onCreate(savedInstanceState)
         binding = DetailTopLayoutBinding.inflate(layoutInflater)

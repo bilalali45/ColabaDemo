@@ -32,6 +32,10 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: MutableLiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
+    private val _appMileStoneResponse : MutableLiveData<AppMileStoneResponse?> =   MutableLiveData()
+    val appMileStoneResponse: MutableLiveData<AppMileStoneResponse?> get() = _appMileStoneResponse
+
+
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
     private var applicationServiceRunning:Boolean = false
@@ -198,6 +202,27 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
             return false
         }
         return true
+    }
+
+
+    suspend fun getMilestoneForLoanCenter(token:String, loanApplicationId:Int) {
+        viewModelScope.launch (Dispatchers.IO) {
+            val responseResult = detailRepo.getMilestoneForLoanCenter(token = token, loanApplicationId = loanApplicationId)
+            withContext(Dispatchers.Main) {
+                overviewServiceRunning = false
+                if (responseResult is Result.Success)
+                    _appMileStoneResponse.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    fun resetMileStoneToNull() {
+        _appMileStoneResponse.value = null
+        _appMileStoneResponse.postValue(null)
     }
 
 }

@@ -87,14 +87,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/app_status_title"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/rubik_regular"
                 android:text="15 July 2021"
                 android:textColor="@color/grey_color_three"
-                android:textSize="13sp"
-                android:fontFamily="@font/rubik_regular"/>
+                android:textSize="13sp" />
 
             <ImageView
+                android:id="@+id/tick_status"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
@@ -103,13 +104,14 @@
                 android:src="@drawable/check" />
 
             <ImageView
+                android:id="@+id/cross_status"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="30dp"
                 android:layout_marginTop="4.5dp"
+                android:layout_marginEnd="30dp"
                 android:src="@drawable/ic_close"
-                android:visibility="invisible"/>
+                android:visibility="invisible" />
 
 
         </RelativeLayout>

@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.Fragment
+import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.ApplicationStatusLayoutBinding
 
 
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.layout_loan_status_item.view.*
 import javax.inject.Inject
 
 
@@ -30,27 +33,83 @@ class OverviewAppStatusFragment : BaseFragment(), AdapterClickListener {
     lateinit var lineBlue :View
     lateinit var lineGrey :View
 
-    //private val detailViewModel: DetailViewModel by activityViewModels()
+    private val viewModel: DetailViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
     lateinit var rootTestView: View
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ApplicationStatusLayoutBinding.inflate(inflater, container, false)
         rootTestView = binding.root
-        createList()
-        showApplicationStatus()
+        //createList()
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.hideFabIcons()
+        observeAppStatusList()
+
         binding.backButtonImageView.setOnClickListener{
-           findNavController().popBackStack()
+            viewModel.resetMileStoneToNull()
+            findNavController().popBackStack()
         }
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, navigateToPreviousScreen)
+
         super.addListeners(binding.root)
         return rootTestView
+    }
+
+    private val navigateToPreviousScreen: OnBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            viewModel.resetMileStoneToNull()
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun observeAppStatusList(){
+
+        lifecycleScope.launchWhenStarted {
+            val detailActivity = (activity as? DetailActivity)
+            detailActivity?.let {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    viewModel.getMilestoneForLoanCenter(token = authToken, loanApplicationId = it.loanApplicationId!!)
+                }
+            }
+        }
+        viewModel.appMileStoneResponse.observe(viewLifecycleOwner,{
+            if (it != null) {
+                if(it.status.equals("OK", true) || it.code == "200"){
+                    val mileStoneList: ArrayList<MileStoneData> = ArrayList()
+                    for(item in it.mileStoneData.indices){
+                        mileStoneList.add(it.mileStoneData[item])
+                    }
+                    createAppStatusDesign(mileStoneList)
+                }
+            }
+        })
+    }
+
+    private fun createAppStatusDesign(mileStoneList:ArrayList<MileStoneData>){
+        val parentLayout = rootTestView.findViewById(R.id.layout_parent) as ViewGroup
+        val layoutInflater = layoutInflater
+        var view: View
+
+        for (i in mileStoneList.indices) {
+            view = layoutInflater.inflate(R.layout.layout_loan_status_item, null)
+            val textView = view.findViewById<TextView>(R.id.app_status_title)
+            textView.text = mileStoneList[i].name
+            if(mileStoneList[i].createdDate!=null)
+                view.app_status_date.text = AppSetting.getAppStatusDateFormat(mileStoneList[i].createdDate!!)
+            else
+                view.app_status_date.text = ""
+            if(!mileStoneList[i].isCurrent) {
+                view.tick_status.visibility = View.GONE
+                view.app_status_circle_blue.visibility = View.GONE
+                view.app_status_line_blue.visibility = View.GONE
+                view.app_status_circle_grey.visibility = View.VISIBLE
+                view.app_status_line_grey.visibility = View.VISIBLE
+            }
+            parentLayout.addView(view, i)
+        }
     }
 
     private fun createList() {
@@ -61,6 +120,7 @@ class OverviewAppStatusFragment : BaseFragment(), AdapterClickListener {
         list.add("Approvals")
         list.add("Closing")
         list.add("Application Completed")
+        showApplicationStatus()
     }
 
     private fun showApplicationStatus() {
@@ -70,11 +130,11 @@ class OverviewAppStatusFragment : BaseFragment(), AdapterClickListener {
 
         for (i in list.indices) {
             view = layoutInflater.inflate(R.layout.layout_loan_status_item, null)
-            var textView = view.findViewById<TextView>(R.id.app_status_title)
+            val textView = view.findViewById<TextView>(R.id.app_status_title)
             textView.text = list.get(i)
 
             if(list[i] == "Application Completed"){
-                var lineBlue = view.findViewById<View>(R.id.app_status_line_blue)
+                val lineBlue = view.findViewById<View>(R.id.app_status_line_blue)
                 lineBlue.visibility = View.GONE
             }
 

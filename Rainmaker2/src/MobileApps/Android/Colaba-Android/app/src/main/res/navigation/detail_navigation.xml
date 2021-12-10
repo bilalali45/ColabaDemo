@@ -35,4 +35,10 @@
         android:label="@string/image_view"
         tools:layout="@layout/image_view_layout" />
 
+    <fragment
+        android:id="@+id/invitation_primary_borrower_fragment_id"
+        android:name="com.rnsoft.colabademo.InvitePrimaryBorrowerFragment"
+        android:label="@string/image_view"
+        tools:layout="@layout/invite_primary_borrower_layout" />
+
 </navigation>
