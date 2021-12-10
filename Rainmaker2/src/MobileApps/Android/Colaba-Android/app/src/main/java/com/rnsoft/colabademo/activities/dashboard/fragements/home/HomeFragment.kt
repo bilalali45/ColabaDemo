@@ -137,8 +137,6 @@ class HomeFragment : BaseFragment() {
             }
         })
 
-
-
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
@@ -168,8 +166,6 @@ class HomeFragment : BaseFragment() {
 
         assignToMeSwitch.setOnCheckedChangeListener(assignToMeChangeListener)
 
-
-
         filterImageView.setOnClickListener {
             loanBaseFragment?.let {
                 CustomFilterBottomSheetDialogFragment.newInstance(it).show(
@@ -181,6 +177,8 @@ class HomeFragment : BaseFragment() {
             //FilterBottomSheetDialogFragment.newInstance().show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
             //FilterBottomSheetDialogFragment.newInstance(loanFilterInterface!!).show(childFragmentManager, FilterBottomSheetDialogFragment::class.java.canonicalName)
         }
+
+        loanBaseFragment = ViewPagerAdapter.hashMap.getValue(0) as AllLoansFragment
 
         setGreetingMessageOnTop()
         super.addListeners(binding.root)
