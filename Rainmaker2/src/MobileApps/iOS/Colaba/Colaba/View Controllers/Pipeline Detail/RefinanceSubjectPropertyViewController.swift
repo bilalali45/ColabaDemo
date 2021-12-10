@@ -154,11 +154,11 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     func setTextFields(){
 
-        txtfieldPropertyType.setTextField(placeholder: "Property Type" , controller: self, validationType: .noValidation)
+        txtfieldPropertyType.setTextField(placeholder: "Property Type" , controller: self, validationType: .required)
         txtfieldPropertyType.type = .dropdown
         
         ///Occupancy Type Text Field
-        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type" , controller: self, validationType: .noValidation)
+        txtfieldOccupancyType.setTextField(placeholder: "Occupancy Type" , controller: self, validationType: .required)
         txtfieldOccupancyType.type = .dropdown
         
         ///Rental Income Text Field
@@ -431,12 +431,20 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         }
     }
     
+    func validate() -> Bool{
+        var isValidate = txtfieldPropertyType.validate()
+        isValidate = txtfieldOccupancyType.validate() && isValidate
+        return isValidate
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton){
         self.goBack()
     }
     
     @IBAction func btnSaveChangesTapped(_ sender: UIButton){
-        updateSubjectProperty()
+        if (validate()){
+            updateSubjectProperty()
+        }
     }
     
     //MARK:- API's

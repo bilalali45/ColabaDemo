@@ -137,6 +137,11 @@ class ApplicationViewController: BaseViewController {
     }
     
     func setApplicationData(){
+        
+        addSubjectPropertyView.isHidden = !(loanApplicationDetail.street == "" && loanApplicationDetail.propertyTypeName == "" && loanApplicationDetail.propertyUsageName == "")
+        addressView.isHidden = (loanApplicationDetail.street == "" && loanApplicationDetail.propertyTypeName == "" && loanApplicationDetail.propertyUsageName == "")
+        subjectPropertyViewHeightConstraint.constant = (loanApplicationDetail.street == "" && loanApplicationDetail.propertyTypeName == "" && loanApplicationDetail.propertyUsageName == "") ? 134 : 180
+        
         self.lblAddress.text = "\(loanApplicationDetail.street) \(loanApplicationDetail.unit),\n\(loanApplicationDetail.city), \(loanApplicationDetail.stateName) \(loanApplicationDetail.zipCode)"
         let propertyTypeText = "\(loanApplicationDetail.propertyTypeName)   ·   \(loanApplicationDetail.propertyUsageName)"
         let propertyTypeAttributedText = NSMutableAttributedString(string: propertyTypeText)
