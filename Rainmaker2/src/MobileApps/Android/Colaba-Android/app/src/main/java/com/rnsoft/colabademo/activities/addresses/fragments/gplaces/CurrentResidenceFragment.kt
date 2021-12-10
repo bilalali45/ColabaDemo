@@ -266,7 +266,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                             itemList.add(item.name)
                             stateFullList.add(item)
                         }
-                        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        val stateAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.stateCompleteTextView.setAdapter(stateAdapter)
 
                         /*binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -316,7 +316,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         }
                         val countryAdapter = ArrayAdapter(
                             requireContext(),
-                            R.layout.autocomplete_text_view,
+                            android.R.layout.simple_list_item_1,
                             itemList
                         )
                         binding.countryCompleteTextView.setAdapter(countryAdapter)
@@ -361,11 +361,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                             itemList.add(item.name)
                             countyFullList.add(item)
                         }
-                        val countyAdapter = ArrayAdapter(
-                            requireContext(),
-                            R.layout.autocomplete_text_view,
-                            itemList
-                        )
+
+                        val countyAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.countyEditText.setAdapter(countyAdapter)
 
                         /*
@@ -418,6 +415,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
                         binding.housingCompleteTextView.setOnFocusChangeListener { _, _ ->
                             binding.housingCompleteTextView.showDropDown()
                         }
+
                         binding.housingCompleteTextView.setOnClickListener {
                             binding.housingCompleteTextView.showDropDown()
                         }
@@ -472,7 +470,7 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             AppConstant.delete_mailing_address)?.observe(viewLifecycleOwner) { result ->
             if(result) {
                 mailingAddressModel = null
-                binding.addAddressLayout.visibility = View.VISIBLE
+                binding.addAddressLayout.visibility = View.GONE
                 binding.showAddressLayout.visibility = View.GONE
                 binding.checkboxIsMailingAddressDiff.isChecked = false
             }
@@ -511,7 +509,6 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         binding.moveInEditText.setOnClickListener {
             createCustomDialog()
-
             binding.topSearchAutoTextView.clearFocus()
         }
 
@@ -571,6 +568,16 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             }
         }
 
+        binding.countyEditText.setOnFocusChangeListener{ _, hasFocus: Boolean ->
+            if(!hasFocus){
+                if (binding.countyEditText.text.toString().length == 0) {
+                    CustomMaterialFields.setColor(binding.countyLayout, R.color.grey_color_three, requireActivity())
+                } else {
+                    CustomMaterialFields.setColor(binding.countyLayout, R.color.grey_color_two, requireActivity())
+                }
+            }
+        }
+
         binding.countryCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
                 //binding.countryCompleteTextView.showDropDown()
@@ -590,17 +597,15 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
             }
         }
 
-        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
-        binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext()))
+        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext(),getString(R.string.error_field_required)))
+        binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext(),getString(R.string.error_field_required)))
         binding.unitAptInputEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
-        //binding.countyEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.countyEditText, binding.countyLayout, requireContext()))
-        binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext()))
-        binding.etMonthlyRent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMonthlyRent, binding.monthlyRentLayout, requireContext()))
+        binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext(),getString(R.string.error_field_required)))
+        binding.etMonthlyRent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMonthlyRent, binding.monthlyRentLayout, requireContext(),getString(R.string.error_field_required)))
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.unitAptInputEditText, binding.unitAptInputLayout)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.streetAddressEditText, binding.streetAddressLayout)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.cityEditText, binding.cityLayout)
-        //CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.countyEditText,binding.countyLayout)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.zipcodeEditText, binding.zipcodeLayout)
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.moveInEditText, binding.moveInLayout)
 
@@ -1126,7 +1131,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.unitAptInputLayout.visibility = View.VISIBLE
         binding.streetAddressLayout.visibility = View.VISIBLE
         binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
-        binding.addAddressLayout.visibility = View.VISIBLE
+        binding.checkboxIsMailingAddressDiff.visibility = View.VISIBLE
+        //binding.addAddressLayout.visibility = View.VISIBLE
         //binding.showAddressLayout.visibility = View.VISIBLE  // condition visibility
         //binding.monthlyRentLayout.visibility = View.VISIBLE
     }

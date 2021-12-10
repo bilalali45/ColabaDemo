@@ -16,9 +16,9 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
         this.classScopedItemClickListener = onAdapterClickListener
     }
 
-    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  { abstract fun bind(
-        item: BorrowersInformation
-    ) }
+    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  {
+        abstract fun bind(item: BorrowersInformation)
+    }
     //abstract class BaseViewHolder<TabBorrowerList>(itemView: View) : RecyclerView.ViewHolder(itemView) { abstract fun bind(item: TabBorrowerList) }
 
     inner class BorrowerItemViewHolder(itemView: View) : BaseViewHolder(itemView)  {
@@ -34,9 +34,7 @@ class CustomBorrowerAdapter internal constructor(private var tabBorrowerDataList
                 mainBorrowerName.text = item.firstName + " " + item.lastName
                 coBorrowerNames.text = "Co-Borrower"
             }
-
         }
-
         init {
             borrowerDataCell.setOnClickListener {
                 classScopedItemClickListener.navigateTo(adapterPosition)

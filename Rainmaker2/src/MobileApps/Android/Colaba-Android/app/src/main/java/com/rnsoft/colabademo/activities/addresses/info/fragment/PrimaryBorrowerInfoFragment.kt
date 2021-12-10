@@ -285,7 +285,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             bi.edSecurityNum.setText(ssn)
                         }
                         it.dobUtc?.let { dob ->
-                            bi.edDateOfBirth.setText(AppSetting.getFullDate(dob))
+                            bi.edDateOfBirth.setText(AppSetting.getFullDate1(dob))
                         }
                         if (it.residencyTypeId == 1)
                             citizenshipBinding.rbUsCitizen.isChecked = true
@@ -323,7 +323,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                                     bindingMilitary.chbDutyPersonel.isChecked = true
                                     it.get(i).expirationDateUtc?.let { it1 ->
                                         if (it1.isNotBlank() &&it1.isNotEmpty() && !it1.equals("null", true)) {
-                                            var serviceDate = AppSetting.getMonthAndYearValue(it1)
+                                            var serviceDate = AppSetting.getMonthAndYear(it1,true)
                                             bindingMilitary.serviceDate.text = serviceDate
                                             militaryServiceDate = serviceDate
                                         }
@@ -424,7 +424,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4, expirationDateUtc = militaryServiceDate, reserveEverActivated = null))
         }
         if (bindingMilitary.chbResNationalGuard.isChecked) {
-                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3, expirationDateUtc = null, reserveEverActivated = reserveEverActivated))
+            if(reserveEverActivated == null){
+                reserveEverActivated = false
+            }
+            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3, expirationDateUtc = null, reserveEverActivated = reserveEverActivated))
         }
         if (bindingMilitary.chbVeteran.isChecked) {
             militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2, expirationDateUtc = null, reserveEverActivated = null))
@@ -673,10 +676,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             viewLifecycleOwner) { result ->
             try {
                 if(result.isNotBlank() && result.isNotEmpty() && result.length > 0){
-                    var updatedDate = AppSetting.reverseDateFormat("01/"+result)
-                    var serviceDate1 = AppSetting.getMonthAndYearValue(updatedDate)
-                    militaryServiceDate = serviceDate1
-                    bindingMilitary.serviceDate.text = serviceDate1
+                    //val updatedDate = AppSetting.reverseDateFormat("01/"+result)
+                    //val serviceDate1 = AppSetting.getMonthAndYearValue(updatedDate)
+                    militaryServiceDate = result
+                    bindingMilitary.serviceDate.text = result
                     bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
                     bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
 
@@ -1046,7 +1049,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     @SuppressLint("ClickableViewAccessibility")
     private fun setResidence() {
         // set btn text
-        Log.e("SetResidence","True")
 
         //bi.recyclerview.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
         //bi.recyclerview.hasFixedSize()
@@ -1398,9 +1400,9 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         // New Style Calendar Added....
         val datePickerDialog = DatePickerDialog(
-            requireActivity(), R.style.MySpinnerDatePickerStyle,
-            { view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + (monthOfYear+1) + "-" + dayOfMonth + "-" + selectedYear) }
-            , year, month, day
+            requireActivity(), R.style.MySpinnerDatePickerStyle, {
+                    view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear) },
+            year, month, day
         )
         datePickerDialog.show()
     }
@@ -1461,7 +1463,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onSentData(event: SendDataEvent){
         bi.loaderBorrowerInfo.visibility = View.GONE
-        Log.e("Data Sent","Event Received")
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
@@ -1475,8 +1476,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         requireActivity().finish()
     }
-
-
 
     fun getOrdinal(i: Int): String? {
         val mod100 = i % 100

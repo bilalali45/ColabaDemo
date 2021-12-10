@@ -6,7 +6,7 @@
     android:background="@color/half_white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/assets_top_container"
+        android:id="@+id/mailing_address_top_container"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -53,6 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/borrower_name_greeting" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/btn_delete_mailing_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -79,15 +80,14 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         android:isScrollContainer="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
+        app:layout_constraintTop_toBottomOf="@+id/mailing_address_top_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/topSearchTextViewLayout"
+            android:id="@+id/mailing_address_parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,6 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="30dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@android:color/transparent"
@@ -381,6 +382,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="bottom"
+                    android:singleLine="true"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
                     android:cursorVisible="true"
@@ -397,9 +399,6 @@
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -436,14 +435,13 @@
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
                     android:cursorVisible="true"
                     android:dropDownAnchor="@+id/countyLayout"
-
                     android:focusable="true"
-
                     android:focusableInTouchMode="true"
                     android:fontFamily="@font/rubik_regular"
                     android:gravity="bottom"
@@ -457,7 +455,6 @@
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -533,6 +530,7 @@
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:singleLine="true"
                     android:layout_gravity="bottom"
                     android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"

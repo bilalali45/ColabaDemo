@@ -429,6 +429,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     borrowerInfoAdapter =
                         CustomBorrowerAdapter(borrowerInfoList, this@BorrowerApplicationFragment)
                     horizontalRecyclerView.adapter = borrowerInfoAdapter
+                    Log.e("Application Frag",""+ borrowerInfoList)
+
                     borrowerInfoAdapter.notifyDataSetChanged()
 
 
@@ -468,23 +470,17 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
-
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 200) {
             Log.d("TAG", "${data.toString()}")
         }
-
     }
-
-
-
-
 
 }
 

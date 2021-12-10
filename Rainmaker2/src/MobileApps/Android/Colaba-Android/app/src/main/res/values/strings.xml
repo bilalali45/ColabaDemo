@@ -363,7 +363,7 @@
     <string name="others">Others</string>
     <string name="dob">Date of Birth</string>
     <string name="social_security_num">Social Security Number</string>
-    <string name="no_of_dependents">No. Of Dependents</string>
+    <string name="no_of_dependents">No. of Dependents</string>
     <string name="add_dependents">Add Dependent</string>
     <string name="military_service">Military Service</string>
     <string name="service_lastdate">Last date of service / tour</string>

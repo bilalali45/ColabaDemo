@@ -52,7 +52,6 @@
             android:id="@+id/service_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10/2010"
             android:drawableStart="@drawable/ic_calendar_two"
             android:gravity="center_vertical"
             android:drawablePadding="3dp"

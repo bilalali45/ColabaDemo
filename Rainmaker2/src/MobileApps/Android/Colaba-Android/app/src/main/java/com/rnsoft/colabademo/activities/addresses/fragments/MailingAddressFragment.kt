@@ -82,7 +82,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
-        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        //activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
         binding.btnSaveMailingAddress.setOnClickListener {
             checkValidations()
@@ -114,6 +114,12 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
+
+        binding.mailingAddressParentLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.mailingAddressParentLayout)
+            super.removeFocusFromAllFields(binding.mailingAddressParentLayout)
+        }
+
         return root
     }
 
@@ -176,7 +182,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                             itemList.add(item.name)
                             stateFullList.add(item)
                         }
-                        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        val stateAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                         binding.stateCompleteTextView.setAdapter(stateAdapter)
 
                        /* binding.stateCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -225,7 +231,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                         }
                         val countryAdapter = ArrayAdapter(
                             requireContext(),
-                            R.layout.autocomplete_text_view,
+                            android.R.layout.simple_list_item_1,
                             itemList
                         )
                         binding.countryCompleteTextView.setAdapter(countryAdapter)
@@ -270,7 +276,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                             itemList.add(item.name)
                             countyFullList.add(item)
                         }
-                        val countyAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        val countyAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                         binding.countyEditText.setAdapter(countyAdapter)
 
                         binding.countyEditText.onItemClickListener =
@@ -331,7 +337,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.stateCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.stateCompleteTextView.showDropDown()
+                //binding.stateCompleteTextView.showDropDown()
                 binding.stateCompleteTextView.addTextChangedListener(stateTextWatcher)
                 CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
 
@@ -350,7 +356,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
 
         binding.countryCompleteTextView.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
-                binding.countryCompleteTextView.showDropDown()
+                //binding.countryCompleteTextView.showDropDown()
                 binding.countryCompleteTextView.addTextChangedListener(countryTextWatcher)
                 CustomMaterialFields.setColor(binding.countryCompleteLayout, R.color.grey_color_two, requireActivity())
             } else {
@@ -381,53 +387,21 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
             }
         }
 
-        binding.cityEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext())
-        )
-        binding.streetAddressEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.streetAddressEditText,
-                binding.streetAddressLayout,
-                requireContext()
-            )
-        )
-        binding.unitAptInputEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.unitAptInputEditText,
-                binding.unitAptInputLayout,
-                requireContext()
-            )
-        )
+        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext(),getString(R.string.error_field_required)))
 
-        binding.zipcodeEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.zipcodeEditText,
-                binding.zipcodeLayout,
-                requireContext()
-            )
-        )
+        binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout,requireContext(), getString(R.string.error_field_required)))
 
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.unitAptInputEditText,
-            binding.unitAptInputLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.streetAddressEditText,
-            binding.streetAddressLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.cityEditText,
-            binding.cityLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.zipcodeEditText,
-            binding.zipcodeLayout
-        )
+        binding.unitAptInputEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
 
+        binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext(),getString(R.string.error_field_required)))
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.unitAptInputEditText, binding.unitAptInputLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.streetAddressEditText, binding.streetAddressLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.cityEditText, binding.cityLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.zipcodeEditText, binding.zipcodeLayout)
 
     }
 
@@ -895,6 +869,7 @@ class MailingAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         binding.unitAptInputLayout.visibility = View.VISIBLE
         binding.streetAddressLayout.visibility = View.VISIBLE
         binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
+        binding.btnDeleteMailingAddress.visibility= View.VISIBLE
 
     }
 

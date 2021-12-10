@@ -50,7 +50,7 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
             binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
-        createCustomDialog()
+        //createCustomDialog()
 
         binding.edEmail.showSoftInputOnFocus = false
         binding.edEmail.setOnClickListener { createCustomDialog() }
@@ -70,12 +70,17 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
             if (arguments != null) {
                 militarySericeDate = arguments?.getString(AppConstant.service_date)
                 militarySericeDate?.let {
-                    if (it.isNullOrBlank() && it.length >0) {
+                    if (it.isNotBlank() && it.length >0) {
                        binding.edEmail.setText(militarySericeDate)
                     }
+                } ?: run {
+                    createCustomDialog()
                 }
+            } else {
+                createCustomDialog()
             }
         } catch(e:Exception){
+            Log.e("Frag Active duty","Exception")
 
         }
 
@@ -92,7 +97,7 @@ class ActiveDutyFragment : BaseFragment(), DatePickerDialog.OnDateSetListener {
 
 
 
-                super.addListeners(binding.root)
+         super.addListeners(binding.root)
 
         return root
 

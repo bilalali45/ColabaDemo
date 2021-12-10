@@ -80,11 +80,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     val numberFormatter =  DecimalFormat("#,###,###")
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PreviousResidenceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         super.addListeners(binding.root)
@@ -289,7 +285,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                             }
                             val stateAdapter = ArrayAdapter(
                                 requireContext(),
-                                R.layout.autocomplete_text_view,
+                                android.R.layout.simple_list_item_1,
                                 itemList
                             )
                             binding.stateCompleteTextView.setAdapter(stateAdapter)
@@ -336,7 +332,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                             }
                             val countryAdapter = ArrayAdapter(
                                 requireContext(),
-                                R.layout.autocomplete_text_view,
+                                android.R.layout.simple_list_item_1,
                                 itemList
                             )
                             binding.countryCompleteTextView.setAdapter(countryAdapter)
@@ -379,7 +375,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                             }
                             val countyAdapter = ArrayAdapter(
                                 requireContext(),
-                                R.layout.autocomplete_text_view,
+                                android.R.layout.simple_list_item_1,
                                 itemList
                             )
                             binding.countyEditText.setAdapter(countyAdapter)
@@ -413,21 +409,17 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
                 // set Housing status
                 viewModel.housingStatus.observe(viewLifecycleOwner, { housing ->
-                        if (housing != null && housing.size > 0) {
-                            dataCounter++
+                    if (housing != null && housing.size > 0) {
+                        dataCounter++
 
-                            val itemList: ArrayList<String> = arrayListOf()
-                            housingStatusList = arrayListOf()
-                            for (item in housing) {
-                                itemList.add(item.description)
-                                housingStatusList.add(item)
-                            }
+                        val itemList: ArrayList<String> = arrayListOf()
+                        housingStatusList = arrayListOf()
+                        for (item in housing) {
+                            itemList.add(item.description)
+                            housingStatusList.add(item)
+                        }
 
-                            val adapter = ArrayAdapter(
-                                requireContext(),
-                                android.R.layout.simple_list_item_1,
-                                itemList
-                            )
+                        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                             binding.housingCompleteTextView.setAdapter(adapter)
 
                             binding.housingCompleteTextView.setOnFocusChangeListener { _, _ ->
@@ -458,12 +450,8 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
                 })
 
                 binding.loaderPrevAddress.visibility = View.GONE
-
-
             }
-
         }
-
     }
     
     private fun setColor(textInputLayout: TextInputLayout){
@@ -591,67 +579,29 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
-        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext()))
+        binding.cityEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.cityEditText, binding.cityLayout, requireContext(),getString(R.string.error_field_required)))
 
-        binding.streetAddressEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.streetAddressEditText,
-                binding.streetAddressLayout,
-                requireContext()
-            )
-        )
-        binding.unitAptInputEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.unitAptInputEditText,
-                binding.unitAptInputLayout,
-                requireContext()
-            )
-        )
-        //binding.countyEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.countyEditText, binding.countyLayout, requireContext()))
+        binding.streetAddressEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.streetAddressEditText, binding.streetAddressLayout, requireContext(),getString(R.string.error_field_required)))
 
-        binding.zipcodeEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(
-                binding.zipcodeEditText,
-                binding.zipcodeLayout,
-                requireContext()
-            )
-        )
-        binding.monthlyRentEditText.setOnFocusChangeListener(
-            CustomFocusListenerForEditText(binding.monthlyRentEditText,binding.monthlyRentLayout, requireContext()))
+        binding.unitAptInputEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.unitAptInputEditText, binding.unitAptInputLayout, requireContext()))
+
+        binding.zipcodeEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.zipcodeEditText, binding.zipcodeLayout, requireContext(),getString(R.string.error_field_required)))
+
+        binding.monthlyRentEditText.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.monthlyRentEditText,binding.monthlyRentLayout, requireContext(),getString(R.string.error_field_required)))
         //binding.housingEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.housingEditText, binding.housingLayout, requireContext()))
         //binding.moveInEditText.setOnFocusChangeListener(MyCustomFocusListener(binding.moveInEditText, binding.moveInLayout, requireContext()))
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.unitAptInputEditText,
-            binding.unitAptInputLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.streetAddressEditText,
-            binding.streetAddressLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.cityEditText,
-            binding.cityLayout
-        )
-        //CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.countyEditText, binding.countyLayout)
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.zipcodeEditText,
-            binding.zipcodeLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.moveInEditText,
-            binding.moveInLayout
-        )
-        CustomMaterialFields.onTextChangedLableColor(
-            requireActivity(),
-            binding.moveOutEditText,
-            binding.moveOutLayout
-        )
 
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.unitAptInputEditText, binding.unitAptInputLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.streetAddressEditText, binding.streetAddressLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.cityEditText, binding.cityLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.zipcodeEditText, binding.zipcodeLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.moveInEditText, binding.moveInLayout)
+
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.moveOutEditText, binding.moveOutLayout)
     }
 
     private fun setDropDownData() {
@@ -1151,6 +1101,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         binding.unitAptInputLayout.visibility = View.VISIBLE
         binding.streetAddressLayout.visibility = View.VISIBLE
         binding.stateCompleteTextInputLayout.visibility = View.VISIBLE
+        binding.delImageview.visibility = View.VISIBLE
 
         //binding.showAddressLayout.visibility = View.VISIBLE  // condition visibility
         //binding.monthlyRentLayout.visibility = View.VISIBLE

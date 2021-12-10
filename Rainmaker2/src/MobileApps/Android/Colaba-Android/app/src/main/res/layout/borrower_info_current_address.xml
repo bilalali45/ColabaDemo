@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/current_residence_parent_layout"
     android:background="@color/half_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -82,7 +81,6 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
         android:isScrollContainer="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,9 +90,10 @@
         app:layout_constraintVertical_bias="1.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/topSearchTextViewLayout"
+            android:id="@+id/current_residence_parent_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
@@ -104,6 +103,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center"
                 android:hint="@string/search_home_address"
                 android:background="@android:color/transparent"
@@ -354,6 +354,7 @@
 
                         </com.google.android.material.textfield.TextInputLayout> -->
 
+
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
                 android:id="@+id/countyLayout"
@@ -405,6 +406,7 @@
                     android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -481,7 +483,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stateCompleteTextInputLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/zipcodeEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -551,7 +553,6 @@
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/moveInLayout"
@@ -684,6 +685,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:visibility="gone"
                 android:id="@+id/checkbox_is_mailing_address_diff"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
@@ -698,7 +700,6 @@
                 android:paddingStart="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/monthlyRentLayout"/>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addAddressLayout"
@@ -717,13 +718,13 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_plus_inside_circle" />
+                    app:srcCompat="@drawable/ic_add_icon_light" />
 
                 <TextView
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="22dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/rubik_medium"
                     android:text="Add A Different Mailing Address"
                     android:textColor="@color/colaba_primary_color"
