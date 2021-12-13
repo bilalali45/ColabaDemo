@@ -11,7 +11,7 @@ protocol SpouseBasicDetailViewControllerDelegate: AnyObject {
     func saveMaritalStatusMarriedOrSeparated(status: MaritalStatus)
 }
 
-class SpouseBasicDetailViewController: UIViewController {
+class SpouseBasicDetailViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

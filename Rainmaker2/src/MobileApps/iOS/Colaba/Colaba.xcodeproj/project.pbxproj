@@ -231,6 +231,7 @@
 		23EBC7902732CAAF0063922C /* OtherAssetsDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */; };
 		23EBC7922732D9C60063922C /* GiftDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBC7912732D9C60063922C /* GiftDetailModel.swift */; };
 		23ED227F272C069A00EABF89 /* BorrowerInformationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */; };
+		23EF6BC827675FF900214C0A /* PreApprovalLettersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EF6BC727675FF900214C0A /* PreApprovalLettersViewController.swift */; };
 		23F23B3D26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */; };
 		23F23B3F26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */; };
 		23F23B4126CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */; };
@@ -518,6 +519,7 @@
 		23EBC78F2732CAAF0063922C /* OtherAssetsDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherAssetsDetailModel.swift; sourceTree = "<group>"; };
 		23EBC7912732D9C60063922C /* GiftDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftDetailModel.swift; sourceTree = "<group>"; };
 		23ED227E272C069A00EABF89 /* BorrowerInformationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInformationModel.swift; sourceTree = "<group>"; };
+		23EF6BC727675FF900214C0A /* PreApprovalLettersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreApprovalLettersViewController.swift; sourceTree = "<group>"; };
 		23F23B3C26CA400B00AEF33E /* NonPermanentResidenceFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonPermanentResidenceFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
 		23F23B3E26CA46CE00AEF33E /* ActiveDutyPersonnelFollowUpQuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveDutyPersonnelFollowUpQuestionViewController.swift; sourceTree = "<group>"; };
 		23F23B4026CA471E00AEF33E /* ReserveFollowUpQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReserveFollowUpQuestionsViewController.swift; sourceTree = "<group>"; };
@@ -907,6 +909,14 @@
 			path = "Pipeline Detail";
 			sourceTree = "<group>";
 		};
+		23EF6BC627675FDB00214C0A /* Pre Approval Letters */ = {
+			isa = PBXGroup;
+			children = (
+				23EF6BC727675FF900214C0A /* PreApprovalLettersViewController.swift */,
+			);
+			path = "Pre Approval Letters";
+			sourceTree = "<group>";
+		};
 		3937F87C26DE0BDC00B85585 /* ColabaTextField */ = {
 			isa = PBXGroup;
 			children = (
@@ -1047,6 +1057,7 @@
 		7186ACE62653C56C00E740D3 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23EF6BC627675FDB00214C0A /* Pre Approval Letters */,
 				23AFA369270712CA00388905 /* Request Document */,
 				239983F026F9B71100C0AFA7 /* Start New Application */,
 				23DBAD1E2696EAAA00119680 /* Pipeline Detail */,
@@ -1558,6 +1569,7 @@
 				2313E7C227155E3D00222A6E /* DropDownModel.swift in Sources */,
 				7113F52526569D310066E179 /* LocalAuthManager.swift in Sources */,
 				236EA1AC26789EAC00C2F8B5 /* PipelineMoreViewController.swift in Sources */,
+				23EF6BC827675FF900214C0A /* PreApprovalLettersViewController.swift in Sources */,
 				236B59D1266504060001F416 /* UserModel.swift in Sources */,
 				238973FC2702F15E00759965 /* AssignLoanOfficerViewController.swift in Sources */,
 				23D9E6EC2701A4EF004D34CF /* ContactListTableViewCell.swift in Sources */,
