@@ -28,10 +28,10 @@ data class AssetAndIncome(
 @Parcelize
 data class BorrowersInformation(
     val borrowerId: Int,
-    val firstName: String?,
+    val firstName: String? = null,
     val genderId: Int?,
     val genderName: String?,
-    val lastName: String?,
+    val lastName: String? = null,
     val middleName:String?,
     val ownTypeName: String?,
     val owntypeId: Int,

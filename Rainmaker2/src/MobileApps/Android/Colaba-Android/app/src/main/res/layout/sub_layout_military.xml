@@ -52,7 +52,6 @@
             android:id="@+id/service_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10/2010"
             android:drawableStart="@drawable/ic_calendar_two"
             android:gravity="center_vertical"
             android:drawablePadding="3dp"
@@ -95,13 +94,13 @@
             android:textColor="@color/grey_color_two"
             android:fontFamily="@font/rubik_regular"
             android:textSize="13sp"
-            android:lineSpacingExtra="10dp" />
+            android:lineSpacingExtra="5dp" />
 
         <TextView
             android:id="@+id/res_national_guard_ans"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yes"
+            android:text=""
             android:textStyle="bold"
             android:layout_marginStart="25dp"
             android:layout_marginTop="15dp"

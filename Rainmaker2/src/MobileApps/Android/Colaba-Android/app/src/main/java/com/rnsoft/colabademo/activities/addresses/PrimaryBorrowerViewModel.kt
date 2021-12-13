@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,15 +39,41 @@ class PrimaryBorrowerViewModel @Inject constructor(
     private val _housingStatus: MutableLiveData<ArrayList<OptionsResponse>> = MutableLiveData()
     val housingStatus: LiveData<ArrayList<OptionsResponse>> get() = _housingStatus
 
-    private val _relationships: MutableLiveData<ArrayList<DropDownResponse>> = MutableLiveData()
-    val relationships: LiveData<ArrayList<DropDownResponse>> get() = _relationships
+    private val _relationships: MutableLiveData<ArrayList<DropDownResponse>?> = MutableLiveData()
+    val relationships: LiveData<ArrayList<DropDownResponse>?> get() = _relationships
 
     private val _addUpdateDeleteResponse: MutableLiveData<AddUpdateDataResponse> = MutableLiveData()
     val addUpdateDeleteResponse: LiveData<AddUpdateDataResponse> get() = _addUpdateDeleteResponse
 
-    suspend fun deletePreviousAddress(token: String, id: Int){
+    private val _updatedAddress : MutableLiveData<PreviousAddresses?> = MutableLiveData()
+    val updatedAddress : LiveData<PreviousAddresses?> get() = _updatedAddress
+
+    private val _mailingAddress : MutableLiveData<AddressModel?> = MutableLiveData()
+    val mailingAddress : LiveData<AddressModel?> get() = _mailingAddress
+
+
+    fun savePreviousAddress(address: PreviousAddresses) {
+        _updatedAddress.postValue(address)
+    }
+
+    fun saveMailingAddress(address: AddressModel) {
+        _mailingAddress.postValue(address)
+    }
+
+    fun emptyMailingAddress(){
+        _mailingAddress.value = null
+        _mailingAddress.postValue( null)
+    }
+
+    fun emptyAddress(){
+        _updatedAddress.value = null
+        _updatedAddress.postValue( null)
+    }
+
+    suspend fun deletePreviousAddress(token: String, loanApplicationId: Int,id: Int){
+        //Log.e("delete Address","loan id "+ loanApplicationId+"Id " + id)
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repo.deletePreviousAddress(token = token,id)
+            val responseResult = repo.deletePreviousAddress(token = token,loanApplicationId,id)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _addUpdateDeleteResponse.value = (responseResult.data)
@@ -109,6 +136,9 @@ class PrimaryBorrowerViewModel @Inject constructor(
     }
 
     suspend fun getRelationshipTypes(token:String) {
+        _relationships.value = null
+        _relationships.postValue(null)
+
         viewModelScope.launch(Dispatchers.IO) {
             val response = repo.getRelationshipTypes(token = token )
             withContext(Dispatchers.Main) {

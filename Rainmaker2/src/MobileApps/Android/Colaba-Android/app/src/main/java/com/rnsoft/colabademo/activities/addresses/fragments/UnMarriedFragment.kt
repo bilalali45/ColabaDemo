@@ -115,6 +115,7 @@ class UnMarriedFragment : BaseFragment() {
         if(counter==2) {
             try {
                 maritalStatus = arguments?.getParcelable(AppConstant.marital_status)!!
+                Log.e("umarriedFra-SetData","$maritalStatus")
                 if (maritalStatus != null) {
                     maritalStatus?.isInRelationship?.let { isInRelation ->
                         if (isInRelation)
@@ -195,48 +196,66 @@ class UnMarriedFragment : BaseFragment() {
                     isDataEntered = false
                 }
                 if(isDataEntered){
+                     try {
+                         //Log.e("relationshipList","$relationshipTypeList")
+                         val matchedList = relationshipTypeList.filter { p -> p.name.equals(relation, true) }
+                         val relationshipTypeId = if (matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
 
-                    val matchedList =  relationshipTypeList.filter { p -> p.name.equals(relation,true)}
-                    val relationshipTypeId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+                         val stateName: String = binding.tvState.getText().toString()
+                         val matchedState = stateList.filter { p -> p.name.equals(stateName, true) }
+                         val stateId = if (matchedState.size > 0) matchedState.get(0).id else null
 
-                    val stateName : String = binding.tvState.getText().toString()
-                    val matchedState =  stateList.filter { p -> p.name.equals(stateName,true)}
-                    val stateId = if(matchedState.size > 0) matchedState.get(0).id else null
-                    var isInRelationship : Boolean? = null
-                    if(yesRadioBtn.isChecked)
-                        isInRelationship = true
-                    if(noRadioBtn.isChecked)
-                        isInRelationship = false
+                         var isInRelationship: Boolean? = null
+                         if (yesRadioBtn.isChecked)
+                             isInRelationship = true
+                         if (noRadioBtn.isChecked)
+                             isInRelationship = false
 
 
-                    val maritalStatus = MaritalStatus(
-                        loanApplicationId = loanApplicationId!!,
-                        borrowerId = if(borrowerId != null) borrowerId else null,
-                        firstName = null,
-                        middleName = null,
-                        lastName = null,
-                        isInRelationship = isInRelationship,
-                        otherRelationshipExplanation = if(desc.length > 0) desc else null,
-                        relationFormedStateId = stateId,
-                        relationshipTypeId = relationshipTypeId,
-                        spouseBorrowerId = null,
-                        spouseLoanContactId = null,
-                        maritalStatusId = 9)
+                         val maritalStatus = MaritalStatus(
+                             loanApplicationId = loanApplicationId!!,
+                             borrowerId = if (borrowerId != null) borrowerId else null,
+                             firstName = null,
+                             middleName = null,
+                             lastName = null,
+                             isInRelationship = isInRelationship,
+                             otherRelationshipExplanation = if (desc.length > 0) desc else null,
+                             relationFormedStateId = stateId,
+                             relationshipTypeId = relationshipTypeId,
+                             spouseBorrowerId = null,
+                             spouseLoanContactId = null,
+                             maritalStatusId = 9
+                         )
 
-                    Log.e("UnMarriedFrag",""+maritalStatus)
+                         Log.e("UnMarriedFrag", "" + maritalStatus)
 
-                    findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.marital_status, maritalStatus)
-                    findNavController().popBackStack()
+                         findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                             AppConstant.marital_status,
+                             maritalStatus
+                         )
+                         findNavController().popBackStack()
+
+                     } catch (e:Exception){
+                         //Log.e("exception",e.toString())
+                     }
                 }
             }
         } else {
+
+            var isInRelationship : Boolean? = false
+            if(yesRadioBtn.isChecked)
+                isInRelationship = true
+            if(noRadioBtn.isChecked)
+                isInRelationship = false
+
+
             val maritalStatus = MaritalStatus(
                 loanApplicationId = loanApplicationId!!,
                 borrowerId = if(borrowerId != null) borrowerId else null,
                 firstName = null,
                 middleName = null,
                 lastName = null,
-                isInRelationship = null,
+                isInRelationship = isInRelationship,
                 otherRelationshipExplanation = null,
                 relationFormedStateId = null,
                 relationshipTypeId = null,
@@ -258,7 +277,8 @@ class UnMarriedFragment : BaseFragment() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 binding.loader.visibility = View.VISIBLE
                 coroutineScope {
-                    var counter:Int = 0
+
+
                     commonViewModel.getStates(authToken)
 
                     viewModel.getRelationshipTypes(authToken)
@@ -312,11 +332,11 @@ class UnMarriedFragment : BaseFragment() {
 
                         })
 
-                    viewModel.relationships.observe(viewLifecycleOwner, { relationshipList ->
-                            if (relationshipList != null && relationshipList.size > 0) {
+                    viewModel.relationships.observe(viewLifecycleOwner, { list ->
+                            if (list != null && list.size > 0) {
                                 dataCounter++
                                 val itemList: ArrayList<String> = arrayListOf()
-                                for (item in relationshipList) {
+                                for (item in list) {
                                     itemList.add(item.name)
                                     relationshipTypeList.add(item)
                                 }

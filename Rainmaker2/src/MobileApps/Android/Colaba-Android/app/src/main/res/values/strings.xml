@@ -60,8 +60,9 @@
     <string name="ethnicity">Ethnicity</string>
     <string name="sex">Sex</string>
 
-    <string name="add_current_address">Add Current Address</string>
-    <string name="add_previous_address">Add Previous Address</string>
+    <string name="add_current_address">Add Current Residence</string>
+    <string name="add_previous_address">Add Previous Residence</string>
+    <string name="mailing_address_added">Mailing address has been added</string>
 
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
@@ -316,7 +317,8 @@
 
     <string name="internet_error">Please connect to the network…</string>
 
-    <string name="heading_borrower_info">Primary Borrower</string>
+    <string name="heading_borrower_primary">Primary Borrower</string>
+    <string name="heading_borrower_secondary">Co-Borrower</string>
 
     <string name="expected_date_of_transfer">Expected Date of Transfer</string>
     <string name="date_of_transfer">Date of Transfer</string>
@@ -346,7 +348,7 @@
     <string name="citizenship">Citizenship</string>
     <string name="us_citizen">US Citizen</string>
     <string name="pr_green_card">Permanent Resident Alien (Green Card)</string>
-    <string name="non_pr">Non Permantent Resident Alien</string>
+    <string name="non_pr">Non Permanent Resident Alien</string>
     <string name="visa_status">Visa Status</string>
     <string name="status_details">Status Details</string>
     <string name="current_market_value">Current Market Value</string>
@@ -356,18 +358,20 @@
     <string name="account_type">Account Type</string>
     <string name="asset_type">Asset Type</string>
     <string name="proceeds_from_transaction">Proceeds From Transaction</string>
+    <string name="save_current_residence">Save Current Residence?</string>
+    <string name="save_previous_residence">Save Previous Residence?</string>
 
     <string name="dummy_string_text">Lorem ipsum dolor sit amet, consectetur elit. Quisque, elementum ...</string>
 
     <string name="others">Others</string>
     <string name="dob">Date of Birth</string>
     <string name="social_security_num">Social Security Number</string>
-    <string name="no_of_dependents">No. Of Dependents</string>
+    <string name="no_of_dependents">No. of Dependents</string>
     <string name="add_dependents">Add Dependent</string>
     <string name="military_service">Military Service</string>
-    <string name="service_lastdate">Last date of service/tour</string>
+    <string name="service_lastdate">Last date of service / tour</string>
     <string name="active_duty_personel">Active Duty Personnel</string>
-    <string name="national_guard">Reservce Or National Guard</string>
+    <string name="national_guard">Reserve Or National Guard</string>
     <string name="veteran">Veteran</string>
     <string name="surviving_spouse">Surviving Spouse</string>
     <string name="error_field_required">This field is required.</string>

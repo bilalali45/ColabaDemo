@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.activities.addresses.info.AddressClickListener
 import com.rnsoft.colabademo.databinding.ResidenceItemBinding
+import java.text.DecimalFormat
 import java.util.ArrayList
 
 /**
@@ -18,6 +19,7 @@ class BorrowerAddressAdapter(var context: Context) :
     RecyclerView.Adapter<BorrowerAddressAdapter.AddressViewHolder>() {
 
     var address: List<PreviousAddresses> = arrayListOf()
+    val numberFormatter =  DecimalFormat("#,###,###")
    /* private var clickEvent: AddressClickListener = clickListner
 
     init {
@@ -46,35 +48,7 @@ class BorrowerAddressAdapter(var context: Context) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(address: PreviousAddresses, position: Int) {
-             //val desc =  address.get tion).street + " " + address.unit + "\n" + address.city + " " + address.stateName + " " + address.zipCode + " " + address.countryName
-            ///binding.tvAddress.text = address.addressModel
-            /*if (address.isCurrentAddress){
-                //binding.tvCurrentAddressHeading.setVisibility(View.VISIBLE)
-                address.fromDate?.let {
-                    if(it.length >0) {
-                        binding.tvResidenceDate.text =
-                            "From ".plus(AppSetting.getMonthAndYearValue(it))
-                    }
-                }
 
-                address.monthlyRent?.let {
-                    if(it > 0){
-                        binding.tvHomerent.text = "$".plus(address.monthlyRent.toString())
-                        binding.tvHomerent.setVisibility(View.VISIBLE)
-                    }
-                }
-            } else {
-                binding.tvCurrentAddressHeading.setVisibility(View.GONE)
-                binding.tvHomerent.setVisibility(View.GONE)
-                val fromDate = address.fromDate?.let { AppSetting.getMonthAndYearValue(it) }
-                address.toDate?.let {
-                    if (it.isNotBlank() && it.length > 0) {
-                        val toDate = AppSetting.getMonthAndYearValue(it)
-                        binding.tvResidenceDate.text =
-                            "From ".plus(fromDate).plus(" to ").plus(toDate)
-                    }
-                }
-            } */
             address.addressModel?.let {
                 val builder = StringBuilder()
                 it.street?.let { builder.append(it).append(" ") }
@@ -87,8 +61,9 @@ class BorrowerAddressAdapter(var context: Context) :
 
             address.monthlyRent?.let {
                 if(it > 0) {
-                    //binding.textviewRent.text = "Rent $".plus(Math.round(it).toString())
-                    //bi.textviewRent.visibility = View.VISIBLE
+                    val value: String = numberFormatter.format(Math.round(it))
+                    binding.tvHomerent.text = "Rental $".plus(value)
+                    binding.tvHomerent.visibility = View.VISIBLE
                 }
             }
 
@@ -112,12 +87,9 @@ class BorrowerAddressAdapter(var context: Context) :
         }
     }
 
-
     @SuppressLint("NotifyDataSetChanged")
     fun setTaskList(addressList: ArrayList<PreviousAddresses>){
         address = addressList
         notifyDataSetChanged()
     }
-
-
 }
