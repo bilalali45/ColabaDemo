@@ -44,39 +44,70 @@ class AssignLoanOfficerFragment : BaseFragment() {
         // Pre-call Loan officer service..
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                viewModel.getMcusByRoleId(authToken, filterLoanOfficer = true)
+                //viewModel.getMcusByRoleId(authToken, filterLoanOfficer = true)
             }
         }
         viewModel.getLoanOfficerResponse.observe(viewLifecycleOwner, {
             if (it.code == "200" || it.status.equals("OK", true)) {
                 if (it.loData != null) {
                     val rolesMcus = it.loData.roles[0].mcus
-                    /*
-                    for(item in 0 until layouts.size){
 
-                      layouts[item].visibility = View.VISIBLE
-                      layouts[item].setOnClickListener {
-                          EventBus.getDefault().post(DismissBoxEvent())
-                          EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[item]))
-                      }
-                      Glide.with(requireActivity())
-                          .load(rolesMcus[item].profileimageurl) // Uri of the picture
-                          .circleCrop()
-                          .into(layoutsImageView[item])
-                      layoutsName[item].text = rolesMcus[item].fullName
-                      layoutsDetail[item].text = rolesMcus[item].branchName
-
-
+                    for(i in 0 until rolesMcus.size){
+                        if(i%4==0) {
+                            mainCell = layoutInflater.inflate(R.layout.lo_main_cell_layout, null) as ConstraintLayout
+                            mainCell.first_container.visibility = View.VISIBLE
+                            mainCell.first_container.first_lo_name.text = rolesMcus[i].fullName
+                            mainCell.first_container.first_lo_detail.text = rolesMcus[i].fullName
+                            Glide.with(requireActivity()).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.first_container.first_lo_image)
+                            mainCell.first_container.setOnClickListener {
+                                EventBus.getDefault().post(DismissBoxEvent())
+                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                            }
+                            binding.loParentContainer.addView(mainCell)
+                        }
+                        else
+                        if(i%4==1) {
+                            mainCell.second_container.visibility = View.VISIBLE
+                            mainCell.second_container.second_lo_name.text = rolesMcus[i].fullName
+                            mainCell.second_container.second_lo_detail.text = rolesMcus[i].branchName
+                            Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.second_container.second_lo_image)
+                            mainCell.second_container.setOnClickListener {
+                                EventBus.getDefault().post(DismissBoxEvent())
+                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                            }
+                        }
+                        else
+                        if(i%4==2) {
+                            mainCell.third_container.visibility = View.VISIBLE
+                            mainCell.third_container.third_lo_name.setText(rolesMcus[i].fullName)
+                            mainCell.third_container.third_lo_detail.setText(rolesMcus[i].branchName)
+                            Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.third_container.third_lo_image)
+                            mainCell.third_container.setOnClickListener {
+                                EventBus.getDefault().post(DismissBoxEvent())
+                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                            }
+                        }
+                        else
+                        if(i%4==3) {
+                            mainCell.fourth_container.visibility = View.VISIBLE
+                            mainCell.fourth_container.fourth_lo_name.setText(rolesMcus[i].fullName)
+                            mainCell.fourth_container.fourth_lo_detail.setText(rolesMcus[i].branchName)
+                            Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.fourth_container.fourth_lo_image)
+                            mainCell.fourth_container.setOnClickListener {
+                                EventBus.getDefault().post(DismissBoxEvent())
+                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                            }
+                        }
                     }
 
-                     */
+
                 }
                 else
                     Timber.e("data is null....")
             }
         })
 
-
+        /*
         for (i in 0 until sampleLoList.size) {
 
             val modelData = sampleLoList[i]
@@ -115,6 +146,8 @@ class AssignLoanOfficerFragment : BaseFragment() {
 
         }
         setUpTabs()
+
+         */
     }
 
     private fun setUpTabs() {}

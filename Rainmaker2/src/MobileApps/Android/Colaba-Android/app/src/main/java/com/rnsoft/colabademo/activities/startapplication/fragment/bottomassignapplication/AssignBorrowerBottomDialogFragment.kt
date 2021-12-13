@@ -132,7 +132,7 @@ class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
         navigateToAssignBorrowerScreen()
     }
 
-    fun navigateToAssignBorrowerScreen(){
+    private fun navigateToAssignBorrowerScreen(){
         dismiss()
         findNavController().navigate(R.id.navigateToAssignApplicationToFragment)
     }

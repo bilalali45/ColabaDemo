@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
@@ -25,6 +26,14 @@ class BorrowerOverviewFragment : BaseFragment()  {
         _binding = DetailBorrowerLayoutTwoBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        val detailActivity = (activity as? DetailActivity)
+        detailActivity?.let { detailActivity ->
+            binding.loanPurposeParam.text = detailActivity.borrowerLoanPurpose
+        }
+
+        binding.box1.setOnClickListener{
+            findNavController().navigate(R.id.invitation_primary_borrower_fragment_id, null)
+        }
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
@@ -51,8 +60,12 @@ class BorrowerOverviewFragment : BaseFragment()  {
                         }
                         binding.coBorrowerNames.visibility = View.VISIBLE
                         binding.coBorrowerNames.text = coBorrowerNames.joinToString(separator = ", ")
+                        if(binding.coBorrowerNames.text.toString().isBlank() || binding.coBorrowerNames.text.toString().isBlank())
+                            binding.coBorrowerNames.visibility = View.GONE
                     }
                 }
+                else
+                    binding.coBorrowerNames.visibility = View.GONE
 
                 binding.mainBorrowerName.text = mainBorrowerName
 
@@ -96,32 +109,37 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 if(percentage!=0)
                     binding.percentageTextView.text = "("+percentage.toString()+"%)"
 
-                overviewModel.webBorrowerAddress?.let {
-                    //binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
-                    val builder = StringBuilder()
-                    it.street?.let {
-                        if(it != "null")
-                            builder.append(it).append(" ")
-                    }
-                    it.unit?.let {
-                        if(it != "null")
-                            builder.append(it).append(",")
-                        else
-                            builder.append(",")
-                    } ?: run { builder.append(",") }
-                    it.city?.let {
-                        if(it != "null")
-                            builder.append("\n").append(it).append(",").append(" ")
-                    } ?: run { builder.append("\n") }
-                    it.stateName?.let {
-                        if(it !="null") builder.append(it).append(" ")
-                    }
-                    it.zipCode?.let {
-                        if(it != "null")
-                            builder.append(it)
-                    }
+                if(overviewModel.webBorrowerAddress==null)
+                    binding.noAddressLayout.visibility = View.VISIBLE
+                else {
+                    binding.addressLayout.visibility = View.VISIBLE
+                    overviewModel.webBorrowerAddress.let {
+                        //binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        val builder = StringBuilder()
+                        it.street?.let {
+                            if (it != "null")
+                                builder.append(it).append(" ")
+                        }
+                        it.unit?.let {
+                            if (it != "null")
+                                builder.append(it).append(",")
+                            else
+                                builder.append(",")
+                        } ?: run { builder.append(",") }
+                        it.city?.let {
+                            if (it != "null")
+                                builder.append("\n").append(it).append(",").append(" ")
+                        } ?: run { builder.append("\n") }
+                        it.stateName?.let {
+                            if (it != "null") builder.append(it).append(" ")
+                        }
+                        it.zipCode?.let {
+                            if (it != "null")
+                                builder.append(it)
+                        }
                         binding.completeAddress.text = builder
 
+                    }
                 }
 
                 if(overviewModel.postedOn!=null && !overviewModel.postedOn.equals("null", true)) {
@@ -133,6 +151,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
                     binding.bytesPosted.visibility = View.GONE
                    // binding.bytesTick.visibility = View.GONE
                 }
+
+                if(!binding.bytesPosted.isVisible && !binding.loanId.isVisible)
+                    binding.view7.visibility = View.GONE
             }
             else
                 Log.e("should-stop"," here....")

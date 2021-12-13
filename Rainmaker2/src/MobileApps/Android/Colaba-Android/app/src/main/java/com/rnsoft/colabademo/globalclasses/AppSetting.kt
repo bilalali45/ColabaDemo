@@ -284,7 +284,27 @@ object AppSetting {
         return finalTimeInFormat
     }
 
-    fun getDate(milliSeconds: Long, dateFormat: String?): String {
+
+    fun getAppStatusDateFormat(input: String): String {
+        var receivedTimeString = input
+        receivedTimeString = if (input.contains(":Z"))
+            input.substring(0, input.length - 2).toString()
+        else
+            input.substring(0, input.length - 4)
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.US)
+        val oldDate: Date? = formatter.parse(receivedTimeString)
+        val oldMillis = oldDate?.time
+        var finalTimeInFormat = ""
+
+        oldMillis?.let {
+            finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm")
+        }
+
+        return finalTimeInFormat
+    }
+
+    private fun getDate(milliSeconds: Long, dateFormat: String?): String {
         // Create a DateFormatter object for displaying date in specified format.
         val formatter = SimpleDateFormat(dateFormat)
 

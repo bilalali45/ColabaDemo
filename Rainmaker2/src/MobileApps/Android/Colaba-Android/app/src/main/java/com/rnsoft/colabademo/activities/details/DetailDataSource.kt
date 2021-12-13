@@ -87,5 +87,17 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-
+    suspend fun getMilestoneForLoanCenter(token: String, loanApplicationId: Int): Result<AppMileStoneResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.getMilestoneForLoanCenter(newToken, loanApplicationId)
+            //Log.e("getLoanInfo-", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 }

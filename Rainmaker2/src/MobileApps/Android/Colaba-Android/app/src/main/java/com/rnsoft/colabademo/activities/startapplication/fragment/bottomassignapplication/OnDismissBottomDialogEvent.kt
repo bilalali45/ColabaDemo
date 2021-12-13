@@ -5,3 +5,5 @@ class OnDismissBottomDialogEvent {
 
 class DismissBoxEvent {}
 
+class AllowDuplicateBorrowerEvent{}
+

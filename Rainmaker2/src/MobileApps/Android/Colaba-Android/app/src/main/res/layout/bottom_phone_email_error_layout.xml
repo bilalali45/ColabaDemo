@@ -75,7 +75,7 @@
 
 
             <TextView
-                android:id="@+id/errorInChildSupport"
+                android:id="@+id/borrower_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
@@ -87,7 +87,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView51"
+                android:id="@+id/email_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
@@ -99,7 +99,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/textView55"
+                android:id="@+id/phone_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
@@ -115,9 +115,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/textView55"
-                app:layout_constraintStart_toEndOf="@+id/textView51"
-                app:layout_constraintTop_toTopOf="@+id/textView55"
+                app:layout_constraintEnd_toStartOf="@+id/phone_text_view"
+                app:layout_constraintStart_toEndOf="@+id/email_text_view"
+                app:layout_constraintTop_toTopOf="@+id/phone_text_view"
                 app:srcCompat="@drawable/circle_grey_light" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

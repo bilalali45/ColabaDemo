@@ -591,6 +591,12 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerOverviewModel
 
 
+    @GET("api/mcu/mobile/Milestone/Milestone/GetMilestoneForLoanCenter")
+    suspend fun getMilestoneForLoanCenter(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId")  loanApplicationId:Int):AppMileStoneResponse
+
+
     @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
     suspend fun getBorrowerDocuments(
         @Header("Authorization" )  Authorization:String,

@@ -27,7 +27,12 @@ class DetailRepo  @Inject constructor(
         return detailDataSource.getBorrowerApplicationTabData(token = token , loanApplicationId = loanApplicationId)
     }
 
-     suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String , fileName:String): Response<ResponseBody>? {
+    suspend fun downloadFile(token:String , id:String, requestId:String, docId:String, fileId:String , fileName:String): Response<ResponseBody>? {
         return detailDataSource.downloadFile(token = token , id = id, requestId = requestId, docId = docId, fileId = fileId )
     }
+
+    suspend fun getMilestoneForLoanCenter(token: String, loanApplicationId: Int): Result<AppMileStoneResponse> {
+        return detailDataSource.getMilestoneForLoanCenter(token = token , loanApplicationId = loanApplicationId)
+    }
+
 }

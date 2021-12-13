@@ -71,6 +71,7 @@ object AppConstant {
         const val loanApplicationId:String = "loanApplicationId"
 
         const val loanPurpose:String = "loanPurpose"
+        const val loanPurposeNumber:String = "loanPurposeNumber"
         const val PURPOSE_ID_PURCHASE:Int = 1
         const val PURPOSE_ID_REFINANCE:Int = 2
 

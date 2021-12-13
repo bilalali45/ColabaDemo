@@ -28,6 +28,7 @@
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
 
+    <string name="send_invitation">SEND INVITATION</string>
 
     <string-array name="array_occupancy_type">
         <item>Primary Residence</item>
@@ -525,6 +526,12 @@
     <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
         \nComplete these items as soon as possible so we can continue reviewing your application. \n \n \n \nThanks &amp; Regards, \n John Doe
 
+    </string>
+
+    <string name="invitation_detail">
+        Hi Richard,\n \nLorem ipsum dolor sit amet, consectetur adipiscing elit. In commodo laoreet lectus sit amet vulputate. Ut malesuada arcu eget porttitor laoreet. In commodo dui et tristique consequat. Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat. Mauris blandit velit non velit laoreet efficitur. Integer non arcu sodales, rutrum lectus ac, auctor lectus.
+        Integer in hendrerit arcu, at pellentesque ligula.\n \n https://colaba.com/?=sdjkhdfgn_dsfgdf \n \nIn commodo dui et tristique consequat.
+        Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat.\n \n \n \nThanks &amp; Regards,\nJohn Doe\nLoan Officer
     </string>
 
 </resources>
