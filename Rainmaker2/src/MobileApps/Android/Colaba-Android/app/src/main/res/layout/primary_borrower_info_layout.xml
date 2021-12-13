@@ -91,9 +91,9 @@
                 android:id="@+id/layout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -205,7 +205,7 @@
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
-                        android:maxLength="16"
+                        android:maxLength="20"
                         android:paddingStart="0dp"
                         android:singleLine="true"
                         android:textColor="@color/grey_color_one"
@@ -460,7 +460,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:background="@drawable/search_view_holder_style"
+                    android:background="@drawable/content_bg_with_drop_shadow"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -570,8 +570,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -593,7 +591,7 @@
                     layout="@layout/sublayout_citizenship"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="40dp"
                     android:visibility="visible"
                     android:background="@color/half_white"/>
 
@@ -603,7 +601,9 @@
                     android:id="@+id/layout_date_of_birth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="50dp"
                     android:hint="@string/dob"
                     android:textColorHint="@color/primary_info_label_color"
                     android:visibility="visible"
@@ -641,6 +641,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="25dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:hint="@string/social_security_num"
                     android:textColorHint="@color/primary_info_label_color"
                     android:visibility="visible"
@@ -677,6 +679,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:text="@string/no_of_dependents"
                     android:layout_marginTop="37dp"
                     android:textStyle="bold"
@@ -689,6 +693,8 @@
                     android:id="@+id/tv_dependent_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:text="0"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
@@ -701,17 +707,19 @@
                 <RelativeLayout
                     android:id="@+id/layout_add_dependents"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_dependents"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        android:orientation="vertical"
                         android:descendantFocusability="afterDescendants"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+                        android:orientation="vertical"
+                        android:visibility="visible"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 </RelativeLayout>
@@ -721,6 +729,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:clickable="true"
                     android:gravity="center">
@@ -748,6 +757,8 @@
                     layout="@layout/sub_layout_military"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="200dp"
                     android:background="@color/half_white"

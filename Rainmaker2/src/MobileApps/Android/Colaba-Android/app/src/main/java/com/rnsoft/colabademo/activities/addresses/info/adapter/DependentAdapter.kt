@@ -34,18 +34,19 @@ class DependentAdapter (val mContext : Context, private val items: ArrayList<Dep
 
             if(model.age > 0){
                 itemView.ed_age.setText(model.age.toString())
+                itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))
             }
             itemView.til_dependent.setHint(model.dependent)
 
             itemView.ed_age.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
+                if (hasFocus){
                     itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))
                     itemView.til_dependent.setEndIconDrawable(R.drawable.ic_delete_dependent)
                     //itemView.til_dependent.ed_age.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_delete_dependent,0)
                 }
-                else {
+                else{
                     itemView.til_dependent.setEndIconDrawable(null)
-                    if (itemView.ed_age.text?.length == 0) {
+                    if (itemView.ed_age.text?.length == 0){
                         itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_three))
                     } else {
                         itemView.til_dependent.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(itemView.context,R.color.grey_color_two))

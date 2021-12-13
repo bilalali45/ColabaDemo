@@ -88,7 +88,7 @@ class MarriageDetailFragment : BaseFragment() {
             //Log.e("Owntype 2","else")
             binding.layoutQuestion.visibility = View.GONE // don't ask ques only ask names
             binding.spouseInfoLayout.visibility = View.VISIBLE
-            if (marriage_type.equals(AppConstant.married)) {
+            /*if (marriage_type.equals(AppConstant.married)){
                 binding.layoutFirstName.hint = "Spouse First Name"
                 binding.layoutMiddleName.hint = "Spouse Middle Name"
                 binding.layoutLastName.hint = "Spouse Last Name"
@@ -97,7 +97,10 @@ class MarriageDetailFragment : BaseFragment() {
                 binding.layoutFirstName.hint = "Legal Spouse First Name"
                 binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
                 binding.layoutLastName.hint = "Legal Spouse Last Name"
-            }
+            } */
+            try {
+                setLabels(marriage_type!!)
+            } catch (e:Exception){}
         }
 
 
@@ -216,19 +219,17 @@ class MarriageDetailFragment : BaseFragment() {
                                             }
                                             break
                                         }
-                                        // }
                                     }
                                 }
                             }
 
 
                     } else {
-                        Log.e("Else", "unexpected")
-
+                        //Log.e("Else", "unexpected")
                     }
                 }
             } else {
-                Log.e("marital","Status-null")
+               //Log.e("marital","Status-null")
             }
         } catch (e:Exception){
             Log.e("Exception",e.toString())
@@ -263,11 +264,11 @@ class MarriageDetailFragment : BaseFragment() {
                         }
                     }
                 } catch (e:Exception){
-                    Log.e("exception found","setting co-borrowers")
+                    //Log.e("exception found","setting co-borrowers")
                 }
                 coBorrowerCount = coborrowerList.size
 
-                Log.e("coborrowerList",""+coborrowerList)
+                //Log.e("coborrowerList",""+coborrowerList)
 
 
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
@@ -287,6 +288,19 @@ class MarriageDetailFragment : BaseFragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun setLabels(type: String){
+        if(type.equals(AppConstant.married)){
+            binding.layoutFirstName.hint = "Spouse First Name"
+            binding.layoutMiddleName.hint = "Spouse Middle Name"
+            binding.layoutLastName.hint = "Spouse Last Name"
+        }
+        if (type.equals(AppConstant.separated)) {
+            binding.layoutFirstName.hint = "Legal Spouse First Name"
+            binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
+            binding.layoutLastName.hint = "Legal Spouse Last Name"
         }
     }
 
@@ -339,7 +353,7 @@ class MarriageDetailFragment : BaseFragment() {
                     val coborrowerName : String = binding.tvCoborrower.getText().toString().trim()
                     if(coborrowerName.length > 0 && coborrowerList.size > 0){
                         for(i in coborrowerList.indices){
-                            var name: String =  coborrowerList.get(i).coborrowerFirstName.plus(" ").plus(coborrowerList.get(i).coborrowerLastName)
+                            var name: String =  coborrowerList.get(i).coborrowerFirstName.plus(" ").plus(coborrowerList.get(i).coborrowerLastName).trim()
                             if(name.equals(coborrowerName,true)){
                                 spouseBorrowerId = coborrowerList.get(i).borrowerId // get borrower id coborrower
                                 break

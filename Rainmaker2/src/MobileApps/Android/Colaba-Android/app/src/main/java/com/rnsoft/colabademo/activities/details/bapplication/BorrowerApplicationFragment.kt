@@ -65,7 +65,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
 
 
-
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{

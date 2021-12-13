@@ -48,7 +48,7 @@
             android:fontFamily="@font/rubik_regular"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="Richard Glenn Randall"
+            android:text=""
             android:textColor="@color/grey_color_two"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"

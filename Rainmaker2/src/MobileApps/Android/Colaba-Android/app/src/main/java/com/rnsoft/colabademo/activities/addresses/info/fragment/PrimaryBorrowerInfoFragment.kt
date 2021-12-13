@@ -71,7 +71,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     val listItems = ArrayList<Dependent>()
     lateinit var adapter: BorrowerAddressAdapter
     lateinit var dependentAdapter: DependentAdapter
-    var addressBtnText : String = "Add Previous Residence"
+    //var addressBtnText : String = "Add Previous Residence"
     var reserveEverActivated : Boolean? = null
     var listAddress: ArrayList<PreviousAddresses> = ArrayList()
     private var loanApplicationId: Int? = null
@@ -194,48 +194,73 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                     detail.borrowerData?.borrowerBasicDetails?.let {
                         it.firstName?.let {
-                            bi.edFirstName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutFirstName, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edFirstName.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutFirstName, R.color.grey_color_two, requireContext())
+                            }
                         }
 
                         it.middleName?.let {
-                            bi.edMiddleName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutMiddleName, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edMiddleName.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutMiddleName, R.color.grey_color_two, requireContext())
+                            }
                         }
 
                         it.lastName?.let {
-                            bi.edLastName.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutLastName, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edLastName.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutLastName, R.color.grey_color_two, requireContext())
+                            }
                         }
 
                         it.suffix?.let {
-                            bi.edSuffix.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutSuffix, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edSuffix.setText(it)
+                                CustomMaterialFields.setColor(
+                                    bi.layoutSuffix,
+                                    R.color.grey_color_two,
+                                    requireContext()
+                                )
+                            }
                         }
 
                         it.emailAddress?.let {
-                            bi.edEmail.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutEmail, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null"){
+                                bi.edEmail.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutEmail, R.color.grey_color_two, requireContext())
+                            }
                         }
 
                         it.homePhone?.let {
-                            bi.edHomeNumber.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutHomeNum, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                if (it.isNotEmpty()) {
+                                    bi.edHomeNumber.setText(it)
+                                    CustomMaterialFields.setColor(bi.layoutHomeNum, R.color.grey_color_two, requireContext())
+                                }
+                            }
                         }
 
                         it.workPhone?.let {
-                            bi.edWorkNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutWorkNum, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edWorkNum.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutWorkNum, R.color.grey_color_two, requireContext())
+                            }
+
                         }
 
                         it.workPhoneExt?.let {
-                            bi.edExtNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutExtNum, R.color.grey_color_two, requireContext())
+                            if (it.isNotEmpty() && it != "null") {
+                                bi.edExtNum.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutExtNum, R.color.grey_color_two, requireContext())
+                            }
                         }
 
                         it.cellPhone?.let {
-                            bi.edCellNum.setText(it)
-                            CustomMaterialFields.setColor(bi.layoutCellNum, R.color.grey_color_two, requireContext())
+                            if(it.isNotEmpty() && it !="null") {
+                                bi.edCellNum.setText(it)
+                                CustomMaterialFields.setColor(bi.layoutCellNum, R.color.grey_color_two, requireContext())
+                            }
                         }
                     }
 
@@ -283,9 +308,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         //citizenshipForApi = it
                         it.ssn?.let { ssn ->
                             bi.edSecurityNum.setText(ssn)
+                            CustomMaterialFields.setColor(bi.layoutSecurityNum, R.color.grey_color_two, requireContext())
                         }
                         it.dobUtc?.let { dob ->
                             bi.edDateOfBirth.setText(AppSetting.getFullDate1(dob))
+                            CustomMaterialFields.setColor(bi.layoutDateOfBirth, R.color.grey_color_two, requireContext())
                         }
                         if (it.residencyTypeId == 1)
                             citizenshipBinding.rbUsCitizen.isChecked = true
@@ -364,100 +391,197 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             })
     }
 
-    private fun sendBorrowerData(){
+    private fun sendBorrowerData() {
         // borrower basic details
+        var isDataEntered = true
         val firstName: String = bi.edFirstName.text.toString()
         val lastName: String = bi.edLastName.text.toString()
         val email: String = bi.edEmail.text.toString().trim()
         val homeNum: String = bi.edHomeNumber.text.toString().trim()
 
-        val middleName = if(bi.edMiddleName.text.toString().trim().length >0) bi.edMiddleName.text.toString() else null // get middle name
-        val suffix = if(bi.edSuffix.text.toString().trim().length >0) bi.edSuffix.text.toString() else null  // suffix
-        val workPhoneNumber = if(bi.edWorkNum.text.toString().trim().length >0) bi.edWorkNum.text.toString() else null // work number
-        val workExt = if(bi.edExtNum.text.toString().trim().length >0) bi.edExtNum.text.toString() else null
-        val cellPhone = if(bi.edCellNum.text.toString().trim().length >0) bi.edCellNum.text.toString() else null
+        val middleName = if (bi.edMiddleName.text.toString().trim().length > 0) bi.edMiddleName.text.toString() else null // get middle name
+        val suffix = if (bi.edSuffix.text.toString().trim().length > 0) bi.edSuffix.text.toString() else null  // suffix
+        val workPhoneNumber = if (bi.edWorkNum.text.toString().trim().length > 0) bi.edWorkNum.text.toString() else null // work number
+        val workExt = if (bi.edExtNum.text.toString().trim().length > 0) bi.edExtNum.text.toString() else null
+        val cellPhone = if (bi.edCellNum.text.toString().trim().length > 0) bi.edCellNum.text.toString() else null
 
-       // citizenship
-        var residencyTypeId:Int? = null
-        var residencyStatusId:Int? = null
-        var visaStatusDesc : String? = null
 
-        if(citizenshipBinding.rbUsCitizen.isChecked) {
-            residencyTypeId = 1
-        }
-
-        if(citizenshipBinding.rbPr.isChecked) {
-            residencyTypeId = 2
-        }
-
-        if(citizenshipBinding.rbNonPrOther.isChecked) {
-            residencyTypeId = 3
-        }
-
-        citizenship?.let {
-            residencyStatusId =  it.residencyStatusId
-            visaStatusDesc = it.residencyStatusExplanation
-        }
-
-        // try {
-        val dob = if (bi.edDateOfBirth.text.toString().trim().length > 0) bi.edDateOfBirth.text.toString() else null
-        val securityNum = if (bi.edSecurityNum.text.toString().trim().length > 0) bi.edSecurityNum.text.toString() else null
-        val dependentCount = bi.tvDependentCount.text.toString()
-        val builder = StringBuilder()
-        if (listItems.size > 0) {
-            for (i in 0 until listItems.size) {
-                builder.append(listItems.get(i).age)
-                if (i + 1 < listItems.size) builder.append(",")
+        if (email.isNotEmpty() && email.length > 0){
+            if (!isValidEmailAddress(email.trim())) {
+                setError(bi.layoutEmail, getString(R.string.invalid_email))
+                isDataEntered = false
+            } else {
+                clearError(bi.layoutEmail)
             }
         }
 
-        var dependentAges: String? = null
-        dependentAges = if(builder.toString().length > 0) builder.toString() else null
-
-        citizenshipForApi = BorrowerCitizenship(loanApplicationId= loanApplicationId,
-            borrowerId= if(borrowerId != null) borrowerId else null,residencyTypeId=residencyTypeId,residencyStatusId = residencyStatusId,residencyStatusExplanation=visaStatusDesc,dobUtc=dob,ssn = securityNum,
-            dependentCount = dependentCount.toInt(),dependentAges = dependentAges.toString()
-        )
-
-        // military
-        if(bindingMilitary.chbDutyPersonel.isChecked){
-                militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 4, expirationDateUtc = militaryServiceDate, reserveEverActivated = null))
-        }
-        if (bindingMilitary.chbResNationalGuard.isChecked) {
-            if(reserveEverActivated == null){
-                reserveEverActivated = false
+        if (homeNum.isNotEmpty() && homeNum.isNotBlank()) {
+            if (homeNum.length < 14) {
+                isDataEntered = false
+                setError(bi.layoutHomeNum, getString(R.string.invalid_phone_num))
+            } else {
+                clearError(bi.layoutHomeNum)
             }
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 3, expirationDateUtc = null, reserveEverActivated = reserveEverActivated))
-        }
-        if (bindingMilitary.chbVeteran.isChecked) {
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 2, expirationDateUtc = null, reserveEverActivated = null))
-        }
-        if (bindingMilitary.chbSurvivingSpouse.isChecked) {
-            militaryAffliation.add(MilitaryServiceDetail(militaryAffiliationId = 1, expirationDateUtc = null, reserveEverActivated = null))
         }
 
-        val militaryServiceDetail = MilitaryServiceDetails(details = militaryAffliation,isVaEligible=true)
+        if(!bi.tvDependentCount.text.equals("0")){
 
-        if(maritalStatus == null){
-            maritalStatus = MaritalStatus(loanApplicationId= loanApplicationId!!)
+            var textInputLayout : TextInputLayout
+            for(item in 0 until bi.rvDependents.childCount){
+
+                textInputLayout = bi.rvDependents.layoutManager?.findViewByPosition(item)?.findViewById<TextInputLayout>(R.id.til_dependent)!!
+                var text =  textInputLayout.editText?.text.toString()
+                if(text.isEmpty() || text.isBlank()){
+                    textInputLayout.helperText = getString(R.string.error_field_required)
+                    textInputLayout.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
+                    isDataEntered = false
+
+                } else if(text.length>0){
+                    clearError(textInputLayout)
+                    isDataEntered =true
+                }
+            }
         }
 
-        lifecycleScope.launchWhenStarted{
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                val basicDetails = BorrowerBasicDetails(loanApplicationId=loanApplicationId!!,borrowerId = if(borrowerId != null) borrowerId else null,
-                    firstName = firstName,lastName = lastName,middleName = middleName,suffix = suffix,emailAddress = email,homePhone = homeNum,
-                    workPhone = workPhoneNumber,workPhoneExt = workExt,cellPhone = cellPhone,ownTypeId = ownTypeId
+
+        // citizenship
+        if(isDataEntered) {
+            var residencyTypeId: Int? = null
+            var residencyStatusId: Int? = null
+            var visaStatusDesc: String? = null
+
+            if (citizenshipBinding.rbUsCitizen.isChecked) {
+                residencyTypeId = 1
+            }
+
+            if (citizenshipBinding.rbPr.isChecked) {
+                residencyTypeId = 2
+            }
+
+            if (citizenshipBinding.rbNonPrOther.isChecked) {
+                residencyTypeId = 3
+            }
+
+            citizenship?.let {
+                residencyStatusId = it.residencyStatusId
+                visaStatusDesc = it.residencyStatusExplanation
+            }
+
+            // try {
+            val dob = if (bi.edDateOfBirth.text.toString()
+                    .trim().length > 0
+            ) bi.edDateOfBirth.text.toString() else null
+            val securityNum = if (bi.edSecurityNum.text.toString()
+                    .trim().length > 0
+            ) bi.edSecurityNum.text.toString() else null
+            val dependentCount = bi.tvDependentCount.text.toString()
+            val builder = StringBuilder()
+            if (listItems.size > 0) {
+                for (i in 0 until listItems.size) {
+                    builder.append(listItems.get(i).age)
+                    if (i + 1 < listItems.size) builder.append(",")
+                }
+            }
+
+            var dependentAges: String? = null
+            dependentAges = if (builder.toString().length > 0) builder.toString() else null
+
+            citizenshipForApi = BorrowerCitizenship(
+                loanApplicationId = loanApplicationId,
+                borrowerId = if (borrowerId != null) borrowerId else null,
+                residencyTypeId = residencyTypeId,
+                residencyStatusId = residencyStatusId,
+                residencyStatusExplanation = visaStatusDesc,
+                dobUtc = dob,
+                ssn = securityNum,
+                dependentCount = dependentCount.toInt(),
+                dependentAges = dependentAges.toString()
+            )
+
+            // military
+            if (bindingMilitary.chbDutyPersonel.isChecked) {
+                militaryAffliation.add(
+                    MilitaryServiceDetail(
+                        militaryAffiliationId = 4,
+                        expirationDateUtc = militaryServiceDate,
+                        reserveEverActivated = null
+                    )
                 )
+            }
 
-                //Log.e("currentAddressBeforeApi",""+currentAddressFullDetail)
-                val responseBody = PrimaryBorrowerData(loanApplicationId= loanApplicationId!!, borrowerId= if(borrowerId != null) borrowerId else null,
-                    borrowerBasicDetails = basicDetails,currentAddress = currentAddressFullDetail,previousAddresses = if(listAddress.size > 0) listAddress else null,borrowerCitizenship = citizenshipForApi,
-                    maritalStatus = maritalStatus, militaryServiceDetails = militaryServiceDetail)
+            if (bindingMilitary.chbResNationalGuard.isChecked) {
+                if (reserveEverActivated == null) {
+                    reserveEverActivated = false
+                }
+                militaryAffliation.add(
+                    MilitaryServiceDetail(
+                        militaryAffiliationId = 3,
+                        expirationDateUtc = null,
+                        reserveEverActivated = reserveEverActivated
+                    )
+                )
+            }
 
-                //Log.e("AddResponseBody","$responseBody")
-                viewModel.addUpdateBorrowerInfo(authToken,responseBody)
+            if (bindingMilitary.chbVeteran.isChecked) {
+                militaryAffliation.add(
+                    MilitaryServiceDetail(
+                        militaryAffiliationId = 2,
+                        expirationDateUtc = null,
+                        reserveEverActivated = null
+                    )
+                )
+            }
 
-            /* empty parameter validation
+            if (bindingMilitary.chbSurvivingSpouse.isChecked) {
+                militaryAffliation.add(
+                    MilitaryServiceDetail(
+                        militaryAffiliationId = 1,
+                        expirationDateUtc = null,
+                        reserveEverActivated = null
+                    )
+                )
+            }
+
+            val militaryServiceDetail =
+                MilitaryServiceDetails(details = militaryAffliation, isVaEligible = true)
+
+            if (maritalStatus == null) {
+                maritalStatus = MaritalStatus(loanApplicationId = loanApplicationId!!)
+            }
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    val basicDetails = BorrowerBasicDetails(
+                        loanApplicationId = loanApplicationId!!,
+                        borrowerId = if (borrowerId != null) borrowerId else null,
+                        firstName = firstName,
+                        lastName = lastName,
+                        middleName = middleName,
+                        suffix = suffix,
+                        emailAddress = email,
+                        homePhone = homeNum,
+                        workPhone = workPhoneNumber,
+                        workPhoneExt = workExt,
+                        cellPhone = cellPhone,
+                        ownTypeId = ownTypeId
+                    )
+
+                    //Log.e("currentAddressBeforeApi",""+currentAddressFullDetail)
+                    val responseBody = PrimaryBorrowerData(
+                        loanApplicationId = loanApplicationId!!,
+                        borrowerId = if (borrowerId != null) borrowerId else null,
+                        borrowerBasicDetails = basicDetails,
+                        currentAddress = currentAddressFullDetail,
+                        previousAddresses = if (listAddress.size > 0) listAddress else null,
+                        borrowerCitizenship = citizenshipForApi,
+                        maritalStatus = maritalStatus,
+                        militaryServiceDetails = militaryServiceDetail
+                    )
+
+                    //Log.e("AddResponseBody","$responseBody")
+                    viewModel.addUpdateBorrowerInfo(authToken, responseBody)
+
+                    /* empty parameter validation
                    current and previous address will be null
                   citizenship and marital status all parameters can be null accept loan application id
                   military Serive (details=[], isVaEligible=true)
@@ -465,6 +589,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 }
             }
 
+        }
     }
 
     override fun onResume(){

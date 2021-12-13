@@ -45,6 +45,7 @@ class AddressNotSavingDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentCurrentResidenceBinding.inflate(inflater, container, false)
         setStyle(DialogFragment.STYLE_NORMAL, R.style.roundedBottomSheetDialog)
+        binding.borrowerName.setText(userMessage)
 
         binding.crossImageView.setOnClickListener{
             dismiss()

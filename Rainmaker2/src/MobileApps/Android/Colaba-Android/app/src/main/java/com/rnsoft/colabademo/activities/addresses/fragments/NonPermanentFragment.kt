@@ -38,7 +38,6 @@ class NonPermanentFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = NonPermenantResidentLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -69,7 +68,7 @@ class NonPermanentFragment : BaseFragment() {
                 if(position == visaStatusArray.size-1) {
                     binding.relationshipDetailLayout.visibility = View.VISIBLE
                 }
-               else
+                else
                     binding.relationshipDetailLayout.visibility = View.GONE
             }
         }
@@ -92,6 +91,7 @@ class NonPermanentFragment : BaseFragment() {
 
         setData()
 
+
         super.addListeners(binding.root)
 
         return root
@@ -101,9 +101,10 @@ class NonPermanentFragment : BaseFragment() {
         try {
             if (arguments != null) {
                 citizenship = arguments?.getParcelable(AppConstant.borrower_citizenship)!!
-                citizenship?.let {
+                citizenship?.let { status->
                     //Log.e("OtherFrag","$it")
-                    it.residencyStatusId?.let {
+                    status.residencyStatusId?.let {
+                        binding.visaStatusCompleteView.showDropDown()
                         if(it==4) {
                             binding.visaStatusCompleteView.setText(
                                 "I am a temporary worker (H-2A, etc.)",
@@ -113,20 +114,30 @@ class NonPermanentFragment : BaseFragment() {
                         if(it==3)
                             binding.visaStatusCompleteView.setText("I hold a valid work visa (H1, L1, etc.)",false)
 
-                        if(it==5) {
+                        if(it==5){
                             binding.visaStatusCompleteView.setText("Other", false)
                             binding.relationshipDetailLayout.visibility = View.VISIBLE
+
+                            status.residencyStatusExplanation?.let {
+                                if(it.isNotEmpty() && it.isNotBlank() && it.length >0 ){
+                                    binding.relationshipEditText.setText(it)
+                                    CustomMaterialFields.setColor(binding.relationshipDetailLayout, R.color.grey_color_two, requireActivity())
+                                }
+                            }
                         }
                         CustomMaterialFields.setColor(binding.visaStatusViewLayout, R.color.grey_color_two, requireActivity())
                     }
 
-                    it.residencyStatusExplanation?.let {
+                    /*it.residencyStatusExplanation?.let {
                         if(it.isNotEmpty() && it.isNotBlank() && it.length >0 ){
+
                             binding.relationshipEditText.setText(it)
                             binding.relationshipDetailLayout.visibility = View.VISIBLE
                             CustomMaterialFields.setColor(binding.relationshipDetailLayout, R.color.grey_color_two, requireActivity())
                         }
-                    }
+                    } */
+                } ?: run {
+                    binding.visaStatusCompleteView.showDropDown()
                 }
 
             }
@@ -134,56 +145,60 @@ class NonPermanentFragment : BaseFragment() {
         }
     }
 
-     private fun saveData(){
-         var isDataEntered : Boolean = false
-         val visaStatus = binding.visaStatusCompleteView.text.toString()
-         var desc = binding.relationshipEditText.text.toString()
+    private fun saveData(){
+        var isDataEntered : Boolean = false
+        val visaStatus = binding.visaStatusCompleteView.text.toString()
+        var desc :String? = null
+        desc =  binding.relationshipEditText.text.toString().trim()
 
-         if (visaStatus.isEmpty() || visaStatus.length == 0) {
-             isDataEntered = false
-             CustomMaterialFields.setError(binding.visaStatusViewLayout,getString(R.string.error_field_required), requireActivity())
-         }
+        if (visaStatus.isEmpty() || visaStatus.length == 0) {
+            isDataEntered = false
+            CustomMaterialFields.setError(binding.visaStatusViewLayout,getString(R.string.error_field_required), requireActivity())
+        }
 
-         if (visaStatus.length > 0) {
-             isDataEntered = true
-             CustomMaterialFields.clearError(binding.visaStatusViewLayout, requireActivity())
-         }
+        if (visaStatus.length > 0) {
+            isDataEntered = true
+            CustomMaterialFields.clearError(binding.visaStatusViewLayout, requireActivity())
+        }
 
-         if(binding.relationshipDetailLayout.isVisible){
-             if (desc.isEmpty() || desc.length == 0) {
-                 isDataEntered = false
-                 CustomMaterialFields.setError(binding.relationshipDetailLayout,getString(R.string.error_field_required), requireActivity())
-             }
+        if(binding.relationshipDetailLayout.isVisible){
+            if (desc.isEmpty() || desc.length == 0) {
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.relationshipDetailLayout,getString(R.string.error_field_required), requireActivity())
+            }
 
-             if (desc.length > 0) {
-                 isDataEntered = true
-                 CustomMaterialFields.clearError(binding.relationshipDetailLayout, requireActivity())
-             }
-         }
+            if (desc.length > 0) {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.relationshipDetailLayout, requireActivity())
+            }
+        }
 
-         if(isDataEntered){
-             var statusId: Int? = null
+        if(isDataEntered){
+            var statusId: Int? = null
 
-             if(binding.visaStatusCompleteView.text.toString().equals("I am a temporary worker (H-2A, etc.)")){
-                 statusId = 4
-             }
+            if(binding.visaStatusCompleteView.text.toString().equals("I am a temporary worker (H-2A, etc.)")){
+                statusId = 4
+                desc = "I am a temporary worker (H-2A, etc.)"
+            }
 
-             if(binding.visaStatusCompleteView.text.toString().equals("I hold a valid work visa (H1, L1, etc.)")){
-                 statusId = 3
-             }
+            if(binding.visaStatusCompleteView.text.toString().equals("I hold a valid work visa (H1, L1, etc.)")){
+                statusId = 3
+                desc = "I hold a valid work visa (H1, L1, etc.)"
+            }
 
-             if(binding.visaStatusCompleteView.text.toString().equals("Other")){
-                 statusId = 5
-             }
+            if(binding.visaStatusCompleteView.text.toString().equals("Other")){
+                statusId = 5
+                //desc = if(binding.relationshipEditText.text.toString().length > 0 )
+            }
 
-            desc = if(binding.relationshipEditText.text.toString().length > 0 ) desc else ""
+            //desc = if(binding.relationshipEditText.text.toString().length > 0 ) desc else ""
 
-             citizenship = BorrowerCitizenship(residencyStatusId = statusId,residencyStatusExplanation =  desc)
+            citizenship = BorrowerCitizenship(residencyStatusId = statusId,residencyStatusExplanation =  desc)
 
-             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.borrower_citizenship, citizenship)
-             findNavController().popBackStack()
-         }
-     }
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.borrower_citizenship, citizenship)
+            findNavController().popBackStack()
+        }
+    }
 
 
  }

@@ -21,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.splash_layout)
 
         activityScope.launch {
-            //startActivity(Intent(this@SplashActivity, SubjectPropertyActivity::class.java))
+           // startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
             //  startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
            // redirectToApplicationDetailScreen()
 

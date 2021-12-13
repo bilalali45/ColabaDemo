@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.compose.ui.window.isPopupLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -133,7 +134,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
 
 
         binding.backButton.setOnClickListener {
-            val message = "Are you sure you want to delete Richard's Current Residence?"
+            val message = getString(R.string.save_previous_residence)
             AddressNotSavingDialogFragment.newInstance(message).show(
                 childFragmentManager,
                 AddressNotSavingDialogFragment::class.java.canonicalName
@@ -680,6 +681,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     }
 
     private fun checkValidations() {
+        var isDataEntered = true
         val searchBar: String = binding.topSearchAutoTextView.text.toString()
         val country: String = binding.countryCompleteTextView.text.toString()
         val state: String = binding.stateCompleteTextView.text.toString()
@@ -690,6 +692,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         val moveInDate = binding.moveInEditText.text.toString()
         val moveOutDate = binding.moveOutEditText.text.toString()
         val housingStatus = binding.housingCompleteTextView.text.toString()
+        var monthlyRent = binding.monthlyRentEditText.text.toString()
 
         if (searchBar.isEmpty() || searchBar.length == 0) {
             setError()
@@ -703,46 +706,24 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
         }
 
         if (housingStatus.isEmpty() || housingStatus.length == 0) {
-            CustomMaterialFields.setError(
-                binding.housingLayout,
-                getString(R.string.error_field_required),
-                requireActivity()
-            )
+            CustomMaterialFields.setError(binding.housingLayout, getString(R.string.error_field_required), requireActivity())
         }
 
         if (binding.streetAddressLayout.visibility == View.VISIBLE) {
             if (street.isEmpty() || street.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.streetAddressLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+                CustomMaterialFields.setError(binding.streetAddressLayout, getString(R.string.error_field_required), requireActivity())
             }
             if (city.isEmpty() || city.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.cityLayout,
-                    getString(R.string.error_field_required), requireActivity())
+                CustomMaterialFields.setError(binding.cityLayout, getString(R.string.error_field_required), requireActivity())
             }
             if (zipCode.isEmpty() || zipCode.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.zipcodeLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+                CustomMaterialFields.setError(binding.zipcodeLayout, getString(R.string.error_field_required), requireActivity())
             }
             if (country.isEmpty() || country.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.countryCompleteLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+                CustomMaterialFields.setError(binding.countryCompleteLayout, getString(R.string.error_field_required), requireActivity())
             }
             if (state.isEmpty() || state.length == 0) {
-                CustomMaterialFields.setError(
-                    binding.stateCompleteTextInputLayout,
-                    getString(R.string.error_field_required),
-                    requireActivity()
-                )
+                CustomMaterialFields.setError(binding.stateCompleteTextInputLayout, getString(R.string.error_field_required), requireActivity())
             }
             // clear error
             if (street.isNotEmpty() || street.length > 0) {
@@ -772,65 +753,83 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             }
         }
 
-        if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0  && country.length > 0 && zipCode.length > 0 && housingStatus.length > 0) {
+        if(binding.monthlyRentLayout.isVisible){
+            if(monthlyRent.isEmpty() || monthlyRent.length == 0){
+                isDataEntered = false
+                CustomMaterialFields.setError(binding.monthlyRentLayout,getString(R.string.error_field_required), requireActivity())
+            } else {
+                isDataEntered = true
+                CustomMaterialFields.clearError(binding.monthlyRentLayout,requireActivity())
+            }
+        }
 
-            val unit = if(binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
+        if(isDataEntered) {
+            if (searchBar.length > 0 && street.length > 0 && city.length > 0 && state.length > 0 && country.length > 0 && zipCode.length > 0 && housingStatus.length > 0){
 
-            val countyName : String = binding.countryCompleteTextView.getText().toString().trim()
-            val matchedCounty =  countyFullList.filter { p -> p.name.equals(countyName,true)}
-            val countyId = if(matchedCounty.size > 0)
-                matchedCounty.get(0).id else null
+                val unit =
+                    if (binding.unitAptInputEditText.text.toString().length > 0) binding.unitAptInputEditText.text.toString() else null
 
-            val countryName : String = binding.countryCompleteTextView.getText().toString().trim()
-            val matchedCountry =  countryFullList.filter { p -> p.name.equals(countryName,true)}
-            val countryId = if(matchedCountry.size > 0) matchedCountry.get(0).id else null
+                val countyName: String = binding.countryCompleteTextView.getText().toString().trim()
+                val matchedCounty = countyFullList.filter { p -> p.name.equals(countyName, true) }
+                val countyId = if (matchedCounty.size > 0)
+                    matchedCounty.get(0).id else null
 
-            val stateName : String = binding.stateCompleteTextView.getText().toString().trim()
-            val matchedState =  stateFullList.filter { p -> p.name.equals(stateName,true)}
-            val stateId = if(matchedState.size > 0) matchedState.get(0).id else null
+                val countryName: String =
+                    binding.countryCompleteTextView.getText().toString().trim()
+                val matchedCountry =
+                    countryFullList.filter { p -> p.name.equals(countryName, true) }
+                val countryId = if (matchedCountry.size > 0) matchedCountry.get(0).id else null
 
-            val matchedList =  housingStatusList.filter { p -> p.description.equals(housingStatus,true)}
-            val housingStatusId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).id }.single() else null
+                val stateName: String = binding.stateCompleteTextView.getText().toString().trim()
+                val matchedState = stateFullList.filter { p -> p.name.equals(stateName, true) }
+                val stateId = if (matchedState.size > 0) matchedState.get(0).id else null
 
-            val fromDate = if(moveInDate.length > 0 ) "01/"+moveInDate else null
-            val toDate = if(moveOutDate.length > 0 ) "01/"+moveOutDate else null
+                val matchedList =
+                    housingStatusList.filter { p -> p.description.equals(housingStatus, true) }
+                val housingStatusId =
+                    if (matchedList.size > 0) matchedList.map { matchedList.get(0).id }
+                        .single() else null
 
-            var monthlyRent = binding.monthlyRentEditText.text.toString()
-            monthlyRent = if(monthlyRent.length > 0) monthlyRent.replace(",".toRegex(), "") else "0"
+                val fromDate = if (moveInDate.length > 0) "01/" + moveInDate else null
+                val toDate = if (moveOutDate.length > 0) "01/" + moveOutDate else null
 
-            previousAddressModel = AddressModel(   // current address
-                street = street,
-                unit = unit,
-                city = city,
-                stateName = state,
-                countryName = country,
-                countyName = county,
-                countyId = countyId,
-                stateId = stateId,
-                countryId = countryId,
-                zipCode = zipCode)
+                monthlyRent =
+                    if (monthlyRent.length > 0) monthlyRent.replace(",".toRegex(), "") else "0"
 
-            previousAddressDetail = PreviousAddresses(
-                position = addressPosition,
-                id = addressId,
-                housingStatusId = housingStatusId,
-                addressModel = previousAddressModel,
-                fromDate = fromDate,
-                toDate = toDate,
-                //isMailingAddressDifferent = isMailingAddressDifferent,
-                //mailingAddressModel = mailingAddressModel,
-                monthlyRent = monthlyRent.toDouble())
+                previousAddressModel = AddressModel(   // current address
+                    street = street,
+                    unit = unit,
+                    city = city,
+                    stateName = state,
+                    countryName = country,
+                    countyName = county,
+                    countyId = countyId,
+                    stateId = stateId,
+                    countryId = countryId,
+                    zipCode = zipCode
+                )
 
-            //Log.e("PreviousDetail","$previousAddressDetail")
+                previousAddressDetail = PreviousAddresses(
+                    position = addressPosition,
+                    id = addressId,
+                    housingStatusId = housingStatusId,
+                    addressModel = previousAddressModel,
+                    fromDate = fromDate,
+                    toDate = toDate,
+                    //isMailingAddressDifferent = isMailingAddressDifferent,
+                    //mailingAddressModel = mailingAddressModel,
+                    monthlyRent = monthlyRent.toDouble()
+                )
 
-            viewModel.savePreviousAddress(previousAddressDetail!!)
-            findNavController().popBackStack()
+                //Log.e("PreviousDetail","$previousAddressDetail")
 
-            /*
+                viewModel.savePreviousAddress(previousAddressDetail!!)
+                findNavController().popBackStack()
+
+                /*
                  //findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.previous_address, previousAddressDetail)
-                //findNavController().popBackStack()
-
-            */
+                //findNavController().popBackStack() */
+            }
         }
     }
 
