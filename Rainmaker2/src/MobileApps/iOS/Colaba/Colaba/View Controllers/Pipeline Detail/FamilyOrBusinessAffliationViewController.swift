@@ -11,7 +11,7 @@ protocol FamilyOrBusinessAffliationViewControllerDelegate: AnyObject {
     func getFamilyOrBusinessQuestionModel(question: [String: Any])
 }
 
-class FamilyOrBusinessAffliationViewController: UIViewController {
+class FamilyOrBusinessAffliationViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     

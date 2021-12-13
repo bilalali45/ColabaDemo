@@ -11,7 +11,7 @@ protocol SpouseLinkWithBorrowerlViewControllerDelegate: AnyObject {
     func savePrimaryBorrowerMartialStatus(status: MaritalStatus)
 }
 
-class SpouseLinkWithBorrowerlViewController: UIViewController {
+class SpouseLinkWithBorrowerlViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     @IBOutlet weak var btnBack: UIButton!

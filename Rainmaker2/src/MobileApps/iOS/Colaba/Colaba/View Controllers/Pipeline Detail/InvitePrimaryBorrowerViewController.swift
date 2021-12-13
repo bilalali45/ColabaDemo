@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InvitePrimaryBorrowerViewController: UIViewController {
+class InvitePrimaryBorrowerViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
     
