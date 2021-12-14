@@ -132,6 +132,13 @@
     <string name="was_richard">Was he ever activated during their tour of duty?</string>
     <string name="last_date_of_service">Last date of service / tour</string>
 
+    <string name="set_letter_ondemand">Set Letter On-Demand</string>
+    <string name="letter_on_demand_text">Allow borrowers to generate their own pre-approval letters after setting loan limits below</string>
+    <string name="max_loan_amount">Max Loan Amount</string>
+    <string name="max_down_payment">Max Down Payment</string>
+    <string name="max_expiry_date">Max Expiration Date</string>
+    <string name="max_purchase_price">Max Purchase Price</string>
+
     <string name="test_password">123</string>
     <string name="test_cell">test_cell</string>
 

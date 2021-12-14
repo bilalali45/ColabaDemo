@@ -89,8 +89,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     var lastName : String? = null
     var middleName : String? = null
 
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return if (savedViewInstance != null) {
             savedViewInstance
