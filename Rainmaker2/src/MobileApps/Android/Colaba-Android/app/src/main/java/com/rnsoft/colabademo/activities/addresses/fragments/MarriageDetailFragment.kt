@@ -180,7 +180,7 @@ class MarriageDetailFragment : BaseFragment() {
                                             binding.primaryRelationInfoLayout.visibility =
                                                 View.VISIBLE
                                             list.get(i).firstName?.let { fname ->
-
+                                                binding.layoutQuestion.visibility = View.VISIBLE
                                                 if (marriage_type.equals(AppConstant.married)) {
                                                     binding.tvQuestion.text =
                                                         "Are you married with ".plus(fname)
