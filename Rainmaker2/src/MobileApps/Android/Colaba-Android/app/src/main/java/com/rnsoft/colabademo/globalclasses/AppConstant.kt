@@ -42,6 +42,9 @@ object AppConstant {
 
         const val service_date: String = "service_date"
         const val borrower_citizenship: String = "borrower_citizenship"
+        const val visa_status_other : String = "Other"
+        const val visa_status_temp_worker : String = "I am a temporary worker (H-2A, etc.)"
+        const val visa_status_work_visa : String = "I hold a valid work visa (H1, L1, etc.)"
 
         const val married: String = "Married"
         const val separated: String = "Separated"

@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.compose.ui.text.capitalize
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.SpouseDetailLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import java.lang.Exception
@@ -88,16 +90,6 @@ class MarriageDetailFragment : BaseFragment() {
             //Log.e("Owntype 2","else")
             binding.layoutQuestion.visibility = View.GONE // don't ask ques only ask names
             binding.spouseInfoLayout.visibility = View.VISIBLE
-            /*if (marriage_type.equals(AppConstant.married)){
-                binding.layoutFirstName.hint = "Spouse First Name"
-                binding.layoutMiddleName.hint = "Spouse Middle Name"
-                binding.layoutLastName.hint = "Spouse Last Name"
-            }
-            if (marriage_type.equals(AppConstant.separated)) {
-                binding.layoutFirstName.hint = "Legal Spouse First Name"
-                binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
-                binding.layoutLastName.hint = "Legal Spouse Last Name"
-            } */
             try {
                 setLabels(marriage_type!!)
             } catch (e:Exception){}
@@ -118,7 +110,7 @@ class MarriageDetailFragment : BaseFragment() {
                         if (item.borrowerId == selectedId){
                             binding.yesRadioBtn.isChecked = true
                             binding.tvCoborrower.setText(item.coborrowerFirstName.plus( " ").plus(item.coborrowerLastName), false)
-                            CustomMaterialFields.setColor(binding.layoutCoborrower, R.color.grey_color_two, requireActivity())
+                            setColor(binding.layoutCoborrower)
                             break
                         }
                     }
@@ -126,19 +118,22 @@ class MarriageDetailFragment : BaseFragment() {
                 maritalStatus?.firstName?.let { firstName->
                     binding.noRadioBtn.isChecked = true
                     if(firstName.isNotEmpty() && firstName.isNotBlank()){
-                        binding.etFirstName.setText(firstName)
+                        binding.etFirstName.setText(firstName.capitalize())
+                        setColor(binding.layoutFirstName)
                     }
                 }
                 maritalStatus?.middleName?.let { middleName->
                     binding.noRadioBtn.isChecked = true
                     if(middleName.isNotEmpty() && middleName.isNotBlank()){
-                        binding.etMiddleName.setText(middleName)
+                        binding.etMiddleName.setText(middleName.capitalize())
+                        setColor(binding.layoutMiddleName)
                     }
                 }
                 maritalStatus?.lastName?.let { lastName->
                     binding.noRadioBtn.isChecked = true
                     if(lastName.isNotEmpty() && lastName.isNotBlank()){
-                        binding.etLastName.setText(lastName)
+                        binding.etLastName.setText(lastName.capitalize())
+                        setColor(binding.layoutLastName)
                     }
                 }
 
@@ -157,6 +152,7 @@ class MarriageDetailFragment : BaseFragment() {
                             binding.layoutMiddleName.hint = "Spouse Middle Name"
                             binding.layoutLastName.hint = "Spouse Last Name"
                         }
+
                         if (marriage_type.equals(AppConstant.separated)) {
                             binding.layoutFirstName.hint = "Legal Spouse First Name"
                             binding.layoutMiddleName.hint = "Legal Spouse Middle Name"
@@ -191,39 +187,25 @@ class MarriageDetailFragment : BaseFragment() {
                                                 }
 
 
-                                                binding.etSpouseFirstName.setText(fname)
+                                                binding.etSpouseFirstName.setText(fname.capitalize())
                                                 binding.etSpouseFirstName.isEnabled = false
                                                 binding.etSpouseMiddleName.isEnabled = false
                                                 binding.etSpouseLastName.isEnabled = false
-                                                CustomMaterialFields.setColor(
-                                                    binding.layoutSpouseFirstName,
-                                                    R.color.grey_color_two,
-                                                    requireActivity()
-                                                )
+                                                setColor(binding.layoutSpouseFirstName)
                                             }
                                             list.get(i).middleName?.let { mname ->
-                                                binding.etSpouseMiddleName.setText(mname)
-                                                CustomMaterialFields.setColor(
-                                                    binding.layoutSpouseMiddleName,
-                                                    R.color.grey_color_two,
-                                                    requireActivity()
-                                                )
+                                                binding.etSpouseMiddleName.setText(mname.capitalize())
+                                                setColor(binding.layoutSpouseMiddleName)
                                             }
                                             list.get(i).lastName?.let { lname ->
-                                                binding.etSpouseLastName.setText(lname)
-                                                CustomMaterialFields.setColor(
-                                                    binding.layoutSpouseLastName,
-                                                    R.color.grey_color_two,
-                                                    requireActivity()
-                                                )
+                                                binding.etSpouseLastName.setText(lname.capitalize())
+                                                setColor(binding.layoutSpouseLastName)
                                             }
                                             break
                                         }
                                     }
                                 }
                             }
-
-
                     } else {
                         //Log.e("Else", "unexpected")
                     }
@@ -429,6 +411,10 @@ class MarriageDetailFragment : BaseFragment() {
                 binding.noRadioBtn.setTypeface(null, Typeface.NORMAL)
             }
         }
+    }
+
+    private fun setColor(textInputLayout: TextInputLayout){
+        CustomMaterialFields.setColor(textInputLayout, R.color.grey_color_two, requireActivity())
     }
 
 }

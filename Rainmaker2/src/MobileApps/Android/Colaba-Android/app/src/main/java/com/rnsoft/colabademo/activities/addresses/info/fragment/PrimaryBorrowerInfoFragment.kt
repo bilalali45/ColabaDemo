@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.text.capitalize
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -71,7 +72,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     val listItems = ArrayList<Dependent>()
     lateinit var adapter: BorrowerAddressAdapter
     lateinit var dependentAdapter: DependentAdapter
-    //var addressBtnText : String = "Add Previous Residence"
     var reserveEverActivated : Boolean? = null
     var listAddress: ArrayList<PreviousAddresses> = ArrayList()
     private var loanApplicationId: Int? = null
@@ -84,11 +84,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private var militaryServiceDate : String? =null
     var militaryAffliation: ArrayList<MilitaryServiceDetail> = ArrayList()
     private var isAddCoBorrower: Boolean = false
-   // private var militaryDetails = MilitaryServiceDetails()
     var ownTypeId : Int? =null
     var firstName : String? = null
     var lastName : String? = null
     var middleName : String? = null
+
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -134,13 +134,16 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
             if(ownTypeId == SECONDARY_BORROWER_ID) bi.borrowerType.text= getString(R.string.heading_borrower_secondary) else bi.borrowerType.text= getString(R.string.heading_borrower_primary)
 
-            if(firstName !=null && lastName !=null){
-                var name = firstName.plus(" ").plus(lastName)
-                if(name.isNotEmpty() && name.isNotBlank() && name.length >0){
-                    bi.name.setText(name)
-                    bindingMilitary.tvQues.text = "Was ".plus(name) + " ever activated during their tour of duty?"
+            try {
+                if (firstName != null && lastName != null) {
+                    var name = firstName!!.capitalize().plus(" ").plus(lastName!!.capitalize())
+                    if (name.isNotEmpty() && name.isNotBlank() && name.length > 0) {
+                        bi.name.setText(name)
+                        bindingMilitary.tvQues.text =
+                            "Was ".plus(name) + " ever activated during their tour of duty?"
+                    }
                 }
-            }
+            } catch(e:Exception){}
 
             adapter = BorrowerAddressAdapter(requireActivity())
 
@@ -195,21 +198,21 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     detail.borrowerData?.borrowerBasicDetails?.let {
                         it.firstName?.let {
                             if(it.isNotEmpty() && it !="null") {
-                                bi.edFirstName.setText(it)
+                                bi.edFirstName.setText(it.capitalize())
                                 CustomMaterialFields.setColor(bi.layoutFirstName, R.color.grey_color_two, requireContext())
                             }
                         }
 
                         it.middleName?.let {
                             if(it.isNotEmpty() && it !="null") {
-                                bi.edMiddleName.setText(it)
+                                bi.edMiddleName.setText(it.capitalize())
                                 CustomMaterialFields.setColor(bi.layoutMiddleName, R.color.grey_color_two, requireContext())
                             }
                         }
 
                         it.lastName?.let {
                             if(it.isNotEmpty() && it !="null") {
-                                bi.edLastName.setText(it)
+                                bi.edLastName.setText(it.capitalize())
                                 CustomMaterialFields.setColor(bi.layoutLastName, R.color.grey_color_two, requireContext())
                             }
                         }
@@ -383,7 +386,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     }
 
                 } catch (e: Exception){
-                    Log.e("Exception-InfoFrag",e.toString())
+                    //Log.e("Exception-InfoFrag",e.toString())
                 }
             } // details
 
@@ -827,18 +830,28 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
         }
 
-        // non permanent other
+        // visa status  other
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<BorrowerCitizenship>(AppConstant.borrower_citizenship)?.observe(
             viewLifecycleOwner) { result ->
             result?.let {
-                //citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
-                //citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
-                //citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
                 citizenship = it
-                result.residencyStatusExplanation?.let {
+                result.residencyStatusId?.let {
+                    citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
+                    if(it==5){
+                        citizenshipBinding.visaStatusDesc.setText(AppConstant.visa_status_other)
+                    }
+                    if(it==4){
+                        citizenshipBinding.visaStatusDesc.setText(AppConstant.visa_status_temp_worker)
+                    }
+                    if(it==3){
+                        citizenshipBinding.visaStatusDesc.setText(AppConstant.visa_status_work_visa)
+                    }
+                }
+
+                /*result.residencyStatusExplanation?.let {
                     citizenshipBinding.visaStatusDesc.setText(it)
                     citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
-                }
+                } */
             }
         }
 
@@ -1529,6 +1542,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     view, selectedYear, monthOfYear, dayOfMonth -> bi.edDateOfBirth.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear) },
             year, month, day
         )
+        datePickerDialog.datePicker.maxDate= System.currentTimeMillis()
         datePickerDialog.show()
     }
 

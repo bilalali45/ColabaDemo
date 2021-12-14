@@ -103,19 +103,19 @@ class NonPermanentFragment : BaseFragment() {
                 citizenship = arguments?.getParcelable(AppConstant.borrower_citizenship)!!
                 citizenship?.let { status->
                     //Log.e("OtherFrag","$it")
-                    status.residencyStatusId?.let {
-                        binding.visaStatusCompleteView.showDropDown()
-                        if(it==4) {
-                            binding.visaStatusCompleteView.setText(
-                                "I am a temporary worker (H-2A, etc.)",
-                                false
-                            )
-                        }
-                        if(it==3)
-                            binding.visaStatusCompleteView.setText("I hold a valid work visa (H1, L1, etc.)",false)
+                    status.residencyStatusId?.let { residencyStatusId->
 
-                        if(it==5){
-                            binding.visaStatusCompleteView.setText("Other", false)
+                        if(residencyStatusId == 4) {
+                            binding.visaStatusCompleteView.showDropDown()
+                            binding.visaStatusCompleteView.setText(AppConstant.visa_status_temp_worker, false)
+                        }
+                        if(residencyStatusId == 3) {
+                            binding.visaStatusCompleteView.showDropDown()
+                            binding.visaStatusCompleteView.setText(AppConstant.visa_status_work_visa, false)
+                        }
+
+                        if(residencyStatusId == 5){
+                            binding.visaStatusCompleteView.setText(AppConstant.visa_status_other, false)
                             binding.relationshipDetailLayout.visibility = View.VISIBLE
 
                             status.residencyStatusExplanation?.let {
@@ -176,19 +176,18 @@ class NonPermanentFragment : BaseFragment() {
         if(isDataEntered){
             var statusId: Int? = null
 
-            if(binding.visaStatusCompleteView.text.toString().equals("I am a temporary worker (H-2A, etc.)")){
+            if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_temp_worker)){
                 statusId = 4
-                desc = "I am a temporary worker (H-2A, etc.)"
+                //desc = AppConstant.visa_status_temp_worker
             }
 
-            if(binding.visaStatusCompleteView.text.toString().equals("I hold a valid work visa (H1, L1, etc.)")){
+            if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_work_visa)){
                 statusId = 3
-                desc = "I hold a valid work visa (H1, L1, etc.)"
+               // desc = AppConstant.visa_status_work_visa
             }
 
-            if(binding.visaStatusCompleteView.text.toString().equals("Other")){
+            if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_other)){
                 statusId = 5
-                //desc = if(binding.relationshipEditText.text.toString().length > 0 )
             }
 
             //desc = if(binding.relationshipEditText.text.toString().length > 0 ) desc else ""
