@@ -728,7 +728,7 @@
                     android:id="@+id/add_dependent_click"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:clickable="true"
@@ -745,6 +745,7 @@
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/rubik_medium"
                         android:text="Add Dependent"
+                        android:textStyle="bold"
                         android:textAlignment="center"
                         android:textColor="@color/colaba_apptheme_blue"
                         android:textSize="13sp" />
