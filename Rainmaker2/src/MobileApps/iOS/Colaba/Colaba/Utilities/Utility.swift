@@ -466,6 +466,10 @@ struct Utility {
         return requestDocumentStoryboard.instantiateViewController(withIdentifier: String(describing: TestViewController.self)) as! TestViewController
     }
     
+    static func getPreApprovalLettersVC() -> PreApprovalLettersViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: PreApprovalLettersViewController.self)) as! PreApprovalLettersViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
