@@ -32,7 +32,7 @@ class PreApprovalFragment : BaseFragment(){
         _binding = PreApprovalLayoutBinding.inflate(inflater, container, false)
         rootTestView = binding.root
         val detailActivity = (activity as? DetailActivity)
-
+        detailActivity?.hideFabIcons()
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
