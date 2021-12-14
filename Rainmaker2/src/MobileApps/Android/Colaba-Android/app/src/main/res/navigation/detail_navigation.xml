@@ -41,4 +41,10 @@
         android:label="@string/image_view"
         tools:layout="@layout/invite_primary_borrower_layout" />
 
+    <fragment
+        android:id="@+id/navigation_pre_approval_fragment_id"
+        android:name="com.rnsoft.colabademo.PreApprovalFragment"
+        android:label="@string/image_view"
+        tools:layout="@layout/pre_approval_layout" />
+
 </navigation>

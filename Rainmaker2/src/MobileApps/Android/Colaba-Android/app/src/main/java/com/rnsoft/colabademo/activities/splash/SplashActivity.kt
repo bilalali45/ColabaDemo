@@ -24,9 +24,9 @@ class SplashActivity : AppCompatActivity() {
         activityScope.launch {
            // startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
             //  startActivity(Intent(this@SplashActivity, GovtQuestionActivity::class.java))
-           // redirectToApplicationDetailScreen()
+            redirectToApplicationDetailScreen()
 
-
+            /*
             if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {
@@ -39,6 +39,8 @@ class SplashActivity : AppCompatActivity() {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
             }
+
+             */
 
            finish()
          }
