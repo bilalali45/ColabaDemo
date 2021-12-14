@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,12 +53,32 @@ class PreApprovalFragment : BaseFragment(){
     private fun setupUI(){
         CustomMaterialFields.setDollarPrefix(binding.layoutLoanAmount,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.downPaymentAmount,requireContext())
-        binding.dateOfTransferEditText.onFocusChangeListener = CustomFocusListenerForEditText(
-            binding.dateOfTransferEditText,
-            binding.layoutTransferDate,
-            requireContext()
-        )
+        binding.dateOfTransferEditText.onFocusChangeListener = CustomFocusListenerForEditText(binding.dateOfTransferEditText, binding.layoutTransferDate, requireContext())
         binding.dateOfTransferEditText.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
+
+        binding.checkBoxLoanType.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+               binding.layoutLoanType.visibility = View.VISIBLE
+            } else
+                binding.layoutLoanType.visibility = View.GONE
+
+        }
+
+        binding.checkboxPropertyType.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.layoutPropertyType.visibility = View.VISIBLE
+            } else
+                binding.layoutPropertyType.visibility = View.GONE
+
+        }
+
+        binding.checkboxPropertyLocation.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.layoutPropertyLocation.visibility = View.VISIBLE
+            } else
+                binding.layoutPropertyLocation.visibility = View.GONE
+
+        }
     }
 
     private fun openCalendar(){

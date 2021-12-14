@@ -58,22 +58,18 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-
         android:fillViewport="true"
         android:isScrollContainer="false"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container"
-
-        >
+        app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="100dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,12 +82,10 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-
                 android:text="@string/send_the_borrower"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_loan_amount"
@@ -259,9 +253,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-
                 android:background="@drawable/content_background_full_white"
-                android:paddingEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView51">
@@ -294,7 +286,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
-
             <TextView
                 android:id="@+id/textView54"
                 android:layout_width="wrap_content"
@@ -320,21 +311,18 @@
                 app:layout_constraintStart_toStartOf="@+id/textView54"
                 app:layout_constraintTop_toBottomOf="@+id/textView54" />
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout5"
                 android:layout_width="match_parent"
-                android:layout_height="111dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/content_background_full_white"
-
                 android:padding="20dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView34">
-
 
                 <TextView
                     android:id="@+id/textView55"
@@ -348,10 +336,9 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/loan_type_check_box"
+                    android:id="@+id/check_box_loan_type"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     android:fontFamily="@font/rubik_regular"
                     android:layoutDirection="rtl"
                     android:text=""
@@ -363,27 +350,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView55" />
 
+                <LinearLayout
+                    android:id="@+id/layout_loan_type"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView55" >
+
                 <View
                     android:id="@+id/view8"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/loan_view_holder_separator"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    android:background="@color/loan_view_holder_separator" />
 
                 <TextView
                     android:id="@+id/textView56"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Conventional"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textSize="15sp" />
+
+                </LinearLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -392,7 +387,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout6"
                 android:layout_width="match_parent"
-                android:layout_height="111dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/content_background_full_white"
@@ -401,7 +396,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout5">
-
 
                 <TextView
                     android:id="@+id/textView58"
@@ -415,10 +409,9 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/loan_type_check_box2"
+                    android:id="@+id/checkbox_property_type"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-
                     android:fontFamily="@font/rubik_regular"
                     android:layoutDirection="rtl"
                     android:text=""
@@ -428,37 +421,140 @@
                     app:buttonCompat="@drawable/cb_selector"
                     app:layout_constraintBottom_toBottomOf="@+id/textView58"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView58" />
+                    app:layout_constraintTop_toTopOf="@+id/textView58"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_property_type"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView58">
 
                 <View
                     android:id="@+id/view9"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/loan_view_holder_separator"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
+                    android:background="@color/loan_view_holder_separator" />
 
                 <TextView
                     android:id="@+id/textView57"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="Single Family Property"
                     android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:textSize="15sp" />
 
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/content_background_full_white"
+                android:layout_marginTop="30dp"
+                android:padding="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout6">
+
+                <TextView
+                    android:id="@+id/tv_property_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="Property Location"
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/checkbox_property_location"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:layoutDirection="rtl"
+                    android:text=""
+                    android:textColor="@color/grey_color_one"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:buttonCompat="@drawable/cb_selector"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_property_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_property_location"/>
+
+                <LinearLayout
+                    android:id="@+id/layout_property_location"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_property_location">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/loan_view_holder_separator" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="State"
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Taxas"
+                        android:textColor="@color/grey_color_one"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="County"
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Anderson"
+                        android:textColor="@color/grey_color_one"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
