@@ -65,7 +65,6 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
 
 
-
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{
@@ -250,12 +249,12 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
             intent.putExtra(AppConstant.firstName, borrowerInfoList.get(position).firstName)
             intent.putExtra(AppConstant.lastName, borrowerInfoList.get(position).lastName)
             intent.putExtra(AppConstant.middleName, borrowerInfoList.get(position).middleName)
-            //Log.e("size",""+borrowerInfoList)
+            //Log.e("Application-Frag",""+borrowerInfoList.get(position).isFooter)
             startActivity(intent)
         }
     }
 
-    override fun onRealEstateClick(position: Int) {
+    override fun onRealEstateClick(position: Int){
 
         val detailActivity = (activity as? DetailActivity)
         detailActivity?.let {
@@ -429,6 +428,8 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     borrowerInfoAdapter =
                         CustomBorrowerAdapter(borrowerInfoList, this@BorrowerApplicationFragment)
                     horizontalRecyclerView.adapter = borrowerInfoAdapter
+                    Log.e("Application Frag",""+ borrowerInfoList)
+
                     borrowerInfoAdapter.notifyDataSetChanged()
 
 
@@ -468,23 +469,17 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
 
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
-
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
         super.onActivityResult(requestCode, resultCode, data)
         if(resultCode == Activity.RESULT_OK && requestCode == 200) {
             Log.d("TAG", "${data.toString()}")
         }
-
     }
-
-
-
-
 
 }
 

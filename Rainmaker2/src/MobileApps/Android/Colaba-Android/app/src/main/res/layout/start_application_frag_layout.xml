@@ -233,7 +233,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerview_contacts"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/layout_style_flat_top"
@@ -565,7 +565,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:paddingEnd="16dp"
-                        android:background="@drawable/content_background_fullwhite">
+                        android:background="@drawable/content_background_full_white">
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/btn_pre_approval"
                             android:text="Pre-Approval"
@@ -593,7 +593,7 @@
                         android:layout_height="48dp"
                         android:paddingEnd="16dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/content_background_fullwhite">
+                        android:background="@drawable/content_background_full_white">
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/btn_property_under_cont"
                         android:text=" Property Under Contract"
@@ -630,7 +630,7 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:background="@drawable/content_background_fullwhite"
+                        android:background="@drawable/content_background_full_white"
                         android:paddingEnd="16dp">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
@@ -660,7 +660,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/content_background_fullwhite"
+                        android:background="@drawable/content_background_full_white"
                         android:paddingEnd="16dp">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
@@ -688,7 +688,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/content_background_fullwhite"
+                        android:background="@drawable/content_background_full_white"
                         android:paddingEnd="16dp">
 
                         <androidx.appcompat.widget.AppCompatRadioButton
@@ -728,7 +728,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="25dp"
-                android:background="@drawable/content_background_fullwhite"
+                android:background="@drawable/content_background_full_white"
                 android:clickable="true"
                 android:gravity="start|center">
 
@@ -756,7 +756,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/content_background_fullwhite"
+                android:background="@drawable/content_background_full_white"
                 android:clickable="true"
                 android:gravity="start|center"
                 android:padding="16dp"
@@ -831,6 +831,23 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <ProgressBar
+        android:id="@+id/new_app_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="2dp"
+        android:foregroundGravity="center"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colaba_apptheme_blue"
+        android:indeterminateTintMode="src_atop"
+        android:translationX="2dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -15,6 +15,15 @@ object AppConstant {
 
         //const val  LOGIN_NAME:String = "khatri03.mcu@mailinator.com"
         //const val  PASSWORD:String = "test123"
+
+
+        const val MARITAL_STATUS_MARRIED: Int = 1
+        const val MARITAL_STATUS_SEPARATED: Int = 2
+        const val MARITAL_STATUS_UNMARRIED: Int = 9
+
+        const val PRIMARY_BORROWER_ID: Int = 1
+        const val SECONDARY_BORROWER_ID: Int = 2
+
         const val real_estate_delete_text: String = "Are you sure you want to delete this property?"
         const val income_borrowerId: String = "income-borrower-id"
         const val income_update: String = "income-update"
@@ -26,10 +35,16 @@ object AppConstant {
         const val income_other: String = "Other"
 
         const val previous_address: String = "prev_address"
+        const val add_previous_address: String = "add_prev_address"
+        const val delete_previous_address: String = "delete_prev_address"
+        const val delete_mailing_address: String = "delete_mailing_address"
         const val owntypeid: String = "owntype_id"
 
         const val service_date: String = "service_date"
         const val borrower_citizenship: String = "borrower_citizenship"
+        const val visa_status_other : String = "Other"
+        const val visa_status_temp_worker : String = "I am a temporary worker (H-2A, etc.)"
+        const val visa_status_work_visa : String = "I hold a valid work visa (H1, L1, etc.)"
 
         const val married: String = "Married"
         const val separated: String = "Separated"

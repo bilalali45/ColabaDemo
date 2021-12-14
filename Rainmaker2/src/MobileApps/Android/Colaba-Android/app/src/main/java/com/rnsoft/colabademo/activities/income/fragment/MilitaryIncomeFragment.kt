@@ -287,7 +287,7 @@ class  MilitaryIncomeFragment : BaseFragment(), View.OnClickListener {
                             loanApplicationId = loanApplicationId,borrowerId= borrowerId, employerName = empName, jobTitle= jobTitle,yearsInProfession= profYears.toInt(),
                             startDate=startDate,monthlyBaseSalary= newBaseSalary?.toDouble(),address = militaryAddress,id=incomeInfoId,militaryEntitlements = newEntitlement?.toDouble())
 
-                        Log.e("businessDate-snding to API", "" + data)
+                       // Log.e("businessDate-snding to API", "" + data)
 
                         binding.loaderMilitary.visibility = View.VISIBLE
                         viewModel.sendMilitaryIncomeData (authToken,data)

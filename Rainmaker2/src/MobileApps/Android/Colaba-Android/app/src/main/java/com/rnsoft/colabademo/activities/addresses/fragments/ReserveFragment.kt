@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.text.capitalize
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -45,14 +46,15 @@ class ReserveFragment : BaseFragment() {
             lastName = it
         }
 
-        if(firstName !=null && lastName !=null){
-            var name = firstName.plus(" ").plus(lastName)
-            if(name.isNotEmpty() && name.isNotBlank() && name.length >0) {
-                binding.borrowerName.setText(name)
-                binding.tvQues.text =
-                    "Was ".plus(name) + " ever activated during their tour of duty?"
+        try {
+            if (firstName != null && lastName != null) {
+                val name = firstName!!.capitalize().plus(" ").plus(lastName!!.capitalize())
+                if (name.isNotEmpty() && name.isNotBlank() && name.length > 0) {
+                    binding.borrowerName.setText(name)
+                    binding.tvQues.text = "Was ".plus(name) + " ever activated during their tour of duty?"
+                }
             }
-        }
+        } catch (e:Exception){}
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

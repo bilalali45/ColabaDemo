@@ -187,7 +187,7 @@ object AppSetting {
         var finalTimeInFormat = ""
          oldMillis?.let {
              if(isReturnFormatSlash)
-                 finalTimeInFormat = getDate(oldMillis, "MM / yyyy")
+                 finalTimeInFormat = getDate(oldMillis, "MM/yyyy")
              else
                 finalTimeInFormat = getDate(oldMillis, "MM-yyyy")
         }
@@ -206,13 +206,13 @@ object AppSetting {
     }
 
     fun reverseDateFormat(dateString : String) : String{
-        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-        val oldDate: Date? = formatter.parse(dateString)
+        var input = dateString.replace(" ", "")
+        val formatter = SimpleDateFormat("dd/MM/yyyy")
+        val oldDate: Date? = formatter.parse(input)
         val postFormater = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val newDateStr = postFormater.format(oldDate)
 
         return newDateStr
-
     }
 
     fun returnLongTimeNow(input: String): String {

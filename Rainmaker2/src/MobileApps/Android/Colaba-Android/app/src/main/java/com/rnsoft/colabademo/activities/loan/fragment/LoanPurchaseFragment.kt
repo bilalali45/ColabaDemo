@@ -38,7 +38,7 @@ import javax.inject.Inject
  * Created by Anita Kiran on 9/3/2021.
  */
 @AndroidEntryPoint
-class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener{
+class LoanPurchaseFragment : BaseFragment(), DatePickerDialog.OnDateSetListener{
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -60,14 +60,13 @@ class LoanPurchaseFragment : BaseFragment() , DatePickerDialog.OnDateSetListener
         bindingToolbar = binding.headerLoanPurchase
 
       val test = activity as BorrowerLoanActivity
-        test.let{
+      test.let{
             loanApplicationId = it.loanApplicationId
         }
 
-        initViews()
-        setCalulations()
-        setLoanStages()
-
+      initViews()
+      setCalulations()
+      setLoanStages()
         super.addListeners(binding.root)
         return binding.root
     }

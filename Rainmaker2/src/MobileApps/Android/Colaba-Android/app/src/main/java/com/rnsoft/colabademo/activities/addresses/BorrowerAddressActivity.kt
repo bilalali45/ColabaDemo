@@ -37,7 +37,7 @@ class BorrowerAddressActivity : BaseActivity() {
     var lastName:String ? = null
     var middleName:String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?){
 
         try {
             val extras = intent.extras
@@ -50,12 +50,13 @@ class BorrowerAddressActivity : BaseActivity() {
                 firstName = it.getString(AppConstant.firstName)
                 lastName = it.getString(AppConstant.lastName)
                 middleName = it.getString(AppConstant.middleName)
-                //Log.e("coborrower list", "" + borrowerInfoList.size)
+
+                //Log.e("coborrower list", "" + borrowerInfoList)
                 //Log.e("owntypeId","borrowerId: " + borrowerId + "OwnTypeId: " + ownTypeId)
                 //Log.e("firstName",firstName+ "lastname: " + lastName)
             }
         } catch (e:Exception){
-
+            Log.e("Exception","Primary Activity")
         }
 
         super.onCreate(savedInstanceState)

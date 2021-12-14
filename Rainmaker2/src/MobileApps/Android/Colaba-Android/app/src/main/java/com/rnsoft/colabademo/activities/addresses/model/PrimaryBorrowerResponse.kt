@@ -20,11 +20,11 @@ data class PrimaryBorrowerData(
     val currentAddress: CurrentAddress?,
     val maritalStatus: MaritalStatus?,
     val militaryServiceDetails: MilitaryServiceDetails? = null,
-    val previousAddresses: List<PreviousAddresses>?
+    val previousAddresses: List<PreviousAddresses>? = null
 )
 
 data class BorrowerBasicDetails(
-    val borrowerId: Int,
+    val borrowerId: Int?,
     val loanApplicationId: Int,
     val cellPhone: String?,
     val emailAddress: String?,
@@ -50,6 +50,21 @@ data class BorrowerCitizenship(
     val residencyTypeId: Int? = null,
     val ssn: String? = null
 ) : Parcelable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @Parcelize
 data class CurrentAddress(
@@ -94,26 +109,26 @@ data class AddressModel(
 
 @Parcelize
 data class MaritalStatus(
-    val loanApplicationId: Int,
+    val loanApplicationId: Int? = null,
     val borrowerId: Int? = null,
-    val maritalStatusId: Int?,
-    val firstName: String?,
-    val middleName: String?,
-    val lastName: String?,
+    val maritalStatusId: Int?=null,
+    val firstName: String?=null,
+    val middleName: String?=null,
+    val lastName: String?= null,
     val relationWithPrimaryId: Int? = null,
-    val isInRelationship: Boolean?,
-    val otherRelationshipExplanation: String?,
-    val relationFormedStateId: Int?,
-    val relationshipTypeId: Int?,
-    val spouseBorrowerId: Int?,
-    val spouseLoanContactId: Int?,
+    val isInRelationship: Boolean?=null,
+    val otherRelationshipExplanation: String?=null,
+    val relationFormedStateId: Int?=null,
+    val relationshipTypeId: Int? = null,
+    val spouseBorrowerId: Int? = null,
+    val spouseLoanContactId: Int?= null,
     val spouseMaritalStatusId: Int? = null
 ) : Parcelable
 
 
 data class MilitaryServiceDetails(
-    val details: List<MilitaryServiceDetail>?,
-    val isVaEligible: Boolean?
+    val details: List<MilitaryServiceDetail>? = null,
+    val isVaEligible: Boolean? = null
 )
 
 data class MilitaryServiceDetail(

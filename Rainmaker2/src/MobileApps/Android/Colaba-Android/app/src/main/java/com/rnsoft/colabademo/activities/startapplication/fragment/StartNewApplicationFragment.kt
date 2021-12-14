@@ -1,10 +1,12 @@
 package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -247,6 +249,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 searchList = arrayListOf()
                 adapter.showResult(searchList, binding.searchEdittext.text.toString())
                 binding.recyclerviewContacts.adapter = adapter
+
+
                 binding.layoutFindContact.visibility = View.VISIBLE
                 binding.recyclerviewContacts.visibility = View.INVISIBLE
                 binding.layoutEditText.setBackgroundResource(R.drawable.edittext_search_contact_style)
@@ -258,6 +262,17 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         viewModel.searchResultResponse.observe(viewLifecycleOwner, {
             searchList = it
+            val params: ViewGroup.LayoutParams =  binding.recyclerviewContacts.layoutParams
+            if(searchList.size>3)
+                params.height = convertDpToPixel(300F, requireContext())
+            else
+            if(searchList.size in 2..2)
+                params.height = convertDpToPixel(200F, requireContext())
+            else
+            if(searchList.size in 1..1)
+                params.height = convertDpToPixel(120F, requireContext())
+
+            binding.recyclerviewContacts.setLayoutParams(params)
             adapter.showResult(searchList, binding.searchEdittext.text.toString())
             binding.recyclerviewContacts.adapter = adapter
             binding.layoutFindContact.visibility = View.VISIBLE
@@ -273,8 +288,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.btnCreateApplication.setOnClickListener {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    if(isFindContactSelected)
+                        createNewApplicationMethod()
+                    else
                     if(emailPhoneValidated()) {
                         createNewApplicationParams.EmailAddress?.let { email ->
+                            binding.newAppLoader.visibility = View.VISIBLE
                             viewModel.lookUpBorrowerContact(authToken, email, createNewApplicationParams.MobileNumber)
                         }
                     }
@@ -284,6 +303,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         viewModel.lookUpBorrowerContactResponse.observe(viewLifecycleOwner, {
             Timber.e("At least in look up observer....")
+            binding.newAppLoader.visibility = View.GONE
             if(it.code == "200" || it.status.equals("OK", true)) {
                 Timber.e("At least code is = 200....")
                 if (it.borrowerData != null) {
@@ -295,18 +315,13 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                     ).show(childFragmentManager, BottomEmailPhoneErrorFragment::class.java.canonicalName)
                 }
                 else
-                {
-                    lifecycleScope.launchWhenStarted {
-                        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                            viewModel.createApplication(authToken, createNewApplicationParams)
-                        }
-                    }
-                }
+                    createNewApplicationMethod()
             }
         })
 
         viewModel.createNewAppResponse.observe(viewLifecycleOwner, {
             Timber.e("At least in look up observer....")
+            binding.newAppLoader.visibility = View.GONE
             if(it.code == "200" || it.status.equals("OK", true)) {
                 startDetailActivity(it)
             }
@@ -322,11 +337,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
 
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
@@ -372,6 +382,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             viewModel.setCreateNewParams(createNewApplicationParams)
 
              */
+            if (binding.edEmail.text?.length!! >5 && isValidEmailAddress(binding.edEmail.text.toString().trim())) {
+                createNewApplicationParams.EmailAddress = binding.edEmail.text.toString().trim()
+                //CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
+                viewModel.setCreateNewParams(createNewApplicationParams)
+            }
+
 
         }
 
@@ -390,6 +406,10 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             viewModel.setCreateNewParams(createNewApplicationParams)
         }
 
+    }
+
+    fun convertDpToPixel(dp: Float, context: Context): Int {
+        return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
 
 
@@ -435,10 +455,16 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         requireActivity().finish()
     }
 
+    private fun convertPixelsToDp(px: Float, context: Context): Int {
+        return (px / (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
+    }
+
     override fun onItemClick(position: Int) {
         binding.searchedContactName.text = searchList[position].firstName
         binding.searchedContactEmail.text = searchList[position].emailAddress
         binding.searchedContactPhone.text = searchList[position].mobileNumber
+
+        HideSoftkeyboard.hide(requireContext(), binding.searchedContactEmail)
 
         createNewApplicationParams.let {
             it.FirstName = searchList[position].firstName
@@ -456,6 +482,15 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.layoutEditText.setBackgroundResource(R.drawable.layout_style_flat_bottom)
 
         // searchList.clear()
+    }
+
+    private fun createNewApplicationMethod(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                binding.newAppLoader.visibility = View.VISIBLE
+                viewModel.createApplication(authToken, createNewApplicationParams)
+            }
+        }
     }
 
     private fun setLabelFocus(){
