@@ -479,7 +479,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="20dp"
-                android:background="@drawable/content_background_fullwhite"
+                android:background="@drawable/content_background_full_white"
                 android:clickable="true"
                 android:gravity="start|center">
 

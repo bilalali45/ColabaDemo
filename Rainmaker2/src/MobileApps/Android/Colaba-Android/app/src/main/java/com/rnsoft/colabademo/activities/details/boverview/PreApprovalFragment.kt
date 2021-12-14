@@ -32,7 +32,7 @@ class PreApprovalFragment : BaseFragment(){
         _binding = PreApprovalLayoutBinding.inflate(inflater, container, false)
         rootTestView = binding.root
         val detailActivity = (activity as? DetailActivity)
-
+        detailActivity?.hideFabIcons()
         binding.backButton.setOnClickListener{
             findNavController().popBackStack()
         }
@@ -65,12 +65,13 @@ class PreApprovalFragment : BaseFragment(){
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
-        val dpd = DatePickerDialog(requireActivity(), { _, year, _, dayOfMonth ->
-            val dateOfTransferString = "$newMonth-$dayOfMonth-$year"
-            binding.dateOfTransferEditText.setText(dateOfTransferString)
-        }, year, month, day)
-        dpd.show()
+        // New Style Calendar Added....
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle, {
+                    view, selectedYear, monthOfYear, dayOfMonth -> binding.dateOfTransferEditText.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear) },
+            year, month, day
+        )
+        datePickerDialog.show()
     }
 
 }
