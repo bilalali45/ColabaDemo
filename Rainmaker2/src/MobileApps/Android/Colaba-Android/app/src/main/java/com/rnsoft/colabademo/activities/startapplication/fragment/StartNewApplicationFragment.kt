@@ -382,9 +382,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             viewModel.setCreateNewParams(createNewApplicationParams)
 
              */
-            if (binding.edEmail.text?.length!! >5 && !isValidEmailAddress(binding.edEmail.text.toString().trim())) {
-                createNewApplicationParams.EmailAddress = null
-                CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
+            if (binding.edEmail.text?.length!! >5 && isValidEmailAddress(binding.edEmail.text.toString().trim())) {
+                createNewApplicationParams.EmailAddress = binding.edEmail.text.toString().trim()
+                //CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
                 viewModel.setCreateNewParams(createNewApplicationParams)
             }
 
