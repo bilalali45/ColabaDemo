@@ -32,7 +32,8 @@ class BorrowerOverviewFragment : BaseFragment()  {
         }
 
         binding.box1.setOnClickListener{
-            findNavController().navigate(R.id.invitation_primary_borrower_fragment_id, null)
+            //findNavController().navigate(R.id.invitation_primary_borrower_fragment_id, null)
+            findNavController().navigate(R.id.navigation_pre_approval_fragment_id, null)
         }
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->

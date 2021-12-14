@@ -473,15 +473,10 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
         val newMonth = month + 1
-
-
-
         val dpd = DatePickerDialog(requireActivity(), { _, year, _, dayOfMonth ->
             val dateOfTransferString = "$newMonth-$dayOfMonth-$year"
             binding.dateOfTransferEditText.setText(dateOfTransferString)
                                                       }, year, month, day)
-
         dpd.show()
-
     }
 }
