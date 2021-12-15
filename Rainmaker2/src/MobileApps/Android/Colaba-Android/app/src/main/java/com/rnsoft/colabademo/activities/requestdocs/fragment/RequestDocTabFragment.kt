@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -37,7 +39,6 @@ class RequestDocsTabFragment : BaseFragment() {
 
         _binding = RequestDocsTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
 
         viewPager = binding.reqDocsViewPager
         tabLayout = binding.reqDocsTabLayout
@@ -74,8 +75,6 @@ class RequestDocsTabFragment : BaseFragment() {
         })
         TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = docsTypeTabArray[position] }.attach()
 
-
-
         binding.backButton.setOnClickListener {
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
@@ -92,9 +91,22 @@ class RequestDocsTabFragment : BaseFragment() {
 
         super.addListeners(binding.root)
 
-
+        loadDocsRequestWebServices()
 
         return root
+    }
+
+    private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
+
+    private fun loadDocsRequestWebServices(){
+        lifecycleScope.launchWhenStarted {
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                requestDocsViewModel.getTemplates(token = authToken)
+                //requestDocsViewModel.getCategoryDocumentMcu(token = authToken)
+                //requestDocsViewModel.getEmailTemplates(token = authToken)
+            }
+        }
+        //observeInSearchCase()
     }
 
 

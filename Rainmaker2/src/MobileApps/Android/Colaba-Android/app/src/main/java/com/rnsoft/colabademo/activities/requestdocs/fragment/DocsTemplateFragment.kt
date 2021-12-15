@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
@@ -21,7 +22,7 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
     private var _binding: DocsTemplateLayoutBinding? = null
     private val binding get() = _binding!!
 
-
+    private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -40,74 +41,71 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
     private fun setUpUI(){
 
-        val sampleDocs = getSampleDocsTemplate()
-        for (i in 0 until sampleDocs.size) {
+        requestDocsViewModel.getTemplatesResponse.observe(viewLifecycleOwner, { templatesList ->
+            templatesList?.let {
+                for (i in 0 until it.size) {
 
-            val modelData = sampleDocs[i]
+                    val modelData = it[i]
+                    val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
+                    val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
+                    topCell.cell_header_title.text = modelData.type
+                    //topCell.total_selected.text = modelData.totalSelected
 
-            val mainCell: LinearLayoutCompat =
-                layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
-
-
-
-            val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
-            topCell.cell_header_title.text =  modelData.headerTitle
-            topCell.total_selected.text = modelData.totalSelected
-
-            // always hide this...
-            topCell.total_selected.visibility = View.GONE
-            topCell.items_selected_imageview.visibility = View.GONE
-            topCell.tag = R.string.docs_top_cell
-            mainCell.addView(topCell)
+                     topCell.total_selected.visibility = View.GONE
+                    topCell.items_selected_imageview.visibility = View.GONE
+                    topCell.tag = R.string.docs_top_cell
+                    mainCell.addView(topCell)
 
 
-            val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellStart)
+                    val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+                    //emptyCell.visibility = View.GONE
+                    mainCell.addView(emptyCellStart)
 
-            for (j in 0 until modelData.contentCell.size) {
-                val contentCell: View =
-                    layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
-                val contentData = modelData.contentCell[j]
-                contentCell.checkbox.text = contentData.checkboxContent
-                contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
-                    if(isChecked)
-                        buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
-                    else
-                        buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                    for (j in 0 until it.size) {
+                        val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+                        val contentData = modelData.name
+                        //contentCell.checkbox.text = contentData.checkboxContent
+                        contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                            if (isChecked)
+                                buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                            else
+                                buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                        }
+                        //contentCell.content_desc.text = contentData.description
+                        contentCell.visibility = View.VISIBLE
+                        contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
+                        mainCell.addView(contentCell)
+                    }
+
+                    val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+                    //emptyCell.visibility = View.GONE
+                    mainCell.addView(emptyCellEnd)
+
+
+                    mainCell.visibility = View.INVISIBLE
+                    binding.docsTypeParentContainer.addView(mainCell)
+                    binding.docsTypeParentContainer.postDelayed({
+                        hideOtherBoxes()
+                        mainCell.visibility = View.VISIBLE }, 500)
+
+
+
+                    topCell.setOnClickListener {
+                        //hideOtherBoxes()
+                        hideAllAndOpenedSelectedCell(topCell, mainCell)
+                    }
+
+                    topCell.docs_arrow_up.setOnClickListener {
+                        hideCurrentlyOpenedCell(topCell, mainCell)
+                    }
+
+
                 }
-                //contentCell.content_desc.text = contentData.description
-                contentCell.visibility = View.VISIBLE
-                contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
-                mainCell.addView(contentCell)
             }
+        })
 
-            val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellEnd)
+        val sampleDocs = getSampleDocsTemplate()
 
-
-            mainCell.visibility = View.INVISIBLE
-            binding.docsTypeParentContainer.addView(mainCell)
-            binding.docsTypeParentContainer.postDelayed({
-                hideOtherBoxes()
-                mainCell.visibility = View.VISIBLE
-            },500)
-
-
-
-            topCell.setOnClickListener {
-                //hideOtherBoxes()
-                hideAllAndOpenedSelectedCell(topCell, mainCell)
-            }
-
-            topCell.docs_arrow_up.setOnClickListener {
-                hideCurrentlyOpenedCell(topCell, mainCell)
-            }
-
-
-
-        }
     }
 
     private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){

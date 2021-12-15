@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-
 class RequestPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
         FragmentStateAdapter(fragmentManager, lifecycle) {
 
@@ -27,9 +26,6 @@ class RequestPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle
                 return DocsListFragment()
             }
         }
-
-
         return BaseFragment()
-
     }
 }
