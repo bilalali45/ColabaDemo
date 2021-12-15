@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.AppHeaderWithBackNavBinding
 import com.rnsoft.colabademo.databinding.LetterOndemandBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -55,11 +56,25 @@ class LetterOnDemandFragment : BaseFragment(){
 
         binding.etDownPayment.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etDownPayment, binding.layoutMaxDownPayment, requireContext()))
         binding.etMaxLoanAmount.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etMaxLoanAmount, binding.layoutMaxLoanAmount, requireContext()))
-        binding.etExpiryDate.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etExpiryDate, binding.layoutExpiryDate, requireContext()))
+        CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.etExpiryDate, binding.layoutExpiryDate)
+
         binding.etExpiryDate.showSoftInputOnFocus = false
 
         binding.etExpiryDate.setOnClickListener {
             openCalendar()
+        }
+
+        bindingToolbar.backButton.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.saveLetterOnDemand.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
+        binding.letterOndemandLayout.setOnClickListener {
+            HideSoftkeyboard.hide(requireActivity(),binding.letterOndemandLayout)
+            super.removeFocusFromAllFields(binding.letterOndemandLayout)
         }
 
     }
