@@ -161,7 +161,8 @@ class PreApprovalLettersViewController: BaseViewController {
     }
     
     @IBAction func btnChangeParamtersTapped(_ sender: UIButton) {
-        
+        let vc = Utility.getSetLetterOnDemandVC()
+        self.pushToVC(vc: vc)
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton){

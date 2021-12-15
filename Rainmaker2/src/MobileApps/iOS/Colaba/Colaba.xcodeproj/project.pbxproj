@@ -190,6 +190,7 @@
 		23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */; };
 		23BE065526F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */; };
 		23BE065726F0E86200F9B4B8 /* AddOtherIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */; };
+		23BE89F32769CE2300247B1F /* SetLetterOnDemandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */; };
 		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
@@ -478,6 +479,7 @@
 		23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMilitaryPayViewController.swift; sourceTree = "<group>"; };
 		23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementIncomeViewController.swift; sourceTree = "<group>"; };
 		23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherIncomeViewController.swift; sourceTree = "<group>"; };
+		23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLetterOnDemandViewController.swift; sourceTree = "<group>"; };
 		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -913,6 +915,7 @@
 			isa = PBXGroup;
 			children = (
 				23EF6BC727675FF900214C0A /* PreApprovalLettersViewController.swift */,
+				23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */,
 			);
 			path = "Pre Approval Letters";
 			sourceTree = "<group>";
@@ -1654,6 +1657,7 @@
 				239DFD562727DAE60052E391 /* RaceModel.swift in Sources */,
 				238973FE2703132D00759965 /* DuplicateContactPopupViewController.swift in Sources */,
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
+				23BE89F32769CE2300247B1F /* SetLetterOnDemandViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				238E0F9126F37A040025FF06 /* OwnershipInterestInPropertyViewController.swift in Sources */,
 				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
