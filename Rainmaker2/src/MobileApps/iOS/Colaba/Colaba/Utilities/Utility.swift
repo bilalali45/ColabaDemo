@@ -470,12 +470,16 @@ struct Utility {
         return testStoryboard.instantiateViewController(withIdentifier: String(describing: PreApprovalLettersViewController.self)) as! PreApprovalLettersViewController
     }
     
+    static func getSetLetterOnDemandVC() -> SetLetterOnDemandViewController{
+        return testStoryboard.instantiateViewController(withIdentifier: String(describing: SetLetterOnDemandViewController.self)) as! SetLetterOnDemandViewController
+    }
+    
     static var localPiplineDateFormatter: DateFormatter{
         get{
             if (pipelineDateFormatter == nil){
                 pipelineDateFormatter = DateFormatter()
-                //pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
-                pipelineDateFormatter?.locale = .current
+                pipelineDateFormatter?.timeZone = TimeZone(abbreviation: "UTC")
+                //pipelineDateFormatter?.locale = .current
                 pipelineDateFormatter?.dateFormat = "yyyy-MM-dd HH:mm:ss"
             }
             return pipelineDateFormatter!

@@ -131,7 +131,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        navVC.modalPresentationStyle = .fullScreen
 //        self.window?.rootViewController = navVC
         
-        let vc = Utility.getPreApprovalLettersVC()
+        let vc = Utility.getSetLetterOnDemandVC()
         self.window?.rootViewController = vc
     }
     
