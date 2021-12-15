@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,7 +74,7 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                         }
                         //contentCell.content_desc.text = contentData.description
                         contentCell.visibility = View.VISIBLE
-                        contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
+                        contentCell.info_imageview.setOnClickListener(DocsShowClickListener(modelData.type, modelData.docs, childFragmentManager))
                         mainCell.addView(contentCell)
                     }
 
@@ -106,6 +107,14 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
         val sampleDocs = getSampleDocsTemplate()
 
+    }
+
+
+    class DocsShowClickListener(private val dialogTitle: String, private val dialogValues: ArrayList<Doc>, private val childFragmentManager: FragmentManager) :
+        View.OnClickListener {
+        override fun onClick(v: View?) {
+            StandardChecklistDialogFragment.newInstance(dialogTitle, dialogValues).show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
+        }
     }
 
     private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){

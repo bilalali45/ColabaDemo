@@ -9,7 +9,6 @@ import androidx.annotation.Nullable
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.R
 import com.rnsoft.colabademo.databinding.DialogStandardChecklistBinding
 import kotlinx.android.synthetic.main.docs_type_bottom_value_cell.view.*
 
@@ -20,8 +19,8 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
         lateinit var dialogTitle:String
-        lateinit var dialogValues:ArrayList<String>
-        fun newInstance(dTitle:String, dValues:ArrayList<String>): StandardChecklistDialogFragment {
+        lateinit var dialogValues:ArrayList<Doc>
+        fun newInstance(dTitle:String, dValues: ArrayList<Doc>): StandardChecklistDialogFragment {
             dialogTitle = dTitle
             dialogValues = dValues
             return StandardChecklistDialogFragment()
@@ -37,7 +36,7 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
         for(dialogValue in dialogValues){
             val valueCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.docs_type_bottom_value_cell, null) as LinearLayoutCompat
-            valueCell.textValue.text = dialogValue
+            valueCell.textValue.text = dialogValue.docName
             binding.dialogValueContainer.addView(valueCell)
         }
 
