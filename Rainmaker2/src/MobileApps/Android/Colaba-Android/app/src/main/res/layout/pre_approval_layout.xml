@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/half_white">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/assets_top_container"
         android:layout_width="match_parent"
@@ -67,6 +66,7 @@
         app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/parent_layout_preapproval"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingBottom="100dp"
@@ -110,7 +110,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView31">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_loan_amount"
+                    android:id="@+id/et_loan_amount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -128,7 +128,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/down_payment_amount"
+                android:id="@+id/layout_down_payment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -150,7 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/layout_loan_amount">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_down_payment"
+                    android:id="@+id/et_down_payment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -167,42 +167,41 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
+
+
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_transfer_date"
+                android:id="@+id/layout_expiry_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:fontFamily="@font/rubik_light"
-                android:hint="Expiration Date"
+                android:hint="Expiration Date (MM/DD/YYYY)"
                 android:textColorHint="@color/primary_info_label_color"
-                android:visibility="visible"
                 app:boxCollapsedPaddingTop="1dp"
                 app:boxStrokeColor="@color/primary_info_line_color"
                 app:boxStrokeWidth="0.5dp"
                 app:boxStrokeWidthFocused="1dp"
-                app:endIconDrawable="@drawable/ic_move_to_icon"
+                app:endIconDrawable="@drawable/ic_calendar"
                 app:endIconMode="custom"
-                app:helperTextEnabled="true"
-                app:helperTextTextAppearance="@style/inputError"
-                app:helperTextTextColor="@color/colaba_red_color"
+                app:endIconTint="@color/grey_color_three"
                 app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                app:hintTextColor="@color/grey_color_two"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/down_payment_amount">
+                app:layout_constraintTop_toBottomOf="@+id/layout_down_payment">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/date_of_transfer_edit_text"
+                    android:id="@+id/et_expiry_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:cursorVisible="false"
                     android:ems="10"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
                     android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionDone"
-                    android:inputType="none"
+                    android:imeOptions="actionNext"
                     android:paddingStart="0dp"
                     android:singleLine="true"
                     android:textColor="@color/grey_color_one"
@@ -215,7 +214,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@+id/textView51"
-                app:layout_constraintStart_toStartOf="@+id/layout_transfer_date"
+                app:layout_constraintStart_toStartOf="@+id/layout_expiry_date"
                 app:layout_constraintTop_toTopOf="@+id/textView32"
                 app:srcCompat="@drawable/ic_dollar_pre_approval" />
 
@@ -230,7 +229,7 @@
                 android:textColor="@color/grey_color_two"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/imageView42"
-                app:layout_constraintTop_toBottomOf="@+id/layout_transfer_date" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_expiry_date" />
 
             <TextView
                 android:id="@+id/textView51"
@@ -249,7 +248,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginEnd="20dp"
@@ -259,17 +258,116 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView51">
 
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch2"
+                    android:id="@+id/switch_letter_onDemand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:layoutDirection="rtl"
                     android:text="Allow Borrower to Generate Letter On-Demand"
-                    android:textColor="@color/grey_color_one"
+                    android:textColor="@color/grey_color_two"
+                    android:fontFamily="@font/rubik_regular"
                     android:textSize="13sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/layout_loan_ltv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/switch_letter_onDemand" >
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1.5dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@color/loan_view_holder_separator" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="Max Loan Amount"
+                                android:textColor="@color/grey_color_two"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="$900,000"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="Max Loan-To-Value (LTV)"
+                                android:textColor="@color/grey_color_two"
+                                android:textSize="13sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="50%"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="15sp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/change_parameter_click"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:padding="15dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="Change Parameters"
+                        android:textColor="@color/colaba_primary_color"
+                        android:textSize="13sp"
+                        android:clickable="true"
+                        app:drawableEndCompat="@drawable/ic_right_arrow_blue" />
+
+                </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -555,6 +653,19 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/save_pre_approval_letter"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="end"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
