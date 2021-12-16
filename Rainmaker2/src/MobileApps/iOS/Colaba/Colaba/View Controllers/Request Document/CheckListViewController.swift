@@ -72,7 +72,7 @@ extension CheckListViewController: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CheckListTableViewCell", for: indexPath) as! CheckListTableViewCell
         let doc = selectedTemplate.docs[indexPath.row]
-        cell.lblTitle.text = doc.docName
+        cell.lblTitle.text = doc.docType
         return cell
     }
     

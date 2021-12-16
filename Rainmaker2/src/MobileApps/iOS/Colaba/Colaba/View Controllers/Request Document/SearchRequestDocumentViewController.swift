@@ -44,13 +44,13 @@ class SearchRequestDocumentViewController: BaseViewController {
     
     var searchedDocumentName = ""
     
-    var assetsArray: [String] = []
-    var incomeArray: [String] = []
-    var liabilitiesArray: [String] = []
-    var personalArray: [String] = []
-    var propertyArray: [String] = []
-    var disclosureArray: [String] = []
-    var otherArray: [String] = []
+    var assets = DocumentCategoryModel()
+    var income = DocumentCategoryModel()
+    var liabilities = DocumentCategoryModel()
+    var personal = DocumentCategoryModel()
+    var property = DocumentCategoryModel()
+    var disclosure = DocumentCategoryModel()
+    var other = DocumentCategoryModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,34 +97,42 @@ class SearchRequestDocumentViewController: BaseViewController {
             self.tableViewDisclosure.reloadData()
             self.tableViewOther.reloadData()
         }
+        
+        let searchedAssetDocs = assets.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedIncomeDocs = income.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedLiabilitiesDocs = liabilities.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPersonalDocs = personal.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPropertyDocs = property.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedDisclosureDocs = disclosure.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedOtherDocs = other.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
 
-        tableViewAssetTopConstraint.constant = assetsArray.count == 0 ? 0 : 10
-        tableViewIncomeTopConstraint.constant = incomeArray.count == 0 ? 0 : 10
-        tableViewLiabilityTopConstraint.constant = liabilitiesArray.count == 0 ? 0 : 10
-        tableViewPersonalTopConstraint.constant = personalArray.count == 0 ? 0 : 10
-        tableViewPropertyTopConstraint.constant = propertyArray.count == 0 ? 0 : 10
-        tableViewDisclosureTopConstraint.constant = disclosureArray.count == 0 ? 0 : 10
-        tableViewOtherTopConstraint.constant = otherArray.count == 0 ? 0 : 10
+        tableViewAssetTopConstraint.constant = searchedAssetDocs.count == 0 ? 0 : 10
+        tableViewIncomeTopConstraint.constant = searchedIncomeDocs.count == 0 ? 0 : 10
+        tableViewLiabilityTopConstraint.constant = searchedLiabilitiesDocs.count == 0 ? 0 : 10
+        tableViewPersonalTopConstraint.constant = searchedPersonalDocs.count == 0 ? 0 : 10
+        tableViewPropertyTopConstraint.constant = searchedPropertyDocs.count == 0 ? 0 : 10
+        tableViewDisclosureTopConstraint.constant = searchedDisclosureDocs.count == 0 ? 0 : 10
+        tableViewOtherTopConstraint.constant = searchedOtherDocs.count == 0 ? 0 : 10
         
-        tableViewAssets.isHidden = assetsArray.count == 0
-        tableViewIncome.isHidden = incomeArray.count == 0
-        tableViewLiabilities.isHidden = liabilitiesArray.count == 0
-        tableViewPersonal.isHidden = personalArray.count == 0
-        tableViewProperty.isHidden = propertyArray.count == 0
-        tableViewDisclosure.isHidden = disclosureArray.count == 0
-        tableViewOther.isHidden = otherArray.count == 0
+        tableViewAssets.isHidden = searchedAssetDocs.count == 0
+        tableViewIncome.isHidden = searchedIncomeDocs.count == 0
+        tableViewLiabilities.isHidden = searchedLiabilitiesDocs.count == 0
+        tableViewPersonal.isHidden = searchedPersonalDocs.count == 0
+        tableViewProperty.isHidden = searchedPropertyDocs.count == 0
+        tableViewDisclosure.isHidden = searchedDisclosureDocs.count == 0
+        tableViewOther.isHidden = searchedOtherDocs.count == 0
         
-        searchResultSeparator.isHidden = !(assetsArray.count == 0 && incomeArray.count == 0 && liabilitiesArray.count == 0 && personalArray.count == 0 && propertyArray.count == 0 && disclosureArray.count == 0 && otherArray.count == 0)
-        lblNoResult.isHidden = !(assetsArray.count == 0 && incomeArray.count == 0 && liabilitiesArray.count == 0 && personalArray.count == 0 && propertyArray.count == 0 && disclosureArray.count == 0 && otherArray.count == 0)
+        searchResultSeparator.isHidden = !(searchedAssetDocs.count == 0 && searchedIncomeDocs.count == 0 && searchedLiabilitiesDocs.count == 0 && searchedPersonalDocs.count == 0 && searchedPropertyDocs.count == 0 && searchedDisclosureDocs.count == 0 && searchedOtherDocs.count == 0)
+        lblNoResult.isHidden = !(searchedAssetDocs.count == 0 && searchedIncomeDocs.count == 0 && searchedLiabilitiesDocs.count == 0 && searchedPersonalDocs.count == 0 && searchedPropertyDocs.count == 0 && searchedDisclosureDocs.count == 0 && searchedOtherDocs.count == 0)
         lblNoResult.text = "No Results Found for \"\(txtfieldSearch.text!)\" "
         
-        let assetsTableViewHeight = (assetsArray.count == 0 ? 0 : tableViewAssets.contentSize.height)
-        let incomeTableViewHeight = (incomeArray.count == 0 ? 0 : tableViewIncome.contentSize.height)
-        let liabilityTableViewHeight = (liabilitiesArray.count == 0 ? 0 : tableViewLiabilities.contentSize.height)
-        let personalTableViewHeight = (personalArray.count == 0 ? 0 : tableViewPersonal.contentSize.height)
-        let propertyTableViewHeight = (propertyArray.count == 0 ? 0 : tableViewProperty.contentSize.height)
-        let disclosureTableViewHeight = (disclosureArray.count == 0 ? 0 : tableViewDisclosure.contentSize.height)
-        let otherTableViewHeight = (otherArray.count == 0 ? 0 : tableViewOther.contentSize.height)
+        let assetsTableViewHeight = (searchedAssetDocs.count == 0 ? 0 : tableViewAssets.contentSize.height + 20)
+        let incomeTableViewHeight = (searchedIncomeDocs.count == 0 ? 0 : tableViewIncome.contentSize.height + 20)
+        let liabilityTableViewHeight = (searchedLiabilitiesDocs.count == 0 ? 0 : tableViewLiabilities.contentSize.height + 20)
+        let personalTableViewHeight = (searchedPersonalDocs.count == 0 ? 0 : tableViewPersonal.contentSize.height + 20)
+        let propertyTableViewHeight = (searchedPropertyDocs.count == 0 ? 0 : tableViewProperty.contentSize.height + 20)
+        let disclosureTableViewHeight = (searchedDisclosureDocs.count == 0 ? 0 : tableViewDisclosure.contentSize.height + 20)
+        let otherTableViewHeight = (searchedOtherDocs.count == 0 ? 0 : tableViewOther.contentSize.height)
         
         let totalHeight = assetsTableViewHeight + incomeTableViewHeight + liabilityTableViewHeight +  personalTableViewHeight + propertyTableViewHeight + disclosureTableViewHeight + otherTableViewHeight + 300
         
@@ -146,25 +154,6 @@ class SearchRequestDocumentViewController: BaseViewController {
     }
     
     func searchDocument(){
-        if (txtfieldSearch.text == ""){
-            assetsArray = []
-            incomeArray = []
-            liabilitiesArray = []
-            personalArray = []
-            propertyArray = []
-            disclosureArray = []
-            otherArray = []
-        }
-        else{
-            assetsArray = kAssetsArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            incomeArray = kIncomeArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            liabilitiesArray = kLiabilitiesArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            personalArray = kPersonalArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            propertyArray = kPropertyArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            disclosureArray = kDisclosureArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-            otherArray = kOtherArray.filter{$0.localizedCaseInsensitiveContains(txtfieldSearch.text!)}
-        }
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             self.setScreenHeight()
         }
@@ -189,26 +178,35 @@ class SearchRequestDocumentViewController: BaseViewController {
 extension SearchRequestDocumentViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let searchedAssetDocs = assets.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedIncomeDocs = income.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedLiabilitiesDocs = liabilities.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPersonalDocs = personal.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPropertyDocs = property.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedDisclosureDocs = disclosure.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedOtherDocs = other.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        
         if (tableView == tableViewAssets){
-            return assetsArray.count + 1
+            return searchedAssetDocs.count + 1
         }
         else if (tableView == tableViewIncome){
-            return incomeArray.count + 1
+            return searchedIncomeDocs.count + 1
         }
         else if (tableView == tableViewLiabilities){
-            return liabilitiesArray.count + 1
+            return searchedLiabilitiesDocs.count + 1
         }
         else if (tableView == tableViewPersonal){
-            return personalArray.count + 1
+            return searchedPersonalDocs.count + 1
         }
         else if (tableView == tableViewProperty){
-            return propertyArray.count + 1
+            return searchedPropertyDocs.count + 1
         }
         else if (tableView == tableViewDisclosure){
-            return disclosureArray.count + 1
+            return searchedDisclosureDocs.count + 1
         }
         else{
-            return otherArray.count + 1
+            return searchedOtherDocs.count + 1
         }
     }
     
@@ -216,67 +214,96 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
         if (tableView == tableViewAssets){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Assets"
+                cell.lblTitle.text = assets.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
-
-                cell.lblCounter.text = "2"
+                let searchedDocs = assets.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = assetsArray[indexPath.row - 1]
+                let searchedDocs = assets.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewAssets
                 return cell
             }
         }
         else if (tableView == tableViewIncome){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Income"
+                cell.lblTitle.text = income.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
-                cell.lblCounter.text = "1"
+                let searchedDocs = income.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = incomeArray[indexPath.row - 1]
+                let searchedDocs = income.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewIncome
                 return cell
             }
         }
         else if (tableView == tableViewLiabilities){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Liabilities"
+                cell.lblTitle.text = liabilities.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
+                let searchedDocs = liabilities.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = liabilitiesArray[indexPath.row - 1]
+                let searchedDocs = liabilities.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewLiabilities
                 return cell
             }
         }
         else if (tableView == tableViewPersonal){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Personal"
+                cell.lblTitle.text = personal.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
+                let searchedDocs = personal.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = personalArray[indexPath.row - 1]
+                let searchedDocs = personal.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewPersonal
                 return cell
             }
         }
@@ -287,13 +314,20 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
-                cell.lblCounter.text = "4"
+                let searchedDocs = property.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = propertyArray[indexPath.row - 1]
+                let searchedDocs = property.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewProperty
                 return cell
             }
         }
@@ -304,12 +338,20 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
+                let searchedDocs = disclosure.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = disclosureArray[indexPath.row - 1]
+                let searchedDocs = disclosure.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewDisclosure
                 return cell
             }
         }
@@ -320,12 +362,20 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: "AssetsUpArrow")
                 cell.separatorView.isHidden = false
+                let searchedDocs = other.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.counterView.isHidden = searchedDocs.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(searchedDocs.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = otherArray[indexPath.row - 1]
+                let searchedDocs = other.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+                cell.lblTemplateName.text = searchedDocs[indexPath.row - 1].docType
+                cell.btnCheckbox.setImage(UIImage(named: searchedDocs[indexPath.row - 1].isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+                cell.tableView = tableViewOther
                 return cell
             }
         }
@@ -335,6 +385,54 @@ extension SearchRequestDocumentViewController: UITableViewDataSource, UITableVie
         return indexPath.row == 0 ? 56 : UITableView.automaticDimension
     }
     
+}
+
+extension SearchRequestDocumentViewController: DocumentsTemplatesTableViewCellDelegate{
+    
+    func infoTapped(indexPath: IndexPath) {
+        
+    }
+    
+    func templateSelect(indexPath: IndexPath, tableView: UITableView) {
+        
+        let searchedAssetDocs = assets.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedIncomeDocs = income.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedLiabilitiesDocs = liabilities.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPersonalDocs = personal.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedPropertyDocs = property.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedDisclosureDocs = disclosure.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        let searchedOtherDocs = other.documents.filter({$0.docType.localizedCaseInsensitiveContains(txtfieldSearch.text!)})
+        
+        if (tableView == tableViewAssets){
+            searchedAssetDocs[indexPath.row - 1].isSelected = !searchedAssetDocs[indexPath.row - 1].isSelected
+            tableViewAssets.reloadData()
+        }
+        else if (tableView == tableViewIncome){
+            searchedIncomeDocs[indexPath.row - 1].isSelected = !searchedIncomeDocs[indexPath.row - 1].isSelected
+            tableViewIncome.reloadData()
+        }
+        else if (tableView == tableViewLiabilities){
+            searchedLiabilitiesDocs[indexPath.row - 1].isSelected = !searchedLiabilitiesDocs[indexPath.row - 1].isSelected
+            tableViewLiabilities.reloadData()
+        }
+        else if (tableView == tableViewPersonal){
+            searchedPersonalDocs[indexPath.row - 1].isSelected = !searchedPersonalDocs[indexPath.row - 1].isSelected
+            tableViewPersonal.reloadData()
+        }
+        else if (tableView == tableViewProperty){
+            searchedPropertyDocs[indexPath.row - 1].isSelected = !searchedPropertyDocs[indexPath.row - 1].isSelected
+            tableViewProperty.reloadData()
+        }
+        else if (tableView == tableViewDisclosure){
+            searchedDisclosureDocs[indexPath.row - 1].isSelected = !searchedDisclosureDocs[indexPath.row - 1].isSelected
+            tableViewDisclosure.reloadData()
+        }
+        else if (tableView == tableViewOther){
+            searchedOtherDocs[indexPath.row - 1].isSelected = !searchedOtherDocs[indexPath.row - 1].isSelected
+            tableViewOther.reloadData()
+        }
+        
+    }
 }
 
 extension SearchRequestDocumentViewController: UITextFieldDelegate{

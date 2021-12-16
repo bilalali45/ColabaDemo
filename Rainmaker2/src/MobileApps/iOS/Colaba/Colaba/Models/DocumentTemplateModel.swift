@@ -32,12 +32,17 @@ class DocumentTemplateModel: NSObject {
 
 class Doc : NSObject{
 
-    var docName: String = ""
-    var typeId: String = ""
+    var docTypeId: String = ""
+    var docType: String = ""
+    var docMessage: String = ""
+    var isCommonlyUsed: Bool = false
+    var isSelected: Bool = false
     
-    func updateModelWithJSON(json: JSON){
-        docName = json["docName"].stringValue
-        typeId = json["typeId"].stringValue
+    func updateModelWithJSON(json: JSON, isForDocList: Bool=false){
+        docTypeId = json[ isForDocList ? "docTypeId" : "typeId"].stringValue
+        docType = json[isForDocList ? "docType" : "docName"].stringValue
+        docMessage = json["docMessage"].stringValue
+        isCommonlyUsed = json["isCommonlyUsed"].boolValue
     }
 
 }

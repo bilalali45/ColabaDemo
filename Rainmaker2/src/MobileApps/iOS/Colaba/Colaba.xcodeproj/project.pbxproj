@@ -91,6 +91,7 @@
 		2390FED626A6B639007A5A52 /* ApplicationTabHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */; };
 		2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */; };
 		2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */; };
+		239129C5276B1C1700F82B07 /* DocumentCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */; };
 		2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */; };
 		2392A4CC26C4F9700083EFE4 /* DependentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */; };
 		2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */; };
@@ -381,6 +382,7 @@
 		2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTabHeaderView.swift; sourceTree = "<group>"; };
 		2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerInfoCollectionViewCell.xib; sourceTree = "<group>"; };
+		239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCategoryModel.swift; sourceTree = "<group>"; };
 		2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentCollectionViewCell.swift; sourceTree = "<group>"; };
 		2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DependentCollectionViewCell.xib; sourceTree = "<group>"; };
 		2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailingAddressViewController.swift; sourceTree = "<group>"; };
@@ -679,6 +681,7 @@
 				23A03063275E034F00A9D26D /* ApplicationStatusModel.swift */,
 				232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */,
 				23BE89F42769D59300247B1F /* DocumentTemplateModel.swift */,
+				239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1667,6 +1670,7 @@
 				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */,
 				23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */,
+				239129C5276B1C1700F82B07 /* DocumentCategoryModel.swift in Sources */,
 				23B91CD627609647006F24ED /* InvitePrimaryBorrowerViewController.swift in Sources */,
 				23BE064D26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,

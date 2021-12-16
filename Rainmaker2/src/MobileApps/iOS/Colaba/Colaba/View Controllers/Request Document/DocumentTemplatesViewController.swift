@@ -202,7 +202,7 @@ extension DocumentTemplatesViewController: DocumentsTemplatesTableViewCellDelega
         self.present(vc, animated: false, completion: nil)
     }
     
-    func templateSelect(indexPath: IndexPath) {
+    func templateSelect(indexPath: IndexPath, tableView: UITableView) {
         if (selectedTableView == tableViewMyTemplates){
             myTemplatesArray[indexPath.row - 1].isSelected = !myTemplatesArray[indexPath.row - 1].isSelected
             tableViewMyTemplates.reloadData()
