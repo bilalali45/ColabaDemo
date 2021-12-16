@@ -1,18 +1,12 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
-import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.ResponseBody
 import retrofit2.Response
-import java.io.*
 import javax.inject.Inject
 
 
 class DetailRepo  @Inject constructor(
-    private val detailDataSource: DetailDataSource, private val spEditor: SharedPreferences.Editor,
-    @ApplicationContext val applicationContext: Context
-) {
+    private val detailDataSource: DetailDataSource) {
 
 
    suspend fun getLoanInfo(token:String ,loanApplicationId:Int):Result<BorrowerOverviewModel>{

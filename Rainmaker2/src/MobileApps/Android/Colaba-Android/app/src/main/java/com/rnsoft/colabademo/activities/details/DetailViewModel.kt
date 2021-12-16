@@ -32,6 +32,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: MutableLiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
+
     private val _appMileStoneResponse : MutableLiveData<AppMileStoneResponse?> =   MutableLiveData()
     val appMileStoneResponse: MutableLiveData<AppMileStoneResponse?> get() = _appMileStoneResponse
 
@@ -39,9 +40,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
     private var applicationServiceRunning:Boolean = false
-
-    //private val _fileName : MutableLiveData<String> =   MutableLiveData()
-    //val fileName: LiveData<String> get() = _fileName
 
 
     suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
@@ -224,5 +222,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         _appMileStoneResponse.value = null
         _appMileStoneResponse.postValue(null)
     }
+
+
 
 }
