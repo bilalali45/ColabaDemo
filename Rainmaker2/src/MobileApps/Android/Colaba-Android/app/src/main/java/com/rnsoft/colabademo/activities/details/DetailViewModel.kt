@@ -34,7 +34,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
 
 
     private val _appMileStoneResponse : MutableLiveData<AppMileStoneResponse?> =   MutableLiveData()
-    val appMileStoneResponse: MutableLiveData<AppMileStoneResponse?> get() = _appMileStoneResponse
+    val appMileStoneResponse: LiveData<AppMileStoneResponse?> get() = _appMileStoneResponse
 
 
     private var docsServiceRunning:Boolean = false

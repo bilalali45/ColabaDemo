@@ -15,7 +15,7 @@ class RequestDocsRepo  @Inject constructor(private val requestDocsDataSource: Re
         return requestDocsDataSource.getEmailTemplates(token = token )
     }
 
-    suspend fun getCategoryDocumentMcu(token: String): Result<Any> {
+    suspend fun getCategoryDocumentMcu(token: String): Result<CategoryDocsResponse> {
         return requestDocsDataSource.getCategoryDocumentMcu(token = token )
     }
 

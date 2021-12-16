@@ -52,8 +52,6 @@ open class DocsTypesBaseFragment:BaseFragment() {
         }
     }
 
-
-
     protected fun getSampleDocsFiles():ArrayList<DocTypeModelClass>{
 
         val infoTitle ="My Standard Checklist"

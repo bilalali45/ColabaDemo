@@ -79,6 +79,7 @@
     <string name="delete_current_address">Are you sure you want to delete Richard\'s Current Address?</string>
 
     <string name="docs_top_cell">docs_top_cell</string>
+    <string name="docs_search_cell">docs_search_cell</string>
 
     <string name="asset_top_cell">asset_top_cell</string>
 

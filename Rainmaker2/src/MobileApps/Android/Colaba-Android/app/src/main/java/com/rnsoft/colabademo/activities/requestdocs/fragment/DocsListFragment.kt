@@ -16,6 +16,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DocsFilesLayoutBinding
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
@@ -30,6 +31,9 @@ class DocsListFragment:DocsTypesBaseFragment() {
 
     private var _binding: DocsFilesLayoutBinding? = null
     private val binding get() = _binding!!
+    private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
+
+    private lateinit var categoryDocsList:ArrayList<CategoryDocsResponseItem>
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -42,71 +46,159 @@ class DocsListFragment:DocsTypesBaseFragment() {
     }
 
     private fun setUpUI(){
-        val sampleDocs = getSampleDocsFiles()
-        for (i in 0 until sampleDocs.size) {
-            val modelData = sampleDocs[i]
-            val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
-            val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
-            topCell.cell_header_title.text =  modelData.headerTitle
-            topCell.total_selected.text = modelData.totalSelected
-
-            // always hide this...
-            topCell.total_selected.visibility = View.GONE
-            topCell.items_selected_imageview.visibility = View.GONE
-            topCell.tag = R.string.docs_top_cell
-            mainCell.addView(topCell)
-
-            val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellStart)
-
-            for (j in 0 until modelData.contentCell.size) {
-                val contentCell: View =
-                    layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
-                val contentData = modelData.contentCell[j]
-                contentCell.checkbox.text = contentData.checkboxContent
-                contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
-                    if(isChecked)
-                       buttonView.setTypeface(null,Typeface.BOLD) //only text style(only bold)
-                    else
-                        buttonView.setTypeface(null,Typeface.NORMAL) //only text style(only bold)
-                }
-                //contentCell.content_desc.text = contentData.description
-                //contentCell.visibility = View.GONE
-                contentCell.info_imageview.visibility = View.INVISIBLE
-                //contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
-                if(i+1 ==  sampleDocs.size && j+1 ==  modelData.contentCell.size)
-                    contentCell.edit_imageview.visibility = View.VISIBLE
-                mainCell.addView(contentCell)
-            }
-
-            val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellEnd)
-
-            mainCell.visibility = View.INVISIBLE
-            binding.docsTypeParentContainer.addView(mainCell)
-            binding.docsTypeParentContainer.postDelayed({
-                hideOtherBoxes()
-                binding.docsTypeParentContainer.postDelayed({
-                    mainCell.visibility = View.VISIBLE
-                },250)
-            },50)
-
-            topCell.setOnClickListener {
-                hideAllAndOpenedSelectedCell(topCell, mainCell)
-            }
-
-            topCell.docs_arrow_up.setOnClickListener {
-                hideCurrentlyOpenedCell(topCell, mainCell)
-            }
-
-            //hideOtherBoxes()
-
-        }
         binding.customDocConstraintLayout.setOnClickListener {
             findNavController().navigate(R.id.action_custom_doc)
         }
+        requestDocsViewModel.getCategoryDocuments.observe(viewLifecycleOwner, { templatesList->
+            templatesList?.let {
+                categoryDocsList = it
+                for (i in 0 until it.size) {
+                    val modelData = it[i]
+                    val mainCell: LinearLayoutCompat = createMainCell(modelData.catName, modelData.documents.size)
+                    addContentToMainCell(modelData.documents, mainCell)
+                    addBottomToMainCell(mainCell)
+
+                    mainCell.visibility = View.INVISIBLE
+                    binding.docsTypeParentContainer.addView(mainCell)
+                    binding.docsTypeParentContainer.postDelayed({
+                        hideOtherBoxes()
+                        binding.docsTypeParentContainer.postDelayed({ mainCell.visibility = View.VISIBLE },250) },50)
+                }
+            }
+        })
+
+        setupSearchFunctionality()
+    }
+
+    private fun createMainCell(mainCellTitle:String , totalDocs:Int):LinearLayoutCompat{
+        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
+        val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
+        topCell.tag = R.string.docs_top_cell
+        topCell.cell_header_title.text =  mainCellTitle
+
+        //topCell.total_selected.text = totalDocs.toString()
+        topCell.total_selected.visibility = View.GONE
+        topCell.items_selected_imageview.visibility = View.GONE
+
+
+        mainCell.addView(topCell)
+        // add listeners to the top cell....
+        topCell.setOnClickListener { hideAllAndOpenedSelectedCell(topCell, mainCell) }
+        topCell.docs_arrow_up.setOnClickListener { hideCurrentlyOpenedCell(topCell, mainCell) }
+
+        val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+        //emptyCell.visibility = View.GONE
+        mainCell.addView(emptyCellStart)
+        return mainCell
+    }
+
+    private fun addContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat , searchKeyword: String?=null){
+        for (j in 0 until templatesList.size) {
+            val modelData = templatesList[j]
+            val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+            contentCell.tag = R.string.docs_search_cell
+            contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                modelData.locallySelected = isChecked
+                if (isChecked)
+                    buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                else
+                    buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+            }
+            contentCell.checkbox.text = modelData.docType
+            contentCell.visibility = View.VISIBLE
+            //contentCell.info_imageview.setOnClickListener(DocsTemplateFragment.DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
+            mainCell.addView(contentCell)
+        }
+    }
+
+    private fun addSearchContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat , searchKeyword: String){
+        for (j in 0 until templatesList.size) {
+            val modelData = templatesList[j]
+            var foundWord = false
+            if(modelData.docType.contains(searchKeyword, true) || searchKeyword.isEmpty() || searchKeyword.isBlank())
+                foundWord = true
+            if(foundWord) {
+                val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+                contentCell.tag = R.string.docs_search_cell
+                contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                    modelData.locallySelected = isChecked
+                    if (isChecked)
+                        buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                    else
+                        buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                }
+                contentCell.checkbox.text = modelData.docType
+                contentCell.checkbox.isChecked = modelData.locallySelected
+                contentCell.visibility = View.VISIBLE
+                //contentCell.info_imageview.setOnClickListener(DocsTemplateFragment.DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
+                mainCell.addView(contentCell)
+            }
+        }
+
+    }
+
+    private fun performSearch2(searchKeyword: String){
+        val layout = binding.docsTypeParentContainer
+        var mainCell: LinearLayoutCompat?
+        for (i in 0 until layout.childCount) {
+            mainCell = layout[i] as LinearLayoutCompat
+            mainCell.removeAllViews()
+        }
+        layout.removeAllViewsInLayout()
+
+        for (i in 0 until categoryDocsList.size) {
+            val modelData = categoryDocsList[i]
+            val mainCell: LinearLayoutCompat = createMainCell(modelData.catName, modelData.documents.size)
+            addSearchContentToMainCell(modelData.documents, mainCell , searchKeyword)
+            addBottomToMainCell(mainCell)
+
+            //mainCell.visibility = View.INVISIBLE
+            if(mainCell.childCount>3)
+                binding.docsTypeParentContainer.addView(mainCell)
+            binding.docsTypeParentContainer.postDelayed({
+                //hideOtherBoxes()
+                //binding.docsTypeParentContainer.postDelayed({ mainCell.visibility = View.VISIBLE },250)
+                                                        },50)
+        }
+    }
+
+
+    private fun performSearch(searchKeyword:String){
+        val layout = binding.docsTypeParentContainer
+        var mainCell: LinearLayoutCompat?
+        for (i in 0 until layout.childCount) {
+            mainCell = layout[i] as LinearLayoutCompat
+            for(j in 0 until mainCell.childCount) {
+                val contentCell = mainCell[j] as ConstraintLayout
+                if (contentCell.tag == R.string.docs_search_cell) {
+                    mainCell.removeView(contentCell)
+                    if(contentCell.checkbox.text.contains(searchKeyword, true))
+                        contentCell.visibility = View.VISIBLE
+                    else
+                        contentCell.visibility = View.VISIBLE
+                }
+            }
+
+            /*
+            val topCell = mainCell.getTag(R.string.asset_top_cell) as ConstraintLayout
+            val middleCell = mainCell.getTag(R.string.asset_middle_cell) as ConstraintLayout
+            val bottomCell = mainCell.getTag(R.string.asset_bottom_cell) as ConstraintLayout
+            topCell.arrow_up.visibility = View.GONE
+            topCell.arrow_down.visibility = View.VISIBLE
+            middleCell.visibility = View.GONE
+            bottomCell.visibility = View.GONE
+             */
+        }
+    }
+
+    private fun addBottomToMainCell(mainCell: LinearLayoutCompat){
+        val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+        mainCell.addView(emptyCellEnd)
+    }
+
+
+    private fun setupSearchFunctionality(){
+        /*
         binding.searchEditTextField.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 binding.searchEditTextField.clearFocus()
@@ -117,16 +209,27 @@ class DocsListFragment:DocsTypesBaseFragment() {
             }
             false
         })
+        binding.searchImageView.setOnClickListener{
+            if(binding.searchEditTextField.text.toString().isNotEmpty()){
+                val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
+                findNavController().navigate(R.id.action_search_doc_fragment , bundle)
+            }
+        }
+        */
 
         binding.searchEditTextField.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 val str: String = binding.searchEditTextField.text.toString()
-                if(str.isNotEmpty())
+                if(str.isNotEmpty()) {
                     binding.searchcrossImageView.visibility = View.VISIBLE
-                else
+                    performSearch2(str)
+                }
+                else {
                     binding.searchcrossImageView.visibility = View.INVISIBLE
+                    performSearch2("")
+                }
             }
         })
         binding.searchcrossImageView.setOnClickListener{
@@ -136,12 +239,6 @@ class DocsListFragment:DocsTypesBaseFragment() {
             binding.searchcrossImageView.visibility = View.INVISIBLE
         }
 
-        binding.searchImageView.setOnClickListener{
-            if(binding.searchEditTextField.text.toString().isNotEmpty()){
-                val bundle = bundleOf(AppConstant.search_word to binding.searchEditTextField.text.toString())
-                findNavController().navigate(R.id.action_search_doc_fragment , bundle)
-            }
-        }
     }
 
     private fun View.hideKeyboard() {

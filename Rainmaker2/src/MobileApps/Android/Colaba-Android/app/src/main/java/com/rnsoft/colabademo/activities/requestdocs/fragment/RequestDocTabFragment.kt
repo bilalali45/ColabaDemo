@@ -102,6 +102,7 @@ class RequestDocsTabFragment : BaseFragment() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 requestDocsViewModel.getTemplates(token = authToken)
+                requestDocsViewModel.getCategoryDocumentMcu(token = authToken)
                 //requestDocsViewModel.getCategoryDocumentMcu(token = authToken)
                 //requestDocsViewModel.getEmailTemplates(token = authToken)
             }
