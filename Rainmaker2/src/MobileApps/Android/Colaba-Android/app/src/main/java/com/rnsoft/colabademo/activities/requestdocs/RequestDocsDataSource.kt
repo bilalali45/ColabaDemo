@@ -24,7 +24,7 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
         }
     }
 
-    suspend fun getCategoryDocumentMcu(token: String): Result<Any>{
+    suspend fun getCategoryDocumentMcu(token: String): Result<CategoryDocsResponse>{
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getCategoryDocumentMcu(newToken)

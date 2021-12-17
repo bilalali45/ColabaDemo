@@ -674,7 +674,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetCategoryDocumentMcu")
     suspend fun getCategoryDocumentMcu(
-        @Header("Authorization" )  Authorization:String):Any
+        @Header("Authorization" )  Authorization:String):CategoryDocsResponse
 
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")

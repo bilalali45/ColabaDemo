@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,11 @@ import javax.inject.Inject
 class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: RequestDocsRepo) : ViewModel() {
 
     private val _getTemplatesResponse : MutableLiveData<GetTemplatesResponse?> =   MutableLiveData()
-    val getTemplatesResponse: MutableLiveData<GetTemplatesResponse?> get() = _getTemplatesResponse
+    val getTemplatesResponse: LiveData<GetTemplatesResponse?> get() = _getTemplatesResponse
+
+    private val _getCategoryDocuments : MutableLiveData<CategoryDocsResponse> =   MutableLiveData()
+    val getCategoryDocuments: LiveData<CategoryDocsResponse> get() = _getCategoryDocuments
+
 
     private val _anyResponse : MutableLiveData<Any?> =   MutableLiveData()
     val anyResponse: MutableLiveData<Any?> get() = _anyResponse
@@ -26,7 +31,6 @@ class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: Requ
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = requestDocsRepo.getEmailTemplates(token = token)
             withContext(Dispatchers.Main) {
-                webServiceRunning = false
                 if (responseResult is Result.Success)
                     _anyResponse.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
@@ -41,9 +45,8 @@ class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: Requ
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = requestDocsRepo.getCategoryDocumentMcu(token = token)
             withContext(Dispatchers.Main) {
-                webServiceRunning = false
                 if (responseResult is Result.Success)
-                    _anyResponse.value = (responseResult.data)
+                    _getCategoryDocuments.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
@@ -56,7 +59,6 @@ class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: Requ
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = requestDocsRepo.getTemplates(token = token)
             withContext(Dispatchers.Main) {
-                webServiceRunning = false
                 if (responseResult is Result.Success)
                     _getTemplatesResponse.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)

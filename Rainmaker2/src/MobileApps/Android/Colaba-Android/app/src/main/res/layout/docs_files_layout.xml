@@ -78,7 +78,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:isScrollContainer="false"
+        android:layout_marginTop="20dp"
 
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_search_layout">
@@ -86,7 +88,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="80dp"
+            android:paddingBottom="100dp"
             >
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -94,10 +96,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="18dp"
-                    android:layout_marginTop="18dp"
+
                     android:layout_marginEnd="18dp"
                     android:orientation="vertical"
-                        app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -111,6 +113,7 @@
 
                 android:background="@drawable/content_background_halfwhite"
                 android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/docs_type_parent_container"
                 app:layout_constraintStart_toStartOf="@+id/docs_type_parent_container"
                 app:layout_constraintTop_toBottomOf="@+id/docs_type_parent_container">
