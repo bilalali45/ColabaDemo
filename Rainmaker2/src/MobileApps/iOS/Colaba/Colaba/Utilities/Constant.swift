@@ -91,3 +91,6 @@ let kPersonalArray = ["Government Issued Identification", "Permanent Resident Ca
 let kPropertyArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
 let kDisclosureArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
 let kOtherArray = ["Trust - Family Trust", "Divorce Decree", "Mortgage Statement", "Homebuyer Education", "Credit Explanation", "Letter of Explanation", "Power of Attorney (POA)", "Purpose of Cash Out", "Page 5 of 5 of bank statements"]
+
+var selectedDocsFromTemplate = [Doc]()
+var selectedDocsFromList = [Doc]()

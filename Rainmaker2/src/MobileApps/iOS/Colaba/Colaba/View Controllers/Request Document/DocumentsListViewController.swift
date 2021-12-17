@@ -134,6 +134,11 @@ class DocumentsListViewController: BaseViewController {
         btnClose.isHidden = true
     }
     
+    func saveSelectedDocs(){
+        selectedDocsFromList.removeAll(where: {$0.docTypeId != ""})
+        selectedDocsFromList = selectedDocsFromList + assets.documents.filter({$0.isSelected}) + income.documents.filter({$0.isSelected}) + liabilities.documents.filter({$0.isSelected}) + personal.documents.filter({$0.isSelected}) + property.documents.filter({$0.isSelected}) + disclosure.documents.filter({$0.isSelected}) + other.documents.filter({$0.isSelected})
+    }
+    
     //MARK:- API's
     
     func getDocumentsList(){
@@ -428,6 +433,7 @@ extension DocumentsListViewController: DocumentsTemplatesTableViewCellDelegate{
             other.documents[indexPath.row - 1].isSelected = !other.documents[indexPath.row - 1].isSelected
             tableViewOther.reloadData()
         }
+        saveSelectedDocs()
     }
 }
 

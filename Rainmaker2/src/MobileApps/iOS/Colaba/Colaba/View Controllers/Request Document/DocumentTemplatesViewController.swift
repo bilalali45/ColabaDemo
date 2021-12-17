@@ -81,6 +81,19 @@ class DocumentTemplatesViewController: BaseViewController {
         }
     }
     
+    func saveDocsOfSelectedTemplates(){
+        selectedDocsFromTemplate.removeAll()
+        let selectedMyTemplates = myTemplatesArray.filter({$0.isSelected})
+        let selectedSystemTemplates = systemTemplatesArray.filter({$0.isSelected})
+        
+        for myTemplate in selectedMyTemplates{
+            selectedDocsFromTemplate = selectedDocsFromTemplate + myTemplate.docs
+        }
+        for systemTemplate in selectedSystemTemplates{
+            selectedDocsFromTemplate = selectedDocsFromTemplate + systemTemplate.docs
+        }
+    }
+    
     //MARK:- API's
     
     func getDocumentTemplates(){
@@ -211,6 +224,7 @@ extension DocumentTemplatesViewController: DocumentsTemplatesTableViewCellDelega
             systemTemplatesArray[indexPath.row - 1].isSelected = !systemTemplatesArray[indexPath.row - 1].isSelected
             tableViewSystemTemplate.reloadData()
         }
+        saveDocsOfSelectedTemplates()
     }
     
 }

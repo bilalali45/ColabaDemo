@@ -38,9 +38,9 @@ class Doc : NSObject{
     var isCommonlyUsed: Bool = false
     var isSelected: Bool = false
     
-    func updateModelWithJSON(json: JSON, isForDocList: Bool=false){
-        docTypeId = json[ isForDocList ? "docTypeId" : "typeId"].stringValue
-        docType = json[isForDocList ? "docType" : "docName"].stringValue
+    func updateModelWithJSON(json: JSON){
+        docTypeId = json["docTypeId"].stringValue
+        docType = json["docType"].stringValue
         docMessage = json["docMessage"].stringValue
         isCommonlyUsed = json["isCommonlyUsed"].boolValue
     }

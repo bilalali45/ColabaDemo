@@ -159,6 +159,11 @@ class SearchRequestDocumentViewController: BaseViewController {
         }
     }
     
+    func saveSelectedDocs(){
+        selectedDocsFromList.removeAll(where: {$0.docTypeId != ""})
+        selectedDocsFromList = selectedDocsFromList + assets.documents.filter({$0.isSelected}) + income.documents.filter({$0.isSelected}) + liabilities.documents.filter({$0.isSelected}) + personal.documents.filter({$0.isSelected}) + property.documents.filter({$0.isSelected}) + disclosure.documents.filter({$0.isSelected}) + other.documents.filter({$0.isSelected})
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton) {
         self.dismissVC()
     }
@@ -431,7 +436,7 @@ extension SearchRequestDocumentViewController: DocumentsTemplatesTableViewCellDe
             searchedOtherDocs[indexPath.row - 1].isSelected = !searchedOtherDocs[indexPath.row - 1].isSelected
             tableViewOther.reloadData()
         }
-        
+        saveSelectedDocs()
     }
 }
 

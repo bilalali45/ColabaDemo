@@ -28,6 +28,6 @@ class DocumentRequestSentViewController: BaseViewController {
     //MARK:- Methods and Actions
     
     @IBAction func btnBackToDocumentTapped(_ sender: UIButton){
-        self.goToRoot()
+        self.dismissVC()
     }
 }
