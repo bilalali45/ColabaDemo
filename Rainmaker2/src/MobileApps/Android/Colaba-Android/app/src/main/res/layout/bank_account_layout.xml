@@ -323,7 +323,7 @@
         android:id="@+id/save_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_save_icon"
+        android:src="@drawable/ic_save"
         app:elevation="3dp"
         android:translationX="18dp"
         android:translationY="20dp"

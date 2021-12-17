@@ -56,9 +56,12 @@
     <!--  <item>Own</item>
         <item>Rent</item>
         <item>No Primary Housing Expense</item>-->
+
+
     <string name="race">Race</string>
     <string name="ethnicity">Ethnicity</string>
     <string name="sex">Sex</string>
+
 
     <string name="add_current_address">Add Current Residence</string>
     <string name="add_previous_address">Add Previous Residence</string>
@@ -103,6 +106,8 @@
     <string name="assets_income"> ASSETS &amp; INCOME</string>
     <string name="income">Income</string>
     <string name="real_estate_owned">Real Estate Owned</string>
+    <string name="add_real_estate_owned">Add Real Estate Owned</string>
+    <string name="add_subject_property">Add Subject Property</string>
 
 
     <string name="pipeline">Pipeline</string>

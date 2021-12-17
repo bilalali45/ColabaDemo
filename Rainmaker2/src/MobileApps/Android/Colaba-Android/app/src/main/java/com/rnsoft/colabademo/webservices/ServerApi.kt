@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.model.*
+import com.rnsoft.colabademo.activities.requestdocs.model.TemplatesModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
@@ -19,6 +20,13 @@ interface ServerApi{
         "Cache-Control: max-age=640000"
     )
      */
+
+    @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")
+    suspend fun getEmailTemplates(
+        @Header("Authorization") Authorization:String) : TemplatesModel
+
+
+
 
     // subject property
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyTypeDropDown")

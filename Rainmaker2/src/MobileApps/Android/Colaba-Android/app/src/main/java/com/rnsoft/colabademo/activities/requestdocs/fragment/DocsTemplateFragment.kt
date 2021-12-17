@@ -21,8 +21,6 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
     private var _binding: DocsTemplateLayoutBinding? = null
     private val binding get() = _binding!!
 
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -159,8 +157,5 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
              */
         }
     }
-
-
-
 
 }
