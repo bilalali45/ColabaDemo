@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol BankStatementViewControllerDelegate: AnyObject {
+    func deleteDocument(doc: Doc)
+}
+
 class BankStatementViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -20,12 +24,16 @@ class BankStatementViewController: BaseViewController {
     @IBOutlet weak var btnNext: ColabaButton!
     
     var txtViewMessage = MDCFilledTextArea()
+    var selectedDoc = Doc()
+    weak var delegate: BankStatementViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMaterialTextView()
         btnNext.setButton(image: UIImage(named: "NextIcon")!)
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDocumentTapped), name: NSNotification.Name(rawValue: kNotificationDeleteDocument), object: nil)
+        lblTitle.text = selectedDoc.docType
+        
     }
 
     //MARK:- Methods and Actions
@@ -34,7 +42,7 @@ class BankStatementViewController: BaseViewController {
         let estimatedFrame = messageTextViewContainer.frame
         txtViewMessage = MDCFilledTextArea(frame: estimatedFrame)
         txtViewMessage.label.text = "Include a message to the borrower"
-        txtViewMessage.textView.text = ""
+        txtViewMessage.textView.text = selectedDoc.docMessage
         txtViewMessage.leadingAssistiveLabel.text = ""
         txtViewMessage.setFilledBackgroundColor(.clear, for: .normal)
         txtViewMessage.setFilledBackgroundColor(.clear, for: .disabled)
@@ -65,6 +73,7 @@ class BankStatementViewController: BaseViewController {
     }
     
     @objc func deleteDocumentTapped(){
+        self.delegate?.deleteDocument(doc: selectedDoc)
         self.dismissVC()
     }
     
@@ -74,10 +83,12 @@ class BankStatementViewController: BaseViewController {
     
     @IBAction func btnDeleteTapped(_ sender: UIButton) {
         let vc = Utility.getDeleteDocumentPopupVC()
+        vc.docName = selectedDoc.docType
         self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnNextTapped(_ sender: UIButton) {
+        selectedDoc.docMessage = txtViewMessage.textView.text!
         self.dismissVC()
     }
 }

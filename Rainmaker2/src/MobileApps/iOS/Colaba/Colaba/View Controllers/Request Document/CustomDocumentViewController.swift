@@ -88,6 +88,10 @@ class CustomDocumentViewController: BaseViewController {
     
     @IBAction func btnNextTapped(_ sender: UIButton) {
         if validate(){
+            let model = Doc()
+            model.docType = txtfieldDocumentName.text!
+            model.docMessage = txtViewMessage.textView.text
+            selectedDocsFromList = selectedDocsFromList + [model]
             self.dismissVC()
         }
     }

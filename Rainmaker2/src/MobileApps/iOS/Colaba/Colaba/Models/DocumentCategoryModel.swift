@@ -20,7 +20,7 @@ class DocumentCategoryModel: NSObject {
         let docsArray = json["documents"].arrayValue
         for docsJson in docsArray{
             let model = Doc()
-            model.updateModelWithJSON(json: docsJson, isForDocList: true)
+            model.updateModelWithJSON(json: docsJson)
             documents.append(model)
         }
     }
