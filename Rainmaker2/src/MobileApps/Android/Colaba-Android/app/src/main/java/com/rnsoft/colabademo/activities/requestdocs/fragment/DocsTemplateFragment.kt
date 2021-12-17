@@ -9,10 +9,16 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
 import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
+import timber.log.Timber
 
 import javax.inject.Inject
 @AndroidEntryPoint
@@ -21,6 +27,10 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
     private var _binding: DocsTemplateLayoutBinding? = null
     private val binding get() = _binding!!
 
+    private var onceLoaded = true
+
+    private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(
@@ -28,7 +38,6 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = DocsTemplateLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -38,81 +47,103 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
     private fun setUpUI(){
 
-        val sampleDocs = getSampleDocsTemplate()
-        for (i in 0 until sampleDocs.size) {
+        requestDocsViewModel.getTemplatesResponse.observe(viewLifecycleOwner, { templatesList->
+            if(onceLoaded) {
+                templatesList?.let {
+                    // Custom Cell....
+                    val customTemplateMainCell: LinearLayoutCompat = createMainCell("My Templates")
+                    addContentToMainCell(it, customTemplateMainCell, "My Templates")
+                    addBottomToMainCell(customTemplateMainCell)
 
-            val modelData = sampleDocs[i]
+                    customTemplateMainCell.visibility = View.INVISIBLE
+                    binding.docsTypeParentContainer.addView(customTemplateMainCell)
+                    binding.docsTypeParentContainer.postDelayed({
+                        hideOtherBoxes()
+                        customTemplateMainCell.visibility = View.VISIBLE
+                    }, 500
+                    )
 
-            val mainCell: LinearLayoutCompat =
-                layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
+                    // System Cell....
+                    val systemMainCell: LinearLayoutCompat = createMainCell("System Templates")
+                    addContentToMainCell(it, systemMainCell, "Tenant Template")
+                    addBottomToMainCell(systemMainCell)
 
-
-
-            val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
-            topCell.cell_header_title.text =  modelData.headerTitle
-            topCell.total_selected.text = modelData.totalSelected
-
-            // always hide this...
-            topCell.total_selected.visibility = View.GONE
-            topCell.items_selected_imageview.visibility = View.GONE
-            topCell.tag = R.string.docs_top_cell
-            mainCell.addView(topCell)
-
-
-            val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellStart)
-
-            for (j in 0 until modelData.contentCell.size) {
-                val contentCell: View =
-                    layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
-                val contentData = modelData.contentCell[j]
-                contentCell.checkbox.text = contentData.checkboxContent
-                contentCell.checkbox.setOnCheckedChangeListener{ buttonView, isChecked ->
-                    if(isChecked)
-                        buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
-                    else
-                        buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                    systemMainCell.visibility = View.INVISIBLE
+                    binding.docsTypeParentContainer.addView(systemMainCell)
+                    binding.docsTypeParentContainer.postDelayed({
+                        hideOtherBoxes()
+                        systemMainCell.visibility = View.VISIBLE }, 500)
+                    onceLoaded = false
                 }
-                //contentCell.content_desc.text = contentData.description
-                contentCell.visibility = View.VISIBLE
-                contentCell.info_imageview.setOnClickListener(modelData.contentListenerAttached)
-                mainCell.addView(contentCell)
             }
+        } )
 
-            val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
-            //emptyCell.visibility = View.GONE
-            mainCell.addView(emptyCellEnd)
+        val sampleDocs = getSampleDocsTemplate()
+
+    }
+
+    private fun createMainCell(mainCellTitle:String):LinearLayoutCompat{
+        val mainCell: LinearLayoutCompat = layoutInflater.inflate(R.layout.docs_type_top_main_cell, null) as LinearLayoutCompat
+        val topCell: View = layoutInflater.inflate(R.layout.docs_type_header_cell, null)
+        topCell.cell_header_title.text =  mainCellTitle
+        //topCell.total_selected.text = modelData.totalSelected
+
+        topCell.total_selected.visibility = View.GONE
+        topCell.items_selected_imageview.visibility = View.GONE
+        topCell.tag = R.string.docs_top_cell
+        mainCell.addView(topCell)
+        // add listeners to the top cell....
+        topCell.setOnClickListener { hideAllAndOpenedSelectedCell(topCell, mainCell) }
+        topCell.docs_arrow_up.setOnClickListener { hideCurrentlyOpenedCell(topCell, mainCell) }
 
 
-            mainCell.visibility = View.INVISIBLE
-            binding.docsTypeParentContainer.addView(mainCell)
-            binding.docsTypeParentContainer.postDelayed({
-                hideOtherBoxes()
-                mainCell.visibility = View.VISIBLE
-            },500)
+        val emptyCellStart: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+        //emptyCell.visibility = View.GONE
+        mainCell.addView(emptyCellStart)
+        return mainCell
+    }
 
-
-
-            topCell.setOnClickListener {
-                //hideOtherBoxes()
-                hideAllAndOpenedSelectedCell(topCell, mainCell)
+    private fun addContentToMainCell(templatesList:ArrayList<GetTemplatesResponseItem>, mainCell: LinearLayoutCompat, filterString :String){
+        for (j in 0 until templatesList.size) {
+            val modelData = templatesList[j]
+            if(modelData.type != filterString) continue
+            val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
+            contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked)
+                    buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
+                else
+                    buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
             }
+            contentCell.checkbox.text = modelData.name
+            contentCell.visibility = View.VISIBLE
+            contentCell.info_imageview.setOnClickListener(DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
+            mainCell.addView(contentCell)
+        }
+    }
 
-            topCell.docs_arrow_up.setOnClickListener {
-                hideCurrentlyOpenedCell(topCell, mainCell)
-            }
+    private fun addBottomToMainCell(mainCell: LinearLayoutCompat){
+        val emptyCellEnd: View = layoutInflater.inflate(R.layout.docs_type_empty_space_cell, null)
+        mainCell.addView(emptyCellEnd)
+    }
 
 
-
+    class DocsShowClickListener(private val dialogTitle: String, private val dialogValues: ArrayList<Doc>, private val childFragmentManager: FragmentManager) :
+        View.OnClickListener {
+        override fun onClick(v: View?) {
+            StandardChecklistDialogFragment.newInstance(dialogTitle, dialogValues).show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
         }
     }
 
     private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){
         hideOtherBoxes() // if you want to hide other boxes....
-        topCell.docs_arrow_up.visibility = View.VISIBLE
-        topCell.docs_arrow_down.visibility = View.INVISIBLE
-        toggleContentCells(mainCell, View.VISIBLE)
+        if(mainCell.childCount>3) { // if there are no contents, by default 3 children are added to the maincell....
+            topCell.docs_arrow_up.visibility = View.VISIBLE
+            topCell.docs_arrow_down.visibility = View.INVISIBLE
+            Timber.e("total children are = " + mainCell.childCount.toString())
+            toggleContentCells(mainCell, View.VISIBLE)
+        }
+        else
+            SandbarUtils.showRegular(requireActivity(), "No data to display")
         //bottomCell.visibility = View.VISIBLE
     }
 
@@ -158,4 +189,14 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
         }
     }
 
+
+
+
 }
+
+    /*
+        private val getTemplatesObserver = Observer<GetTemplatesResponse> { onNewTemplateReceived(it) }
+        private fun onNewTemplateReceived(templatesList: GetTemplatesResponse?) {}
+        private fun <T> LiveData<T>.removeObserver(emailValidObserver: Observer<GetTemplatesResponse>) {}
+        private fun <T> LiveData<T>.observe(viewLifecycleOwner: LifecycleOwner, emailValidObserver: Observer<GetTemplatesResponse>) {}
+     */

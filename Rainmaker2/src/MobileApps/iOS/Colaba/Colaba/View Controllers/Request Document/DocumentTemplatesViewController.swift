@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
 
 class DocumentTemplatesViewController: BaseViewController {
 
@@ -18,8 +19,10 @@ class DocumentTemplatesViewController: BaseViewController {
     @IBOutlet weak var tableViewSystemTemplate: UITableView!
     @IBOutlet weak var tableViewSystemTemplateHeightConstraint: NSLayoutConstraint!
     
-    let myTemplatesArray = ["Income Template", "My Standard Checklist", "Assets template"]
-    let systemTemplatesArray = ["FHA Full Doc Refinance - W2", "VA Cash Out - W-2", "FHA Full Doc Refinance", "Conventional Refinance - SE", "VA Purchase - W-2", "Additional Questions", "Auto Loan", "Construction Loan-Phase 1"]
+    var myTemplatesArray = [DocumentTemplateModel]()
+    var systemTemplatesArray = [DocumentTemplateModel]()
+    
+    let loadingPlaceholderView = LoadingPlaceholderView()
     
     var selectedTableView: UITableView?
     
@@ -31,6 +34,12 @@ class DocumentTemplatesViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2){
             self.setScreenHeight()
         }
+        getDocumentTemplates()
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
     }
     
@@ -46,13 +55,17 @@ class DocumentTemplatesViewController: BaseViewController {
             tableView.clipsToBounds = false
             tableView.layer.masksToBounds = false
             tableView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 1, shadowOpacity: 1)
+            tableView.coverableCellsIdentifiers = ["AssetsHeadingTableViewCell"]
         }
     }
    
     func setScreenHeight(){
         
-        let myTemplateTableViewHeight = selectedTableView == tableViewMyTemplates ? 174 : 56
-        let systemTemplateTableViewHeight = selectedTableView == tableViewSystemTemplate ? 376 : 56
+        let myTemplateHeight = (self.myTemplatesArray.count * 40)
+        let myTemplateTableViewHeight = selectedTableView == tableViewMyTemplates ? (myTemplateHeight + 56) : 56
+        
+        let systemTemplateHeight = (self.systemTemplatesArray.count * 40)
+        let systemTemplateTableViewHeight = selectedTableView == tableViewSystemTemplate ? (systemTemplateHeight + 56) : 56
         
         let totalHeight = myTemplateTableViewHeight + systemTemplateTableViewHeight + 100
         
@@ -66,6 +79,62 @@ class DocumentTemplatesViewController: BaseViewController {
             self.tableViewMyTemplates.reloadData()
             self.tableViewSystemTemplate.reloadData()
         }
+    }
+    
+    func saveDocsOfSelectedTemplates(){
+        selectedDocsFromTemplate.removeAll()
+        let selectedMyTemplates = myTemplatesArray.filter({$0.isSelected})
+        let selectedSystemTemplates = systemTemplatesArray.filter({$0.isSelected})
+        
+        for myTemplate in selectedMyTemplates{
+            selectedDocsFromTemplate = selectedDocsFromTemplate + myTemplate.docs
+        }
+        for systemTemplate in selectedSystemTemplates{
+            selectedDocsFromTemplate = selectedDocsFromTemplate + systemTemplate.docs
+        }
+    }
+    
+    //MARK:- API's
+    
+    func getDocumentTemplates(){
+        
+        if (myTemplatesArray.count == 0 && systemTemplatesArray.count == 0){
+            loadingPlaceholderView.cover(self.view, animated: true)
+        }
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getDocumentTemplates, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                self.loadingPlaceholderView.uncover(animated: true)
+                
+                if (status == .success){
+                    
+                    self.myTemplatesArray.removeAll()
+                    self.systemTemplatesArray.removeAll()
+                    
+                    let allTemplates = result.arrayValue
+                    for template in allTemplates{
+                        let model = DocumentTemplateModel()
+                        model.updateModelWithJSON(json: template)
+                        if (model.type.localizedCaseInsensitiveContains("Tenant Template")){
+                            self.systemTemplatesArray.append(model)
+                        }
+                        else{
+                            self.myTemplatesArray.append(model)
+                        }
+                    }
+                    self.setScreenHeight()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+            
+        }
+        
     }
 }
 
@@ -92,7 +161,9 @@ extension DocumentTemplatesViewController: UITableViewDataSource, UITableViewDel
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = myTemplatesArray[indexPath.row - 1]
+                let template = myTemplatesArray[indexPath.row - 1]
+                cell.lblTemplateName.text = template.name
+                cell.btnCheckbox.setImage(UIImage(named: template.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.indexPath = indexPath
                 cell.delegate = self
                 return cell
@@ -109,7 +180,9 @@ extension DocumentTemplatesViewController: UITableViewDataSource, UITableViewDel
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = systemTemplatesArray[indexPath.row - 1]
+                let template = systemTemplatesArray[indexPath.row - 1]
+                cell.lblTemplateName.text = template.name
+                cell.btnCheckbox.setImage(UIImage(named: template.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.indexPath = indexPath
                 cell.delegate = self
                 return cell
@@ -138,11 +211,20 @@ extension DocumentTemplatesViewController: DocumentsTemplatesTableViewCellDelega
     
     func infoTapped(indexPath: IndexPath) {
         let vc = Utility.getCheckListVC()
+        vc.selectedTemplate = selectedTableView == tableViewMyTemplates ? myTemplatesArray[indexPath.row - 1] : systemTemplatesArray[indexPath.row - 1]
         self.present(vc, animated: false, completion: nil)
     }
     
-    func templateSelect(indexPath: IndexPath) {
-        
+    func templateSelect(indexPath: IndexPath, tableView: UITableView) {
+        if (selectedTableView == tableViewMyTemplates){
+            myTemplatesArray[indexPath.row - 1].isSelected = !myTemplatesArray[indexPath.row - 1].isSelected
+            tableViewMyTemplates.reloadData()
+        }
+        else if (selectedTableView == tableViewSystemTemplate){
+            systemTemplatesArray[indexPath.row - 1].isSelected = !systemTemplatesArray[indexPath.row - 1].isSelected
+            tableViewSystemTemplate.reloadData()
+        }
+        saveDocsOfSelectedTemplates()
     }
     
 }

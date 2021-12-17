@@ -8,7 +8,7 @@
 import UIKit
 
 protocol DocumentsTemplatesTableViewCellDelegate: AnyObject {
-    func templateSelect(indexPath: IndexPath)
+    func templateSelect(indexPath: IndexPath, tableView: UITableView)
     func infoTapped(indexPath: IndexPath)
 }
 
@@ -21,10 +21,9 @@ class DocumentsTemplatesTableViewCell: UITableViewCell {
     @IBOutlet weak var lblTemplateName: UILabel!
     @IBOutlet weak var btnInfo: UIButton!
     
-    var isSelectedTemplate = false
-    
     var indexPath = IndexPath()
     weak var delegate: DocumentsTemplatesTableViewCellDelegate?
+    var tableView = UITableView()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,10 +39,10 @@ class DocumentsTemplatesTableViewCell: UITableViewCell {
     //MARK:- Methods and Actions
     
     @objc func stackViewTemplateTapped(){
-        isSelectedTemplate = !isSelectedTemplate
-        btnCheckbox.setImage(UIImage(named: isSelectedTemplate ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblTemplateName.font = isSelectedTemplate ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-//        self.delegate?.templateSelect(indexPath: indexPath)
+//        isSelectedTemplate = !isSelectedTemplate
+//        btnCheckbox.setImage(UIImage(named: isSelectedTemplate ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+//        lblTemplateName.font = isSelectedTemplate ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        self.delegate?.templateSelect(indexPath: indexPath, tableView: tableView)
     }
     
     @IBAction func btnInfoTapped(_ sender: UIButton) {

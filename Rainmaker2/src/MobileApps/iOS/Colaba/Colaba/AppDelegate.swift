@@ -120,17 +120,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func loadBorrowerInfoController(){
         
-        let vc = Utility.getLoanDetailVC()
-        vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
-        vc.borrowerName = "Farhan Qadir"//"flow check"//"Quentin Finley"//"flow check"
-        vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
-        vc.phoneNumber = ""
-        vc.email = ""
-        let navVC = UINavigationController(rootViewController: vc)
-        navVC.navigationBar.isHidden = true
-        navVC.modalPresentationStyle = .fullScreen
-        self.window?.rootViewController = navVC
+//        let vc = Utility.getLoanDetailVC()
+//        vc.loanApplicationId = 5//1042    //1009 for Refinance with co borrower
+//        vc.borrowerName = "Farhan Qadir"//"flow check"//"Quentin Finley"//"flow check"
+//        vc.loanPurpose = "Purchase"//"Purchase"// "Refinance"
+//        vc.phoneNumber = ""
+//        vc.email = ""
+//        let navVC = UINavigationController(rootViewController: vc)
+//        navVC.navigationBar.isHidden = true
+//        navVC.modalPresentationStyle = .fullScreen
+//        self.window?.rootViewController = navVC
         
+        let vc = Utility.getSetLetterOnDemandVC()
+        self.window?.rootViewController = vc
     }
     
     func loadLoginViewController(){

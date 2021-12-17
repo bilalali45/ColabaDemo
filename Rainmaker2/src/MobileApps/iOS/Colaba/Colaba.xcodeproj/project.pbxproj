@@ -91,6 +91,7 @@
 		2390FED626A6B639007A5A52 /* ApplicationTabHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */; };
 		2390FEE126A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */; };
 		2390FEE226A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */; };
+		239129C5276B1C1700F82B07 /* DocumentCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */; };
 		2392A4CB26C4F9700083EFE4 /* DependentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */; };
 		2392A4CC26C4F9700083EFE4 /* DependentCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */; };
 		2392A4CE26C55FEE0083EFE4 /* AddMailingAddressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */; };
@@ -190,6 +191,8 @@
 		23BE065126F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */; };
 		23BE065526F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */; };
 		23BE065726F0E86200F9B4B8 /* AddOtherIncomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */; };
+		23BE89F32769CE2300247B1F /* SetLetterOnDemandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */; };
+		23BE89F52769D59300247B1F /* DocumentTemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BE89F42769D59300247B1F /* DocumentTemplateModel.swift */; };
 		23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */; };
 		23C244862689B6A500EED1D0 /* AllLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244852689B6A500EED1D0 /* AllLoanModel.swift */; };
 		23C244882689E3E400EED1D0 /* ActiveLoanModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */; };
@@ -379,6 +382,7 @@
 		2390FED526A6B639007A5A52 /* ApplicationTabHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationTabHeaderView.swift; sourceTree = "<group>"; };
 		2390FEDF26A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorrowerInfoCollectionViewCell.swift; sourceTree = "<group>"; };
 		2390FEE026A6BE6D007A5A52 /* BorrowerInfoCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BorrowerInfoCollectionViewCell.xib; sourceTree = "<group>"; };
+		239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCategoryModel.swift; sourceTree = "<group>"; };
 		2392A4C926C4F9700083EFE4 /* DependentCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependentCollectionViewCell.swift; sourceTree = "<group>"; };
 		2392A4CA26C4F9700083EFE4 /* DependentCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DependentCollectionViewCell.xib; sourceTree = "<group>"; };
 		2392A4CD26C55FEE0083EFE4 /* AddMailingAddressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMailingAddressViewController.swift; sourceTree = "<group>"; };
@@ -478,6 +482,8 @@
 		23BE065026F0D7E300F9B4B8 /* AddMilitaryPayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMilitaryPayViewController.swift; sourceTree = "<group>"; };
 		23BE065426F0E54C00F9B4B8 /* AddRetirementIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRetirementIncomeViewController.swift; sourceTree = "<group>"; };
 		23BE065626F0E86200F9B4B8 /* AddOtherIncomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOtherIncomeViewController.swift; sourceTree = "<group>"; };
+		23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLetterOnDemandViewController.swift; sourceTree = "<group>"; };
+		23BE89F42769D59300247B1F /* DocumentTemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTemplateModel.swift; sourceTree = "<group>"; };
 		23C1038F26E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MixPropertyDetailFollowUpViewController.swift; sourceTree = "<group>"; };
 		23C244852689B6A500EED1D0 /* AllLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLoanModel.swift; sourceTree = "<group>"; };
 		23C244872689E3E400EED1D0 /* ActiveLoanModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveLoanModel.swift; sourceTree = "<group>"; };
@@ -674,6 +680,8 @@
 				23A03061275DF13900A9D26D /* BorrowerContactModel.swift */,
 				23A03063275E034F00A9D26D /* ApplicationStatusModel.swift */,
 				232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */,
+				23BE89F42769D59300247B1F /* DocumentTemplateModel.swift */,
+				239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -913,6 +921,7 @@
 			isa = PBXGroup;
 			children = (
 				23EF6BC727675FF900214C0A /* PreApprovalLettersViewController.swift */,
+				23BE89F22769CE2300247B1F /* SetLetterOnDemandViewController.swift */,
 			);
 			path = "Pre Approval Letters";
 			sourceTree = "<group>";
@@ -1654,12 +1663,14 @@
 				239DFD562727DAE60052E391 /* RaceModel.swift in Sources */,
 				238973FE2703132D00759965 /* DuplicateContactPopupViewController.swift in Sources */,
 				238A076926DCF5EB0042E4A7 /* PurchaseLoanInfoViewController.swift in Sources */,
+				23BE89F32769CE2300247B1F /* SetLetterOnDemandViewController.swift in Sources */,
 				7160CA88267339060061ACD5 /* ProfileViewController.swift in Sources */,
 				238E0F9126F37A040025FF06 /* OwnershipInterestInPropertyViewController.swift in Sources */,
 				237DF98726D772A1000CAA8E /* FaceLockNavigationViewController.swift in Sources */,
 				23C1039026E0A82600268FE6 /* MixPropertyDetailFollowUpViewController.swift in Sources */,
 				23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */,
 				23CD143226E259C000627127 /* FirstMortgageFollowupQuestionsViewController.swift in Sources */,
+				239129C5276B1C1700F82B07 /* DocumentCategoryModel.swift in Sources */,
 				23B91CD627609647006F24ED /* InvitePrimaryBorrowerViewController.swift in Sources */,
 				23BE064D26F0C0EF00F9B4B8 /* AddSelfEmploymentViewController.swift in Sources */,
 				2368799C26BC173E0045D294 /* BorrowerInformationViewController.swift in Sources */,
@@ -1671,6 +1682,7 @@
 				238E0F9926F38AFC0025FF06 /* UndisclosedMortgageApplicationViewController.swift in Sources */,
 				23AFA3712707187700388905 /* DocumentsListViewController.swift in Sources */,
 				2393361D273506C0003D71F8 /* SelfIndependenDetailModel.swift in Sources */,
+				23BE89F52769D59300247B1F /* DocumentTemplateModel.swift in Sources */,
 				23A1CA6C268C4B8400D93DC4 /* UILoadControl.swift in Sources */,
 				7186AD562653CD5C00E740D3 /* Theme.swift in Sources */,
 				239DB53C270C67A900977E20 /* DocumentRequestSentViewController.swift in Sources */,

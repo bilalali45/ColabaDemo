@@ -13,16 +13,18 @@ class CheckListViewController: BaseViewController {
     
     @IBOutlet weak var mainView: UIView!
     @IBOutlet weak var mainViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lblTemplateName: UILabel!
     @IBOutlet weak var btnClose: UIButton!
     @IBOutlet weak var tableViewCheckList: UITableView!
     
-    let checklistArray = ["Earnest Money Deposit", "Financial Statements", "Profit and Loss Statement", "Form 1099 (Miscellaneous Income)", "Earnest Money Deposit", "Financial Statements"]
+    var selectedTemplate = DocumentTemplateModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mainView.roundOnlyTopCorners(radius: 20)
         tableViewCheckList.register(UINib(nibName: "CheckListTableViewCell", bundle: nil), forCellReuseIdentifier: "CheckListTableViewCell")
         tableViewCheckList.rowHeight = 38
+        lblTemplateName.text = selectedTemplate.name
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,12 +66,13 @@ class CheckListViewController: BaseViewController {
 extension CheckListViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return checklistArray.count
+        return selectedTemplate.docs.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CheckListTableViewCell", for: indexPath) as! CheckListTableViewCell
-        cell.lblTitle.text = checklistArray[indexPath.row]
+        let doc = selectedTemplate.docs[indexPath.row]
+        cell.lblTitle.text = doc.docType
         return cell
     }
     

@@ -25,6 +25,7 @@ class CustomDocumentViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFieldAndTextView()
+        btnDelete.isHidden = true
         NotificationCenter.default.addObserver(self, selector: #selector(deleteDocumentTapped), name: NSNotification.Name(rawValue: kNotificationDeleteDocument), object: nil)
     }
 
@@ -87,6 +88,10 @@ class CustomDocumentViewController: BaseViewController {
     
     @IBAction func btnNextTapped(_ sender: UIButton) {
         if validate(){
+            let model = Doc()
+            model.docType = txtfieldDocumentName.text!
+            model.docMessage = txtViewMessage.textView.text
+            selectedDocsFromList = selectedDocsFromList + [model]
             self.dismissVC()
         }
     }

@@ -18,6 +18,8 @@ class DeleteDocumentPopupViewController: BaseViewController {
     @IBOutlet weak var lblDocumentName: UILabel!
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var btnYes: UIButton!
+
+    var docName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +28,7 @@ class DeleteDocumentPopupViewController: BaseViewController {
         btnYes.layer.borderWidth = 2
         btnYes.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         btnNo.layer.cornerRadius = 5
+        lblDocumentName.text = docName
     }
     
     override func viewDidAppear(_ animated: Bool) {

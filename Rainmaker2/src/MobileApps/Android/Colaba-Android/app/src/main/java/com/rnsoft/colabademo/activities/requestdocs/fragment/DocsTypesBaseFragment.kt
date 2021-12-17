@@ -9,7 +9,9 @@ open class DocsTypesBaseFragment:BaseFragment() {
     protected fun getSampleDocsTemplate():ArrayList<DocTypeModelClass>{
 
             val infoTitle ="My Standard Checklist"
-            val infoArrayList:ArrayList<String> = arrayListOf("Earnest Money Deposit", "Financial Statements" , "Profit and Loss Statement", "Form 1099 (Miscellaneous Income)", "Earnest Money Deposit", "Financial Statements")
+            //val infoArrayList:ArrayList<String> = arrayListOf("Earnest Money Deposit", "Financial Statements" , "Profit and Loss Statement", "Form 1099 (Miscellaneous Income)", "Earnest Money Deposit", "Financial Statements")
+            val infoArrayList:ArrayList<Doc> = arrayListOf()
+
 
             val docTypeModelClass = DocTypeModelClass( headerTitle = "My Templates", totalSelected = "0" , footerTitle = "",
             contentCell = arrayListOf(
@@ -42,7 +44,7 @@ open class DocsTypesBaseFragment:BaseFragment() {
         //StandardChecklistDialogFragment.newInstance().show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
     }
 
-    class MyLovelyOnClickListener(private val dialogTitle: String, private val dialogValues:ArrayList<String>, private val childFragmentManager:FragmentManager) :
+    class MyLovelyOnClickListener(private val dialogTitle: String, private val dialogValues:ArrayList<Doc>, private val childFragmentManager:FragmentManager) :
         View.OnClickListener {
         override fun onClick(v: View?) {
             //read your lovely variable
@@ -50,13 +52,11 @@ open class DocsTypesBaseFragment:BaseFragment() {
         }
     }
 
-
-
     protected fun getSampleDocsFiles():ArrayList<DocTypeModelClass>{
 
         val infoTitle ="My Standard Checklist"
-        val infoArrayList:ArrayList<String> = arrayListOf("Earnest Money Deposit", "Financial Statements" , "Profit and Loss Statement", "Form 1099 (Miscellaneous Income)", "Earnest Money Deposit", "Financial Statements")
-
+        //val infoArrayList:ArrayList<String> = arrayListOf("Earnest Money Deposit", "Financial Statements" , "Profit and Loss Statement", "Form 1099 (Miscellaneous Income)", "Earnest Money Deposit", "Financial Statements")
+        val infoArrayList:ArrayList<Doc> = arrayListOf()
         val docTypeModelClass = DocTypeModelClass( headerTitle = "Assets", totalSelected = "0" , footerTitle = "",
             contentCell = arrayListOf(
                 DocTypeContentCell("Credit Report", ""),

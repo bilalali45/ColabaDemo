@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.RequestDocsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

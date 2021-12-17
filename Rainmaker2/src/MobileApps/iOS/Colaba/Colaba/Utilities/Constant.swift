@@ -16,8 +16,8 @@ let kNo = "NO"
 let kFaceIdResetPopup = "This will reset your face Id verification. Do you want to continue?"
 let kFingerIdResetPopup = "This will reset your finger print verification. Do you want to continue?"
 //let BASEURL = "http://172.16.100.17:5003/api/mcu/mobile/"
-let BASEURL = "https://devmobilegateway.rainsoftfn.com/api/mcu/mobile/"
-//let BASEURL = "https://qamobilegateway.rainsoftfn.com/api/mcu/mobile/"
+//let BASEURL = "https://devmobilegateway.rainsoftfn.com/api/mcu/mobile/"
+let BASEURL = "https://qamobilegateway.rainsoftfn.com/api/mcu/mobile/"
 //let BASEURL = "https://mobilegateway.rainsoftfn.xyz/api/mcu/mobile/"
 let kResendEnableTimeStamp = "kResendEnableTimeStamp"
 var isBiometricAllow = false
@@ -91,3 +91,6 @@ let kPersonalArray = ["Government Issued Identification", "Permanent Resident Ca
 let kPropertyArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
 let kDisclosureArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
 let kOtherArray = ["Trust - Family Trust", "Divorce Decree", "Mortgage Statement", "Homebuyer Education", "Credit Explanation", "Letter of Explanation", "Power of Attorney (POA)", "Purpose of Cash Out", "Page 5 of 5 of bank statements"]
+
+var selectedDocsFromTemplate = [Doc]()
+var selectedDocsFromList = [Doc]()

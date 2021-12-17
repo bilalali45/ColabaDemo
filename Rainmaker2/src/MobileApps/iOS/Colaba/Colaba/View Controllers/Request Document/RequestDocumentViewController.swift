@@ -19,6 +19,8 @@ class RequestDocumentViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
+        selectedDocsFromTemplate.removeAll()
+        selectedDocsFromList.removeAll()
     }
     
     //MARK:- Methods and Actions

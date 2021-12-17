@@ -5,7 +5,6 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
-import java.io.InputStream
 import javax.inject.Inject
 
 class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
@@ -100,4 +99,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+
+
 }

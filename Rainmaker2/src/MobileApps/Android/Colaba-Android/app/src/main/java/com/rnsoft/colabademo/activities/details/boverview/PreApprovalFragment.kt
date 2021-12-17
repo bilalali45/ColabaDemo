@@ -54,8 +54,8 @@ class PreApprovalFragment : BaseFragment(){
         CustomMaterialFields.setDollarPrefix(binding.layoutLoanAmount,requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutDownPayment,requireContext())
 
-        binding.etDownPayment.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etDownPayment, binding.layoutDownPayment, requireContext()))
-        binding.etLoanAmount.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.etLoanAmount, binding.layoutLoanAmount, requireContext()))
+        binding.etDownPayment.onFocusChangeListener = CustomFocusListenerForEditText(binding.etDownPayment, binding.layoutDownPayment, requireContext())
+        binding.etLoanAmount.onFocusChangeListener = CustomFocusListenerForEditText(binding.etLoanAmount, binding.layoutLoanAmount, requireContext())
 
         CustomMaterialFields.onTextChangedLableColor(requireActivity(), binding.etExpiryDate, binding.layoutExpiryDate)
         binding.etExpiryDate.showSoftInputOnFocus = false

@@ -675,6 +675,20 @@ interface ServerApi{
     ):DemoGraphicResponseModel
 
 
+    @GET("api/mcu/mobile/DocumentManagement/EmailTemplate/GetEmailTemplates")
+    suspend fun getEmailTemplates(
+        @Header("Authorization" )  Authorization:String):Any
+
+
+    @GET("api/mcu/mobile/DocumentManagement/Template/GetCategoryDocumentMcu")
+    suspend fun getCategoryDocumentMcu(
+        @Header("Authorization" )  Authorization:String):CategoryDocsResponse
+
+
+    @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")
+    suspend fun getTemplates(
+        @Header("Authorization" )  Authorization:String):GetTemplatesResponse
+
 
 
 }

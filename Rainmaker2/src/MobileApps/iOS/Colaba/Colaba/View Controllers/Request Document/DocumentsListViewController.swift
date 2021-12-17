@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LoadingPlaceholderView
 
 class DocumentsListViewController: BaseViewController {
 
@@ -34,19 +35,26 @@ class DocumentsListViewController: BaseViewController {
     @IBOutlet weak var addCustomDocumentView: UIView!
     
     var selectedTableView: UITableView?
+    let loadingPlaceholderView = LoadingPlaceholderView()
     
-    let assetsArray = ["Credit Report", "Earnest Money Deposit", "Financial Statement", "Form 1099", "Government-issued ID", "Letter of Explanation - General", "Mortgage Statement", "Form 1099"]
-    let incomeArray = ["Tax Returns with Schedules (Business - Two Years)", "Tax Returns with Schedules (Personal - Two Years)", "Paystubs - Most Recent", "W-2s - Last Two years", "Rental Agreement - Real Estate Owned", "Income - Miscellaneous"]
-    let liabilitiesArray = ["HOA or Condo Association Fee Statements", "Liabilities - Miscellaneous", "Rental Agreement", "Bankruptcy Papers", "Property Tax Statement"]
-    let personalArray = ["Government Issued Identification", "Permanent Resident Card", "Work Visa - Work Permit"]
-    let propertyArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
-    let disclosureArray = ["Purchase Contract", "Condo HO6 Interior Insurance", "Flood Insurance Policy", "Survey Affidavit", "Property Survey", "Homeowner's Association Certificate"]
-    let otherArray = ["Trust - Family Trust", "Divorce Decree", "Mortgage Statement", "Homebuyer Education", "Credit Explanation", "Letter of Explanation", "Power of Attorney (POA)", "Purpose of Cash Out", "Page 5 of 5 of bank statements"]
+    var assets = DocumentCategoryModel()
+    var income = DocumentCategoryModel()
+    var liabilities = DocumentCategoryModel()
+    var personal = DocumentCategoryModel()
+    var property = DocumentCategoryModel()
+    var disclosure = DocumentCategoryModel()
+    var other = DocumentCategoryModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableViewsAndViews(tableViews: [tableViewAssets, tableViewIncome, tableViewLiabilities, tableViewPersonal, tableViewProperty, tableViewDisclosure, tableViewOther])
         txtfieldSearch.addTarget(self, action: #selector(textfieldSearchEditingChanged), for: .editingChanged)
+        getDocumentsList()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setScreenHeight()
     }
     
     //MARK:- Methods
@@ -61,6 +69,7 @@ class DocumentsListViewController: BaseViewController {
             tableView.clipsToBounds = false
             tableView.layer.masksToBounds = false
             tableView.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 1, shadowOpacity: 1)
+            tableView.coverableCellsIdentifiers = ["AssetsHeadingTableViewCell"]
         }
         
         searchView.backgroundColor = .white
@@ -94,7 +103,7 @@ class DocumentsListViewController: BaseViewController {
         let liabilityTableViewHeight = selectedTableView == tableViewLiabilities ? (tableViewLiabilities.contentSize.height) : 56
         let personalTableViewHeight = selectedTableView == tableViewPersonal ? (tableViewPersonal.contentSize.height) : 56
         let propertyTableViewHeight = selectedTableView == tableViewProperty ? (tableViewProperty.contentSize.height) : 56
-        let disclosureTableViewHeight = selectedTableView == tableViewDisclosure ? (tableViewDisclosure.contentSize.height) : 56
+        let disclosureTableViewHeight = selectedTableView == tableViewDisclosure ? (tableViewDisclosure.contentSize.height + 20) : 56
         let otherTableViewHeight = selectedTableView == tableViewOther ? (tableViewOther.contentSize.height) : 56
         
         let totalHeight = assetsTableViewHeight + incomeTableViewHeight + liabilityTableViewHeight +  personalTableViewHeight + propertyTableViewHeight + disclosureTableViewHeight + otherTableViewHeight + 300
@@ -125,31 +134,91 @@ class DocumentsListViewController: BaseViewController {
         btnClose.isHidden = true
     }
     
+    func saveSelectedDocs(){
+        selectedDocsFromList.removeAll(where: {$0.docTypeId != ""})
+        selectedDocsFromList = selectedDocsFromList + assets.documents.filter({$0.isSelected}) + income.documents.filter({$0.isSelected}) + liabilities.documents.filter({$0.isSelected}) + personal.documents.filter({$0.isSelected}) + property.documents.filter({$0.isSelected}) + disclosure.documents.filter({$0.isSelected}) + other.documents.filter({$0.isSelected})
+    }
+    
+    //MARK:- API's
+    
+    func getDocumentsList(){
+        
+        if (assets.documents.count == 0 && income.documents.count == 0 && liabilities.documents.count == 0 && personal.documents.count == 0 && property.documents.count == 0 && disclosure.documents.count == 0 && other.documents.count == 0){
+            loadingPlaceholderView.cover(self.view, animated: true)
+        }
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getDocumentListByCategory, method: .get, params: nil) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                self.loadingPlaceholderView.uncover(animated: true)
+                
+                if (status == .success){
+                    
+                    let allDocumentList = result.arrayValue
+                    for document in allDocumentList{
+                        let model = DocumentCategoryModel()
+                        model.updateModelWithJSON(json: document)
+                        if (model.catName == "Assets"){
+                            self.assets = model
+                        }
+                        else if (model.catName == "Income"){
+                            self.income = model
+                        }
+                        else if (model.catName == "Liabilities"){
+                            self.liabilities = model
+                        }
+                        else if (model.catName == "Personal"){
+                            self.personal = model
+                        }
+                        else if (model.catName == "Property"){
+                            self.property = model
+                        }
+                        else if (model.catName == "Disclosure"){
+                            self.disclosure = model
+                        }
+                        else if (model.catName == "Other"){
+                            self.other = model
+                        }
+                    }
+                    self.setScreenHeight()
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
 }
 
 extension DocumentsListViewController: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == tableViewAssets){
-            return selectedTableView == tableViewAssets ? assetsArray.count + 1 : 1
+            return selectedTableView == tableViewAssets ? assets.documents.count + 1 : 1
         }
         else if (tableView == tableViewIncome){
-            return selectedTableView == tableViewIncome ? incomeArray.count + 1 : 1
+            return selectedTableView == tableViewIncome ? income.documents.count + 1 : 1
         }
         else if (tableView == tableViewLiabilities){
-            return selectedTableView == tableViewLiabilities ? liabilitiesArray.count + 1 : 1
+            return selectedTableView == tableViewLiabilities ? liabilities.documents.count + 1 : 1
         }
         else if (tableView == tableViewPersonal){
-            return selectedTableView == tableViewPersonal ? personalArray.count + 1 : 1
+            return selectedTableView == tableViewPersonal ? personal.documents.count + 1 : 1
         }
         else if (tableView == tableViewProperty){
-            return selectedTableView == tableViewProperty ? propertyArray.count + 1 : 1
+            return selectedTableView == tableViewProperty ? property.documents.count + 1 : 1
         }
         else if (tableView == tableViewDisclosure){
-            return selectedTableView == tableViewDisclosure ? disclosureArray.count + 1 : 1
+            return selectedTableView == tableViewDisclosure ? disclosure.documents.count + 1 : 1
         }
         else{
-            return selectedTableView == tableViewOther ? otherArray.count + 1 : 1
+            return selectedTableView == tableViewOther ? other.documents.count + 1 : 1
         }
     }
     
@@ -157,119 +226,156 @@ extension DocumentsListViewController: UITableViewDataSource, UITableViewDelegat
         if (tableView == tableViewAssets){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Assets"
+                cell.lblTitle.text = assets.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
-                cell.counterView.isHidden = selectedTableView != tableView
-                cell.lblCounter.text = "2"
+                cell.counterView.isHidden = assets.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(assets.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = assetsArray[indexPath.row - 1]
+                let document = assets.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else if (tableView == tableViewIncome){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Income"
+                cell.lblTitle.text = income.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
-                cell.counterView.isHidden = selectedTableView != tableView
-                cell.lblCounter.text = "1"
+                cell.counterView.isHidden = income.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(income.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = incomeArray[indexPath.row - 1]
+                let document = income.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else if (tableView == tableViewLiabilities){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Liabilities"
+                cell.lblTitle.text = liabilities.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
+                cell.counterView.isHidden = liabilities.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(liabilities.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = liabilitiesArray[indexPath.row - 1]
+                let document = liabilities.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else if (tableView == tableViewPersonal){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Personal"
+                cell.lblTitle.text = personal.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
+                cell.counterView.isHidden = personal.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(personal.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = personalArray[indexPath.row - 1]
+                let document = personal.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else if (tableView == tableViewProperty){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Property"
+                cell.lblTitle.text = property.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
-                cell.counterView.isHidden = selectedTableView != tableView
-                cell.lblCounter.text = "4"
+                cell.counterView.isHidden = property.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(property.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = propertyArray[indexPath.row - 1]
+                let document = property.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else if (tableView == tableViewDisclosure){
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Disclosure"
+                cell.lblTitle.text = disclosure.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
+                cell.counterView.isHidden = disclosure.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(disclosure.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = disclosureArray[indexPath.row - 1]
+                let document = disclosure.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
                 cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
                 return cell
             }
         }
         else{
             if (indexPath.row == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsHeadingTableViewCell", for: indexPath) as! AssetsHeadingTableViewCell
-                cell.lblTitle.text = "Other"
+                cell.lblTitle.text = other.catName
                 cell.lblAmount.text = ""
                 cell.imageArrow.image = UIImage(named: selectedTableView == tableView ? "AssetsUpArrow" : "AssetsDownArrow")
                 cell.separatorView.isHidden = selectedTableView != tableView
+                cell.counterView.isHidden = other.documents.filter({$0.isSelected}).count == 0
+                cell.lblCounter.text = "\(other.documents.filter({$0.isSelected}).count)"
                 return cell
             }
             else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentsTemplatesTableViewCell", for: indexPath) as! DocumentsTemplatesTableViewCell
-                cell.lblTemplateName.text = otherArray[indexPath.row - 1]
-                cell.btnInfo.isHidden = indexPath.row != otherArray.count
-                cell.btnInfo.setImage(UIImage(named: "editIcon"), for: .normal)
+                let document = other.documents[indexPath.row - 1]
+                cell.lblTemplateName.text = document.docType
+                cell.btnCheckbox.setImage(UIImage(named: document.isSelected ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+                cell.btnInfo.isHidden = true
+                cell.indexPath = indexPath
+                cell.delegate = self
+//                cell.btnInfo.isHidden = indexPath.row != otherArray.count
+//                cell.btnInfo.setImage(UIImage(named: "editIcon"), for: .normal)
                 return cell
             }
         }
@@ -292,11 +398,57 @@ extension DocumentsListViewController: UITableViewDataSource, UITableViewDelegat
     }
 }
 
+extension DocumentsListViewController: DocumentsTemplatesTableViewCellDelegate{
+    
+    func infoTapped(indexPath: IndexPath) {
+        
+    }
+    
+    func templateSelect(indexPath: IndexPath, tableView: UITableView) {
+        if (selectedTableView == tableViewAssets){
+            assets.documents[indexPath.row - 1].isSelected = !assets.documents[indexPath.row - 1].isSelected
+            tableViewAssets.reloadData()
+        }
+        else if (selectedTableView == tableViewIncome){
+            income.documents[indexPath.row - 1].isSelected = !income.documents[indexPath.row - 1].isSelected
+            tableViewIncome.reloadData()
+        }
+        else if (selectedTableView == tableViewLiabilities){
+            liabilities.documents[indexPath.row - 1].isSelected = !liabilities.documents[indexPath.row - 1].isSelected
+            tableViewLiabilities.reloadData()
+        }
+        else if (selectedTableView == tableViewPersonal){
+            personal.documents[indexPath.row - 1].isSelected = !personal.documents[indexPath.row - 1].isSelected
+            tableViewPersonal.reloadData()
+        }
+        else if (selectedTableView == tableViewProperty){
+            property.documents[indexPath.row - 1].isSelected = !property.documents[indexPath.row - 1].isSelected
+            tableViewProperty.reloadData()
+        }
+        else if (selectedTableView == tableViewDisclosure){
+            disclosure.documents[indexPath.row - 1].isSelected = !disclosure.documents[indexPath.row - 1].isSelected
+            tableViewDisclosure.reloadData()
+        }
+        else if (selectedTableView == tableViewOther){
+            other.documents[indexPath.row - 1].isSelected = !other.documents[indexPath.row - 1].isSelected
+            tableViewOther.reloadData()
+        }
+        saveSelectedDocs()
+    }
+}
+
 extension DocumentsListViewController: UITextFieldDelegate{
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let vc = Utility.getSearchRequestDocumentVC()
         vc.searchedDocumentName = txtfieldSearch.text!
+        vc.assets = self.assets
+        vc.income = self.income
+        vc.liabilities = self.liabilities
+        vc.personal = self.personal
+        vc.property = self.property
+        vc.disclosure = self.disclosure
+        vc.other = self.other
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen
