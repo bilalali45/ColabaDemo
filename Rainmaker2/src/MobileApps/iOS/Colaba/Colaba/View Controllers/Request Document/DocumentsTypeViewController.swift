@@ -62,8 +62,16 @@ extension DocumentsTypeViewController: UITableViewDataSource, UITableViewDelegat
         let doc = selectedDocs[indexPath.row]
         let vc = Utility.getBankStatementVC()
         vc.selectedDoc = doc
+        vc.delegate = self
         self.presentVC(vc: vc)
         
     }
     
+}
+
+extension DocumentsTypeViewController: BankStatementViewControllerDelegate{
+    func deleteDocument(doc: Doc) {
+        selectedDocs.removeAll(where: {$0.docTypeId == doc.docTypeId && $0.docType == doc.docType})
+        self.tableViewDocumentType.reloadData()
+    }
 }

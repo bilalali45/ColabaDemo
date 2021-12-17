@@ -8,6 +8,10 @@
 import UIKit
 import MaterialComponents
 
+protocol BankStatementViewControllerDelegate: AnyObject {
+    func deleteDocument(doc: Doc)
+}
+
 class BankStatementViewController: BaseViewController {
 
     //MARK:- Outlets and Properties
@@ -21,6 +25,7 @@ class BankStatementViewController: BaseViewController {
     
     var txtViewMessage = MDCFilledTextArea()
     var selectedDoc = Doc()
+    weak var delegate: BankStatementViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,6 +73,7 @@ class BankStatementViewController: BaseViewController {
     }
     
     @objc func deleteDocumentTapped(){
+        self.delegate?.deleteDocument(doc: selectedDoc)
         self.dismissVC()
     }
     
