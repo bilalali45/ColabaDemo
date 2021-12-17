@@ -11,6 +11,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
@@ -23,6 +26,8 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
     private var _binding: DocsTemplateLayoutBinding? = null
     private val binding get() = _binding!!
+
+    private var onceLoaded = true
 
     private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
 
@@ -42,10 +47,11 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
     private fun setUpUI(){
 
-        requestDocsViewModel.getTemplatesResponse.observe(viewLifecycleOwner, { templatesList ->
-            templatesList?.let {
+        requestDocsViewModel.getTemplatesResponse.observe(viewLifecycleOwner, { templatesList->
+            if(onceLoaded) {
+                templatesList?.let {
                     // Custom Cell....
-                    val customTemplateMainCell:LinearLayoutCompat = createMainCell("My Templates")
+                    val customTemplateMainCell: LinearLayoutCompat = createMainCell("My Templates")
                     addContentToMainCell(it, customTemplateMainCell, "My Templates")
                     addBottomToMainCell(customTemplateMainCell)
 
@@ -53,11 +59,12 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                     binding.docsTypeParentContainer.addView(customTemplateMainCell)
                     binding.docsTypeParentContainer.postDelayed({
                         hideOtherBoxes()
-                        customTemplateMainCell.visibility = View.VISIBLE }, 500
+                        customTemplateMainCell.visibility = View.VISIBLE
+                    }, 500
                     )
 
                     // System Cell....
-                    val systemMainCell:LinearLayoutCompat = createMainCell("System Templates")
+                    val systemMainCell: LinearLayoutCompat = createMainCell("System Templates")
                     addContentToMainCell(it, systemMainCell, "Tenant Template")
                     addBottomToMainCell(systemMainCell)
 
@@ -65,18 +72,11 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
                     binding.docsTypeParentContainer.addView(systemMainCell)
                     binding.docsTypeParentContainer.postDelayed({
                         hideOtherBoxes()
-                        systemMainCell.visibility = View.VISIBLE }, 500
-                    )
-
-
-
-
-
-
-
+                        systemMainCell.visibility = View.VISIBLE }, 500)
+                    onceLoaded = false
                 }
-
-        })
+            }
+        } )
 
         val sampleDocs = getSampleDocsTemplate()
 
@@ -193,3 +193,10 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
 
 }
+
+    /*
+        private val getTemplatesObserver = Observer<GetTemplatesResponse> { onNewTemplateReceived(it) }
+        private fun onNewTemplateReceived(templatesList: GetTemplatesResponse?) {}
+        private fun <T> LiveData<T>.removeObserver(emailValidObserver: Observer<GetTemplatesResponse>) {}
+        private fun <T> LiveData<T>.observe(viewLifecycleOwner: LifecycleOwner, emailValidObserver: Observer<GetTemplatesResponse>) {}
+     */

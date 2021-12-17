@@ -32,7 +32,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
     private var _binding: DocsFilesLayoutBinding? = null
     private val binding get() = _binding!!
     private val requestDocsViewModel: RequestDocsViewModel by activityViewModels()
-
+    private var onceLoaded = true
     private lateinit var categoryDocsList:ArrayList<CategoryDocsResponseItem>
 
     @Inject
@@ -50,24 +50,37 @@ class DocsListFragment:DocsTypesBaseFragment() {
             findNavController().navigate(R.id.action_custom_doc)
         }
         requestDocsViewModel.getCategoryDocuments.observe(viewLifecycleOwner, { templatesList->
-            templatesList?.let {
-                categoryDocsList = it
-                for (i in 0 until it.size) {
-                    val modelData = it[i]
-                    val mainCell: LinearLayoutCompat = createMainCell(modelData.catName, modelData.documents.size)
-                    addContentToMainCell(modelData.documents, mainCell)
-                    addBottomToMainCell(mainCell)
+            if(onceLoaded) {
+                templatesList?.let {
+                    categoryDocsList = it
+                    for (i in 0 until it.size) {
+                        val modelData = it[i]
+                        val mainCell: LinearLayoutCompat = createMainCell(modelData.catName, modelData.documents.size)
+                        addContentToMainCell(modelData.documents, mainCell)
+                        addBottomToMainCell(mainCell)
 
-                    mainCell.visibility = View.INVISIBLE
-                    binding.docsTypeParentContainer.addView(mainCell)
-                    binding.docsTypeParentContainer.postDelayed({
-                        hideOtherBoxes()
-                        binding.docsTypeParentContainer.postDelayed({ mainCell.visibility = View.VISIBLE },250) },50)
+                        mainCell.visibility = View.INVISIBLE
+                        binding.docsTypeParentContainer.addView(mainCell)
+                        binding.docsTypeParentContainer.postDelayed({
+                            hideOtherBoxes()
+                            binding.docsTypeParentContainer.postDelayed({ mainCell.visibility = View.VISIBLE }, 250)
+                        }, 50)
+                    }
+                    onceLoaded = false
                 }
             }
         })
 
         setupSearchFunctionality()
+    }
+
+    private fun returnTopCell(mainCell: LinearLayoutCompat):View?{
+        for(j in 0 until mainCell.childCount) {
+            val contentCell = mainCell[j] as ConstraintLayout
+            if (contentCell.tag == R.string.docs_top_cell)
+                return contentCell
+        }
+        return null
     }
 
     private fun createMainCell(mainCellTitle:String , totalDocs:Int):LinearLayoutCompat{
@@ -92,13 +105,14 @@ class DocsListFragment:DocsTypesBaseFragment() {
         return mainCell
     }
 
-    private fun addContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat , searchKeyword: String?=null){
+    private fun addContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat){
         for (j in 0 until templatesList.size) {
             val modelData = templatesList[j]
             val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
             contentCell.tag = R.string.docs_search_cell
             contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 modelData.locallySelected = isChecked
+                setTopCellCount(mainCell, isChecked)
                 if (isChecked)
                     buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
                 else
@@ -111,7 +125,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
         }
     }
 
-    private fun addSearchContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat , searchKeyword: String){
+    private fun addSearchContentToMainCell(templatesList:ArrayList<Document>, mainCell: LinearLayoutCompat,  searchKeyword: String){
         for (j in 0 until templatesList.size) {
             val modelData = templatesList[j]
             var foundWord = false
@@ -122,6 +136,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
                 contentCell.tag = R.string.docs_search_cell
                 contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                     modelData.locallySelected = isChecked
+                    setTopCellCount(mainCell, isChecked)
                     if (isChecked)
                         buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
                     else
@@ -137,6 +152,27 @@ class DocsListFragment:DocsTypesBaseFragment() {
 
     }
 
+    private fun setTopCellCount(mainCell: LinearLayoutCompat, isChecked:Boolean){
+        val topCell = returnTopCell(mainCell)
+        topCell?.let {
+            var alreadyTicked = topCell.total_selected.text.toString().toInt()
+            if (isChecked)
+                topCell.total_selected.text = (alreadyTicked + 1).toString()
+            else
+                topCell.total_selected.text = (alreadyTicked - 1).toString()
+
+            alreadyTicked = topCell.total_selected.text.toString().toInt()
+
+            if (alreadyTicked == 0) {
+                topCell.total_selected.visibility = View.GONE
+                topCell.items_selected_imageview.visibility = View.GONE
+            } else {
+                topCell.total_selected.visibility = View.VISIBLE
+                topCell.items_selected_imageview.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun performSearch2(searchKeyword: String){
         val layout = binding.docsTypeParentContainer
         var mainCell: LinearLayoutCompat?
@@ -149,7 +185,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
         for (i in 0 until categoryDocsList.size) {
             val modelData = categoryDocsList[i]
             val mainCell: LinearLayoutCompat = createMainCell(modelData.catName, modelData.documents.size)
-            addSearchContentToMainCell(modelData.documents, mainCell , searchKeyword)
+            addSearchContentToMainCell(modelData.documents, mainCell,  searchKeyword)
             addBottomToMainCell(mainCell)
 
             //mainCell.visibility = View.INVISIBLE
