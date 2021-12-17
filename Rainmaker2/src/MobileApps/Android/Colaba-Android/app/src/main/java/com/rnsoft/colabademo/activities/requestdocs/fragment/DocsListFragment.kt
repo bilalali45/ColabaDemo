@@ -155,15 +155,18 @@ class DocsListFragment:DocsTypesBaseFragment() {
     private fun setTopCellCount(mainCell: LinearLayoutCompat, isChecked:Boolean){
         val topCell = returnTopCell(mainCell)
         topCell?.let {
-            var alreadyTicked = topCell.total_selected.text.toString().toInt()
+            var alreadyTicked = topCell.total_selected.text.toString()
+            var totalCount = 0
+            if(alreadyTicked.isNotBlank() && alreadyTicked.isNotEmpty())
+                totalCount = alreadyTicked.toInt()
             if (isChecked)
-                topCell.total_selected.text = (alreadyTicked + 1).toString()
+                topCell.total_selected.text = (totalCount + 1).toString()
             else
-                topCell.total_selected.text = (alreadyTicked - 1).toString()
+                topCell.total_selected.text = (totalCount - 1).toString()
 
-            alreadyTicked = topCell.total_selected.text.toString().toInt()
+            totalCount = topCell.total_selected.text.toString().toInt()
 
-            if (alreadyTicked == 0) {
+            if (totalCount == 0) {
                 topCell.total_selected.visibility = View.GONE
                 topCell.items_selected_imageview.visibility = View.GONE
             } else {
