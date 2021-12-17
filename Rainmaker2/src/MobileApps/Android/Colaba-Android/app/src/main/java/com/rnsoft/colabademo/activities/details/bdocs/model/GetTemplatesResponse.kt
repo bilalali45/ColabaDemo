@@ -10,6 +10,7 @@ data class GetTemplatesResponseItem(
 )
 
 data class Doc(
-    val docName: String,
-    val typeId: String
+    val docType: String,
+    val docMessage: String,
+    val docTypeId: String
 )

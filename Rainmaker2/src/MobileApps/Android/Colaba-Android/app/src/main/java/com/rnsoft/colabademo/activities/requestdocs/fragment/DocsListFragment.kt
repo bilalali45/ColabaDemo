@@ -120,7 +120,7 @@ class DocsListFragment:DocsTypesBaseFragment() {
             }
             contentCell.checkbox.text = modelData.docType
             contentCell.visibility = View.VISIBLE
-            //contentCell.info_imageview.setOnClickListener(DocsTemplateFragment.DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
+            contentCell.info_imageview.visibility = View.GONE
             mainCell.addView(contentCell)
         }
     }
