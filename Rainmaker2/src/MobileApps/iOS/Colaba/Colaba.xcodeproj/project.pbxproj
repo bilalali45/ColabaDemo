@@ -206,6 +206,7 @@
 		23CD143426E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */; };
 		23D9E6EC2701A4EF004D34CF /* ContactListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */; };
 		23D9E6ED2701A4EF004D34CF /* ContactListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */; };
+		23DA05A8277060FA0035A5D1 /* EmailTemplateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA05A7277060FA0035A5D1 /* EmailTemplateModel.swift */; };
 		23DA70E8270EF07500912804 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DA70E7270EF07500912804 /* TestViewController.swift */; };
 		23DBAD202696EB2D00119680 /* PipelineDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */; };
 		23DBAD222696EBA800119680 /* LoanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DBAD212696EBA800119680 /* LoanDetailViewController.swift */; };
@@ -497,6 +498,7 @@
 		23CD143326E25B4400627127 /* SecondMortgageFollowupQuestionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondMortgageFollowupQuestionsViewController.swift; sourceTree = "<group>"; };
 		23D9E6EA2701A4EF004D34CF /* ContactListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListTableViewCell.swift; sourceTree = "<group>"; };
 		23D9E6EB2701A4EF004D34CF /* ContactListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactListTableViewCell.xib; sourceTree = "<group>"; };
+		23DA05A7277060FA0035A5D1 /* EmailTemplateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailTemplateModel.swift; sourceTree = "<group>"; };
 		23DA70E7270EF07500912804 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		23DBAD1F2696EB2D00119680 /* PipelineDetail.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = PipelineDetail.storyboard; sourceTree = "<group>"; };
 		23DBAD212696EBA800119680 /* LoanDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoanDetailViewController.swift; sourceTree = "<group>"; };
@@ -682,6 +684,7 @@
 				232AF5A6275E552B006C4DA3 /* LoanOfficersModel.swift */,
 				23BE89F42769D59300247B1F /* DocumentTemplateModel.swift */,
 				239129C4276B1C1700F82B07 /* DocumentCategoryModel.swift */,
+				23DA05A7277060FA0035A5D1 /* EmailTemplateModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1561,6 +1564,7 @@
 				23A03062275DF13900A9D26D /* BorrowerContactModel.swift in Sources */,
 				23BE064926F08EED00F9B4B8 /* CurrentEmployerAddressViewController.swift in Sources */,
 				7186AD602653DE8600E740D3 /* ExtensionOfView.swift in Sources */,
+				23DA05A8277060FA0035A5D1 /* EmailTemplateModel.swift in Sources */,
 				23A0D5D026958E83002B4BCE /* DashboardHeaderView.swift in Sources */,
 				23B5E98526F4A40E00686B8E /* BankruptcyViewController.swift in Sources */,
 				2397AF672677A60A007A1A45 /* PipelineDetailTableViewCell.swift in Sources */,
@@ -1869,7 +1873,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -1893,7 +1897,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = 2HX8AP6426;
 				INFOPLIST_FILE = Colaba/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

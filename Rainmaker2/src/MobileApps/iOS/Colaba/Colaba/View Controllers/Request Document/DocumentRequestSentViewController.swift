@@ -14,12 +14,14 @@ class DocumentRequestSentViewController: BaseViewController {
     @IBOutlet weak var lblRequestSent: UILabel!
     @IBOutlet weak var btnBackToDocument: UIButton!
     
+    var borrowerName = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let successMessage = "Document Request has been sent to Richard Glenn Randall"
+        let successMessage = "Document Request has been sent to \(borrowerName)"
         let attributedSuccessMessage = NSMutableAttributedString(string: successMessage)
-        let range = successMessage.range(of: "Richard Glenn Randall")
+        let range = successMessage.range(of: borrowerName)
         attributedSuccessMessage.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikMediumFont(size: 17), range: successMessage.nsRange(from: range!))
         lblRequestSent.attributedText = attributedSuccessMessage
         btnBackToDocument.layer.cornerRadius = 5
