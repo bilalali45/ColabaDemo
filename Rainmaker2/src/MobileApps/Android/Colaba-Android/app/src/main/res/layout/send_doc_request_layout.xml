@@ -422,12 +422,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/layout_email_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/content_bg_email_body">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_email_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -438,12 +441,12 @@
                 android:cursorVisible="true"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
-                android:text="@string/email_body"
+                android:text=""
                 android:fontFamily="@font/rubik_regular"
                 android:textSize="15sp"
                 android:isScrollContainer="true">
 
-            </androidx.appcompat.widget.AppCompatEditText>
+            </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
         </LinearLayout>

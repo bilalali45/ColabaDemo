@@ -4,7 +4,7 @@ import android.view.View
 import androidx.fragment.app.FragmentManager
 
 
-open class DocsTypesBaseFragment:BaseFragment() {
+open class DocsTypesBaseFragment: BaseFragment() {
 
     protected fun getSampleDocsTemplate():ArrayList<DocTypeModelClass>{
 

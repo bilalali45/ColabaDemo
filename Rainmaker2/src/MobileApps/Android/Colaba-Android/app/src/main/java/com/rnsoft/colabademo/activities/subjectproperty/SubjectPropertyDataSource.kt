@@ -65,13 +65,11 @@ class SubjectPropertyDataSource @Inject constructor(private val serverApi: Serve
             }
 
         } catch (e: Throwable){
-            Log.e("errorrr",e.localizedMessage)
+            //Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
