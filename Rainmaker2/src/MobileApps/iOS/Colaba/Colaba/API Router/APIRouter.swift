@@ -124,6 +124,7 @@ enum EndPoint:String{
     case getDocumentListByCategory = "DocumentManagement/Template/GetCategoryDocumentMcu"
     case getEmailTemplateList = "DocumentManagement/EmailTemplate/GetEmailTemplates"
     case getRenderEmailTemplate = "DocumentManagement/EmailTemplate/GetRenderEmailTemplateById?"
+    case saveAndSendEmailRequest = "DocumentManagement/Request/Save"
     case logout = "identity/mcuaccount/Logout"
     
 }

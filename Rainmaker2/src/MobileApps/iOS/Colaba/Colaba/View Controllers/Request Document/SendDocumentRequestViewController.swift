@@ -221,9 +221,7 @@ class SendDocumentRequestViewController: BaseViewController {
     
     @IBAction func btnSendRequestTapped(_ sender: UIButton){
         if validate(){
-            let vc = Utility.getDocumentRequestSentVC()
-            vc.borrowerName = self.borrowerName
-            self.pushToVC(vc: vc)
+            self.saveAndSendRequest()
         }
     }
     
@@ -286,6 +284,57 @@ class SendDocumentRequestViewController: BaseViewController {
                 }
             }
         }
+    }
+    
+    func saveAndSendRequest(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        var requests = [[String: Any]]()
+        
+        var requestDic = [String: Any]()
+        
+        let emailTemplate = ["emailTemplateId": selectedEmailTemplate.id,
+                             "toAddress": txtfieldTo.text!,
+                             "fromAddress": selectedEmailTemplate.fromAddress,
+                             "ccAddress": txtfieldCC.text!,
+                             "subject": txtViewSubject.textView.text!,
+                             "emailBody": emailBody] as [String: Any]
+        requestDic["email"] = emailTemplate
+        
+        var documents = [[String: Any]]()
+        
+        for document in selectedDocs{
+            let doc = [
+                "typeId":document.docTypeId,
+                "displayName": document.docType,
+                "message": document.docMessage]
+            documents.append(doc)
+        }
+        
+        requestDic["documents"] = documents
+            
+        requests.append(requestDic)
+        
+        let params = ["loanApplicationId": loanApplicationId,
+                      "requests": requests] as [String: Any]
+        
+        APIRouter.sharedInstance.executeAPI(type: .saveAndSendEmailRequest, method: .post, params: params) { status, result, message in
+            DispatchQueue.main.async {
+                Utility.showOrHideLoader(shouldShow: false)
+                if (status == .success){
+                    let vc = Utility.getDocumentRequestSentVC()
+                    vc.borrowerName = self.borrowerName
+                    self.pushToVC(vc: vc)
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5)) { dismiss in
+                        
+                    }
+                }
+            }
+        }
+        
     }
     
 }
