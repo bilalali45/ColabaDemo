@@ -36,7 +36,7 @@ class StandardChecklistDialogFragment : BottomSheetDialogFragment() {
         for(dialogValue in dialogValues){
             val valueCell: LinearLayoutCompat =
                 layoutInflater.inflate(R.layout.docs_type_bottom_value_cell, null) as LinearLayoutCompat
-            valueCell.textValue.text = dialogValue.docName
+            valueCell.textValue.text = dialogValue.docType
             binding.dialogValueContainer.addView(valueCell)
         }
 

@@ -9,11 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.get
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
@@ -33,11 +29,7 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = DocsTemplateLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setUpUI()
@@ -78,7 +70,7 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
             }
         } )
 
-        val sampleDocs = getSampleDocsTemplate()
+        //val sampleDocs = getSampleDocsTemplate()
 
     }
 
@@ -109,14 +101,26 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
             if(modelData.type != filterString) continue
             val contentCell: View = layoutInflater.inflate(R.layout.docs_type_middle_cell, null)
             contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-                if (isChecked)
+                if (isChecked) {
+                    for(item in modelData.docs){
+                        combineDocList.add(Doc(docType = item.docType , docMessage = item.docMessage , docTypeId = item.docTypeId))
+                    }
                     buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
-                else
+                }
+                else {
+                    for(item in modelData.docs){
+                        combineDocList.remove(item)
+                    }
                     buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                }
             }
             contentCell.checkbox.text = modelData.name
             contentCell.visibility = View.VISIBLE
-            contentCell.info_imageview.setOnClickListener(DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
+            contentCell.info_imageview.setOnClickListener{
+                //(DocsShowClickListener(modelData.name, modelData.docs,  childFragmentManager))
+
+                StandardChecklistDialogFragment.newInstance(modelData.name, modelData.docs).show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
+            }
             mainCell.addView(contentCell)
         }
     }
@@ -127,12 +131,6 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
     }
 
 
-    class DocsShowClickListener(private val dialogTitle: String, private val dialogValues: ArrayList<Doc>, private val childFragmentManager: FragmentManager) :
-        View.OnClickListener {
-        override fun onClick(v: View?) {
-            StandardChecklistDialogFragment.newInstance(dialogTitle, dialogValues).show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
-        }
-    }
 
     private fun hideAllAndOpenedSelectedCell(topCell:View, mainCell:LinearLayoutCompat){
         hideOtherBoxes() // if you want to hide other boxes....
@@ -193,6 +191,17 @@ class DocsTemplateFragment:DocsTypesBaseFragment() {
 
 
 }
+
+
+    /*
+    class DocsShowClickListener(private val dialogTitle: String, private val dialogValues: ArrayList<Doc>,   private val childFragmentManager: FragmentManager) :
+        View.OnClickListener {
+        override fun onClick(v: View?) {
+            StandardChecklistDialogFragment.newInstance(dialogTitle, dialogValues).show(childFragmentManager, StandardChecklistDialogFragment::class.java.canonicalName)
+        }
+    }
+    */
+
 
     /*
         private val getTemplatesObserver = Observer<GetTemplatesResponse> { onNewTemplateReceived(it) }

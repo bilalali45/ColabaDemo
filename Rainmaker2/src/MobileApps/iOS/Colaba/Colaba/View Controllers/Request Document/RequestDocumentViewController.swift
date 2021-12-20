@@ -16,6 +16,9 @@ class RequestDocumentViewController: BaseViewController {
     @IBOutlet weak var tabView: UIView!
     @IBOutlet weak var btnNext: ColabaButton!
     
+    var loanApplicationId = 0
+    var borrowerName = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupHeaderAndFooter()
@@ -64,6 +67,8 @@ class RequestDocumentViewController: BaseViewController {
     
     @IBAction func btnNextTapped(_ sender: UIButton){
         let vc = Utility.getDocumentsTypeVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.borrowerName
         self.pushToVC(vc: vc)
     }
     
