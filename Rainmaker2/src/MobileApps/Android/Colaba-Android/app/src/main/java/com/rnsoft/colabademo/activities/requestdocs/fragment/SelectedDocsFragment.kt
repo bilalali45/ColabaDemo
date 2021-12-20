@@ -34,24 +34,17 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
     }
 
     private fun setUpLayout(){
-        val sampleList: HashMap<String, String> = HashMap()
-        sampleList.put("Earnest Money Deposit", "")
-        sampleList.put("Bank Statements", "Please provide 2 most recent month's bank statement with sufficient funds for cash to close.")
-        sampleList.put("Profit and Loss Statement", "")
-        sampleList.put("Form 1099 (Miscellaneous Income)", "Please provide the extra income evidence document.")
-        sampleList.put("Earnest Money Deposit", "")
-        sampleList.put("Financial Statements", "")
         var mainCell: ConstraintLayout = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
-        for ((key, value) in sampleList) {
+        for (item in combineDocList) {
             mainCell = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
-            mainCell.selectedDocTitle.text = key
+            mainCell.selectedDocTitle.text = item.docType
             mainCell.setOnClickListener {
-                val bundle = bundleOf(AppConstant.heading to key)
+                val bundle = bundleOf(AppConstant.heading to item.docMessage)
                 findNavController().navigate(R.id.action_doc_detail_fragment , bundle)
             }
-            if(value.isNotEmpty() && value.isNotBlank()) {
+            if(item.docMessage.isNotEmpty() && item.docMessage.isNotBlank()) {
                 mainCell.selectedDocDetail.visibility = View.VISIBLE
-                mainCell.selectedDocDetail.text = value
+                mainCell.selectedDocDetail.text = item.docMessage
             }
             else
                 mainCell.selectedDocDetail.visibility = View.GONE
