@@ -51,6 +51,10 @@
         android:name="com.rnsoft.colabademo.CreateCustomDocumentFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/custom_doc_layout">
+
+
+
+
     </fragment>
 
     <fragment
@@ -65,10 +69,15 @@
         android:name="com.rnsoft.colabademo.DocumentDetailFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/doc_detail_layout">
+
         <action
             android:id="@+id/action_selected_doc_fragment"
             app:destination="@+id/navigation_selected_doc_fragment"
             app:enterAnim="@anim/slide_up"/>
+
+
+
+
     </fragment>
 
     <fragment

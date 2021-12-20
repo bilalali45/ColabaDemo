@@ -209,7 +209,9 @@ object AppConstant {
         const val RESERVE_ACTIVATED: String = "reserve_activated"
         const val secMortgage : String = "sec_mortgage"
         const val firstMortgage : String = "first_mortgage"
-        const val heading : String = "toolbar_heading"
+        const val docTypeObject : String = "docTypeObject"
+        const val docTypeName : String = "toolbar_heading"
+        const val docTypeDetail : String = "variable_message"
 
         const val search_word : String = "search_word"
 

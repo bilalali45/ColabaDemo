@@ -1,5 +1,8 @@
 package com.rnsoft.colabademo
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 class GetTemplatesResponse : ArrayList<GetTemplatesResponseItem>()
 
 data class GetTemplatesResponseItem(
@@ -9,8 +12,9 @@ data class GetTemplatesResponseItem(
     val type: String
 )
 
+@Parcelize
 data class Doc(
-    val docType: String,
-    val docMessage: String,
-    val docTypeId: String
-)
+        var docType: String,
+        var docMessage: String,
+        val docTypeId: String?=null
+):Parcelable

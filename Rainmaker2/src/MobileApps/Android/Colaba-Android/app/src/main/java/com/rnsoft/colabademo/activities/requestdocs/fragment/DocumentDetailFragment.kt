@@ -6,15 +6,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DocDetailLayoutBinding
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-class DocumentDetailFragment : BaseFragment() {
+class DocumentDetailFragment : DocsTypesBaseFragment() {
 
     private lateinit var binding : DocDetailLayoutBinding
 
+    private var docTypeObject:Doc? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DocDetailLayoutBinding.inflate(inflater, container, false)
-        val title = arguments?.getString(AppConstant.heading).toString()
-        binding.toolbarTitle.text = title
+        //val title = arguments?.getString(AppConstant.docTypeName).toString()
+        docTypeObject = arguments?.getParcelable(AppConstant.docTypeObject)!!
+        docTypeObject?.let {
+            binding.toolbarTitle.text = it.docType
+            binding.etMsg.setText(it.docMessage)
+        }
         setupUI()
         return binding.root
      }
@@ -28,10 +37,31 @@ class DocumentDetailFragment : BaseFragment() {
         }
 
         binding.btnNext.setOnClickListener {
-            findNavController().navigate(R.id.action_selected_doc_fragment)
+            docTypeObject?.let {
+                it.docMessage =  binding.etMsg.text.toString()
+                it.docType =  binding.toolbarTitle.text.toString()
+            }
+            findNavController().navigate(R.id.navigation_selected_doc_fragment)
         }
-
-
-
     }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun deleteCurrentDocument(delEvent: DeleteCurrentDocumentEvent) {
+        docTypeObject?.let {
+            combineDocList.remove(it)
+        }
+        findNavController().popBackStack()
+    }
+
+
 }
