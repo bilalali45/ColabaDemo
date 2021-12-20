@@ -59,8 +59,9 @@ class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: Requ
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = requestDocsRepo.getTemplates(token = token)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
+                if (responseResult is Result.Success) {
                     _getTemplatesResponse.value = (responseResult.data)
+                }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
