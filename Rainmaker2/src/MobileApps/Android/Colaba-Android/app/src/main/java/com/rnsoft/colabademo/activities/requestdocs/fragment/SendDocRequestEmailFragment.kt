@@ -125,9 +125,23 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
             if(body != null){
                 body.emailBody?.let {
+                    val builder = StringBuilder()
+                    if(it.contains("###RequestDocumentList###")){
+                        Log.e("body","hasPattern True")
+                        Log.e("combineDocList","$combineDocList")
+                        val houseLivingTypeArray: ArrayList<String> = arrayListOf("Own", "Rent", "No Primary Housing Expense")
 
-                    binding.tvEmailBody.setText(Html.fromHtml(it))
-                    binding.layoutEmailBody.visibility = View.VISIBLE
+
+                        for(item in houseLivingTypeArray.indices){
+                            builder.append(houseLivingTypeArray.get(item)).append("\n")
+                        }
+
+                        var newText = it.replace("###RequestDocumentList###".toRegex(),builder.toString())
+                        Log.e("newText", newText)
+                        binding.tvEmailBody.setText(Html.fromHtml(newText))
+                        binding.layoutEmailBody.visibility = View.VISIBLE
+                    }
+
 
 
 

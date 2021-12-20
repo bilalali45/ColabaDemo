@@ -59,7 +59,7 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getEmailBody(newToken,loanApplicationId,templateId)
-            Log.e("Email-Body", response.toString())
+            //Log.e("Email-Body", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
