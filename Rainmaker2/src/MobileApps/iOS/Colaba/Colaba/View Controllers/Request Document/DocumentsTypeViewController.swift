@@ -15,6 +15,8 @@ class DocumentsTypeViewController: BaseViewController {
     @IBOutlet weak var tableViewDocumentType: UITableView!
     @IBOutlet weak var btnNext: ColabaButton!
     
+    var loanApplicationId = 0
+    var borrowerName = ""
     var selectedDocs = [Doc]()
     
     override func viewDidLoad() {
@@ -38,6 +40,9 @@ class DocumentsTypeViewController: BaseViewController {
     
     @IBAction func btnNextTapped(_ sender: UIButton){
         let vc = Utility.getSendDocumentRequestVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.borrowerName
+        vc.selectedDocs = self.selectedDocs
         self.pushToVC(vc: vc)
     }
     

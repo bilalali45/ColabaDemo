@@ -122,6 +122,8 @@ enum EndPoint:String{
     case getLoanOfficers = "loanapplication/MCU/GetMcusByRoleId?"
     case getDocumentTemplates = "DocumentManagement/Template/GetTemplates"
     case getDocumentListByCategory = "DocumentManagement/Template/GetCategoryDocumentMcu"
+    case getEmailTemplateList = "DocumentManagement/EmailTemplate/GetEmailTemplates"
+    case getRenderEmailTemplate = "DocumentManagement/EmailTemplate/GetRenderEmailTemplateById?"
     case logout = "identity/mcuaccount/Logout"
     
 }

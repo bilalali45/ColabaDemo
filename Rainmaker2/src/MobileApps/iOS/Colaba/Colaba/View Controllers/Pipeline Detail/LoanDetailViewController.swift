@@ -227,6 +227,8 @@ class LoanDetailViewController: BaseViewController {
     
     @IBAction func btnNewDocumentTapped(_ sender: UIButton) {
         let vc = Utility.getRequestDocumentVC()
+        vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.borrowerName
         let navVC = UINavigationController(rootViewController: vc)
         navVC.modalPresentationStyle = .fullScreen
         navVC.navigationBar.isHidden = true
