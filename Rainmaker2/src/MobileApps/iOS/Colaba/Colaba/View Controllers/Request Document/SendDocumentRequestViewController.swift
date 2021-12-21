@@ -306,9 +306,9 @@ class SendDocumentRequestViewController: BaseViewController {
         
         for document in selectedDocs{
             let doc = [
-                "typeId":document.docTypeId,
-                "displayName": document.docType,
-                "message": document.docMessage]
+                "docTypeId":document.docTypeId,
+                "docType": document.docType,
+                "docMessage": document.docMessage]
             documents.append(doc)
         }
         
