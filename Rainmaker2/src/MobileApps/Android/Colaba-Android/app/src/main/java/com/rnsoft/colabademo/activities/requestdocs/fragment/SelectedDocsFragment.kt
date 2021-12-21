@@ -8,11 +8,14 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SelectedDocsLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.select_doc_main_cell.view.*
-import java.util.HashMap
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 import javax.inject.Inject
 @AndroidEntryPoint
@@ -34,30 +37,7 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
     }
 
     private fun setUpLayout(){
-        val sampleList: HashMap<String, String> = HashMap()
-        sampleList.put("Earnest Money Deposit", "")
-        sampleList.put("Bank Statements", "Please provide 2 most recent month's bank statement with sufficient funds for cash to close.")
-        sampleList.put("Profit and Loss Statement", "")
-        sampleList.put("Form 1099 (Miscellaneous Income)", "Please provide the extra income evidence document.")
-        sampleList.put("Earnest Money Deposit", "")
-        sampleList.put("Financial Statements", "")
-        var mainCell: ConstraintLayout = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
-        for ((key, value) in sampleList) {
-            mainCell = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
-            mainCell.selectedDocTitle.text = key
-            mainCell.setOnClickListener {
-                val bundle = bundleOf(AppConstant.heading to key)
-                findNavController().navigate(R.id.action_doc_detail_fragment , bundle)
-            }
-            if(value.isNotEmpty() && value.isNotBlank()) {
-                mainCell.selectedDocDetail.visibility = View.VISIBLE
-                mainCell.selectedDocDetail.text = value
-            }
-            else
-                mainCell.selectedDocDetail.visibility = View.GONE
-
-            binding.selectDocContainer.addView(mainCell)
-        }
+        updateUI()
 
         binding.btnNext.setOnClickListener {
             findNavController().navigate(R.id.action_send_email_request)
@@ -65,6 +45,51 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
+        }
+    }
+
+
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun deleteCurrentDocument(delEvent: DeleteCurrentDocumentEvent) {
+        val layout = binding.selectDocContainer
+        var mainCell: LinearLayoutCompat?
+        for (i in 0 until layout.childCount) {
+            mainCell = layout[i] as LinearLayoutCompat
+            mainCell.removeAllViews()
+        }
+        layout.removeAllViewsInLayout()
+
+        updateUI()
+    }
+
+    private fun updateUI(){
+        var mainCell: ConstraintLayout = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
+        for (item in combineDocList) {
+            mainCell = layoutInflater.inflate(R.layout.select_doc_main_cell, null) as ConstraintLayout
+            mainCell.selectedDocTitle.text = item.docType
+            mainCell.setOnClickListener {
+                val bundle = bundleOf(AppConstant.docTypeObject to item)
+                findNavController().navigate(R.id.action_doc_detail_fragment , bundle)
+            }
+            if(item.docMessage.isNotEmpty() && item.docMessage.isNotBlank()) {
+                mainCell.selectedDocDetail.visibility = View.VISIBLE
+                mainCell.selectedDocDetail.text = item.docMessage
+            }
+            else
+                mainCell.selectedDocDetail.visibility = View.GONE
+
+            binding.selectDocContainer.addView(mainCell)
         }
     }
 

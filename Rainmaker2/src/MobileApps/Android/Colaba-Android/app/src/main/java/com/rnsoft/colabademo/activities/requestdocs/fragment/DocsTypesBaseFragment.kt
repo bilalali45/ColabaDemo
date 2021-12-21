@@ -5,7 +5,10 @@ import androidx.fragment.app.FragmentManager
 
 
 open class DocsTypesBaseFragment:BaseFragment() {
-
+    companion object {
+        @JvmStatic
+        protected var combineDocList: ArrayList<Doc> = arrayListOf()
+    }
     protected fun getSampleDocsTemplate():ArrayList<DocTypeModelClass>{
 
             val infoTitle ="My Standard Checklist"

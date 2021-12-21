@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.CustomDocLayoutBinding
 
-class CreateCustomDocumentFragment : BaseFragment() {
+class CreateCustomDocumentFragment : DocsTypesBaseFragment() {
 
     private lateinit var binding : CustomDocLayoutBinding
 
@@ -18,8 +18,22 @@ class CreateCustomDocumentFragment : BaseFragment() {
     }
 
     private fun setupUI(){
-        binding.btnTopDelete.setOnClickListener {
-            DeleteDocumentDialogFragment.newInstance("Tax returns with schedules (Personals-Two Years").show(childFragmentManager, DeleteDocumentDialogFragment::class.java.canonicalName)
+
+        binding.etDocName.onFocusChangeListener = CustomFocusListenerForEditText(binding.etDocName, binding.layoutDocName, requireContext())
+        binding.etMsg.onFocusChangeListener = CustomFocusListenerForEditText(binding.etMsg, binding.msgLayout, requireContext())
+
+
+        binding.btnNext.setOnClickListener {
+            val docName = binding.etDocName.text.toString()
+            val docMessage = binding.etMsg.text.toString()
+            if(docName.isNotEmpty() && docName.isNotBlank() && docMessage.isNotBlank() && docMessage.isNotEmpty()){
+                combineDocList.add(Doc(docTypeId = null, docType = docName, docMessage = docMessage))
+                findNavController().navigate(R.id.action_selected_doc_fragment)
+            }
+            else {
+
+            }
+
         }
         binding.btnClose.setOnClickListener {
             findNavController().popBackStack()

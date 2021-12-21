@@ -9,17 +9,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.os.bundleOf
 import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DocsFilesLayoutBinding
-import com.rnsoft.colabademo.databinding.DocsTemplateLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.docs_type_header_cell.view.*
 import kotlinx.android.synthetic.main.docs_type_middle_cell.view.*
@@ -113,10 +109,14 @@ class DocsListFragment:DocsTypesBaseFragment() {
             contentCell.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
                 modelData.locallySelected = isChecked
                 setTopCellCount(mainCell, isChecked)
-                if (isChecked)
+                if (isChecked) {
                     buttonView.setTypeface(null, Typeface.BOLD) //only text style(only bold)
-                else
+                    combineDocList.add(Doc(docType = modelData.docType , docMessage = modelData.docMessage , docTypeId = modelData.docTypeId))
+                }
+                else {
                     buttonView.setTypeface(null, Typeface.NORMAL) //only text style(only bold)
+                    combineDocList.remove(Doc(docType = modelData.docType , docMessage = modelData.docMessage , docTypeId = modelData.docTypeId))
+                }
             }
             contentCell.checkbox.text = modelData.docType
             contentCell.visibility = View.VISIBLE
@@ -145,6 +145,8 @@ class DocsListFragment:DocsTypesBaseFragment() {
                 contentCell.checkbox.text = modelData.docType
                 contentCell.checkbox.isChecked = modelData.locallySelected
                 contentCell.visibility = View.VISIBLE
+
+                contentCell.info_imageview.visibility = View.GONE
                 //contentCell.info_imageview.setOnClickListener(DocsTemplateFragment.DocsShowClickListener(modelData.name, modelData.docs, childFragmentManager))
                 mainCell.addView(contentCell)
             }
