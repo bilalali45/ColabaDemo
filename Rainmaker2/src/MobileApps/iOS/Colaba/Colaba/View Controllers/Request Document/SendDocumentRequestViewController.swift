@@ -92,8 +92,8 @@ class SendDocumentRequestViewController: BaseViewController {
     
     func setupTextFieldsAndTextViews(){
         txtfieldRequestEmailTemplate.setTextField(placeholder: "Request Email Template", controller: self, validationType: .required)
-        txtfieldTo.setTextField(placeholder: "To", controller: self, validationType: .required, keyboardType: .emailAddress)
-        txtfieldCC.setTextField(placeholder: "Cc", controller: self, validationType: .required, keyboardType: .emailAddress)
+        txtfieldTo.setTextField(placeholder: "To", controller: self, validationType: .email, keyboardType: .emailAddress)
+        txtfieldCC.setTextField(placeholder: "Cc", controller: self, validationType: .email, keyboardType: .emailAddress)
         
         let estimatedFrame = subjectLineContainer.frame
         txtViewSubject = MDCFilledTextArea(frame: estimatedFrame)
@@ -163,7 +163,9 @@ class SendDocumentRequestViewController: BaseViewController {
     func validate() -> Bool {
         var isValidate = txtfieldRequestEmailTemplate.validate()
         isValidate = txtfieldTo.validate() && isValidate
-        isValidate = txtfieldCC.validate() && isValidate
+        if (txtfieldCC.text != ""){
+            isValidate = txtfieldCC.validate() && isValidate
+        }
         isValidate = validateSubjectTextView() && isValidate
         isValidate = validateBodyTextView() && isValidate
         return isValidate
