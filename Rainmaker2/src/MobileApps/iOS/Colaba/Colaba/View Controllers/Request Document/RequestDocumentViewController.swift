@@ -77,7 +77,15 @@ class RequestDocumentViewController: BaseViewController {
 extension RequestDocumentViewController: CarbonTabSwipeNavigationDelegate{
     
     func carbonTabSwipeNavigation(_ carbonTabSwipeNavigation: CarbonTabSwipeNavigation, viewControllerAt index: UInt) -> UIViewController {
-        return index == 0 ? Utility.getDocumentTemplatesVC() : Utility.getDocumentsListVC()
+        if (index == 0){
+            let vc = Utility.getDocumentTemplatesVC()
+            return vc
+        }
+        else{
+            let vc = Utility.getDocumentsListVC()
+            vc.loanApplicationId = self.loanApplicationId
+            return vc
+        }
     }
     
 }

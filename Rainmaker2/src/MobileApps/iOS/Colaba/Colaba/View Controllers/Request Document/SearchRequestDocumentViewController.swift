@@ -42,6 +42,7 @@ class SearchRequestDocumentViewController: BaseViewController {
     @IBOutlet weak var tableViewOtherTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var btnNext: ColabaButton!
     
+    var loanApplicationId = 0
     var searchedDocumentName = ""
     
     var assets = DocumentCategoryModel()
@@ -176,6 +177,7 @@ class SearchRequestDocumentViewController: BaseViewController {
 
     @IBAction func btnNextTapped(_ sender: UIButton) {
         let vc = Utility.getDocumentsTypeVC()
+        vc.loanApplicationId = self.loanApplicationId
         self.pushToVC(vc: vc)
     }
 }

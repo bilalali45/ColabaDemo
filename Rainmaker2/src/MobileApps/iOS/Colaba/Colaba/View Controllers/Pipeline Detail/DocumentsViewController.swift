@@ -156,9 +156,9 @@ class DocumentsViewController: BaseViewController {
             
         }
         
-        let extraData = "loanApplicationId=\(loanApplicationId)"
+        let extraData = "loanApplicationId=\(loanApplicationId)&pending=true"
         
-        APIRouter.sharedInstance.executeDashboardAPIs(type: .getLoanDocuments, method: .get, params: nil, extraData: extraData) { status, result, message in
+        APIRouter.sharedInstance.executeAPI(type: .getLoanDocuments, method: .get, params: nil, extraData: extraData) { status, result, message in
             
             DispatchQueue.main.async {
                 self.loadingPlaceholderView.uncover()

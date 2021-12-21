@@ -45,6 +45,8 @@ class DocumentsListViewController: BaseViewController {
     var disclosure = DocumentCategoryModel()
     var other = DocumentCategoryModel()
     
+    var loanApplicationId = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableViewsAndViews(tableViews: [tableViewAssets, tableViewIncome, tableViewLiabilities, tableViewPersonal, tableViewProperty, tableViewDisclosure, tableViewOther])
@@ -449,6 +451,7 @@ extension DocumentsListViewController: UITextFieldDelegate{
         vc.property = self.property
         vc.disclosure = self.disclosure
         vc.other = self.other
+        vc.loanApplicationId = self.loanApplicationId
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen

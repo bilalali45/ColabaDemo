@@ -23,7 +23,19 @@ class SendDocumentRequestViewController: BaseViewController {
     @IBOutlet weak var emailBodyContainer: UIView!
     @IBOutlet weak var textviewBody: UITextView!
     @IBOutlet weak var btnSendRequest: UIButton!
-    @IBOutlet weak var collectionViewTo: UICollectionView!
+    
+    @IBOutlet weak var toChipView: UIView!
+    @IBOutlet weak var toAlphabetView: UIView!
+    @IBOutlet weak var lblToAlphabet: UILabel!
+    @IBOutlet weak var lblToEmail: UILabel!
+    @IBOutlet weak var toCloseIcon: UIImageView!
+    
+    @IBOutlet weak var ccChipView: UIView!
+    @IBOutlet weak var ccAlphabetView: UIView!
+    @IBOutlet weak var lblCcAlphabet: UILabel!
+    @IBOutlet weak var lblCcEmail: UILabel!
+    @IBOutlet weak var ccCloseIcon: UIImageView!
+    
     
     var loanApplicationId = 0
     var borrowerName = ""
@@ -40,60 +52,21 @@ class SendDocumentRequestViewController: BaseViewController {
         super.viewDidLoad()
         setupTextFieldsAndTextViews()
         txtfieldRequestEmailTemplate.addTarget(self, action: #selector(textfieldRequestTemplateStartEditing), for: .editingDidBegin)
-        //txtfieldTo.isHidden = true
-        collectionViewTo.isHidden = true
         getEmailTemplatesList()
-        
-//        chipFieldTo.textField.placeholderLabel.text = "Hello Everyone"
-//        chipFieldTo.delegate = self
-//        chipFieldTo.showChipsDeleteButton = true
-//        chipFieldTo.sizeToFit()
-        
-//        collectionViewTo.register(MDCChipCollectionViewCell.self, forCellWithReuseIdentifier: "identifier")
-//        collectionViewTo.dataSource = self
-//        collectionViewTo.delegate = self
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        chipField = MDCChipField()
-//        chipField.backgroundColor = .clear
-//        chipField.textField.placeholderLabel.dividerContentEdgeInsetsPreset = .horizontally5
-//        chipField.frame = txtfieldTo.frame
-//        chipField.textField.underline?.color = Theme.getSeparatorNormalColor()
-//        chipField.delegate = self
-//        chipField.textField.placeholderLabel.text = ""
-//        chipField.showChipsDeleteButton = true
-//        chipField.dividerThickness = 1
-//        chipField.dividerColor = Theme.getSeparatorNormalColor()
-//        chipField.contentEdgeInsets = UIEdgeInsets(top: -10, left: -5, bottom: 0, right: 0)
-//        chipField.chipHeight = 40
-//        chipField.heightPreset = .xxlarge
-//        //chipField.minTextFieldWidth = self.txtfieldTo.frame.width
-//        //chipField.sizeToFit()
-//        mainView.addSubview(chipField)
-        
-        
-//        let chipView = MDCChipView()
-//        chipView.titleLabel.text = "ali@rainsoftfn.com"
-//        chipView.setTitleColor(UIColor.red, for: .selected)
-//        chipView.sizeToFit()
-//        //chipView.addTarget(self, action: #selector(tap), for: .touchUpInside)
-//        self.mainView.addSubview(chipView)
-        
+
     }
    
     //MARK:- Methods and Actions
     
-    @objc func chipTap(){
-        
-    }
-    
     func setupTextFieldsAndTextViews(){
         txtfieldRequestEmailTemplate.setTextField(placeholder: "Request Email Template", controller: self, validationType: .required)
-        txtfieldTo.setTextField(placeholder: "To", controller: self, validationType: .required, keyboardType: .emailAddress)
-        txtfieldCC.setTextField(placeholder: "Cc", controller: self, validationType: .required, keyboardType: .emailAddress)
+        txtfieldTo.setTextField(placeholder: "To", controller: self, validationType: .email, keyboardType: .emailAddress)
+        txtfieldCC.setTextField(placeholder: "Cc", controller: self, validationType: .email, keyboardType: .emailAddress)
         
         let estimatedFrame = subjectLineContainer.frame
         txtViewSubject = MDCFilledTextArea(frame: estimatedFrame)
@@ -141,6 +114,18 @@ class SendDocumentRequestViewController: BaseViewController {
         tableViewRequestTemplate.layer.masksToBounds = false
         tableViewRequestTemplate.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 1, shadowOpacity: 1)
         
+        toChipView.layer.cornerRadius = toChipView.frame.height / 2
+        toChipView.layer.borderWidth = 1
+        toChipView.layer.borderColor = Theme.getChipBorderColor().cgColor
+        toChipView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toChipViewTapped)))
+        toAlphabetView.layer.cornerRadius = toAlphabetView.frame.height / 2
+        
+        ccChipView.layer.cornerRadius = ccChipView.frame.height / 2
+        ccChipView.layer.borderWidth = 1
+        ccChipView.layer.borderColor = Theme.getChipBorderColor().cgColor
+        ccChipView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ccChipViewTapped)))
+        ccAlphabetView.layer.cornerRadius = ccAlphabetView.frame.height / 2
+        
         btnSendRequest.layer.cornerRadius = 5
     }
     
@@ -163,7 +148,9 @@ class SendDocumentRequestViewController: BaseViewController {
     func validate() -> Bool {
         var isValidate = txtfieldRequestEmailTemplate.validate()
         isValidate = txtfieldTo.validate() && isValidate
-        isValidate = txtfieldCC.validate() && isValidate
+        if (txtfieldCC.text != ""){
+            isValidate = txtfieldCC.validate() && isValidate
+        }
         isValidate = validateSubjectTextView() && isValidate
         isValidate = validateBodyTextView() && isValidate
         return isValidate
@@ -192,8 +179,14 @@ class SendDocumentRequestViewController: BaseViewController {
     func setEmailBody(){
         
         txtfieldTo.setTextField(text: selectedEmailTemplate.toAddress)
+        if (selectedEmailTemplate.toAddress != ""){
+            setToChipField()
+        }
         
         txtfieldCC.setTextField(text: selectedEmailTemplate.ccAddress)
+        if (selectedEmailTemplate.ccAddress != ""){
+            setCcChipField()
+        }
         
         txtViewSubject.textView.text = selectedEmailTemplate.subject
         txtViewSubject.sizeToFit()
@@ -213,6 +206,74 @@ class SendDocumentRequestViewController: BaseViewController {
             self.setScreenHeight()
         }
         
+    }
+    
+    func setToChipField(){
+        if (txtfieldTo.validate()){
+            toChipView.isUserInteractionEnabled = true
+            toChipView.isHidden = false
+            toAlphabetView.isHidden = false
+            lblToAlphabet.isHidden = false
+            lblToEmail.isHidden = false
+            toCloseIcon.isHidden = false
+            let index = txtfieldTo.text!.index(txtfieldTo.text!.startIndex, offsetBy: 1)
+            lblToAlphabet.text = String(txtfieldTo.text!.prefix(upTo: index))
+            lblToEmail.text = txtfieldTo.text!
+        }
+        else{
+            toChipView.isUserInteractionEnabled = false
+            toChipView.isHidden = true
+            toAlphabetView.isHidden = true
+            lblToAlphabet.isHidden = true
+            lblToEmail.isHidden = true
+            toCloseIcon.isHidden = true
+            lblToAlphabet.text = ""
+            lblToEmail.text = ""
+        }
+    }
+    
+    @objc func toChipViewTapped(){
+        toChipView.isUserInteractionEnabled = false
+        toChipView.isHidden = true
+        toAlphabetView.isHidden = true
+        lblToAlphabet.isHidden = true
+        lblToEmail.isHidden = true
+        toCloseIcon.isHidden = true
+        txtfieldTo.setTextField(text: "")
+    }
+    
+    func setCcChipField(){
+        if (txtfieldCC.validate()){
+            ccChipView.isUserInteractionEnabled = true
+            ccChipView.isHidden = false
+            ccAlphabetView.isHidden = false
+            lblCcAlphabet.isHidden = false
+            lblCcEmail.isHidden = false
+            ccCloseIcon.isHidden = false
+            let index = txtfieldCC.text!.index(txtfieldCC.text!.startIndex, offsetBy: 1)
+            lblCcAlphabet.text = String(txtfieldCC.text!.prefix(upTo: index))
+            lblCcEmail.text = txtfieldCC.text!
+        }
+        else{
+            ccChipView.isUserInteractionEnabled = false
+            ccChipView.isHidden = true
+            ccAlphabetView.isHidden = true
+            lblCcAlphabet.isHidden = true
+            lblCcEmail.isHidden = true
+            ccCloseIcon.isHidden = true
+            lblCcAlphabet.text = ""
+            lblCcEmail.text = ""
+        }
+    }
+    
+    @objc func ccChipViewTapped(){
+        ccChipView.isUserInteractionEnabled = false
+        ccChipView.isHidden = true
+        ccAlphabetView.isHidden = true
+        lblCcAlphabet.isHidden = true
+        lblCcEmail.isHidden = true
+        ccCloseIcon.isHidden = true
+        txtfieldCC.setTextField(text: "")
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){
@@ -306,9 +367,9 @@ class SendDocumentRequestViewController: BaseViewController {
         
         for document in selectedDocs{
             let doc = [
-                "typeId":document.docTypeId,
-                "displayName": document.docType,
-                "message": document.docMessage]
+                "docTypeId":document.docTypeId,
+                "docType": document.docType,
+                "docMessage": document.docMessage]
             documents.append(doc)
         }
         
@@ -337,6 +398,41 @@ class SendDocumentRequestViewController: BaseViewController {
         
     }
     
+}
+
+extension SendDocumentRequestViewController: ColabaTextFieldDelegate{
+
+    func textFieldDidChange(_ textField: ColabaTextField) {
+        if (textField == txtfieldTo){
+            toChipView.isUserInteractionEnabled = false
+            toChipView.isHidden = true
+            toAlphabetView.isHidden = true
+            lblToAlphabet.isHidden = true
+            lblToEmail.isHidden = true
+            toCloseIcon.isHidden = true
+            lblToAlphabet.text = ""
+            lblToEmail.text = ""
+        }
+        else if (textField == txtfieldCC){
+            ccChipView.isUserInteractionEnabled = false
+            ccChipView.isHidden = true
+            ccAlphabetView.isHidden = true
+            lblCcAlphabet.isHidden = true
+            lblCcEmail.isHidden = true
+            ccCloseIcon.isHidden = true
+            lblCcAlphabet.text = ""
+            lblCcEmail.text = ""
+        }
+    }
+    
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        if (textField == txtfieldTo){
+            setToChipField()
+        }
+        else if (textField == txtfieldCC){
+            setCcChipField()
+        }
+    }
 }
 
 extension SendDocumentRequestViewController: UITextViewDelegate{
