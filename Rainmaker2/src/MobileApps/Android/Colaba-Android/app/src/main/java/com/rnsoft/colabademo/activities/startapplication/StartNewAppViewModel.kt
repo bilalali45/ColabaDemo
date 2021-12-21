@@ -31,6 +31,9 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
     val createNewApplicationParams: LiveData<CreateNewApplicationParams> get() = _createNewApplicationParams
 
 
+     val _mcu : MutableLiveData<Mcu> =   MutableLiveData()
+    val mcu: LiveData<Mcu> get() = _mcu
+
     fun setCreateNewParams(createNewApplicationParams:CreateNewApplicationParams){
         _createNewApplicationParams.value = createNewApplicationParams
     }
@@ -90,6 +93,11 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
                     EventBus.getDefault().post(WebServiceErrorEvent(result))
             }
         }
+    }
+
+    fun setMcu(mcu:Mcu){
+        _mcu.value = mcu
+        _mcu.postValue(mcu)
     }
 
 }

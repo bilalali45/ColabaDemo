@@ -20,10 +20,11 @@ import com.rnsoft.colabademo.databinding.GovtQuestionTabLayoutBinding
 
 
 private val govtTabArray = arrayOf(
-    "Unnamed",
-    "Unnamed",
-    "Unnamed",
-    "Unnamed"
+        "UnNamed",
+        "UnNamed",
+        "UnNamed",
+        "UnNamed",
+        "UnNamed"
 )
 
 @AndroidEntryPoint
@@ -43,12 +44,6 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
 
         _binding = GovtQuestionTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-
-
-        val governmentQuestionActivity = (activity as? GovtQuestionActivity)
-        governmentQuestionActivity?.let { governmentQuestionActivity-> }
-
 
         borrowerApplicationViewModel.governmentQuestionsModelClassList.observe(
             viewLifecycleOwner,
@@ -97,13 +92,7 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
                     override fun onTabReselected(tab: TabLayout.Tab?) {}
                 })
                 TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = govtTabArray[position] }.attach()
-
-            })
-
-
-
-
-
+        })
 
         binding.backButton.setOnClickListener {
             requireActivity().finish()
@@ -119,21 +108,9 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
         return root
     }
 
-
-
-
-
-
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
-
 }
 
