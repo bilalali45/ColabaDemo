@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white">
@@ -122,70 +123,127 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-         <!--   <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_to"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="@string/email_to"
-                android:textColor="@color/grey_color_two"
-                android:textSize="14sp" />
+            <!--   <androidx.appcompat.widget.AppCompatTextView
+                   android:id="@+id/tv_to"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="25dp"
+                   android:text="@string/email_to"
+                   android:textColor="@color/grey_color_two"
+                   android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:imeOptions="actionDone"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:text="richard@gmail.com"
-                android:textColor="@color/grey_color_one"
-                android:textSize="14sp"
-                app:fontFamily="@font/rubik_regular"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_to" /> -->
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/editTextEmail"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="8dp"
+                   android:background="@android:color/transparent"
+                   android:ems="10"
+                   android:imeOptions="actionDone"
+                   android:inputType="textEmailAddress"
+                   android:singleLine="true"
+                   android:text="richard@gmail.com"
+                   android:textColor="@color/grey_color_one"
+                   android:textSize="14sp"
+                   app:fontFamily="@font/rubik_regular"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/tv_to" /> -->
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_chip"
+            <!--   <com.google.android.material.textfield.TextInputLayout
+                   android:id="@+id/layout_chip"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="25dp"
+                   android:background="@android:color/transparent"
+                   android:fontFamily="@font/rubik_light"
+                   android:hint="@string/email_to"
+                   android:textColorHint="@color/primary_info_label_color"
+                   app:boxCollapsedPaddingTop="1dp"
+                   app:boxStrokeColor="@color/primary_info_line_color"
+                   app:boxStrokeWidth="0.5dp"
+                   app:boxStrokeWidthFocused="1dp"
+                   app:helperTextEnabled="true"
+                   app:helperTextTextAppearance="@style/inputError"
+                   app:helperTextTextColor="@color/colaba_red_color"
+                   app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                   app:hintTextColor="@color/grey_color_two"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintStart_toStartOf="parent"
+                   app:layout_constraintTop_toBottomOf="@+id/header_statement">
+
+                   <com.google.android.material.textfield.TextInputEditText
+                       android:id="@+id/ed_email"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@android:color/transparent"
+                       android:ems="10"
+                       android:fontFamily="@font/rubik_regular"
+                       android:imeOptions="actionNext"
+                       android:paddingStart="0dp"
+                       android:singleLine="true"
+                       android:textColor="@color/grey_color_one"
+                       android:textSize="@dimen/ed_txt_size_primary_info" />
+               </com.google.android.material.textfield.TextInputLayout> -->
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/rubik_light"
-                android:hint="@string/email_to"
-                android:textColorHint="@color/primary_info_label_color"
-                app:boxCollapsedPaddingTop="1dp"
-                app:boxStrokeColor="@color/primary_info_line_color"
-                app:boxStrokeWidth="0.5dp"
-                app:boxStrokeWidthFocused="1dp"
-                app:helperTextEnabled="true"
-                app:helperTextTextAppearance="@style/inputError"
-                app:helperTextTextColor="@color/colaba_red_color"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-                app:hintTextColor="@color/grey_color_two"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/header_statement">
+                android:orientation="horizontal">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_email"
+                <TextView
+                    android:id="@+id/recipient_label_TV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="15sp"
+                    android:background="@android:color/transparent"
+                    android:text="To"
+                    android:textColor="@color/grey_color_three"/>
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/recipient_group_FL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:ems="10"
-                    android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionNext"
-                    android:paddingStart="0dp"
-                    android:singleLine="true"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:layout_gravity="center_vertical"
+                    app:alignContent="space_around"
+                    app:alignItems="stretch"
+                    app:flexWrap="wrap"
+                    app:showDivider="beginning|middle|end">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/et_recipient_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@android:color/transparent"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
+                        app:layout_flexGrow="1" />
+                </com.google.android.flexbox.FlexboxLayout>
 
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/grey_color_four"/>
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/recipient_email_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colaba_red_color"
+                android:text="@string/invalid_email"
+                android:layout_marginTop="5dp"
+                android:textSize="12sp"
+                android:fontFamily="@font/rubik_regular"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topSearchTextInputLine"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_cc"
@@ -232,150 +290,150 @@
                 android:layout_height="wrap_content"
                 android:text="@string/chip_text" /> -->
 
-<!--
-            <LinearLayout
-                android:id="@+id/layout_cc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/content_bg_email"
-                android:orientation="horizontal"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cc_textview">
+            <!--
+                        <LinearLayout
+                            android:id="@+id/layout_cc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/content_bg_email"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cc_textview">
 
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/style_textview_rounded"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="r"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/style_textview_rounded"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="r"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="richard.glenn@gmail.com"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="richard.glenn@gmail.com"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="15sp" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/ic_cross_grey_two" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:src="@drawable/ic_cross_grey_two" />
 
-            </LinearLayout>
+                        </LinearLayout>
 
-            <View
-                android:id="@+id/email_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/colaba_line_separator" />
+                        <View
+                            android:id="@+id/email_separator"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colaba_line_separator" />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/cc_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:fontFamily="@font/rubik_regular"
-                android:text="@string/email_cc"
-                android:textColor="@color/grey_color_two"
-                android:textSize="14sp" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/cc_textview"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="@string/email_cc"
+                            android:textColor="@color/grey_color_two"
+                            android:textSize="14sp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/cc_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:ems="10"
-                android:text=""
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:textColor="@color/grey_color_one"
-                android:textSize="14sp"
-                app:fontFamily="@font/rubik_regular" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/cc_edittext"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:background="@android:color/transparent"
+                            android:ems="10"
+                            android:text=""
+                            android:imeOptions="actionNext"
+                            android:singleLine="true"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="14sp"
+                            app:fontFamily="@font/rubik_regular" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <com.google.android.material.chip.ChipGroup
+                            android:id="@+id/chipGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-            </com.google.android.material.chip.ChipGroup>
+                        </com.google.android.material.chip.ChipGroup>
 
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/layout_rounded_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/content_bg_email"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cc_textview">
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/layout_rounded_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="10dp"
+                            android:background="@drawable/content_bg_email"
+                            android:orientation="horizontal"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cc_textview">
 
-                <TextView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:background="@drawable/style_textview_rounded"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="r"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                            <TextView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:background="@drawable/style_textview_rounded"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="r"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="richard.glenn@gmail.com"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:text="richard.glenn@gmail.com"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="15sp" />
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:src="@drawable/ic_cross_grey_two" />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginBottom="5dp"
+                                android:src="@drawable/ic_cross_grey_two" />
 
-            </LinearLayout>
+                        </LinearLayout>
 
-            <View
-                android:id="@+id/cc_separator"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/colaba_line_separator" /> -->
+                        <View
+                            android:id="@+id/cc_separator"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/colaba_line_separator" /> -->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_sub_line"
@@ -422,31 +480,31 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/layout_email_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:background="@drawable/content_bg_email_body">
+                android:background="@drawable/content_bg_email_body"
+                android:visibility="gone">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_email_body"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:cursorVisible="true"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:text=""
-                android:fontFamily="@font/rubik_regular"
-                android:textSize="15sp"
-                android:isScrollContainer="true">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_email_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@android:color/transparent"
+                    android:cursorVisible="true"
+                    android:fontFamily="@font/rubik_regular"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:isScrollContainer="true"
+                    android:text=""
+                    android:textSize="15sp">
 
-            </androidx.appcompat.widget.AppCompatTextView>
+                </androidx.appcompat.widget.AppCompatTextView>
 
             </LinearLayout>
         </LinearLayout>

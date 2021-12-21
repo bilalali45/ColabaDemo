@@ -8,6 +8,13 @@
       <item name="colorControlActivated">@color/txt_primary_info</item>
   </style> -->
 
+    <style name="email_chip" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/white</item>
+        <item name="chipStrokeColor">@color/grey_color_five</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:textColor">@color/grey_color_one</item>
+    </style>
+
     <style name="MySpinnerDatePickerStyle" parent="ThemeOverlay.AppCompat.Dialog">
         <item name="android:datePickerStyle">@style/MySpinnerDatePicker</item>
         <item name="android:windowBackground">@color/white</item>     <!--calendar background-->
@@ -20,9 +27,9 @@
         <item name="android:colorAccent">@color/filter_green</item>                   <!-- FOR OTHER VIEW header background -->
         <item name="android:colorControlActivated">@color/filter_blue</item> <!--selected day-->
         <item name="android:textColorPrimary">@color/grey_color_one</item> <!--days of the month-->
-
-
     </style>
+
+
 
     <style name="MySpinnerDatePicker" parent="android:Widget.Material.DatePicker">
         <item name="android:datePickerMode">spinner</item>
