@@ -25,6 +25,13 @@ class SendDocumentRequestViewController: BaseViewController {
     @IBOutlet weak var btnSendRequest: UIButton!
     @IBOutlet weak var collectionViewTo: UICollectionView!
     
+    @IBOutlet weak var toChipView: UIView!
+    @IBOutlet weak var toAlphabetView: UIView!
+    @IBOutlet weak var lblToAlphabet: UILabel!
+    @IBOutlet weak var lblToEmail: UILabel!
+    @IBOutlet weak var lblToCloseIcon: UIImageView!
+    
+    
     var loanApplicationId = 0
     var borrowerName = ""
     var selectedDocs = [Doc]()
@@ -141,6 +148,11 @@ class SendDocumentRequestViewController: BaseViewController {
         tableViewRequestTemplate.layer.masksToBounds = false
         tableViewRequestTemplate.dropShadowToCollectionViewCell(shadowColor: UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.12).cgColor, shadowRadius: 1, shadowOpacity: 1)
         
+        toChipView.layer.cornerRadius = toChipView.frame.height / 2
+        toChipView.layer.borderWidth = 1
+        toChipView.layer.borderColor = Theme.getChipBorderColor().cgColor
+        toChipView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(toChipViewTapped)))
+        toAlphabetView.layer.cornerRadius = toAlphabetView.frame.height / 2
         btnSendRequest.layer.cornerRadius = 5
     }
     
@@ -194,6 +206,7 @@ class SendDocumentRequestViewController: BaseViewController {
     func setEmailBody(){
         
         txtfieldTo.setTextField(text: selectedEmailTemplate.toAddress)
+        setToChipField()
         
         txtfieldCC.setTextField(text: selectedEmailTemplate.ccAddress)
         
@@ -215,6 +228,40 @@ class SendDocumentRequestViewController: BaseViewController {
             self.setScreenHeight()
         }
         
+    }
+    
+    func setToChipField(){
+        if (txtfieldTo.validate()){
+            toChipView.isUserInteractionEnabled = true
+            toChipView.isHidden = false
+            toAlphabetView.isHidden = false
+            lblToAlphabet.isHidden = false
+            lblToEmail.isHidden = false
+            lblToCloseIcon.isHidden = false
+            let index = txtfieldTo.text!.index(txtfieldTo.text!.startIndex, offsetBy: 1)
+            lblToAlphabet.text = String(txtfieldTo.text!.prefix(upTo: index))
+            lblToEmail.text = txtfieldTo.text!
+        }
+        else{
+            toChipView.isUserInteractionEnabled = false
+            toChipView.isHidden = true
+            toAlphabetView.isHidden = true
+            lblToAlphabet.isHidden = true
+            lblToEmail.isHidden = true
+            lblToCloseIcon.isHidden = true
+            lblToAlphabet.text = ""
+            lblToEmail.text = ""
+        }
+    }
+    
+    @objc func toChipViewTapped(){
+        toChipView.isUserInteractionEnabled = false
+        toChipView.isHidden = true
+        toAlphabetView.isHidden = true
+        lblToAlphabet.isHidden = true
+        lblToEmail.isHidden = true
+        lblToCloseIcon.isHidden = true
+        txtfieldTo.setTextField(text: "")
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton){
@@ -339,6 +386,28 @@ class SendDocumentRequestViewController: BaseViewController {
         
     }
     
+}
+
+extension SendDocumentRequestViewController: ColabaTextFieldDelegate{
+
+    func textFieldDidChange(_ textField: ColabaTextField) {
+        if (textField == txtfieldTo){
+            toChipView.isUserInteractionEnabled = false
+            toChipView.isHidden = true
+            toAlphabetView.isHidden = true
+            lblToAlphabet.isHidden = true
+            lblToEmail.isHidden = true
+            lblToCloseIcon.isHidden = true
+            lblToAlphabet.text = ""
+            lblToEmail.text = ""
+        }
+    }
+    
+    func textFieldEndEditing(_ textField: ColabaTextField) {
+        if (textField == txtfieldTo){
+            setToChipField()
+        }
+    }
 }
 
 extension SendDocumentRequestViewController: UITextViewDelegate{
