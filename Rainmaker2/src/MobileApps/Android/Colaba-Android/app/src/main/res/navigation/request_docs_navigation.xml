@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/navigation_doc_request_email_fragment"
-        android:name="com.rnsoft.colabademo.SendDocRequestFragment"
+        android:name="com.rnsoft.colabademo.SendDocRequestEmailFragment"
         android:label="@string/request_docs"
         tools:layout="@layout/send_doc_request_layout">
 

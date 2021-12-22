@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.rnsoft.colabademo.activities.requestdocs.fragment.model.Template
 
 /**
  * Created by Anita Kiran on 10/4/2021.
@@ -27,7 +26,7 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
         if (emailTemplte != null) {
             val docTitle = v?.findViewById(R.id.tv_template_type) as TextView?
             val docDesc = v?.findViewById(R.id.tv_template_desc) as TextView?
-            docTitle?.text = emailTemplte.docType
+            docTitle?.text = emailTemplte.templateName
             docDesc?.text = emailTemplte.docDesc
         }
         return v!!
@@ -36,8 +35,8 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         var v: View? = convertView
         v = super.getDropDownView(position, convertView, parent)
-        //Log.e("adapter", ""+SendDocRequestFragment.selectedItem)
-        if (position == SendDocRequestFragment.selectedItem) {
+        //Log.e("adapter", ""+SendDocRequestEmailFragment.selectedItem)
+        if (position == SendDocRequestEmailFragment.selectedItem) {
             v.setBackgroundColor(Color.BLUE)
         } else {
             v.setBackgroundColor(Color.WHITE)
@@ -52,7 +51,7 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
 
     private var nameFilter: Filter = object : Filter() {
         override fun convertResultToString(resultValue: Any): String {
-            return (resultValue as Template).docType
+            return (resultValue as Template).templateName
         }
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {

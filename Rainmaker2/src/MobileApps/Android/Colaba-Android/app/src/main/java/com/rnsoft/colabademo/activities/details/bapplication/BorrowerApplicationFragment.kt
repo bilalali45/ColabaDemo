@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
-class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, GovernmentQuestionClickListener,RealEstateClickListener {
+class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, GovernmentQuestionClickListener,RealEstateClickListener {
 
     private var _binding: DetailApplicationTabBinding? = null
     private val binding get() = _binding!!
@@ -47,6 +47,10 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
     private var questionAdapter  = QuestionAdapter(questionList, this, null)
     var saveBorrowerId:Int = 0
     var borrowerName : String? = null
+    var streetName : String? = null
+    var propertyType : String? = null
+    var occupancyType : String? = null
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -62,7 +66,7 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
         loanLayout = root.findViewById(R.id.loanInfoLayout)
-        subjectPropertyLayout = root.findViewById(R.id.constraintLayout5)
+        subjectPropertyLayout = root.findViewById(R.id.sub_property_data_layout)
 
 
         //applicationTopContainer = root.findViewById(R.id.application_top_container)
@@ -101,6 +105,17 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 val intent = Intent(requireActivity(), SubjectPropertyActivity::class.java)
                 //Log.e("loanAppID", ""+ it.loanApplicationId)
                 //Log.e("purpose", ""+ it.)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
+                startActivityForResult(intent,200)
+
+            }
+        }
+
+        binding.btnAddSubProperty.setOnClickListener {
+            val detailActivity = (activity as? DetailActivity)
+            detailActivity?.let {
+                val intent = Intent(requireActivity(), SubjectPropertyActivity::class.java)
                 intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
                 intent.putExtra(AppConstant.borrowerPurpose, it.borrowerLoanPurpose)
                 startActivityForResult(intent,200)
@@ -181,6 +196,19 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
         }
 
         observeTabData()
+
+
+        binding.btnAddRealEstateOwned.setOnClickListener {
+            val detailActivity = (activity as? DetailActivity)
+            detailActivity?.let {
+
+                val intent = Intent(requireActivity(), RealEstateActivity::class.java)
+                intent.putExtra(AppConstant.loanApplicationId, it.loanApplicationId)
+                intent.putExtra(AppConstant.borrowerId,saveBorrowerId)
+                intent.putExtra(AppConstant.borrowerName, borrowerName)
+                startActivity(intent)
+            }
+        }
 
         super.addListeners(binding.root)
         return root
@@ -310,39 +338,31 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     binding.applicationTabLayout.visibility = View.VISIBLE
 
                     appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
-                        val builder = StringBuilder()
-                        it.street?.let {
-                            if(it != "null")
-                                builder.append(it).append(" ")
-                        }
-                        it.unit?.let {
-                            if(it != "null")
-                                builder.append(it).append(",")
-                            else
-                                builder.append(",")
-                        } ?: run { builder.append(",") }
-                        it.city?.let {
-                            if(it != "null")
-                                builder.append("\n").append(it).append(",").append(" ")
-                        } ?: run { builder.append("\n") }
-                        it.stateName?.let {
-                            if(it !="null") builder.append(it).append(" ")
-                        }
-                        it.zipCode?.let {
-                            if(it != "null")
-                                builder.append(it)
-                        }
-                        binding.bAppAddress.text = builder
-                        // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+                        displaySubjectPropertyAddress(it)
                     }
 
                     appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let {
-                        binding.bAppPropertyType.text = it
+                        if(it !="null" && it.isNotEmpty()) {
+                            binding.bAppPropertyType.text = it
+                            propertyType = it
+                        }
                     }
 
-                    appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription.let {
-                        binding.bAppPropertyUsage.text = it
+                    appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription?.let {
+                        if(it !="null" && it.isNotEmpty()){
+                            binding.bAppPropertyUsage.text = it
+                            occupancyType = it
+                        }
                     }
+
+                    if(streetName == null && occupancyType == null && propertyType == null){
+                        binding.btnAddSubProperty.visibility = View.VISIBLE
+                        subjectPropertyLayout.visibility = View.GONE
+                    } else {
+                        binding.btnAddSubProperty.visibility = View.GONE
+                        subjectPropertyLayout.visibility = View.VISIBLE
+                    }
+
 
                     appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let {
                         binding.bAppLoanPayment.text =
@@ -428,16 +448,23 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                     borrowerInfoAdapter =
                         CustomBorrowerAdapter(borrowerInfoList, this@BorrowerApplicationFragment)
                     horizontalRecyclerView.adapter = borrowerInfoAdapter
-                    Log.e("Application Frag",""+ borrowerInfoList)
+                    //Log.e("Application Frag",""+ borrowerInfoList)
 
                     borrowerInfoAdapter.notifyDataSetChanged()
 
 
-                    realStateList.add(RealStateOwn(null, saveBorrowerId, 0, 0, "", true, 0))
-                    realStateAdapter =
-                        RealStateAdapter(realStateList, this@BorrowerApplicationFragment)
-                    realStateRecyclerView.adapter = realStateAdapter
-                    realStateAdapter.notifyDataSetChanged()
+                    if(realStateList.size > 0){
+                        realStateList.add(RealStateOwn(null, saveBorrowerId, 0, 0, "", true, 0))
+                        realStateAdapter =
+                            RealStateAdapter(realStateList, this@BorrowerApplicationFragment)
+                        realStateRecyclerView.adapter = realStateAdapter
+                        realStateAdapter.notifyDataSetChanged()
+                        binding.realStateHorizontalRecyclerView.visibility = View.VISIBLE
+                        binding.btnAddRealEstateOwned.visibility = View.GONE
+                    } else {
+                        binding.realStateHorizontalRecyclerView.visibility = View.GONE
+                        binding.btnAddRealEstateOwned.visibility = View.VISIBLE
+                    }
 
                     var counter = 0
                     var noAnswerArrayList:ArrayList<Int> = arrayListOf()
@@ -466,6 +493,39 @@ class BorrowerApplicationFragment : BaseFragment() , AdapterClickListener, Gover
                 } else
                     binding.applicationTabLayout.visibility = View.INVISIBLE
             })
+
+    }
+
+    private fun displaySubjectPropertyAddress(address : SubjectPropertyAddress){
+        address.let {
+            val builder = StringBuilder()
+            it.street?.let {
+                if (it != "null" && it.isNotEmpty()) {
+                    streetName = it
+                    builder.append(it).append(" ")
+                }
+            }
+            it.unit?.let {
+                if (it != "null")
+                    builder.append(it).append(",")
+                else
+                    builder.append(",")
+            } ?: run { builder.append(",") }
+            it.city?.let {
+                if (it != "null")
+                    builder.append("\n").append(it).append(",").append(" ")
+            } ?: run { builder.append("\n") }
+            it.stateName?.let {
+                if (it != "null") builder.append(it).append(" ")
+            }
+            it.zipCode?.let {
+                if (it != "null")
+                    builder.append(it)
+            }
+            binding.bAppAddress.text = builder
+            // binding.bAppAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
+
+        }
 
     }
 

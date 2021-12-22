@@ -300,7 +300,6 @@ class LoanRefinanceFragment : BaseFragment() {
     fun onSentData(event: SendDataEvent) {
         binding.loaderLoanRefinance.visibility = View.GONE
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
-            Log.e("posted","success")
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
             requireActivity().finish()
         }
