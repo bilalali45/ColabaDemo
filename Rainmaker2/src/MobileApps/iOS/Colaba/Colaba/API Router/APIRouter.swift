@@ -273,6 +273,13 @@ class APIRouter: NSObject {
                 return
             }
             
+            if (endPoint == EndPoint.saveAndSendEmailRequest.rawValue){
+                if (response.response?.statusCode == 200){
+                    completion?(.success, JSON.null, "")
+                    return
+                }
+            }
+            
             if let error = response.error{
                 var errorDescription = error.localizedDescription
                 if errorDescription == "The Internet connection appears to be offline." || errorDescription == "URLSessionTask failed with error: A data connection is not currently allowed." || errorDescription == "URLSessionTask failed with error: The Internet connection appears to be offline."{

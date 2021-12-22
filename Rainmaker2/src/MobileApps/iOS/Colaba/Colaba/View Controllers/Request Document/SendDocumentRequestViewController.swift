@@ -380,7 +380,7 @@ class SendDocumentRequestViewController: BaseViewController {
         let params = ["loanApplicationId": loanApplicationId,
                       "requests": requests] as [String: Any]
         
-        APIRouter.sharedInstance.executeAPI(type: .saveAndSendEmailRequest, method: .post, params: params) { status, result, message in
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .saveAndSendEmailRequest, method: .post, params: params) { status, result, message in
             DispatchQueue.main.async {
                 Utility.showOrHideLoader(shouldShow: false)
                 if (status == .success){
