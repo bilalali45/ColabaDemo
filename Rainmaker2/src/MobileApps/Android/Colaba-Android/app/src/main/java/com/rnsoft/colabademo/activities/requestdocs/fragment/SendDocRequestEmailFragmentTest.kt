@@ -32,6 +32,7 @@ import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import android.widget.Toast
+import androidx.core.view.get
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -89,7 +90,11 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
         chip.isClickable = true
         chip.isCheckable = false
         chipGroup.addView(chip as View, chipGroup.childCount - 1)
-        chip.setOnCloseIconClickListener { chipGroup.removeView(chip as View) }
+        chip.setOnCloseIconClickListener {
+            editText.setText(chip.text.toString())
+            editText.setSelection(editText.length())
+            chipGroup.removeView(chip as View)
+        }
         binding.etRecipientEmail.setText("")
     }
 
@@ -274,23 +279,25 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-//            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
-//                if (keyCode == KeyEvent.KEYCODE_ENTER || keyEvent.action == EditorInfo.IME_ACTION_DONE) {
-//                    Toast.makeText(context, "Enter pressed", Toast.LENGTH_SHORT).show()
-//                    return@setOnKeyListener true
-//                }
-//
-//                if(keyCode == KeyEvent.KEYCODE_DEL){
-//                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
-//                    return@setOnKeyListener true
-//                }
-//
-//                if(keyCode == KeyEvent.KEYCODE_SPACE){
-//                    Toast.makeText(context, "Spce pressed", Toast.LENGTH_SHORT).show() //
-//                    return@setOnKeyListener true
-//                }
-//                return@setOnKeyListener false
-//            }
+        binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER || keyEvent.action == EditorInfo.IME_ACTION_DONE) {
+                Toast.makeText(context, "Enter pressed", Toast.LENGTH_SHORT).show()
+                return@setOnKeyListener true
+            }
+
+            if(keyCode == KeyEvent.KEYCODE_DEL){
+                val lastChip = binding.recipientGroupFL.get(binding.recipientGroupFL.childCount-1)
+                lastChip.
+                Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
+                return@setOnKeyListener true
+            }
+
+            if(keyCode == KeyEvent.KEYCODE_SPACE){
+                Toast.makeText(context, "Spce pressed", Toast.LENGTH_SHORT).show() //
+                return@setOnKeyListener true
+            }
+            return@setOnKeyListener false
+        }
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {
@@ -305,7 +312,7 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
         val email = binding.etRecipientEmail.text.toString().trim()
         if(email.length > 0) {
             if (isValidEmailAddress(email)) {
-               // addNewChip(email, binding.recipientGroupFL)
+                addNewChip(email, binding.recipientGroupFL)
 
 
 
