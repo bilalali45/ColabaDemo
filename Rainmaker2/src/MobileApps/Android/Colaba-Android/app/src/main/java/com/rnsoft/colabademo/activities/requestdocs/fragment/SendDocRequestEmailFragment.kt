@@ -95,10 +95,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         chip.isClickable = true
         chip.isCheckable = false
         chipGroup.addView(chip as View, chipGroup.childCount - 1)
-        chip.setOnCloseIconClickListener {
-            // getText
-            editText.setText(chip.text.toString())
-            editText.setSelection(editText.length())
+        chip.setOnCloseIconClickListener{
             chipGroup.removeView(chip as View)
         }
         editText.setText("")
@@ -329,20 +326,39 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-//            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
-//                if (keyCode == KeyEvent.KEYCODE_DEL) {
-//                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
-//                    if (binding.etRecipientEmail.text.toString().length == 0) {
-//                        if (binding.recipientGroupFL.childCount > 0) {
-//                            //Log.e("LayoutChildCount",""+binding.recipientGroupFL.childCount)
-//                            //binding.recipientGroupFL.removeView(binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount-1) as View)
-//                        }
-//
-//                        return@setOnKeyListener true
-//                    }
-//                    return@setOnKeyListener false
-//
-//            }
+            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
+                    if (binding.recipientGroupFL.childCount > 1) {
+
+
+
+                                if(binding.recipientGroupFL.childCount>1) {
+                                    val childOne = binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount - 1)
+                                    val childTwo = binding.recipientGroupFL.childCount - 2
+                                    var index = 0
+                                    index = if (childOne is Chip)
+                                        binding.recipientGroupFL.childCount - 1
+                                    else
+                                        binding.recipientGroupFL.childCount - 2
+
+                                    val lastChip = binding.recipientGroupFL.getChildAt(index) as Chip
+                                    binding.etRecipientEmail.setText(lastChip.text.toString())
+                                    binding.etRecipientEmail.setSelection(binding.etRecipientEmail.length())
+                                    binding.recipientGroupFL.removeView(lastChip as View)
+                                }
+
+
+
+                        //Log.e("LayoutChildCount",""+binding.recipientGroupFL.childCount)
+                        //binding.recipientGroupFL.removeView(binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount-1) as View)
+                    }
+                }
+
+
+                    return@setOnKeyListener false
+
+           }
 
         // cc email
         binding.etccEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
