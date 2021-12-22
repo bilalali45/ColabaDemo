@@ -181,7 +181,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                         Log.e("sendBody", "$sendRequestBody")
 
 
-                        //viewModel.sendDocRequest(authToken, sendRequestBody)
+                        viewModel.sendDocRequest(authToken, sendRequestBody)
                     }
                 }
             }
@@ -329,20 +329,20 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
-                if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
-                    if (binding.etRecipientEmail.text.toString().length == 0) {
-                        if (binding.recipientGroupFL.childCount > 0) {
-                            //Log.e("LayoutChildCount",""+binding.recipientGroupFL.childCount)
-                            //binding.recipientGroupFL.removeView(binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount-1) as View)
-                        }
-
-                        return@setOnKeyListener true
-                    }
-                    return@setOnKeyListener false
-
-            }
+//            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
+//                if (keyCode == KeyEvent.KEYCODE_DEL) {
+//                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
+//                    if (binding.etRecipientEmail.text.toString().length == 0) {
+//                        if (binding.recipientGroupFL.childCount > 0) {
+//                            //Log.e("LayoutChildCount",""+binding.recipientGroupFL.childCount)
+//                            //binding.recipientGroupFL.removeView(binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount-1) as View)
+//                        }
+//
+//                        return@setOnKeyListener true
+//                    }
+//                    return@setOnKeyListener false
+//
+//            }
 
         // cc email
         binding.etccEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
