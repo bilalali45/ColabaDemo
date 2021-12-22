@@ -133,8 +133,12 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         btnFilterManullayAdded.setOnClickListener(this)
 
         (activity as DetailActivity).binding.requestDocFab.setOnClickListener{
-            val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
-            requireActivity().startActivity(intent)
+            val intent = Intent(requireActivity(), RequestDocsActivity::class.java)
+            val activity = (activity as? DetailActivity)
+            activity?.loanApplicationId?.let {
+                intent.putExtra(AppConstant.loanApplicationId, it)
+                startActivity(intent)
+            }
         }
 
         observeDownloadProgress()

@@ -6,23 +6,23 @@ data class SendDocRequestModel(
 )
 
 data class DocRequestDataList(
-    val documents: List<ReqestDocument>,
+    val documents: List<RequestDocument>,
     val email: Email
 )
 
 data class Email(
-    val ccAddress: Any,
-    val emailBody: String,
-    val emailTemplateId: String,
-    val fromAddress: String,
+    val ccAddress: String? = null,
+    val emailBody: String? = null,
+    val emailTemplateId: String?=null,
+    val fromAddress: String? = null,
     val subject: String,
     val toAddress: String
 )
 
-data class ReqestDocument(
-    val docId: Int,
+data class RequestDocument(
+    val docId: String?= null,
     val docMessage: String,
     val docType: String,
-    val docTypeId: String,
-    val requestId: Int
+    val docTypeId: String?=null,
+    val requestId: Int? = null
 )
