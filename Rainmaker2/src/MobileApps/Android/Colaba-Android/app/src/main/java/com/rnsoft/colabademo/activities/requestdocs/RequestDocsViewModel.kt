@@ -33,6 +33,21 @@ class RequestDocsViewModel @Inject constructor(private val requestDocsRepo: Requ
         _emailTemplates.postValue(null)
     }
 
+    suspend fun sendDocRequest(token: String,data: SendDocRequestModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = requestDocsRepo.sendDocRequest(token = token, data)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+            }
+        }
+    }
+
     suspend fun getEmailTemplates(token:String) {
         viewModelScope.launch (Dispatchers.IO) {
             val responseResult = requestDocsRepo.getEmailTemplates(token = token)

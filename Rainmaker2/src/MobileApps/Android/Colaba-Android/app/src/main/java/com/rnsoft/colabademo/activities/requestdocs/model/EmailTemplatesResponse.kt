@@ -1,9 +1,12 @@
 package com.rnsoft.colabademo
 
+import com.google.gson.annotations.SerializedName
+
 /**
  * Created by Anita Kiran on 12/20/2021.
  */
 data class EmailTemplatesResponse(
+    @SerializedName("id")
     val id: String,
     val tenantId: Int,
     val templateName: String,

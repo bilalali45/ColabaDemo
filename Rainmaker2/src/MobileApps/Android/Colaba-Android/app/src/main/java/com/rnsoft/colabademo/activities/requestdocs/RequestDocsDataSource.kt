@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import okhttp3.ResponseBody
+import retrofit2.HttpException
 import retrofit2.Response
 import timber.log.Timber
 import java.io.File
@@ -68,6 +69,24 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
                 Result.Error(IOException("Error notification -", e))
         }
     }
+
+    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<AddUpdateDataResponse> {
+        return try {
+            val newToken = "Bearer $token"
+            val response = serverApi.sendDocRequest(newToken,data)
+            Log.e("send-doc-request-respone","$response")
+            Result.Success(response)
+        } catch (e: Throwable){
+            Log.e("send-doc-request-Error",e.localizedMessage)
+            if(e is HttpException){
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            }
+            else {
+                Result.Error(IOException("Error logging in", e))
+            }
+        }
+    }
+
 
 
 

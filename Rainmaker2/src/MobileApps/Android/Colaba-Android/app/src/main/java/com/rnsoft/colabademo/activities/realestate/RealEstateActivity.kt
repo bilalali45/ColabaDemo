@@ -44,7 +44,7 @@ class RealEstateActivity : BaseActivity() {
 
 
 
-        Log.e("activity","loanApplicatioId: " + loanApplicationId + " borrowerPropertyId:" + borrowerPropertyId + " borrowerId: " + borrowerId)
+        //Log.e("activity","loanApplicatioId: " + loanApplicationId + " borrowerPropertyId:" + borrowerPropertyId + " borrowerId: " + borrowerId)
 
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->

@@ -14,6 +14,8 @@ class RequestDocsActivity : BaseActivity() {
     var loanApplicationId:Int? = null
     var loanPurpose:String? = null
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = RequestDocsActivityLayoutBinding.inflate(layoutInflater)

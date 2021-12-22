@@ -32,7 +32,6 @@ import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import android.widget.Toast
-import androidx.core.view.isVisible
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -44,7 +43,7 @@ import org.greenrobot.eventbus.ThreadMode
  */
 
 @AndroidEntryPoint
-class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
+class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -85,7 +84,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         val chip = LayoutInflater.from(context).inflate(R.layout.chip, chipGroup, false) as Chip
         //val chip = Chip(context)
         chip.text = email
-       // chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
+        chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
         chip.isCloseIconEnabled = true
         chip.isClickable = true
         chip.isCheckable = false
@@ -107,21 +106,15 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
     private fun sendDocRequest(){
 
-        //. to email
-
-        binding.recipientEmailError.isVisible
-
-
-
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 //binding.loaderDocRequest.visibility = View.VISIBLE
                 if(loanApplicationId != null) {
-                    val emailBody= Email()
+                    //val emailBody= Email()
 
-                    val requestList: ArrayList<DocRequestDataList> = ArrayList()
-                    requestList.add(DocRequestDataList(email = emailBody,documents = ))
-                    val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!,)
+                    //val requestList: ArrayList<DocRequestDataList> = ArrayList()
+                    //requestList.add(DocRequestDataList(email = emailBody,documents = ))
+                    //val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!,)
 
                     //viewModel.sendDocRequest(authToken, sendRequestBody)
                 }
@@ -312,7 +305,12 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         val email = binding.etRecipientEmail.text.toString().trim()
         if(email.length > 0) {
             if (isValidEmailAddress(email)) {
-                addNewChip(email, binding.recipientGroupFL)
+               // addNewChip(email, binding.recipientGroupFL)
+
+
+
+
+
                 binding.recipientEmailError.visibility = View.GONE
             } else {
                 binding.recipientEmailError.visibility = View.VISIBLE

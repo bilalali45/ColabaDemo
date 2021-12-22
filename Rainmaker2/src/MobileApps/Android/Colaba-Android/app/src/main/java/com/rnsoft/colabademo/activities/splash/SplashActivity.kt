@@ -23,22 +23,22 @@ class SplashActivity : AppCompatActivity() {
 
         activityScope.launch {
            // startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
-            startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
+//            startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
             //redirectToApplicationDetailScreen()
 
-//
-//            if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
-//                && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
-//            ) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
-//            } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            } else {
-//                delay(500)
-//                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
-//            }
+
+            if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
+                && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
+            ) {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
+            } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+            } else {
+                delay(500)
+                startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))
+            }
 
            finish()
          }

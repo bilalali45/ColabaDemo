@@ -22,5 +22,10 @@ class RequestDocsRepo  @Inject constructor(private val requestDocsDataSource: Re
         return requestDocsDataSource.getEmailBody(token = token,loanApplicaitonId,templateId)
     }
 
+    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<AddUpdateDataResponse> {
+        return requestDocsDataSource.sendDocRequest(token,data)
+    }
+
+
 
 }
