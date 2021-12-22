@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
+import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -33,6 +34,7 @@ import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import android.widget.Toast
 import androidx.core.view.isVisible
+import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -53,6 +55,9 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     private var savedViewInstance: View? = null
     private var loanApplicationId: Int? = null
     var templateList: ArrayList<Template> = ArrayList()
+    var htmlEmailBody : String? = null
+    var fromEmail : String? = null
+    var renderEmailResponse: EmailTemplatesResponse? = null
     companion object {
         var selectedItem = -1
     }
@@ -81,7 +86,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         }
     }
 
-    private fun addNewChip(email: String,chipGroup : FlexboxLayout){
+    private fun addNewChip(email: String,editText: EditText, chipGroup : FlexboxLayout){
         val chip = LayoutInflater.from(context).inflate(R.layout.chip, chipGroup, false) as Chip
         //val chip = Chip(context)
         chip.text = email
@@ -90,8 +95,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         chip.isClickable = true
         chip.isCheckable = false
         chipGroup.addView(chip as View, chipGroup.childCount - 1)
-        chip.setOnCloseIconClickListener { chipGroup.removeView(chip as View) }
-        binding.etRecipientEmail.setText("")
+        chip.setOnCloseIconClickListener {
+            // getText
+            editText.setText(chip.text.toString())
+            editText.setSelection(editText.length())
+            chipGroup.removeView(chip as View)
+        }
+        editText.setText("")
     }
 
     private fun setupUI(){
@@ -105,25 +115,74 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         }
     }
 
-    private fun sendDocRequest(){
+    private fun sendDocRequest() {
+        var isDataEntered = true
+        var emailCount = binding.recipientGroupFL.childCount
+        if (emailCount == 1) {
+            isDataEntered = false
+            binding.recipientEmailError.visibility = View.VISIBLE
+        } else {
+            binding.recipientEmailError.visibility = View.GONE
+            isDataEntered = true
+        }
 
-        //. to email
-
-        binding.recipientEmailError.isVisible
 
 
+        if (isDataEntered){
+            // get to email
+            var recipientEmail: String? = null
+            var ccEmail: String? = null
+            var fromEmail:String?= null
+            for (i in 0 until binding.recipientGroupFL.getChildCount()) {
+                if (binding.recipientGroupFL.getChildAt(i) is Chip) {
+                    val chip = binding.recipientGroupFL.getChildAt(i) as Chip
+                    recipientEmail = chip.text.toString()
+                }
+            }
+            // cc
+            for (i in 0 until binding.ccFL.getChildCount()) {
+                if (binding.ccFL.getChildAt(i) is Chip) {
+                    val chip = binding.ccFL.getChildAt(i) as Chip
+                    ccEmail = chip.text.toString()
+                }
+            }
+            // subject
+            var subject = binding.etSubjectLine.text.toString().trim()
 
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                //binding.loaderDocRequest.visibility = View.VISIBLE
-                if(loanApplicationId != null) {
-                    val emailBody= Email()
+            // email item
+            val matchedList =  templateList.filter { p -> p.templateName.equals(binding.tvEmailType.getText().toString().trim(),true)}
+            val emailTemplateId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).templateId }.single() else null
 
-                    val requestList: ArrayList<DocRequestDataList> = ArrayList()
-                    requestList.add(DocRequestDataList(email = emailBody,documents = ))
-                    val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!,)
+            renderEmailResponse?.fromAddress?.let {
+                fromEmail = it
+            }
 
-                    //viewModel.sendDocRequest(authToken, sendRequestBody)
+
+
+
+
+            val emailBody= Email(toAddress = recipientEmail!!,ccAddress=ccEmail,emailTemplateId = emailTemplateId,subject = subject,emailBody = htmlEmailBody,fromAddress = fromEmail)
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    //binding.loaderDocRequest.visibility = View.VISIBLE
+                    if (loanApplicationId != null) {
+                        var docList: ArrayList<RequestDocument> = ArrayList()
+                        for(i in 0 until combineDocList.size){
+                            docList.add(RequestDocument(docTypeId = combineDocList.get(i).docTypeId,
+                                docType = combineDocList.get(i).docType,docMessage = combineDocList.get(i).docMessage))
+                        }
+
+
+                        val requestList: ArrayList<DocRequestDataList> = ArrayList()
+                        requestList.add(DocRequestDataList(email = emailBody,documents = docList ))
+                        val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!,requestList)
+
+                        Log.e("sendBody", "$sendRequestBody")
+
+
+                        //viewModel.sendDocRequest(authToken, sendRequestBody)
+                    }
                 }
             }
         }
@@ -159,7 +218,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 }
 
                 // set initial template
-                getEmailBody(0,)
+                getEmailBody(0)
 
                 binding.tvEmailType.onItemClickListener =
                     AdapterView.OnItemClickListener { p0, p1, position, id ->
@@ -191,6 +250,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         viewModel.emailTemplateBody.observe(viewLifecycleOwner, { body ->
             binding.loaderDocRequest.visibility = View.GONE
             if(body != null){
+               renderEmailResponse = body
                 body.emailBody?.let {
                     val builder = StringBuilder()
                     if(it.contains(AppConstant.relaceDocFormat)){
@@ -209,8 +269,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
                        // <ul style=\"text-align:left;\"><span style=\"color: rgb(78,78,78);font-size: 14px;font-family: Rubik, sans-serif;\">\(bulletList)</ul>"
 
-                        val newText = it.replace(AppConstant.relaceDocFormat, builder.toString())
-                        binding.tvEmailBody.text = Html.fromHtml(newText)
+                        htmlEmailBody = it.replace(AppConstant.relaceDocFormat, builder.toString())
+                        binding.tvEmailBody.text = Html.fromHtml(htmlEmailBody)
                         binding.layoutEmailBody.visibility = View.VISIBLE
                     }
                 }
@@ -232,7 +292,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                             break
                         }
                     }
-
                 }
 
             }
@@ -247,20 +306,9 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         binding.etRecipientEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if(event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_SPACE
                 || actionId == KeyEvent.KEYCODE_SPACE){
-                Log.e("Key","Pressed")
-
-                validateEmailAddress()
-
+                validateEmailAddress(binding.etRecipientEmail,binding.recipientGroupFL, binding.recipientEmailError)
                 true
             }
-            /*if(event != null && event.getKeyCode() == KeyEvent.KEYCODE_DEL){
-                Toast.makeText(
-                    context, "delete pressed",
-                    Toast.LENGTH_SHORT
-                ).show()
-                true
-            } */
-
             else {
                 false
             }
@@ -272,7 +320,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 if(text.length > 0 ) {
                     val lastChar: String = s.toString().substring(s.length - 1)
                     if (lastChar == " ") {
-                        validateEmailAddress()
+                        validateEmailAddress(binding.etRecipientEmail,binding.recipientGroupFL,binding.recipientEmailError)
                         // Toast.makeText(context, "space bar pressed", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -281,23 +329,46 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-//            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
-//                if (keyCode == KeyEvent.KEYCODE_ENTER || keyEvent.action == EditorInfo.IME_ACTION_DONE) {
-//                    Toast.makeText(context, "Enter pressed", Toast.LENGTH_SHORT).show()
-//                    return@setOnKeyListener true
-//                }
-//
-//                if(keyCode == KeyEvent.KEYCODE_DEL){
-//                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
-//                    return@setOnKeyListener true
-//                }
-//
-//                if(keyCode == KeyEvent.KEYCODE_SPACE){
-//                    Toast.makeText(context, "Spce pressed", Toast.LENGTH_SHORT).show() //
-//                    return@setOnKeyListener true
-//                }
-//                return@setOnKeyListener false
-//            }
+            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
+                if (keyCode == KeyEvent.KEYCODE_DEL) {
+                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
+                    if (binding.etRecipientEmail.text.toString().length == 0) {
+                        if (binding.recipientGroupFL.childCount > 0) {
+                            //Log.e("LayoutChildCount",""+binding.recipientGroupFL.childCount)
+                            //binding.recipientGroupFL.removeView(binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount-1) as View)
+                        }
+
+                        return@setOnKeyListener true
+                    }
+                    return@setOnKeyListener false
+
+            }
+
+        // cc email
+        binding.etccEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if(event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_SPACE
+                || actionId == KeyEvent.KEYCODE_SPACE){
+                validateEmailAddress(binding.etccEmail,binding.ccFL,binding.ccEmailError)
+                true
+            }
+            else {
+                false
+            }
+        })
+
+        binding.etccEmail.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+                if(binding.etccEmail.text.toString().trim().length > 0) {
+                    val lastChar: String = s.toString().substring(s.length - 1)
+                    if (lastChar == " ") {
+                        validateEmailAddress(binding.etccEmail ,binding.ccFL,binding.ccEmailError)
+                    }
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {}
+        })
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {
@@ -308,17 +379,16 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         return m.matches()
     }
 
-    private fun validateEmailAddress(){
-        val email = binding.etRecipientEmail.text.toString().trim()
+    private fun validateEmailAddress(editText: EditText, layout: FlexboxLayout, errorTextView : TextView){
+        var email = editText.text.toString().trim()
         if(email.length > 0) {
             if (isValidEmailAddress(email)) {
-                addNewChip(email, binding.recipientGroupFL)
-                binding.recipientEmailError.visibility = View.GONE
+                addNewChip(email,editText,layout)
+                errorTextView.visibility = View.GONE
             } else {
-                binding.recipientEmailError.visibility = View.VISIBLE
+                errorTextView.visibility = View.VISIBLE
             }
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
