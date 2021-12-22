@@ -9,6 +9,7 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.rnsoft.colabademo.databinding.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,8 +61,10 @@ class AssignLoanOfficerFragment : BaseFragment() {
                             mainCell.first_container.first_lo_detail.text = rolesMcus[i].fullName
                             Glide.with(requireActivity()).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.first_container.first_lo_image)
                             mainCell.first_container.setOnClickListener {
-                                EventBus.getDefault().post(DismissBoxEvent())
-                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                                //EventBus.getDefault().post(DismissBoxEvent())
+                                viewModel.setMcu(rolesMcus[i])
+                                findNavController().popBackStack()
+                                //EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
                             }
                             binding.loParentContainer.addView(mainCell)
                         }
@@ -72,8 +75,10 @@ class AssignLoanOfficerFragment : BaseFragment() {
                             mainCell.second_container.second_lo_detail.text = rolesMcus[i].branchName
                             Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.second_container.second_lo_image)
                             mainCell.second_container.setOnClickListener {
-                                EventBus.getDefault().post(DismissBoxEvent())
-                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                                viewModel.setMcu(rolesMcus[i])
+                                findNavController().popBackStack()
+
+                                //EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
                             }
                         }
                         else
@@ -83,8 +88,11 @@ class AssignLoanOfficerFragment : BaseFragment() {
                             mainCell.third_container.third_lo_detail.setText(rolesMcus[i].branchName)
                             Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.third_container.third_lo_image)
                             mainCell.third_container.setOnClickListener {
-                                EventBus.getDefault().post(DismissBoxEvent())
-                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                                //EventBus.getDefault().post(DismissBoxEvent())
+                                viewModel.setMcu(rolesMcus[i])
+                                findNavController().popBackStack()
+
+                                //EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
                             }
                         }
                         else
@@ -94,8 +102,11 @@ class AssignLoanOfficerFragment : BaseFragment() {
                             mainCell.fourth_container.fourth_lo_detail.setText(rolesMcus[i].branchName)
                             Glide.with(this).load(rolesMcus[i].profileimageurl).circleCrop().into(mainCell.fourth_container.fourth_lo_image)
                             mainCell.fourth_container.setOnClickListener {
-                                EventBus.getDefault().post(DismissBoxEvent())
-                                EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
+                                //EventBus.getDefault().post(DismissBoxEvent())
+                                viewModel.setMcu(rolesMcus[i])
+                                findNavController().popBackStack()
+
+                                //EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[i]))
                             }
                         }
                     }

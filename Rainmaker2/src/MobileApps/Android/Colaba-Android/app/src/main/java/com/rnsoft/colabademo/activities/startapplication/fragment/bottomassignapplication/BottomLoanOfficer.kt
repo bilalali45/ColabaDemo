@@ -60,8 +60,10 @@ class BottomLoanOfficer : BottomBorrowerBaseFragment() {
                     for(item in 0 until layouts.size){
                         layouts[item].visibility = View.VISIBLE
                         layouts[item].setOnClickListener {
+                            //EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[item]))
+                            viewModel.setMcu(rolesMcus[item])
                             EventBus.getDefault().post(DismissBoxEvent())
-                            EventBus.getDefault().post(LoanOfficerSelectedEvent(rolesMcus[item]))
+
                         }
                         Glide.with(requireActivity())
                             .load(rolesMcus[item].profileimageurl) // Uri of the picture

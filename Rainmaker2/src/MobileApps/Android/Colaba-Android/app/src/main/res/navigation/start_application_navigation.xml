@@ -19,4 +19,13 @@
 
     </fragment>
 
+
+    <fragment
+        android:id="@+id/navigateToAssignLoanOfficer"
+        android:name="com.rnsoft.colabademo.AssignLoanOfficerFragment"
+        android:label="@string/assign_application_to"
+        tools:layout="@layout/assign_application_to_layout">
+
+    </fragment>
+
 </navigation>
