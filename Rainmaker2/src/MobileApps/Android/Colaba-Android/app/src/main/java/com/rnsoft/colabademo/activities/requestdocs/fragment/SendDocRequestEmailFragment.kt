@@ -33,6 +33,7 @@ import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -319,7 +320,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                         }
 
                         addNewChip(it,binding.etRecipientEmail,binding.recipientGroupFL)
-                        CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two, requireActivity())
+                        //CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two, requireActivity())
+                        binding.recipientLabelTo.setTextColor(AppCompatResources.getColorStateList(requireActivity(), R.color.grey_color_two))
                     }
                 }
 
@@ -333,9 +335,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                             }
                         }
                         addNewChip(it,binding.etccEmail,binding.ccFL)
-                        CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        binding.ccLable.setTextColor(AppCompatResources.getColorStateList(requireActivity(), R.color.grey_color_two))
                     }
                 }
             }
@@ -465,13 +465,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     fun onEmailRequestSent(event: SendDocRequestEvent){
         binding.loaderDocRequest.visibility = View.GONE
         if(event.response.responseCode == 200){
-            requireActivity().finish()
+            findNavController().popBackStack()
         }
         else
           SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
 
-        requireActivity().finish()
+        findNavController().popBackStack()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
