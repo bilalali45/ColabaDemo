@@ -24,6 +24,7 @@ class RequestDocumentViewController: BaseViewController {
         setupHeaderAndFooter()
         selectedDocsFromTemplate.removeAll()
         selectedDocsFromList.removeAll()
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissDocumentRequest), name: NSNotification.Name(rawValue: kNotificationDismissDocumentRequest), object: nil)
     }
     
     //MARK:- Methods and Actions
@@ -61,6 +62,10 @@ class RequestDocumentViewController: BaseViewController {
         btnNext.setButton(image: UIImage(named: "NextIcon")!)
     }
     
+    @objc func dismissDocumentRequest(){
+        self.dismiss(animated: false, completion: nil)
+    }
+    
     @IBAction func btnBackTapped(_ sender: UIButton){
         self.dismissVC()
     }
@@ -84,6 +89,7 @@ extension RequestDocumentViewController: CarbonTabSwipeNavigationDelegate{
         else{
             let vc = Utility.getDocumentsListVC()
             vc.loanApplicationId = self.loanApplicationId
+            vc.borrowerName = self.borrowerName
             return vc
         }
     }
