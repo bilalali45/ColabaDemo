@@ -695,7 +695,7 @@ interface ServerApi{
         @Header("Authorization")  Authorization:String): GetTemplatesResponse
 
     @POST("api/mcu/mobile/DocumentManagement/Request/Save")
-    suspend fun sendDocRequest(@Header("Authorization")  Authorization:String, @Body data: SendDocRequestModel): AddUpdateDataResponse
+    suspend fun sendDocRequest(@Header("Authorization")  Authorization:String, @Body data: SendDocRequestModel): Response<Unit>
 
 
 

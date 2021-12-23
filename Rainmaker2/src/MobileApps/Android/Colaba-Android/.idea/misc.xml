@@ -3,10 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/workspace/RainMaker2/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/send_doc_request_layout.xml" value="0.36666666666666664" />
+        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_doc_layout.xml" value="0.2056159420289855" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
