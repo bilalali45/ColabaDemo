@@ -22,7 +22,9 @@ class DocumentRequestSentViewController: BaseViewController {
         let successMessage = "Document Request has been sent to \(borrowerName)"
         let attributedSuccessMessage = NSMutableAttributedString(string: successMessage)
         let range = successMessage.range(of: borrowerName)
-        attributedSuccessMessage.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikMediumFont(size: 17), range: successMessage.nsRange(from: range!))
+        if (borrowerName != ""){
+            attributedSuccessMessage.addAttribute(NSAttributedString.Key.font, value: Theme.getRubikMediumFont(size: 17), range: successMessage.nsRange(from: range!))
+        }
         lblRequestSent.attributedText = attributedSuccessMessage
         btnBackToDocument.layer.cornerRadius = 5
     }
@@ -31,5 +33,6 @@ class DocumentRequestSentViewController: BaseViewController {
     
     @IBAction func btnBackToDocumentTapped(_ sender: UIButton){
         self.dismissVC()
+        NotificationCenter.default.post(name:  NSNotification.Name(rawValue: kNotificationDismissDocumentRequest), object: nil)
     }
 }
