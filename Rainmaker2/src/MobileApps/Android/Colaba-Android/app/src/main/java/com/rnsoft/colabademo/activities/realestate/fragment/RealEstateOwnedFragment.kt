@@ -533,8 +533,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
                 val codeString = response.code.toString()
                 if(codeString == "400" || codeString == "200"){
                     EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
-                    requireActivity().finish()
-                    }
+                   requireActivity().finish()
+                }
             })
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -555,11 +555,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         binding.realestateMainlayout.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
-        //binding.rbFirstMortgageYes.setOnClickListener(this)
-        //binding.rbFirstMortgageNo.setOnClickListener(this)
-        //binding.rbSecMortgageYes.setOnClickListener(this)
-        //binding.rbSecMortgageNo.setOnClickListener(this)
-        //binding.layoutFirstMortgageDetail.setOnClickListener(this)
         binding.layoutSecMortgageDetail.setOnClickListener(this)
         binding.layoutAddress.setOnClickListener(this)
 
@@ -956,34 +951,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             fragment.arguments = bundle
             findNavController().navigate(R.id.action_realestate_first_mortgage,bundle)
     }
-
-    private fun onFirstMortgegeNoClick(){
-        binding.layoutFirstMortgageDetail.visibility = View.GONE
-        binding.layoutSecondMortgage.visibility = View.GONE
-        binding.rbFirstMortgageNo.setTypeface(null, Typeface.BOLD)
-        binding.rbFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
-    }
-
-    /*private fun onSecMortgageYesClick(){
-        binding.layoutSecondMortgage.visibility = View.VISIBLE
-        binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-
-        val fragment = RealEstateSecondMortgage()
-        val bundle = Bundle()
-        bundle.putString(AppConstant.address, addressHeading)
-        bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
-        fragment.arguments = bundle
-        findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
-    }
-
-    private fun onSecMortgegeNoClick(){
-        binding.layoutSecondMortgage.visibility = View.VISIBLE
-        binding.layoutSecMortgageDetail.visibility = View.GONE
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
-    } */
 
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){
         if(isShowAddress){

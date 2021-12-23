@@ -17,6 +17,8 @@ object AppConstant {
         //const val  PASSWORD:String = "test123"
 
 
+        const val relaceDocFormat : String = "###RequestDocumentList###"
+
         const val MARITAL_STATUS_MARRIED: Int = 1
         const val MARITAL_STATUS_SEPARATED: Int = 2
         const val MARITAL_STATUS_UNMARRIED: Int = 9

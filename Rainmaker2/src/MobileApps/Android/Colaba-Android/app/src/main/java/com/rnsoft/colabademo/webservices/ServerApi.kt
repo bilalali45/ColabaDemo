@@ -19,6 +19,13 @@ interface ServerApi{
         "Cache-Control: max-age=640000"
     )
      */
+//
+//    @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")
+//    suspend fun getEmailTemplates(
+//        @Header("Authorization") Authorization:String) : TemplatesModel
+//
+//
+//
 
     // subject property
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllPropertyTypeDropDown")
@@ -595,10 +602,11 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):AppMileStoneResponse
 
 
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
+    @GET("api/mcu/mobile/DocumentManagement/AdminDashboard/GetDocuments")
     suspend fun getBorrowerDocuments(
         @Header("Authorization" )  Authorization:String,
-        @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("pending")  pending:Boolean = true):ArrayList<BorrowerDocsModel>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllEthnicityList")
     suspend fun getEthnicityList(
@@ -613,7 +621,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
 
     @Streaming
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/View")
+    @GET("api/mcu/mobile/DocumentManagement/MCUDocument/view")
     suspend fun downloadFile(
         @Header("Authorization" )  Authorization:String,
         @Query("id")  id:String,
@@ -666,11 +674,16 @@ interface ServerApi{
         @Query("borrowerId")  borrowerId:Int
     ):DemoGraphicResponseModel
 
-
     @GET("api/mcu/mobile/DocumentManagement/EmailTemplate/GetEmailTemplates")
     suspend fun getEmailTemplates(
-        @Header("Authorization" )  Authorization:String):Any
+        @Header("Authorization") Authorization:String): ArrayList<EmailTemplatesResponse>
 
+    @GET("api/mcu/mobile/DocumentManagement/EmailTemplate/GetRenderEmailTemplateById")
+    suspend fun getEmailBody(
+        @Header("Authorization") Authorization:String,
+        @Query("loanapplicationid") loanApplicationId: Int,
+        @Query("Id") templateId: String
+    ): EmailTemplatesResponse
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetCategoryDocumentMcu")
     suspend fun getCategoryDocumentMcu(
@@ -679,7 +692,11 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")
     suspend fun getTemplates(
-        @Header("Authorization" )  Authorization:String):GetTemplatesResponse
+        @Header("Authorization")  Authorization:String): GetTemplatesResponse
+
+    @POST("api/mcu/mobile/DocumentManagement/Request/Save")
+    suspend fun sendDocRequest(@Header("Authorization")  Authorization:String, @Body data: SendDocRequestModel): Response<Unit>
+
 
 
 

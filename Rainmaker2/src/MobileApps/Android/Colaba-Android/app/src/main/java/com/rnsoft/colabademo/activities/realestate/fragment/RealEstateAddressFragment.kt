@@ -405,10 +405,8 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             if(!hasFocus){
                 if (binding.tvCounty.text.toString().length == 0) {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
-                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
-                    CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
                 }
             }
         }
@@ -538,8 +536,11 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
             locality?.let { binding.edCity.setText(it) }
             subLocality?.let {
                 binding.tvCounty.setText(it)
-                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())}
-            postalCode?.let { binding.edZipcode.setText(it) }
+                CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
+            }
+            postalCode?.let {
+                binding.edZipcode.setText(it)
+            }
             countryName?.let {
                 binding.tvCountry.setText(it)
                 CustomMaterialFields.setColor(binding.layoutCountry, R.color.grey_color_two, requireActivity())}
@@ -561,11 +562,12 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
         //Log.e("stateCode ", " = $stateCode")
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
-        if (map.get(stateCode) != null)
+        if (map.get(stateCode) != null){
             binding.tvState.setText(map.get(stateCode))
-        else
+             CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+        } else {
             binding.tvState.setText("")
-
+        }
         visibleAllFields()
         clearAllError()
 

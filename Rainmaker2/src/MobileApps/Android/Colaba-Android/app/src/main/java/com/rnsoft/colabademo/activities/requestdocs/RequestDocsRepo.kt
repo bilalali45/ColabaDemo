@@ -1,17 +1,13 @@
 package com.rnsoft.colabademo
 
-import android.content.Context
-import android.content.SharedPreferences
-import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.ResponseBody
+
 import retrofit2.Response
-import java.io.*
 import javax.inject.Inject
 
 
 class RequestDocsRepo  @Inject constructor(private val requestDocsDataSource: RequestDocsDataSource) {
 
-    suspend fun getEmailTemplates(token: String): Result<Any> {
+    suspend fun getEmailTemplates(token: String): Result<ArrayList<EmailTemplatesResponse>> {
         return requestDocsDataSource.getEmailTemplates(token = token )
     }
 
@@ -22,6 +18,15 @@ class RequestDocsRepo  @Inject constructor(private val requestDocsDataSource: Re
     suspend fun getTemplates(token: String): Result<GetTemplatesResponse>{
         return requestDocsDataSource.getTemplates(token = token )
     }
+
+    suspend fun getEmailBody(token: String,loanApplicaitonId : Int, templateId : String): Result<EmailTemplatesResponse>{
+        return requestDocsDataSource.getEmailBody(token = token,loanApplicaitonId,templateId)
+    }
+
+    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<Response<Unit>> {
+        return requestDocsDataSource.sendDocRequest(token,data)
+    }
+
 
 
 }

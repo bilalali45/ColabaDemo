@@ -30,6 +30,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
+
 @AndroidEntryPoint
 class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadClickListener, View.OnClickListener {
 
@@ -129,8 +130,12 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         btnFilterManullayAdded.setOnClickListener(this)
 
         (activity as DetailActivity).binding.requestDocFab.setOnClickListener{
-            val intent = Intent(requireActivity(),RequestDocsActivity::class.java)
-            requireActivity().startActivity(intent)
+            val intent = Intent(requireActivity(), RequestDocsActivity::class.java)
+            val activity = (activity as? DetailActivity)
+            activity?.loanApplicationId?.let {
+                intent.putExtra(AppConstant.loanApplicationId, it)
+                startActivity(intent)
+            }
         }
 
         observeDownloadProgress()
@@ -343,7 +348,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     override fun navigateTo(position: Int) {
-        val selectedDocumentType = if(filter.equals(AppConstant.filter_all)) docsArrayList[position] else filterDocsList[position]
+        val selectedDocumentType = if(filter == AppConstant.filter_all) docsArrayList[position] else filterDocsList[position]
         val listFragment = DocumentListFragment()
         val bundle = Bundle()
         val fileNames = Gson().toJson(selectedDocumentType.subFiles)
@@ -355,7 +360,17 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
         bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
         listFragment.arguments = bundle
-        findNavController().navigate(R.id.docs_list_inner_fragment, listFragment.arguments)
+        Timber.e("  fileNames $fileNames")
+        Timber.e(" docName = "+selectedDocumentType.docName)
+        Timber.e(" message = "+selectedDocumentType.message+"  ")
+        Timber.e(" subFiles = "+selectedDocumentType.subFiles)
+        Timber.e(" id = "+selectedDocumentType.id)
+        Timber.e("  requestId = "+selectedDocumentType.requestId)
+        Timber.e("  docId = "+selectedDocumentType.docId)
+        findNavController().navigate(R.id.docs_list_inner_fragment, bundle)
+
+
+
 
     }
 
