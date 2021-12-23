@@ -34,9 +34,6 @@ private val bottomBorrowerTabArray = arrayOf(
 class AssignBorrowerBottomDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var binding: AssignBorrowerModalBottomSheetBinding
-
-
-
     private var selectedPosition:Int = 0
     private lateinit var pageAdapter:BottomBorrowerPagerAdapter
     private lateinit var viewPager: ViewPager2

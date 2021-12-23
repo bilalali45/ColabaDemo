@@ -35,8 +35,8 @@ enum EndPoint:String{
     case deleteNotifications = "Notification/notification/Delete"
     case getLoanInformation = "loanapplication/loan/getloaninfo?"
     case getApplicationStatus = "Milestone/Milestone/GetMilestoneForLoanCenter?"
-    case getLoanDocuments = "documentmanagement/mcudocument/getdocuments?"
-    case viewLoanDocument = "documentmanagement/mcudocument/View?"
+    case getLoanDocuments = "DocumentManagement/AdminDashboard/GetDocuments?"
+    case viewLoanDocument = "DocumentManagement/MCUDocument/view?"
     case getLoanApplicationData = "loanapplication/Loan/GetLoanApplicationSummary?"
     case getAllPropertyTypeDrowpDown = "loanapplication/Loan/GetAllPropertyTypeDropDown"
     case getAllOccupancyTypeDropDown = "loanapplication/Loan/GetPropertyUsageDropDown"
@@ -271,6 +271,13 @@ class APIRouter: NSObject {
             if response.response?.statusCode == 401{
                 completion?(.authError,JSON.null,"UnAuthorized User")
                 return
+            }
+            
+            if (endPoint == EndPoint.saveAndSendEmailRequest.rawValue){
+                if (response.response?.statusCode == 200){
+                    completion?(.success, JSON.null, "")
+                    return
+                }
             }
             
             if let error = response.error{

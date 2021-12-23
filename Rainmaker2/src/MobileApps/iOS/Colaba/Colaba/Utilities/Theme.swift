@@ -67,6 +67,10 @@ struct Theme {
         return UIColor(named: "TopTabsColor")!
     }
     
+    static func getChipBorderColor() -> UIColor{
+        return UIColor(named: "AppChipBorderColor")!
+    }
+    
     static func getCustomColorSVGImage(imageNamed: String, imageFrame: CGRect, customColor: UIColor, imageIconId: String) -> UIImage{
         let svgImage = SVGKImage(named: imageNamed)
         let svgIMGV = SVGKFastImageView(frame: imageFrame)

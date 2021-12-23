@@ -602,10 +602,11 @@ interface ServerApi{
         @Query("loanApplicationId")  loanApplicationId:Int):AppMileStoneResponse
 
 
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/getdocuments")
+    @GET("api/mcu/mobile/DocumentManagement/AdminDashboard/GetDocuments")
     suspend fun getBorrowerDocuments(
         @Header("Authorization" )  Authorization:String,
-        @Query("loanApplicationId")  loanApplicationId:Int):ArrayList<BorrowerDocsModel>
+        @Query("loanApplicationId")  loanApplicationId:Int,
+        @Query("pending")  pending:Boolean = true):ArrayList<BorrowerDocsModel>
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllEthnicityList")
     suspend fun getEthnicityList(
@@ -620,7 +621,7 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
 
     @Streaming
-    @GET("api/mcu/mobile/documentmanagement/mcudocument/View")
+    @GET("api/mcu/mobile/DocumentManagement/MCUDocument/view")
     suspend fun downloadFile(
         @Header("Authorization" )  Authorization:String,
         @Query("id")  id:String,

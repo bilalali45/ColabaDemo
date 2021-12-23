@@ -60,7 +60,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
+    //@SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     private fun setupUI() {
         searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
         searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
@@ -107,6 +107,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             Timber.e(" toggleButton, checkedId, isChecked ",toggleButton.toString(), checkedId.toString(), isChecked.toString())
 
             if (binding.btnLoanPurchase.isPressed) {
+                //binding.btnLoanPurchase.isEnabled = false
+                //binding.btnLoanPurchase.isClickable = false
                 createNewApplicationParams.let {
                     it.LoanPurpose = 1
                     it.LoanGoal = null
@@ -118,6 +120,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 binding.btnPreApproval.isChecked = false
             }
             else {
+                //binding.btnLoanPurchase.isEnabled = true
+                //binding.btnLoanPurchase.isClickable = true
+                //binding.btnLoanPurchase.isActivated = true
+                //binding.btnLoanPurchase.isHovered  = true
+
                 preSelectInitialization()
                 createNewApplicationParams.let {
                     it.LoanPurpose = 2
@@ -281,7 +288,22 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         })
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        viewModel._mcu.observe(viewLifecycleOwner, { mcu->
+            //Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
+            binding.assignLoanOfficer.visibility = View.GONE
+            binding.loanOfficerAssigned.visibility = View.VISIBLE
+            Glide.with(requireActivity())
+                    .load(mcu.profileimageurl)
+                    .circleCrop()
+                    .into(binding.loImage)
+            binding.loName.text = mcu.fullName
+            binding.loDetail.text = mcu.branchName
+            createNewApplicationParams.let {
+                it.branchId = mcu.branchId
+                it.LoanOfficerUserId = mcu.userId
+            }
+            viewModel.setCreateNewParams(createNewApplicationParams)
+        })
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -652,16 +674,16 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         EventBus.getDefault().unregister(this)
     }
 
+    /*
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onLoanOfficerSelected(loanOfficerSelectedEvent: LoanOfficerSelectedEvent) {
-
         Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
         binding.assignLoanOfficer.visibility = View.GONE
         binding.loanOfficerAssigned.visibility = View.VISIBLE
         Glide.with(requireActivity())
-            .load(loanOfficerSelectedEvent.mcu.profileimageurl)
-            .circleCrop()
-            .into(binding.loImage)
+                .load(loanOfficerSelectedEvent.mcu.profileimageurl)
+                .circleCrop()
+                .into(binding.loImage)
         binding.loName.text = loanOfficerSelectedEvent.mcu.fullName
         binding.loDetail.text = loanOfficerSelectedEvent.mcu.branchName
         createNewApplicationParams.let {
@@ -669,8 +691,10 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             it.LoanOfficerUserId = loanOfficerSelectedEvent.mcu.userId
         }
         viewModel.setCreateNewParams(createNewApplicationParams)
+
         //SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
     }
+    */
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCreateDuplicateEvent(allowDuplicateBorrowerEvent:AllowDuplicateBorrowerEvent ) {

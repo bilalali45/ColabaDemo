@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Bank Statement"
+            android:text=" "
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"

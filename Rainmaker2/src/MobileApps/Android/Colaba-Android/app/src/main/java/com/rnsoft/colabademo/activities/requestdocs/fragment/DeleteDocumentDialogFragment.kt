@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.rnsoft.colabademo.R
-import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEvent
 import com.rnsoft.colabademo.databinding.DialogFragmentDeleteDocumentBinding
 import org.greenrobot.eventbus.EventBus
 
@@ -37,8 +36,9 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
         binding.tvDeleteDocName.text= deleteText
 
         binding.yesBtn.setOnClickListener {
+            EventBus.getDefault().post(DeleteCurrentDocumentEvent(true))
             dismiss()
-            EventBus.getDefault().post(SwipeToDeleteEvent(true))
+
         }
 
         binding.noBtn.setOnClickListener {
@@ -64,3 +64,5 @@ class DeleteDocumentDialogFragment : BottomSheetDialogFragment() {
         requireDialog().window?.statusBarColor = requireContext().getColor(android.R.color.transparent)
     }
 }
+
+class DeleteCurrentDocumentEvent(val boolean: Boolean)

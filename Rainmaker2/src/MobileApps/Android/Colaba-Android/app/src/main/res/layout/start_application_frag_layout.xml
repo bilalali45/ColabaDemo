@@ -506,7 +506,10 @@
                     android:id="@+id/rg_loan_purpose"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+
                     app:singleSelection="true"
+                    app:selectionRequired="true"
+
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
