@@ -182,7 +182,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                             val requestList: ArrayList<DocRequestDataList> = ArrayList()
                             requestList.add(DocRequestDataList(email = emailBody, documents = docList))
                             val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!, requestList)
-                            Log.e("sendBody", "$sendRequestBody")
+                            //Log.e("sendBody", "$sendRequestBody")
 
                             viewModel.sendDocRequest(authToken, sendRequestBody)
                         }
