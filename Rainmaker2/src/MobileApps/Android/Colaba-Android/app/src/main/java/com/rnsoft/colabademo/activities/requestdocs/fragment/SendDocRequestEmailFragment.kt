@@ -108,7 +108,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().navigate(R.id.action_selected_doc_fragment)
+            findNavController().popBackStack()
         }
     }
 
@@ -380,7 +380,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
 
 
-                                if(binding.recipientGroupFL.childCount>1) {
+                                if(binding.recipientGroupFL.childCount>1 && chipDelay) {
                                     val childOne = binding.recipientGroupFL.getChildAt(binding.recipientGroupFL.childCount - 1)
                                     val childTwo = binding.recipientGroupFL.childCount - 2
                                     var index = 0
@@ -393,6 +393,11 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                                     binding.etRecipientEmail.setText(lastChip.text.toString())
                                     binding.etRecipientEmail.setSelection(binding.etRecipientEmail.length())
                                     binding.recipientGroupFL.removeView(lastChip as View)
+                                    chipDelay = false
+
+                                    binding.etRecipientEmail.postDelayed({
+                                        chipDelay = true
+                                    }, 1500)
                                 }
 
 
@@ -433,13 +438,9 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-
-
-
-
-
-
     }
+
+    private var chipDelay:Boolean = true
 
     private fun isValidEmailAddress(email: String?): Boolean {
         val ePattern =

@@ -30,7 +30,9 @@ class DocumentDetailFragment : DocsTypesBaseFragment() {
 
     private fun setupUI(){
        binding.btnTopDelete.setOnClickListener {
-            DeleteDocumentDialogFragment.newInstance("Tax returns with schedules (Personals-Two Years").show(childFragmentManager, DeleteDocumentDialogFragment::class.java.canonicalName)
+            docTypeObject?.let {
+                DeleteDocumentDialogFragment.newInstance(it.docType).show(childFragmentManager, DeleteDocumentDialogFragment::class.java.canonicalName)
+            }
         }
         binding.btnClose.setOnClickListener {
             findNavController().popBackStack()
