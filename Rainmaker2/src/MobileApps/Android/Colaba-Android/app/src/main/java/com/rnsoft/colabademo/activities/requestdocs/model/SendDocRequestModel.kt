@@ -1,22 +1,25 @@
 package com.rnsoft.colabademo
 
+import com.google.gson.annotations.SerializedName
+
 data class SendDocRequestModel(
     val loanApplicationId: Int,
+    @SerializedName("requests")
     val requests: List<DocRequestDataList>
 )
 
 data class DocRequestDataList(
-    val documents: List<RequestDocument>,
-    val email: Email
+    val email: Email,
+    val documents: List<RequestDocument>
 )
 
 data class Email(
-    val ccAddress: String? = null,
-    val emailBody: String? = null,
     val emailTemplateId: String?=null,
+    val toAddress: String,
     val fromAddress: String? = null,
+    val ccAddress: String? = null,
     val subject: String,
-    val toAddress: String
+    val emailBody: String? = null
 )
 
 data class RequestDocument(

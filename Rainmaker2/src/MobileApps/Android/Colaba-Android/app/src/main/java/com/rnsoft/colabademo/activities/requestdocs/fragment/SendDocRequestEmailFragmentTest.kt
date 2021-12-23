@@ -127,7 +127,6 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val call = async {
                     binding.loaderDocRequest.visibility = View.VISIBLE
-                    viewModel.refreshTemplateList()
                     viewModel.getEmailTemplates(authToken)
                 }
                 call.await()
@@ -137,7 +136,6 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
     }
 
     private fun setEmailTemplate(){
-        //viewModel.refreshTemplateList()
         viewModel.emailTemplates.observe(viewLifecycleOwner, { data ->
             if (data != null && data.size > 0){
 
@@ -220,12 +218,10 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
                         if (item.id == it) {
                             binding.tvEmailType.setText(item.templateName, false)
                             CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two,
-                                requireActivity()
-                            )
+                                requireActivity())
                             break
                         }
                     }
-
                 }
 
             }
@@ -240,7 +236,7 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
         binding.etRecipientEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if(event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_SPACE
                 || actionId == KeyEvent.KEYCODE_SPACE){
-                Log.e("Key","Pressed")
+                //Log.e("Key","Pressed")
 
                 validateEmailAddress()
 
@@ -306,11 +302,6 @@ class SendDocRequestEmailFragmentTest : DocsTypesBaseFragment() {
         if(email.length > 0) {
             if (isValidEmailAddress(email)) {
                // addNewChip(email, binding.recipientGroupFL)
-
-
-
-
-
                 binding.recipientEmailError.visibility = View.GONE
             } else {
                 binding.recipientEmailError.visibility = View.VISIBLE

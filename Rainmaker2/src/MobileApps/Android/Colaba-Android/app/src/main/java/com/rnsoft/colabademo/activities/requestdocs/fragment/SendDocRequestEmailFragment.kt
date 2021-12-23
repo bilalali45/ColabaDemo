@@ -78,7 +78,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             activity?.loanApplicationId?.let {
                 loanApplicationId = it
             }
-
             setupUI()
             getDropDownTemplate()
             setClickEvents()
@@ -113,7 +112,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     }
 
     private fun sendDocRequest() {
-        var isDataEntered = true
+        var isDataEntered  = true
         var emailCount = binding.recipientGroupFL.childCount
         if (emailCount == 1) {
             isDataEntered = false
@@ -123,66 +122,73 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             isDataEntered = true
         }
 
-
-
         if (isDataEntered){
-            // get to email
-            var recipientEmail: String? = null
-            var ccEmail: String? = null
-            var fromEmail:String?= null
-            for (i in 0 until binding.recipientGroupFL.getChildCount()) {
-                if (binding.recipientGroupFL.getChildAt(i) is Chip) {
-                    val chip = binding.recipientGroupFL.getChildAt(i) as Chip
-                    recipientEmail = chip.text.toString()
-                }
-            }
-            // cc
-            for (i in 0 until binding.ccFL.getChildCount()) {
-                if (binding.ccFL.getChildAt(i) is Chip) {
-                    val chip = binding.ccFL.getChildAt(i) as Chip
-                    ccEmail = chip.text.toString()
-                }
-            }
-            // subject
-            var subject = binding.etSubjectLine.text.toString().trim()
-
-            // email item
-            val matchedList =  templateList.filter { p -> p.templateName.equals(binding.tvEmailType.getText().toString().trim(),true)}
-            val emailTemplateId = if(matchedList.size > 0) matchedList.map { matchedList.get(0).templateId }.single() else null
-
-            renderEmailResponse?.fromAddress?.let {
-                fromEmail = it
-            }
-
-
-
-
-
-            val emailBody= Email(toAddress = recipientEmail!!,ccAddress=ccEmail,emailTemplateId = emailTemplateId,subject = subject,emailBody = htmlEmailBody,fromAddress = fromEmail)
-
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    //binding.loaderDocRequest.visibility = View.VISIBLE
-                    if (loanApplicationId != null) {
-                        var docList: ArrayList<RequestDocument> = ArrayList()
-                        for(i in 0 until combineDocList.size){
-                            docList.add(RequestDocument(docTypeId = combineDocList.get(i).docTypeId,
-                                docType = combineDocList.get(i).docType,docMessage = combineDocList.get(i).docMessage))
-                        }
-
-
-                        val requestList: ArrayList<DocRequestDataList> = ArrayList()
-                        requestList.add(DocRequestDataList(email = emailBody,documents = docList ))
-                        val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!,requestList)
-
-                        Log.e("sendBody", "$sendRequestBody")
-
-
-                        viewModel.sendDocRequest(authToken, sendRequestBody)
+            try {
+                // get to email
+                var recipientEmail: String? = null
+                var ccEmail: String? = null
+                var fromEmail: String? = null
+                for (i in 0 until binding.recipientGroupFL.getChildCount()) {
+                    if (binding.recipientGroupFL.getChildAt(i) is Chip) {
+                        val chip = binding.recipientGroupFL.getChildAt(i) as Chip
+                        recipientEmail = chip.text.toString()
                     }
                 }
-            }
-        }
+                // cc
+                for (i in 0 until binding.ccFL.getChildCount()) {
+                    if (binding.ccFL.getChildAt(i) is Chip) {
+                        val chip = binding.ccFL.getChildAt(i) as Chip
+                        ccEmail = chip.text.toString()
+                    }
+                }
+                // subject
+                var subject = binding.etSubjectLine.text.toString().trim()
+
+                // email item
+                val matchedList = templateList.filter { p ->
+                    p.templateName.equals(
+                        binding.tvEmailType.getText().toString().trim(), true
+                    )
+                }
+                val emailTemplateId =
+                    if (matchedList.size > 0) matchedList.map { matchedList.get(0).templateId }
+                        .single() else null
+
+                renderEmailResponse?.fromAddress?.let {
+                    fromEmail = it
+                }
+
+                val emailBody = Email(
+                    toAddress = recipientEmail!!,
+                    ccAddress = ccEmail,
+                    emailTemplateId = emailTemplateId,
+                    subject = subject,
+                    emailBody = htmlEmailBody,
+                    fromAddress = fromEmail)
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        binding.loaderDocRequest.visibility = View.VISIBLE
+                        if (loanApplicationId != null) {
+                            var docList: ArrayList<RequestDocument> = ArrayList()
+                            if (combineDocList.size > 0) {
+                                for (i in 0 until combineDocList.size) {
+                                   docList.add(
+                                       RequestDocument(docTypeId = combineDocList.get(i).docTypeId, docType = combineDocList.get(i).docType, docMessage = combineDocList.get(i).docMessage))
+                                }
+                            }
+
+                            val requestList: ArrayList<DocRequestDataList> = ArrayList()
+                            requestList.add(DocRequestDataList(email = emailBody, documents = docList))
+                            val sendRequestBody = SendDocRequestModel(loanApplicationId = loanApplicationId!!, requestList)
+                            Log.e("sendBody", "$sendRequestBody")
+
+                            viewModel.sendDocRequest(authToken, sendRequestBody)
+                        }
+                    }
+                }
+            } catch (e:Exception){}
+        } // data entered
     }
 
     private fun getDropDownTemplate(){
@@ -190,7 +196,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val call = async {
                     binding.loaderDocRequest.visibility = View.VISIBLE
-                    viewModel.refreshTemplateList()
                     viewModel.getEmailTemplates(authToken)
                 }
                 call.await()
@@ -231,15 +236,27 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     }
 
     private fun getEmailBody(position : Int){
-        lifecycleScope.launchWhenStarted {
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                // showloader here
-                binding.tvEmailBody.setText("")
-                val call = async {
-                    viewModel.getEmailTemplateBody(authToken,47,templateList.get(position).templateId) }
-                call.await()
-                setEmailBody()
+        try {
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    binding.loaderDocRequest.visibility = View.VISIBLE
+                    binding.tvEmailBody.setText("")
+                    if(loanApplicationId != null) {
+                        val call = async {
+                            viewModel.getEmailTemplateBody(
+                                authToken,
+                                loanApplicationId!!,
+                                templateList.get(position).templateId
+                            )
+                        }
+                        call.await()
+                        setEmailBody()
+                    }
+
+                }
             }
+        } catch (e:java.lang.Exception){
+
         }
     }
 
@@ -291,6 +308,36 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                     }
                 }
 
+                body.toAddress?.let{
+                    if(it.isNotEmpty() && it != "null"){
+
+                        for (i in 0 until binding.recipientGroupFL.getChildCount()) { // removew previous chips if any
+                            if (binding.recipientGroupFL.getChildAt(i) is Chip) {
+                                val chip = binding.recipientGroupFL.getChildAt(i) as Chip
+                                binding.recipientGroupFL.removeView(chip as View)
+                            }
+                        }
+
+                        addNewChip(it,binding.etRecipientEmail,binding.recipientGroupFL)
+                        CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two, requireActivity())
+                    }
+                }
+
+                body.ccAddress?.let {
+                    if(it.isNotEmpty() && it != "null"){
+
+                        for (i in 0 until binding.ccFL.getChildCount()) {
+                            if (binding.ccFL.getChildAt(i) is Chip) {
+                                val chip = binding.ccFL.getChildAt(i) as Chip
+                                binding.ccFL.removeView(chip as View)
+                            }
+                        }
+                        addNewChip(it,binding.etccEmail,binding.ccFL)
+                        CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two,
+                            requireActivity()
+                        )
+                    }
+                }
             }
         })
 
@@ -328,7 +375,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
             binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
-                    Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(context, "Delete pressed", Toast.LENGTH_SHORT).show()
                     if (binding.recipientGroupFL.childCount > 1) {
 
 
@@ -385,6 +432,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {}
         })
+
+
+
+
+
+
+
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {
@@ -408,16 +462,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent){
+    fun onEmailRequestSent(event: SendDocRequestEvent){
         binding.loaderDocRequest.visibility = View.GONE
-        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+        if(event.response.responseCode == 200){
             requireActivity().finish()
         }
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
         else
-            if (event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+          SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
 
         requireActivity().finish()
@@ -427,11 +478,11 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     fun onReceiveData(event: WebServiceErrorEvent){
         binding.loaderDocRequest.visibility = View.GONE
 
-        /*else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-        else
-            if (event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG) */
+//         if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)
+//            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+//        else
+//            if (event.addUpdateDataResponse.message != null)
+//                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
 
 
         requireActivity().finish()

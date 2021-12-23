@@ -1,6 +1,8 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import androidx.compose.ui.text.resolveDefaults
+import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.HttpException
 import retrofit2.Response
@@ -70,14 +72,14 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
         }
     }
 
-    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<AddUpdateDataResponse> {
+    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<Response<Unit>> {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.sendDocRequest(newToken,data)
-            Log.e("send-doc-request-respone","$response")
+            //Log.e("send-doc-request-respone", "${response.code()}")
             Result.Success(response)
         } catch (e: Throwable){
-            Log.e("send-doc-request-Error",e.localizedMessage)
+            //Log.e("send-doc-request-Error",e.localizedMessage)
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }

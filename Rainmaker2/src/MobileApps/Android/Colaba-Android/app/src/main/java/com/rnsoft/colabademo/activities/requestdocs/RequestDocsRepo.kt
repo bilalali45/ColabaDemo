@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 
+import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -22,7 +23,7 @@ class RequestDocsRepo  @Inject constructor(private val requestDocsDataSource: Re
         return requestDocsDataSource.getEmailBody(token = token,loanApplicaitonId,templateId)
     }
 
-    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<AddUpdateDataResponse> {
+    suspend fun sendDocRequest(token: String, data: SendDocRequestModel): Result<Response<Unit>> {
         return requestDocsDataSource.sendDocRequest(token,data)
     }
 
