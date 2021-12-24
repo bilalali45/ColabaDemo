@@ -17,44 +17,11 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
     private val _notificationItemList : MutableLiveData<ArrayList<NotificationItem>> =   MutableLiveData()
     val notificationItemList: LiveData<ArrayList<NotificationItem>> get() = _notificationItemList
 
-    //private var lastNotificationItem:NotificationItem? = null
-
     private val _notificationCount: MutableLiveData<Int> =  MutableLiveData()
     val notificationCount:LiveData<Int> = _notificationCount
 
-    fun setFakeCount(itemCount: Int) {
-        _notificationCount.value = itemCount
-    }
 
-
-    fun logoutUser(token:String) {
-        viewModelScope.launch {
-            val result = dashBoardRepo.logoutUser(token)
-            if (result is Result.Success)
-                EventBus.getDefault().post(LogoutEvent(result.data))
-            else
-                EventBus.getDefault().post(LogoutEvent(LogoutResponse("300", null, "Webservice error, can not logout...", null)))
-        }
-    }
-
-    /*
-    suspend fun getNotificationCount(token:String):Int {
-        var count = 0
-        viewModelScope.launch {
-            val result = dashBoardRepo.getNotificationCount(token)
-            if(result is Result.Success)
-                count = result.data.count
-            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                count = -1
-            else
-                count = -100
-        }
-
-        return count
-    }
-    */
-
-     fun getNotificationCountT(token:String) {
+    fun getNotificationCountT(token:String) {
          viewModelScope.launch {
              val result = dashBoardRepo.getNotificationCount(token)
              if (result is Result.Success)
@@ -84,7 +51,6 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
         }
     }
 
-
     fun getFurtherNotificationList(token:String, pageSize:Int, lastId:Int, mediumId:Int) {
             viewModelScope.launch {
                 val responseResult = dashBoardRepo.getNotificationListing(
@@ -100,9 +66,6 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
     }
-
-
-
 
     fun seenNotifications(token:String , ids:ArrayList<Int>) {
         viewModelScope.launch {
@@ -144,14 +107,5 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
                // EventBus.getDefault().post(WebServiceErrorEvent(result))
         }
     }
-
-
-
-
-
-
-
-
-
 
 }
