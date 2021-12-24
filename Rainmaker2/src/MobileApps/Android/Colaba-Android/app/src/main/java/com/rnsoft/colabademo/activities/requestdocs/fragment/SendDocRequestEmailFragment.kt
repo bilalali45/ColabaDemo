@@ -5,10 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.ImageSpan
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +14,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.EditText
 import androidx.core.content.ContextCompat
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -32,10 +28,7 @@ import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
-import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.isVisible
-import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -57,7 +50,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     private var loanApplicationId: Int? = null
     var templateList: ArrayList<Template> = ArrayList()
     var htmlEmailBody : String? = null
-    var fromEmail : String? = null
     var renderEmailResponse: EmailTemplatesResponse? = null
     companion object {
         var selectedItem = -1
@@ -196,16 +188,16 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val call = async {
-                    binding.loaderDocRequest.visibility = View.VISIBLE
+                    binding.loaderDocRequest.visibility = View.GONE
                     viewModel.getEmailTemplates(authToken)
                 }
                 call.await()
-                setEmailTemplate()
+                setDropDownTemplate()
             }
         }
     }
 
-    private fun setEmailTemplate(){
+    private fun setDropDownTemplate(){
         viewModel.emailTemplates.observe(viewLifecycleOwner, { data ->
             if (data != null && data.size > 0){
 
@@ -227,9 +219,18 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                         selectedItem = position
                         //Log.e("onClick-id",templateList.get(position).templateId + " " +  templateList.get(position).templateName)
                         binding.layoutEmailTemplate.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                        binding.loaderDocRequest.visibility = View.VISIBLE
+                        binding.loaderDocRequest.visibility = View.GONE
                         getEmailBody(position)
                     }
+
+                mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                    }
+
+
+
             }
         })
 
@@ -239,7 +240,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         try {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    binding.loaderDocRequest.visibility = View.VISIBLE
+                    binding.loaderDocRequest.visibility = View.GONE
                     binding.tvEmailBody.setText("")
                     if(loanApplicationId != null) {
                         val call = async {
@@ -372,7 +373,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             override fun afterTextChanged(s: Editable) {}
         })
 
-            binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
+        binding.etRecipientEmail.setOnKeyListener { _, keyCode, keyEvent ->
                 if (keyCode == KeyEvent.KEYCODE_DEL) {
                     if(binding.recipientGroupFL.childCount > 1) {
 
@@ -449,12 +450,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             }
             return@setOnKeyListener false
         }
-
-
-
-
-
-
 
     }
 

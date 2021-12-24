@@ -125,7 +125,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startIconDrawable="@drawable/ic_grey_search">
+                app:startIconDrawable="@drawable/ic_grey_search"
+                app:startIconTint="@color/grey_color_three">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/topSearchAutoTextView"
