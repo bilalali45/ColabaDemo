@@ -46,6 +46,7 @@ class DocumentsListViewController: BaseViewController {
     var other = DocumentCategoryModel()
     
     var loanApplicationId = 0
+    var borrowerName = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -452,6 +453,7 @@ extension DocumentsListViewController: UITextFieldDelegate{
         vc.disclosure = self.disclosure
         vc.other = self.other
         vc.loanApplicationId = self.loanApplicationId
+        vc.borrowerName = self.borrowerName
         let navVC = UINavigationController(rootViewController: vc)
         navVC.navigationBar.isHidden = true
         navVC.modalPresentationStyle = .fullScreen

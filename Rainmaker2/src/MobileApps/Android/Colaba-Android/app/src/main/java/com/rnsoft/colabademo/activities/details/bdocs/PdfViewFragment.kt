@@ -25,11 +25,7 @@ class PdfViewFragment : BaseFragment(), AdapterClickListener {
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PdfViewLayoutBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
@@ -44,7 +40,8 @@ class PdfViewFragment : BaseFragment(), AdapterClickListener {
         titleTextView.text = pdfFileName
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+           requireActivity().onBackPressed()
+           //requireActivity().onBackPressed()
         }
 
         hideFabIcons()
