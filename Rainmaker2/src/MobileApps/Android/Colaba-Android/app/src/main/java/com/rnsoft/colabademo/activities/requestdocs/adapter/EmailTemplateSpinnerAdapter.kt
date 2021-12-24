@@ -2,11 +2,14 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import timber.log.Timber
 
 /**
@@ -30,12 +33,17 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
             val docDesc = v?.findViewById(R.id.tv_template_desc) as TextView?
             docTitle?.text = emailTemplte.templateName
             docDesc?.text = emailTemplte.docDesc
+            if (position == SendDocRequestEmailFragment.selectedItem) {
+                v?.setBackgroundColor(ContextCompat.getColor(mContext,R.color.plus_circle_inside_color_with_ten_alpha))
+            } else {
+                v?.setBackgroundColor(Color.WHITE)
+            }
         }
         return v!!
     }
 
-    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var v: View? = convertView
+    /*override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        /*var v: View? = convertView
         v = super.getDropDownView(position, convertView, parent)
         Log.e("adapter", ""+SendDocRequestEmailFragment.selectedItem)
         if (position == SendDocRequestEmailFragment.selectedItem) {
@@ -43,8 +51,23 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
         } else {
             v.setBackgroundColor(Color.WHITE)
         }
-        return v
-    }
+        return v */
+
+        var v: View? = convertView
+        if (v == null) {
+            val vi = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            v = vi.inflate(viewResourceId, null)
+        }
+        val emailTemplte: Template = items[position]
+        if (emailTemplte != null) {
+
+            val docTitle = v?.findViewById(R.id.tv_template_type) as TextView?
+            val docDesc = v?.findViewById(R.id.tv_template_desc) as TextView?
+            docTitle?.text = emailTemplte.templateName
+            docDesc?.text = emailTemplte.docDesc
+        }
+        return v!!
+    } */
 
 
     override fun getFilter(): Filter {

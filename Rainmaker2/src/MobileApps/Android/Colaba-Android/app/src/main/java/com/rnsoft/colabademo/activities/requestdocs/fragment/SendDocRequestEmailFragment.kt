@@ -2,10 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -188,7 +190,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 val call = async {
-                    binding.loaderDocRequest.visibility = View.GONE
+                    binding.loaderDocRequest.visibility = View.VISIBLE
                     viewModel.getEmailTemplates(authToken)
                 }
                 call.await()
@@ -211,6 +213,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                     binding.tvEmailType.showDropDown()
                 }
 
+                //binding.tvEmailType.setDropDownBackgroundDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.content_bg_with_drop_shadow))
+
                 // set initial template
                 getEmailBody(0)
 
@@ -219,18 +223,9 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                         selectedItem = position
                         //Log.e("onClick-id",templateList.get(position).templateId + " " +  templateList.get(position).templateName)
                         binding.layoutEmailTemplate.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two))
-                        binding.loaderDocRequest.visibility = View.GONE
+                        binding.loaderDocRequest.visibility = View.VISIBLE
                         getEmailBody(position)
                     }
-
-                mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                    }
-
-
-
             }
         })
 
@@ -240,7 +235,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         try {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    binding.loaderDocRequest.visibility = View.GONE
+                    binding.loaderDocRequest.visibility = View.VISIBLE
                     binding.tvEmailBody.setText("")
                     if(loanApplicationId != null) {
                         val call = async {
