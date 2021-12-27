@@ -1084,9 +1084,11 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
             extractState.substring(extractState.lastIndexOf(",") - 2, extractState.lastIndexOf(","))
         stateCode = stateCode.capitalize()
 
-        if (map.get(stateCode) != null)
+        if (map.get(stateCode) != null) {
             binding.stateCompleteTextView.setText(map.get(stateCode))
-        else
+            CustomMaterialFields.setColor(
+                binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
+        }else
             binding.stateCompleteTextView.setText("")
 
         visibleAllFields()

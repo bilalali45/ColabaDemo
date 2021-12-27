@@ -180,7 +180,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                                 }
 
                                 topCell.header_amount.text =
-                                    "$".plus(Common.addNumberFormat(totalAmount))
+                                    "$".plus(Common.addNumberFormat(totalAmount)).plus("/mo")
                                 grandTotalAmount += totalAmount
 
                                 val bottomCell: View =
@@ -240,13 +240,12 @@ class BorrowerOneIncome : IncomeBaseFragment() {
         }
 
         else {
-            Log.e("NOT","NOt matched 2222")
+           // Log.e("NOT","NOt matched 2222")
             setupLayout()
         }
     }
 
     private fun setupLayout(){
-        Log.e("set up layout", "CALLED")
        // binding.incomeParentContainer.removeAllViews()
         lifecycleScope.launchWhenStarted{
             viewModel.incomeDetails.observe(viewLifecycleOwner, { observableSampleContent ->
@@ -262,7 +261,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                         if (tabBorrowerId == webIncome.passedBorrowerId) {
                             webIncome.incomeData?.borrower?.borrowerIncomes?.let { webBorrowerIncome ->
                                 getBorrowerIncome = webBorrowerIncome
-                                Log.e("BorrrowerIncomeSize",""+getBorrowerIncome.size)
+                                //Log.e("BorrrowerIncomeSize",""+getBorrowerIncome.size)
                             }
                         }
                         observerCounter++
@@ -354,7 +353,7 @@ class BorrowerOneIncome : IncomeBaseFragment() {
                             }
                         }
 
-                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount))
+                        topCell.header_amount.text = "$".plus(Common.addNumberFormat(totalAmount)).plus("/mo")
                         grandTotalAmount += totalAmount
 
                         val bottomCell: View = layoutInflater.inflate(R.layout.income_bottom_cell, null)

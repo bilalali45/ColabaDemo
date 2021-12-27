@@ -127,6 +127,9 @@ class LoanPurchaseFragment : BaseFragment(), DatePickerDialog.OnDateSetListener{
                    // var formattedValue = format.format(value)
                     binding.edDownPayment.setText(Math.round(it).toString())
                     CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
+                    if(it >0){ // calculate percentage
+                        binding.edDownPayment.addTextChangedListener(mTextWatcher)
+                    }
                 }
                 loanInfo.data?.expectedClosingDate?.let {
                     val date = AppSetting.getMonthAndYear(it,false)

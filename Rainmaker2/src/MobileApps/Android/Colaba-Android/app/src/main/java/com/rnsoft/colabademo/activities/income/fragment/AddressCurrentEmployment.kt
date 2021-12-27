@@ -130,7 +130,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
                     val stateAdapter =
                         ArrayAdapter(
                             requireContext(),
-                            R.layout.autocomplete_text_view,
+                            android.R.layout.simple_list_item_1,
                             itemList
                         )
                     binding.tvState.setAdapter(stateAdapter)
@@ -173,7 +173,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
                         countryList.add(item)
                     }
                     val countryAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
                     binding.tvCountry.setAdapter(countryAdapter)
 
                     /*binding.tvCountry.setOnFocusChangeListener { _, _ ->
@@ -207,7 +207,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
-                        R.layout.autocomplete_text_view,
+                        android.R.layout.simple_list_item_1,
                         itemList
                     )
                     binding.tvCounty.setAdapter(countyAdapter)
@@ -452,7 +452,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
 
     private fun setStateAndCountyDropDown() {
 
-        val countryAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.countries)
+        val countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, AppSetting.countries)
         binding.tvCountry.setAdapter(countryAdapter)
         binding.tvCountry.addTextChangedListener(countryTextWatcher)
         binding.tvCountry.setOnClickListener {
@@ -466,7 +466,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
             }
 
 
-        val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, AppSetting.states)
+        val stateAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, AppSetting.states)
         binding.tvState.setAdapter(stateAdapter)
         binding.tvState.addTextChangedListener(stateTextWatcher)
         binding.tvState.setOnClickListener {
@@ -595,9 +595,10 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
         //Log.e("stateCode ", " = $stateCode")
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
-        if (map.get(stateCode) != null)
+        if (map.get(stateCode) != null) {
             binding.tvState.setText(map.get(stateCode))
-        else
+            CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+        }else
             binding.tvState.setText("")
 
         visibleAllFields()
