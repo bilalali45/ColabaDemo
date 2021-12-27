@@ -8,5 +8,5 @@ import com.rnsoft.colabademo.database.tables.NonActiveLoanTable
 
 @Database(entities = [AllLoanTable::class , ActiveLoanTable::class, NonActiveLoanTable::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun loansDao(): LoansDao
+    //abstract fun loansDao(): LoansDao
 }

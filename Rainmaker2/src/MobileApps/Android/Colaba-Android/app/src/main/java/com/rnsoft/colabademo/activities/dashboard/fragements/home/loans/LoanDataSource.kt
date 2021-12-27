@@ -14,7 +14,7 @@ class LoanDataSource  @Inject constructor(private val serverApi: ServerApi){
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.loadAllLoansFromApi(
-                Authorization = newToken,
+
                 dateTime = dateTime,
                 pageNumber = pageNumber,
                 pageSize = pageSize,

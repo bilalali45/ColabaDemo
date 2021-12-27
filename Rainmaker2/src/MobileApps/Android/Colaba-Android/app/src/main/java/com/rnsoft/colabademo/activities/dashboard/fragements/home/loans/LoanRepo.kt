@@ -7,9 +7,9 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class LoanRepo @Inject constructor(
-    private val loanDataSource: LoanDataSource,
-    private val loansDao: LoansDao,
-    private val preferenceEditor: SharedPreferences.Editor
+    private val loanDataSource: LoanDataSource
+    //private val loansDao: LoansDao,
+    //private val preferenceEditor: SharedPreferences.Editor
 ) {
 
 
@@ -25,13 +25,15 @@ class LoanRepo @Inject constructor(
             pageNumber = pageNumber, pageSize = pageSize, loanFilter = loanFilter,
             orderBy = orderBy, assignedToMe = assignedToMe)
 
-        if(loansResult is Result.Success)
-            storeLoansResultToRoom(loansResult.data , loanFilter)
+        //if(loansResult is Result.Success)
+            //storeLoansResultToRoom(loansResult.data , loanFilter)
 
         return loansResult
     }
 
 
+
+    /*
     private fun storeLoansResultToRoom(loanResult: ArrayList<LoanItem>, repoLoanFilter: Int){
         if(repoLoanFilter == 0 && !AppSetting.hasLoanApiDataLoaded) {
             val loanResultString = Gson().toJson(loanResult)
@@ -51,7 +53,6 @@ class LoanRepo @Inject constructor(
 
     }
 
-    /*
     private suspend fun fillLoanTable(loanResult:ArrayList<LoanItem>, repoLoanFilter:Int) :Boolean{
         try {
             // first delete all loans w.r.t loan filter then store latest ones to cache....

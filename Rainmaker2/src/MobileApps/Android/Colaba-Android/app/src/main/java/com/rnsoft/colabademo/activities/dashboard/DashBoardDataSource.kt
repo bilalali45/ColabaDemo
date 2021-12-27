@@ -10,7 +10,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun logoutUser(token: String): Result<LogoutResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.logoutUser(Authorization = newToken)
+            val response = serverApi.logoutUser()
             Log.e("LogoutResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -24,7 +24,8 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun getNotificationListing(token:String, pageSize:Int, lastId:Int, mediumId:Int):Result<ArrayList<NotificationItem>>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getNotificationListing(Authorization = newToken, pageSize = pageSize, lastId = lastId, mediumId = mediumId)
+            val response = serverApi.getNotificationListing(
+                pageSize = pageSize, lastId = lastId, mediumId = mediumId)
             Log.e("NotificationListItems- ", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -53,7 +54,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val putParams = PutParameters(ids)
-            val response = serverApi.readNotifications(newToken, putParams)
+            val response = serverApi.readNotifications( putParams)
             Log.e("read-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)
@@ -71,7 +72,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val putParams = PutParameters(ids)
-            val response = serverApi.seenNotifications(newToken, putParams)
+            val response = serverApi.seenNotifications( putParams)
             if (response != null){
                 val responseString = response as String
                 Log.e("seen-Notifications-", responseString.toString())
@@ -98,7 +99,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         return try {
             val newToken = "Bearer $token"
             val putParams = PutParameters(ids)
-            val response = serverApi.deleteNotifications(newToken, putParams)
+            val response = serverApi.deleteNotifications( putParams)
             Log.e("delete-Notifications-", response.toString())
             if(response.isSuccessful)
                 Result.Success(response)

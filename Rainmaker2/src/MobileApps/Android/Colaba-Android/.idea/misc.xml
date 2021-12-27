@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/drawable/ic_grey_search.xml" value="0.3828125" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_doc_layout.xml" value="0.2056159420289855" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/borrower_info_current_address.xml" value="0.5" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/email_template_item.xml" value="0.2210144927536232" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/mailing_address_layout.xml" value="0.5" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/previous_residence_layout.xml" value="0.33" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/primary_borrower_info_layout.xml" value="0.21240942028985507" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/send_doc_request_layout.xml" value="0.2056159420289855" />
-        <entry key="..\:/rainsoft projects/work/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/start_application_frag_layout.xml" value="0.21240942028985507" />
-      </map>
-    </option>
-  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
