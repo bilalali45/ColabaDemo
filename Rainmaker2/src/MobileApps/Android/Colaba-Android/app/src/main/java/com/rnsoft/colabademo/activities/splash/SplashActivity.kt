@@ -22,8 +22,8 @@ class SplashActivity : AppCompatActivity() {
 
         activityScope.launch {
            // startActivity(Intent(this@SplashActivity, BorrowerAddressActivity::class.java))
-           //startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
-            //redirectToApplicationDetailScreen()
+          // startActivity(Intent(this@SplashActivity, RequestDocsActivity::class.java))
+          //  redirectToApplicationDetailScreen()
 
 
             if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)

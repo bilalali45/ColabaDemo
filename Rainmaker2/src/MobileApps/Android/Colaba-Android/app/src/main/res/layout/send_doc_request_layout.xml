@@ -75,9 +75,13 @@
             android:orientation="vertical"
             android:paddingBottom="250dp">
 
+            <!--
+     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+-->
+
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_email_template"
                 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                android:id="@+id/layout_email_template"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -99,11 +103,8 @@
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/tv_email_type"
-                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:backgroundTint="@android:color/transparent"
                     android:completionThreshold="1"
                     android:cursorVisible="false"
                     android:focusable="false"
@@ -117,7 +118,8 @@
                     android:textAlignment="gravity"
                     android:textColor="@color/grey_color_one"
                     android:textColorHint="@color/grey_color_three"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:backgroundTint="@android:color/transparent"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

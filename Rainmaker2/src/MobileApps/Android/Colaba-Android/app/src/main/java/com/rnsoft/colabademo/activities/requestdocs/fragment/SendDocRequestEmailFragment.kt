@@ -22,7 +22,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import javax.inject.Inject
@@ -31,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import androidx.appcompat.content.res.AppCompatResources
+import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -212,6 +212,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 binding.tvEmailType.setOnClickListener {
                     binding.tvEmailType.showDropDown()
                 }
+                //binding.tvEmailType.setDropDownBackgroundDrawable(getDrawable(requireContext(), R.drawable.content_bg_with_drop_shadow))
 
                 //binding.tvEmailType.setDropDownBackgroundDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.content_bg_with_drop_shadow))
 
@@ -295,6 +296,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 body.id?.let {
                     for (item in templateList){
                         if (item.id == it) {
+                            Log.e("selected Item", ""+ selectedItem)
+                            Log.e("Templete List","$templateList" + " itemId : " + item.id)
                             binding.tvEmailType.setText(item.templateName, false)
                             CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two,
                                 requireActivity()
@@ -307,7 +310,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 body.toAddress?.let{
                     if(it.isNotEmpty() && it != "null"){
 
-                        for (i in 0 until binding.recipientGroupFL.getChildCount()) { // removew previous chips if any
+                        for (i in 0 until binding.recipientGroupFL.getChildCount()) { // remove previous chips if any
                             if (binding.recipientGroupFL.getChildAt(i) is Chip) {
                                 val chip = binding.recipientGroupFL.getChildAt(i) as Chip
                                 binding.recipientGroupFL.removeView(chip as View)

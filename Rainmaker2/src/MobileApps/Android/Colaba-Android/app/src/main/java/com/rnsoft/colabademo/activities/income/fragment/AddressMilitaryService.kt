@@ -124,12 +124,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                         itemList.add(item.name)
                         stateList.add(item)
                     }
-                    val stateAdapter =
-                        ArrayAdapter(
-                            requireContext(),
-                            R.layout.autocomplete_text_view,
-                            itemList
-                        )
+                    val stateAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                     binding.tvState.setAdapter(stateAdapter)
 
                     binding.tvState.setOnFocusChangeListener { _, _ ->
@@ -170,7 +165,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                         countryList.add(item)
                     }
                     val countryAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                     binding.tvCountry.setAdapter(countryAdapter)
 
                     binding.tvCountry.setOnFocusChangeListener { _, _ ->
@@ -204,7 +199,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
-                        R.layout.autocomplete_text_view,
+                        android.R.layout.simple_list_item_1,
                         itemList
                     )
                     binding.tvCounty.setAdapter(countyAdapter)
@@ -278,7 +273,7 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         }
     }
 
-    private fun setInputFields() {
+    private fun setInputFields(){
         // set lable focus
         binding.tvSearch.setOnFocusChangeListener { p0: View?, hasFocus: Boolean ->
             if (hasFocus) {
@@ -594,8 +589,10 @@ class AddressMilitaryService : BaseFragment(), PlacePredictionAdapter.OnPlaceCli
         //Log.e("stateCode ", " = $stateCode")
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
-        if (map.get(stateCode) != null)
+        if (map.get(stateCode) != null) {
             binding.tvState.setText(map.get(stateCode))
+            CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+        }
         else
             binding.tvState.setText("")
 

@@ -95,7 +95,8 @@
                 android:gravity="start"
                 android:paddingStart="-17dp"
                 android:theme="@style/InputText_Overlay"
-                app:startIconDrawable="@drawable/ic_grey_search">
+                app:startIconDrawable="@drawable/ic_grey_search"
+                app:startIconTint="@color/grey_color_three">
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
