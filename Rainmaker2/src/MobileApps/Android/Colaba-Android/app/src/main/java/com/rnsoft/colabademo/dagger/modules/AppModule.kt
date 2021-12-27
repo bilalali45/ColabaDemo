@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
@@ -51,6 +52,7 @@ class AppModule {
         }
 
 
+
         /*
         @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
         @Provides
@@ -65,6 +67,7 @@ class AppModule {
         @Provides
         fun provideYourDao(db: AppDatabase) = db.loansDao() // The reason we can implement a Dao for the database
          */
+
 
 
 
@@ -89,8 +92,9 @@ class AppModule {
 
             val networkInterceptor = Interceptor { chain ->
                 var request: Request = chain.request().newBuilder().build()
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    request = chain.request().newBuilder().addHeader("Authorization", "Bearer $authToken").build()
+                val tokenValue = sharedPreferences.getString(AppConstant.token, "")!!
+                if(tokenValue.isNotEmpty() && tokenValue.isNotBlank()){
+                    request = chain.request().newBuilder().addHeader("Authorization", "Bearer $tokenValue").build()
                 }
                 chain.proceed(request)
             }
@@ -111,6 +115,8 @@ class AppModule {
         }
 
 
+
+
         /*
         @Provides
         @Singleton
@@ -125,7 +131,7 @@ class AppModule {
             // val cookieHandler = CookieManager( null, CookiePolicy.ACCEPT_ALL )
 
             val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
-                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+                this.level = HttpLoggingInterceptor.Level.BODY
             }
             return OkHttpClient.Builder()
                 //.authenticator(tokenAuthenticator)
@@ -138,10 +144,11 @@ class AppModule {
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()
-
         }
 
          */
+
+
 
 
         @Provides

@@ -12,7 +12,7 @@ class SearchDataSource @Inject constructor(private val serverApi: ServerApi){
     {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.searchByText(Authorization = newToken, pageNumber = pageNumber, pageSize = pageSize, searchTerm = searchTerm)
+            val response = serverApi.searchByText( pageNumber = pageNumber, pageSize = pageSize, searchTerm = searchTerm)
             Log.e("response-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

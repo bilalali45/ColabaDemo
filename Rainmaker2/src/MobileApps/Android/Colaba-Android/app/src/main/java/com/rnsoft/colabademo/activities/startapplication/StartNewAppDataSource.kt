@@ -9,7 +9,7 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun searchByBorrowerContact(token:String, searchKeyword:String):Result<SearchResultResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.searchByBorrowerContact(newToken , keyword = searchKeyword)
+            val response = serverApi.searchByBorrowerContact( keyword = searchKeyword)
             Log.e("searchByBorrowerContact-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -23,7 +23,7 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun lookUpBorrowerContact(token:String, borrowerEmail:String, borrowerPhone:String?=null):Result<LookUpBorrowerContactResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.lookUpBorrowerContact(newToken , email = borrowerEmail, phone = borrowerPhone)
+            val response = serverApi.lookUpBorrowerContact( email = borrowerEmail, phone = borrowerPhone)
             //Log.e("lookUpBorrowerContact-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -37,7 +37,7 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun createApplication(token:String, createNewApplicationParams: CreateNewApplicationParams):Result<CreateNewApplicationResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.createApplication(newToken , createNewApplicationParams = createNewApplicationParams)
+            val response = serverApi.createApplication( createNewApplicationParams = createNewApplicationParams)
             Log.e("createNewApplicationParams-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -52,7 +52,7 @@ class StartNewAppDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun getMcusByRoleId(token:String, filterLoanOfficer:Boolean):Result<LoanOfficerApiResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getMcusByRoleId(newToken , filterLoanOfficer = filterLoanOfficer)
+            val response = serverApi.getMcusByRoleId( filterLoanOfficer = filterLoanOfficer)
             Log.e("getMcusByRoleId-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

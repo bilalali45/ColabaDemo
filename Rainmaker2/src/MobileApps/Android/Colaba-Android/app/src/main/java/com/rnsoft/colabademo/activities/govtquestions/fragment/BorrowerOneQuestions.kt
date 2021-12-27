@@ -45,7 +45,6 @@ import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.native_h
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_hispanic
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.not_telling_ethnicity
 import kotlinx.android.synthetic.main.new_demo_graphic_show_layout.view.white_check_box
-import okio.utf8Size
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -60,16 +59,12 @@ import java.util.ArrayList
 
 
 
-interface JSONConvertable {
-    fun toJSON(): String = Gson().toJson(this)
-}
-
-
-inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
+//interface JSONConvertable {  fun toJSON(): String = Gson().toJson(this) }
+//inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
 
 
 @AndroidEntryPoint
-class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
+class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     private lateinit var binding: BorrowerOneQuestionsLayoutBinding
     private var idToContentMapping = HashMap<Int, ConstraintLayout>(0)
@@ -108,7 +103,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
     private lateinit var lastQData: QuestionData
 
 
-    private lateinit var ownerShipConstraintLayout: ConstraintLayout
+    private var ownerShipConstraintLayout: ConstraintLayout?=null
     private lateinit var childConstraintLayout: ConstraintLayout
     private lateinit var undisclosedLayout: ConstraintLayout
     private lateinit var bankruptcyConstraintLayout: ConstraintLayout
@@ -185,12 +180,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                         question.answerData = null
                     else {
                         val test = hashMapOf<String, String>()
-                        var newTestList = arrayListOf(HashMap<String, String>())
+                        val newTestList = arrayListOf(HashMap<String, String>())
                         for(item in bankruptcyMap){
                             Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                             test.put(item.key, item.value)
-                            var json = Gson().toJson(test)
-                            var mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                            val json = Gson().toJson(test)
+                            val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                             newTestList.add(mapCopy)
                             test.clear()
                         }
@@ -239,6 +234,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
     }
 
+    /*
     private fun guessTheType(any: Any) = when (any){
         is Int -> Timber.e("It's an Integer !")
         is String -> Timber.e("It's a String !")
@@ -253,6 +249,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         is BankruptcyAnswerData -> Timber.e("It's an BankruptcyAnswerData !")
         else -> Timber.e("Error ! Type not recognized...")
     }
+     */
 
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -474,65 +471,100 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
                                     Timber.e(qData.answerDetail.toString())
                                 }
                                 else
-                                if (parentQuestionId == ownerShipConstraintLayout.id ) {
-                                    qData.answer?.let {answer->
-                                        if(!answer.equals("No", true)){
-                                            if(ownerShipBoxOneEnabled) {
-                                                ownerShipBoxOneEnabled = false
-                                                Timber.e("ownerShipConstraintLayout " + qData.question)
-                                                Timber.e(qData.answerDetail.toString())
+
+                                    if (parentQuestionId == ownerShipConstraintLayout?.id) {
+                                        ownerShipConstraintLayout?.let { ownerShipConstraintLayout->
+                                            qData.answer?.let { answer ->
+                                                if (!answer.equals("No", true)) {
+                                                    if (ownerShipBoxOneEnabled) {
+                                                        ownerShipBoxOneEnabled = false
+                                                        Timber.e("ownerShipConstraintLayout " + qData.question)
+                                                        Timber.e(qData.answerDetail.toString())
 
 
-                                                val t: LinkedTreeMap<Any, Any> = qData.answerData as LinkedTreeMap<Any, Any>
-                                                //var selectionOptionText: String?
-                                                //var selectionOptionId: String? //t["selectionOptionId"].toString()
+                                                        val t: LinkedTreeMap<Any, Any> =
+                                                            qData.answerData as LinkedTreeMap<Any, Any>
+                                                        //var selectionOptionText: String?
+                                                        //var selectionOptionId: String? //t["selectionOptionId"].toString()
 
-                                                if(t["selectionOptionId"]!=null && t["selectionOptionText"]!=null) {
-                                                    val selectionOptionText = t["selectionOptionText"].toString()
-                                                    val selectionOptionId = t["selectionOptionId"].toString().toDouble().toInt()
-                                                    ownershipInterestAnswerData1 =
-                                                        OwnershipInterestAnswerData(
-                                                            selectionOptionId,
-                                                            selectionOptionText
+                                                        if (t["selectionOptionId"] != null && t["selectionOptionText"] != null) {
+                                                            val selectionOptionText =
+                                                                t["selectionOptionText"].toString()
+                                                            val selectionOptionId =
+                                                                t["selectionOptionId"].toString()
+                                                                    .toDouble().toInt()
+                                                            ownershipInterestAnswerData1 =
+                                                                OwnershipInterestAnswerData(
+                                                                    selectionOptionId,
+                                                                    selectionOptionText
+                                                                )
+                                                            ownerShipConstraintLayout.detail_text.text =
+                                                                selectionOptionText
+                                                            qData.answerData =
+                                                                ownershipInterestAnswerData1
+                                                            ownerShipInnerScreenParams.add(
+                                                                selectionOptionText
+                                                            )
+                                                        }
+
+                                                        ownerShipConstraintLayout.detail_title.text =
+                                                            qData.question
+
+                                                        ownerShipConstraintLayout.detail_title.setTypeface(
+                                                            null,
+                                                            Typeface.NORMAL
                                                         )
-                                                    ownerShipConstraintLayout.detail_text.text = selectionOptionText
-                                                    qData.answerData = ownershipInterestAnswerData1
-                                                    ownerShipInnerScreenParams.add(selectionOptionText)
-                                                }
-
-                                                ownerShipConstraintLayout.detail_title.text = qData.question
-
-                                                ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                                                ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-
-                                                ownerShipConstraintLayout.govt_detail_box.visibility = View.VISIBLE
-                                            }
-                                            else{
-
-                                                val t: LinkedTreeMap<Any, Any> = qData.answerData as LinkedTreeMap<Any, Any>
-                                                if(t["selectionOptionId"]!=null && t["selectionOptionText"]!=null) {
-                                                    val selectionOptionText = t["selectionOptionText"].toString()
-                                                    val selectionOptionId = t["selectionOptionId"].toString().toDouble().toInt()
-                                                    ownershipInterestAnswerData2 =
-                                                        OwnershipInterestAnswerData(
-                                                            selectionOptionId,
-                                                            selectionOptionText
+                                                        ownerShipConstraintLayout.detail_text.setTypeface(
+                                                            null,
+                                                            Typeface.BOLD
                                                         )
-                                                    ownerShipConstraintLayout.detail_text2.text = selectionOptionText
-                                                    qData.answerData = ownershipInterestAnswerData2
-                                                    ownerShipInnerScreenParams.add(selectionOptionText)
+
+                                                        ownerShipConstraintLayout.govt_detail_box.visibility =
+                                                            View.VISIBLE
+                                                    } else {
+
+                                                        val t: LinkedTreeMap<Any, Any> =
+                                                            qData.answerData as LinkedTreeMap<Any, Any>
+                                                        if (t["selectionOptionId"] != null && t["selectionOptionText"] != null) {
+                                                            val selectionOptionText =
+                                                                t["selectionOptionText"].toString()
+                                                            val selectionOptionId =
+                                                                t["selectionOptionId"].toString()
+                                                                    .toDouble().toInt()
+                                                            ownershipInterestAnswerData2 =
+                                                                OwnershipInterestAnswerData(
+                                                                    selectionOptionId,
+                                                                    selectionOptionText
+                                                                )
+                                                            ownerShipConstraintLayout.detail_text2.text =
+                                                                selectionOptionText
+                                                            qData.answerData =
+                                                                ownershipInterestAnswerData2
+                                                            ownerShipInnerScreenParams.add(
+                                                                selectionOptionText
+                                                            )
+                                                        }
+
+                                                        ownerShipConstraintLayout.detail_title2.text =
+                                                            qData.question
+
+                                                        ownerShipConstraintLayout.detail_title2.setTypeface(
+                                                            null,
+                                                            Typeface.NORMAL
+                                                        )
+                                                        ownerShipConstraintLayout.detail_text2.setTypeface(
+                                                            null,
+                                                            Typeface.BOLD
+                                                        )
+
+                                                        ownerShipConstraintLayout.govt_detail_box2.visibility =
+                                                            View.VISIBLE
+                                                    }
                                                 }
-
-                                                ownerShipConstraintLayout.detail_title2.text = qData.question
-
-                                                ownerShipConstraintLayout.detail_title2.setTypeface(null, Typeface.NORMAL)
-                                                ownerShipConstraintLayout.detail_text2.setTypeface(null, Typeface.BOLD)
-
-                                                ownerShipConstraintLayout.govt_detail_box2.visibility = View.VISIBLE
                                             }
                                         }
                                     }
-                                }
+
                                 else
                                 if (parentQuestionId == undisclosedLayout.id) {
                                     qData.answer?.let { answer->
@@ -606,20 +638,22 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
 
         if(questionData.headerText == AppConstant.ownershipConstantValue) {
             ownerShipConstraintLayout = layoutInflater.inflate(R.layout.ownership_interest_layout, null) as ConstraintLayout
-            contentCell = ownerShipConstraintLayout
-            questionData.id?.let {
-                ownerShipConstraintLayout.id = it
-                contentCell.id = it
-            }
+            contentCell = ownerShipConstraintLayout as ConstraintLayout
+            ownerShipConstraintLayout?.let { ownerShipConstraintLayout->
+                    questionData.id?.let {
+                    ownerShipConstraintLayout.id = it
+                    contentCell.id = it
+                }
 
-            ownerShipConstraintLayout.govt_detail_box.setOnClickListener {
-                clickedContentCell = contentCell
-                navigateToInnerScreen(headerTitle , questionId)
-            }
+                ownerShipConstraintLayout.govt_detail_box.setOnClickListener {
+                    clickedContentCell = contentCell
+                    navigateToInnerScreen(headerTitle, questionId)
+                }
 
-            ownerShipConstraintLayout.govt_detail_box2.setOnClickListener {
-                clickedContentCell = contentCell
-                navigateToInnerScreen(headerTitle , questionId)
+                ownerShipConstraintLayout.govt_detail_box2.setOnClickListener {
+                    clickedContentCell = contentCell
+                    navigateToInnerScreen(headerTitle, questionId)
+                }
             }
         }
         else
@@ -1470,28 +1504,54 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment(), JSONConvertable {
         governmentParams.Questions.let { questions ->
             for (item in questions) {
                 item.parentQuestionId?.let { parentQuestionId ->
-                    if (parentQuestionId == ownerShipConstraintLayout.id) {
-                        if (secondMatched) {
-                            secondMatched = false
+                    if (parentQuestionId == ownerShipConstraintLayout?.id) {
+                        ownerShipConstraintLayout?.let { ownerShipConstraintLayout ->
+                            if (secondMatched) {
+                                secondMatched = false
 
 
-                            ownerShipConstraintLayout.detail_title.text =  OwnershipInterestInPropertyFragment.ownershipQuestionOne
-                            ownerShipConstraintLayout.detail_title.setTypeface(null, Typeface.NORMAL)
-                            ownerShipConstraintLayout.detail_text.text = updateEvent.answer1
-                            ownerShipConstraintLayout.detail_text.setTypeface(null, Typeface.BOLD)
-                            ownerShipConstraintLayout.visibility = View.VISIBLE
-                            ownerShipInnerScreenParams.add(updateEvent.answer1)
-                            ownershipInterestAnswerData1 = OwnershipInterestAnswerData(updateEvent.index1, updateEvent.answer1)
-                            item.answerData = ownershipInterestAnswerData1
-                        } else {
-                            ownerShipConstraintLayout.detail_text2?.text =  OwnershipInterestInPropertyFragment.ownershipQuestionTwo
-                            ownerShipConstraintLayout.detail_text2?.setTypeface(null, Typeface.NORMAL)
-                            ownerShipConstraintLayout.detail_text2?.text = updateEvent.answer2
-                            ownerShipConstraintLayout.detail_text2?.setTypeface(null, Typeface.BOLD)
-                            ownerShipConstraintLayout.govt_detail_box2?.visibility = View.VISIBLE
-                            ownerShipInnerScreenParams.add(updateEvent.answer2)
-                            ownershipInterestAnswerData2 = OwnershipInterestAnswerData(updateEvent.index2, updateEvent.answer2)
-                            item.answerData = OwnershipInterestAnswerData(updateEvent.index2, updateEvent.answer2)
+                                ownerShipConstraintLayout.detail_title.text =
+                                    OwnershipInterestInPropertyFragment.ownershipQuestionOne
+                                ownerShipConstraintLayout.detail_title.setTypeface(
+                                    null,
+                                    Typeface.NORMAL
+                                )
+                                ownerShipConstraintLayout.detail_text.text = updateEvent.answer1
+                                ownerShipConstraintLayout.detail_text.setTypeface(
+                                    null,
+                                    Typeface.BOLD
+                                )
+                                ownerShipConstraintLayout.visibility = View.VISIBLE
+                                ownerShipInnerScreenParams.add(updateEvent.answer1)
+                                ownershipInterestAnswerData1 = OwnershipInterestAnswerData(
+                                    updateEvent.index1,
+                                    updateEvent.answer1
+                                )
+                                item.answerData = ownershipInterestAnswerData1
+                            } else {
+                                ownerShipConstraintLayout.detail_text2?.text =
+                                    OwnershipInterestInPropertyFragment.ownershipQuestionTwo
+                                ownerShipConstraintLayout.detail_text2?.setTypeface(
+                                    null,
+                                    Typeface.NORMAL
+                                )
+                                ownerShipConstraintLayout.detail_text2?.text = updateEvent.answer2
+                                ownerShipConstraintLayout.detail_text2?.setTypeface(
+                                    null,
+                                    Typeface.BOLD
+                                )
+                                ownerShipConstraintLayout.govt_detail_box2?.visibility =
+                                    View.VISIBLE
+                                ownerShipInnerScreenParams.add(updateEvent.answer2)
+                                ownershipInterestAnswerData2 = OwnershipInterestAnswerData(
+                                    updateEvent.index2,
+                                    updateEvent.answer2
+                                )
+                                item.answerData = OwnershipInterestAnswerData(
+                                    updateEvent.index2,
+                                    updateEvent.answer2
+                                )
+                            }
                         }
                     }
                 }

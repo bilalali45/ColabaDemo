@@ -19,7 +19,7 @@ class FilesDataSource(private val parentFolder: File, private val serverApi: Ser
        // val response = serverApi.downloadFile(id).awaitResponse()// returns the response, but it's content will be later
 
         val newToken = "Bearer $token"
-        val response = serverApi.downloadFile(Authorization = newToken, id = id, requestId = requestId, docId = docId, fileId = fileId)
+        val response = serverApi.downloadFile( id = id, requestId = requestId, docId = docId, fileId = fileId)
 
 
         val body = response.body()

@@ -122,7 +122,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     ): Result<MyAssetBorrowerDataClass> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBorrowerAssetsDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
+            val response = serverApi.getBorrowerAssetsDetail( loanApplicationId = loanApplicationId , borrowerId = borrowerId)
             //Timber.e("AssetsModelDataClass-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -141,7 +141,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     ): Result<GovernmentQuestionsModelClass> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getGovernmentQuestions(newToken, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId,  borrowerId = borrowerId)
+            val response = serverApi.getGovernmentQuestions( loanApplicationId = loanApplicationId , ownTypeId = ownTypeId,  borrowerId = borrowerId)
             //Timber.e("AssetsModelDataClass-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -174,7 +174,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun addOrUpdateGovernmentQuestions(token:String, questionParams:GovernmentParams):Result<GovernmentAddUpdateDataResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addOrUpdateGovernmentQuestions( newToken,  questionParams )
+            val response = serverApi.addOrUpdateGovernmentQuestions( questionParams )
             Timber.e("updateGovernmentQuestions - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -189,7 +189,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun addOrUpdateDemoGraphic( token:String, demoGraphicData:DemoGraphicData):Result<AddUpdateDemoGraphicResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addOrUpdateDemoGraphic( newToken,  demoGraphicData )
+            val response = serverApi.addOrUpdateDemoGraphic( demoGraphicData )
             Timber.e("addOrUpdateDemoGraphic - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -208,7 +208,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     ): Result<GovernmentQuestionsModelClass> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getGovernmentQuestions( newToken, loanApplicationId = loanApplicationId , ownTypeId = ownTypeId,  borrowerId = borrowerId)
+            val response = serverApi.getGovernmentQuestions(  loanApplicationId = loanApplicationId , ownTypeId = ownTypeId,  borrowerId = borrowerId)
             Timber.e("GovernmentQuestionsModelClass - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -226,7 +226,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     ): Result<DemoGraphicResponseModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getDemoGraphicInfo( newToken, loanApplicationId = loanApplicationId, borrowerId = borrowerId)
+            val response = serverApi.getDemoGraphicInfo(  loanApplicationId = loanApplicationId, borrowerId = borrowerId)
             Timber.e("DemoGraphicResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -240,7 +240,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun getGenderList(token: String): Result<ArrayList<GenderResponseModel>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getGenderList(newToken)
+            val response = serverApi.getGenderList()
             //Timber.e("GenderResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -254,7 +254,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun getEthnicityList(token: String): Result<ArrayList<EthnicityResponseModel>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getEthnicityList(newToken)
+            val response = serverApi.getEthnicityList()
             //Timber.e("EthnicityResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -268,7 +268,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun getRaceList(token: String): Result<ArrayList<RaceResponseModel>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getRaceList(newToken)
+            val response = serverApi.getRaceList()
             Timber.e("RaceResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {
