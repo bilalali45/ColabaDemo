@@ -39,7 +39,7 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
     suspend fun getNotificationCount(token:String):Result<TotalNotificationCount>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getNotificationCount(newToken)
+            val response = serverApi.getNotificationCount()
             Log.e("NotificationCount-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

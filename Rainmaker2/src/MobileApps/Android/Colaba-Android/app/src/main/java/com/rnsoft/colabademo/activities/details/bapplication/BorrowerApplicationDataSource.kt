@@ -122,7 +122,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     ): Result<MyAssetBorrowerDataClass> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBorrowerAssetsDetail(newToken, loanApplicationId = loanApplicationId , borrowerId = borrowerId)
+            val response = serverApi.getBorrowerAssetsDetail( loanApplicationId = loanApplicationId , borrowerId = borrowerId)
             //Timber.e("AssetsModelDataClass-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -268,7 +268,7 @@ class BorrowerApplicationDataSource  @Inject constructor(private val serverApi: 
     suspend fun getRaceList(token: String): Result<ArrayList<RaceResponseModel>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getRaceList(newToken)
+            val response = serverApi.getRaceList()
             Timber.e("RaceResponse - $response")
             Result.Success(response)
         } catch (e: Throwable) {

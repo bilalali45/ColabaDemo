@@ -474,8 +474,7 @@ interface ServerApi{
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest ,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
-
-    suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
+    //suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
 
     @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
     suspend fun getMcuTenantTwoFaValuesService( @Header("IntermediateToken")  IntermediateToken:String): TenantConfigurationResponse
@@ -586,7 +585,9 @@ interface ServerApi{
 
 
     @GET("api/mcu/mobile/Notification/notification/getcount")
-    suspend fun getNotificationCount(@Header("Authorization" )  Authorization:String):TotalNotificationCount
+    suspend fun getNotificationCount(
+        //@Header("Authorization" )  Authorization:String
+    ):TotalNotificationCount
 
 
     @PUT("api/mcu/mobile/Notification/notification/Read")
@@ -601,13 +602,13 @@ interface ServerApi{
 
     @PUT("api/mcu/mobile/Notification/notification/Delete")
     suspend fun deleteNotifications(
-    //@Header("Authorization" )  Authorization:String,
-     @Body putParams:PutParameters):Response<Any>
+        //@Header("Authorization" )  Authorization:String,
+         @Body putParams:PutParameters):Response<Any>
 
 
     @GET("api/mcu/mobile/loanapplication/loan/getloaninfo")
     suspend fun getLoanInfo(
-        @Header("Authorization" )  Authorization:String,
+        //@Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):BorrowerOverviewModel
 
 
@@ -635,7 +636,8 @@ interface ServerApi{
 
     @GET("/api/mcu/mobile/loanapplication/Loan/GetAllRaceList")
     suspend fun getRaceList(
-        @Header("Authorization" )  Authorization:String) :ArrayList<RaceResponseModel>
+        //@Header("Authorization" )  Authorization:String
+    ) :ArrayList<RaceResponseModel>
 
     @Streaming
     @GET("api/mcu/mobile/DocumentManagement/MCUDocument/view")
@@ -655,7 +657,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetAssetsDetails")
     suspend fun getBorrowerAssetsDetail(
-        @Header("Authorization" )  Authorization:String,
+        //@Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int,
         @Query("borrowerId")  borrowerId:Int
     ): MyAssetBorrowerDataClass
@@ -704,12 +706,14 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetCategoryDocumentMcu")
     suspend fun getCategoryDocumentMcu(
-        @Header("Authorization" )  Authorization:String):CategoryDocsResponse
+        //@Header("Authorization" )  Authorization:String
+    ):CategoryDocsResponse
 
 
     @GET("api/mcu/mobile/DocumentManagement/Template/GetTemplates")
     suspend fun getTemplates(
-        @Header("Authorization")  Authorization:String): GetTemplatesResponse
+        //@Header("Authorization")  Authorization:String
+    ): GetTemplatesResponse
 
     @POST("api/mcu/mobile/DocumentManagement/Request/Save")
     suspend fun sendDocRequest(@Header("Authorization")  Authorization:String, @Body data: SendDocRequestModel): Response<Unit>
