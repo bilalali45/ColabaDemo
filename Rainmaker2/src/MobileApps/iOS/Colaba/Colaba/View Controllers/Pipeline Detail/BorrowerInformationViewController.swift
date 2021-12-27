@@ -117,7 +117,6 @@ class BorrowerInformationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        lblBorrowerType.text = borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
         setViews()
         getAllMaritalStatus()
     }
@@ -1019,6 +1018,9 @@ class BorrowerInformationViewController: BaseViewController {
                     }
                     if (self.borrowerId > 0){
                         self.getBorrowerDetail()
+                    }
+                    else{
+                        self.lblBorrowerType.text = self.borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
                     }
                     Utility.showOrHideLoader(shouldShow: false)
                 }
