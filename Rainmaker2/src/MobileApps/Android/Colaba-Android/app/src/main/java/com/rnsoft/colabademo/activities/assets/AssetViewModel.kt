@@ -222,9 +222,9 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     }
 
 
-    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams) {
+    fun addUpdateStockBonds( stocksBondsAddUpdateParams:StocksBondsAddUpdateParams) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = assetsRepo.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams = stocksBondsAddUpdateParams)
+            val responseResult = assetsRepo.addUpdateStockBonds( stocksBondsAddUpdateParams = stocksBondsAddUpdateParams)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _genericAddUpdateAssetResponse.value = (responseResult.data)

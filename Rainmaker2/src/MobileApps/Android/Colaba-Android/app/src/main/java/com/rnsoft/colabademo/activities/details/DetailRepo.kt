@@ -25,8 +25,8 @@ class DetailRepo  @Inject constructor(
         return detailDataSource.downloadFile(token = token , id = id, requestId = requestId, docId = docId, fileId = fileId )
     }
 
-    suspend fun getMilestoneForLoanCenter(token: String, loanApplicationId: Int): Result<AppMileStoneResponse> {
-        return detailDataSource.getMilestoneForLoanCenter(token = token , loanApplicationId = loanApplicationId)
+    suspend fun getMilestoneForLoanCenter( loanApplicationId: Int): Result<AppMileStoneResponse> {
+        return detailDataSource.getMilestoneForLoanCenter( loanApplicationId = loanApplicationId)
     }
 
 }

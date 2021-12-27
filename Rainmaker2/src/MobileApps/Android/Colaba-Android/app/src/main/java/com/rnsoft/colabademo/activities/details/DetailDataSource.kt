@@ -1,8 +1,8 @@
 package com.rnsoft.colabademo
 
-import android.util.Log
 import okhttp3.ResponseBody
 import retrofit2.Response
+import timber.log.Timber
 import java.io.File
 import java.io.IOException
 import javax.inject.Inject
@@ -46,8 +46,8 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     ): Result<BorrowerApplicationTabModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBorrowerApplicationTabData( loanApplicationId)
-            Log.e("ApplicationTabData-", response.toString())
+            val response = serverApi.getBorrowerApplicationTabData(loanApplicationId)
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -60,16 +60,18 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     suspend fun downloadFile(token:String, id:String, requestId:String, docId:String, fileId:String):Response<ResponseBody>?{
         try {
             val newToken = "Bearer $token"
-            val result = serverApi.downloadFile( id = id, requestId = requestId, docId = docId, fileId = fileId)
-            Log.e("result.body()-", result.body().toString())
-            Log.e("result.raw()-", result.raw().toString())
-            Log.e("result.code()-", result.code().toString())
-            Log.e("result.errorBody()", result.errorBody().toString())
-            Log.e("result.charStream ", result.errorBody()?.charStream().toString())
-            Log.e("result.source() ",  result.errorBody()?.source().toString())
-
-            val isSame = result is Response<ResponseBody>
-            val isWhat = result as Response<File>
+            val result = serverApi.downloadFile(
+                id = id,
+                requestId = requestId,
+                docId = docId,
+                fileId = fileId
+            )
+            Timber.e(result.body().toString())
+            Timber.e(result.raw().toString())
+            Timber.e(result.code().toString())
+            Timber.e(result.errorBody().toString())
+            Timber.e(result.errorBody()?.charStream().toString())
+            Timber.e(result.errorBody()?.source().toString())
 
 
             return result
@@ -86,10 +88,10 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun getMilestoneForLoanCenter(token: String, loanApplicationId: Int): Result<AppMileStoneResponse> {
+    suspend fun getMilestoneForLoanCenter( loanApplicationId: Int): Result<AppMileStoneResponse> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getMilestoneForLoanCenter(newToken, loanApplicationId)
+
+            val response = serverApi.getMilestoneForLoanCenter( loanApplicationId)
             //Log.e("getLoanInfo-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

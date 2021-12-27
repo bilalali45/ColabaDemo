@@ -431,7 +431,7 @@ import java.util.ArrayList
                     }
                 }
             }
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
 
         private fun  addUpdateAssetsRealStateOrNonRealState(selectedAssetTypeId:Int, assetTypeDisplayName:String){
@@ -459,7 +459,7 @@ import java.util.ArrayList
                     }
                 }
             }
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
 
         private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
@@ -472,7 +472,7 @@ import java.util.ArrayList
                     assetAction = AppConstant.assetUpdated
             }
 
-            Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
+
             assetUniqueId?.let { notNullAssetUniqueId->
                 if(notNullAssetUniqueId<=0)
                     assetUniqueId = null

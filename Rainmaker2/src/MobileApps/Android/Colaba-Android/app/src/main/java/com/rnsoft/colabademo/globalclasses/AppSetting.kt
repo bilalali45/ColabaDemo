@@ -298,7 +298,8 @@ object AppSetting {
         var finalTimeInFormat = ""
 
         oldMillis?.let {
-            finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm")
+            //finalTimeInFormat = getDate(it, "E MMM dd,yyyy hh:mm")
+            finalTimeInFormat = getDate(it, "dd MMM, yyyy hh:mm")
         }
 
         return finalTimeInFormat

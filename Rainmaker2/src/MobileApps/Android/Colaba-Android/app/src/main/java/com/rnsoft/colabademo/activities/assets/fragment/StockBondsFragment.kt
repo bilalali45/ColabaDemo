@@ -114,17 +114,15 @@ class StockBondsFragment:AssetBaseFragment() {
             binding.accountTypeCompleteView.showDropDown()
         }
 
-        binding.accountTypeCompleteView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+        binding.accountTypeCompleteView.onItemClickListener =
+            AdapterView.OnItemClickListener { p0, p1, position, id ->
                 binding.accountTypeInputLayout.defaultHintTextColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.grey_color_two ))
                 binding.accountNumberLayout.helperText?.let{
                     if(it.isNotEmpty())
                         CustomMaterialFields.clearError(binding.accountTypeInputLayout, requireContext())
                 }
-                if(position ==dataArray.size-1) { }
-                else{}
+                //if(position ==dataArray.size-1) { } else{}
             }
-        }
 
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
 
@@ -144,35 +142,33 @@ class StockBondsFragment:AssetBaseFragment() {
         val fieldsValidated = checkEmptyFields()
         if(fieldsValidated) {
             clearFocusFromFields()
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    var accountTypeId:Int?=null
-                    for(item in bankAccounts){
-                        if(item.name == binding.accountTypeCompleteView.text.toString())
-                            accountTypeId = item.id
-                    }
-                    accountTypeId?.let { notNullAccountTypeId->
-                        loanApplicationId?.let { notNullLoanApplicationId->
-                            borrowerId?.let { notNullBorrowerId ->
-                                val stocksBondsAddUpdateParams =
-                                    StocksBondsAddUpdateParams(
-                                        AssetTypeId = notNullAccountTypeId,
-                                        LoanApplicationId = notNullLoanApplicationId,
-                                        BorrowerId = notNullBorrowerId,
-                                        Id = assetUniqueId,
-                                        AccountNumber = binding.accountNumberEdittext.text.toString(),
-                                        Balance = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
-                                        InstitutionName = binding.financialEditText.text.toString()
-                                    )
-                                viewModel.addUpdateStockBonds(authToken , stocksBondsAddUpdateParams)
-                            }
-                        }
 
-                    }
-
-                }
+            var accountTypeId:Int?=null
+            for(item in bankAccounts){
+                if(item.name == binding.accountTypeCompleteView.text.toString())
+                    accountTypeId = item.id
             }
-            observeAddUpdateResponse(returnUpdatedParams())
+            accountTypeId?.let { notNullAccountTypeId->
+                loanApplicationId?.let { notNullLoanApplicationId->
+                    borrowerId?.let { notNullBorrowerId ->
+                        val stocksBondsAddUpdateParams =
+                            StocksBondsAddUpdateParams(
+                                AssetTypeId = notNullAccountTypeId,
+                                LoanApplicationId = notNullLoanApplicationId,
+                                BorrowerId = notNullBorrowerId,
+                                Id = assetUniqueId,
+                                AccountNumber = binding.accountNumberEdittext.text.toString(),
+                                Balance = Common.removeCommas(binding.annualBaseEditText.text.toString()).toInt(),
+                                InstitutionName = binding.financialEditText.text.toString()
+                            )
+                        viewModel.addUpdateStockBonds( stocksBondsAddUpdateParams)
+                    }
+                }
+
+            }
+
+
+            observeAddUpdateResponse()
         }
 
 
@@ -220,10 +216,10 @@ class StockBondsFragment:AssetBaseFragment() {
     }
 
     private  fun addFocusOutListenerToFields(){
-        binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
+        binding.accountNumberEdittext.onFocusChangeListener = CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext())
         //binding.accountTypeCompleteView.setOnFocusChangeListener(CustomFocusListenerForAutoCompleteTextView( binding.accountTypeCompleteView , binding.accountTypeInputLayout , requireContext()))
-        binding.annualBaseEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext()))
-        binding.financialEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext()))
+        binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext())
+        binding.financialEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext())
     }
 
     private fun observeStockBondsData(){
@@ -284,16 +280,18 @@ class StockBondsFragment:AssetBaseFragment() {
     }
 
     private fun setUpEndIcon(){
-        binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
-            if (binding.accountNumberEdittext.getTransformationMethod()
+        binding.accountNumberLayout.setEndIconOnClickListener {
+            if (binding.accountNumberEdittext.transformationMethod
                     .equals(PasswordTransformationMethod.getInstance())
             ) { //  hide password
-                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
             } else {
-                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
-        })
+        }
     }
 }
