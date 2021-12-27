@@ -12,7 +12,7 @@ data class BorrowerDocsModel(
     val docId: String?,
     val docName: String?,
     @SerializedName("files")
-    val subFiles : @RawValue ArrayList<SubFiles>,
+    val subFiles : @RawValue ArrayList<SubFiles>?=null,
     val id: String?,
     val requestId: String?,
     val status: String?,
@@ -23,15 +23,15 @@ data class BorrowerDocsModel(
 
 @Parcelize
 data class SubFiles(
-    val byteProStatus: String,
+    val byteProStatus: String?=null,
     val clientName: String,
-    val fileModifiedOn: String,
+    val fileModifiedOn: String?=null,
     val fileUploadedOn: String,
     val id: String,
-    val isRead: Boolean,
+    val isRead: Boolean=true,
     val mcuName: String,
-    val status: @RawValue Any,
-    val userId: @RawValue Any,
-    val userName: @RawValue Any,
+    val status: String?=null,
+    val userId: Int?=null,
+    val userName: String?=null,
 
 ) : Parcelable

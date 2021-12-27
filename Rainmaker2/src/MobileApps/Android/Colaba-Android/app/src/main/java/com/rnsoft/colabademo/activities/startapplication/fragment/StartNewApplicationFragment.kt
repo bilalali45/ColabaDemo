@@ -288,22 +288,26 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         })
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        viewModel._mcu.observe(viewLifecycleOwner, { mcu->
-            //Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
-            binding.assignLoanOfficer.visibility = View.GONE
-            binding.loanOfficerAssigned.visibility = View.VISIBLE
-            Glide.with(requireActivity())
+
+        activity?.let {
+            viewModel.mcu.observe(it, { mcu->
+
+                //Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
+                binding.assignLoanOfficer.visibility = View.GONE
+                binding.loanOfficerAssigned.visibility = View.VISIBLE
+                Glide.with(requireActivity())
                     .load(mcu.profileimageurl)
                     .circleCrop()
                     .into(binding.loImage)
-            binding.loName.text = mcu.fullName
-            binding.loDetail.text = mcu.branchName
-            createNewApplicationParams.let {
-                it.branchId = mcu.branchId
-                it.LoanOfficerUserId = mcu.userId
-            }
-            viewModel.setCreateNewParams(createNewApplicationParams)
-        })
+                binding.loName.text = mcu.fullName
+                binding.loDetail.text = mcu.branchName
+                createNewApplicationParams.let {
+                    it.branchId = mcu.branchId
+                    it.LoanOfficerUserId = mcu.userId
+                }
+                viewModel.setCreateNewParams(createNewApplicationParams)
+            })
+        }
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -546,9 +550,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
     }
 
-
-
-
     private fun findOrCreateContactClick(){
         if(binding.findContactBtn.isChecked) {
             //searchList.clear()
@@ -674,28 +675,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         EventBus.getDefault().unregister(this)
     }
 
-    /*
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onLoanOfficerSelected(loanOfficerSelectedEvent: LoanOfficerSelectedEvent) {
-        Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
-        binding.assignLoanOfficer.visibility = View.GONE
-        binding.loanOfficerAssigned.visibility = View.VISIBLE
-        Glide.with(requireActivity())
-                .load(loanOfficerSelectedEvent.mcu.profileimageurl)
-                .circleCrop()
-                .into(binding.loImage)
-        binding.loName.text = loanOfficerSelectedEvent.mcu.fullName
-        binding.loDetail.text = loanOfficerSelectedEvent.mcu.branchName
-        createNewApplicationParams.let {
-            it.branchId = loanOfficerSelectedEvent.mcu.branchId
-            it.LoanOfficerUserId = loanOfficerSelectedEvent.mcu.userId
-        }
-        viewModel.setCreateNewParams(createNewApplicationParams)
-
-        //SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-    }
-    */
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onCreateDuplicateEvent(allowDuplicateBorrowerEvent:AllowDuplicateBorrowerEvent ) {
         lifecycleScope.launchWhenStarted {
@@ -708,7 +687,31 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 }
 
 
-/*
+    /*
+        @Subscribe(threadMode = ThreadMode.MAIN)
+        fun onLoanOfficerSelected(loanOfficerSelectedEvent: LoanOfficerSelectedEvent) {
+        Timber.e(" loan officer selected........."+ loanOfficerSelectedEvent.mcu.profileimageurl)
+        binding.assignLoanOfficer.visibility = View.GONE
+        binding.loanOfficerAssigned.visibility = View.VISIBLE
+        Glide.with(requireActivity())
+               .load(loanOfficerSelectedEvent.mcu.profileimageurl)
+               .circleCrop()
+               .into(binding.loImage)
+        binding.loName.text = loanOfficerSelectedEvent.mcu.fullName
+        binding.loDetail.text = loanOfficerSelectedEvent.mcu.branchName
+        createNewApplicationParams.let {
+           it.branchId = loanOfficerSelectedEvent.mcu.branchId
+           it.LoanOfficerUserId = loanOfficerSelectedEvent.mcu.userId
+        }
+        viewModel.setCreateNewParams(createNewApplicationParams)
+
+        //SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+    }
+    */
+
+
+
+    /*
 
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -718,4 +721,4 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     private val disableScrollViewListener  = View.OnTouchListener { p0, p1 -> true }
 
     private val enableScrollViewListener  = View.OnTouchListener { p0, p1 -> true };
- */
+    */

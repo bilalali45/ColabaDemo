@@ -207,7 +207,7 @@ class DocumentListFragment : BaseFragment(), DocsViewClickListener {
         val bundle = Bundle()
         bundle.putString(AppConstant.downloadedFileName, pdfFileName)
         pdfViewFragment.arguments = bundle
-        findNavController().navigate(R.id.pdf_view_fragment_id, pdfViewFragment.arguments)
+        findNavController().navigate(R.id.pdf_view_fragment_id, bundle)
     }
 
     private fun goToImageViewFragment(imageFileName:String){

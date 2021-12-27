@@ -81,11 +81,13 @@ internal constructor(
 
         // set Doc name
         holder.docType.text = doc.docName
-        if(doc.subFiles.size>0){
-            for(file in doc.subFiles){
-                //Log.e("READ", doc.docName + "  " + file.isRead)
-                if((!file.isRead)){
-                    holder.docType.setTypeface(null,Typeface.BOLD)
+        doc.subFiles?.let { subFiles ->
+            if (doc.subFiles.size > 0) {
+                for (file in doc.subFiles) {
+                    //Log.e("READ", doc.docName + "  " + file.isRead)
+                    if ((!file.isRead)) {
+                        holder.docType.setTypeface(null, Typeface.BOLD)
+                    }
                 }
             }
         }
@@ -100,69 +102,77 @@ internal constructor(
         holder.docFilter.text = doc.status
         setDocFilterColor(doc.status!!)
 
-        if (doc.subFiles.isEmpty()) {
-            holder.containsNoChild.visibility = View.VISIBLE
-            holder.containsThreeChild.visibility = View.GONE
-            holder.tvDocUploadedTime.visibility = View.GONE
-        } else
-            if (doc.subFiles.isNotEmpty()) {
-                holder.containsThreeChild.visibility = View.VISIBLE
-                holder.containsNoChild.visibility = View.GONE
-                holder.tvDocUploadedTime.visibility = View.VISIBLE
+        doc.subFiles?.let { subFiles ->
+            if (doc.subFiles.isEmpty()) {
+                holder.containsNoChild.visibility = View.VISIBLE
+                holder.containsThreeChild.visibility = View.GONE
+                holder.tvDocUploadedTime.visibility = View.GONE
+            } else
+                if (doc.subFiles.isNotEmpty()) {
+                    holder.containsThreeChild.visibility = View.VISIBLE
+                    holder.containsNoChild.visibility = View.GONE
+                    holder.tvDocUploadedTime.visibility = View.VISIBLE
 
-                val fileOne = doc.subFiles[0]
-                if (fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
-                    holder.docOneName.text = fileOne.clientName
-                    holder.docOneImage.visibility = View.VISIBLE
+                    val fileOne = doc.subFiles[0]
+                    if (fileOne.clientName.isNotEmpty() && fileOne.clientName.isNotBlank()) {
+                        holder.docOneName.text = fileOne.clientName
+                        holder.docOneImage.visibility = View.VISIBLE
 
-                    val docType = getDocType(fileOne.clientName)
-                    setDocImage(docType,holder.docOneImage)
+                        val docType = getDocType(fileOne.clientName)
+                        setDocImage(docType, holder.docOneImage)
 
-                    holder.docOneLayout.setOnClickListener {
-                        classScopedDownloadClickListener.fileClicked(fileOne.clientName, fileOne.id, position)
+                        holder.docOneLayout.setOnClickListener {
+                            classScopedDownloadClickListener.fileClicked(
+                                fileOne.clientName,
+                                fileOne.id,
+                                position
+                            )
+                        }
+
+
+                    } else {
+                        holder.docOneName.text = fileOne.mcuName
+                        holder.docOneImage.visibility = View.VISIBLE
+                        val docType = getDocType(fileOne.mcuName)
+                        setDocImage(docType, holder.docOneImage)
                     }
 
+                    var fileTwo: SubFiles? = null
+                    if (doc.subFiles.size > 1)
+                        fileTwo = doc.subFiles[1]
 
-
-                } else {
-                    holder.docOneName.text = fileOne.mcuName
-                    holder.docOneImage.visibility = View.VISIBLE
-                    val docType = getDocType(fileOne.mcuName)
-                    setDocImage(docType, holder.docOneImage)
-                }
-
-                var fileTwo: SubFiles? = null
-                if (doc.subFiles.size > 1)
-                    fileTwo = doc.subFiles[1]
-
-                if (fileTwo != null) {
-                    if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
-                        holder.docTwoLayout.visibility = View.VISIBLE
-                        holder.docTwoName.text = fileTwo.clientName
-                        holder.docTwoImage.visibility = View.VISIBLE
-                        val docType = getDocType(fileTwo.clientName)
-                        setDocImage(docType, holder.docTwoImage)
-                        holder.docTwoLayout.setOnClickListener {
-                            classScopedDownloadClickListener.fileClicked(fileTwo.clientName, fileTwo.id, position)
+                    if (fileTwo != null) {
+                        if (fileTwo.clientName.isNotEmpty() && fileTwo.clientName.isNotBlank()) {
+                            holder.docTwoLayout.visibility = View.VISIBLE
+                            holder.docTwoName.text = fileTwo.clientName
+                            holder.docTwoImage.visibility = View.VISIBLE
+                            val docType = getDocType(fileTwo.clientName)
+                            setDocImage(docType, holder.docTwoImage)
+                            holder.docTwoLayout.setOnClickListener {
+                                classScopedDownloadClickListener.fileClicked(
+                                    fileTwo.clientName,
+                                    fileTwo.id,
+                                    position
+                                )
+                            }
+                        } else {
+                            holder.docTwoLayout.visibility = View.INVISIBLE
                         }
                     }
-                    else {
-                        holder.docTwoLayout.visibility = View.INVISIBLE
-                    }
+
+                    if (doc.subFiles.size > 2) {
+                        holder.docThreeLayout.visibility = View.VISIBLE
+                        holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
+                    } else
+                        holder.docThreeLayout.visibility = View.INVISIBLE
+
+                    // set time
+                    var fileUploadOn = doc.subFiles[0].fileUploadedOn
+                    var time = AppSetting.getDocumentUploadedDate(fileUploadOn)
+                    holder.tvDocUploadedTime.text = time
+
                 }
-
-                if (doc.subFiles.size > 2) {
-                    holder.docThreeLayout.visibility = View.VISIBLE
-                    holder.docThreeName.text = "+" + (doc.subFiles.size.minus(2)).toString()
-                } else
-                    holder.docThreeLayout.visibility = View.INVISIBLE
-
-                // set time
-                var fileUploadOn = doc.subFiles[0].fileUploadedOn
-                var time = AppSetting.getDocumentUploadedDate(fileUploadOn)
-                holder.tvDocUploadedTime.text = time
-
-            }
+        }
 
     }
     private fun setDocFilterColor(filter: String) {

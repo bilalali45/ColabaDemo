@@ -65,7 +65,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ScrollView
+    <com.rnsoft.colabademo.CustomScrollView
         android:id="@+id/scroll_primary_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -770,7 +770,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </com.rnsoft.colabademo.CustomScrollView>
 
     <ImageButton
         android:id="@+id/btn_save_info"

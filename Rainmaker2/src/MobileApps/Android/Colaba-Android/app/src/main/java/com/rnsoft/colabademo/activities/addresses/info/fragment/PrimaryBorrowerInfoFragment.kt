@@ -101,54 +101,71 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             bindingMilitary = bi.layoutMilitaryService
 
             setViews()
+            setValues()
             bi.tvResidence.setText(requireContext().getString(R.string.add_current_address))
-
-            val activity = (activity as? BorrowerAddressActivity)
-            activity?.loanApplicationId?.let {
-                loanApplicationId = it
-            }
-            activity?.borrowerId?.let {
-                if(it != -1 && it != 0){
-                   borrowerId = it
-                }
-            }
-            activity?.ownTypeId?.let {
-                ownTypeId = it
-            }
-            activity?.firstName?.let {
-                firstName = it
-            }
-            activity?.lastName?.let {
-                lastName = it
-            }
-            activity?.middleName?.let {
-                middleName = it
-            }
-            activity?.isAddBorrower?.let{
-                isAddCoBorrower= it
-                if(isAddCoBorrower)
-                    ownTypeId = SECONDARY_BORROWER_ID
-            }
-
-            if(ownTypeId == SECONDARY_BORROWER_ID) bi.borrowerType.text= getString(R.string.heading_borrower_secondary) else bi.borrowerType.text= getString(R.string.heading_borrower_primary)
-
-            try {
-                if (firstName != null && lastName != null) {
-                    var name = firstName!!.capitalize().plus(" ").plus(lastName!!.capitalize())
-                    if (name.isNotEmpty() && name.isNotBlank() && name.length > 0) {
-                        bi.name.setText(name)
-                        bindingMilitary.tvQues.text =
-                            "Was ".plus(name) + " ever activated during their tour of duty?"
-                    }
-                }
-            } catch(e:Exception){}
-
             adapter = BorrowerAddressAdapter(requireActivity())
 
             setData()
 
             savedViewInstance
         }
+    }
+
+    private fun setValues(){
+        val activity = (activity as? BorrowerAddressActivity)
+        activity?.loanApplicationId?.let {
+            loanApplicationId = it
+        }
+        activity?.borrowerId?.let {
+            if(it != -1 && it != 0){
+                borrowerId = it
+            }
+        }
+        activity?.ownTypeId?.let {
+            ownTypeId = it
+        }
+        activity?.firstName?.let {
+            firstName = it
+        }
+        activity?.lastName?.let {
+            lastName = it
+        }
+        activity?.middleName?.let {
+            middleName = it
+        }
+        activity?.isAddBorrower?.let{
+            isAddCoBorrower= it
+            if(isAddCoBorrower)
+                ownTypeId = SECONDARY_BORROWER_ID
+        }
+
+        if(ownTypeId == SECONDARY_BORROWER_ID) bi.borrowerType.text= getString(R.string.heading_borrower_secondary) else bi.borrowerType.text= getString(R.string.heading_borrower_primary)
+
+        try {
+//                if (firstName != null && lastName != null) {
+//                    var name = firstName!!.capitalize().plus(" ").plus(lastName!!.capitalize())
+//                    if (name.isNotEmpty() && name.isNotBlank() && name.length > 0) {
+//                        bi.name.setText(name)
+//                        bindingMilitary.tvQues.text =
+//                            "Was ".plus(name) + " ever activated during their tour of duty?"
+//                    }
+//                }
+
+            val builder = StringBuilder()
+            if(firstName!!.isNotEmpty() && firstName != "null"){
+                builder.append(firstName!!.capitalize())
+            }
+
+            if(lastName!!.isNotEmpty() && lastName != "null"){
+                builder.append(" ".plus(lastName!!.capitalize()))
+            }
+
+            if(builder.length > 0){
+                bi.name.setText(builder.toString())
+                bindingMilitary.tvQues.text =
+                    "Was ".plus(builder) + " ever activated during their tour of duty?"
+            }
+        } catch(e:Exception){}
     }
 
     private fun setData(){
@@ -1057,13 +1074,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
         }
 
-        // check listeners
-        /*msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
-                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
-            else
-                msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
-        } */
         //married
         msBinding.rbMarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
@@ -1138,16 +1148,22 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
 
         bindingMilitary.chbResNationalGuard.setOnClickListener {
-            val bundle = Bundle()
-            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
-            findNavController().navigate(R.id.action_info_reserve,bundle)
-            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
-        }
+            if (bindingMilitary.chbResNationalGuard.isChecked) {
+                val bundle = Bundle()
+                reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
+                findNavController().navigate(R.id.action_info_reserve,bundle)
+                bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
+            }
+            else {
+                bindingMilitary.layoutNationalGuard.visibility = View.GONE
+                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
+            }
 
-        bindingMilitary.layoutNationalGuard.setOnClickListener {
-            val bundle = Bundle()
-            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
-            findNavController().navigate(R.id.action_info_reserve,bundle)
+            bindingMilitary.layoutNationalGuard.setOnClickListener {
+                val bundle = Bundle()
+                reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
+                findNavController().navigate(R.id.action_info_reserve,bundle)
+            }
         }
     }
 
@@ -1433,20 +1449,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
         }
     }
-
-    /*private fun militaryNationalGuard() {
-        if (bindingMilitary.chbResNationalGuard.isChecked) {
-            val bundle = Bundle()
-            reserveEverActivated?.let { bundle.putBoolean(AppConstant.RESERVE_ACTIVATED, it) }
-            findNavController().navigate(R.id.action_info_reserve,bundle)
-            bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
-            bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
-
-        } else {
-            bindingMilitary.layoutNationalGuard.visibility = View.GONE
-            bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
-        }
-    } */
 
     private fun militaryVeteran() {
         if (bindingMilitary.chbVeteran.isChecked) {

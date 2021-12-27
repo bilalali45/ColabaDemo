@@ -135,10 +135,15 @@ class DetailTabFragment : BaseFragment() {
     private fun observeFileReadChanges(){
         detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, { docsArrayList ->
             for (doc in docsArrayList) {
-                if (doc.subFiles.size > 0) {
-                    for (subFile in doc.subFiles) {
-                        if (!subFile.isRead)
-                            displayBadge = true
+                doc.subFiles?.let { subFiles->
+                    if (subFiles.size > 0) {
+                        for (subFile in subFiles) {
+                            subFile.isRead?.let {
+                                if (!it)
+                                    displayBadge = true
+                            }
+
+                        }
                     }
                 }
             }

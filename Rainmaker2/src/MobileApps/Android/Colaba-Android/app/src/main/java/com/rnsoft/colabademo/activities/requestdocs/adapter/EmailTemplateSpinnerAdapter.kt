@@ -2,10 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import timber.log.Timber
 
 /**
  * Created by Anita Kiran on 10/4/2021.
@@ -35,7 +37,7 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         var v: View? = convertView
         v = super.getDropDownView(position, convertView, parent)
-        //Log.e("adapter", ""+SendDocRequestEmailFragment.selectedItem)
+        Log.e("adapter", ""+SendDocRequestEmailFragment.selectedItem)
         if (position == SendDocRequestEmailFragment.selectedItem) {
             v.setBackgroundColor(Color.BLUE)
         } else {
@@ -56,7 +58,7 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             return if (constraint != null) {
-                //Timber.e("perform filtering")
+                Timber.e("perform filtering")
                 suggestions.clear()
                 for (item in itemsAll) {
                     suggestions.add(item)
