@@ -15,13 +15,13 @@ class LoanInfoRepo @Inject constructor(private val datasource : LoanInfoDataSour
         return datasource.getLoanGoals(loanPurposeId = loanPurposeId)
     }
 
-    suspend fun addLoanInfo(token: String, data: AddLoanInfoModel): Result<AddUpdateDataResponse> {
-        val sendDataResponse = datasource.addUpdateLoan(token,data)
+    suspend fun addLoanInfo(data: AddLoanInfoModel): Result<AddUpdateDataResponse> {
+        val sendDataResponse = datasource.addUpdateLoan(data)
         return sendDataResponse
     }
 
-    suspend fun addLoanRefinanceInfo(token: String, data: UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
-        val sendDataResponse = datasource.addUpdateLoanRefinance(token,data)
+    suspend fun addLoanRefinanceInfo(data: UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
+        val sendDataResponse = datasource.addUpdateLoanRefinance(data)
         return sendDataResponse
     }
 }

@@ -2,14 +2,17 @@ package com.rnsoft.colabademo
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getDrawable
 import timber.log.Timber
 
 /**
@@ -27,6 +30,9 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
             val vi = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             v = vi.inflate(viewResourceId, null)
         }
+
+      //  v?.setBackground(getDrawable(mContext, R.drawable.all_white))
+
         val emailTemplte: Template? = items[position]
         if (emailTemplte != null) {
             val docTitle = v?.findViewById(R.id.tv_template_type) as TextView?
@@ -35,9 +41,16 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
             docDesc?.text = emailTemplte.docDesc
             if (position == SendDocRequestEmailFragment.selectedItem) {
                 v?.setBackgroundColor(ContextCompat.getColor(mContext,R.color.plus_circle_inside_color_with_ten_alpha))
+                    docTitle?.setTypeface(null, Typeface.BOLD)
+
+
+
             } else {
                 v?.setBackgroundColor(Color.WHITE)
+                docTitle?.setTypeface(null, Typeface.NORMAL)
             }
+
+
         }
         return v!!
     }

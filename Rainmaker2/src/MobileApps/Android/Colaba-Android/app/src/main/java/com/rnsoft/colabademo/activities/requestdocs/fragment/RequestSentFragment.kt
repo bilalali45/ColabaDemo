@@ -22,13 +22,16 @@ class RequestSentFragment : BaseFragment() {
 
         setupUI()
 
+        val activity = (activity as? RequestDocsActivity)
+        activity?.fullName?.let {
+            binding.emailBorrowerName.setText(it)
+        }
 
         return binding.root
 
     }
 
     private fun setupUI(){
-
         requireActivity().onBackPressedDispatcher.addCallback {
             requireActivity().finish()
             requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)

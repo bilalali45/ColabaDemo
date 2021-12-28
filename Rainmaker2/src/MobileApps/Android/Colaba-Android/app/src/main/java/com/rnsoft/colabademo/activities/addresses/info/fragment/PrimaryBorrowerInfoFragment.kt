@@ -396,7 +396,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         }
                     }
 
-                    if (detail.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)) {
+                    if (detail.code.equals(AppConstant.RESPONSE_CODE_SUCCESS)){
                         hideLoader()
                     }
 
@@ -1173,13 +1173,13 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
     }
 
-    fun clearError(textInputlayout: TextInputLayout) {
+    fun clearError(textInputlayout: TextInputLayout){
         textInputlayout.helperText = ""
         textInputlayout.setBoxStrokeColorStateList(
             AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_line_color))
     }
 
-    private fun setEndIconClicks() {
+    private fun setEndIconClicks(){
         bi.layoutDateOfBirth.setEndIconOnClickListener(View.OnClickListener {
             openCalendar()
         })

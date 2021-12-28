@@ -212,11 +212,10 @@ class LoanPurchaseFragment : BaseFragment(), DatePickerDialog.OnDateSetListener{
                 val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = AppConstant.PURPOSE_ID_PURCHASE,loanPayment= newLoanAmount?.toDouble(),
                     loanGoalId = loanGoalId, expectedClosingDate = closingDate, downPayment = newDownPayment?.toDouble(), cashOutAmount=1, propertyValue = newPurchasePrice?.toDouble())
                 lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        binding.loaderLoanPurchase.visibility = View.VISIBLE
-                        //Log.e("LoanInfoApi",""+info)
-                        loanViewModel.addLoanInfo(authToken, info)
-                    }
+                    //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    binding.loaderLoanPurchase.visibility = View.VISIBLE
+                    //Log.e("LoanInfoApi",""+info)
+                    loanViewModel.addLoanInfo(info)
                 }
                 binding.loaderLoanPurchase.visibility = View.GONE
             }

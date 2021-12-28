@@ -56,12 +56,12 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
         }
     }
 
-    suspend fun addLoanInfo(token: String,data: AddLoanInfoModel) {
+    suspend fun addLoanInfo(data: AddLoanInfoModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repo.addLoanInfo(token = token,data)
+            val responseResult = repo.addLoanInfo(data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
-                    Log.e("Viewmodel", "${responseResult.data}")
+                    //Log.e("Viewmodel", "${responseResult.data}")
                     //Log.e("Viewmodel", "$responseResult")
                     EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 }
@@ -73,9 +73,9 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
         }
     }
 
-    suspend fun addLoanRefinanceInfo(token: String,data: UpdateLoanRefinanceModel) {
+    suspend fun addLoanRefinanceInfo(data: UpdateLoanRefinanceModel) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = repo.addLoanRefinanceInfo(token = token,data)
+            val responseResult = repo.addLoanRefinanceInfo(data)
             withContext(Dispatchers.Main) {
                 if(responseResult is Result.Success) {
                     //Log.e("Viewmodel", "${responseResult.data}")

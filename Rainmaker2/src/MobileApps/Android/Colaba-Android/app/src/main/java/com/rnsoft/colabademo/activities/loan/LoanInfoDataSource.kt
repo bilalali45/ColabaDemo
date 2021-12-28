@@ -1,9 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
-import com.google.gson.Gson
 import retrofit2.HttpException
-import retrofit2.Response
 import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
@@ -40,39 +38,32 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun addUpdateLoan(token: String, data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
+    suspend fun addUpdateLoan(data:AddLoanInfoModel): Result<AddUpdateDataResponse> {
         val serverResponse: AddUpdateDataResponse
         return try {
-            val newToken = "Bearer $token"
-            serverResponse = serverApi.addUpdateLoanInfo(newToken, data)
+            //val newToken = "Bearer $token"
+            serverResponse = serverApi.addUpdateLoanInfo(data)
             if(serverResponse.status.equals("OK", true) )
                 Result.Success(serverResponse)
-            else {
-               // Log.e("what-code ", ""+serverResponse.errorBody())
-                // Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
+            else
                 Result.Success(serverResponse)
-            }
 
         } catch (e: Throwable){
-             //Log.e("errorrr",e.localizedMessage)
             if(e is HttpException){
-                 //Log.e("network", "issues...")
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-                 //Log.e("erorr",e.message ?:"Error")
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
 
-    suspend fun addUpdateLoanRefinance(token: String, data:UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
+    suspend fun addUpdateLoanRefinance(data:UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
         val serverResponse: AddUpdateDataResponse
         return try {
-            val newToken = "Bearer $token"
-            serverResponse = serverApi.addUpdateLoanRefinance(newToken, data)
+            //val newToken = "Bearer $token"
+            serverResponse = serverApi.addUpdateLoanRefinance(data)
                 //Log.e("Add-Refinance-Response","$serverResponse")
-
             if(serverResponse.status.equals("OK", true) )
                 Result.Success(serverResponse)
             else {
