@@ -6,26 +6,22 @@ import androidx.room.Room
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
-import com.franmontiel.persistentcookiejar.PersistentCookieJar
-import com.franmontiel.persistentcookiejar.cache.SetCookieCache
-import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
+import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
+import java.util.*
 
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
-
-
 
         @Singleton
         @Provides
@@ -57,6 +53,7 @@ class AppModule {
 
 
 
+        /*
         @Singleton // Tell Dagger-Hilt to create a singleton accessible everywhere in ApplicationCompenent (i.e. everywhere in the application)
         @Provides
         fun provideYourDatabase(@ApplicationContext app: Context) =
@@ -69,6 +66,8 @@ class AppModule {
         @Singleton
         @Provides
         fun provideYourDao(db: AppDatabase) = db.loansDao() // The reason we can implement a Dao for the database
+         */
+
 
 
 
@@ -88,31 +87,52 @@ class AppModule {
 
         @Provides
         @Singleton
+        fun provideOkHttp(sharedPreferences: SharedPreferences):OkHttpClient{
+            val httpClientNew = OkHttpClient.Builder()
+
+            val networkInterceptor = Interceptor { chain ->
+                var request: Request = chain.request().newBuilder().build()
+                val tokenValue = sharedPreferences.getString(AppConstant.token, "")!!
+                if(tokenValue.isNotEmpty() && tokenValue.isNotBlank()){
+                    request = chain.request().newBuilder().addHeader("Authorization", "Bearer $tokenValue").build()
+                }
+                chain.proceed(request)
+            }
+
+            httpClientNew
+                //.authenticator(tokenAuthenticator)
+                .retryOnConnectionFailure(true)
+                .connectTimeout(60,TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BODY })
+                .addNetworkInterceptor(networkInterceptor)
+
+            httpClientNew.protocols(listOf(Protocol.HTTP_1_1))
+
+            return httpClientNew.build()
+
+        }
+
+
+
+
+        /*
+        @Provides
+        @Singleton
         //fun provideOkHttp(tokenAuthenticator: TokenAuthenticator): OkHttpClient {
         fun provideOkHttp( @ApplicationContext context: Context,
                            tokenAuthenticator : TokenAuthenticator,
                            networkConnectionInterceptor: NetworkConnectionInterceptor): OkHttpClient {
 
-            //val interceptor = HttpLoggingInterceptor()
-            //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
             //val newLoginInterceptor = NewLoginInterceptor(HttpLoggingInterceptor.Logger.DEFAULT)
-            //newLoginInterceptor.setL
+            // val testCookieJar = PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
+            // val cookieHandler = CookieManager( PersistentCookieStore(ctx), CookiePolicy.ACCEPT_ALL )
+            // val cookieHandler = CookieManager( null, CookiePolicy.ACCEPT_ALL )
 
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            httpLoggingInterceptor.apply {
-                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                this.level = HttpLoggingInterceptor.Level.BODY
             }
-
-
-
-            val testCookieJar =
-                PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(context))
-
-
-           // val cookieHandler = CookieManager( PersistentCookieStore(ctx), CookiePolicy.ACCEPT_ALL )
-
-            //val cookieHandler = CookieManager( null, CookiePolicy.ACCEPT_ALL )
-
             return OkHttpClient.Builder()
                 //.authenticator(tokenAuthenticator)
                 .retryOnConnectionFailure(true)
@@ -120,12 +140,14 @@ class AppModule {
                 //.addInterceptor(interceptor)
                 .addInterceptor(httpLoggingInterceptor)
                 //.addInterceptor(networkConnectionInterceptor)
-
                 //.cookieJar(testCookieJar)
                 .connectTimeout(60,TimeUnit.SECONDS).readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
                 .build()
         }
+
+         */
+
 
 
 
@@ -135,24 +157,17 @@ class AppModule {
             return NetworkConnectionInterceptor(context)
         }
 
-
-
-
         @Provides
         @Singleton
         fun provideTokenAuthenticator(sharedPreferences: SharedPreferences): TokenAuthenticator {
             return TokenAuthenticator(sharedPreferences)
         }
 
-
-
-
         @Provides
         @Singleton
         fun retrofit(okHttpClient: OkHttpClient): Retrofit {
             return Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
-
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
@@ -183,25 +198,15 @@ class AppModule {
         }
 
 
-
-    /*
+        /*
         @Provides
         @Singleton
         fun provideProductRepo( @ApplicationContext applicationContext: Application , loginRepository: LoginRepository): ProductRepository {
             return ProductRepository( applicationContext , loginRepository  )
         }
+        */
 
-     */
 
-    /*
-      can not pass TestAPI, it is creating dependency cycle... Dagger is stopping it at compile time....
-      @Provides
-      @Singleton
-      fun provideTokenAuthenticator(testApi: TestAPI, sharedPreferences: SharedPreferences): TokenAuthenticator {
-          return TokenAuthenticator(testApi,sharedPreferences)
-      }
-
-       */
 }
 
 

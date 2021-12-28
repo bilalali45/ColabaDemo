@@ -18,7 +18,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun fetchAssetTypesByCategoryItemList(token: String , categoryId:Int, loanPurposeId:Int) : Result<ArrayList<GetAssetTypesByCategoryItem>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.fetchAssetTypesByCategoryItemList(newToken , categoryId = categoryId, loanPurposeId = loanPurposeId)
+            val response = serverApi.fetchAssetTypesByCategoryItemList( categoryId = categoryId, loanPurposeId = loanPurposeId)
             //Timber.e("GetAssetTypesByCategoryItem:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -32,7 +32,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getProceedsFromLoan(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getProceedsFromLoan(Authorization  = newToken ,
+            val response = serverApi.getProceedsFromLoan(
                 loanApplicationId = loanApplicationId, borrowerId = borrowerId,
                 AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
             Timber.e("getProceedsFromLoan:  - $response")
@@ -48,7 +48,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getProceedsFromNonRealEstateDetail(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getFromLoanNonRealStateDetails(Authorization  = newToken ,
+            val response = serverApi.getFromLoanNonRealStateDetails(
                 loanApplicationId = loanApplicationId, borrowerId = borrowerId,
                 AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
             Timber.e("getProceedsFromLoan:  - $response")
@@ -65,7 +65,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getProceedsFromRealEstateDetail(token: String , loanApplicationId : Int, borrowerId : Int, assetTypeID:Int, borrowerAssetId : Int) : Result<ProceedFromLoanModel> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getFromLoanRealStateDetails(Authorization  = newToken ,
+            val response = serverApi.getFromLoanRealStateDetails(
                 loanApplicationId = loanApplicationId, borrowerId = borrowerId,
                 AssetTypeId=assetTypeID, borrowerAssetId = borrowerAssetId )
             Timber.e("getProceedsFromLoan:  - $response")
@@ -82,8 +82,13 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getBankAccountDetails(token : String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBankAccountDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
-            Log.e("BankAccount-Details----", response.toString())
+            val response = serverApi.getBankAccountDetails(
+                newToken,
+                loanApplicationId,
+                borrowerId,
+                borrowerAssetId
+            )
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -96,8 +101,8 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateBankDetails(token : String, addUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateBankDetails(newToken, addUpdateParams)
-            Log.e("-addUpdateBankDetails----", response.toString())
+            val response = serverApi.addUpdateBankDetails(addUpdateParams)
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -110,7 +115,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateOtherAsset(token : String, otherAssetAddUpdateParams: OtherAssetAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateOtherAsset(newToken, otherAssetAddUpdateParams)
+            val response = serverApi.addUpdateOtherAsset( otherAssetAddUpdateParams)
             Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -124,7 +129,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateGift(token : String, giftAddUpdateParams: GiftAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateGift(newToken, giftAddUpdateParams)
+            val response = serverApi.addUpdateGift( giftAddUpdateParams)
             Timber.e("addUpdate = $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -136,11 +141,10 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     }
 
 
-    suspend fun addUpdateStockBonds(token : String, stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+    suspend fun addUpdateStockBonds(stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.addUpdateStockBonds(newToken, stocksBondsAddUpdateParams)
-            Log.e("-addUpdateBankDetails----", response.toString())
+            val response = serverApi.addUpdateStockBonds(stocksBondsAddUpdateParams)
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -158,7 +162,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateProceedFromLoan(token : String, addUpdateProceedLoanParams: AddUpdateProceedLoanParams): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateProceedFromLoan(newToken, addUpdateProceedLoanParams)
+            val response = serverApi.addUpdateProceedFromLoan( addUpdateProceedLoanParams)
             Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -173,7 +177,6 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addUpdateProceedFromLoanOther(
-                newToken,
                 addUpdateProceedFromLoanOtherParams
             )
             Timber.e(response.toString())
@@ -191,9 +194,9 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response:GenericAddUpdateAssetResponse = if(addUpdateRealStateParams.AssetTypeId == AppConstant.assetRealStateId)
-                serverApi.addUpdateAssetsRealState(newToken, addUpdateRealStateParams)
+                serverApi.addUpdateAssetsRealState( addUpdateRealStateParams)
             else
-                serverApi.addUpdateAssetsNonRealState(newToken, addUpdateRealStateParams)
+                serverApi.addUpdateAssetsNonRealState( addUpdateRealStateParams)
             Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -209,7 +212,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
                               loanApplicationId:Int): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.deleteAsset(newToken, AssetId = assetId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
+            val response = serverApi.deleteAsset( AssetId = assetId, borrowerId = borrowerId, loanApplicationId = loanApplicationId)
             Timber.e("deleteAsset = $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -227,7 +230,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateRetirement(token : String, retirementAddUpdateParams: RetirementAddUpdateParams ): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateRetirement(newToken, retirementAddUpdateParams)
+            val response = serverApi.addUpdateRetirement( retirementAddUpdateParams)
             Log.e("-addUpdateBankDetails----", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -243,7 +246,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getBankAccountType(token: String) : Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBankAccountType(newToken)
+            val response = serverApi.getBankAccountType()
             Timber.e("BankAccountTyppes:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -262,7 +265,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     ): Result<RetirementAccountResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getRetirementAccountDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
+            val response = serverApi.getRetirementAccountDetails( loanApplicationId,borrowerId,borrowerAssetId)
             Log.e("BankAccount-Details----", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -295,7 +298,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getAllFinancialAssets(token: String) : Result<ArrayList<DropDownResponse>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getFinancialAsset(newToken)
+            val response = serverApi.getFinancialAsset()
             Timber.e("BankAccountTyppes:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -325,7 +328,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         token : String, loanApplicationId : Int, borrowerId : Int, AssetTypeId:Int, borrowerAssetId : Int): Result<AssetsRealEstateResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getFromLoanRealEstateDetail(newToken, loanApplicationId,borrowerId, AssetTypeId,borrowerAssetId)
+            val response = serverApi.getFromLoanRealEstateDetail( loanApplicationId,borrowerId, AssetTypeId,borrowerAssetId)
             Log.e("Asset LoanReal Estate--", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -339,7 +342,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getAssetByCategory(token: String, categoryId: Int, loanPurposeId:Int) : Result<ArrayList<AssetTypesByCategory>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getAssetTransactionType(newToken, categoryId, loanPurposeId)
+            val response = serverApi.getAssetTransactionType( categoryId, loanPurposeId)
             //Timber.e("Assets by category:  - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -355,7 +358,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         token: String, loanApplicationId : Int, borrowerId : Int, AssetTypeId:Int, borrowerAssetId : Int): Result<ProceedFromLoanResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getProceedFromLoan(newToken, loanApplicationId,borrowerId, AssetTypeId,borrowerAssetId)
+            val response = serverApi.getProceedFromLoan( loanApplicationId,borrowerId, AssetTypeId,borrowerAssetId)
             Log.e("Proceed from loan--", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -370,7 +373,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId : Int): Result<GiftAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getGiftAssetDetail(newToken, loanApplicationId,borrowerId,borrowerAssetId)
+            val response = serverApi.getGiftAssetDetail( loanApplicationId,borrowerId,borrowerAssetId)
             //Log.e("Gift Asset Detail--", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -384,7 +387,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getAllGiftSources(token: String): Result<ArrayList<GiftSourcesResponse>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getAllGiftSources(newToken)
+            val response = serverApi.getAllGiftSources()
             //Timber.e("Gift sources: - $response")
             Result.Success(response)
         } catch (e: Throwable) {
@@ -399,7 +402,7 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
         token: String, loanApplicationId: Int, borrowerId: Int, borrowerAssetId : Int): Result<OtherAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getOtherAssetDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
+            val response = serverApi.getOtherAssetDetails( loanApplicationId,borrowerId,borrowerAssetId)
             Log.e("OtherAssetResponse--", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

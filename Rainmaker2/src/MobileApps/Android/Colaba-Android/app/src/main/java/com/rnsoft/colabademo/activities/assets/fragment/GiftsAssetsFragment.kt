@@ -350,7 +350,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
 
                 }
             }
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
 
 

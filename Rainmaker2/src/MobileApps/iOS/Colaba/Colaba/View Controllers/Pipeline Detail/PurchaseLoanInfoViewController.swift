@@ -67,6 +67,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
         if let loanGoalModel = self.loanStageArray.filter({$0.id == self.loanInfo.loanGoalId}).first{
             txtfieldLoanStage.setTextField(text: loanGoalModel.loanGoal)
         }
+        txtfieldClosingDate.isHidden = (txtfieldLoanStage.text! == "" || txtfieldLoanStage.text!.localizedCaseInsensitiveContains("Pre-Approval"))
         txtfieldPurchasePrice.setTextField(text: String(format: "%.0f", self.loanInfo.propertyValue.rounded()))
         txtfieldLoanAmount.setTextField(text: String(format: "%.0f", self.loanInfo.loanPayment.rounded()))
         txtfieldDownPayment.setTextField(text: String(format: "%.0f", self.loanInfo.downPayment.rounded()))
@@ -92,7 +93,9 @@ class PurchaseLoanInfoViewController: BaseViewController {
         isValidate = txtfieldLoanAmount.validate() && isValidate
         isValidate = txtfieldDownPayment.validate() && isValidate
         isValidate = txtfieldPercentage.validate() && isValidate
-        isValidate = txtfieldClosingDate.validate() && isValidate
+        if !(txtfieldClosingDate.isHidden){
+            isValidate = txtfieldClosingDate.validate() && isValidate
+        }
         return isValidate
     }
     
@@ -180,10 +183,16 @@ class PurchaseLoanInfoViewController: BaseViewController {
             }
         }
         
-        let dateComponent = txtfieldClosingDate.text!.components(separatedBy: "/")
-        if (dateComponent.count == 2){
-            expectedClosingDate = "\(dateComponent[1])-\(dateComponent[0])-01T00:00:00"
+        if (txtfieldLoanStage.text! == "" || txtfieldLoanStage.text!.localizedCaseInsensitiveContains("Pre-Approval")){
+            expectedClosingDate = NSNull()
         }
+        else{
+            let dateComponent = txtfieldClosingDate.text!.components(separatedBy: "/")
+            if (dateComponent.count == 2){
+                expectedClosingDate = "\(dateComponent[1])-\(dateComponent[0])-01T00:00:00"
+            }
+        }
+        
         
         Utility.showOrHideLoader(shouldShow: true)
         
@@ -216,6 +225,7 @@ class PurchaseLoanInfoViewController: BaseViewController {
 
 extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
     func textFieldDidChange(_ textField: ColabaTextField) {
+         
         if textField == txtfieldPurchasePrice {
             if !isDownPaymentPercentageChanged {
                 txtfieldPercentage.attributedText = createAttributedTextWithPrefix(prefix: PrefixType.percentage.rawValue, string: "20")
@@ -224,7 +234,7 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
             calculateDownPayment()
         }
         
-        if (textField == txtfieldLoanAmount){
+        if textField == txtfieldLoanAmount{
             isDownPaymentPercentageChanged = true
             calculateDownPaymentFromLoanAmount()
         }
@@ -237,6 +247,12 @@ extension PurchaseLoanInfoViewController: ColabaTextFieldDelegate {
         if textField == txtfieldDownPayment {
             isDownPaymentPercentageChanged = true
             calculatePercentage()
+        }
+    }
+    
+    func selectedOption(option: String, atIndex: Int, textField: ColabaTextField) {
+        if (textField == txtfieldLoanStage){
+            txtfieldClosingDate.isHidden = (txtfieldLoanStage.text! == "" || txtfieldLoanStage.text!.localizedCaseInsensitiveContains("Pre-Approval"))
         }
     }
     

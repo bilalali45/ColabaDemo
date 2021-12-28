@@ -33,8 +33,8 @@ class AssetsRepo @Inject constructor(private val dataSource : AssetDataSource){
         return dataSource.addUpdateRetirement(token = token, retirementAddUpdateParams)
     }
 
-    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
-        return dataSource.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams)
+    suspend fun addUpdateStockBonds( stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+        return dataSource.addUpdateStockBonds( stocksBondsAddUpdateParams)
     }
 
 

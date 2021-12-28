@@ -117,7 +117,6 @@ class BorrowerInformationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        lblBorrowerType.text = borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
         setViews()
         getAllMaritalStatus()
     }
@@ -159,6 +158,7 @@ class BorrowerInformationViewController: BaseViewController {
 
         ///Extension Number Text Field
         txtfieldExtensionNumber.setTextField(placeholder: "EXT", controller: self, validationType: .noValidation, keyboardType: .phonePad)
+        txtfieldExtensionNumber.delegate = self
         
         ///Cell Number Text Field
         txtfieldCellNumber.setTextField(placeholder: "Cell Number", controller: self, validationType: .phoneNumber, keyboardType: .phonePad)
@@ -1019,6 +1019,9 @@ class BorrowerInformationViewController: BaseViewController {
                     if (self.borrowerId > 0){
                         self.getBorrowerDetail()
                     }
+                    else{
+                        self.lblBorrowerType.text = self.borrowerInformationModel.borrowerBasicDetails.ownTypeId == 1 ? "Primary Borrower" : "Co-Borrower"
+                    }
                     Utility.showOrHideLoader(shouldShow: false)
                 }
                 else{
@@ -1309,9 +1312,20 @@ class BorrowerInformationViewController: BaseViewController {
     }
 }
 
-extension BorrowerInformationViewController: ColabaTextFieldDelegate {
+extension BorrowerInformationViewController: ColabaTextFieldDelegate, UITextFieldDelegate {
     func textFieldEndEditing(_ textField: ColabaTextField) {
         _ = validate()
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if (textField == txtfieldExtensionNumber){
+            let maxLength = 10
+            let currentString: NSString = (textField.text ?? "") as NSString
+            let newString: NSString =
+                currentString.replacingCharacters(in: range, with: string) as NSString
+            return newString.length <= maxLength
+        }
+        return true
     }
 }
 

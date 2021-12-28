@@ -203,7 +203,7 @@ class OtherAssetsFragment:AssetBaseFragment() {
 
                 }
             }
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
     }
 

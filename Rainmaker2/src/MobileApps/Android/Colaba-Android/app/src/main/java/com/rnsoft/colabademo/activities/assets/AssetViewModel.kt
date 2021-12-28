@@ -97,12 +97,6 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
         }
     }
 
-    fun setProccedFromLaonToNull(){
-        _proceedFromLoanModel.value = null
-        _proceedFromLoanModel.postValue(null)
-
-    }
-
     suspend fun getProceedsFromLoan(token: String , loanApplicationId:Int, borrowerId:Int, assetTypeID:Int, borrowerAssetId:Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = assetsRepo.getProceedsFromLoan( token , loanApplicationId, borrowerId, assetTypeID, borrowerAssetId)
@@ -228,9 +222,9 @@ class AssetViewModel @Inject constructor(private val assetsRepo: AssetsRepo) : V
     }
 
 
-    suspend fun addUpdateStockBonds(token: String,  stocksBondsAddUpdateParams:StocksBondsAddUpdateParams) {
+    fun addUpdateStockBonds( stocksBondsAddUpdateParams:StocksBondsAddUpdateParams) {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseResult = assetsRepo.addUpdateStockBonds(token = token, stocksBondsAddUpdateParams = stocksBondsAddUpdateParams)
+            val responseResult = assetsRepo.addUpdateStockBonds( stocksBondsAddUpdateParams = stocksBondsAddUpdateParams)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _genericAddUpdateAssetResponse.value = (responseResult.data)

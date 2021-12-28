@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.UndisclosedBorrowerFundLayoutBinding
 import com.rnsoft.colabademo.utils.Common
@@ -23,13 +21,12 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         const val UndisclosedBorrowerQuestionConstant ="What is the amount of money you’ve borrowed or intend to borrow?"
     }
 
-    private var _binding: UndisclosedBorrowerFundLayoutBinding? = null
-    private val binding get() = _binding!!
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
-    private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
+
+    private var _binding: UndisclosedBorrowerFundLayoutBinding? = null
+    private val binding get() = _binding!!
     private var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     private var questionId:Int = 0
 
@@ -74,7 +71,6 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         }
     }
 
-
     private fun setUpUI(){
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
@@ -90,8 +86,6 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
     }
 
-
-
     private fun updateOwnerShipInterest(getDetailString:String) {
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
             for (item in updateGovernmentQuestionByBorrowerId.Questions) {
@@ -99,18 +93,12 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                     item.answerDetail = getDetailString
                 }
             }
-            lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    //borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
-                    var detailTitle =  binding.edDetails.text.toString()
-                    if(detailTitle.isEmpty() || detailTitle.isBlank())
-                        detailTitle = ""
-                    EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString))
 
-                }
-            }
-
-           //findNavController().popBackStack()
+            var detailTitle =  binding.edDetails.text.toString()
+            if(detailTitle.isEmpty() || detailTitle.isBlank())
+                detailTitle = ""
+            EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString))
+            findNavController().popBackStack()
         }
     }
 
@@ -140,8 +128,6 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
 
          */
-
-
         return bool
     }
 

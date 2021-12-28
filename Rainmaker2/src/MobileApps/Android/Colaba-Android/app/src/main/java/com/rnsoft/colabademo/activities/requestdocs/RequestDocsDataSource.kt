@@ -18,7 +18,7 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun getCategoryDocumentMcu(token: String): Result<CategoryDocsResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getCategoryDocumentMcu(newToken)
+            val response = serverApi.getCategoryDocumentMcu()
             //Log.e("getCategoryDocumentMcu-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
@@ -32,7 +32,7 @@ class RequestDocsDataSource  @Inject constructor(private val serverApi: ServerAp
     suspend fun getTemplates(token: String): Result<GetTemplatesResponse>{
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getTemplates(newToken)
+            val response = serverApi.getTemplates()
             //Log.e("getCategoryDocumentMcu-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
