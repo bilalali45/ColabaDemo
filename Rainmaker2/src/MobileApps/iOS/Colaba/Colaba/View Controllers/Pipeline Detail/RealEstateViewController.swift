@@ -150,8 +150,13 @@ class RealEstateViewController: BaseViewController {
     
     func setRealEstateDetail(){
         if let subjectPropertyAddress = self.realEstateDetail.address{
-            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+            if (subjectPropertyAddress.street != ""){
+                lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+            }
         }
+        
+        addressView.isHidden = self.realEstateDetail.address?.street == ""
+        addAddressView.isHidden = self.realEstateDetail.address?.street != ""
         
         if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.realEstateDetail.propertyTypeId}).first{
             self.txtfieldPropertyType.setTextField(text: propertyType.optionName)
