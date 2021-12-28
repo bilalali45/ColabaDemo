@@ -15,13 +15,13 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
 
 
     suspend fun getLoanInfoDetails(
-        token: String,
+       // token: String,
         loanApplicationId: Int
     ): Result<LoanInfoDetailsModel> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getLoanInfoDetails(newToken, loanApplicationId)
-            //Log.e("Loan_info_Response", response.toString())
+            //val newToken = "Bearer $token"
+            val response = serverApi.getLoanInfoDetails(loanApplicationId)
+            Log.e("Loan_info_Response", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -31,11 +31,11 @@ class LoanInfoDataSource @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun getLoanGoals(token: String, loanPurposeId: Int): Result<ArrayList<LoanGoalModel>> {
+    suspend fun getLoanGoals(loanPurposeId: Int): Result<ArrayList<LoanGoalModel>> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getLoanGoals(newToken, loanPurposeId)
-            //Log.e("LoanGoals", response.toString())
+            //val newToken = "Bearer $token"
+            val response = serverApi.getLoanGoals(loanPurposeId)
+            Log.e("LoanGoals", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

@@ -27,10 +27,9 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
     private val _loanGoals : MutableLiveData<ArrayList<LoanGoalModel>> =   MutableLiveData()
     val loanGoals: LiveData<ArrayList<LoanGoalModel>> get() = _loanGoals
 
-
-    suspend fun getLoanInfoPurchase(token:String, loanApplicationId:Int) {
+    suspend fun getLoanInfoPurchase(loanApplicationId:Int) {
         viewModelScope.launch() {
-            val responseResult = repo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
+            val responseResult = repo.getLoanInfo(loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _loanInfoPurchase.value = (responseResult.data)
@@ -43,9 +42,9 @@ class LoanInfoViewModel @Inject constructor(private val repo: LoanInfoRepo) : Vi
         }
     }
 
-     fun getLoanGoals(token:String, loanPurposeId:Int) {
+     fun getLoanGoals(loanPurposeId:Int) {
         viewModelScope.launch() {
-            val responseResult = repo.getLoanGoals(token = token, loanPurposeId = loanPurposeId)
+            val responseResult = repo.getLoanGoals(loanPurposeId = loanPurposeId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _loanGoals.value = (responseResult.data)

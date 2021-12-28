@@ -115,13 +115,13 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetLoanInfoDetails")
     suspend fun getLoanInfoDetails(
-        @Header("Authorization")  Authorization:String,
+        //@Header("Authorization")  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int) : LoanInfoDetailsModel
 
     @GET("api/mcu/mobile/loanapplication/Loan/GetAllLoanGoals")
     suspend fun getLoanGoals(
-        @Header("Authorization")  Authorization:String,
-        @Query("loanpurposeid")  loanPurpuseId:Int) : ArrayList<LoanGoalModel>
+       // @Header("Authorization") Authorization:String,
+        @Query("loanpurposeid") loanPurpuseId:Int) : ArrayList<LoanGoalModel>
 
 
     @POST("api/mcu/mobile/loanapplication/Loan/AddOrUpdateLoanInformation")

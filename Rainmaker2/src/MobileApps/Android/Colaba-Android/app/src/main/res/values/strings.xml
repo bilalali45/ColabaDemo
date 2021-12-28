@@ -350,7 +350,7 @@
     <string name="email_add">Email Address</string>
     <string name="home_number">Home Number</string>
     <string name="work_number">Work Number</string>
-    <string name="ext_number">Extension Number</string>
+    <string name="ext_number">EXT</string>
     <string name="cell_number">Cell Number</string>
     <string name="emp_phone_number">Employer Phone Number</string>
     <string name="current_home_address">Current Home Address</string>
