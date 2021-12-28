@@ -41,30 +41,27 @@ class BorrowerLoanActivity : BaseActivity() {
         val navController = findNavController(R.id.nav_host_borrower_loan)
 
         lifecycleScope.launchWhenStarted {
-            //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (loanApplicationId != null) {
-                    //Log.e("authToken", authToken)
-                    //Log.e("****laon id", "" + loanApplicationId)
-                        coroutineScope {
-                            binding.loaderLoanInfo.visibility = View.VISIBLE
-                            viewModel.getLoanInfoPurchase(loanApplicationId!!)
-                            if(loanPurpose.equals(AppConstant.purchase, ignoreCase = true)) {
-                                val call1 = async {
-                                    viewModel.getLoanGoals(AppConstant.PURPOSE_ID_PURCHASE)
-                                }
-                                call1.await()
-                                navController.navigate(R.id.navigation_loan_purchase)
-                            }
-                            else if(loanPurpose.equals(AppConstant.refinance, ignoreCase = true)) {
-                                val call = async {
-                                    viewModel.getLoanGoals(AppConstant.PURPOSE_ID_REFINANCE)
-                                }
-                                call.await()
-                                navController.navigate(R.id.navigation_loan_refinance)
-                            }
+
+            if (loanApplicationId != null) {
+                //Log.e("authToken", authToken) //Log.e("****laon id", "" + loanApplicationId)
+                coroutineScope {
+                    binding.loaderLoanInfo.visibility = View.VISIBLE
+                    viewModel.getLoanInfoPurchase(loanApplicationId!!)
+                    if (loanPurpose.equals(AppConstant.purchase, ignoreCase = true)) {
+                        val call1 = async {
+                            viewModel.getLoanGoals(AppConstant.PURPOSE_ID_PURCHASE)
                         }
+                        call1.await()
+                        navController.navigate(R.id.navigation_loan_purchase)
+                    } else if (loanPurpose.equals(AppConstant.refinance, ignoreCase = true)) {
+                        val call = async {
+                            viewModel.getLoanGoals(AppConstant.PURPOSE_ID_REFINANCE)
+                        }
+                        call.await()
+                        navController.navigate(R.id.navigation_loan_refinance)
+                    }
                 }
-           // }
+            }
         }
     }
 }
