@@ -23,7 +23,10 @@ class PriorityLiensFragment:GovtDetailBaseFragment() {
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
+            userName = it.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
+
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         fillWithData(binding.edDetails)
         setUpUI()

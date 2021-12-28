@@ -887,6 +887,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
+        bundle.putString(AppConstant.govtUserName , (lastQData.firstName+" "+lastQData.lastName))
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{

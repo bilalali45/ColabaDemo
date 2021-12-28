@@ -22,6 +22,7 @@ class AsianFragment:BaseFragment() {
     private val binding get() = _binding!!
 
     private var asianChildList:ArrayList<DemoGraphicRaceDetail>? = null
+    private var userName:String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -30,6 +31,9 @@ class AsianFragment:BaseFragment() {
         _binding = AsianLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         asianChildList = arguments?.getParcelableArrayList(AppConstant.asianChildList)!!
+        userName = arguments?.getString(AppConstant.govtUserName)
+        binding.borrowerPurpose.text = userName
+
         setUpUI()
         super.addListeners(binding.root)
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )

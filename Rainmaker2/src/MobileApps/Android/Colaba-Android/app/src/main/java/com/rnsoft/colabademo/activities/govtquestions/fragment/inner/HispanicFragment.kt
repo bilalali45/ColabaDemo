@@ -19,6 +19,7 @@ class HispanicFragment:BaseFragment() {
     private val binding get() = _binding!!
 
     private var ethnicityChildList:ArrayList<EthnicityDetailDemoGraphic>? = null
+    private var userName:String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -26,6 +27,8 @@ class HispanicFragment:BaseFragment() {
         _binding = HispanicLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         ethnicityChildList = arguments?.getParcelableArrayList(AppConstant.ethnicityChildList)!!
+        userName = arguments?.getString(AppConstant.govtUserName)
+        binding.borrowerPurpose.text = userName
         setUpUI()
         super.addListeners(binding.root)
         return root
