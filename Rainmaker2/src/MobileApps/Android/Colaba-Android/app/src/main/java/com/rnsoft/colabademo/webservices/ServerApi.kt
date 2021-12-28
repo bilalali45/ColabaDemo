@@ -614,7 +614,7 @@ interface ServerApi{
 
     @GET("api/mcu/mobile/Milestone/Milestone/GetMilestoneForLoanCenter")
     suspend fun getMilestoneForLoanCenter(
-        @Header("Authorization" )  Authorization:String,
+        //@Header("Authorization" )  Authorization:String,
         @Query("loanApplicationId")  loanApplicationId:Int):AppMileStoneResponse
 
 

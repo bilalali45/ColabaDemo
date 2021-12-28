@@ -27,8 +27,8 @@ class BorrowerOverviewFragment : BaseFragment()  {
         val root: View = binding.root
 
         val detailActivity = (activity as? DetailActivity)
-        detailActivity?.let { detailActivity ->
-            binding.loanPurposeParam.text = detailActivity.borrowerLoanPurpose
+        detailActivity?.let {
+            binding.loanPurposeParam.text = it.borrowerLoanPurpose
         }
 
         binding.box1.setOnClickListener{
@@ -77,9 +77,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 else
                      binding.loanId.visibility = View.GONE
 
-                binding.loanPurpose.text = overviewModel.loanPurpose
+                //binding.loanPurpose.text = overviewModel.loanPurpose
                 binding.borrowerPropertyType.text = overviewModel.propertyType
-                binding.loanGoalTextView.text = "- "+overviewModel.loanGoal
+                //binding.loanGoalTextView.text = "- "+overviewModel.loanGoal
                 binding.propertyUsageTextView.text = overviewModel.propertyUsage
                 binding.borrowerAppStatus.text = overviewModel.milestone
 
@@ -93,9 +93,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
                     binding.loanPayment.text = "$"+stringValue
                 }
 
-                overviewModel.propertyValue?.let {
-                    val stringValue = AppSetting.returnAmountFormattedString(it)
-                    binding.propertyValue.text = "$"+stringValue
+                overviewModel.loanPurpose?.let {
+                    //val stringValue = AppSetting.returnAmountFormattedString(it)
+                    binding.loanPurposeValue.text = "$"+it
                 }
 
 

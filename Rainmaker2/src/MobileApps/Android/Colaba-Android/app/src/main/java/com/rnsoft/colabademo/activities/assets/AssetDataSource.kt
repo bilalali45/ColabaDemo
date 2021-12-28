@@ -82,8 +82,13 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getBankAccountDetails(token : String, loanApplicationId : Int, borrowerId : Int, borrowerAssetId : Int): Result<BankAccountResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBankAccountDetails(newToken, loanApplicationId,borrowerId,borrowerAssetId)
-            Log.e("BankAccount-Details----", response.toString())
+            val response = serverApi.getBankAccountDetails(
+                newToken,
+                loanApplicationId,
+                borrowerId,
+                borrowerAssetId
+            )
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -96,8 +101,8 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun addUpdateBankDetails(token : String, addUpdateParams: BankAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addUpdateBankDetails( addUpdateParams)
-            Log.e("-addUpdateBankDetails----", response.toString())
+            val response = serverApi.addUpdateBankDetails(addUpdateParams)
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -136,11 +141,10 @@ class AssetDataSource @Inject constructor(private val serverApi: ServerApi) {
     }
 
 
-    suspend fun addUpdateStockBonds(token : String, stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
+    suspend fun addUpdateStockBonds(stocksBondsAddUpdateParams:StocksBondsAddUpdateParams): Result<GenericAddUpdateAssetResponse> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.addUpdateStockBonds( stocksBondsAddUpdateParams)
-            Log.e("-addUpdateBankDetails----", response.toString())
+            val response = serverApi.addUpdateStockBonds(stocksBondsAddUpdateParams)
+            Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

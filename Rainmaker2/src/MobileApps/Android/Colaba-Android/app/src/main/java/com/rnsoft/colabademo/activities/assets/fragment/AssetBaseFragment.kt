@@ -90,7 +90,8 @@ open class AssetBaseFragment: BaseFragment() {
         }
     }
 
-    protected fun observeAddUpdateResponse(assetReturnParams: AssetReturnParams){
+    //protected fun observeAddUpdateResponse(assetReturnParams: AssetReturnParams){
+    protected fun observeAddUpdateResponse(){
         viewModel.genericAddUpdateAssetResponse.observe(viewLifecycleOwner, { addUpdateResponse ->
             if(addUpdateResponse?.status.equals("OK", true)){
                 val codeString:String = addUpdateResponse?.code.toString()

@@ -6,21 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.pdfview.PDFView
 import com.rnsoft.colabademo.databinding.PdfViewLayoutBinding
 import java.io.File
 import javax.inject.Inject
 
-class PdfViewFragment : BaseFragment(), AdapterClickListener {
+class PdfViewFragment : BaseFragment() {
+
     private var _binding: PdfViewLayoutBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var pdfFileName:String
-    lateinit var pdfView: PDFView
-    lateinit var titleTextView: TextView
-
+    private lateinit var pdfView: PDFView
+    private lateinit var titleTextView: TextView
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -41,7 +38,6 @@ class PdfViewFragment : BaseFragment(), AdapterClickListener {
 
         binding.backButton.setOnClickListener {
            requireActivity().onBackPressed()
-           //requireActivity().onBackPressed()
         }
 
         hideFabIcons()
@@ -51,14 +47,8 @@ class PdfViewFragment : BaseFragment(), AdapterClickListener {
         return view
     }
 
-    override fun navigateTo(position: Int) {
 
-    }
-    override fun getSingleItemIndex(position: Int) {
-
-    }
-
-    fun hideFabIcons(){
+    private fun hideFabIcons(){
         (activity as DetailActivity).hideFabIcons()
     }
 }

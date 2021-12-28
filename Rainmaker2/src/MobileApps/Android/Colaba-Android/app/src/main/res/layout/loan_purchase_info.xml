@@ -200,11 +200,10 @@
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/layout_percent"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="25dp"
                     android:layout_weight="1"
                     android:fontFamily="@font/rubik_light"
-                    app:hintEnabled="true"
                     app:boxCollapsedPaddingTop="1dp"
                     app:boxStrokeColor="@color/primary_info_line_color"
                     app:boxStrokeWidth="0.5dp"
@@ -212,6 +211,7 @@
                     app:helperTextEnabled="true"
                     app:helperTextTextAppearance="@style/inputError"
                     app:helperTextTextColor="@color/colaba_red_color"
+                    app:hintEnabled="true"
                     app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -219,15 +219,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
+                        android:clickable="true"
                         android:digits="1234567890"
                         android:ems="10"
                         android:fontFamily="@font/rubik_regular"
                         android:imeOptions="actionNext"
                         android:inputType="number"
+                        android:maxLength="2"
                         android:paddingStart="0dp"
                         android:singleLine="true"
-                        android:clickable="true"
-                        android:maxLength="3"
                         android:textColor="@color/grey_color_one"
                         android:textSize="@dimen/ed_txt_size_primary_info" />
 

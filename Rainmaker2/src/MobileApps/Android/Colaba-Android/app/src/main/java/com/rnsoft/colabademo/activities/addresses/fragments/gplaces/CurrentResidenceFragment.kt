@@ -1099,7 +1099,8 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
 
         val geocoder = Geocoder(requireContext(), Locale.getDefault())
         try {
-            val addresses: List<Address>? = geocoder.getFromLocationName(place.getFullText(null).toString(), 1)
+            val addresses: List<Address>? =
+                geocoder.getFromLocationName(place.getFullText(null).toString(), 1)
             val countryName: String? = addresses?.get(0)?.countryName
             val locality: String? = addresses?.get(0)?.locality
             val subLocality: String? = addresses?.get(0)?.subLocality
@@ -1131,12 +1132,15 @@ class CurrentResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetListe
         }
 
         val extractState = place.getFullText(null)
-        var stateCode =  extractState.substring(extractState.lastIndexOf(",")-2,extractState.lastIndexOf(","))
+        var stateCode =
+            extractState.substring(extractState.lastIndexOf(",") - 2, extractState.lastIndexOf(","))
         stateCode = stateCode.capitalize()
 
-        if(map.get(stateCode)!=null)
+        if (map.get(stateCode) != null){
             binding.stateCompleteTextView.setText(map.get(stateCode))
-        else
+            CustomMaterialFields.setColor(binding.stateCompleteTextInputLayout, R.color.grey_color_two, requireActivity())
+
+         }   else
             binding.stateCompleteTextView.setText("")
 
         visibleAllFields()

@@ -166,7 +166,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
                         itemList.add(item.name)
                     }
                     val stateAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                     binding.tvState.setAdapter(stateAdapter)
 
                    /* binding.tvState.setOnFocusChangeListener { _, _ ->
@@ -206,7 +206,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
                         itemList.add(item.name)
                     }
                     val countryAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                     binding.tvCountry.setAdapter(countryAdapter)
 
                     /*binding.tvCountry.setOnFocusChangeListener { _, _ ->
@@ -239,7 +239,7 @@ class RealEstateAddressFragment : BaseFragment() , PlacePredictionAdapter.OnPlac
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
-                        R.layout.autocomplete_text_view,
+                        android.R.layout.simple_list_item_1,
                         itemList
                     )
                     binding.tvCounty.setAdapter(countyAdapter)

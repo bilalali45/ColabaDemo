@@ -289,7 +289,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
                     val stateAdapter =
                         ArrayAdapter(
                             requireContext(),
-                            R.layout.autocomplete_text_view,
+                            android.R.layout.simple_list_item_1,
                             itemList
                         )
                     binding.tvState.setAdapter(stateAdapter)
@@ -332,7 +332,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
                         countryList.add(item)
                     }
                     val countryAdapter =
-                        ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                        ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                     binding.tvCountry.setAdapter(countryAdapter)
 
 //                    binding.tvCountry.setOnFocusChangeListener { _, _ ->
@@ -366,7 +366,7 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
                     }
                     val countyAdapter = ArrayAdapter(
                         requireContext(),
-                        R.layout.autocomplete_text_view,
+                        android.R.layout.simple_list_item_1,
                         itemList
                     )
                     binding.tvCounty.setAdapter(countyAdapter)
@@ -554,9 +554,11 @@ class AddressBusiness : BaseFragment(), PlacePredictionAdapter.OnPlaceClickListe
         //Log.e("stateCode ", " = $stateCode")
         //Log.e("Test State - ", " = " +map.get("LA") +"  "+map.get(stateCode))
 
-        if (map.get(stateCode) != null)
+        if (map.get(stateCode) != null) {
             binding.tvState.setText(map.get(stateCode))
-        else
+            CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
+
+        } else
             binding.tvState.setText("")
 
         visibleAllFields()

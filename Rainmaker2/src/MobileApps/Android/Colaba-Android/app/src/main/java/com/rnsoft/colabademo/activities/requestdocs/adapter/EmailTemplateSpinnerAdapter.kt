@@ -81,7 +81,7 @@ class EmailTemplateSpinnerAdapter(private val mContext: Context, private val vie
 
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             return if (constraint != null) {
-                Timber.e("perform filtering")
+                //Timber.e("perform filtering")
                 suggestions.clear()
                 for (item in itemsAll) {
                     suggestions.add(item)

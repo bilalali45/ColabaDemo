@@ -96,7 +96,7 @@ class RetirementFragment:AssetBaseFragment() {
                 }
             }
 
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
 
 

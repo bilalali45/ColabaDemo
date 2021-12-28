@@ -74,8 +74,6 @@ class BankAccountFragment : AssetBaseFragment() {
             }
         }
 
-        Timber.e("catching unique id in returnUpdatedParams  = $assetUniqueId")
-
 
         var assetValue = 0.0
         if(binding.annualBaseEditText.text.toString().isNotEmpty() && binding.annualBaseEditText.text.toString().isNotBlank() )
@@ -172,7 +170,7 @@ class BankAccountFragment : AssetBaseFragment() {
                 }
             }
 
-            observeAddUpdateResponse(returnUpdatedParams())
+            observeAddUpdateResponse()
         }
 
 
@@ -181,13 +179,13 @@ class BankAccountFragment : AssetBaseFragment() {
 
     private fun setUpEndIcon(){
         binding.accountNumberLayout.setEndIconOnClickListener(View.OnClickListener {
-            if (binding.accountNumberEdittext.getTransformationMethod()
+            if (binding.accountNumberEdittext.transformationMethod
                     .equals(PasswordTransformationMethod.getInstance())
             ) { //  hide password
-                binding.accountNumberEdittext.setTransformationMethod(HideReturnsTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod = HideReturnsTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_hide)
             } else {
-                binding.accountNumberEdittext.setTransformationMethod(PasswordTransformationMethod.getInstance())
+                binding.accountNumberEdittext.transformationMethod = PasswordTransformationMethod.getInstance()
                 binding.accountNumberLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
@@ -240,10 +238,10 @@ class BankAccountFragment : AssetBaseFragment() {
     }
 
     private fun addFocusOutListenerToFields(){
-        binding.accountNumberEdittext.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext()))
+        binding.accountNumberEdittext.onFocusChangeListener = CustomFocusListenerForEditText( binding.accountNumberEdittext , binding.accountNumberLayout , requireContext())
         //binding.accountTypeCompleteView.setOnFocusChangeListener(CustomFocusListenerForAutoCompleteTextView( binding.accountTypeCompleteView , binding.accountTypeInputLayout , requireContext()))
-        binding.annualBaseEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext()))
-        binding.financialEditText.setOnFocusChangeListener(CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext()))
+        binding.annualBaseEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.annualBaseEditText , binding.annualBaseLayout , requireContext())
+        binding.financialEditText.onFocusChangeListener = CustomFocusListenerForEditText( binding.financialEditText , binding.financialLayout , requireContext())
     }
 
     private var classLevelBankAccountTypes: ArrayList<DropDownResponse> = arrayListOf(DropDownResponse(1, "Checking Account"), DropDownResponse(2, "Savings Account"))

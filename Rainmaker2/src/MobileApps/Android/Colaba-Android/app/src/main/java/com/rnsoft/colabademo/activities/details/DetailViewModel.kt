@@ -1,7 +1,6 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,6 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.greenrobot.eventbus.EventBus
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -43,7 +43,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
 
 
     suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
-        Log.e("Token", token)
+        Timber.e("Token", token)
         if(!overviewServiceRunning) {
             overviewServiceRunning = true
             viewModelScope.launch (Dispatchers.IO) {
@@ -119,13 +119,13 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
 
 
             var bool = false
-            Log.e("fileName", "= $fileName")
+            Timber.e("fileName", "= $fileName")
             if(result?.body() is ResponseBody) {
                 val responseBody = result.body()
                 try {
                     //you can now get your file in the InputStream
                     val isRead: InputStream? = responseBody?.byteStream()
-                    Log.e("file lenght", "" + responseBody?.contentLength())
+                    Timber.e("file lenght", "" + responseBody?.contentLength())
                     val totalLength = responseBody?.contentLength()
                     totalLength?.let {
                         isRead?.let { isRead ->
@@ -138,7 +138,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                                 progress += nRead
                                 // publishProgress(progress,responseBody.contentLength() )
                                 withContext(Dispatchers.Main) { // invoke callback in UI thtread
-                                    Log.e("Progresss---", "$progress - $totalLength")
+                                    Timber.e("Progresss---", "$progress - $totalLength")
                                     val temp = arrayListOf<Long>()
                                     temp.add(progress)
                                     temp.add(totalLength)
@@ -146,20 +146,22 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                                     //callback(progress, fileSize)
 
                                 }
-                                Log.e(
+                                Timber.e(
                                     "isRead = ",
                                     "" + progress + " total size = " + responseBody.contentLength()
                                 )
                             }
 
                             bool = saveFileToExternalStorage(buffer.toByteArray(), fileName)
-                            Log.e("bool", "= $bool")
+                            Timber.e("bool", "= $bool")
                         }
                     }
-                }catch (e: Exception){Log.e("Exception", " can not save PDF file...")}
+                }catch (e: Exception) {
+                    Timber.e(" can not save PDF file...")
+                }
 
             }
-            Log.e("File", " is file created??$bool")
+            Timber.e("File", " is file created??$bool")
 
 
             if(!bool)
@@ -174,38 +176,26 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _progressGlobal : MutableLiveData<ArrayList<Long>> =   MutableLiveData()
     val progressGlobal: LiveData<ArrayList<Long>> get() = _progressGlobal
 
-
-    private suspend fun publishProgress(
-        progress: Long, //bytes
-        fileSize: Long  //bytes
-    ) {
-        withContext(Dispatchers.Main) { // invoke callback in UI thtread
-            Log.e("Progresss---", "$progress  $fileSize")
-            //callback(progress, fileSize)
-
-        }
-    }
-
     private fun saveFileToExternalStorage(data: ByteArray , fileName:String): Boolean {
         val path: File = applicationContext.filesDir
         val file = File(path, fileName )
-        var outputStream: FileOutputStream? = null
+        val outputStream: FileOutputStream?
         try {
             outputStream = FileOutputStream(file)
             outputStream.write(data)
             outputStream.flush()
             outputStream.close()
         } catch (e: java.lang.Exception) {
-            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG)
+            Toast.makeText(applicationContext, e.message, Toast.LENGTH_LONG).show()
             return false
         }
         return true
     }
 
 
-    suspend fun getMilestoneForLoanCenter(token:String, loanApplicationId:Int) {
+    fun getMilestoneForLoanCenter( loanApplicationId:Int) {
         viewModelScope.launch (Dispatchers.IO) {
-            val responseResult = detailRepo.getMilestoneForLoanCenter(token = token, loanApplicationId = loanApplicationId)
+            val responseResult = detailRepo.getMilestoneForLoanCenter( loanApplicationId = loanApplicationId)
             withContext(Dispatchers.Main) {
                 overviewServiceRunning = false
                 if (responseResult is Result.Success)

@@ -114,7 +114,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             addressList = arguments?.getParcelable(AppConstant.address)!!
             addressList?.let {
                 it.street?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.tvSearch.setText(it)
                         CustomMaterialFields.setColor(
                             binding.layoutSearchAddress,
@@ -124,17 +124,17 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     }
                 }
                 it.street?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.edStreetAddress.setText(it)
                     }
                 }
                 it.city?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.edCity.setText(it)
                     }
                 }
                 it.countryName?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.tvCountry.setText(it)
                         CustomMaterialFields.setColor(
                             binding.layoutCountry,
@@ -144,12 +144,12 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     }
                 }
                 it.zipCode?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.edZipcode.setText(it)
                     }
                 }
                 it.stateName?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.tvState.setText(it)
                         CustomMaterialFields.setColor(
                             binding.layoutState,
@@ -159,7 +159,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     }
                 }
                 it.countyName?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.tvCounty.setText(it)
                         CustomMaterialFields.setColor(
                             binding.layoutCounty,
@@ -169,7 +169,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                     }
                 }
                 it.unit?.let {
-                    if (it != "null") {
+                    if (it != "null" && it.isNotEmpty()) {
                         binding.edUnitAtpNo.setText(it)
                     }
                 }
@@ -200,7 +200,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                              itemList.add(item.name)
                              stateList.add(item)
                          }
-                         val stateAdapter = ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                         val stateAdapter = ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                          binding.tvState.setAdapter(stateAdapter)
 
                          /*binding.tvState.setOnClickListener {
@@ -229,7 +229,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                              countryList.add(item)
                          }
                          val countryAdapter =
-                             ArrayAdapter(requireContext(), R.layout.autocomplete_text_view, itemList)
+                             ArrayAdapter(requireContext(),android.R.layout.simple_list_item_1, itemList)
                          binding.tvCountry.setAdapter(countryAdapter)
 
                          /*
@@ -272,7 +272,7 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
                          }
                          val countyAdapter = ArrayAdapter(
                              requireContext(),
-                             R.layout.autocomplete_text_view,
+                             android.R.layout.simple_list_item_1,
                              itemList
                          )
                          binding.tvCounty.setAdapter(countyAdapter)
@@ -374,7 +374,6 @@ class SubPropertyAddressFragment : BaseFragment(), PlacePredictionAdapter.OnPlac
             if(!hasFocus){
                 if (binding.tvCounty.text.toString().length == 0) {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_three, requireActivity())
-                    CustomMaterialFields.setError(binding.layoutCounty,getString(R.string.error_field_required),requireActivity())
                 } else {
                     CustomMaterialFields.setColor(binding.layoutCounty, R.color.grey_color_two, requireActivity())
                     CustomMaterialFields.clearError(binding.layoutCounty, requireActivity())
