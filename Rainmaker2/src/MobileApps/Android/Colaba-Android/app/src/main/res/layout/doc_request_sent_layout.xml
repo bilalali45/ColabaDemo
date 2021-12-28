@@ -76,6 +76,7 @@
         android:textColor="@color/grey_color_two"/>
 
     <TextView
+        android:id="@+id/email_borrower_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -97,10 +98,11 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/app_button_style"
         android:fontFamily="@font/rubik_regular"
-        android:text="@string/send_request"
+        android:text="@string/back_to_doc"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

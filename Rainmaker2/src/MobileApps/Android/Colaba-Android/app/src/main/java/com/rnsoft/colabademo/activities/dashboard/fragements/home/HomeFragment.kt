@@ -40,16 +40,12 @@ class HomeFragment : BaseFragment() {
 
     //private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
     //private val loanViewModel: LoanViewModel by activityViewModels()
-
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
-
-
     private lateinit var searchImageView: ImageView
     private lateinit var filterImageView: ImageView
     private lateinit var greetingMessage: TextView
     private lateinit var assignToMeSwitch: SwitchCompat
-
     private var selectedText: String = tabArray[0]
     private var selectedPosition: Int = 0
     private lateinit var pageAdapter: ViewPagerAdapter

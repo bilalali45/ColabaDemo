@@ -7,21 +7,21 @@ import javax.inject.Inject
  */
 class LoanInfoRepo @Inject constructor(private val datasource : LoanInfoDataSource) {
 
-    suspend fun getLoanInfo(token: String, loanApplicationId: Int): Result<LoanInfoDetailsModel> {
-        return datasource.getLoanInfoDetails(token = token, loanApplicationId = loanApplicationId)
+    suspend fun getLoanInfo(loanApplicationId: Int): Result<LoanInfoDetailsModel> {
+        return datasource.getLoanInfoDetails(loanApplicationId = loanApplicationId)
     }
 
-    suspend fun getLoanGoals(token: String, loanPurposeId: Int): Result<ArrayList<LoanGoalModel>> {
-        return datasource.getLoanGoals(token = token, loanPurposeId = loanPurposeId)
+    suspend fun getLoanGoals(loanPurposeId: Int): Result<ArrayList<LoanGoalModel>> {
+        return datasource.getLoanGoals(loanPurposeId = loanPurposeId)
     }
 
-    suspend fun addLoanInfo(token: String, data: AddLoanInfoModel): Result<AddUpdateDataResponse> {
-        val sendDataResponse = datasource.addUpdateLoan(token,data)
+    suspend fun addLoanInfo(data: AddLoanInfoModel): Result<AddUpdateDataResponse> {
+        val sendDataResponse = datasource.addUpdateLoan(data)
         return sendDataResponse
     }
 
-    suspend fun addLoanRefinanceInfo(token: String, data: UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
-        val sendDataResponse = datasource.addUpdateLoanRefinance(token,data)
+    suspend fun addLoanRefinanceInfo(data: UpdateLoanRefinanceModel): Result<AddUpdateDataResponse> {
+        val sendDataResponse = datasource.addUpdateLoanRefinance(data)
         return sendDataResponse
     }
 }

@@ -109,7 +109,7 @@ class DocumentListFragment : BaseFragment(), DocsViewClickListener {
             findNavController().popBackStack()
         }
 
-        (activity as DetailActivity).showFabIcons()
+       // (activity as DetailActivity).showFabIcons()
         super.addListeners(binding.root)
         return view
     }
@@ -153,6 +153,7 @@ class DocumentListFragment : BaseFragment(), DocsViewClickListener {
     override fun getCardIndex(position: Int) {
 
     }
+
 
 
     /*

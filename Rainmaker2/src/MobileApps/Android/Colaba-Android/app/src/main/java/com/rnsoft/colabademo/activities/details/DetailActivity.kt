@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.lifecycleScope
 import com.rnsoft.colabademo.databinding.DetailTopLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,8 +38,8 @@ class DetailActivity : BaseActivity() {
         val extras = intent.extras
         extras?.let {
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
-            borrowerFirstName = it.getString(AppConstant.firstName)
-            borrowerLastName = it.getString(AppConstant.lastName)
+            borrowerFirstName = it.getString(AppConstant.firstName)?.capitalize()
+            borrowerLastName = it.getString(AppConstant.lastName)?.capitalize()
             borrowerLoanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerLoanPurposeNumber = it.getString(AppConstant.loanPurposeNumber)
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
@@ -122,12 +123,12 @@ class DetailActivity : BaseActivity() {
         binding.phoneFab.visibility = View.INVISIBLE
     }
 
-    fun showFabIcons(){
+    /*fun showFabIcons(){
         binding.emailFab.visibility = View.VISIBLE
         binding.messageFab.visibility = View.VISIBLE
         binding.phoneFab.visibility = View.VISIBLE
-        binding.requestDocFab.visibility = View.GONE
-    }
+        binding.requestDocFab.visibility = View.VISIBLE
+    } */
 
     fun checkIfUnreadFileOpened(){
         lifecycleScope.launchWhenStarted {

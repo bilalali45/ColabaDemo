@@ -350,7 +350,7 @@
     <string name="email_add">Email Address</string>
     <string name="home_number">Home Number</string>
     <string name="work_number">Work Number</string>
-    <string name="ext_number">Extension Number</string>
+    <string name="ext_number">EXT</string>
     <string name="cell_number">Cell Number</string>
     <string name="emp_phone_number">Employer Phone Number</string>
     <string name="current_home_address">Current Home Address</string>
@@ -537,7 +537,7 @@
     <string name="doc_req_has_been_sent_to">Document Request has been sent to</string>
     <string name="send_request">Send Request</string>
     <string name="request_doc">REQUEST DOCUMENT</string>
-    <string name="back_to_doc">Back To Document</string>
+    <string name="back_to_doc">Back to Documents</string>
     <string name="ques_remove_doc">Are you sure you want to remove this document?</string>
     <string name="email_to">To</string>
     <string name="email_cc">CC</string>

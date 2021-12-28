@@ -86,6 +86,7 @@ object AppConstant {
         const val borrowerParcelObject:String = "borrowerParcelObject"
 
         const val loanApplicationId:String = "loanApplicationId"
+        const val fullName : String = "fullName"
 
         const val loanPurpose:String = "loanPurpose"
         const val loanPurposeNumber:String = "loanPurposeNumber"
