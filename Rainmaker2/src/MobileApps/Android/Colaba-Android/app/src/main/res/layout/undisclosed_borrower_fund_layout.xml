@@ -45,12 +45,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/borrower_purpose"
+            android:id="@+id/borrower_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/rubik_light"
-            android:text="@string/richard"
+            android:text=""
             android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="11sp"

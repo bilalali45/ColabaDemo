@@ -27,11 +27,11 @@ import timber.log.Timber
 
 
 private val assetsTabArray = arrayOf(
-    "UnNamed",
-    "UnNamed",
-    "UnNamed",
-    "UnNamed",
-    "UnNamed"
+    "",
+    "",
+    "",
+    "",
+    ""
 )
 
 @AndroidEntryPoint

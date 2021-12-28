@@ -25,11 +25,11 @@ import kotlin.collections.ArrayList
 
 
 private val incomeTabArray = arrayOf(
-    "Unnamed",
-    "Unnamed",
-    "Unnamed",
-    "Unnamed",
-    "Unnamed"
+    "",
+    "",
+    "",
+    "",
+    ""
 )
 
 @AndroidEntryPoint

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.UndisclosedBorrowerFundLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
@@ -23,7 +24,6 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
 
     private var _binding: UndisclosedBorrowerFundLayoutBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +41,8 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             questionId = it.getInt(AppConstant.questionId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
+
+        //binding.borrowerName.text  =
 
         // fill the date with the API values...
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
@@ -84,6 +86,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         }
         addFocusOutListenerToFields()
         CustomMaterialFields.setDollarPrefix(binding.annualBaseLayout, requireActivity())
+        binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
     }
 
     private fun updateOwnerShipInterest(getDetailString:String) {
@@ -119,7 +122,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         else
             CustomMaterialFields.clearError(binding.annualBaseLayout,  requireContext())
 
-        /*
+
         if(binding.edDetails.text?.isEmpty() == true || binding.edDetails.text?.isBlank() == true) {
             CustomMaterialFields.setError(binding.layoutDetail, "This field is required." , requireContext())
             bool = false
@@ -127,7 +130,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         else
             CustomMaterialFields.clearError(binding.layoutDetail,  requireContext())
 
-         */
+
         return bool
     }
 
