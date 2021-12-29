@@ -87,7 +87,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_login_email"
+                        android:id="@+id/layout_login_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -118,14 +118,14 @@
                             android:inputType="textEmailAddress"
                             android:singleLine="true"
                             android:textSize="14sp"
-                            android:text="mobileuser1@mailinator.com"
+                            android:text=""
                             app:fontFamily="@font/rubik_regular"
                             android:textColor="@color/grey_color_one" />
                     </com.google.android.material.textfield.TextInputLayout>
 
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/til_login_password"
+                        android:id="@+id/layout_login_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -144,7 +144,7 @@
                         app:endIconTint="@color/grey_color_three"
                         app:passwordToggleEnabled="true"
                         android:layout_marginTop="20dp"
-                        app:layout_constraintTop_toBottomOf="@+id/til_login_email"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_login_email"
                         app:layout_constraintEnd_toEndOf="parent">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -153,7 +153,7 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/transparent"
                             android:ems="10"
-                            android:text="Test@124"
+                            android:text=""
                             android:paddingStart="0dp"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
@@ -170,7 +170,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="30dp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/til_login_password"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_login_password"
                         app:srcCompat="@drawable/ic_face_icon_svg" />
 
                     <androidx.appcompat.widget.AppCompatTextView

@@ -3,6 +3,8 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
@@ -29,6 +31,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.rnsoft.colabademo.databinding.LoginLayoutBinding
+import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.NumberTextFormat
 import kotlinx.android.synthetic.main.login_layout.*
 
 
@@ -44,9 +49,12 @@ class LoginFragment : BaseFragment() {
     private lateinit var forgotPasswordLink: AppCompatTextView
     private lateinit var loginButton: AppCompatButton
     private lateinit var imageView5: ImageView
-    private lateinit var emailLayout:TextInputLayout
-    private lateinit var passwordLayout:TextInputLayout
-    lateinit var parentLayout : ConstraintLayout
+    private lateinit var emailLayout: TextInputLayout
+    private lateinit var passwordLayout: TextInputLayout
+    lateinit var parentLayout: ConstraintLayout
+    private lateinit var mTextWatcher : TextWatcher
+
+
 
 
     override fun onCreateView(
@@ -55,6 +63,7 @@ class LoginFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         root = inflater.inflate(R.layout.login_layout, container, false)
+        super.addListeners(root as ViewGroup)
 
         setupFragment()
         hideSoftKeyboard()
@@ -69,7 +78,30 @@ class LoginFragment : BaseFragment() {
                 passwordLayout.setEndIconDrawable(R.drawable.ic_eye_icon_svg)
             }
         })
-        super.addListeners(root as ViewGroup)
+
+
+        mTextWatcher = object : TextWatcher {
+            override fun afterTextChanged(et: Editable?) {
+                when {
+                    et === userEmailField.editableText -> {
+                        if(userEmailField.text.toString().length > 0){
+                            clearError(emailLayout)
+                            userEmailField.removeTextChangedListener(mTextWatcher)
+                        }
+                    }
+                    et === passwordField.editableText -> {
+                        if(passwordField.text.toString().length > 0){
+                            clearError(passwordLayout)
+                            passwordField.removeTextChangedListener(mTextWatcher)
+                        }
+                    }
+                }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        }
+
         return root
     }
 
@@ -89,10 +121,14 @@ class LoginFragment : BaseFragment() {
     private fun setupFragment() {
         userEmailField = root.findViewById(R.id.editTextEmail)
         passwordField = root.findViewById(R.id.editTextPassword)
-        emailLayout = root.findViewById(R.id.til_login_email)
-        passwordLayout = root.findViewById(R.id.til_login_password)
+        emailLayout = root.findViewById(R.id.layout_login_email)
+        passwordLayout = root.findViewById(R.id.layout_login_password)
         parentLayout = root.findViewById(R.id.layout_login)
         biometricSwitch = root.findViewById<SwitchCompat>(R.id.switch1)
+        forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
+        loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
+        loading = root.findViewById<ProgressBar>(R.id.loader_login_screen)
+        imageView5 = root.findViewById<ImageView>(R.id.imageView5)
 
         setLableFocus()
 
@@ -100,28 +136,48 @@ class LoginFragment : BaseFragment() {
             //Log.e("resumeState= ","LoginFragment -userEmailField ="+(activity as SignUpFlowActivity).resumeState)
             if (AppSetting.initialScreenLoaded) {
                 disableEditText(userEmailField)
-                activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback )
+                activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, testCallback)
             }
         }
 
-       userEmailField.setText("sadiq@rainsoftfn.com")
-       passwordField.setText("rainsoft")
+        //userEmailField.setText("sadiq@rainsoftfn.com")
+        //passwordField.setText("rainsoft")
 
-
-        imageView5 =  root.findViewById<ImageView>(R.id.imageView5)
-        imageView5.setOnClickListener{
+        imageView5.setOnClickListener {
             navigateToDashBoard(null)
         }
 
-        forgotPasswordLink = root.findViewById<AppCompatTextView>(R.id.forgotPasswordLink)
-        loginButton = root.findViewById<AppCompatButton>(R.id.loginBtn)
-        loading = root.findViewById<ProgressBar>(R.id.loader_login_screen)
+
         resetToInitialPosition()
         loginButton.setOnClickListener {
-            loading.visibility = View.VISIBLE
-            toggleButtonState(false)
-            resetToInitialPosition()
-            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString())
+//            loading.visibility = View.VISIBLE
+//            toggleButtonState(false)
+//            resetToInitialPosition()
+//            loginViewModel.login(userEmailField.text.toString(), passwordField.text.toString())
+
+            val emailError = LoginUtil.isValidEmail(editTextEmail.text.toString().trim())
+            val passworError =
+                LoginUtil.checkPasswordLength(editTextPassword.text.toString().trim())
+
+            if (emailError != null) {
+                CustomMaterialFields.setError(emailLayout, getString(R.string.error_field_required), requireContext())
+            }
+            if (passworError != null) {
+                CustomMaterialFields.setError(passwordLayout, getString(R.string.error_field_required), requireActivity())
+            }
+
+            if (emailError == null && passworError == null) {
+                clearError(emailLayout)
+                clearError(passwordLayout)
+
+                loading.visibility = View.VISIBLE
+                toggleButtonState(false)
+                loginViewModel.login(
+                    editTextEmail.text.toString().trim(),
+                    editTextPassword.text.toString().trim()
+                )
+            }
+
         }
 
         forgotPasswordLink.setOnClickListener {
@@ -136,10 +192,12 @@ class LoginFragment : BaseFragment() {
             if (isChecked) {
                 if (goldfinger.canAuthenticate()) {
 
-                }
-                else {
+                } else {
                     biometricSwitch.isChecked = false
-                    SandbarUtils.showRegular(requireActivity(), resources.getString((R.string.biometric_check_two)) )
+                    SandbarUtils.showRegular(
+                        requireActivity(),
+                        resources.getString((R.string.biometric_check_two))
+                    )
 
                     /*
                     ToastUtils.init(requireActivity().application)
@@ -152,7 +210,8 @@ class LoginFragment : BaseFragment() {
             AppSetting.biometricEnabled = biometricSwitch.isChecked
         }
         parentLayout.setOnClickListener {
-            hideSoftKeyboard() }
+            hideSoftKeyboard()
+        }
 
     }
 
@@ -176,7 +235,7 @@ class LoginFragment : BaseFragment() {
         findNavController().navigate(R.id.phone_number_id, null)
 
 
-   override fun onStart() {
+    override fun onStart() {
         super.onStart()
         EventBus.getDefault().register(this)
     }
@@ -197,46 +256,35 @@ class LoginFragment : BaseFragment() {
             loading.visibility = View.INVISIBLE
 
             if (it.emailError != null) {
-                //emailError.visibility = View.VISIBLE
-                //emailError.text = it.emailError
-                setError(emailLayout,it.emailError)
-
-
-
+                setError(emailLayout, it.emailError)
 
             } else if (it.passwordError != null) {
-                //passwordError.visibility = View.VISIBLE
-                //passwordError.text = it.passwordError
-                setError(passwordLayout,it.passwordError)
+                setError(passwordLayout, it.passwordError)
+
             } else if (it.responseError != null) {
                 //showToast(it.responseError)
-                if(it.responseError == AppConstant.INTERNET_ERR_MSG)
-                    SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG )
-                 else
-                    SandbarUtils.showError(requireActivity(), it.responseError )
+                if (it.responseError == AppConstant.INTERNET_ERR_MSG)
+                    SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
+                else
+                    SandbarUtils.showError(requireActivity(), it.responseError)
             } else if (it.success != null) {
-                //emailError.visibility = View.GONE
-                //passwordError.visibility = View.GONE
-                    clearError(emailLayout)
-                    clearError(passwordLayout)
+                clearError(emailLayout)
+                clearError(passwordLayout)
 
-                when (it.screenNumber) {
+                when (it.screenNumber){
                     1 -> {
-                        if(biometricSwitch.isChecked)
-                            sharedPreferences.edit().putBoolean(AppConstant.isbiometricEnabled, true).apply()
+                        if (biometricSwitch.isChecked)
+                            sharedPreferences.edit()
+                                .putBoolean(AppConstant.isbiometricEnabled, true).apply()
 
                         if (activity is SignUpFlowActivity) {
                             if ((activity as SignUpFlowActivity).resumeState) {
                                 AppSetting.initialScreenLoaded = false
                                 requireActivity().finish()
-                            }
-                            else
+                            } else
                                 navigateToDashBoard(it.success)
-                        }
-                        else
+                        } else
                             navigateToDashBoard(it.success)
-
-
 
 
                     }
@@ -244,7 +292,7 @@ class LoginFragment : BaseFragment() {
                     3 -> navigateToOtpScreen()
                     else -> {
                         //showToast(R.string.we_have_send_you_email)
-                        SandbarUtils.showRegular(requireActivity(),AppConstant.INTERNET_ERR_MSG)
+                        SandbarUtils.showRegular(requireActivity(), AppConstant.INTERNET_ERR_MSG)
 
                     }
                 }
@@ -255,7 +303,11 @@ class LoginFragment : BaseFragment() {
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
         textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
+            AppCompatResources.getColorStateList(
+                requireContext(),
+                R.color.primary_info_stroke_error_color
+            )
+        )
     }
 
     fun clearError(textInputlayout: TextInputLayout) {
@@ -273,78 +325,114 @@ class LoginFragment : BaseFragment() {
         loginButton.isEnabled = bool
     }
 
-    private fun setLableFocus(){
-        userEmailField.setOnFocusChangeListener(CustomFocusListenerForEditText(userEmailField,emailLayout, requireContext()))
-        passwordField.setOnFocusChangeListener(CustomFocusListenerForEditText(passwordField,passwordLayout, requireContext()))
+    private fun setLableFocus() {
+
+        userEmailField.setOnFocusChangeListener { view, hasFocus ->
+            val emailError = LoginUtil.isValidEmail(userEmailField.text.toString().trim())
+            if (hasFocus){
+                CustomMaterialFields.setColor(emailLayout, R.color.grey_color_two, requireContext())
+                userEmailField.addTextChangedListener(mTextWatcher)
+                passwordField.removeTextChangedListener(mTextWatcher)
+            } else {
+                if(emailError != null) {
+                    setError(emailLayout, emailError)
+                } else {
+                    clearError(emailLayout)
+                }
+
+                if(userEmailField.text.toString().trim().length > 0)
+                    CustomMaterialFields.setColor(emailLayout, R.color.grey_color_two, requireContext())
+                else
+                    CustomMaterialFields.setColor(emailLayout, R.color.grey_color_three, requireContext())
+            }
+        }
+
+        passwordField.setOnFocusChangeListener { view, hasFocus ->
+            val passworError = LoginUtil.checkPasswordLength(passwordField.text.toString().trim())
+            if (hasFocus){
+                CustomMaterialFields.setColor(passwordLayout, R.color.grey_color_two, requireContext())
+                passwordField.addTextChangedListener(mTextWatcher)
+                userEmailField.removeTextChangedListener(mTextWatcher)
+
+            } else {
+                if (passworError != null)
+                    setError(passwordLayout, passworError)
+                else
+                    clearError(passwordLayout)
+
+                if(passwordField.text.toString().trim().length > 0)
+                    CustomMaterialFields.setColor(passwordLayout, R.color.grey_color_two, requireContext())
+                else
+                    CustomMaterialFields.setColor(passwordLayout, R.color.grey_color_three, requireContext())
+
+            }
+        }
     }
 
-    private fun hideSoftKeyboard(){
-        val imm = view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
+
+
+        private fun hideSoftKeyboard() {
+        val imm =
+            view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
-
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Getting phone lock broadcast ......
 
-    /*
-    private var mPowerKeyReceiver: BroadcastReceiver? = null
+/*
+private var mPowerKeyReceiver: BroadcastReceiver? = null
 
-    private fun registerBroadcastReceiver() {
-        val theFilter = IntentFilter()
-        /** System Defined Broadcast  */
-        theFilter.addAction(Intent.ACTION_SCREEN_ON)
-        theFilter.addAction(Intent.ACTION_SCREEN_OFF)
-        mPowerKeyReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent) {
-                val strAction = intent.action
-                if (strAction == Intent.ACTION_SCREEN_OFF || strAction == Intent.ACTION_SCREEN_ON) {
-                    // > Your playground~!
-                    Log.e("Screen-","ON-OFF LOCK---")
-                }
+private fun registerBroadcastReceiver() {
+    val theFilter = IntentFilter()
+    /** System Defined Broadcast  */
+    theFilter.addAction(Intent.ACTION_SCREEN_ON)
+    theFilter.addAction(Intent.ACTION_SCREEN_OFF)
+    mPowerKeyReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+            val strAction = intent.action
+            if (strAction == Intent.ACTION_SCREEN_OFF || strAction == Intent.ACTION_SCREEN_ON) {
+                // > Your playground~!
+                Log.e("Screen-","ON-OFF LOCK---")
             }
         }
-        requireActivity().applicationContext
-            .registerReceiver(mPowerKeyReceiver, theFilter)
     }
+    requireActivity().applicationContext
+        .registerReceiver(mPowerKeyReceiver, theFilter)
+}
 
-    private fun unregisterReceiver() {
-            try {
-                requireActivity().applicationContext
-                    .unregisterReceiver(mPowerKeyReceiver)
-            } catch (e: IllegalArgumentException) {
-                mPowerKeyReceiver = null
-            }
-    }
+private fun unregisterReceiver() {
+        try {
+            requireActivity().applicationContext
+                .unregisterReceiver(mPowerKeyReceiver)
+        } catch (e: IllegalArgumentException) {
+            mPowerKeyReceiver = null
+        }
+}
 
 
-     */
+ */
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    //private fun showToast(@StringRes errorString: Int) {
+//private fun showToast(@StringRes errorString: Int) {
 
-            //SandbarUtils.showRegular(requireActivity(), "some error" )
+//SandbarUtils.showRegular(requireActivity(), "some error" )
 
-            //ToastUtils.init(requireActivity().application)
+//ToastUtils.init(requireActivity().application)
 
-            //ToastUtils.setView(R.layout.toast_error_layout)
-            //ToastUtils.setGravity(Gravity.BOTTOM, 0, 60)
-
-
-
-            //ToastUtils.show("Some Error coming from the case")
+//ToastUtils.setView(R.layout.toast_error_layout)
+//ToastUtils.setGravity(Gravity.BOTTOM, 0, 60)
 
 
+//ToastUtils.show("Some Error coming from the case")
 
 
-    // }
-
+// }
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -93,10 +93,11 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                     }
                 }
                 else {
+                    Log.e("genericResult","$genericResult")
                     if(genericResult is Result.Error && genericResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = AppConstant.INTERNET_ERR_MSG)))
                     else
-                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = " User does not exist")))
+                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = "User does not exist")))
                 }
 
             }

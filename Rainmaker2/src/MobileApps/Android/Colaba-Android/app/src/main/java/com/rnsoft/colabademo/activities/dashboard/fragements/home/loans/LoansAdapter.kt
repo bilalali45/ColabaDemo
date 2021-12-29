@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.Exception
+import java.text.DecimalFormat
 
 
 class LoansAdapter
@@ -17,6 +19,7 @@ internal constructor(
 
     //: RecyclerView.Adapter<LoansAdapter.LoanViewHolder>() {
 
+    val formatter = DecimalFormat("#,###,###")
     private var borrowerList = ArrayList<LoanItem>()
     private var classScopedItemClickListener: AdapterClickListener = onAdapterClickListener
 
@@ -73,13 +76,22 @@ internal constructor(
         else
             holder.coBorrowerCount.visibility = View.GONE
 
-        if(borrower.detail?.loanAmount!=null )
-            holder.loanAmount.text = "$ "+borrower.detail?.loanAmount
-        else
+        if(borrower.detail?.loanAmount != null){
+            //holder.loanAmount.text = "$ " + borrower.detail?.loanAmount
+            try {
+                if (borrower.detail?.loanAmount!! > 0) {
+                    holder.loanAmount.setText("$ ".plus(formatter.format(Math.round((borrower.detail?.loanAmount)!!.toDouble()))))
+                }
+            } catch (e: Exception) { }
+        } else
             holder.loanAmount.text = ""
 
-        if(borrower.detail?.propertyValue!=null )
-            holder.propertyValue.text = "$ "+borrower.detail?.propertyValue
+        if(borrower.detail?.propertyValue!=null) {
+            //holder.propertyValue.text = "$ " + borrower.detail?.propertyValue
+            try {
+                holder.propertyValue.setText("$ ".plus(formatter.format(Math.round((borrower.detail?.loanAmount)!!.toDouble()))))
+            } catch (e: Exception) { }
+        }
         else
             holder.propertyValue.text = ""
 
