@@ -1091,6 +1091,12 @@ extension ApplicationViewController: UICollectionViewDataSource, UICollectionVie
             let vc = Utility.getGovernmentQuestionsVC()
             vc.loanApplicationId = self.loanApplicationId
             vc.borrowersArray = self.loanApplicationDetail.borrowersInformation
+            if (indexPath.row == loanApplicationDetail.governmentQuestions.count){
+                vc.selectedQuesionHeader = "Demographic Information"
+            }
+            else{
+                vc.selectedQuesionHeader = loanApplicationDetail.governmentQuestions[indexPath.row].questionHeader
+            }
             self.pushToVC(vc: vc)
         }
     }
