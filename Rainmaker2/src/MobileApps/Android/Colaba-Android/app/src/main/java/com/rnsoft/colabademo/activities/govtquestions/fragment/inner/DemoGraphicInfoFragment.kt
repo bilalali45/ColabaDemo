@@ -27,7 +27,7 @@ class DemoGraphicInfoFragment : BaseFragment() {
     private var newRaceList : ArrayList<RaceResponseModel> = ArrayList()
     private var newEthnicityList : ArrayList<EthnicityResponseModel> = ArrayList()
     private var raceBaseList : ArrayList<DemoGraphicRace> = ArrayList()
-    private var ethnicityBaseList : ArrayList<EthnicityDemoGraphic> = ArrayList()
+    private var userName:String? = null
 
 
 

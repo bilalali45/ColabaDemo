@@ -29,14 +29,17 @@ class ChildSupportFragment:BaseFragment() {
     private val binding get() = _binding!!
 
     private  var childSelectionList:ArrayList<ChildAnswerData> = arrayListOf()
-
+    private var userName:String? = null
+    
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = ChildSupportLayoutBinding.inflate(inflater, container, false)
         arguments?.let { arguments->
             childSelectionList = arguments.getParcelableArrayList(AppConstant.childGlobalList)!!
+            userName = arguments.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         val root: View = binding.root
         setUpUI()

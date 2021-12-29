@@ -18,6 +18,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
 
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     protected var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
+    protected var userName:String? = null
     protected var questionId:Int = 0
 
     protected fun fillWithData(detailTextView:TextInputEditText){

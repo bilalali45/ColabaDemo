@@ -30,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener
 import com.google.android.material.chip.ChipGroup
 import java.util.regex.Pattern
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.rnsoft.colabademo.databinding.SendDocRequestLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
@@ -205,13 +206,14 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
                 for(item in data){
                     templateList.add(
-                        Template( id= item.id ,templateId = item.id, templateName = item.templateName, docDesc = item.templateDescription))
+                        Template( id= item.id,templateId = item.id, templateName = item.templateName, docDesc = item.templateDescription))
                 }
                 val spinnerAdapter = EmailTemplateSpinnerAdapter(requireContext(), R.layout.email_template_item, templateList)
                 binding.tvEmailType.setAdapter(spinnerAdapter)
                 binding.tvEmailType.setOnClickListener {
                     binding.tvEmailType.showDropDown()
                 }
+                //binding.tvEmailType.setBackground(getDrawable(requireContext(), R.drawable.content_bg_with_drop_shadow))
                 //binding.tvEmailType.setDropDownBackgroundDrawable(getDrawable(requireContext(), R.drawable.content_bg_with_drop_shadow))
 
                 //binding.tvEmailType.setDropDownBackgroundDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.content_bg_with_drop_shadow))
@@ -240,21 +242,14 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                     binding.tvEmailBody.setText("")
                     if(loanApplicationId != null) {
                         val call = async {
-                            viewModel.getEmailTemplateBody(
-                                authToken,
-                                loanApplicationId!!,
-                                templateList.get(position).templateId
-                            )
+                            viewModel.getEmailTemplateBody(authToken, loanApplicationId!!, templateList.get(position).templateId)
                         }
                         call.await()
                         setEmailBody()
                     }
-
                 }
             }
-        } catch (e:java.lang.Exception){
-
-        }
+        } catch (e:java.lang.Exception){}
     }
 
     private fun setEmailBody(){
@@ -294,14 +289,11 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 }
 
                 body.id?.let {
-                    for (item in templateList){
-                        if (item.id == it) {
-                            Log.e("selected Item", ""+ selectedItem)
-                            Log.e("Templete List","$templateList" + " itemId : " + item.id)
-                            binding.tvEmailType.setText(item.templateName, false)
-                            CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two,
-                                requireActivity()
-                            )
+                    for (item in 0 until templateList.size){
+                        if (templateList.get(item).id == it) {
+                            selectedItem = item
+                            binding.tvEmailType.setText(templateList.get(item).templateName, false)
+                            CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two, requireActivity())
                             break
                         }
                     }
@@ -318,7 +310,6 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                         }
 
                         addNewChip(it,binding.etRecipientEmail,binding.recipientGroupFL)
-                        //CustomMaterialFields.setColor(binding.layoutEmailTemplate, R.color.grey_color_two, requireActivity())
                         binding.recipientLabelTo.setTextColor(AppCompatResources.getColorStateList(requireActivity(), R.color.grey_color_two))
                     }
                 }
@@ -397,6 +388,12 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 return@setOnKeyListener false
            }
 
+        binding.etRecipientEmail.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus){
+                validateEmailAddress(binding.etRecipientEmail,binding.recipientGroupFL, binding.recipientEmailError)
+            }
+        }
+
         // cc email
         binding.etccEmail.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if(event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER || actionId == EditorInfo.IME_ACTION_DONE || event.keyCode == KeyEvent.KEYCODE_SPACE
@@ -449,6 +446,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             return@setOnKeyListener false
         }
 
+        binding.etccEmail.setOnFocusChangeListener { view, hasFocus ->
+            if (!hasFocus){
+                validateEmailAddress(binding.etccEmail,binding.ccFL,binding.ccEmailError)
+            }
+        }
+
+
     }
 
     private fun isValidEmailAddress(email: String?): Boolean {
@@ -475,13 +479,12 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     fun onEmailRequestSent(event: SendDocRequestEvent){
         binding.loaderDocRequest.visibility = View.GONE
         if(event.response.responseCode == 200){
+            findNavController().navigate(R.id.navigation_request_sent)
+        }
+        else {
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
             findNavController().popBackStack()
         }
-        else
-          SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-
-
-        findNavController().popBackStack()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

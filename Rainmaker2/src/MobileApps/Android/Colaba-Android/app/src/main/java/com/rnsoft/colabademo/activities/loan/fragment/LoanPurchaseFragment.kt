@@ -125,10 +125,10 @@ class LoanPurchaseFragment : BaseFragment(), DatePickerDialog.OnDateSetListener{
                 loanInfo.data?.downPayment?.let {
                    // val value = Math.round(it).toString()
                    // var formattedValue = format.format(value)
-                    binding.edDownPayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
                     if(it >0){ // calculate percentage
                         binding.edDownPayment.addTextChangedListener(mTextWatcher)
+                        binding.edDownPayment.setText(Math.round(it).toString())
+                        CustomMaterialFields.setColor(binding.layoutDownPayment,R.color.grey_color_two,requireActivity())
                     }
                 }
                 loanInfo.data?.expectedClosingDate?.let {
@@ -212,11 +212,10 @@ class LoanPurchaseFragment : BaseFragment(), DatePickerDialog.OnDateSetListener{
                 val info = AddLoanInfoModel(loanApplicationId = loanId, loanPurposeId = AppConstant.PURPOSE_ID_PURCHASE,loanPayment= newLoanAmount?.toDouble(),
                     loanGoalId = loanGoalId, expectedClosingDate = closingDate, downPayment = newDownPayment?.toDouble(), cashOutAmount=1, propertyValue = newPurchasePrice?.toDouble())
                 lifecycleScope.launchWhenStarted {
-                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        binding.loaderLoanPurchase.visibility = View.VISIBLE
-                        //Log.e("LoanInfoApi",""+info)
-                        loanViewModel.addLoanInfo(authToken, info)
-                    }
+                    //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    binding.loaderLoanPurchase.visibility = View.VISIBLE
+                    //Log.e("LoanInfoApi",""+info)
+                    loanViewModel.addLoanInfo(info)
                 }
                 binding.loaderLoanPurchase.visibility = View.GONE
             }

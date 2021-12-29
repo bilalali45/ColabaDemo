@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/rubik_light"
-            android:text="@string/richard"
+            android:text=""
             android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="11sp"

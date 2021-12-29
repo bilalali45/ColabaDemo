@@ -18,6 +18,7 @@ class BankruptcyFragment:BaseFragment() {
     private var _binding: BankruptcyLayoutBinding? = null
     private val binding get() = _binding!!
     private  var answerData:BankruptcyAnswerData = BankruptcyAnswerData()
+    private var userName:String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -29,7 +30,9 @@ class BankruptcyFragment:BaseFragment() {
         super.addListeners(binding.root)
         arguments?.let { arguments->
             answerData = arguments.getParcelable(AppConstant.bankruptcyAnswerData)!!
+            userName = arguments.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
 
         binding.chapter7.setOnClickListener{

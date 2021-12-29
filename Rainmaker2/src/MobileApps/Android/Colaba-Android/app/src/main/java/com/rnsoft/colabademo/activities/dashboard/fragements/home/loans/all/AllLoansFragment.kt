@@ -170,9 +170,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
         }
     }
 
-
-
-
     override fun getSingleItemIndex(position: Int) {
         val borrowerBottomSheet = SheetBottomBorrowerCardFragment.newInstance()
         val bundle = Bundle()
@@ -190,16 +187,13 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
             borrowerDetailIntent.putExtra(AppConstant.loanApplicationId, test.loanApplicationId)
             borrowerDetailIntent.putExtra(AppConstant.loanPurpose, test.loanPurpose)
             borrowerDetailIntent.putExtra(AppConstant.firstName, test.firstName)
+            //borrowerDetailIntent.putExtra(AppConstant.firstName, test.)
             borrowerDetailIntent.putExtra(AppConstant.lastName, test.lastName)
             borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, test.cellNumber)
             borrowerDetailIntent.putExtra(AppConstant.bEmail, test.email)
             startActivity(borrowerDetailIntent)
         }
     }
-
-
-
-
 
     override fun onResume() {
         super.onResume()
@@ -239,7 +233,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
         }
     }
 
-
     private fun loadDataFromCache(){
         // load data from cache first...
         if(!NetworkSetting.isNetworkAvailable(requireContext())) {
@@ -262,8 +255,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener ,  LoanFilterI
             }
         }
     }
-
-
 
     override fun onStart() {
         super.onStart()

@@ -20,11 +20,11 @@ import com.rnsoft.colabademo.databinding.GovtQuestionTabLayoutBinding
 
 
 private val govtTabArray = arrayOf(
-        "UnNamed",
-        "UnNamed",
-        "UnNamed",
-        "UnNamed",
-        "UnNamed"
+        "",
+        "",
+        "",
+        "",
+        ""
 )
 
 @AndroidEntryPoint

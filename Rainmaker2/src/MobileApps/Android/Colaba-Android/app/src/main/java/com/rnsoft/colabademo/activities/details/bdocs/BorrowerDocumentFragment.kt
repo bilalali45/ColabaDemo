@@ -76,7 +76,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         val linearLayoutManager = LinearLayoutManager(activity)
         downloadLoader = view.findViewById(R.id.doc_download_loader)
 
-        (activity as DetailActivity).showFabIcons()
+        //(activity as DetailActivity).showFabIcons()
 
         borrowerDocumentAdapter =
             BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment)
@@ -132,8 +132,18 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         (activity as DetailActivity).binding.requestDocFab.setOnClickListener{
             val intent = Intent(requireActivity(), RequestDocsActivity::class.java)
             val activity = (activity as? DetailActivity)
+            val nameBuilder = StringBuilder()
+            activity?.borrowerFirstName?.let {
+                if(it != "null" && it.isNotEmpty())
+                    nameBuilder.append(it)
+            }
+            activity?.borrowerLastName?.let {
+                if(it != "null" && it.isNotEmpty())
+                    nameBuilder.append(" ").append(it)
+            }
             activity?.loanApplicationId?.let {
                 intent.putExtra(AppConstant.loanApplicationId, it)
+                intent.putExtra(AppConstant.fullName, nameBuilder.toString())
                 startActivity(intent)
             }
         }
@@ -276,18 +286,11 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
 
     override fun onResume() {
         super.onResume()
+        (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+
         if(docsArrayList.size ==0){
             showHideLayout(false)
         }
-        /*else {
-            Log.e("onResume","Else")
-            Log.e("FilterList",""+ docsArrayList.size)
-            if(docsArrayList.size==0){
-                layout_docData.visibility = View.GONE
-                layout_noDocFound.visibility = View.VISIBLE
-                (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
-            }
-        } */
     }
 
     override fun onStart() {
@@ -360,18 +363,14 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
         bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
         listFragment.arguments = bundle
-        Timber.e("  fileNames $fileNames")
-        Timber.e(" docName = "+selectedDocumentType.docName)
-        Timber.e(" message = "+selectedDocumentType.message+"  ")
-        Timber.e(" subFiles = "+selectedDocumentType.subFiles)
-        Timber.e(" id = "+selectedDocumentType.id)
-        Timber.e("  requestId = "+selectedDocumentType.requestId)
-        Timber.e("  docId = "+selectedDocumentType.docId)
+        //Timber.e("  fileNames $fileNames")
+        //Timber.e(" docName = "+selectedDocumentType.docName)
+        //Timber.e(" message = "+selectedDocumentType.message+"  ")
+        //Timber.e(" subFiles = "+selectedDocumentType.subFiles)
+        //Timber.e(" id = "+selectedDocumentType.id)
+        //Timber.e("  requestId = "+selectedDocumentType.requestId)
+       // Timber.e("  docId = "+selectedDocumentType.docId)
         findNavController().navigate(R.id.docs_list_inner_fragment, bundle)
-
-
-
-
     }
 
 
@@ -458,12 +457,12 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         if(dataLayout){
             layout_docData.visibility = View.VISIBLE
             layout_noDocFound.visibility = View.GONE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
         else {
             layout_docData.visibility = View.GONE
             layout_noDocFound.visibility = View.VISIBLE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
     }
 
@@ -490,13 +489,13 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         //Log.e("Filterlist size", ""+filterDocsList.size)
         if(filterDocsList.size > 0) {
             layout_noDocFound.visibility = View.GONE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
             docsRecycler.visibility=View.VISIBLE
             populateRecyclerview(filterDocsList)
         } else{
             docsRecycler.visibility=View.GONE
             layout_noDocFound.visibility = View.VISIBLE
-            (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
         }
     }
 

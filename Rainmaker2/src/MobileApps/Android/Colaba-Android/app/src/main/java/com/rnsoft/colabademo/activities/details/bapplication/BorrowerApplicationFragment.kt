@@ -331,37 +331,36 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
     }
 
     private fun observeTabData(){
+        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel ->
+            if (appTabModel != null) {
+                binding.applicationTopContainer.visibility = View.VISIBLE
+                binding.applicationTabLayout.visibility = View.VISIBLE
 
-            detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, { appTabModel ->
-                if (appTabModel != null) {
-                    binding.applicationTopContainer.visibility = View.VISIBLE
-                    binding.applicationTabLayout.visibility = View.VISIBLE
+                appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
+                    displaySubjectPropertyAddress(it)
+                }
 
-                    appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
-                        displaySubjectPropertyAddress(it)
+                appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let {
+                    if(it !="null" && it.isNotEmpty()) {
+                        binding.bAppPropertyType.text = it
+                        propertyType = it
                     }
+                }
 
-                    appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let {
-                        if(it !="null" && it.isNotEmpty()) {
-                            binding.bAppPropertyType.text = it
-                            propertyType = it
-                        }
+                appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription?.let {
+                    if(it !="null" && it.isNotEmpty()){
+                        binding.bAppPropertyUsage.text = it
+                        occupancyType = it
                     }
+                }
 
-                    appTabModel.borrowerAppData?.subjectProperty?.propertyUsageDescription?.let {
-                        if(it !="null" && it.isNotEmpty()){
-                            binding.bAppPropertyUsage.text = it
-                            occupancyType = it
-                        }
-                    }
-
-                    if(streetName == null && occupancyType == null && propertyType == null){
-                        binding.btnAddSubProperty.visibility = View.VISIBLE
-                        subjectPropertyLayout.visibility = View.GONE
-                    } else {
-                        binding.btnAddSubProperty.visibility = View.GONE
-                        subjectPropertyLayout.visibility = View.VISIBLE
-                    }
+                if(streetName == null && occupancyType == null && propertyType == null){
+                    binding.btnAddSubProperty.visibility = View.VISIBLE
+                    subjectPropertyLayout.visibility = View.GONE
+                } else {
+                    binding.btnAddSubProperty.visibility = View.GONE
+                    subjectPropertyLayout.visibility = View.VISIBLE
+                }
 
 
                     appTabModel.borrowerAppData?.loanInformation?.loanAmount?.let {

@@ -231,11 +231,11 @@ class LoanRefinanceFragment : BaseFragment() {
                         )
 
                         lifecycleScope.launchWhenStarted {
-                            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                           // sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                                 binding.loaderLoanRefinance.visibility = View.VISIBLE
-                                  //Log.e("LoanInfoApi",""+info)
-                                  loanViewModel.addLoanRefinanceInfo(authToken, info)
-                            }
+                                  Log.e("LoanInfoApi",""+info)
+                                  loanViewModel.addLoanRefinanceInfo(info)
+                            //}
                         }
                     }
                 }

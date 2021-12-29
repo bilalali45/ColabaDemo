@@ -52,17 +52,6 @@ import javax.inject.Inject
 import java.util.ArrayList
 
 
-
-
-
-
-
-
-
-//interface JSONConvertable {  fun toJSON(): String = Gson().toJson(this) }
-//inline fun <reified T: JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
-
-
 @AndroidEntryPoint
 class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
@@ -898,6 +887,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
+        bundle.putString(AppConstant.govtUserName , (lastQData.firstName+" "+lastQData.lastName))
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
