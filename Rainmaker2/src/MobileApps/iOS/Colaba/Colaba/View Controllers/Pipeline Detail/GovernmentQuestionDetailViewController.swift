@@ -381,7 +381,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             unDisclosedViewTapped()
         }
         
-        self.tabsScrollView.contentOffset = CGPoint(x: scrollViewXPosition - 20, y: 0.0)
+        self.tabsScrollView.setContentOffset(CGPoint(x: scrollViewXPosition - 20, y: 0.0), animated: true)
     }
     
     @objc func unDisclosedViewTapped(){
