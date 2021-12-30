@@ -11,7 +11,7 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
         val serverResponse: Response<LoginResponse>
         return try {
             serverResponse = serverApi.login(LoginRequest(userEmail, password), dontAskTwoFaIdentifier)
-            Log.e("login-Response","$serverResponse")
+            //Log.e("login-Response","$serverResponse")
             //Log.e("Errorbody",)
 
             if(serverResponse.isSuccessful)
