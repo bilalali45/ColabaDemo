@@ -16,6 +16,7 @@ class GovernmentQuestionsViewController: BaseViewController {
     
     var loanApplicationId = 0
     var borrowersArray = [BorrowerInfoModel]()
+    var selectedQuesionHeader = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +76,7 @@ extension GovernmentQuestionsViewController: CarbonTabSwipeNavigationDelegate{
         vc.loanApplicationId = self.loanApplicationId
         vc.borrowerId = borrowersArray[Int(index)].borrowerId
         vc.ownTypeId = borrowersArray[Int(index)].ownTypeId
+        vc.selectedQuesionHeader = self.selectedQuesionHeader
         return vc
     }
     
