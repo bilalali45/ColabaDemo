@@ -75,7 +75,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                                 val phoneInfoResult =
                                     loginRepo.getPhoneNumberDetail(loginResponse.data.token)
 
-                               if (phoneInfoResult is Result.Success) {
+                               if (phoneInfoResult is Result.Success){
                                     val phoneDetail = phoneInfoResult.data
                                     when (phoneDetail.code) {
                                         "404" -> EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 2)))
@@ -85,19 +85,22 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                                         else ->
                                             Log.e("Else", "WebService-error-go")
                                     }
-
                                 }
                             }
-
                         }
                     }
+                } else if(genericResult is Result.Failure){
+                    EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 3)))
                 }
+
+
                 else {
                     Log.e("genericResult","$genericResult")
                     if(genericResult is Result.Error && genericResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = AppConstant.INTERNET_ERR_MSG)))
-                    else
-                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = "User does not exist")))
+                    else {
+                        //EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = "User does not exist")))
+                    }
                 }
 
             }
