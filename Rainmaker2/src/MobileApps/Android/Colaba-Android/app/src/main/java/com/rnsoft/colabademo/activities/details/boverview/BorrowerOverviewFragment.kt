@@ -36,6 +36,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
             findNavController().navigate(R.id.navigation_pre_approval_fragment, null)
         }
 
+        binding.noAddressLayout.visibility = View.INVISIBLE
+        binding.addressLayout.visibility = View.INVISIBLE
+
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
 

@@ -181,7 +181,7 @@ class HomeFragment : BaseFragment() {
         return root
     }
 
-    val assignToMeChangeListener =
+    private val assignToMeChangeListener =
         CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             //assignToMeSwitch.setOnClickListener(null)
             Log.e("selectedText-", selectedText)

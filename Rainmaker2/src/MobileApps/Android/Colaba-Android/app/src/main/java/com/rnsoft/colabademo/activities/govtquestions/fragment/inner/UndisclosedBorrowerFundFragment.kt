@@ -30,6 +30,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
     private var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     private var questionId:Int = 0
     private var userName:String? = null
+    private var whichBorrowerId:Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,7 +41,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
-
+            whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = it.getString(AppConstant.govtUserName)
         }
@@ -107,7 +108,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             var detailTitle =  binding.edDetails.text.toString()
             if(detailTitle.isEmpty() || detailTitle.isBlank())
                 detailTitle = ""
-            EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString))
+            EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString, whichBorrowerId))
             findNavController().popBackStack()
         }
     }

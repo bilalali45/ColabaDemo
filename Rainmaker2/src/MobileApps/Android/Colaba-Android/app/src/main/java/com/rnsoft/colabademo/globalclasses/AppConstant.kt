@@ -182,6 +182,9 @@ object AppConstant {
 
         const val bEmail:String = "bEmail"
 
+        const val milestone:String = "milestone"
+
+
         const val innerScreenName:String = "innerScreenName"
 
         const val borrowerAppScreen:String = "borrowerAppScreen"

@@ -1469,7 +1469,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateReceivedFromInnerScreen(updateEvent: GovtScreenUpdateEvent) {
-        if(updateEvent.whichBorrowerId == tabBorrowerId) {
+        if(updateEvent.whichBorrowerId == currentBorrowerId) {
             clickedContentCell.govt_detail_box.detail_title.text = updateEvent.detailTitle
             clickedContentCell.govt_detail_box.detail_text.text = updateEvent.detailDescription
             if (updateEvent.detailDescription.isNotEmpty() && updateEvent.detailDescription.isNotBlank())
@@ -1480,19 +1480,23 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun updateUndisclosedBorrowerFunds(borrowerFundUpdateEvent: UndisclosedBorrowerFundUpdateEvent) {
-        clickedContentCell.govt_detail_box.detail_title.text =  UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
-        clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-        clickedContentCell.govt_detail_box.detail_text.text = "$".plus(Common.addNumberFormat(borrowerFundUpdateEvent.detailDescription.toDouble()))
-        clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-        clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+    fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
+        if(updateEvent.whichBorrowerId == currentBorrowerId) {
+            clickedContentCell.govt_detail_box.detail_title.text =
+                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
+            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+            clickedContentCell.govt_detail_box.detail_text.text =
+                "$".plus(Common.addNumberFormat(updateEvent.detailDescription.toDouble()))
+            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
 
-        governmentParams.Questions.let { questions->
-            for (question in questions) {
-                question.parentQuestionId?.let { parentQuestionId ->
-                    if (parentQuestionId == undisclosedLayout.id) {
-                        question.answer = borrowerFundUpdateEvent.detailDescription
-                        question.answerDetail = borrowerFundUpdateEvent.detailTitle
+            governmentParams.Questions.let { questions ->
+                for (question in questions) {
+                    question.parentQuestionId?.let { parentQuestionId ->
+                        if (parentQuestionId == undisclosedLayout.id) {
+                            question.answer = updateEvent.detailDescription
+                            question.answerDetail = updateEvent.detailTitle
+                        }
                     }
                 }
             }
@@ -1515,121 +1519,129 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     var ownershipInterestAnswerData2:OwnershipInterestAnswerData?= null
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateOwnershipInterest(updateEvent: OwnershipInterestUpdateEvent) {
-        var secondMatched = true
-        ownerShipInnerScreenParams.clear()
+        if(updateEvent.whichBorrowerId == currentBorrowerId) {
+            var secondMatched = true
+            ownerShipInnerScreenParams.clear()
 
-        Timber.e(" 1- updateOwnershipInterest = "+ updateEvent.index1 +" = "+ updateEvent.answer1)
-        Timber.e(" 2- updateOwnershipInterest = "+ updateEvent.index2 +" = "+ updateEvent.answer2)
+            Timber.e(" 1- updateOwnershipInterest = " + updateEvent.index1 + " = " + updateEvent.answer1)
+            Timber.e(" 2- updateOwnershipInterest = " + updateEvent.index2 + " = " + updateEvent.answer2)
 
-        governmentParams.Questions.let { questions ->
-            for (item in questions) {
-                item.parentQuestionId?.let { parentQuestionId ->
-                    if (parentQuestionId == ownerShipConstraintLayout?.id) {
-                        ownerShipConstraintLayout?.let { ownerShipConstraintLayout ->
-                            if (secondMatched) {
-                                secondMatched = false
+            governmentParams.Questions.let { questions ->
+                for (item in questions) {
+                    item.parentQuestionId?.let { parentQuestionId ->
+                        if (parentQuestionId == ownerShipConstraintLayout?.id) {
+                            ownerShipConstraintLayout?.let { ownerShipConstraintLayout ->
+                                if (secondMatched) {
+                                    secondMatched = false
 
 
-                                ownerShipConstraintLayout.detail_title.text =
-                                    OwnershipInterestInPropertyFragment.ownershipQuestionOne
-                                ownerShipConstraintLayout.detail_title.setTypeface(
-                                    null,
-                                    Typeface.NORMAL
-                                )
-                                ownerShipConstraintLayout.detail_text.text = updateEvent.answer1
-                                ownerShipConstraintLayout.detail_text.setTypeface(
-                                    null,
-                                    Typeface.BOLD
-                                )
-                                ownerShipConstraintLayout.visibility = View.VISIBLE
-                                ownerShipInnerScreenParams.add(updateEvent.answer1)
-                                ownershipInterestAnswerData1 = OwnershipInterestAnswerData(
-                                    updateEvent.index1,
-                                    updateEvent.answer1
-                                )
-                                item.answerData = ownershipInterestAnswerData1
-                            } else {
-                                ownerShipConstraintLayout.detail_text2?.text =
-                                    OwnershipInterestInPropertyFragment.ownershipQuestionTwo
-                                ownerShipConstraintLayout.detail_text2?.setTypeface(
-                                    null,
-                                    Typeface.NORMAL
-                                )
-                                ownerShipConstraintLayout.detail_text2?.text = updateEvent.answer2
-                                ownerShipConstraintLayout.detail_text2?.setTypeface(
-                                    null,
-                                    Typeface.BOLD
-                                )
-                                ownerShipConstraintLayout.govt_detail_box2?.visibility =
-                                    View.VISIBLE
-                                ownerShipInnerScreenParams.add(updateEvent.answer2)
-                                ownershipInterestAnswerData2 = OwnershipInterestAnswerData(
-                                    updateEvent.index2,
-                                    updateEvent.answer2
-                                )
-                                item.answerData = OwnershipInterestAnswerData(
-                                    updateEvent.index2,
-                                    updateEvent.answer2
-                                )
+                                    ownerShipConstraintLayout.detail_title.text =
+                                        OwnershipInterestInPropertyFragment.ownershipQuestionOne
+                                    ownerShipConstraintLayout.detail_title.setTypeface(
+                                        null,
+                                        Typeface.NORMAL
+                                    )
+                                    ownerShipConstraintLayout.detail_text.text = updateEvent.answer1
+                                    ownerShipConstraintLayout.detail_text.setTypeface(
+                                        null,
+                                        Typeface.BOLD
+                                    )
+                                    ownerShipConstraintLayout.visibility = View.VISIBLE
+                                    ownerShipInnerScreenParams.add(updateEvent.answer1)
+                                    ownershipInterestAnswerData1 = OwnershipInterestAnswerData(
+                                        updateEvent.index1,
+                                        updateEvent.answer1
+                                    )
+                                    item.answerData = ownershipInterestAnswerData1
+                                } else {
+                                    ownerShipConstraintLayout.detail_text2?.text =
+                                        OwnershipInterestInPropertyFragment.ownershipQuestionTwo
+                                    ownerShipConstraintLayout.detail_text2?.setTypeface(
+                                        null,
+                                        Typeface.NORMAL
+                                    )
+                                    ownerShipConstraintLayout.detail_text2?.text =
+                                        updateEvent.answer2
+                                    ownerShipConstraintLayout.detail_text2?.setTypeface(
+                                        null,
+                                        Typeface.BOLD
+                                    )
+                                    ownerShipConstraintLayout.govt_detail_box2?.visibility =
+                                        View.VISIBLE
+                                    ownerShipInnerScreenParams.add(updateEvent.answer2)
+                                    ownershipInterestAnswerData2 = OwnershipInterestAnswerData(
+                                        updateEvent.index2,
+                                        updateEvent.answer2
+                                    )
+                                    item.answerData = OwnershipInterestAnswerData(
+                                        updateEvent.index2,
+                                        updateEvent.answer2
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
+            //updateGovernmentQuestionApiCall()
         }
-        //updateGovernmentQuestionApiCall()
     }
 
 
     private var bankruptcyMap = hashMapOf<String, String>()
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateBankruptcy(updateEvent: BankruptcyUpdateEvent) {
-        var displayValue = updateEvent.detailDescription
-        displayValue = displayValue.trim()
-        displayValue = displayValue.removeRange(displayValue.length-1, displayValue.length)
-        bankruptcyAnswerData = updateEvent.bankruptcyAnswerData
-        bankruptcyConstraintLayout.govt_detail_box.detail_title.text = updateEvent.detailTitle
-        bankruptcyConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-        bankruptcyConstraintLayout.govt_detail_box.detail_text.text = displayValue
-        bankruptcyConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-        bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
+        if(updateEvent.whichBorrowerId == currentBorrowerId) {
+            var displayValue = updateEvent.detailDescription
+            displayValue = displayValue.trim()
+            displayValue = displayValue.removeRange(displayValue.length - 1, displayValue.length)
+            bankruptcyAnswerData = updateEvent.bankruptcyAnswerData
+            bankruptcyConstraintLayout.govt_detail_box.detail_title.text = updateEvent.detailTitle
+            bankruptcyConstraintLayout.govt_detail_box.detail_title.setTypeface(
+                null,
+                Typeface.NORMAL
+            )
+            bankruptcyConstraintLayout.govt_detail_box.detail_text.text = displayValue
+            bankruptcyConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+            bankruptcyConstraintLayout.govt_detail_box.visibility = View.VISIBLE
 
 
-        //val thelist: MutableList<String, String> = ArrayList<String>()
-        bankruptcyMap = hashMapOf<String, String>()
-        bankruptcyMap.clear()
-        //bankruptcyAnswerData = BankruptcyAnswerData()
-        governmentParams.Questions.let { questions->
-            for (question in questions) {
-                question.parentQuestionId?.let { parentQuestionId ->
-                    if (parentQuestionId == bankruptcyConstraintLayout.id) {
-                        question.answer = "Yes"
-                        question.answerDetail = bankruptcyAnswerData.extraDetail
-                        if(bankruptcyAnswerData.`1`) {
-                            bankruptcyMap.put("1", "Chapter 7")
-                           // bankruptcyAnswerData.`1` = true
+            //val thelist: MutableList<String, String> = ArrayList<String>()
+            bankruptcyMap = hashMapOf<String, String>()
+            bankruptcyMap.clear()
+            //bankruptcyAnswerData = BankruptcyAnswerData()
+            governmentParams.Questions.let { questions ->
+                for (question in questions) {
+                    question.parentQuestionId?.let { parentQuestionId ->
+                        if (parentQuestionId == bankruptcyConstraintLayout.id) {
+                            question.answer = "Yes"
+                            question.answerDetail = bankruptcyAnswerData.extraDetail
+                            if (bankruptcyAnswerData.`1`) {
+                                bankruptcyMap.put("1", "Chapter 7")
+                                // bankruptcyAnswerData.`1` = true
+                            }
+
+                            if (bankruptcyAnswerData.`2`) {
+                                bankruptcyMap.put("2", "Chapter 11")
+                                // bankruptcyAnswerData.`2` = true
+                            }
+
+                            if (bankruptcyAnswerData.`3`) {
+                                bankruptcyMap.put("3", "Chapter 12")
+                                //bankruptcyAnswerData.`3` = true
+                            }
+
+
+                            if (bankruptcyAnswerData.`4`) {
+                                bankruptcyMap.put("4", "Chapter 13")
+                                // bankruptcyAnswerData.`4` = true
+                            }
+
+                            question.answerData = bankruptcyMap
+
                         }
-
-                        if(bankruptcyAnswerData.`2`) {
-                            bankruptcyMap.put("2", "Chapter 11")
-                           // bankruptcyAnswerData.`2` = true
-                        }
-
-                        if(bankruptcyAnswerData.`3`) {
-                            bankruptcyMap.put("3", "Chapter 12")
-                            //bankruptcyAnswerData.`3` = true
-                        }
-
-
-                        if(bankruptcyAnswerData.`4`) {
-                            bankruptcyMap.put("4", "Chapter 13")
-                           // bankruptcyAnswerData.`4` = true
-                        }
-
-                        question.answerData = bankruptcyMap
 
                     }
-
                 }
             }
         }
@@ -1638,36 +1650,50 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateChildSupport(updateEvent: ChildSupportUpdateEvent) {
+        if (updateEvent.whichBorrowerId == currentBorrowerId) {
+            val list = updateEvent.childAnswerList
+            childSupportAnswerDataList.clear()
+            childSupportAnswerDataList = list
+            if (list.size > 0) {
+                childConstraintLayout.govt_detail_box.detail_title.text = list[0].liabilityName
+                childConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.BOLD)
+                childConstraintLayout.govt_detail_box.detail_text.text =
+                    "$".plus(Common.addNumberFormat(list[0].monthlyPayment.toDouble()))
+                childConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.NORMAL)
+                //clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+            }
+            if (list.size > 1) {
+                childConstraintLayout.govt_detail_box2.detail_title2.text = list[1].liabilityName
+                childConstraintLayout.govt_detail_box2.detail_title2.setTypeface(
+                    null,
+                    Typeface.BOLD
+                )
+                childConstraintLayout.govt_detail_box2.detail_text2.text =
+                    "$".plus(Common.addNumberFormat(list[1].monthlyPayment.toDouble()))
+                childConstraintLayout.govt_detail_box2.detail_text2.setTypeface(
+                    null,
+                    Typeface.NORMAL
+                )
+                //clickedContentCell.govt_detail_box2.visibility = View.VISIBLE
+            }
 
-        val list = updateEvent.childAnswerList
-        childSupportAnswerDataList.clear()
-        childSupportAnswerDataList = list
-        if(list.size>0){
-            childConstraintLayout.govt_detail_box.detail_title.text = list[0].liabilityName
-            childConstraintLayout.govt_detail_box.detail_title.setTypeface(null, Typeface.BOLD )
-            childConstraintLayout.govt_detail_box.detail_text.text = "$".plus(Common.addNumberFormat(list[0].monthlyPayment.toDouble()))
-            childConstraintLayout.govt_detail_box.detail_text.setTypeface(null, Typeface.NORMAL)
-            //clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+            if (list.size > 2) {
+                childConstraintLayout.govt_detail_box3.detail_title3.text = list[2].liabilityName
+                childConstraintLayout.govt_detail_box3.detail_title3.setTypeface(
+                    null,
+                    Typeface.BOLD
+                )
+                childConstraintLayout.govt_detail_box3.detail_text3.text =
+                    "$".plus(Common.addNumberFormat(list[2].monthlyPayment.toDouble()))
+                childConstraintLayout.govt_detail_box3.detail_text3.setTypeface(
+                    null,
+                    Typeface.NORMAL
+                )
+                //clickedContentCell.govt_detail_box3.visibility = View.VISIBLE
+            }
+
+            showHideChildGovtBoxes(View.VISIBLE)
         }
-        if(list.size>1){
-            childConstraintLayout.govt_detail_box2.detail_title2.text = list[1].liabilityName
-            childConstraintLayout.govt_detail_box2.detail_title2.setTypeface(null, Typeface.BOLD )
-            childConstraintLayout.govt_detail_box2.detail_text2.text = "$".plus(Common.addNumberFormat(list[1].monthlyPayment.toDouble()))
-            childConstraintLayout.govt_detail_box2.detail_text2.setTypeface(null, Typeface.NORMAL)
-            //clickedContentCell.govt_detail_box2.visibility = View.VISIBLE
-        }
-
-        if(list.size>2){
-            childConstraintLayout.govt_detail_box3.detail_title3.text = list[2].liabilityName
-            childConstraintLayout.govt_detail_box3.detail_title3.setTypeface(null, Typeface.BOLD )
-            childConstraintLayout.govt_detail_box3.detail_text3.text = "$".plus(Common.addNumberFormat(list[2].monthlyPayment.toDouble()))
-            childConstraintLayout.govt_detail_box3.detail_text3.setTypeface(null, Typeface.NORMAL)
-            //clickedContentCell.govt_detail_box3.visibility = View.VISIBLE
-        }
-
-        showHideChildGovtBoxes(View.VISIBLE)
-
-
     }
 
     private fun <T> stringToArray2(s: String?, clazz: Class<T>?): T {

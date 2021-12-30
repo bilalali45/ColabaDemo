@@ -21,6 +21,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
     protected var userName:String? = null
     protected var questionId:Int = 0
     protected var whichBorrowerId:Int = 0
+
     protected fun fillWithData(detailTextView:TextInputEditText){
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
             for (item in updateGovernmentQuestionByBorrowerId.Questions) {

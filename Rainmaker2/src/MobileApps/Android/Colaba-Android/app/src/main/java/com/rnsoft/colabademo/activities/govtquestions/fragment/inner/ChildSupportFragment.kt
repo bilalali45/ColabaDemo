@@ -30,7 +30,8 @@ class ChildSupportFragment:BaseFragment() {
 
     private  var childSelectionList:ArrayList<ChildAnswerData> = arrayListOf()
     private var userName:String? = null
-    
+    private var whichBorrowerId:Int = 0
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -38,6 +39,7 @@ class ChildSupportFragment:BaseFragment() {
         arguments?.let { arguments->
             childSelectionList = arguments.getParcelableArrayList(AppConstant.childGlobalList)!!
             userName = arguments.getString(AppConstant.govtUserName)
+            whichBorrowerId = arguments.getInt(AppConstant.whichBorrowerId)
         }
         binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
@@ -201,7 +203,7 @@ class ChildSupportFragment:BaseFragment() {
                     ))
                 }
 
-                EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList))
+                EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList , whichBorrowerId))
                 findNavController().popBackStack()
             }
             else
