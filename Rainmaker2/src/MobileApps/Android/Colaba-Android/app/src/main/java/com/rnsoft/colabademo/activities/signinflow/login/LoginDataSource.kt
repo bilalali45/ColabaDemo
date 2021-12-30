@@ -1,9 +1,13 @@
 package com.rnsoft.colabademo
 
 import android.util.Log
+import com.google.gson.Gson
+import org.json.JSONObject
 import retrofit2.Response
 import java.io.IOException
 import javax.inject.Inject
+import retrofit2.HttpException
+
 
 class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
 
@@ -22,17 +26,24 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
                 //Log.e("what-code ", serverResponse.errorBody()?.charStream().toString())
                 //Log.e("source- ",  serverResponse.errorBody()?.source().toString())
                 //val testError = serverResponse.errorBody()
-               // Log.e("errorBody",serverResponse.errorBody().toString())
-                Result.Success(serverResponse.body()!!)
+                // Log.e("errorBody",serverResponse.errorBody().toString())
+
+                 //val errorResponse = Gson().toJson(serverResponse.errorBody()!!.charStream(), ErrorResponse::class.java)
+                 //Log.e("login-error", errorResponse)
+
+                val jsonObj = JSONObject(serverResponse.errorBody()!!.charStream().readText())
+                Log.e("error-read",jsonObj.getString("message"))
+                Log.e("error-read-code",jsonObj.getString("code"))
+                //val errorResponse = ErrorResponse(jsonObj.getString("code"),jsonObj.getString("message"))
+                //Result.Success(serverResponse.body()!!)
+                Result.Failure(jsonObj.getString("code"),jsonObj.getString("message"))
+
             }
 
         } catch (e: Throwable) {
             if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else
-
-
-
                 Result.Error(IOException(e.localizedMessage))
         }
     }
