@@ -19,7 +19,9 @@ class FamilyFragment:GovtDetailBaseFragment() {
             questionId = it.getInt(AppConstant.questionId)
             whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
+            userName = it.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         fillWithData(binding.edDetails)
         setUpUI()

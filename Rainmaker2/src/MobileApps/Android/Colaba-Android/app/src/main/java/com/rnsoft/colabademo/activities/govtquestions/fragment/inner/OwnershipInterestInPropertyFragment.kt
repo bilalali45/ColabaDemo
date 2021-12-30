@@ -49,6 +49,8 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
     private val array2 = HashMap<String, Int>()
 
+    private var userName:String? = null
+
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -64,7 +66,9 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
             questionId = arguments.getInt(AppConstant.questionId)
 
             updateGovernmentQuestionByBorrowerId = arguments.getParcelable(AppConstant.addUpdateQuestionsParams)
+            userName = arguments.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         val root: View = binding.root
         setUpUI()

@@ -246,7 +246,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
 
         borrowerAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,  { governmentQuestionsModelClassList->
-
+            var zeroIndexAppCompat:AppCompatTextView?= null
             if(governmentQuestionsModelClassList.size>0) {
                 var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
                 for (item in governmentQuestionsModelClassList) {
@@ -282,10 +282,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                     val govtQuestionActivity = (activity as GovtQuestionActivity)
                     govtQuestionActivity.binding.govtDataLoader.visibility = View.INVISIBLE
-                    var zeroIndexAppCompat:AppCompatTextView?= null
+
                     childSupportAnswerDataList= arrayListOf()
                     bankruptcyAnswerData = BankruptcyAnswerData()
                     ownerShipInnerScreenParams = arrayListOf()
+
+
 
                     selectedGovernmentQuestionModel.questionData?.let { questionData ->
                         saveGovtQuestionForDetailAnswer = questionData
@@ -313,6 +315,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                     val appCompactTextView = createAppCompactTextView(tabTitle, currentBorrowerId)
                                     if (zeroIndexAppCompat == null)
                                         zeroIndexAppCompat = appCompactTextView
+
+                                    if(tabTitle.equals(govtQuestionActivity.selectedQuestionHeader, true))
+                                        zeroIndexAppCompat = appCompactTextView
                                     //tabArrayList.add(appCompactTextView)
                                     binding.horizontalTabs.addView(appCompactTextView)
                                     val contentView = createContentLayoutForTab(qData)
@@ -339,6 +344,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                             innerLayoutHashMap.put(appCompactTextView, contentView)
                             idToContentMapping.put(5000, contentView)
+
+                            if(AppConstant.demographicInformation.equals(govtQuestionActivity.selectedQuestionHeader, true))
+                                zeroIndexAppCompat = appCompactTextView
 
                             binding.parentContainer.addView(contentView)
                             appCompactTextView.setOnClickListener(openTabMenuScreen)
@@ -578,10 +586,19 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                 }
                             }
                     }  // close of let block...
-                    zeroIndexAppCompat?.performClick()
+
+                    zeroIndexAppCompat?.let { zeroAppCompat->
+                        zeroAppCompat.performClick()
+                        //binding.horizontalScrollView.scrollTo(zeroAppCompat.translationX.toInt(), 0 )
+
+                    }
+
                 }
             }
-            binding.parentContainer.postDelayed({ binding.parentContainer.visibility = View.VISIBLE },100)
+            binding.parentContainer.postDelayed({
+                binding.parentContainer.visibility = View.VISIBLE
+                binding.horizontalScrollView.smoothScrollTo(zeroIndexAppCompat!!.left, 0 )
+            },100)
 
         })
     }
@@ -898,6 +915,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putInt(AppConstant.whichBorrowerId, currentBorrowerId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
+        bundle.putString(AppConstant.govtUserName , (lastQData.firstName+" "+lastQData.lastName))
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
