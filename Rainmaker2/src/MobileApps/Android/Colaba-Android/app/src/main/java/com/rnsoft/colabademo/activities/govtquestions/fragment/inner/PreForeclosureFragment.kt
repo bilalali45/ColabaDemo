@@ -30,6 +30,7 @@ class PreForeclosureFragment:GovtDetailBaseFragment() {
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
+            whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )

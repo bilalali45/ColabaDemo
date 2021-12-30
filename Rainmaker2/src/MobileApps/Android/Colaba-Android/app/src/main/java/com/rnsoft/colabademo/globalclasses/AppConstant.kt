@@ -192,6 +192,7 @@ object AppConstant {
 
 
         const val questionId : String = "questionId"
+        const val whichBorrowerId : String = "whichBorrowerId"
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"

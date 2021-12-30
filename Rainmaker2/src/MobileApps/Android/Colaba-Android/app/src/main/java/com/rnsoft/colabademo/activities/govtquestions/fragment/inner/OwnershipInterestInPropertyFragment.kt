@@ -62,6 +62,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
         arguments?.let { arguments->
             ownerShipInnerScreenParams = arguments.getStringArrayList(AppConstant.ownerShipGlobalData)!!
             questionId = arguments.getInt(AppConstant.questionId)
+
             updateGovernmentQuestionByBorrowerId = arguments.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )

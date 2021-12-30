@@ -19,7 +19,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     protected var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     protected var questionId:Int = 0
-
+    protected var whichBorrowerId:Int = 0
     protected fun fillWithData(detailTextView:TextInputEditText){
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
             for (item in updateGovernmentQuestionByBorrowerId.Questions) {
@@ -49,7 +49,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
-                    EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString))
+                    EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString , whichBorrowerId))
                     findNavController().popBackStack()
                 }
             }

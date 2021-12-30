@@ -39,6 +39,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
+
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
         }
 
