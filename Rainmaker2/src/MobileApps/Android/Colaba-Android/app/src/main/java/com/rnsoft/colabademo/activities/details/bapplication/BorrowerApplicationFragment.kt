@@ -9,7 +9,6 @@ import android.view.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,9 +16,6 @@ import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.rnsoft.colabademo.activities.details.bapplication.RealEstateClickListener
 import com.rnsoft.colabademo.databinding.DetailApplicationTabBinding
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
@@ -325,6 +321,10 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
                 govtQuestionActivity.putExtra(AppConstant.loanApplicationId, loanId)
                 //Timber.e("loanApplicationId -- "+loanId)
             }
+            val questionSelection = questionList[position]
+            govtQuestionActivity.putExtra( AppConstant.selectedQuestionHeader, questionSelection.questionDetail?.questionHeader)
+
+
 
             startActivity(govtQuestionActivity)
         }
@@ -478,7 +478,7 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
 
                     //Timber.e(" print arraylist = $questionList")
 
-                    questionList.add(BorrowerQuestionsModel(null, null, true, races, ethnicities, ))
+                    questionList.add(BorrowerQuestionsModel(QuestionDetail(AppConstant.demographicInformation, 500, ""), null, true, races, ethnicities, ))
 
                     appTabModel.borrowerAppData?.let { bAppData ->
                         bAppData.borrowersInformation?.let { eachBorrowerRaceEthnicity ->
