@@ -240,6 +240,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
      */
 
+    private var currentBorrowerId:Int = 0
+
     private fun setUpDynamicTabs(){
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
 
@@ -250,7 +252,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 for (item in governmentQuestionsModelClassList) {
                     if (item.passedBorrowerId == tabBorrowerId) {
                         selectedGovernmentQuestionModel = item
-
+                        currentBorrowerId = tabBorrowerId!!
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
@@ -310,7 +312,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                                 if (qData.parentQuestionId == null) {
                                     binding.parentContainer.visibility = View.INVISIBLE
-                                    val appCompactTextView = createAppCompactTextView(tabTitle, 0)
+                                    val appCompactTextView = createAppCompactTextView(tabTitle, currentBorrowerId)
                                     if (zeroIndexAppCompat == null)
                                         zeroIndexAppCompat = appCompactTextView
 
@@ -332,7 +334,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
                         // adding demo graphic tab here....
                         if (zeroIndexAppCompat != null) {
-                            val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, 0)
+                            val appCompactTextView = createAppCompactTextView(AppConstant.demographicInformation, currentBorrowerId)
                             binding.horizontalTabs.addView(appCompactTextView)
                             val contentView = createContentLayoutForTab(
                                 QuestionData(
@@ -601,7 +603,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         })
     }
 
-    private fun createAppCompactTextView(tabTitle:String, tabIndex:Int):AppCompatTextView{
+    private fun createAppCompactTextView(tabTitle:String, currentBorrowerId:Int):AppCompatTextView{
         //val appCompactTextView = AppCompatTextView(requireContext())
 
         val appCompactTextView: AppCompatTextView =
@@ -837,8 +839,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
             else if(questionData.answer.equals("yes",true)) {
                 contentCell.ans_yes.isChecked = true
-                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty())
+                if(questionData.answerDetail!=null && questionData.answer.equals("Yes", true) &&  questionData.answerDetail!!.isNotBlank() && questionData.answerDetail!!.isNotEmpty()) {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
+                    questionData.answerDetail?.let {
+                        contentCell.detail_text.text = it
+                    }
+                }
             }
 
             contentCell.ans_no.setOnClickListener {
@@ -849,8 +855,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 updateGovernmentData(variableQuestionData)
             }
             contentCell.ans_yes.setOnClickListener {
-                if(contentCell.detail_text.text.toString().isNotBlank() && contentCell.detail_text.text.toString().isNotEmpty())
+                if(contentCell.detail_text.text.toString().isNotBlank() && contentCell.detail_text.text.toString().isNotEmpty()) {
                     contentCell.govt_detail_box.visibility = View.VISIBLE
+                    questionData.answerDetail?.let {
+                        contentCell.detail_text.text = it
+                    }
+                }
 
                 contentCell.govt_detail_box2?.let{ govt_detail_box2->
                     if(contentCell.detail_text2.text.toString().isNotBlank() && contentCell.detail_text2.text.toString().isNotEmpty())
@@ -903,6 +913,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
+        bundle.putInt(AppConstant.whichBorrowerId, currentBorrowerId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
         bundle.putString(AppConstant.govtUserName , (lastQData.firstName+" "+lastQData.lastName))
 
@@ -1458,12 +1469,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateReceivedFromInnerScreen(updateEvent: GovtScreenUpdateEvent) {
-        clickedContentCell.govt_detail_box.detail_title.text = updateEvent.detailTitle
-        clickedContentCell.govt_detail_box.detail_text.text = updateEvent.detailDescription
-        if(updateEvent.detailDescription.isNotEmpty() && updateEvent.detailDescription.isNotBlank())
-            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
-        else
-            clickedContentCell.govt_detail_box.visibility = View.INVISIBLE
+        if(updateEvent.whichBorrowerId == tabBorrowerId) {
+            clickedContentCell.govt_detail_box.detail_title.text = updateEvent.detailTitle
+            clickedContentCell.govt_detail_box.detail_text.text = updateEvent.detailDescription
+            if (updateEvent.detailDescription.isNotEmpty() && updateEvent.detailDescription.isNotBlank())
+                clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+            else
+                clickedContentCell.govt_detail_box.visibility = View.INVISIBLE
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

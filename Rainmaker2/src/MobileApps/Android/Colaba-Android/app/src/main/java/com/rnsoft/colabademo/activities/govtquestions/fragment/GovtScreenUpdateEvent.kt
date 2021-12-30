@@ -1,6 +1,6 @@
 package com.rnsoft.colabademo
 
-class GovtScreenUpdateEvent(val detailTitle: String = "Detail", val detailDescription:String = " ")
+class GovtScreenUpdateEvent(val detailTitle: String = "Detail", val detailDescription:String = " " , val whichBorrowerId:Int)
 
 class UndisclosedBorrowerFundUpdateEvent(val detailTitle: String , val detailDescription:String)
 
