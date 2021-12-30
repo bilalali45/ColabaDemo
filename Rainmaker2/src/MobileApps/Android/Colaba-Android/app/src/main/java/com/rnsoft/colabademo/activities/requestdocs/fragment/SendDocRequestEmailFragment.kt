@@ -98,10 +98,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
     private fun setupUI(){
         binding.btnSendRequest.setOnClickListener {
-          //findNavController().navigate(R.id.action_request_sent)
             sendDocRequest()
         }
-
         binding.backButton.setOnClickListener {
             findNavController().navigate(R.id.action_selected_doc_fragment)
         }
@@ -260,20 +258,16 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
                 body.emailBody?.let {
                     val builder = StringBuilder()
                     if(it.contains(AppConstant.relaceDocFormat)){
-                        //Log.e("combineDocList","$combineDocList")
 
                         for(item in combineDocList.indices){
                              // builder.append("<p><span style=\"color: rgb(78,78,78);background-color: rgb(255,255,255);font-size: 14px;font-family: Rubik, sans-serif;\">")
                                //   .append("\u25CF").append(" ").append(combineDocList.get(item).docType).append("</span></p>")
 
-
                             builder.append("<ul style=\"color: rgb(78,78,78);background-color: rgb(255,255,255);font-size: 14px;font-family: Rubik, sans-serif;\">")
                                 .append("\u2022").append(" ").append(combineDocList.get(item).docType).append("</ul>")
                         }
 
-
-
-                       // <ul style=\"text-align:left;\"><span style=\"color: rgb(78,78,78);font-size: 14px;font-family: Rubik, sans-serif;\">\(bulletList)</ul>"
+                        // <ul style=\"text-align:left;\"><span style=\"color: rgb(78,78,78);font-size: 14px;font-family: Rubik, sans-serif;\">\(bulletList)</ul>"
 
                         htmlEmailBody = it.replace(AppConstant.relaceDocFormat, builder.toString())
                         binding.tvEmailBody.text = Html.fromHtml(htmlEmailBody)

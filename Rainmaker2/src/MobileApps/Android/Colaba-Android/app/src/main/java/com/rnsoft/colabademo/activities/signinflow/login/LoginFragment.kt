@@ -140,8 +140,8 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-        //userEmailField.setText("sadiq@rainsoftfn.com")
-        //passwordField.setText("rainsoft")
+        userEmailField.setText("sadiq@rainsoftfn.com")
+        passwordField.setText("rainsoft")
 
         imageView5.setOnClickListener {
             navigateToDashBoard(null)
