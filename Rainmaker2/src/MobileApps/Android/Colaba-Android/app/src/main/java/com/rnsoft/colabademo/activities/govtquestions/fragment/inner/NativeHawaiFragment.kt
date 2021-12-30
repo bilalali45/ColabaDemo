@@ -19,7 +19,7 @@ class NativeHawaiFragment:BaseFragment() {
     private val binding get() = _binding!!
 
     private var nativeHawaiianChildList:ArrayList<DemoGraphicRaceDetail>? = null
-
+    private var userName:String? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -31,6 +31,9 @@ class NativeHawaiFragment:BaseFragment() {
         _binding = NativeHawaiianLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         nativeHawaiianChildList = arguments?.getParcelableArrayList(AppConstant.nativeHawaianChildList)!!
+        userName = arguments?.getString(AppConstant.govtUserName)
+        binding.borrowerPurpose.text = userName
+
         setUpUI()
         super.addListeners(binding.root)
         return root

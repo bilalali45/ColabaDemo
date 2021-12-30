@@ -72,6 +72,8 @@ class GovernmentQuestionDetailViewController: BaseViewController {
     var bankruptcySubQuestion: [String: Any] = [:]
     var childSupportQuestion: [String: Any] = [:]
     
+    var selectedQuesionHeader = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -98,6 +100,7 @@ class GovernmentQuestionDetailViewController: BaseViewController {
         bankruptcyView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(bankruptcyViewTapped)))
         childSupportView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(childSupportViewTapped)))
         demographicView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(demographicViewTapped)))
+        
     }
     
     //MARK:- Methods and Actions
@@ -319,7 +322,66 @@ class GovernmentQuestionDetailViewController: BaseViewController {
             demographicInfoVC.borrowerName = "\(firstName) \(lastName)"
         }
         
-        filterViewTapped(selectedFilterView: unDisclosedView, filterViews: [unDisclosedView, ownershipInterestView, /*priorityLiensView,*/familyOrBusinessAffiliationView, undisclosedMortgageApplicationsView, undisclosedCreditApplicationView, debtCoSignerView, outstandingJudgementsView, fedralDebtView, partyToLawsuitView, titleConveyanceView, preForceClosureView, foreClosuredPropertyView, bankruptcyView, childSupportView, demographicView])
+        var scrollViewXPosition: CGFloat = 0.0
+        
+        if selectedQuesionHeader.localizedCaseInsensitiveContains("Undisclosed Borrowered Funds"){
+            scrollViewXPosition = unDisclosedView.frame.origin.x
+            unDisclosedViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Ownership Interest in Property"){
+            scrollViewXPosition = ownershipInterestView.frame.origin.x
+            ownershipInterestViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Family or Business affiliation"){
+            scrollViewXPosition = familyOrBusinessAffiliationView.frame.origin.x
+            familyOrBusinessAffiliationViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Debt Co-Signer or Guarantor"){
+            scrollViewXPosition = debtCoSignerView.frame.origin.x
+            debtCoSignerViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Outstanding Judgements"){
+            scrollViewXPosition = outstandingJudgementsView.frame.origin.x
+            outstandingJudgementsViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Federal Debt Deliquency"){
+            scrollViewXPosition = fedralDebtView.frame.origin.x
+            fedralDebtViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Party to Lawsuit"){
+            scrollViewXPosition = partyToLawsuitView.frame.origin.x
+            partyToLawsuitViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Title Conveyance"){
+            scrollViewXPosition = titleConveyanceView.frame.origin.x
+            titleConveyanceViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Pre-Foreclosureor Short Sale"){
+            scrollViewXPosition = preForceClosureView.frame.origin.x
+            preForceClosureViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Foreclosured Property"){
+            scrollViewXPosition = foreClosuredPropertyView.frame.origin.x
+            foreClosuredPropertyViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Bankruptcy"){
+            scrollViewXPosition = bankruptcyView.frame.origin.x
+            bankruptcyViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Child Support, Alimony, etc."){
+            scrollViewXPosition = childSupportView.frame.origin.x
+            childSupportViewTapped()
+        }
+        else if selectedQuesionHeader.localizedCaseInsensitiveContains("Demographic Information"){
+            scrollViewXPosition = demographicView.frame.origin.x
+            demographicViewTapped()
+        }
+        else{
+            scrollViewXPosition = unDisclosedView.frame.origin.x
+            unDisclosedViewTapped()
+        }
+        
+        self.tabsScrollView.setContentOffset(CGPoint(x: scrollViewXPosition - 20, y: 0.0), animated: true)
     }
     
     @objc func unDisclosedViewTapped(){

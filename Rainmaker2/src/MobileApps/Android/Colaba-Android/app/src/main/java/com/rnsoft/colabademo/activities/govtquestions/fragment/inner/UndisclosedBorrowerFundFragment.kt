@@ -29,6 +29,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
     private val binding get() = _binding!!
     private var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     private var questionId:Int = 0
+    private var userName:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,16 +41,18 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
+            userName = it.getString(AppConstant.govtUserName)
         }
+        binding.borrowerPurpose.text = userName
 
-        //binding.borrowerName.text  =
+
+
 
         // fill the date with the API values...
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
             for (item in updateGovernmentQuestionByBorrowerId.Questions) {
 
                 item.parentQuestionId?.let { parentQuestionId->
-
                     if (parentQuestionId == questionId) {
                         item.answerDetail?.let {
                            binding.edDetails.setText(it)
@@ -61,6 +64,9 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 }
             }
         }
+
+
+
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
         setUpUI()
         super.addListeners(binding.root)

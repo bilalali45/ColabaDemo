@@ -190,6 +190,8 @@ object AppConstant {
 
         const val addUpdateQuestionsParams : String = "addUpdateQuestionsParams"
 
+        const val govtUserName : String = "govtUserName"
+
 
         const val questionId : String = "questionId"
 
@@ -222,6 +224,8 @@ object AppConstant {
         const val  incomeBorrowerList:String = "incomeBorrowerList"
         const val footerAddEmployment = "Add Employment"
 
+
+        const val  selectedQuestionHeader:String = "questionSelected"
         const val  borrowerList:String = "BorrowerList"
         const val  borrowerOwnTypeList:String = "BorrowerOwnTypeList"
 

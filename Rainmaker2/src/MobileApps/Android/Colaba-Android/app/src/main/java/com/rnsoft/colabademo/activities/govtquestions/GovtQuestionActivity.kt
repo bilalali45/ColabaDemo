@@ -27,6 +27,7 @@ class GovtQuestionActivity : BaseActivity() {
     lateinit var binding: GovtQuestionsActivityLayoutBinding
     var loanApplicationId:Int? = null
     private var loanPurpose:String? = null
+    var selectedQuestionHeader:String?  =  null
     private var borrowerTabList:ArrayList<Int>? = null
     private var borrowerOwnTypeList:ArrayList<Int>? = null
     private val borrowerApplicationViewModel: BorrowerApplicationViewModel by viewModels()
@@ -42,6 +43,9 @@ class GovtQuestionActivity : BaseActivity() {
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList = it.getIntegerArrayList(AppConstant.borrowerList) as ArrayList<Int>
             borrowerOwnTypeList = it.getIntegerArrayList(AppConstant.borrowerOwnTypeList) as ArrayList<Int>
+            selectedQuestionHeader = it.getString(AppConstant.selectedQuestionHeader).toString()
+
+
             //for (item in borrowerTabList!!) Timber.d("item size " + item)
         }
 
