@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
+import android.provider.Settings.Global.getString
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -96,10 +97,10 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = AppConstant.INTERNET_ERR_MSG)))
 
                     else if(genericResult is Result.Failure){
-                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = genericResult.message)))
+                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError="Incorrect email or password.")))
                     }
                     else {
-                        //EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = "User does not exist")))
+                        EventBus.getDefault().post(LoginEvent(LoginResponseResult(responseError = "Internal Server Error")))
                     }
 
                 }

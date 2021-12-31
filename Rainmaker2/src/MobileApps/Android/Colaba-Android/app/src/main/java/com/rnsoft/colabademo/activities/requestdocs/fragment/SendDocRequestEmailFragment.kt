@@ -36,6 +36,16 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import android.graphics.drawable.BitmapDrawable
+
+import android.graphics.RectF
+
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
+import android.widget.ImageView
 
 
 /**
@@ -74,6 +84,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             activity?.loanApplicationId?.let {
                 loanApplicationId = it
             }
+            
             setupUI()
             getDropDownTemplate()
             setClickEvents()
@@ -84,6 +95,21 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
     private fun addNewChip(email: String,editText: EditText, chipGroup : FlexboxLayout){
         val chip = LayoutInflater.from(context).inflate(R.layout.chip, chipGroup, false) as Chip
         //val chip = Chip(context)
+
+      // create image
+        /*val bitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        val canvas: Canvas = Canvas(bitmap)
+        var shapeDrawable: ShapeDrawable
+        // draw oval shape to canvas
+        shapeDrawable = ShapeDrawable(OvalShape())
+        shapeDrawable.setBounds(100,500, 600,800)
+        shapeDrawable.getPaint().setColor(Color.parseColor("#009191"))
+        shapeDrawable.draw(canvas)
+        val imageV = LayoutInflater.from(context).inflate(R.layout.email_chip_imageview, chipGroup, false) as ImageView
+
+        imageV.background = BitmapDrawable(getResources(), bitmap) */
+
+
         chip.text = email
        // chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
         chip.isCloseIconEnabled = true
@@ -261,7 +287,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
 
                         for(item in combineDocList.indices){
                              // builder.append("<p><span style=\"color: rgb(78,78,78);background-color: rgb(255,255,255);font-size: 14px;font-family: Rubik, sans-serif;\">")
-                               //   .append("\u25CF").append(" ").append(combineDocList.get(item).docType).append("</span></p>")
+                                 // .append("\u25CF").append(" ").append(combineDocList.get(item).docType).append("</span></p>")
 
                             builder.append("<ul style=\"color: rgb(78,78,78);background-color: rgb(255,255,255);font-size: 14px;font-family: Rubik, sans-serif;\">")
                                 .append("\u2022").append(" ").append(combineDocList.get(item).docType).append("</ul>")

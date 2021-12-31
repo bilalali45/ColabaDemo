@@ -25,8 +25,6 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
                 //val testError = serverResponse.errorBody()
 
                 val jsonObj = JSONObject(serverResponse.errorBody()!!.charStream().readText())
-                Log.e("error-read",jsonObj.getString("message"))
-                Log.e("error-read-code",jsonObj.getString("code"))
                 //Result.Success(serverResponse.body()!!)
                 Result.Failure(jsonObj.getString("code"),jsonObj.getString("message"))
 
