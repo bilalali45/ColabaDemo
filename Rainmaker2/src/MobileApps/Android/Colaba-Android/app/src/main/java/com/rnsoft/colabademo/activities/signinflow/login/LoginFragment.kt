@@ -31,9 +31,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.rnsoft.colabademo.databinding.LoginLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.NumberTextFormat
 import kotlinx.android.synthetic.main.login_layout.*
 
 
@@ -53,8 +51,6 @@ class LoginFragment : BaseFragment() {
     private lateinit var passwordLayout: TextInputLayout
     lateinit var parentLayout: ConstraintLayout
     private lateinit var mTextWatcher : TextWatcher
-
-
 
 
     override fun onCreateView(

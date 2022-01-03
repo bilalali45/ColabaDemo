@@ -20,7 +20,6 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
     private val _notificationCount: MutableLiveData<Int> =  MutableLiveData()
     val notificationCount:LiveData<Int> = _notificationCount
 
-
     fun getNotificationCountT(token:String) {
          viewModelScope.launch {
              val result = dashBoardRepo.getNotificationCount(token)
@@ -105,6 +104,17 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
             //else if(result is Result.Error)
                // EventBus.getDefault().post(WebServiceErrorEvent(result))
+        }
+    }
+
+    fun logout(){
+        viewModelScope.launch {
+            val result = dashBoardRepo.logout()
+            if (result is Result.Success) {
+                Log.e("del-notify-", result.toString())
+            }
+            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
+                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
         }
     }
 

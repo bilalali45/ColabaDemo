@@ -52,21 +52,18 @@
         <item>Pending Sale</item>
     </string-array>
 
-
-    <!--  <item>Own</item>
-        <item>Rent</item>
-        <item>No Primary Housing Expense</item>-->
+    <string name="invite_real_estate_agent">Invite Real Estate Agent</string>
+    <string name="share_loan_app_link">Share Loan Application Link</string>
+    <string name="settings">Settings</string>
 
 
     <string name="race">Race</string>
     <string name="ethnicity">Ethnicity</string>
     <string name="sex">Sex</string>
 
-
     <string name="add_current_address">Add Current Residence</string>
     <string name="add_previous_address">Add Previous Residence</string>
     <string name="mailing_address_added">Mailing address has been added</string>
-
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
     <string name="doc_filter_borrower_to_do">Borrower To Do</string>

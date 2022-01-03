@@ -113,4 +113,20 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
+    suspend fun logout():Result<Any>{
+        return try {
+            val response = serverApi.logout()
+            Log.e("logout-api", response.toString())
+            if(response.isSuccessful)
+                Result.Success(response)
+            else
+                Result.Error(IOException("unknown webservice error"))
+        } catch (e: Throwable) {
+            if(e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
 }

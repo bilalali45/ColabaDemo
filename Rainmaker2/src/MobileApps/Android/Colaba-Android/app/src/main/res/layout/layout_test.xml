@@ -185,97 +185,22 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/dollar_up" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Property Value"
-            android:textColor="@color/grey_color_one"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView15"
-            app:layout_constraintTop_toTopOf="@+id/imageView15" />
-
-
-        <TextView
-            android:id="@+id/propertyValueTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="$0"
-            android:textColor="@color/grey_color_three"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <ImageView
             android:id="@+id/imageView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="18dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/propertyValueTextView"
+            app:layout_constraintTop_toBottomOf="@+id/loanAmountTextView"
             app:srcCompat="@drawable/home_oval" />
 
-        <ImageView
-            android:id="@+id/imageView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.62"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView15"
-            app:srcCompat="@drawable/dollar_bag" />
-
-        <TextView
-            android:id="@+id/notRequiredField"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Loan Amount"
-            android:textColor="@color/grey_color_one"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView16"
-            app:layout_constraintTop_toTopOf="@+id/imageView16" />
-
-        <TextView
-            android:id="@+id/loanAmountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="$0"
-            android:textColor="@color/grey_color_three"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="@+id/notRequiredField"
-            app:layout_constraintTop_toBottomOf="@+id/notRequiredField" />
-
-
-
-
-
-
-        <!-- address-->
         <TextView
             android:id="@+id/textView16"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:fontFamily="@font/rubik_regular"
-            android:text="Subject Property Address"
+            android:text="Property Address"
             android:textColor="@color/grey_color_one"
             android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/imageView14"
@@ -287,7 +212,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/rubik_regular"
-            android:text=""
+            android:text="727 Ashleigh LN#"
             android:textColor="@color/grey_color_three"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/textView16"
@@ -299,19 +224,79 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:fontFamily="@font/rubik_regular"
-            android:text=""
+            android:text="22 Dallas, TX 76099"
             android:textColor="@color/grey_color_three"
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="@+id/addressOne"
             app:layout_constraintTop_toBottomOf="@+id/addressOne" />
 
+        <ImageView
+            android:id="@+id/imageView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/dollar_bag" />
 
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Loan Amount"
+            android:textColor="@color/grey_color_one"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView15"
+            app:layout_constraintTop_toTopOf="@+id/imageView15" />
 
+        <TextView
+            android:id="@+id/loanAmountTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="$ 80,000"
+            android:textColor="@color/grey_color_three"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/textView21"
+            app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
+        <ImageView
+            android:id="@+id/imageView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView15"
+            app:srcCompat="@drawable/dollar_up" />
 
-     <!--   -->
+        <TextView
+            android:id="@+id/notRequiredField"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Property Value"
+            android:textColor="@color/grey_color_one"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@+id/imageView16"
+            app:layout_constraintTop_toTopOf="@+id/imageView16" />
 
-
+        <TextView
+            android:id="@+id/propertyValueTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="$ 10,000"
+            android:textColor="@color/grey_color_three"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@+id/notRequiredField"
+            app:layout_constraintTop_toBottomOf="@+id/notRequiredField" />
 
         <ImageView
             android:id="@+id/imageView17"
@@ -321,7 +306,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/addressTwo"
             app:srcCompat="@drawable/up_line" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
