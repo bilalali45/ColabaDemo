@@ -16,9 +16,9 @@ object LoginUtil {
 
     fun isValidEmail(userEmail: String): String? {
         return if (userEmail.isEmpty())
-            "Empty Email, Please try again…"
+            "This field is required."//"Empty Email, Please try again"
         else if (!EMAIL_ADDRESS_PATTERN.matcher(userEmail).matches())
-            "Invalid Email, Please try again…"
+            "Please enter a valid email address."
         else
             null
     }
@@ -30,15 +30,15 @@ object LoginUtil {
 
     fun checkPasswordLength(password: String): String? {
         if (password.isEmpty())
-            return "Password Empty, Please try again…"
+            return "This field is required." //"Password Empty, Please try again…"
         else
         if(password.isBlank())
-            return "Password Empty, Please try again…"
+            return  "This field is required."  //"Password Empty, Please try again…"
         else
         if(password.isNotEmpty()){
             for (element in password) {
                 if (Character.isWhitespace(element)) {
-                    return "Password can not contain space…"
+                    return "Password can not contain space"
                 }
             }
         }

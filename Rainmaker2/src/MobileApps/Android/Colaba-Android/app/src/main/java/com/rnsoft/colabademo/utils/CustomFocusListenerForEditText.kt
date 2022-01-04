@@ -40,7 +40,7 @@ class CustomFocusListenerForEditText(private val mEditText: TextInputEditText, p
 class FocusListenerForPhoneNumber(private val mEditText: TextInputEditText, private val mTextInputLayout: TextInputLayout, private val context: Context, private val errorString:String =""):View.OnFocusChangeListener {
     override fun onFocusChange(p0: View?, p1: Boolean) {
         if(p1) {
-            setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_two )
+            setTextInputLayoutHintColor(mTextInputLayout, context = context, R.color.grey_color_two)
         }
         else{
             if (mEditText.text?.length == 0) {

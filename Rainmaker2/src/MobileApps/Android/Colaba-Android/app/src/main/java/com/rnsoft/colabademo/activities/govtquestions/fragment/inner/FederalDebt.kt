@@ -17,6 +17,7 @@ class FederalDebt:GovtDetailBaseFragment() {
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
+            whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = it.getString(AppConstant.govtUserName)
         }

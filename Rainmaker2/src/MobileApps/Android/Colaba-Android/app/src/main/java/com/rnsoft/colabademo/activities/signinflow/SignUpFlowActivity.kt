@@ -27,7 +27,6 @@ class SignUpFlowActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.signupflow_navigation_layout)
 
         intent.extras?.let {

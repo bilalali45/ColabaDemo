@@ -19,7 +19,7 @@ class BankruptcyFragment:BaseFragment() {
     private val binding get() = _binding!!
     private  var answerData:BankruptcyAnswerData = BankruptcyAnswerData()
     private var userName:String? = null
-
+    private var whichBorrowerId:Int = 0
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -31,6 +31,7 @@ class BankruptcyFragment:BaseFragment() {
         arguments?.let { arguments->
             answerData = arguments.getParcelable(AppConstant.bankruptcyAnswerData)!!
             userName = arguments.getString(AppConstant.govtUserName)
+            whichBorrowerId = arguments.getInt(AppConstant.whichBorrowerId)
         }
         binding.borrowerPurpose.text = userName
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, backToGovernmentScreen )
@@ -77,7 +78,7 @@ class BankruptcyFragment:BaseFragment() {
             val selectedValues = returnSelectedValues()
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
-                EventBus.getDefault().post(BankruptcyUpdateEvent(detailDescription = selectedValues, bankruptcyAnswerData = answerData))
+                EventBus.getDefault().post(BankruptcyUpdateEvent(detailDescription = selectedValues, bankruptcyAnswerData = answerData , whichBorrowerId = whichBorrowerId ))
                 findNavController().popBackStack()
             }
             else

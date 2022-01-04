@@ -20,6 +20,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
     protected var updateGovernmentQuestionByBorrowerId:GovernmentParams? = null
     protected var userName:String? = null
     protected var questionId:Int = 0
+    protected var whichBorrowerId:Int = 0
 
     protected fun fillWithData(detailTextView:TextInputEditText){
         updateGovernmentQuestionByBorrowerId?.let { updateGovernmentQuestionByBorrowerId ->
@@ -50,7 +51,7 @@ open class GovtDetailBaseFragment: BaseFragment() {
             lifecycleScope.launchWhenStarted {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, updateGovernmentQuestionByBorrowerId)
-                    EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString))
+                    EventBus.getDefault().post(GovtScreenUpdateEvent(govtTitleString, getDetailString , whichBorrowerId))
                     findNavController().popBackStack()
                 }
             }

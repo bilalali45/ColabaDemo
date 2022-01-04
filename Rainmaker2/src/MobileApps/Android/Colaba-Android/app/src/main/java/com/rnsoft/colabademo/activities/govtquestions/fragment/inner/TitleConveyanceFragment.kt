@@ -12,16 +12,13 @@ class TitleConveyanceFragment:GovtDetailBaseFragment() {
     private var _binding: TitleConveyanceLayoutBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         _binding = TitleConveyanceLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
         arguments?.let {
             questionId = it.getInt(AppConstant.questionId)
+            whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = it.getString(AppConstant.govtUserName)
         }

@@ -182,6 +182,9 @@ object AppConstant {
 
         const val bEmail:String = "bEmail"
 
+        const val milestone:String = "milestone"
+
+
         const val innerScreenName:String = "innerScreenName"
 
         const val borrowerAppScreen:String = "borrowerAppScreen"
@@ -194,6 +197,7 @@ object AppConstant {
 
 
         const val questionId : String = "questionId"
+        const val whichBorrowerId : String = "whichBorrowerId"
 
         const val childGlobalList : String = "childGlobalList"
         const val ownerShipGlobalData : String = "ownerShipGlobalData"
@@ -224,6 +228,8 @@ object AppConstant {
         const val  incomeBorrowerList:String = "incomeBorrowerList"
         const val footerAddEmployment = "Add Employment"
 
+
+        const val  selectedQuestionHeader:String = "questionSelected"
         const val  borrowerList:String = "BorrowerList"
         const val  borrowerOwnTypeList:String = "BorrowerOwnTypeList"
 

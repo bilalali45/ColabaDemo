@@ -32,7 +32,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
     private var _binding: OwnershipInterestInPropertyLayoutBinding? = null
     private val binding get() = _binding!!
     private var ownerShipInnerScreenParams:ArrayList<String> = arrayListOf()
-
+    private var whichBorrowerId:Int = 0
     companion object{
         const val ownershipQuestionOne =    "What type of property did you own?"
         const val ownershipQuestionTwo =    "How did you hold title to the property?"
@@ -64,6 +64,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
         arguments?.let { arguments->
             ownerShipInnerScreenParams = arguments.getStringArrayList(AppConstant.ownerShipGlobalData)!!
             questionId = arguments.getInt(AppConstant.questionId)
+            whichBorrowerId = arguments.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = arguments.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = arguments.getString(AppConstant.govtUserName)
         }
@@ -173,7 +174,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
                     EventBus.getDefault().post(
                         OwnershipInterestUpdateEvent(ownershipQuestionOne, answer1 , array1.getValue(answer1),
-                            ownershipQuestionTwo, answer2,  array2.getValue(answer2))
+                            ownershipQuestionTwo, answer2,  array2.getValue(answer2), whichBorrowerId )
 
                     )
 

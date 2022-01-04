@@ -102,11 +102,14 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             resetCreateFieldsToInitialState()
         }
 
+
+        binding.btnLoanPurchase.isChecked = true
+
         binding.rgLoanPurpose.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
             if(isChecked) toggleButton.isEnabled
             Timber.e(" toggleButton, checkedId, isChecked ",toggleButton.toString(), checkedId.toString(), isChecked.toString())
 
-            if (binding.btnLoanPurchase.isPressed) {
+            if (binding.btnLoanPurchase.isChecked) {
                 //binding.btnLoanPurchase.isEnabled = false
                 //binding.btnLoanPurchase.isClickable = false
                 createNewApplicationParams.let {
@@ -124,7 +127,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 //binding.btnLoanPurchase.isClickable = true
                 //binding.btnLoanPurchase.isActivated = true
                 //binding.btnLoanPurchase.isHovered  = true
-
+                binding.btnLoanPurchase.isChecked = false
                 preSelectInitialization()
                 createNewApplicationParams.let {
                     it.LoanPurpose = 2
@@ -134,6 +137,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
             onLoanPurposeClick()
         }
+
+
+        //binding.btnLoanPurchase.isPressed = true
 
 
         /*
@@ -245,7 +251,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         */
 
         binding.searchEdittext.doAfterTextChanged {
-            if(it?.length!! >2) {
+            if(it?.length!! >0) {
                 lifecycleScope.launchWhenStarted {
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         viewModel.searchByBorrowerContact(authToken, it.toString())
