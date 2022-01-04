@@ -31,6 +31,8 @@ class DashboardViewController: BaseViewController {
         setTopTabBar()
         NotificationCenter.default.addObserver(self, selector: #selector(hidesNavigationBar), name: NSNotification.Name(rawValue: kNotificationHidesHomeNavigationBar), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(showNavigationBar), name: NSNotification.Name(rawValue: kNotificationShowHomeNavigationBar), object: nil)
+//        userIcon.isUserInteractionEnabled = true
+//        userIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(userImageViewTapped)))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -135,7 +137,7 @@ class DashboardViewController: BaseViewController {
 //        })
 //    }
     
-    @IBAction func btnLogoutTapped(_ sender: UIButton) {
+    @objc func userImageViewTapped(){
         
         let alert = UIAlertController(title: "Logout", message: "Are you sure you want to logout?", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Yes", style: .default) { ation in

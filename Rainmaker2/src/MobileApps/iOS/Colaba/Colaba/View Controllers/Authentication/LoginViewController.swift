@@ -147,7 +147,7 @@ class LoginViewController: UIViewController {
                 else{
                     self.isAPIInProgress = false
                     Utility.showOrHideLoader(shouldShow: false)
-                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(5), completionHandler: nil)
+                    self.showPopup(message: message == "User does not exist" ? "Incorrect email or password" : message, popupState: .error, popupDuration: .custom(5), completionHandler: nil)
                 }
             }
             
