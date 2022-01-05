@@ -471,7 +471,7 @@ interface ServerApi{
 
 
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
-    suspend fun login(@Body loginRequest: LoginRequest ,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
+    suspend fun login(@Body loginRequest: LoginRequest,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
     //suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
 
     @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
@@ -515,9 +515,7 @@ interface ServerApi{
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // OTP DASHBOARD API....
     @POST("api/mcu/mobile/identity/mcuaccount/Logout")
-    suspend fun logoutUser() :LogoutResponse
-
-
+    suspend fun logoutUser() : LogoutResponse
 
     @POST("api/mcu/mobile/identity/mcuaccount/RefreshAccessToken")
     fun refreshToken(@Body refreshTokenRequest: RefreshTokenRequest) : Call<LoginResponse>
@@ -602,10 +600,6 @@ interface ServerApi{
     suspend fun deleteNotifications(
         //@Header("Authorization" )  Authorization:String,
          @Body putParams:PutParameters):Response<Any>
-
-    @PUT("api/mcu/mobile/identity/mcuaccount/Logout")
-    suspend fun logout():Response<Any>
-
 
     @GET("api/mcu/mobile/loanapplication/loan/getloaninfo")
     suspend fun getLoanInfo(

@@ -10,8 +10,8 @@ class DashBoardRepo  @Inject constructor(
     @ApplicationContext val applicationContext: Context
 ) {
 
-    suspend fun logoutUser(token: String): Result<LogoutResponse> {
-        val logoutResult = dashBoardDataSource.logoutUser(token = token)
+    suspend fun logoutUser(): Result<LogoutResponse> {
+        val logoutResult = dashBoardDataSource.logoutUser()
         if(logoutResult is Result.Success)
             clearUserRecords()
         return logoutResult
@@ -46,8 +46,8 @@ class DashBoardRepo  @Inject constructor(
         return dashBoardDataSource.deleteNotifications(token = token , ids = ids)
     }
 
-    suspend fun logout():Result<Any>{
-        return dashBoardDataSource.logout()
-    }
+//    suspend fun logout():Result<Any>{
+//        return dashBoardDataSource.logout()
+//    }
 
 }

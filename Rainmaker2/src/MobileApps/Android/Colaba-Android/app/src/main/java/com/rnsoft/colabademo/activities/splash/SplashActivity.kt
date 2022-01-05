@@ -25,12 +25,17 @@ class SplashActivity : AppCompatActivity() {
            // startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
           //  redirectToApplicationDetailScreen()
 
+            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                Log.e("authToken-Splash", authToken)
+            }
+
 
             if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, WelcomeActivity::class.java))
+
             } else if (sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)) {
                 delay(500)
                 startActivity(Intent(this@SplashActivity, SignUpFlowActivity::class.java))

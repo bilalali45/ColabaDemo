@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi){
 
-    suspend fun logoutUser(token: String): Result<LogoutResponse> {
+
+    suspend fun logoutUser(): Result<LogoutResponse> {
         return try {
-            val newToken = "Bearer $token"
             val response = serverApi.logoutUser()
-            Log.e("LogoutResponse-", response.toString())
+            //Log.e("LogoutResponse-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if(e is NoConnectivityException)
@@ -113,20 +113,5 @@ class DashBoardDataSource  @Inject constructor(private val serverApi: ServerApi)
         }
     }
 
-    suspend fun logout():Result<Any>{
-        return try {
-            val response = serverApi.logout()
-            Log.e("logout-api", response.toString())
-            if(response.isSuccessful)
-                Result.Success(response)
-            else
-                Result.Error(IOException("unknown webservice error"))
-        } catch (e: Throwable) {
-            if(e is NoConnectivityException)
-                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
-            else
-                Result.Error(IOException("Error notification -", e))
-        }
-    }
 
 }

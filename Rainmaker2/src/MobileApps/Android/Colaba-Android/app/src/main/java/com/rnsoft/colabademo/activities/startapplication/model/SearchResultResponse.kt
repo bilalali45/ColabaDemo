@@ -8,5 +8,5 @@ data class SearchResultResponseItem(
     val firstName: String="",
     val lastName: String="",
     val midleName: String="",
-    val mobileNumber: String=""
+    val mobileNumber: String?
 )

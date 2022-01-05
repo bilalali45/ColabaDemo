@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class SearchAdapter
 internal constructor(
-    passedSearchList: ArrayList<SearchItem>, onSearchClickListener: SearchFragment) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
+    passedSearchList: ArrayList<SearchItem>, onSearchClickListener: SearchActivity) :  RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
     private var searchList = ArrayList<SearchItem>()
     private var clickListener: SearchClickListener = onSearchClickListener

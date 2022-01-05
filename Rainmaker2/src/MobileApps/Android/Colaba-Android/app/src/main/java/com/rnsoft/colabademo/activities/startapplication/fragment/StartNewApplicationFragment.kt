@@ -1,15 +1,19 @@
 package com.rnsoft.colabademo
 
 import android.annotation.SuppressLint
+import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.TextView
 import com.rnsoft.colabademo.activities.startapplication.adapter.ContactsAdapter
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.dependent_input_field.view.*
@@ -26,6 +30,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -488,7 +493,28 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     override fun onItemClick(position: Int) {
         binding.searchedContactName.text = searchList[position].firstName
         binding.searchedContactEmail.text = searchList[position].emailAddress
-        binding.searchedContactPhone.text = searchList[position].mobileNumber
+        //binding.searchedContactEmail.layoutParams.width = 210
+        //binding.searchedContactEmail.ellipsize = TextUtils.TruncateAt.END
+
+
+        try {
+            searchList[position].mobileNumber?.let {
+                if (searchList.get(position).mobileNumber!!.isNotEmpty()) {
+                    binding.searchedContactPhone.text = searchList[position].mobileNumber
+                    //binding.searchedContactPhone.visibility = View.VISIBLE
+                    //binding.searchedContactEmail.layoutParams.width = 210
+                } else {
+                    binding.searchedContactPhone.text = ""
+                    //binding.searchedContactEmail.ellipsize = null
+                    //binding.searchedContactPhone.visibility = View.INVISIBLE
+                }
+            } ?: run {
+                binding.searchedContactPhone.text = ""
+               //binding.searchedContactEmail.ellipsize = null
+                //binding.searchedContactEmail.layoutParams.width = WRAP_CONTENT
+                //binding.searchedContactPhone.visibility = View.INVISIBLE
+            }
+        } catch (e: Exception){}
 
         HideSoftkeyboard.hide(requireContext(), binding.searchedContactEmail)
 
