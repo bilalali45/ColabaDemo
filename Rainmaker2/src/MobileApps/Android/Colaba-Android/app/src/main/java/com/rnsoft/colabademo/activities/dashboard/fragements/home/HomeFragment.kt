@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -58,7 +59,6 @@ class HomeFragment : BaseFragment() {
     ): View {
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val root: View = binding.root
@@ -72,14 +72,17 @@ class HomeFragment : BaseFragment() {
         assignToMeSwitch = root.findViewById(R.id.assignToMeSwitch)
 
         searchImageView.setOnClickListener {
-            findNavController().navigate(R.id.navigation_search, null)
+            //findNavController().navigate(R.id.navigation_search)
            // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
            // Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
+            val intent = Intent(requireActivity(), SearchActivity::class.java)
+            startActivity(intent)
         }
 
+        assignToMeSwitch.setOnCheckedChangeListener(assignToMeChangeListener)
+
         if (sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)) {
-            assignToMeSwitch.isChecked =
-                sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
+            assignToMeSwitch.isChecked = sharedPreferences.getBoolean(AppConstant.ASSIGN_TO_ME, false)
             LoanBaseFragment.globalAssignToMe = assignToMeSwitch.isChecked
         }
 
@@ -131,7 +134,7 @@ class HomeFragment : BaseFragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     //Log.e("onTabSelected -", viewPager.currentItem.toString())
-                    Timber.e("onPageSelected - working... "+viewPager.currentItem)
+                    //Timber.e("onPageSelected - working... "+viewPager.currentItem)
                     //EventBus.getDefault().post(OnTabSwitchedEvent( viewPager.currentItem))
 
                     selectedText = it.text as String
@@ -154,7 +157,7 @@ class HomeFragment : BaseFragment() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
-        assignToMeSwitch.setOnCheckedChangeListener(assignToMeChangeListener)
+
 
         filterImageView.setOnClickListener {
             loanBaseFragment?.let {
@@ -174,8 +177,6 @@ class HomeFragment : BaseFragment() {
         super.addListeners(binding.root)
 
         binding.imageView18.setOnClickListener {
-            //if (drawerListener == null) { return@setOnClickListener }
-            //drawerListener?.onDrawerOpenClick()
             EventBus.getDefault().post(DrawerMenuClickEvent(true))
         }
 
@@ -186,6 +187,7 @@ class HomeFragment : BaseFragment() {
     val assignToMeChangeListener =
         CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             //assignToMeSwitch.setOnClickListener(null)
+            //Log.e("Checked change",""+isChecked)
             //Log.e("selectedText-", selectedText)
             loanBaseFragment?.setAssignToMe(isChecked)
             sharedPreferences.edit().putBoolean(AppConstant.ASSIGN_TO_ME, isChecked).apply()

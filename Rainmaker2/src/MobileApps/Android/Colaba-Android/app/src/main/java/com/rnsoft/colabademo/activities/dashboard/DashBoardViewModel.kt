@@ -6,7 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
@@ -19,6 +21,10 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
 
     private val _notificationCount: MutableLiveData<Int> =  MutableLiveData()
     val notificationCount:LiveData<Int> = _notificationCount
+
+    private val _logoutResponse: MutableLiveData<LogoutResponse> = MutableLiveData()
+    val logoutResponse: LiveData<LogoutResponse> get() = _logoutResponse
+
 
     fun getNotificationCountT(token:String) {
          viewModelScope.launch {
@@ -107,15 +113,24 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
         }
     }
 
-    fun logout(){
-        viewModelScope.launch {
-            val result = dashBoardRepo.logout()
-            if (result is Result.Success) {
-                Log.e("del-notify-", result.toString())
+    fun logoutUser() {
+        Log.e("ViewModel", "inside-logout")
+        viewModelScope.launch(Dispatchers.IO) {
+            val responseResult = dashBoardRepo.logoutUser()
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success) {
+                    _logoutResponse.value = (responseResult.data)
+                } else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    //EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse(AppConstant.INTERNET_ERR_CODE, null, AppConstant.INTERNET_ERR_MSG, null)))
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+
+                else if (responseResult is Result.Error)
+                    //EventBus.getDefault().post(SendDataEvent(AddUpdateDataResponse("600", null, "Webservice Error", null)))
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
-            else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
-                EventBus.getDefault().post(WebServiceErrorEvent(null, true))
         }
     }
+
+
 
 }

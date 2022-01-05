@@ -90,8 +90,6 @@
                 android:drawableStart="@drawable/radiodraw"
                 android:drawablePadding="15dp"
                 android:fontFamily="@font/rubik_regular"
-
-
                 android:textColor="@color/grey_color_one"
                 android:textSize="15sp" />
 
@@ -129,7 +127,6 @@
                         android:layoutDirection="rtl"
                         android:text="@string/find_contact"
                         app:layout_constraintEnd_toEndOf="parent"
-
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -197,33 +194,40 @@
                             android:layout_marginEnd="10dp"
                             android:src="@drawable/ic_cross_small" />
 
-                        <TextView
-                            android:id="@+id/searched_contact_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/searched_contact_name"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="6dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="richard@gmail.com"
-                            android:textColor="@color/grey_color_two"
-                            android:textSize="14sp" />
+                     <TextView
+                         android:id="@+id/searched_contact_email"
+                         android:layout_width="210dp"
+                         android:layout_height="wrap_content"
+                         android:layout_below="@+id/searched_contact_name"
+                         android:layout_marginStart="10dp"
+                         android:layout_marginTop="6dp"
+                         android:layout_marginEnd="5dp"
+                         android:ellipsize="end"
+                         android:fontFamily="@font/rubik_regular"
+                         android:singleLine="true"
+                         android:text="wahab.momin@mailinator.com"
+                         android:textColor="@color/grey_color_two"
+                         android:textSize="13sp" />
 
-                        <TextView
-                            android:id="@+id/searched_contact_phone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="17dp"
-                            android:layout_below="@+id/searched_contact_name"
-                            android:layout_alignParentEnd="true"
-                            android:layout_marginTop="6dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="15dp"
-                            android:drawableStart="@drawable/ic_circle_blue"
-                            android:drawablePadding="10dp"
-                            android:fontFamily="@font/rubik_regular"
-                            android:text="(121)31245454"
-                            android:textColor="@color/grey_color_two"
-                            android:textSize="14sp" />
+                     <TextView
+                         android:id="@+id/searched_contact_phone"
+                         android:layout_width="100dp"
+                         android:layout_height="17dp"
+                         android:layout_below="@+id/searched_contact_name"
+                         android:layout_alignParentEnd="true"
+                         android:layout_marginStart="10dp"
+                         android:layout_marginTop="6dp"
+                         android:layout_marginEnd="10dp"
+                         android:layout_marginBottom="15dp"
+                         android:drawableStart="@drawable/circle_medium"
+                         android:drawableTint="@color/colaba_primary_color"
+                         android:drawablePadding="5dp"
+                         android:ellipsize="end"
+                         android:fontFamily="@font/rubik_regular"
+                         android:singleLine="true"
+                         android:text=""
+                         android:textColor="@color/grey_color_two"
+                         android:textSize="13sp" />
 
                     </RelativeLayout>
 

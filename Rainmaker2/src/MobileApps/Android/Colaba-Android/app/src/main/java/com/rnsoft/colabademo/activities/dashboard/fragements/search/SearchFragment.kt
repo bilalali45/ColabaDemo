@@ -72,7 +72,7 @@ class SearchFragment : BaseFragment() , SearchAdapter.SearchClickListener {
 
         searchRowLoader = root.findViewById(R.id.search_row_loader)
         searchRecyclerView = root.findViewById(R.id.search_recycle_view)
-        searchAdapter = SearchAdapter(searchArrayList, this@SearchFragment)
+        //searchAdapter = SearchAdapter(searchArrayList, this@SearchFragment) // uncomment
         val linearLayoutManager = LinearLayoutManager(activity)
         searchRecyclerView?.apply {
             this.layoutManager = linearLayoutManager
@@ -149,7 +149,8 @@ class SearchFragment : BaseFragment() , SearchAdapter.SearchClickListener {
         }
 
         binding.searchBackButton.setOnClickListener {
-                findNavController().popBackStack()
+            binding.searchBackButton.hideKeyboard()
+           findNavController().popBackStack(R.id.navigation_home,true)
         }
 
         val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
@@ -208,8 +209,9 @@ class SearchFragment : BaseFragment() , SearchAdapter.SearchClickListener {
     }
 
     override fun onDestroyView() {
+        Log.e("Searcg Fragment", "OnDestroy View")
         super.onDestroyView()
-        _binding = null
+        //_binding = null
     }
 
     override fun onSearchItemClick(view: View) {

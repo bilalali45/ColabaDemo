@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.RecyclerviewClickListener
 import com.rnsoft.colabademo.SearchResultResponseItem
 import com.rnsoft.colabademo.databinding.ContactListItemBinding
+import java.lang.Exception
 import java.util.HashMap
 
 class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListener) :    //, var contact: List<Contacts> = arrayListOf()
@@ -51,10 +52,20 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
 
         fun bind(contact: SearchResultResponseItem, position: Int) {
 
+            try {
+                binding.contactName.text = (contact.firstName + " " + contact.lastName)
+                binding.contactEmail.text = (contact.emailAddress)
 
-            binding.contactName.text = (contact.firstName+" "+contact.lastName)
-            binding.contactNum.text = (contact.mobileNumber)
-            binding.contactEmail.text = (contact.emailAddress)
+                contact.mobileNumber?.let {
+                    if (contact.mobileNumber.isNotEmpty()) {
+                        binding.contactNum.text = contact.mobileNumber
+                    } else {
+                        //binding.contactEmail.ellipsize = null
+                    }
+                } ?: run {
+                    //binding.contactEmail.ellipsize = null
+                }
+            } catch (e:Exception){ }
 
 
             var sentence = binding.contactName.text.toString()

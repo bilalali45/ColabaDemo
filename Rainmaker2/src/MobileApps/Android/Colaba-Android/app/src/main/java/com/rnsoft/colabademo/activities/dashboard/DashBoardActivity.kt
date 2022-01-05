@@ -4,9 +4,11 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.Gravity
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -21,6 +23,7 @@ import com.rnsoft.colabademo.databinding.DashboardLayoutBinding
 import com.rnsoft.colabademo.databinding.NavHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -58,8 +61,7 @@ class DashBoardActivity : BaseActivity() {
             setOf(
                 R.id.navigation_home,
                 R.id.navigation_profile,
-                R.id.navigation_notifications,
-                R.id.navigation_search
+                R.id.navigation_notifications
             )
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
@@ -120,7 +122,6 @@ class DashBoardActivity : BaseActivity() {
 
     private fun initViews(){
         //val navView: NavigationView = binding.navigationView
-
         // Pass the ActionBarToggle action into the drawerListener
         actionBarToggle = ActionBarDrawerToggle(this, binding.drawerLayout, 0, 0)
         binding.drawerLayout.addDrawerListener(actionBarToggle)
@@ -139,6 +140,18 @@ class DashBoardActivity : BaseActivity() {
             binding.drawerLayout.closeDrawer(Gravity.LEFT)
         }
 
+
+        // set name
+        val builder = StringBuilder()
+        sharedPreferences.getString(AppConstant.firstName, "")?.let { firstName ->
+            builder.append(firstName)
+        }
+
+        sharedPreferences.getString(AppConstant.lastName, "")?.let { lastname ->
+            builder.append(" ".plus(lastname))
+        }
+        headerBinding.tvUserName.text = builder.toString()
+
         //binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         // Display the hamburger icon to launch the drawer
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -150,16 +163,34 @@ class DashBoardActivity : BaseActivity() {
             .setOnMenuItemClickListener { menuItem: MenuItem? ->
                 //loader.show()
                 binding.drawerLayout.closeDrawer(Gravity.LEFT)
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                   dashBoardViewModel.logout()
+
+                lifecycleScope.launchWhenStarted {
+                    sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                        binding.loaderHome.visibility = View.VISIBLE
+                        val call = async { dashBoardViewModel.logoutUser() }
+                        call.await()
+                    }
                 }
+
+                dashBoardViewModel.logoutResponse.observe(this, { response ->
+                    binding.loaderHome.visibility = View.GONE
+                    val codeString = response.code.toString()
+                    if (codeString == AppConstant.RESPONSE_CODE_SUCCESS){
+
+                        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this)
+                        val editor = sharedPrefs.edit()
+                        editor.clear()
+                        editor.apply()
+                        startActivity(Intent(this, SignUpFlowActivity::class.java))
+                    }
+                    else {
+                        SandbarUtils.showError(this, AppConstant.WEB_SERVICE_ERR_MSG)
+                    }
+                })
                 true
             }
     }
 
-//    override fun onSupportNavigateUp(): Boolean {
-//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun onDrawerClick(evt: DrawerMenuClickEvent){
@@ -177,8 +208,4 @@ class DashBoardActivity : BaseActivity() {
         super.onStop()
         EventBus.getDefault().unregister(this)
     }
-
-
-
-
 }
