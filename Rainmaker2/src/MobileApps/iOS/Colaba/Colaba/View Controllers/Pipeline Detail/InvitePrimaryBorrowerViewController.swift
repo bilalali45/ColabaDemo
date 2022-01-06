@@ -64,7 +64,10 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
     }
     
     @IBAction func btnSendInviteTapped(_ sender: UIButton){
-        sendInvitation()
+        if (textviewBody.text != ""){
+            sendInvitation()
+        }
+        
     }
     
     //MARK:- API's
