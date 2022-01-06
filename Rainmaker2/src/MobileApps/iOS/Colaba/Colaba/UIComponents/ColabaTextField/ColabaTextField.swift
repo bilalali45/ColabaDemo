@@ -494,10 +494,21 @@ extension ColabaTextField: UITextFieldDelegate {
             }
         }
         if type == .amount {
-            return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
+            if (textField.text!.count < 26){
+                return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
+            }
+            else{
+                return string == ""
+            }
         }
         if type == .percentage {
             return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
+        }
+        if (validationType == .noValidation || validationType == .required) && (keyboardType == .asciiCapable){
+            let allowedCharacter = CharacterSet.letters
+            let allowedCharacter1 = CharacterSet.whitespaces
+            let characterSet = CharacterSet(charactersIn: string)
+            return allowedCharacter.isSuperset(of: characterSet) || allowedCharacter1.isSuperset(of: characterSet)
         }
         return true
     }
