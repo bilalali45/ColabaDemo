@@ -30,6 +30,7 @@ class DetailActivity : BaseActivity() {
     var borrowerCellNumber:String? = null
     var borrowerEmail:String? = null
     var innerScreenName:String? = null
+    var isNewApplicationCreated : String? = null
 
     private val detailViewModel: DetailViewModel by viewModels()
 
@@ -45,17 +46,20 @@ class DetailActivity : BaseActivity() {
             borrowerCellNumber = it.getString(AppConstant.bPhoneNumber)
             borrowerEmail = it.getString(AppConstant.bEmail)
             innerScreenName = it.getString(AppConstant.innerScreenName)
+            isNewApplicationCreated = it.getString(AppConstant.isNewApplicationCreated)
             //Log.e("Names- ", "$borrowerFirstName $borrowerLastName")
         }
-
-        if(borrowerLoanPurposeNumber!=null)
-            SandbarUtils.showSuccess(this@DetailActivity,"New application has been created")
-
 
         super.onCreate(savedInstanceState)
         binding = DetailTopLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
+
+        if(isNewApplicationCreated != null) {
+            SandbarUtils.showSuccess(this@DetailActivity, getString(R.string.new_application_created))
+        }
+
+
 
         binding.emailFab.setOnClickListener{
             if(borrowerEmail!=null) {

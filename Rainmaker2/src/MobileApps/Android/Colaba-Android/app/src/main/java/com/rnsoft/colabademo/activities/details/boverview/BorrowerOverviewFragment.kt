@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.text.capitalize
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -53,7 +54,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
                         binding.coBorrowerNames.visibility = View.GONE
                     else{
                         for (coBorrower in coBorrowers){
-                            val coBorrowerName = coBorrower.firstName+" "+coBorrower.lastName
+                            val coBorrowerName = coBorrower.firstName?.capitalize()+" "+coBorrower.lastName?.capitalize()
                             if(coBorrower.ownTypeId!=1)
                                 coBorrowerNames.add(coBorrowerName)
                             else
@@ -110,10 +111,12 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 if(percentage!=0)
                     binding.percentageTextView.text = "("+percentage.toString()+"%)"
 
-                if(overviewModel.webBorrowerAddress==null)
+                if(overviewModel.webBorrowerAddress==null) {
                     binding.noAddressLayout.visibility = View.VISIBLE
-                else {
+                    binding.addressLayout.visibility = View.GONE
+                } else {
                     binding.addressLayout.visibility = View.VISIBLE
+                    binding.noAddressLayout.visibility = View.GONE
                     overviewModel.webBorrowerAddress.let {
                         //binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                         val builder = StringBuilder()

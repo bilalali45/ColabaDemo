@@ -1,5 +1,7 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
+import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
 import okhttp3.ResponseBody
 import retrofit2.Response
 import timber.log.Timber
@@ -8,6 +10,20 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
+
+    suspend fun getInvitationStatus(token: String, loanApplicationId: Int, borrowerId: Int): Result<BorrowerInvitationStatus> {
+        return try {
+            //val newToken = "Bearer $token"
+            val response = serverApi.getInvitationStatus(loanApplicationId,borrowerId)
+            Log.e("invitation-status-success", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
 
     suspend fun getLoanInfo(token: String, loanApplicationId: Int): Result<BorrowerOverviewModel> {
         return try {
@@ -29,7 +45,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     ): Result<ArrayList<BorrowerDocsModel>> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.getBorrowerDocuments( loanApplicationId)
+            val response = serverApi.getBorrowerDocuments(loanApplicationId)
             //Log.e("BorrowerDocsModel-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {

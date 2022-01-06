@@ -9,6 +9,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,15 +41,12 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     private lateinit var binding: StartApplicationFragLayoutBinding
     private var savedViewInstance: View? = null
     private lateinit var adapter : ContactsAdapter
     private var searchList = ArrayList<SearchResultResponseItem>()
     private val viewModel: StartNewAppViewModel by activityViewModels()
-
     private val createNewApplicationParams = CreateNewApplicationParams()
-
     private var isFindContactSelected = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,16 +58,16 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding.btnCreateApplication.isEnabled = false
             setupUI()
             setLabelFocus()
+            setInitialSelection()
             super.addListeners(binding.root)
             savedViewInstance
         }
     }
 
-    //@SuppressLint("ClickableViewAccessibility", "UseCompatLoadingForDrawables")
     private fun setupUI() {
-        searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
-        searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
-        searchList.add(SearchResultResponseItem(3,"richard.glenn@gmail.com", "Richard Glenn Randall", mobileNumber = "(121) 353 1343"))
+        //searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
+        //searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
+       // searchList.add(SearchResultResponseItem(3,"richard.glenn@gmail.com", "Richard Glenn Randall", mobileNumber = "(121) 353 1343"))
 
         adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
@@ -109,27 +107,21 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         binding.rgLoanPurpose.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
             if(isChecked) toggleButton.isEnabled
-            Timber.e(" toggleButton, checkedId, isChecked ",toggleButton.toString(), checkedId.toString(), isChecked.toString())
+            //Timber.e(" toggleButton, checkedId, isChecked ",toggleButton.toString(), checkedId.toString(), isChecked.toString())
 
             if (binding.btnLoanPurchase.isPressed) {
-                //binding.btnLoanPurchase.isEnabled = false
-                //binding.btnLoanPurchase.isClickable = false
                 createNewApplicationParams.let {
                     it.LoanPurpose = 1
                     it.LoanGoal = null
                 }
                 viewModel.setCreateNewParams(createNewApplicationParams)
+                //Log.e("PurchasedPress", ""+createNewApplicationParams)
                 binding.btnPropertyUnderCont.setTypeface(null, Typeface.NORMAL)
                 binding.btnPropertyUnderCont.isChecked = false
                 binding.btnPreApproval.setTypeface(null, Typeface.NORMAL)
                 binding.btnPreApproval.isChecked = false
             }
             else {
-                //binding.btnLoanPurchase.isEnabled = true
-                //binding.btnLoanPurchase.isClickable = true
-                //binding.btnLoanPurchase.isActivated = true
-                //binding.btnLoanPurchase.isHovered  = true
-
                 preSelectInitialization()
                 createNewApplicationParams.let {
                     it.LoanPurpose = 2
@@ -139,22 +131,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             }
             onLoanPurposeClick()
         }
-
-
-        /*
-        binding.btnLoanPurchase.setOnClickListener {
-            binding.btnLoanRefinance.isSelected = false
-            binding.btnLoanRefinance.isClickable = true
-            binding.btnLoanPurchase.isClickable = false
-            onLoanPurposeClick()
-        }
-        binding.btnLoanRefinance.setOnClickListener {
-            binding.btnLoanPurchase.isSelected = false
-            binding.btnLoanPurchase.isClickable = true
-            binding.btnLoanRefinance.isClickable = false
-            onLoanPurposeClick()
-        }
-         */
 
         binding.btnLowerPaymentTerms.setOnClickListener {
             preSelectInitialization()
@@ -204,7 +180,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         viewModel.createNewApplicationParams.observe(viewLifecycleOwner, {
-            Timber.e("listening == $createNewApplicationParams")
+            //Timber.e("listening == $createNewApplicationParams")
             createNewApplicationParams.let {
 
                 if(it.EmailAddress != null && it.FirstName != null &&  it.LastName!= null && it.LoanGoal != null && it.LoanOfficerUserId != null
@@ -219,7 +195,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                         else
                             binding.btnCreateApplication.isEnabled = false
                     }
-
                 }
                 else
                     binding.btnCreateApplication.isEnabled = false
@@ -261,8 +236,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 searchList = arrayListOf()
                 adapter.showResult(searchList, binding.searchEdittext.text.toString())
                 binding.recyclerviewContacts.adapter = adapter
-
-
                 binding.layoutFindContact.visibility = View.VISIBLE
                 binding.recyclerviewContacts.visibility = View.INVISIBLE
                 binding.layoutEditText.setBackgroundResource(R.drawable.edittext_search_contact_style)
@@ -270,7 +243,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         }
 
-        //binding.searchEdittext.addTextChangedListener()
 
         viewModel.searchResultResponse.observe(viewLifecycleOwner, {
             searchList = it
@@ -333,12 +305,9 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         }
 
         viewModel.lookUpBorrowerContactResponse.observe(viewLifecycleOwner, {
-            Timber.e("At least in look up observer....")
             binding.newAppLoader.visibility = View.GONE
             if(it.code == "200" || it.status.equals("OK", true)) {
-                Timber.e("At least code is = 200....")
                 if (it.borrowerData != null) {
-                    Timber.e("At least borrowerData is not null....")
                     BottomEmailPhoneErrorFragment.newInstance(
                         emailParam = it.borrowerData.emailAddress,
                         phoneParam = it.borrowerData.mobileNumber,
@@ -351,7 +320,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         })
 
         viewModel.createNewAppResponse.observe(viewLifecycleOwner, {
-            Timber.e("At least in look up observer....")
             binding.newAppLoader.visibility = View.GONE
             if(it.code == "200" || it.status.equals("OK", true)) {
                 startDetailActivity(it)
@@ -378,9 +346,19 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             binding.recyclerviewContacts.visibility = View.VISIBLE
             binding.layoutResult.visibility = View.GONE
             binding.searchEdittext.visibility = View.VISIBLE
+
+            createNewApplicationParams.let {
+                it.MobileNumber = null
+                it.EmailAddress = null
+                it.contactId = null
+                it.FirstName = null
+                it.LastName = null
+            }
+            viewModel.setCreateNewParams(createNewApplicationParams)
+
         }
 
-       binding.parentLayout.setOnClickListener {
+        binding.parentLayout.setOnClickListener {
            HideSoftkeyboard.hide(requireActivity(),binding.parentLayout)
            super.removeFocusFromAllFields(binding.parentLayout)
        }
@@ -418,8 +396,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
                 //CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
                 viewModel.setCreateNewParams(createNewApplicationParams)
             }
-
-
         }
 
         binding.edMobile.doAfterTextChanged {
@@ -439,10 +415,18 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
     }
 
+    private fun setInitialSelection(){
+        //loan purpuse is default selected to purchase
+        createNewApplicationParams.let {
+            it.LoanPurpose = 1
+            it.LoanGoal = null
+        }
+        viewModel.setCreateNewParams(createNewApplicationParams)
+    }
+
     fun convertDpToPixel(dp: Float, context: Context): Int {
         return (dp * (context.resources.displayMetrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)).toInt()
     }
-
 
     private fun emailPhoneValidated():Boolean{
 
@@ -458,7 +442,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         val emailString = createNewApplicationParams.EmailAddress
         if (emailString != null) {
             if(emailString.isNotBlank() && emailString.isNotEmpty()) {
-                if (!isValidEmailAddress(emailString))
+                if (!isValidEmailAddress(emailString.trim()))
                     return false
             }
         }
@@ -481,6 +465,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             borrowerDetailIntent.putExtra(AppConstant.lastName, createResponse.lastName)
             borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, createResponse.mobileNumber)
             borrowerDetailIntent.putExtra(AppConstant.bEmail, createResponse.emailAddress)
+            borrowerDetailIntent.putExtra(AppConstant.isNewApplicationCreated,AppConstant.isNewApplicationCreated)
         }
         startActivity(borrowerDetailIntent)
         requireActivity().finish()
@@ -552,6 +537,25 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.edMobile.addTextChangedListener(PhoneTextFormatter(binding.edMobile, "(###) ###-####"))
         binding.edEmail.onFocusChangeListener = emailFocusChangeListener
         //binding.edEmail.onFocusChangeListener = CustomFocusListenerForEditText(binding.edEmail, binding.layoutEmail, requireContext(),getString(R.string.error_field_required))
+
+        binding.edMobile.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                CustomMaterialFields.setColor(binding.layoutMobileNum, R.color.grey_color_two, requireContext())
+            } else {
+                if (binding.edMobile.text?.length == 0) {
+                    CustomMaterialFields.setColor(binding.layoutMobileNum, R.color.grey_color_three,requireContext())
+                    CustomMaterialFields.setError(binding.layoutMobileNum, getString(R.string.error_field_required),requireContext())
+
+                } else {
+                    CustomMaterialFields.setColor(binding.layoutMobileNum, R.color.grey_color_two,requireContext())
+                    if (binding.edMobile.text?.length!! < 14) {
+                        CustomMaterialFields.setError(binding.layoutMobileNum, getString(R.string.invalid_phone_num),requireContext())
+                    } else {
+                        CustomMaterialFields.clearError(binding.layoutMobileNum,requireContext())
+                    }
+                }
+            }
+        }
     }
 
     private val emailFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
@@ -563,10 +567,15 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
             if (binding.edEmail.text?.length == 0) {
                 CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.error_field_required),requireActivity())
                 CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_three,requireActivity())
+                createNewApplicationParams.EmailAddress = null
+                viewModel.setCreateNewParams(createNewApplicationParams)
             } else {
                 CustomMaterialFields.setColor(binding.layoutEmail, R.color.grey_color_two,requireActivity())
                 if (!isValidEmailAddress(binding.edEmail.text.toString().trim())) {
                     CustomMaterialFields.setError(binding.layoutEmail,getString(R.string.invalid_email),requireActivity())
+                    createNewApplicationParams.EmailAddress = null
+                    viewModel.setCreateNewParams(createNewApplicationParams)
+
                 } else {
                     CustomMaterialFields.clearError(binding.layoutEmail,requireActivity())
                     createNewApplicationParams.EmailAddress = binding.edEmail.text.toString()
@@ -603,20 +612,11 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
     private fun onLoanPurposeClick(){
-
-        //Timber.e(" binding.btnLoanPurchase.isSelected "+binding.btnLoanPurchase.isSelected)
-
-        //Timber.e(" binding.btnLoanRefinance.isSelected "+binding.btnLoanRefinance.isSelected)
-
         if(binding.btnLoanPurchase.isPressed){
-            //binding.btnLoanPurchase.setTypeface(null, Typeface.BOLD)
-            //binding.btnLoanRefinance.setTypeface(null, Typeface.NORMAL)
             binding.rgPurchaseLoanGoal.visibility= View.VISIBLE
             binding.rgRefinanceLoanGoal.visibility = View.GONE
         }
         else {
-            //binding.btnLoanPurchase.setTypeface(null, Typeface.NORMAL)
-            //binding.btnLoanRefinance.setTypeface(null, Typeface.BOLD)
             binding.rgPurchaseLoanGoal.visibility= View.GONE
             binding.rgRefinanceLoanGoal.visibility = View.VISIBLE
         }
@@ -680,7 +680,6 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         binding.edFirstName.setText("")
         binding.edLastName.setText("")
         binding.edMobile.setText("")
-
         binding.edEmail.setText("")
 
         createNewApplicationParams.FirstName = null
@@ -702,7 +701,7 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onCreateDuplicateEvent(allowDuplicateBorrowerEvent:AllowDuplicateBorrowerEvent ) {
+    fun onCreateDuplicateEvent(allowDuplicateBorrowerEvent:AllowDuplicateBorrowerEvent) {
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 viewModel.createApplication(authToken, createNewApplicationParams)

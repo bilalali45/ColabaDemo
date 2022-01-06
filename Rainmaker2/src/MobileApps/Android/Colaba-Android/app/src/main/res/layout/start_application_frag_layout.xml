@@ -268,7 +268,6 @@
                         android:drawableStart="@drawable/radiodraw"
                         android:drawablePadding="15dp"
                         android:fontFamily="@font/rubik_regular"
-
                         android:text="@string/create_new_contact"
                         android:textColor="@color/grey_color_one"
                         android:textSize="15sp" />
@@ -287,7 +286,6 @@
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:layout_width="match_parent"
                             android:layout_height="25dp"
-
                             android:layout_marginStart="3dp"
                             android:layout_marginTop="17dp"
                             android:button="@null"
@@ -470,53 +468,16 @@
                     app:layout_constraintTop_toBottomOf="@+id/create_contact" />
 
 
-                <!--
-                <RadioGroup
-                    android:id="@+id/rg_loan_purpose"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/heading_loan_purpose">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_loan_purchase"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/purchase"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/btn_loan_refinance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginStart="70dp"
-                        android:button="@drawable/radiodraw"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/refinance"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="15sp" />
-                </RadioGroup>
-            -->
-
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/rg_loan_purpose"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
                     app:singleSelection="true"
                     app:selectionRequired="true"
-
+                    app:checkedButton="@id/btn_loan_purchase"
                     android:layout_marginTop="16dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/heading_loan_purpose">
 
@@ -527,7 +488,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Purchase"
-
                         android:textAllCaps="false" />
 
                     <Button
@@ -538,7 +498,6 @@
                         android:layout_height="wrap_content"
                         android:text="Refinance"
                         android:textAllCaps="false" />
-
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -562,7 +521,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:visibility="visible"
-
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/heading_loan_goal">
@@ -572,6 +530,7 @@
                         android:layout_height="48dp"
                         android:paddingEnd="16dp"
                         android:background="@drawable/content_background_full_white">
+
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:id="@+id/btn_pre_approval"
                             android:text="Pre-Approval"
@@ -583,11 +542,9 @@
                             android:layoutDirection="rtl"
                             android:paddingStart="16dp"
                             android:paddingEnd="16dp"
-
                             android:textAlignment="textStart"
                             android:textColor="@color/grey_color_one"
                             android:textSize="15sp"
-
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -600,6 +557,7 @@
                         android:paddingEnd="16dp"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/content_background_full_white">
+
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/btn_property_under_cont"
                         android:text=" Property Under Contract"
