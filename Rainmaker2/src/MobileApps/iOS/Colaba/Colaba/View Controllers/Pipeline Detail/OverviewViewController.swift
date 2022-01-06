@@ -22,6 +22,7 @@ class OverviewViewController: BaseViewController {
     let loadingPlaceholderView = LoadingPlaceholderView()
     var loanInfoData = LoanInfoModel()
     weak var delegate: OverviewViewControllerDelegate?
+    var invitationStatus = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +68,7 @@ class OverviewViewController: BaseViewController {
                     self.loanInfoData = model
                     self.tableViewOverView.reloadData()
                     self.delegate?.getLoanDetailForMainPage(loanPurpose: self.loanInfoData.loanPurpose, email: self.loanInfoData.email, phoneNumber: self.loanInfoData.cellPhone)
+                    self.getBorrowerInvitationStatus()
                 }
                 else if (status == .internetError){
                     self.tableViewOverView.reloadData()
@@ -85,6 +87,27 @@ class OverviewViewController: BaseViewController {
             
         }
         
+    }
+    
+    func getBorrowerInvitationStatus(){
+        
+        let extraData = "borrowerId=2842&loanapplicationid=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getBorrowerInvitationStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    self.invitationStatus = result["status"].stringValue
+                    self.tableViewOverView.reloadData()
+                }
+                else{
+                    self.invitationStatus = ""
+                    self.tableViewOverView.reloadData()
+                }
+            }
+            
+        }
     }
     
 }
@@ -149,6 +172,7 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
             cell.collectionView.collectionViewLayout = layout
             cell.collectionView.dataSource = self
             cell.collectionView.delegate = self
+            cell.collectionView.reloadData()
             return cell
         }
         else{
@@ -246,7 +270,12 @@ extension OverviewViewController: UITableViewDataSource, UITableViewDelegate{
 
 extension OverviewViewController: UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        if (invitationStatus == "" || invitationStatus == "Invitation Accepted"){
+            return 1
+        }
+        else{
+            return 2
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -255,16 +284,40 @@ extension OverviewViewController: UICollectionViewDataSource, UICollectionViewDe
         cell.mainView.layer.borderWidth = 1
         cell.mainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         cell.mainView.dropShadowToCollectionViewCell()
-        cell.lblTopHeading.text = indexPath.row == 0 ? "PRIMARY BORROWER" : "DOCUMENTS"
-        cell.lblType.text = indexPath.row == 0 ? "Send Invitation" : "Review Documents"
-        cell.icon.image = UIImage(named: indexPath.row == 0 ? "sendInvitation" : "reviewDocument")
+        
+        if (indexPath.row == 0){
+            if (invitationStatus == "Invite Borrower" || invitationStatus == "Invitation Pending" || invitationStatus == "Invitation Resent"){
+                cell.lblTopHeading.text = "PRIMARY BORROWER"
+                cell.lblType.text = invitationStatus == "Invite Borrower" ? "Send Invitation" : "Resend Invitation"
+                cell.icon.image = UIImage(named: invitationStatus == "Invite Borrower" ? "sendInvitation" : "resendInvite")
+            }
+            else{
+                cell.lblTopHeading.text = "DOCUMENTS"
+                cell.lblType.text = "Review Documents"
+                cell.icon.image = UIImage(named: "reviewDocument")
+            }
+        }
+        else{
+            cell.lblTopHeading.text = "DOCUMENTS"
+            cell.lblType.text = "Review Documents"
+            cell.icon.image = UIImage(named: "reviewDocument")
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if (indexPath.row == 0){
-            let vc = Utility.getInvitePrimaryBorrowerVC()
-            self.presentVC(vc: vc)
+            if (invitationStatus == "Invite Borrower" || invitationStatus == "Invitation Pending" || invitationStatus == "Invitation Resent"){
+                let vc = Utility.getInvitePrimaryBorrowerVC()
+                vc.loanApplicationId = self.loanApplicationId
+                vc.borrowerId = 2842//self.loanInfoData.borrowers.first!.borrowerId
+                vc.isForResend = (invitationStatus == "Invitation Pending" || invitationStatus == "Invitation Resent")
+                self.presentVC(vc: vc)
+            }
+            else{
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)
+            }
         }
         else if (indexPath.row == 1){
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowDocumentsTab), object: nil)

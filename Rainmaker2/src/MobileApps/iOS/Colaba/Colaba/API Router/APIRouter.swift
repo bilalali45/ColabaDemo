@@ -125,6 +125,10 @@ enum EndPoint:String{
     case getEmailTemplateList = "DocumentManagement/EmailTemplate/GetEmailTemplates"
     case getRenderEmailTemplate = "DocumentManagement/EmailTemplate/GetRenderEmailTemplateById?"
     case saveAndSendEmailRequest = "DocumentManagement/Request/Save"
+    case getBorrowerInvitationStatus = "loanapplication/loan/GetBorrowerInvitationStatus?"
+    case getBorrowerInvitationEmailTemplate = "loanapplication/loan/GetBorrowerInvitationRenderEmail?"
+    case sendBorrowerInvitation = "loanapplication/loan/SendBorrowerInvitation"
+    case resendBorrowerInvitation = "loanapplication/loan/ResendBorrowerInvitation"
     case logout = "identity/mcuaccount/Logout"
     
 }

@@ -18,9 +18,17 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
     @IBOutlet weak var textviewBody: UITextView!
     @IBOutlet weak var btnSendInvite: UIButton!
     
+    var loanApplicationId = 0
+    var borrowerId = 0
+    var isForResend = false
+    
+    var emailSubject = ""
+    var emailBody = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        getEmailTemplate()
     }
     
     //MARK:- Methods and Actions
@@ -30,9 +38,12 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
         emailBodyContainer.layer.borderWidth = 1
         emailBodyContainer.layer.borderColor = Theme.getButtonGreyColor().cgColor
         textviewBody.delegate = self
-        textviewBody.addHyperLinksToText(originalText: "Hi Richard,\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In commodo laoreet lectus sit amet vulputate. Ut malesuada arcu eget porttitor laoreet. In commodo dui et tristique consequat. Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat. Mauris blandit velit non velit laoreet efficitur. Integer non arcu sodales, rutrum lectus ac, auctor lectus. Integer in hendrerit arcu, at pellentesque ligula.\n\nhttps://colaba.com/?=sdjkhdfgn_dsfgdf\n\nIn commodo dui et tristique consequat. Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat.\n\n\n\nThanks & Regards,\nJohn Doe\nLoan Officer", hyperLinks: ["https://colaba.com/?=sdjkhdfgn_dsfgdf": "https://qaapplytx.rainsoftfn.com/texas/app/signup"])
-        //textviewBody.text = "Hi Richard,\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. In commodo laoreet lectus sit amet vulputate. Ut malesuada arcu eget porttitor laoreet. In commodo dui et tristique consequat. Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat. Mauris blandit velit non velit laoreet efficitur. Integer non arcu sodales, rutrum lectus ac, auctor lectus. Integer in hendrerit arcu, at pellentesque ligula.\n\nhttps://colaba.com/?=sdjkhdfgn_dsfgdf\n\nIn commodo dui et tristique consequat. Aliquam cursus mi nec lectus pretium, quis tincidunt erat consequat.\n\n\n\nThanks & Regards,\nJohn Doe\nLoan Officer"
         btnSendInvite.layer.cornerRadius = 5
+    }
+    
+    func setEmailTemplate(){
+        
+        textviewBody.attributedText = emailBody.htmlToAttributedString
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
@@ -54,6 +65,32 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
     @IBAction func btnSendInviteTapped(_ sender: UIButton){
         self.dismissVC()
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowInviteSendPopup), object: nil)
+    }
+    
+    //MARK:- API's
+    
+    func getEmailTemplate(){
+        
+        let extraData = "borrowerId=\(borrowerId)&loanapplicationid=\(loanApplicationId)"
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: .getBorrowerInvitationEmailTemplate, method: .get, params: nil, extraData: extraData) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                if (status == .success){
+                    self.emailSubject = result["emailSubject"].stringValue
+                    self.emailBody = result["emailBody"].stringValue
+                    self.setEmailTemplate()
+                }
+                else{
+                    self.showPopup(message: "No details found", popupState: .error, popupDuration: .custom(2)) { reason in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
     }
 
 }
