@@ -597,8 +597,15 @@ extension ColabaTextField: UITextFieldDelegate {
             setButton(image: UIImage(named: "textfield-dropdownIcon"))
         }
         
-        if isValidateOnEndEditing {
-            _ = validate()
+        if isValidateOnEndEditing{
+            if (validationType == .phoneNumber && textField.text == ""){
+                self.setTextField(dividerColor: Theme.getSeparatorNormalColor())
+                self.setTextField(detail: "")
+            }
+            else{
+                _ = validate()
+            }
+            
         }
         
         colabaDelegate?.textFieldEndEditing(self)
