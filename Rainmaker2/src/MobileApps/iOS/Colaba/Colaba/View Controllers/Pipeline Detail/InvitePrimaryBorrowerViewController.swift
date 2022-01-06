@@ -38,6 +38,7 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
         emailBodyContainer.layer.borderWidth = 1
         emailBodyContainer.layer.borderColor = Theme.getButtonGreyColor().cgColor
         textviewBody.delegate = self
+        btnSendInvite.setTitle(isForResend ? "RESEND INVITATION" : "SEND INVITATION", for: .normal)
         btnSendInvite.layer.cornerRadius = 5
     }
     
@@ -63,8 +64,7 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
     }
     
     @IBAction func btnSendInviteTapped(_ sender: UIButton){
-        self.dismissVC()
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowInviteSendPopup), object: nil)
+        sendInvitation()
     }
     
     //MARK:- API's
@@ -83,7 +83,37 @@ class InvitePrimaryBorrowerViewController: BaseViewController {
                     self.setEmailTemplate()
                 }
                 else{
-                    self.showPopup(message: "No details found", popupState: .error, popupDuration: .custom(2)) { reason in
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
+                        self.dismissVC()
+                    }
+                }
+            }
+            
+        }
+        
+    }
+    
+    func sendInvitation(){
+        
+        Utility.showOrHideLoader(shouldShow: true)
+        
+        let params = ["borrowerId":borrowerId,
+                      "loanApplicationId":loanApplicationId,
+                      "emailSubject": emailSubject,
+                      "emailBody": emailBody] as [String: Any]
+        
+        APIRouter.sharedInstance.executeDashboardAPIs(type: isForResend ? .resendBorrowerInvitation : .sendBorrowerInvitation, method: .post, params: params) { status, result, message in
+            
+            DispatchQueue.main.async {
+                
+                Utility.showOrHideLoader(shouldShow: false)
+                
+                if (status == .success){
+                    self.dismissVC()
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: kNotificationShowInviteSendPopup), object: nil)
+                }
+                else{
+                    self.showPopup(message: message, popupState: .error, popupDuration: .custom(2)) { reason in
                         self.dismissVC()
                     }
                 }

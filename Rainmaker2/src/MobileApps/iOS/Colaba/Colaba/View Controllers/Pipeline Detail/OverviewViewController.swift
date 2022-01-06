@@ -91,7 +91,7 @@ class OverviewViewController: BaseViewController {
     
     func getBorrowerInvitationStatus(){
         
-        let extraData = "borrowerId=2842&loanapplicationid=\(loanApplicationId)"
+        let extraData = "borrowerId=2846&loanapplicationid=\(loanApplicationId)"
         
         APIRouter.sharedInstance.executeDashboardAPIs(type: .getBorrowerInvitationStatus, method: .get, params: nil, extraData: extraData) { status, result, message in
             
@@ -311,7 +311,7 @@ extension OverviewViewController: UICollectionViewDataSource, UICollectionViewDe
             if (invitationStatus == "Invite Borrower" || invitationStatus == "Invitation Pending" || invitationStatus == "Invitation Resent"){
                 let vc = Utility.getInvitePrimaryBorrowerVC()
                 vc.loanApplicationId = self.loanApplicationId
-                vc.borrowerId = 2842//self.loanInfoData.borrowers.first!.borrowerId
+                vc.borrowerId = 2846//self.loanInfoData.borrowers.first!.borrowerId
                 vc.isForResend = (invitationStatus == "Invitation Pending" || invitationStatus == "Invitation Resent")
                 self.presentVC(vc: vc)
             }
