@@ -31,6 +31,7 @@ class DocumentsViewController: BaseViewController {
     let loadingPlaceholderView = LoadingPlaceholderView()
     var isFiltersApplied = false
     var lastContentOffset: CGFloat = 0
+    var selectedFilterViewTag = 1
     
     lazy var previewItem = NSURL()
     
@@ -136,6 +137,13 @@ class DocumentsViewController: BaseViewController {
     
     @objc func manuallyAddedFilterTapped(){
         filterViewTapped(selectedFilterView: manuallyView, filterViews: [allView, draftView, borrowerToDoView, pendingView, startedView, completedView, manuallyView])
+    }
+    
+    func filterTapped(){
+        let vc = Utility.getDocumentFilterPopupVC()
+        vc.selectedTag = self.selectedFilterViewTag
+        vc.delegate = self
+        self.present(vc, animated: false, completion: nil)
     }
     
     @IBAction func btnRequestDocuments(_ sender: UIButton) {
@@ -364,4 +372,30 @@ extension DocumentsViewController: QLPreviewControllerDelegate, QLPreviewControl
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
         return self.previewItem as QLPreviewItem
     }
+}
+
+extension DocumentsViewController: DocumentFilterPopupViewControllerDelegate{
+    
+    func filterViewTapped(selectedTag: Int) {
+        self.selectedFilterViewTag = selectedTag
+        if (selectedFilterViewTag == 1){
+            allFitersTapped()
+        }
+        else if (selectedFilterViewTag == 2){
+            manuallyAddedFilterTapped()
+        }
+        else if (selectedFilterViewTag == 3){
+            borrowerFilterTapped()
+        }
+        else if (selectedFilterViewTag == 4){
+            startedFilterTapped()
+        }
+        else if (selectedFilterViewTag == 5){
+            pendingFilterTapped()
+        }
+        else if (selectedFilterViewTag == 5){
+            completedFilterTapped()
+        }
+    }
+    
 }

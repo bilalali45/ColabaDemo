@@ -1811,7 +1811,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="In Draft" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbY-RU-Q55">
-                                                        <rect key="frame" x="26" y="7.5" width="43" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1837,7 +1837,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Borrower to do" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPc-1Q-Xpf">
-                                                        <rect key="frame" x="26" y="7.5" width="87.5" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="89" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1863,7 +1863,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HpZ-hT-xwW">
-                                                        <rect key="frame" x="26" y="7.5" width="43" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="45.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1889,7 +1889,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pF0-BJ-80F">
-                                                        <rect key="frame" x="26" y="7.5" width="48" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="50" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1915,7 +1915,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Completed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWb-8l-8FF">
-                                                        <rect key="frame" x="26" y="7.5" width="64.5" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="66" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -1941,7 +1941,7 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manually added" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oZM-La-0Qg">
-                                                        <rect key="frame" x="26" y="7.5" width="93" height="15"/>
+                                                        <rect key="frame" x="26" y="7.5" width="94.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -2005,7 +2005,7 @@
                                 <rect key="frame" x="63.5" y="153.5" width="248" height="227"/>
                             </imageView>
                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No documents found" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0d-L9-5ZE">
-                                <rect key="frame" x="107" y="404.5" width="161" height="20"/>
+                                <rect key="frame" x="104.5" y="404.5" width="166" height="20"/>
                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="17"/>
                                 <color key="textColor" name="AppGreyColor"/>
                                 <nil key="highlightedColor"/>
@@ -2062,7 +2062,7 @@
         <!--Document Filter Popup View Controller-->
         <scene sceneID="FEk-ZT-7VI">
             <objects>
-                <viewController storyboardIdentifier="DocumentFilterPopupViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HLb-ff-vho" customClass="DocumentFilterPopupViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DocumentFilterPopupViewController" modalPresentationStyle="overFullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HLb-ff-vho" customClass="DocumentFilterPopupViewController" customModule="Colaba" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="yDf-2G-ie5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
