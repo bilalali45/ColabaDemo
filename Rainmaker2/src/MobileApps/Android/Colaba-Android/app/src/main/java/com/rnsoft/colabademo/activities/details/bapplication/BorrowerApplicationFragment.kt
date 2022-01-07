@@ -46,7 +46,6 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
     var streetName : String? = null
     var propertyType : String? = null
     var occupancyType : String? = null
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -64,8 +63,6 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
         loanLayout = root.findViewById(R.id.loanInfoLayout)
         subjectPropertyLayout = root.findViewById(R.id.sub_property_data_layout)
 
-
-        //applicationTopContainer = root.findViewById(R.id.application_top_container)
 
         binding.assetsConstraintLayout.setOnClickListener{
             var borrowerIndex = 0
@@ -492,6 +489,12 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
                 } else
                     binding.applicationTabLayout.visibility = View.INVISIBLE
             })
+
+        if(saveBorrowerId > 0){
+            // call invitation status status
+            //detailViewModel.getBorrowerInvitationStatus()
+
+        }
 
     }
 

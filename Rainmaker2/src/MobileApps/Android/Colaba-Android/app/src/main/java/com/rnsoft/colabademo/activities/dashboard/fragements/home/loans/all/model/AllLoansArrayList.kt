@@ -76,23 +76,23 @@ data class LoanItem(
 @VersionedParcelize
 data class Detail(
     var address: Address?,
-    var loanAmount: Int?,
-    var propertyValue: Int?
+    var loanAmount: Long?,
+    var propertyValue: Long?
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readParcelable(Address::class.java.classLoader),
-        parcel.readInt(),
-        parcel.readInt()
+        parcel.readLong(),
+        parcel.readLong()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(address, flags)
         if (loanAmount != null) {
-            parcel.writeInt(loanAmount!!)
+            parcel.writeLong(loanAmount!!)
         }
         if (propertyValue != null) {
-            parcel.writeInt(propertyValue!!)
+            parcel.writeLong(propertyValue!!)
         }
     }
 

@@ -111,7 +111,6 @@
 
         <TextView
             android:id="@+id/coBorrowerNames"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -120,7 +119,7 @@
             android:fontFamily="@font/rubik_light"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="co borrower list....."
+            android:text=""
             android:textColor="@color/grey_color_two"
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"

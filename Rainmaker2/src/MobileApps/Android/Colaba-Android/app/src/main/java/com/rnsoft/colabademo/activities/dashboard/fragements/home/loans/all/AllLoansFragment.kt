@@ -61,10 +61,7 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
         loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
         loanRecycleView?.apply {
             this.layoutManager = linearLayoutManager
-            //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
-            // set the custom adapter to the RecyclerView
-            //borrowList = Borrower.customersList(requireContext())
             loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
             this.adapter = loansAdapter
 
@@ -110,7 +107,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
                     loanRecycleView?.addOnScrollListener(scrollListener)
                     loansAdapter.notifyDataSetChanged()
                 }
-                //SandbarUtils.showError(requireActivity(), AppConstant.NO_RECORDS_FOUND )
             }
 
         })

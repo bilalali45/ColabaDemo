@@ -20,7 +20,9 @@ data class BorrowerOverviewModel(
     val loanGoal: String? = ""
 )
 
+
 data class CoBorrower(
+    val id: Int?,
     val firstName: String?= "",
     val lastName: String? = "",
     val middleName:  String? = "",

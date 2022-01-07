@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
+import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -719,12 +720,19 @@ interface ServerApi{
     // borrower invitation
     @GET("api/mcu/mobile/loanapplication/loan/GetBorrowerInvitationStatus")
     suspend fun getInvitationStatus(
-        //@Header("Authorization") Authorization:String,
         @Query("loanApplicationId") loanApplicationId: Int,
         @Query("borrowerId") borrowerId: Int): BorrowerInvitationStatus
 
+    @GET("api/mcu/mobile/loanapplication/loan/GetBorrowerInvitationRenderEmail")
+    suspend fun getInvitationRenderEmail(
+        @Query("loanApplicationId") loanApplicationId: Int,
+        @Query("borrowerId") borrowerId: Int): InvitatationEmailModel
 
+    @POST("api/mcu/mobile/loanapplication/loan/SendBorrowerInvitation")
+    suspend fun sendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
 
+    @POST("api/mcu/mobile/loanapplication/loan/ResendBorrowerInvitation")
+    suspend fun resendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
 
 
 }

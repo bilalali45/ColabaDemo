@@ -72,11 +72,7 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
     }
 
 
-    fun getActiveLoans(token:String, dateTime:String,
-                    pageNumber:Int, pageSize:Int,
-                    loanFilter:Int, orderBy:Int,
-                    assignedToMe:Boolean)
-    {
+    fun getActiveLoans(token:String, dateTime:String, pageNumber:Int, pageSize:Int, loanFilter:Int, orderBy:Int, assignedToMe:Boolean) {
         if(!activeLoanServiceRunning) {
             activeLoanServiceRunning = true
             viewModelScope.launch(Dispatchers.IO) {

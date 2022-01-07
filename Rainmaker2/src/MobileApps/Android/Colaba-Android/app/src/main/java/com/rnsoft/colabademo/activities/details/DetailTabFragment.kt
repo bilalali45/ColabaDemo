@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 
@@ -159,9 +160,11 @@ class DetailTabFragment : BaseFragment() {
                 val testLoanId = it.loanApplicationId
                 testLoanId?.let { loanId->
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                        detailViewModel.getBorrowerOverview(token = authToken, loanApplicationId = loanId)
-                        detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
-                        detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = loanId)
+                        coroutineScope {
+                            detailViewModel.getBorrowerOverview(token = authToken, loanApplicationId = loanId)
+                            detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
+                            detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = loanId)
+                        }
                     }
                 }
             }
