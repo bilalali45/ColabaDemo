@@ -85,7 +85,7 @@ class BorrowerModel: NSObject{
         middleName = json["middleName"].stringValue
         lastName = json["lastName"].stringValue
         ownType = json["ownType"].stringValue
-        borrowerId = json["borrowerId"].intValue
+        borrowerId = json["id"].intValue
         ownTypeId = json["ownTypeId"].intValue
         
     }

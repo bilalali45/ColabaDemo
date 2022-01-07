@@ -44,13 +44,13 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gift Funds" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWq-ff-9UW">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gs6-O0-3PP">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -167,7 +167,7 @@
                                                 </constraints>
                                             </view>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please select one." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rRv-S9-6ZX">
-                                                <rect key="frame" x="20" y="234" width="117" height="17"/>
+                                                <rect key="frame" x="20" y="234" width="114" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                 <color key="textColor" name="SeparatorErrorColor"/>
                                                 <nil key="highlightedColor"/>
@@ -381,7 +381,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zG9-T9-mhD">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -611,13 +611,13 @@
                                 <rect key="frame" x="0.0" y="607" width="375" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Income" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xbz-qb-hVb">
-                                        <rect key="frame" x="20" y="19.5" width="111.5" height="21"/>
+                                        <rect key="frame" x="20" y="19.5" width="103" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$21,325" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHI-rk-XTH">
-                                        <rect key="frame" x="285" y="19.5" width="70" height="21"/>
+                                        <rect key="frame" x="289.5" y="19.5" width="65.5" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -823,13 +823,13 @@
                                 <rect key="frame" x="0.0" y="667" width="375" height="206"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Employment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Lk-ZZ-Za5">
-                                        <rect key="frame" x="28" y="28" width="148.5" height="21.5"/>
+                                        <rect key="frame" x="28" y="28" width="139.5" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NSo-X2-QGF">
-                                        <rect key="frame" x="321" y="19" width="40" height="40"/>
+                                        <rect key="frame" x="321" y="18.5" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="0kT-if-lcI"/>
                                             <constraint firstAttribute="width" constant="40" id="DfC-fM-KTB"/>
@@ -840,21 +840,21 @@
                                         </connections>
                                     </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sqx-yT-ZAq">
-                                        <rect key="frame" x="0.0" y="69.5" width="375" height="1"/>
+                                        <rect key="frame" x="0.0" y="69" width="375" height="1"/>
                                         <color key="backgroundColor" red="0.8980392157" green="0.8980392157" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="hKx-K2-Mad"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="9yi-vC-y5k">
-                                        <rect key="frame" x="28" y="98.5" width="168" height="22"/>
+                                        <rect key="frame" x="28" y="98" width="161.5" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="azT-Sk-Ac0">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
                                                 <state key="normal" image="AddCurrentEmployement"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Employment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMh-nH-a0p">
-                                                <rect key="frame" x="23" y="0.0" width="145" height="22"/>
+                                                <rect key="frame" x="23" y="0.0" width="138.5" height="22"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppGreyColor"/>
                                                 <nil key="highlightedColor"/>
@@ -862,14 +862,14 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="hb9-HB-Ae2">
-                                        <rect key="frame" x="28" y="150.5" width="175" height="22"/>
+                                        <rect key="frame" x="28" y="150" width="169.5" height="22"/>
                                         <subviews>
                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="de1-hp-fPT">
                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="22"/>
                                                 <state key="normal" image="AddPreviousEmployement"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous Employment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="baP-WA-plk">
-                                                <rect key="frame" x="23" y="0.0" width="152" height="22"/>
+                                                <rect key="frame" x="23" y="0.0" width="146.5" height="22"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppGreyColor"/>
                                                 <nil key="highlightedColor"/>
@@ -938,13 +938,13 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Employment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQy-s7-22x">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysZ-Kq-8VF">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -1055,13 +1055,13 @@
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Employer Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKK-Zs-99T">
-                                                        <rect key="frame" x="35.5" y="18" width="113" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="106.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xz8-fu-6aZ">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="35"/>
                                                         <string key="text">4521 San Felipe St,
 Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -1085,13 +1085,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="193" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="tLF-P0-jEd">
-                                                        <rect key="frame" x="78" y="0.0" width="179" height="50"/>
+                                                        <rect key="frame" x="81.5" y="0.0" width="172" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="afe-XL-qtW">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Employer Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BY1-2O-zD5">
-                                                                <rect key="frame" x="38" y="0.0" width="141" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="134" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1412,7 +1412,7 @@ Houston, TX 77027, USA</string>
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="LBL-Ug-Gz9">
-                                                        <rect key="frame" x="20" y="83.5" width="77" height="40"/>
+                                                        <rect key="frame" x="20" y="83.5" width="75" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a1W-OS-cS8">
                                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
@@ -1423,7 +1423,7 @@ Houston, TX 77027, USA</string>
                                                                 <state key="normal" image="RadioButtonUnselected"/>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hourly" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOK-rf-Piu">
-                                                                <rect key="frame" x="34" y="0.0" width="43" height="40"/>
+                                                                <rect key="frame" x="34" y="0.0" width="41" height="40"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1625,7 +1625,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="khH-vN-lG9">
-                                                        <rect key="frame" x="20" y="123.5" width="114" height="40"/>
+                                                        <rect key="frame" x="20" y="123.5" width="112.5" height="40"/>
                                                         <subviews>
                                                             <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cev-tK-dda">
                                                                 <rect key="frame" x="0.0" y="0.0" width="18" height="40"/>
@@ -1636,7 +1636,7 @@ Houston, TX 77027, USA</string>
                                                                 <state key="normal" image="CheckBoxUnSelected"/>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Commission" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7i4-8d-t3k">
-                                                                <rect key="frame" x="34" y="0.0" width="80" height="40"/>
+                                                                <rect key="frame" x="34" y="0.0" width="78.5" height="40"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1875,7 +1875,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GPJ-Ay-YrH">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -2149,13 +2149,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Previous Employment" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pF3-vs-KvW">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7fa-lq-78T">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -2266,13 +2266,13 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Employer Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PD9-rn-BuN">
-                                                        <rect key="frame" x="35.5" y="18" width="113" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="106.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Y8-3v-Nbv">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="35"/>
                                                         <string key="text">4521 San Felipe St,
 Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -2296,13 +2296,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="193" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="F05-Y3-XJN">
-                                                        <rect key="frame" x="78" y="0.0" width="179" height="50"/>
+                                                        <rect key="frame" x="81.5" y="0.0" width="172" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="2kU-aH-SmX">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Employer Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4zE-O4-LOm">
-                                                                <rect key="frame" x="38" y="0.0" width="141" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="134" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -2711,13 +2711,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Self Employment / Ind. Contractor" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQf-06-PSh">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iUx-iJ-92a">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -2858,13 +2858,13 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business Main Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23P-ty-1sA">
-                                                        <rect key="frame" x="35.5" y="18" width="144" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="136.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="st8-V4-U9O">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="35"/>
                                                         <string key="text">4521 San Felipe St,
 Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -2888,13 +2888,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="262" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="vwQ-9T-BcX">
-                                                        <rect key="frame" x="79" y="0.0" width="177.5" height="50"/>
+                                                        <rect key="frame" x="82.5" y="0.0" width="170" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="cU0-My-MbN">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Business Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9lM-Pp-USh">
-                                                                <rect key="frame" x="38" y="0.0" width="139.5" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="132" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -3084,13 +3084,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iX9-NQ-ytJ">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2l-BL-IgU">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -3261,13 +3261,13 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Business Main Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IP0-tl-SgI">
-                                                        <rect key="frame" x="35.5" y="18" width="144" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="136.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dg7-hd-cR8">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="35"/>
                                                         <string key="text">4521 San Felipe St,
 Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -3291,13 +3291,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="331" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="EeP-Cl-4Ei">
-                                                        <rect key="frame" x="79" y="0.0" width="177.5" height="50"/>
+                                                        <rect key="frame" x="82.5" y="0.0" width="170" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="1TF-72-lm1">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Business Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8DO-lO-tcc">
-                                                                <rect key="frame" x="38" y="0.0" width="139.5" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="132" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -3529,13 +3529,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Military Pay" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pxl-Y6-PvQ">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6W-D8-cPN">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -3616,13 +3616,13 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Service Location Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xe2-nn-Zfy">
-                                                        <rect key="frame" x="35.5" y="18" width="159.5" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="149" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybW-0X-yY6">
-                                                        <rect key="frame" x="16" y="50.5" width="303" height="36"/>
+                                                        <rect key="frame" x="16" y="50.5" width="303" height="35"/>
                                                         <string key="text">4521 San Felipe St,
 Houston, TX 77027, USA</string>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
@@ -3646,13 +3646,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="124" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zU8-0y-Q74">
-                                                        <rect key="frame" x="84" y="0.0" width="167.5" height="50"/>
+                                                        <rect key="frame" x="87.5" y="0.0" width="160.5" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="rJg-iA-ux5">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Service Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c1X-SQ-MFq">
-                                                                <rect key="frame" x="38" y="0.0" width="129.5" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="122.5" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -3942,7 +3942,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Upq-Br-4oc">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -4180,7 +4180,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LwL-F7-CR6">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -4412,13 +4412,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Real Estate Owned" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k1N-se-jqQ">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Anv-aw-U60">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -4469,7 +4469,7 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="16" y="16" width="14.5" height="20"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Property Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b3a-zf-ohJ">
-                                                        <rect key="frame" x="35.5" y="18" width="110" height="15.5"/>
+                                                        <rect key="frame" x="35.5" y="18" width="101.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
@@ -4497,13 +4497,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="55" width="335" height="50"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Z3j-iZ-ixW">
-                                                        <rect key="frame" x="80" y="0.0" width="175.5" height="50"/>
+                                                        <rect key="frame" x="84" y="0.0" width="167" height="50"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Add-Address-Button" translatesAutoresizingMaskIntoConstraints="NO" id="wCy-In-Iuc">
                                                                 <rect key="frame" x="0.0" y="0.0" width="28" height="50"/>
                                                             </imageView>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Property Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kXM-pX-LGb">
-                                                                <rect key="frame" x="38" y="0.0" width="137.5" height="50"/>
+                                                                <rect key="frame" x="38" y="0.0" width="129" height="50"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -4849,22 +4849,22 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="20" y="141.5" width="335" height="185"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="First Mortgage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LAW-Ry-W9K">
-                                                                <rect key="frame" x="34" y="30" width="107" height="18"/>
+                                                                <rect key="frame" x="34" y="30" width="98.5" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="vIX-ne-Ppt">
-                                                                <rect key="frame" x="34" y="56" width="115" height="34.5"/>
+                                                                <rect key="frame" x="34" y="55.5" width="111.5" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mortgage Payment" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNC-6v-91b">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="115" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="111.5" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$150,000" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CnE-rr-t2L">
-                                                                        <rect key="frame" x="0.0" y="16.5" width="115" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="16.5" width="111.5" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -4872,16 +4872,16 @@ Houston, TX 77027, USA</string>
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="Td0-bD-w7g">
-                                                                <rect key="frame" x="34" y="120.5" width="109.5" height="34.5"/>
+                                                                <rect key="frame" x="34" y="119.5" width="107" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mortgage Balance" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkI-0b-0tA">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="109.5" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="107" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250,000" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0I6-jE-F54">
-                                                                        <rect key="frame" x="0.0" y="16.5" width="109.5" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="16.5" width="107" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -4976,22 +4976,22 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="20" y="141.5" width="335" height="185"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Second Mortgage" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fod-tt-v3v">
-                                                                <rect key="frame" x="34" y="30" width="127.5" height="18"/>
+                                                                <rect key="frame" x="34" y="30" width="121" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="jSj-CL-3nb">
-                                                                <rect key="frame" x="34" y="56" width="115" height="34.5"/>
+                                                                <rect key="frame" x="34" y="55.5" width="111.5" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mortgage Payment" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lw7-ym-GJk">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="115" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="111.5" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$150,000" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdD-rs-JGk">
-                                                                        <rect key="frame" x="0.0" y="16.5" width="115" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="16.5" width="111.5" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -4999,16 +4999,16 @@ Houston, TX 77027, USA</string>
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="QcW-k4-A1r">
-                                                                <rect key="frame" x="34" y="120.5" width="109.5" height="34.5"/>
+                                                                <rect key="frame" x="34" y="119.5" width="107" height="34"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mortgage Balance" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUI-fb-nhl">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="109.5" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="107" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$250,000" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8pd-IP-fqg">
-                                                                        <rect key="frame" x="0.0" y="16.5" width="109.5" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="16.5" width="107" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -5396,7 +5396,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="20" y="0.0" width="212" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Undisclosed Borrowed Funds" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9h-Tb-BCP">
-                                                        <rect key="frame" x="18" y="7.5" width="176" height="15"/>
+                                                        <rect key="frame" x="20" y="7.5" width="172.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5413,7 +5413,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="237" y="0.0" width="222" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ownership Interest in Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9LA-bh-ffY">
-                                                        <rect key="frame" x="18.5" y="7.5" width="185" height="15"/>
+                                                        <rect key="frame" x="23" y="7.5" width="176.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5430,7 +5430,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="464" y="0.0" width="206" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Family or Business affiliation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ako-zV-J05">
-                                                        <rect key="frame" x="18" y="7.5" width="170" height="15"/>
+                                                        <rect key="frame" x="20.5" y="7.5" width="165" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5447,7 +5447,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="675" y="0.0" width="249" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Undisclosed Mortgage Applications" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5L-1e-5Ai">
-                                                        <rect key="frame" x="18.5" y="7.5" width="212" height="15"/>
+                                                        <rect key="frame" x="21" y="7.5" width="207.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5464,7 +5464,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="929" y="0.0" width="221" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Undisclosed Credit Application" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dS1-u0-ryn">
-                                                        <rect key="frame" x="18.5" y="7.5" width="184.5" height="15"/>
+                                                        <rect key="frame" x="20.5" y="7.5" width="180" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5481,7 +5481,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="675" y="0.0" width="208" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debt Co-signer or Guarantor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fsz-Kj-nj2">
-                                                        <rect key="frame" x="18.5" y="7.5" width="171" height="15"/>
+                                                        <rect key="frame" x="21" y="7.5" width="166.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5498,7 +5498,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="888" y="0.0" width="191" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Outstanding Judgements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oPv-FF-MvP">
-                                                        <rect key="frame" x="18" y="7.5" width="155" height="15"/>
+                                                        <rect key="frame" x="22" y="7.5" width="147" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5515,7 +5515,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1089" y="0.0" width="184" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Federal Debt Deliquency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c6h-G9-VFA">
-                                                        <rect key="frame" x="18.5" y="7.5" width="147.5" height="15"/>
+                                                        <rect key="frame" x="20.5" y="7.5" width="143.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5532,7 +5532,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1283" y="0.0" width="134" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Party to Lawsuit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y6h-ge-ogf">
-                                                        <rect key="frame" x="18" y="7.5" width="98" height="15"/>
+                                                        <rect key="frame" x="20" y="7.5" width="94" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5549,7 +5549,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1427" y="0.0" width="140" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Conveyance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOn-cL-6AH">
-                                                        <rect key="frame" x="18.5" y="7.5" width="103.5" height="15"/>
+                                                        <rect key="frame" x="20" y="7.5" width="100.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5566,7 +5566,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1577" y="0.0" width="215" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pre-Foreclosure or Short Sale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WEy-JA-c1t">
-                                                        <rect key="frame" x="18.5" y="7.5" width="178.5" height="15"/>
+                                                        <rect key="frame" x="21.5" y="7.5" width="172.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5583,7 +5583,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1802" y="0.0" width="171" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Foreclosured Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AR5-yL-gPz">
-                                                        <rect key="frame" x="18" y="7.5" width="135" height="15"/>
+                                                        <rect key="frame" x="21" y="7.5" width="129.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5600,7 +5600,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="1983" y="0.0" width="106" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bankruptcy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rm4-PY-w4r">
-                                                        <rect key="frame" x="18" y="7.5" width="70" height="15"/>
+                                                        <rect key="frame" x="19.5" y="7.5" width="67" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5617,7 +5617,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="2099" y="0.0" width="202" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support, Alimony, etc." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pS-nz-Jdb">
-                                                        <rect key="frame" x="18.5" y="7.5" width="165.5" height="15"/>
+                                                        <rect key="frame" x="20" y="7.5" width="162.5" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5634,7 +5634,7 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="2311" y="0.0" width="191" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Demographic Information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kiY-gD-k7u">
-                                                        <rect key="frame" x="18.5" y="7.5" width="154.5" height="15"/>
+                                                        <rect key="frame" x="21.5" y="7.5" width="148" height="15"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                                         <nil key="highlightedColor"/>
@@ -5847,7 +5847,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$12,000" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0D2-na-D14">
-                                                <rect key="frame" x="30" y="77" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="77" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -5937,7 +5937,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGn-su-apc">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -6169,7 +6169,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Property" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hC4-nt-f8e">
-                                                <rect key="frame" x="30" y="53.5" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="53.5" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -6203,7 +6203,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Yourself" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJS-qW-g8b">
-                                                <rect key="frame" x="30" y="53.5" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="53.5" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -6299,7 +6299,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hY1-Kf-l7O">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -6525,7 +6525,7 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="254.5" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPg-UT-Son">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -6538,7 +6538,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NDY-qx-i69">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -6628,7 +6628,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w4q-0T-Uqs">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -6798,7 +6798,7 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="254.5" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83u-5e-03i">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -6811,7 +6811,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6X-fk-3tY">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -6939,13 +6939,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="227.5" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QVN-Ca-gbj">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wx-f8-XYb">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7079,13 +7079,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bta-1n-QiZ">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUv-p3-qzP">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7219,13 +7219,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="147" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="chc-mj-ckS">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6L-ye-wg8">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7359,13 +7359,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hWu-yM-t7R">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cHg-6c-x3P">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7499,13 +7499,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLU-Ro-z02">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1Z-OQ-pXh">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7639,13 +7639,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2N-Ka-gtP">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJz-P2-5yH">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7780,13 +7780,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="254.5" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A6U-7v-Wws">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8Y-fb-mTo">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -7920,13 +7920,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO3-gf-2tf">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYV-Bk-uqW">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -8073,7 +8073,7 @@ Houston, TX 77027, USA</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Chapter 7" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPN-rn-5Y7">
-                                                <rect key="frame" x="30" y="53.5" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="53.5" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8157,13 +8157,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bankruptcy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNz-RF-HaX">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="74a-9O-cE0">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -8195,7 +8195,7 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="400"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Which Type?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p5O-AX-Pey">
-                                                <rect key="frame" x="20" y="30" width="78" height="15.5"/>
+                                                <rect key="frame" x="20" y="30" width="74.5" height="15.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                 <color key="textColor" name="AppGreyColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8277,7 +8277,7 @@ Houston, TX 77027, USA</string>
                                                 </subviews>
                                             </stackView>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose one or more options." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbb-N4-PqO">
-                                                <rect key="frame" x="20" y="207.5" width="185.5" height="17"/>
+                                                <rect key="frame" x="20" y="207.5" width="183" height="16.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                 <color key="textColor" name="SeparatorErrorColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8448,13 +8448,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="90"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPs-nb-L7b">
-                                                <rect key="frame" x="30" y="20" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="20" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,500" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dJb-F2-ZLA">
-                                                <rect key="frame" x="30" y="53" width="285" height="18"/>
+                                                <rect key="frame" x="30" y="52.5" width="285" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8475,13 +8475,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="284" width="335" height="90"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fmd-Hk-sLv">
-                                                <rect key="frame" x="30" y="20" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="20" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,500" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIb-uv-X1a">
-                                                <rect key="frame" x="30" y="53" width="285" height="18"/>
+                                                <rect key="frame" x="30" y="52.5" width="285" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8502,13 +8502,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="394" width="335" height="90"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wU8-Cc-OXm">
-                                                <rect key="frame" x="30" y="20" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="20" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,500" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d94-Qt-V8b">
-                                                <rect key="frame" x="30" y="53" width="285" height="18"/>
+                                                <rect key="frame" x="30" y="52.5" width="285" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -8604,13 +8604,13 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Child Support, Alimony, etc." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L5S-rR-jai">
-                                        <rect key="frame" x="47" y="14" width="281" height="21.5"/>
+                                        <rect key="frame" x="47" y="14" width="281" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i42-N3-hmO">
-                                        <rect key="frame" x="120" y="36.5" width="135.5" height="13.5"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -8642,7 +8642,7 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select all that apply" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XXb-X9-TdS">
-                                                <rect key="frame" x="20" y="30" width="124" height="15.5"/>
+                                                <rect key="frame" x="20" y="30" width="114.5" height="15.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="13"/>
                                                 <color key="textColor" name="AppGreyColor"/>
                                                 <nil key="highlightedColor"/>
@@ -9156,7 +9156,7 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Race" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugR-PP-FXm">
-                                                <rect key="frame" x="20" y="15" width="36" height="18"/>
+                                                <rect key="frame" x="20" y="15" width="34.5" height="18"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -9181,7 +9181,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ethnicity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J5K-1l-vgY">
-                                                <rect key="frame" x="20" y="363" width="66.5" height="18"/>
+                                                <rect key="frame" x="20" y="363" width="58" height="18"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -9206,7 +9206,7 @@ Houston, TX 77027, USA</string>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sex" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pWd-hd-0fx">
-                                                <rect key="frame" x="20" y="601" width="27" height="18"/>
+                                                <rect key="frame" x="20" y="601" width="26" height="18"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
@@ -9328,7 +9328,7 @@ Houston, TX 77027, USA</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RICHARD GLENN RANDALL" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akM-e0-MLl">
-                                        <rect key="frame" x="120" y="36" width="135.5" height="13"/>
+                                        <rect key="frame" x="116.5" y="36" width="142" height="13"/>
                                         <fontDescription key="fontDescription" name="Rubik-Light" family="Rubik" pointSize="11"/>
                                         <color key="textColor" name="ButtonGreyTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -9471,13 +9471,13 @@ Houston, TX 77027, USA</string>
                                         <rect key="frame" x="20" y="174" width="335" height="114"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nz5-zV-3Ym">
-                                                <rect key="frame" x="30" y="15" width="275" height="18"/>
+                                                <rect key="frame" x="30" y="15" width="275" height="17.5"/>
                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                 <color key="textColor" name="AppBlackColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YjQ-yX-seF">
-                                                <rect key="frame" x="30" y="48" width="285" height="47"/>
+                                                <rect key="frame" x="30" y="47.5" width="285" height="47"/>
                                                 <attributedString key="attributedText">
                                                     <fragment content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum...">
                                                         <attributes>
@@ -9569,7 +9569,7 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pre-Approval Letter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JPF-Dl-z8Y">
-                                        <rect key="frame" x="56.5" y="21.5" width="262.5" height="21.5"/>
+                                        <rect key="frame" x="56.5" y="21.5" width="262.5" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -9602,13 +9602,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send the borrower a pre-approval letter, allowing them to place an offer on their dream home." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHy-gF-wrH">
-                                                        <rect key="frame" x="20" y="20" width="335" height="33.5"/>
+                                                        <rect key="frame" x="20" y="20" width="335" height="33"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8yK-0W-Q29" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="83.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="83" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="YuT-B2-z7O"/>
@@ -9638,7 +9638,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Leb-uF-ffj" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="152.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="152" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="8th-Hr-e4B"/>
@@ -9668,7 +9668,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yhc-g2-ZwD" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="221.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="221" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="90J-xZ-o4m"/>
@@ -9722,16 +9722,16 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="20" y="8" width="25.5" height="26"/>
                                                     </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="OWj-xJ-r8U">
-                                                        <rect key="frame" x="57.5" y="2" width="100.5" height="38"/>
+                                                        <rect key="frame" x="57.5" y="2.5" width="90.5" height="37"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Purchase Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vMU-Kd-hRc">
-                                                                <rect key="frame" x="0.0" y="0.0" width="84" height="14.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="81" height="14"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,800,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uZ7-uh-Na1">
-                                                                <rect key="frame" x="0.0" y="16.5" width="100.5" height="21.5"/>
+                                                                <rect key="frame" x="0.0" y="16" width="90.5" height="21"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -9739,7 +9739,7 @@ Houston, TX 77027, USA</string>
                                                         </subviews>
                                                     </stackView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epm-RR-RDL">
-                                                        <rect key="frame" x="20" y="70" width="335" height="60"/>
+                                                        <rect key="frame" x="20" y="69.5" width="335" height="60"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Y0R-tG-ovK">
                                                                 <rect key="frame" x="16" y="18" width="303" height="31"/>
@@ -9779,25 +9779,25 @@ Houston, TX 77027, USA</string>
                                                                 <rect key="frame" x="16" y="96" width="303" height="39"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Loan Amount" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCm-L8-icv">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="108.5" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="107" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$900,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oof-oQ-9Po">
-                                                                        <rect key="frame" x="0.0" y="21.5" width="69" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="21.5" width="63" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Loan-To-Value (LTV)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MDL-5U-QD3">
-                                                                        <rect key="frame" x="154" y="0.0" width="149" height="15.5"/>
+                                                                        <rect key="frame" x="158.5" y="0.0" width="144.5" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="50%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v8L-49-nqD">
-                                                                        <rect key="frame" x="154" y="21.5" width="30" height="18"/>
+                                                                        <rect key="frame" x="158.5" y="21.5" width="32" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -9817,7 +9817,7 @@ Houston, TX 77027, USA</string>
                                                                 </constraints>
                                                             </view>
                                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change Parameters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icq-9M-lzK">
-                                                                <rect key="frame" x="16" y="155" width="120" height="15.5"/>
+                                                                <rect key="frame" x="16" y="155" width="116" height="15.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                 <color key="textColor" name="ButtonBlueColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -9879,19 +9879,19 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="0.0" y="481" width="375" height="550"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Optional Elements" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PkW-bq-8ha">
-                                                        <rect key="frame" x="20" y="0.0" width="132.5" height="18"/>
+                                                        <rect key="frame" x="20" y="0.0" width="123" height="17.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="15"/>
                                                         <color key="textColor" name="AppBlackColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can include the following in the letter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Em9-Z1-675">
-                                                        <rect key="frame" x="20" y="26" width="249.5" height="15.5"/>
+                                                        <rect key="frame" x="20" y="25.5" width="238.5" height="15.5"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrN-29-dxj">
-                                                        <rect key="frame" x="20" y="56.5" width="335" height="50"/>
+                                                        <rect key="frame" x="20" y="56" width="335" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="2h5-ca-Cqy">
                                                                 <rect key="frame" x="0.0" y="2" width="335" height="48"/>
@@ -9938,7 +9938,7 @@ Houston, TX 77027, USA</string>
                                                                 </constraints>
                                                             </view>
                                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Conventional" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXI-sB-7LZ">
-                                                                <rect key="frame" x="20" y="43.5" width="92" height="18"/>
+                                                                <rect key="frame" x="20" y="43.5" width="88.5" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -9958,7 +9958,7 @@ Houston, TX 77027, USA</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lB9-nL-PVf">
-                                                        <rect key="frame" x="20" y="121.5" width="335" height="50"/>
+                                                        <rect key="frame" x="20" y="121" width="335" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="M7S-KN-rby">
                                                                 <rect key="frame" x="0.0" y="2" width="335" height="48"/>
@@ -10005,7 +10005,7 @@ Houston, TX 77027, USA</string>
                                                                 </constraints>
                                                             </view>
                                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oXc-3k-e3X">
-                                                                <rect key="frame" x="20" y="43.5" width="156" height="18"/>
+                                                                <rect key="frame" x="20" y="43.5" width="151" height="17.5"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -10025,7 +10025,7 @@ Houston, TX 77027, USA</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WRY-YK-bK5">
-                                                        <rect key="frame" x="20" y="186.5" width="335" height="50"/>
+                                                        <rect key="frame" x="20" y="186" width="335" height="50"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="OXu-dI-cZC">
                                                                 <rect key="frame" x="0.0" y="2" width="335" height="48"/>
@@ -10072,16 +10072,16 @@ Houston, TX 77027, USA</string>
                                                                 </constraints>
                                                             </view>
                                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="p9w-MH-EKC">
-                                                                <rect key="frame" x="20" y="71" width="156" height="43.5"/>
+                                                                <rect key="frame" x="20" y="71" width="151" height="43"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="State" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pex-Xo-ARw">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="32.5" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="31" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Single Family Property" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4fW-w1-Hj2">
-                                                                        <rect key="frame" x="0.0" y="25.5" width="156" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="25.5" width="151" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -10089,16 +10089,16 @@ Houston, TX 77027, USA</string>
                                                                 </subviews>
                                                             </stackView>
                                                             <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dyZ-Aw-OJv">
-                                                                <rect key="frame" x="20" y="134.5" width="67.5" height="43.5"/>
+                                                                <rect key="frame" x="20" y="134" width="64.5" height="43"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="County" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ib-wP-sUq">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="44" height="15.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="42" height="15.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="13"/>
                                                                         <color key="textColor" name="AppGreyColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anderson" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2QX-jR-FN8">
-                                                                        <rect key="frame" x="0.0" y="25.5" width="67.5" height="18"/>
+                                                                        <rect key="frame" x="0.0" y="25.5" width="64.5" height="17.5"/>
                                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="15"/>
                                                                         <color key="textColor" name="AppBlackColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -10282,7 +10282,7 @@ Houston, TX 77027, USA</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set Letter On-Demand" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUS-F2-h2Q">
-                                        <rect key="frame" x="56.5" y="21.5" width="262.5" height="21.5"/>
+                                        <rect key="frame" x="56.5" y="21.5" width="262.5" height="21"/>
                                         <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                         <color key="textColor" name="AppBlackColor"/>
                                         <nil key="highlightedColor"/>
@@ -10315,13 +10315,13 @@ Houston, TX 77027, USA</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="280"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow borrowers to generate their own pre-approval letters after setting loan limits below" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gDY-1t-Chq">
-                                                        <rect key="frame" x="20" y="20" width="335" height="33.5"/>
+                                                        <rect key="frame" x="20" y="20" width="335" height="33"/>
                                                         <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="14"/>
                                                         <color key="textColor" name="AppGreyColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oJ0-jR-yNq" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="83.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="83" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="9x1-uu-7oA"/>
@@ -10351,7 +10351,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ndK-mT-Oa1" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="152.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="152" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="Tmv-iC-l49"/>
@@ -10381,7 +10381,7 @@ Houston, TX 77027, USA</string>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="leP-tY-35B" customClass="ColabaTextField" customModule="Colaba" customModuleProvider="target">
-                                                        <rect key="frame" x="20" y="221.5" width="335" height="39"/>
+                                                        <rect key="frame" x="20" y="221" width="335" height="39"/>
                                                         <color key="backgroundColor" red="0.60392156860000001" green="0.602715373" blue="0.602715373" alpha="0.5" colorSpace="calibratedRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="39" id="yOQ-RX-u2d"/>
@@ -10435,16 +10435,16 @@ Houston, TX 77027, USA</string>
                                                         <rect key="frame" x="20" y="8" width="25.5" height="26"/>
                                                     </imageView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="eu5-Jg-3jO">
-                                                        <rect key="frame" x="57.5" y="2" width="109.5" height="38"/>
+                                                        <rect key="frame" x="57.5" y="2.5" width="107.5" height="37"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Purchase Price" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fc1-M7-LYb">
-                                                                <rect key="frame" x="0.0" y="0.0" width="109.5" height="14.5"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="107.5" height="14"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Regular" family="Rubik" pointSize="12"/>
                                                                 <color key="textColor" name="AppGreyColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$1,800,000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2au-SY-J0s">
-                                                                <rect key="frame" x="0.0" y="16.5" width="100.5" height="21.5"/>
+                                                                <rect key="frame" x="0.0" y="16" width="90.5" height="21"/>
                                                                 <fontDescription key="fontDescription" name="Rubik-Medium" family="Rubik" pointSize="18"/>
                                                                 <color key="textColor" name="AppBlackColor"/>
                                                                 <nil key="highlightedColor"/>

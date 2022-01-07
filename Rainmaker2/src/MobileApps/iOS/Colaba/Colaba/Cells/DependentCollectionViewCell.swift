@@ -12,7 +12,7 @@ protocol DependentCollectionViewCellDelegate: AnyObject {
     func deleteDependent(indexPath: IndexPath)
 }
 
-class DependentCollectionViewCell: UICollectionViewCell, ColabaTextFieldDelegate {
+class DependentCollectionViewCell: UICollectionViewCell, ColabaTextFieldDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var txtfieldAge: ColabaTextField!
     weak var delegate: DependentCollectionViewCellDelegate?
@@ -28,7 +28,6 @@ class DependentCollectionViewCell: UICollectionViewCell, ColabaTextFieldDelegate
         
         /*DO NOT CHANGE SET TEXT FIELD FUNCTIONS FOR THIS CLASS*/
         
-        txtfieldAge.setTextField(placeholder: "Email")
         txtfieldAge.setDelegates(collectionViewCell: self)
         txtfieldAge.setValidation(validationType: .required)
         txtfieldAge.setTextField(keyboardType: .numberPad)
@@ -38,4 +37,5 @@ class DependentCollectionViewCell: UICollectionViewCell, ColabaTextFieldDelegate
     func deleteButtonClicked() {
         self.delegate?.deleteDependent(indexPath: indexPath)
     }
+    
 }

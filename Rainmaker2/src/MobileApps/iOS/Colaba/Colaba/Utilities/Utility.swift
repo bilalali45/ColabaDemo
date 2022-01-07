@@ -134,6 +134,10 @@ struct Utility {
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "DocumentsDetailViewController") as! DocumentsDetailViewController
     }
     
+    static func getDocumentFilterPopupVC() -> DocumentFilterPopupViewController{
+        return loanDetailStoryboard.instantiateViewController(withIdentifier: "DocumentFilterPopupViewController") as! DocumentFilterPopupViewController
+    }
+    
     static func getBorrowerInformationVC() -> BorrowerInformationViewController{
         return loanDetailStoryboard.instantiateViewController(withIdentifier: "BorrowerInformationViewController") as! BorrowerInformationViewController
     }

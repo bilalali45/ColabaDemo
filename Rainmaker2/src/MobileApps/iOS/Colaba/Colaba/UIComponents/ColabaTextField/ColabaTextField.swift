@@ -494,7 +494,7 @@ extension ColabaTextField: UITextFieldDelegate {
             }
         }
         if type == .amount {
-            if (textField.text!.count < 26){
+            if (textField.text!.count < 25){
                 return (self.text == prefix && range.location == prefix!.count - 1 && range.length == 1) ? false : true
             }
             else{
@@ -509,6 +509,14 @@ extension ColabaTextField: UITextFieldDelegate {
             let allowedCharacter1 = CharacterSet.whitespaces
             let characterSet = CharacterSet(charactersIn: string)
             return allowedCharacter.isSuperset(of: characterSet) || allowedCharacter1.isSuperset(of: characterSet)
+        }
+        if (type == .delete){
+            if (textField.text!.count < 3){
+                return true
+            }
+            else{
+                return string == ""
+            }
         }
         return true
     }
