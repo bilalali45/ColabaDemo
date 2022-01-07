@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
+import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import okhttp3.ResponseBody
 import retrofit2.Response
 import javax.inject.Inject
@@ -12,8 +13,21 @@ class DetailRepo @Inject constructor(private val detailDataSource: DetailDataSou
         return detailDataSource.getLoanInfo(token = token , loanApplicationId = loanApplicationId)
     }
 
-    suspend fun getInvitationStatus(token:String,loanApplicationId:Int,borrowerId: Int):Result<BorrowerInvitationStatus>{
-        return detailDataSource.getInvitationStatus(token = token, loanApplicationId = loanApplicationId,borrowerId)
+    suspend fun getInvitationStatus(loanApplicationId:Int,borrowerId: Int):Result<BorrowerInvitationStatus>{
+        return detailDataSource.getInvitationStatus(loanApplicationId = loanApplicationId,borrowerId)
+    }
+
+    suspend fun sendInvitationEmail(emailBody:SendInvitationEmailModel):Result<Any>{
+        return detailDataSource.sendInvitationEmail(emailBody)
+    }
+
+    suspend fun resendInvitationEmail(emailBody:SendInvitationEmailModel):Result<Any>{
+        return detailDataSource.resendInvitationEmail(emailBody)
+    }
+
+
+    suspend fun getInvitationEmail(loanApplicationId:Int,borrowerId: Int):Result<InvitatationEmailModel>{
+        return detailDataSource.getInvitationEmail(loanApplicationId = loanApplicationId,borrowerId)
     }
 
     suspend fun getBorrowerDocuments(token:String ,loanApplicationId:Int):Result<ArrayList<BorrowerDocsModel>>{

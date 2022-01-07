@@ -13,8 +13,8 @@ class LoanDataSource  @Inject constructor(private val serverApi: ServerApi){
     :Result<ArrayList<LoanItem>>{
         return try {
             val newToken = "Bearer $token"
-            Log.e("LoanDataSource-API-Param", "DateTime= " + dateTime + " PageNum= " + pageNumber + " PageSize= " + pageSize + " LoanFilter= " + loanFilter + " OrderBy= " + orderBy +
-                    " Assigned to me=" + assignedToMe)
+            //Log.e("LoanDataSource-API-Param", "DateTime= " + dateTime + " PageNum= " + pageNumber + " PageSize= " + pageSize + " LoanFilter= " + loanFilter + " OrderBy= " + orderBy +
+              //      " Assigned to me=" + assignedToMe)
 
             val response = serverApi.loadAllLoansFromApi(
 
@@ -25,10 +25,11 @@ class LoanDataSource  @Inject constructor(private val serverApi: ServerApi){
                 orderBy = orderBy,
                 assignedToMe = assignedToMe
             )
-            Log.e("LoanDataSource-", response.toString())
+            //Log.e("LoanDataSource-", response.toString())
             Result.Success(response)
         }
         catch (e: Throwable) {
+            //Log.e("Exception",e.localizedMessage)
            if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else

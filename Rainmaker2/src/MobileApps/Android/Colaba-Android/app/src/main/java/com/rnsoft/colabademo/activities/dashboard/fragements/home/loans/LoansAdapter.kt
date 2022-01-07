@@ -85,7 +85,9 @@ internal constructor(
                 }  else {
                     Log.e("Loan amount", "0")
                 }
-            } catch (e: Exception) { }
+            } catch (e: Exception) {
+                Log.e("---LoansAdapterExceptiom---", e.toString())
+            }
         } else
             holder.loanAmount.text = "$0"
 

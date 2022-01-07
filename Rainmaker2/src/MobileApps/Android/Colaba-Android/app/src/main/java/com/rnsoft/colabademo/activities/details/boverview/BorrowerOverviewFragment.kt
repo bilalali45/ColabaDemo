@@ -20,6 +20,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
     private var _binding: DetailBorrowerLayoutTwoBinding? = null
     private val binding get() = _binding!!
     private val detailViewModel: DetailViewModel by activityViewModels()
+    private var loanApplicationId: Int? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -31,6 +32,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
         detailActivity?.let {
             binding.loanPurposeParam.text = it.borrowerLoanPurpose
         }
+        detailActivity?.loanApplicationId?.let {
+            loanApplicationId = it
+        }
 
         binding.box1.setOnClickListener{
             //findNavController().navigate(R.id.invitation_primary_borrower_fragment_id, null)
@@ -38,8 +42,9 @@ class BorrowerOverviewFragment : BaseFragment()  {
         }
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
+            Log.e("Observe", "overview")
             if(overviewModel!=null) {
-
+                Log.e("not null", "overview")
                 binding.userLayout3.setOnClickListener {
                     findNavController().navigate(R.id.borrower_app_status_fragment)
                 }
@@ -117,6 +122,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 } else {
                     binding.addressLayout.visibility = View.VISIBLE
                     binding.noAddressLayout.visibility = View.GONE
+
                     overviewModel.webBorrowerAddress.let {
                         //binding.completeAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                         val builder = StringBuilder()
@@ -158,11 +164,31 @@ class BorrowerOverviewFragment : BaseFragment()  {
 
                 if(!binding.bytesPosted.isVisible && !binding.loanId.isVisible)
                     binding.view7.visibility = View.GONE
+
+                overviewModel.coBorrowers?.let {
+                    if(it.size >0){
+                        for(item in  it.indices) {
+                            if (it.get(item).ownTypeId == AppConstant.borrowerTypeId) {
+                                Log.e("OVerview frag", "overview-borrower is " + it.get(item).id)
+                                // call invitation status
+                                if (loanApplicationId != null) {
+                                    it.get(item).id?.let { id->
+                                        detailViewModel.getBorrowerInvitationStatus(loanApplicationId!!, id)
+                                    }
+                                    break
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else
                 Log.e("should-stop"," here....")
-
         })
+        detailViewModel.invitationStatus.observe(viewLifecycleOwner, { status ->
+            Log.e("invitation status","$status")
+        })
+
         super.addListeners(binding.root)
         return root
     }

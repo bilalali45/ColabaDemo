@@ -41,6 +41,7 @@ object AppConstant {
         const val delete_previous_address: String = "delete_prev_address"
         const val delete_mailing_address: String = "delete_mailing_address"
         const val owntypeid: String = "owntype_id"
+        const val borrowerTypeId: Int = 1 // owntype id
 
         const val service_date: String = "service_date"
         const val borrower_citizenship: String = "borrower_citizenship"

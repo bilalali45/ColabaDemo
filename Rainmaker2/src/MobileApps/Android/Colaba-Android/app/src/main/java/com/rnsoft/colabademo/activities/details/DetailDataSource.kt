@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.util.Log
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
+import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import okhttp3.ResponseBody
 import retrofit2.Response
 import timber.log.Timber
@@ -11,11 +12,50 @@ import javax.inject.Inject
 
 class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
 
-    suspend fun getInvitationStatus(token: String, loanApplicationId: Int, borrowerId: Int): Result<BorrowerInvitationStatus> {
+    suspend fun getInvitationStatus(loanApplicationId: Int, borrowerId: Int): Result<BorrowerInvitationStatus> {
         return try {
-            //val newToken = "Bearer $token"
             val response = serverApi.getInvitationStatus(loanApplicationId,borrowerId)
             Log.e("invitation-status-success", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun getInvitationEmail(loanApplicationId: Int, borrowerId: Int): Result<InvitatationEmailModel> {
+        return try {
+            val response = serverApi.getInvitationRenderEmail(loanApplicationId,borrowerId)
+            Log.e("invitation-Email-success", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+    suspend fun sendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Any> {
+        return try {
+            val response = serverApi.sendBorrowerInvitation(emailBody)
+            Log.e("invitation-Email-success", response.toString())
+            Result.Success(response)
+        } catch (e: Throwable) {
+            if (e is NoConnectivityException)
+                Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
+            else
+                Result.Error(IOException("Error notification -", e))
+        }
+    }
+
+
+    suspend fun resendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Any> {
+        return try {
+            val response = serverApi.resendBorrowerInvitation(emailBody)
+            Log.e("resend-invitation-Email-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -29,7 +69,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getLoanInfo( loanApplicationId)
-            //Log.e("getLoanInfo-", response.toString())
+            //Log.e("BorrowerOverview-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

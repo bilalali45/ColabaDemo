@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
+import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -39,14 +40,17 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _invitationStatus : MutableLiveData<BorrowerInvitationStatus> =   MutableLiveData()
     val invitationStatus: LiveData<BorrowerInvitationStatus> get() = _invitationStatus
 
+    private val _invitationEmail : MutableLiveData<InvitatationEmailModel> = MutableLiveData()
+    val invitationEmail: LiveData<InvitatationEmailModel> get() = _invitationEmail
+
 
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
     private var applicationServiceRunning:Boolean = false
 
-    suspend fun getBorrowerInvitationStatus(token: String, loanApplicationId:Int, borrowerId: Int) {
+    fun getBorrowerInvitationStatus(loanApplicationId:Int, borrowerId: Int) {
         viewModelScope.launch() {
-            val responseResult = detailRepo.getInvitationStatus(token, loanApplicationId = loanApplicationId,borrowerId = borrowerId)
+            val responseResult = detailRepo.getInvitationStatus(loanApplicationId = loanApplicationId,borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
                     _invitationStatus.value = (responseResult.data)
@@ -59,8 +63,49 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         }
     }
 
+    fun getInvitationEmail(loanApplicationId:Int, borrowerId: Int){
+        viewModelScope.launch() {
+            val responseResult = detailRepo.getInvitationEmail(loanApplicationId = loanApplicationId,borrowerId = borrowerId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _invitationEmail.value = (responseResult.data)
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    fun sendInvitationEmail(emailBody: SendInvitationEmailModel){
+        viewModelScope.launch() {
+            val responseResult = detailRepo.sendInvitationEmail(emailBody)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
+    fun resendInvitationEmail(emailBody: SendInvitationEmailModel){
+        viewModelScope.launch() {
+            val responseResult = detailRepo.resendInvitationEmail(emailBody)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
+
     suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
-        Timber.e("Token", token)
         if(!overviewServiceRunning) {
             overviewServiceRunning = true
             viewModelScope.launch (Dispatchers.IO) {
@@ -228,7 +273,5 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         _appMileStoneResponse.value = null
         _appMileStoneResponse.postValue(null)
     }
-
-
 
 }
