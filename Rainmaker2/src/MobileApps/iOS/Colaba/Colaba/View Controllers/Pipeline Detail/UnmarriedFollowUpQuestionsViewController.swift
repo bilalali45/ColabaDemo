@@ -43,10 +43,20 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setMaterialTextFieldsAndViews()
+        
+        yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         isNonLegalSpouse = selectedMaritalStatus.isInRelationship == true ? 1 : 2
         changeNonLegalSpouseStatus()
-        yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
-        noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        
         lblBorrowerName.text = borrowerName.uppercased()
         getStatesDropDown()
     }
@@ -115,10 +125,12 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
     }
     
     func changeNonLegalSpouseStatus(){
-        btnYes.setImage(UIImage(named: isNonLegalSpouse == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isNonLegalSpouse == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isNonLegalSpouse == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = isNonLegalSpouse == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnYes.setImage(UIImage(named: isNonLegalSpouse == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes.font = isNonLegalSpouse == 1 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = isNonLegalSpouse == 1 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo.setImage(UIImage(named: isNonLegalSpouse == 2 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo.font = isNonLegalSpouse == 2 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo.textColor = isNonLegalSpouse == 2 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         txtfieldTypeOfRelation.isHidden = isNonLegalSpouse != 1
         txtfieldState.isHidden = isNonLegalSpouse != 1
         
@@ -135,10 +147,18 @@ class UnmarriedFollowUpQuestionsViewController: BaseViewController {
         if (isNonLegalSpouse == 1){
             relationshipDetailTextViewContainer.isHidden = txtfieldTypeOfRelation.text != "Other"
             txtViewRelationshipDetail.isHidden = txtfieldTypeOfRelation.text != "Other"
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView.dropShadowToCollectionViewCell()
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView.removeShadow()
         }
         else{
             relationshipDetailTextViewContainer.isHidden = true
             txtViewRelationshipDetail.isHidden = true
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView.dropShadowToCollectionViewCell()
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView.removeShadow()
         }
         
     }

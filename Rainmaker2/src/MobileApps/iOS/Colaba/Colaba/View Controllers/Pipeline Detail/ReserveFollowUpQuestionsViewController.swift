@@ -36,8 +36,17 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         isActive = selectedMilitary.reserveEverActivated == true ? 1 : 2
         if (borrowerName == " "){
             lblQuestion.text = "Was he ever activated during their tour of duty?"
@@ -64,10 +73,25 @@ class ReserveFollowUpQuestionsViewController: BaseViewController {
     }
     
     func changeActiveStatus(){
-        btnYes.setImage(UIImage(named: isActive == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isActive == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isActive == 2 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = isActive == 2 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnYes.setImage(UIImage(named: isActive == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes.font = isActive == 1 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = isActive == 1 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo.setImage(UIImage(named: isActive == 2 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo.font = isActive == 2 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo.textColor = isActive == 2 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        
+        if (isActive == 1){
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView.dropShadowToCollectionViewCell()
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView.removeShadow()
+        }
+        else{
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView.dropShadowToCollectionViewCell()
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView.removeShadow()
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
