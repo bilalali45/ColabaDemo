@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1684B186A82DC0DA7659AF00 /* Pods_Colaba_ColabaUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F148EE0E75561316105F49 /* Pods_Colaba_ColabaUITests.framework */; };
 		1E33FD0E116F4CD11CE532FC /* Pods_Colaba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2935F442F6A697341170A45 /* Pods_Colaba.framework */; };
+		23066AE1278C11FE0010EC90 /* rubik_semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23066AE0278C11FE0010EC90 /* rubik_semibold.ttf */; };
 		230B94CA26E73F15004CBC83 /* AssetsHeadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94C826E73F15004CBC83 /* AssetsHeadingTableViewCell.swift */; };
 		230B94CB26E73F15004CBC83 /* AssetsHeadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 230B94C926E73F15004CBC83 /* AssetsHeadingTableViewCell.xib */; };
 		230B94CE26E7496E004CBC83 /* AssetsDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230B94CC26E7496E004CBC83 /* AssetsDetailTableViewCell.swift */; };
@@ -142,6 +143,8 @@
 		23A6578826D65B610013A37B /* LoginNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A6578726D65B610013A37B /* LoginNavigationViewController.swift */; };
 		23A70A9B2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */; };
 		23A70A9D2733F807002C5656 /* EmployementDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */; };
+		23A753DF278C116500AB892D /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A753DE278C116500AB892D /* Rubik-Light.ttf */; };
+		23A753E1278C119200AB892D /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 23A753E0278C119200AB892D /* Rubik-Light.ttf */; };
 		23A8D1A927045AA300950195 /* DemographicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */; };
 		23AFA36B2707130000388905 /* RequestDocument.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23AFA36A2707130000388905 /* RequestDocument.storyboard */; };
 		23AFA36D2707131C00388905 /* RequestDocumentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */; };
@@ -269,7 +272,6 @@
 		7186ACFC2653C68200E740D3 /* FingerPrintViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186ACFB2653C68200E740D3 /* FingerPrintViewController.swift */; };
 		7186AD012653C6AB00E740D3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186AD002653C6AB00E740D3 /* LoginViewController.swift */; };
 		7186AD082653C77B00E740D3 /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7186AD052653C77B00E740D3 /* Rubik-Regular.ttf */; };
-		7186AD092653C77B00E740D3 /* Rubik-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7186AD062653C77B00E740D3 /* Rubik-Light.ttf */; };
 		7186AD0A2653C77B00E740D3 /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7186AD072653C77B00E740D3 /* Rubik-Medium.ttf */; };
 		7186AD512653CD3500E740D3 /* ExtensionOfViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186AD502653CD3500E740D3 /* ExtensionOfViewController.swift */; };
 		7186AD562653CD5C00E740D3 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7186AD552653CD5C00E740D3 /* Theme.swift */; };
@@ -302,6 +304,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		23066AE0278C11FE0010EC90 /* rubik_semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = rubik_semibold.ttf; path = "../../../../Android/Colaba-Android/app/src/main/res/font/rubik_semibold.ttf"; sourceTree = "<group>"; };
 		230B94C826E73F15004CBC83 /* AssetsHeadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsHeadingTableViewCell.swift; sourceTree = "<group>"; };
 		230B94C926E73F15004CBC83 /* AssetsHeadingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AssetsHeadingTableViewCell.xib; sourceTree = "<group>"; };
 		230B94CC26E7496E004CBC83 /* AssetsDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsDetailTableViewCell.swift; sourceTree = "<group>"; };
@@ -435,6 +438,8 @@
 		23A6578726D65B610013A37B /* LoginNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginNavigationViewController.swift; sourceTree = "<group>"; };
 		23A70A9A2733C407002C5656 /* ProceedsFromTransactionDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceedsFromTransactionDetailModel.swift; sourceTree = "<group>"; };
 		23A70A9C2733F807002C5656 /* EmployementDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployementDetailModel.swift; sourceTree = "<group>"; };
+		23A753DE278C116500AB892D /* Rubik-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Light.ttf"; sourceTree = "<group>"; };
+		23A753E0278C119200AB892D /* Rubik-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Light.ttf"; sourceTree = "<group>"; };
 		23A8D1A827045AA300950195 /* DemographicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemographicDetailViewController.swift; sourceTree = "<group>"; };
 		23AFA36A2707130000388905 /* RequestDocument.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = RequestDocument.storyboard; sourceTree = "<group>"; };
 		23AFA36C2707131C00388905 /* RequestDocumentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestDocumentViewController.swift; sourceTree = "<group>"; };
@@ -569,7 +574,6 @@
 		7186ACFB2653C68200E740D3 /* FingerPrintViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerPrintViewController.swift; sourceTree = "<group>"; };
 		7186AD002653C6AB00E740D3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		7186AD052653C77B00E740D3 /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
-		7186AD062653C77B00E740D3 /* Rubik-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Light.ttf"; sourceTree = "<group>"; };
 		7186AD072653C77B00E740D3 /* Rubik-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		7186AD502653CD3500E740D3 /* ExtensionOfViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionOfViewController.swift; sourceTree = "<group>"; };
 		7186AD552653CD5C00E740D3 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1106,7 +1110,9 @@
 		7186ACE92653C58A00E740D3 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				7186AD062653C77B00E740D3 /* Rubik-Light.ttf */,
+				23066AE0278C11FE0010EC90 /* rubik_semibold.ttf */,
+				23A753DE278C116500AB892D /* Rubik-Light.ttf */,
+				23A753E0278C119200AB892D /* Rubik-Light.ttf */,
 				7186AD072653C77B00E740D3 /* Rubik-Medium.ttf */,
 				7186AD052653C77B00E740D3 /* Rubik-Regular.ttf */,
 				23A56C5F2686152A005CE6F4 /* Rubik-LightItalic.ttf */,
@@ -1271,7 +1277,6 @@
 				7186ACEE2653C5CE00E740D3 /* Authentication.storyboard in Resources */,
 				234DB4F326A7067B00ED840C /* GovernmentQuestionsCollectionViewCell.xib in Resources */,
 				23B21491270B425100215ACC /* DocumentTypeTableViewCell.xib in Resources */,
-				7186AD092653C77B00E740D3 /* Rubik-Light.ttf in Resources */,
 				2381B4F32701E21B0045D917 /* LoanOfficerCollectionViewCell.xib in Resources */,
 				23EB790326A6ED980071BC13 /* RealEstateCollectionViewCell.xib in Resources */,
 				23A0D5CE26958E58002B4BCE /* DashboardHeaderView.xib in Resources */,
@@ -1296,6 +1301,7 @@
 				23B238BC2679E05200508449 /* SearchResultTableViewCell.xib in Resources */,
 				7186ACB72653B25A00E740D3 /* Main.storyboard in Resources */,
 				2390FED426A6B624007A5A52 /* ApplicationTabHeaderView.xib in Resources */,
+				23066AE1278C11FE0010EC90 /* rubik_semibold.ttf in Resources */,
 				239B9FBE273A96D9008024F3 /* OccupancyStatusTableViewCell.xib in Resources */,
 				23E9C74E269C23070066C978 /* ApplicationStatusTableViewCell.xib in Resources */,
 				23908F9F26AEDF1200E5FAB3 /* BorrowerAddressAndLoanInfoTableViewCell.xib in Resources */,
@@ -1308,6 +1314,8 @@
 				23AFA36B2707130000388905 /* RequestDocument.storyboard in Resources */,
 				23C9130726982A120067920E /* BorrowerOverviewTableViewCell.xib in Resources */,
 				236879A026BC35360045D294 /* DemographicInformationCollectionViewCell.xib in Resources */,
+				23A753DF278C116500AB892D /* Rubik-Light.ttf in Resources */,
+				23A753E1278C119200AB892D /* Rubik-Light.ttf in Resources */,
 				2397AF682677A60A007A1A45 /* PipelineDetailTableViewCell.xib in Resources */,
 				2321247826C10F4100439A44 /* BorrowerAddressInfoTableViewCell.xib in Resources */,
 				23B238C02679F44000508449 /* NotificationsTableViewCell.xib in Resources */,

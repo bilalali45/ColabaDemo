@@ -32,8 +32,9 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var addAddressView: UIView!
     @IBOutlet weak var lblAddAddress: UILabel!
     @IBOutlet weak var maritalStatusView: UIView!
-    @IBOutlet weak var maritalStatusViewHeightConstraint: NSLayoutConstraint! //290 or 140
-    @IBOutlet weak var unMarriedStackView: UIStackView!
+    @IBOutlet weak var maritalStatusViewHeightConstraint: NSLayoutConstraint! //200 or 342
+    @IBOutlet weak var unMarriedStackView: UIView!
+    @IBOutlet weak var unMarriedStackViewHeightConstraint: NSLayoutConstraint! //180 or 48
     @IBOutlet weak var btnUnMarried: UIButton!
     @IBOutlet weak var lblUnMarried: UILabel!
     @IBOutlet weak var marriedStackView: UIStackView!
@@ -46,14 +47,15 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var lblUnmarriedQuestion: UILabel!
     @IBOutlet weak var lblUnmarriedAns: UILabel!
     @IBOutlet weak var citizenshipView: UIView!
-    @IBOutlet weak var citizenshipViewHeightConstraint: NSLayoutConstraint!//242 or 140
+    @IBOutlet weak var citizenshipViewHeightConstraint: NSLayoutConstraint!//296 or 210
     @IBOutlet weak var usCitizenStackView: UIStackView!
     @IBOutlet weak var btnUSCitizen: UIButton!
     @IBOutlet weak var lblUSCitizen: UILabel!
-    @IBOutlet weak var permanentResidentStackView: UIStackView!
+    @IBOutlet weak var permanentResidentStackView: UIView!
     @IBOutlet weak var btnPermanentResident: UIButton!
     @IBOutlet weak var lblPermanentResident: UILabel!
-    @IBOutlet weak var nonPermanentStackView: UIStackView!
+    @IBOutlet weak var nonPermanentStackView: UIView!
+    @IBOutlet weak var nonPermanentStackViewHeightConstraint: NSLayoutConstraint! //134 or 48
     @IBOutlet weak var btnNonPermanent: UIButton!
     @IBOutlet weak var lblNonPermanent: UILabel!
     @IBOutlet weak var nonPermanentResidentMainView: UIView!
@@ -66,25 +68,24 @@ class BorrowerInformationViewController: BaseViewController {
     @IBOutlet weak var dependentsCollectionViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var stackViewAddDependent: UIStackView!
     @IBOutlet weak var militaryView: UIView!
-    @IBOutlet weak var militaryViewHeightConstraint: NSLayoutConstraint!// 470 or 340 or 370 or 250
-    @IBOutlet weak var activeDutyStackView: UIStackView!
+    @IBOutlet weak var militaryViewHeightConstraint: NSLayoutConstraint!// 650 or 432 or 458 or 260
+    @IBOutlet weak var activeDutyStackView: UIView!
+    @IBOutlet weak var activeDutyStackViewHeightConstraint: NSLayoutConstraint! //136 or 48
     @IBOutlet weak var btnActiveDuty: UIButton!
     @IBOutlet weak var lblActiveDuty: UILabel!
-    @IBOutlet weak var reserveNationalGuardStackView: UIStackView!
+    @IBOutlet weak var reserveNationalGuardStackView: UIView!
+    @IBOutlet weak var reserveNationalGuardStackViewHeightConstraint: NSLayoutConstraint! // 140 or 48
     @IBOutlet weak var btnReserveNationalGuard: UIButton!
     @IBOutlet weak var lblReserveNationalGuard: UILabel!
-    @IBOutlet weak var reserveNationalGuardStackViewTopConstraint: NSLayoutConstraint!// 17 or 116
     @IBOutlet weak var veteranStackView: UIStackView!
     @IBOutlet weak var btnVeteran: UIButton!
     @IBOutlet weak var lblVeteran: UILabel!
-    @IBOutlet weak var veteranStackViewTopConstraint: NSLayoutConstraint!// 136 or 17
     @IBOutlet weak var survivingSpouseStackView: UIStackView!
     @IBOutlet weak var btnSurvivingSpouse: UIButton!
     @IBOutlet weak var lblSurvingSpouse: UILabel!
     @IBOutlet weak var lastDateOfServiceMainView: UIView!
     @IBOutlet weak var lblLastDateQuestion: UILabel!
     @IBOutlet weak var lblLastDate: UILabel!
-    @IBOutlet weak var lastDateOfServiceTopConstraint: NSLayoutConstraint!// 138 or 20
     @IBOutlet weak var reserveOrNationalGuardMainView: UIView!
     @IBOutlet weak var lblReserveNationalGuardQuestion: UILabel!
     @IBOutlet weak var lblReserveNationalGuardAns: UILabel!
@@ -214,20 +215,36 @@ class BorrowerInformationViewController: BaseViewController {
             if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Unmarried")){
                 maritalStatus = 1
                 btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
+                lblUnMarried.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblUnMarried.textColor = Theme.getAppBlackColor()
                 unmarriedMainView.isHidden = false
-                maritalStatusViewHeightConstraint.constant = 290
+                unMarriedStackViewHeightConstraint.constant = 180
+                maritalStatusViewHeightConstraint.constant = 342
                 lblUnmarriedAns.text = borrowerInformationModel.maritalStatus.isInRelationship == true ? "Yes" : "No"
+                unMarriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                unMarriedStackView.dropShadowToCollectionViewCell()
+                marriedStackView.removeShadow()
+                separatedStackView.removeShadow()
             }
             else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Married")){
                 maritalStatus = 2
                 btnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblMarried.font = Theme.getRubikMediumFont(size: 14)
+                lblMarried.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblMarried.textColor = Theme.getAppBlackColor()
+                marriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                marriedStackView.dropShadowToCollectionViewCell()
+                unMarriedStackView.removeShadow()
+                separatedStackView.removeShadow()
             }
             else if (selectedMaritalStatus.optionName.localizedCaseInsensitiveContains("Separated")){
                 maritalStatus = 3
                 btnSeparated.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblSeparated.font = Theme.getRubikMediumFont(size: 14)
+                lblSeparated.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblSeparated.textColor = Theme.getAppBlackColor()
+                separatedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                separatedStackView.dropShadowToCollectionViewCell()
+                unMarriedStackView.removeShadow()
+                marriedStackView.removeShadow()
             }
         }
         
@@ -235,17 +252,30 @@ class BorrowerInformationViewController: BaseViewController {
             if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("US Citizen")){
                 citizenshipStatus = 1
                 btnUSCitizen.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblUSCitizen.font = Theme.getRubikMediumFont(size: 14)
+                lblUSCitizen.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblUSCitizen.textColor = Theme.getAppBlackColor()
+                usCitizenStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                usCitizenStackView.dropShadowToCollectionViewCell()
+                permanentResidentStackView.removeShadow()
+                nonPermanentStackView.removeShadow()
             }
             else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Permanent Resident Alien (Green Card)")){
                 citizenshipStatus = 2
                 btnPermanentResident.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblPermanentResident.font = Theme.getRubikMediumFont(size: 14)
+                lblPermanentResident.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblPermanentResident.textColor = Theme.getAppBlackColor()
+                permanentResidentStackView.dropShadowToCollectionViewCell()
+                usCitizenStackView.removeShadow()
+                nonPermanentStackView.removeShadow()
             }
             else if (selectedCitizenshipStatus.optionName.localizedCaseInsensitiveContains("Non Permanent Resident Alien")){
                 citizenshipStatus = 3
                 btnNonPermanent.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-                lblNonPermanent.font = Theme.getRubikMediumFont(size: 14)
+                lblNonPermanent.font = Theme.getRubikSemiBoldFont(size: 14)
+                lblNonPermanent.textColor = Theme.getAppBlackColor()
+                nonPermanentStackView.dropShadowToCollectionViewCell()
+                permanentResidentStackView.removeShadow()
+                usCitizenStackView.removeShadow()
                 if let selectedVisaStatus = visaStatusArray.filter({$0.optionId == borrowerInformationModel.borrowerCitizenship.residencyStatusId}).first{
                     lblNonPermanentAns.text = selectedVisaStatus.optionName
                 }
@@ -254,7 +284,8 @@ class BorrowerInformationViewController: BaseViewController {
         selectedResidencyStatusId = borrowerInformationModel.borrowerCitizenship.residencyStatusId
         selectedResidencyStatusExplanation = borrowerInformationModel.borrowerCitizenship.residencyStatusExplanation
         nonPermanentResidentMainView.isHidden = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0
-        citizenshipViewHeightConstraint.constant = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0 ? 140 : 242
+        citizenshipViewHeightConstraint.constant = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0 ? 210 : 296
+        nonPermanentStackViewHeightConstraint.constant = borrowerInformationModel.borrowerCitizenship.residencyStatusId == 0 ? 48 : 134
         txtfieldDOB.setTextField(text: Utility.getDayMonthYear(borrowerInformationModel.borrowerCitizenship.dobUtc))
         txtfieldSecurityNo.setTextField(text: borrowerInformationModel.borrowerCitizenship.ssn)
         noOfDependents = borrowerInformationModel.borrowerCitizenship.dependentCount
@@ -269,14 +300,16 @@ class BorrowerInformationViewController: BaseViewController {
                 if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Active Duty Personnel")){
                     isActiveDutyPersonal = true
                     btnActiveDuty.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
-                    lblActiveDuty.font = Theme.getRubikMediumFont(size: 14)
+                    lblActiveDuty.font = Theme.getRubikSemiBoldFont(size: 14)
+                    lblActiveDuty.textColor = Theme.getAppBlackColor()
                     lblLastDate.text = Utility.getMonthYear(militaryService.expirationDateUtc)
                     changeMilitaryStatus()
                 }
                 else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Reserve Or National Guard")){
                     isReserveOrNationalCard = true
                     btnReserveNationalGuard.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
-                    lblReserveNationalGuard.font = Theme.getRubikMediumFont(size: 14)
+                    lblReserveNationalGuard.font = Theme.getRubikSemiBoldFont(size: 14)
+                    lblReserveNationalGuard.textColor = Theme.getAppBlackColor()
                     lblReserveNationalGuardQuestion.text = "Was \(borrowerInformationModel.borrowerBasicDetails.firstName.capitalized) \(borrowerInformationModel.borrowerBasicDetails.lastName.capitalized) ever activated during their tour of duty?"
                     lblReserveNationalGuardAns.text = militaryService.reserveEverActivated ? "Yes" : "No"
                     changeMilitaryStatus()
@@ -284,13 +317,15 @@ class BorrowerInformationViewController: BaseViewController {
                 else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Surviving Spouse")){
                     isSurvivingSpouse = true
                     btnSurvivingSpouse.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
-                    lblSurvingSpouse.font = Theme.getRubikMediumFont(size: 14)
+                    lblSurvingSpouse.font = Theme.getRubikSemiBoldFont(size: 14)
+                    lblSurvingSpouse.textColor = Theme.getAppBlackColor()
                     changeMilitaryStatus()
                 }
                 else if (militaryAffiliation.optionName.localizedCaseInsensitiveContains("Veteran")){
                     isVeteran = true
                     btnVeteran.setImage(UIImage(named: "CheckBoxSelected"), for: .normal)
-                    lblVeteran.font = Theme.getRubikMediumFont(size: 14)
+                    lblVeteran.font = Theme.getRubikSemiBoldFont(size: 14)
+                    lblVeteran.textColor = Theme.getAppBlackColor()
                     changeMilitaryStatus()
                 }
             }
@@ -308,64 +343,91 @@ class BorrowerInformationViewController: BaseViewController {
     }
     
     func setViews() {
-        unMarriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unmarriedTapped)))
-        marriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(marriedTapped)))
-        separatedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(separatedTapped)))
         
-        btnUnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        unMarriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unmarriedTapped)))
+        unMarriedStackView.layer.cornerRadius = 8
+        unMarriedStackView.layer.borderWidth = 1
+        unMarriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        marriedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(marriedTapped)))
+        marriedStackView.layer.cornerRadius = 8
+        marriedStackView.layer.borderWidth = 1
+        marriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        separatedStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(separatedTapped)))
+        separatedStackView.layer.cornerRadius = 8
+        separatedStackView.layer.borderWidth = 1
+        separatedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        btnUnMarried.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblUnMarried.font = Theme.getRubikRegularFont(size: 14)
+        lblUnMarried.textColor = Theme.getAppGreyColor()
         unmarriedMainView.isHidden = true
-        maritalStatusViewHeightConstraint.constant = 140
+        unMarriedStackViewHeightConstraint.constant = 48
+        maritalStatusViewHeightConstraint.constant = 200
         
         usCitizenStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(usCitizenTapped)))
-        permanentResidentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(permanentResidentTapped)))
-        nonPermanentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentTapped)))
+        usCitizenStackView.layer.cornerRadius = 8
+        usCitizenStackView.layer.borderWidth = 1
+        usCitizenStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
-        btnNonPermanent.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        permanentResidentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(permanentResidentTapped)))
+        permanentResidentStackView.layer.cornerRadius = 8
+        permanentResidentStackView.layer.borderWidth = 1
+        permanentResidentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        nonPermanentStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentTapped)))
+        nonPermanentStackView.layer.cornerRadius = 8
+        nonPermanentStackView.layer.borderWidth = 1
+        nonPermanentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        btnNonPermanent.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblNonPermanent.font = Theme.getRubikRegularFont(size: 14)
         nonPermanentResidentMainView.isHidden = true
-        citizenshipViewHeightConstraint.constant = 140
+        citizenshipViewHeightConstraint.constant = 210
+        nonPermanentStackViewHeightConstraint.constant = 48
         
         stackViewAddDependent.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addDependentTapped)))
         
         activeDutyStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(activeDutyTapped)))
+        activeDutyStackView.layer.cornerRadius = 8
+        activeDutyStackView.layer.borderWidth = 1
+        activeDutyStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         reserveNationalGuardStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveNationalGuardTapped)))
+        reserveNationalGuardStackView.layer.cornerRadius = 8
+        reserveNationalGuardStackView.layer.borderWidth = 1
+        reserveNationalGuardStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         veteranStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(veteranTapped)))
+        veteranStackView.layer.cornerRadius = 8
+        veteranStackView.layer.borderWidth = 1
+        veteranStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         survivingSpouseStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(survivingSpouseTapped)))
+        survivingSpouseStackView.layer.cornerRadius = 8
+        survivingSpouseStackView.layer.borderWidth = 1
+        survivingSpouseStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         addAddressView.layer.cornerRadius = 6
         addAddressView.layer.borderWidth = 1
         addAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
         addAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addAddressViewTapped)))
         
-        unmarriedMainView.layer.cornerRadius = 6
-        unmarriedMainView.layer.borderWidth = 1
-        unmarriedMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        unmarriedMainView.dropShadowToCollectionViewCell()
         unmarriedMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(unmarriedMainViewTapped)))
         
-        nonPermanentResidentMainView.layer.cornerRadius = 6
-        nonPermanentResidentMainView.layer.borderWidth = 1
-        nonPermanentResidentMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        nonPermanentResidentMainView.dropShadowToCollectionViewCell()
         nonPermanentResidentMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonPermanentResidentMainViewTapped)))
         
-        lastDateOfServiceMainView.layer.cornerRadius = 6
-        lastDateOfServiceMainView.layer.borderWidth = 1
-        lastDateOfServiceMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        lastDateOfServiceMainView.dropShadowToCollectionViewCell()
         lastDateOfServiceMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(lastDateOfServiceMainViewTapped)))
         
-        reserveOrNationalGuardMainView.layer.cornerRadius = 6
-        reserveOrNationalGuardMainView.layer.borderWidth = 1
-        reserveOrNationalGuardMainView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        reserveOrNationalGuardMainView.dropShadowToCollectionViewCell()
         reserveOrNationalGuardMainView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(reserveOrNationalGuardMainViewTapped)))
         
         btnActiveDuty.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnReserveNationalGuard.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblReserveNationalGuard.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblActiveDuty.textColor = isActiveDutyPersonal ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnReserveNationalGuard.setImage(UIImage(named: isReserveOrNationalCard ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
+        lblReserveNationalGuard.font = isReserveOrNationalCard ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblReserveNationalGuard.textColor = isReserveOrNationalCard ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         changeMilitaryStatus()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
@@ -534,31 +596,60 @@ class BorrowerInformationViewController: BaseViewController {
        
         if (maritalStatus == 1){
             btnUnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblUnMarried.font = Theme.getRubikMediumFont(size: 14)
-            btnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUnMarried.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblUnMarried.textColor = Theme.getAppBlackColor()
+            btnMarried.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblMarried.font = Theme.getRubikRegularFont(size: 14)
-            btnSeparated.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblMarried.textColor = Theme.getAppGreyColor()
+            btnSeparated.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblSeparated.font = Theme.getRubikRegularFont(size: 14)
+            lblSeparated.textColor = Theme.getAppGreyColor()
+            unMarriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            marriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            separatedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            unMarriedStackView.dropShadowToCollectionViewCell()
+            marriedStackView.removeShadow()
+            separatedStackView.removeShadow()
         }
         else if (maritalStatus == 2){
             btnMarried.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblMarried.font = Theme.getRubikMediumFont(size: 14)
-            btnUnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblMarried.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblMarried.textColor = Theme.getAppBlackColor()
+            btnUnMarried.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblUnMarried.font = Theme.getRubikRegularFont(size: 14)
-            btnSeparated.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUnMarried.textColor = Theme.getAppGreyColor()
+            btnSeparated.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblSeparated.font = Theme.getRubikRegularFont(size: 14)
+            lblSeparated.textColor = Theme.getAppGreyColor()
             unmarriedMainView.isHidden = true
-            maritalStatusViewHeightConstraint.constant = 140
+            unMarriedStackViewHeightConstraint.constant = 48
+            maritalStatusViewHeightConstraint.constant = 200
+            unMarriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            marriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            separatedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            marriedStackView.dropShadowToCollectionViewCell()
+            unMarriedStackView.removeShadow()
+            separatedStackView.removeShadow()
         }
         else if (maritalStatus == 3){
             btnSeparated.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblSeparated.font = Theme.getRubikMediumFont(size: 14)
-            btnUnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblSeparated.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblSeparated.textColor = Theme.getAppBlackColor()
+            btnUnMarried.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblUnMarried.font = Theme.getRubikRegularFont(size: 14)
-            btnMarried.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUnMarried.textColor = Theme.getAppGreyColor()
+            btnMarried.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblMarried.font = Theme.getRubikRegularFont(size: 14)
+            lblMarried.textColor = Theme.getAppGreyColor()
             unmarriedMainView.isHidden = true
-            maritalStatusViewHeightConstraint.constant = 140
+            unMarriedStackViewHeightConstraint.constant = 48
+            maritalStatusViewHeightConstraint.constant = 200
+            unMarriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            marriedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            separatedStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            separatedStackView.dropShadowToCollectionViewCell()
+            marriedStackView.removeShadow()
+            unMarriedStackView.removeShadow()
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -599,33 +690,63 @@ class BorrowerInformationViewController: BaseViewController {
     func changeCitizenshipStatus(){
         if (citizenshipStatus == 1){
             btnUSCitizen.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblUSCitizen.font = Theme.getRubikMediumFont(size: 14)
-            btnPermanentResident.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUSCitizen.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblUSCitizen.textColor = Theme.getAppBlackColor()
+            btnPermanentResident.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblPermanentResident.font = Theme.getRubikRegularFont(size: 14)
-            btnNonPermanent.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblPermanentResident.textColor = Theme.getAppGreyColor()
+            btnNonPermanent.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblNonPermanent.font = Theme.getRubikRegularFont(size: 14)
+            lblNonPermanent.textColor = Theme.getAppGreyColor()
+            usCitizenStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            permanentResidentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            nonPermanentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            usCitizenStackView.dropShadowToCollectionViewCell()
+            permanentResidentStackView.removeShadow()
+            nonPermanentStackView.removeShadow()
             nonPermanentResidentMainView.isHidden = true
-            citizenshipViewHeightConstraint.constant = 140
+            citizenshipViewHeightConstraint.constant = 210
+            nonPermanentStackViewHeightConstraint.constant = 48
         }
         else if (citizenshipStatus == 2){
             btnPermanentResident.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblPermanentResident.font = Theme.getRubikMediumFont(size: 14)
-            btnUSCitizen.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblPermanentResident.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblPermanentResident.textColor = Theme.getAppBlackColor()
+            btnUSCitizen.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblUSCitizen.font = Theme.getRubikRegularFont(size: 14)
-            btnNonPermanent.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUSCitizen.textColor = Theme.getAppGreyColor()
+            btnNonPermanent.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblNonPermanent.font = Theme.getRubikRegularFont(size: 14)
+            lblNonPermanent.textColor = Theme.getAppGreyColor()
+            permanentResidentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            usCitizenStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            nonPermanentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            permanentResidentStackView.dropShadowToCollectionViewCell()
+            usCitizenStackView.removeShadow()
+            nonPermanentStackView.removeShadow()
             nonPermanentResidentMainView.isHidden = true
-            citizenshipViewHeightConstraint.constant = 140
+            citizenshipViewHeightConstraint.constant = 210
+            nonPermanentStackViewHeightConstraint.constant = 48
         }
         else if (citizenshipStatus == 3){
             btnNonPermanent.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblNonPermanent.font = Theme.getRubikMediumFont(size: 14)
-            btnUSCitizen.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblNonPermanent.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblNonPermanent.textColor = Theme.getAppBlackColor()
+            btnUSCitizen.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblUSCitizen.font = Theme.getRubikRegularFont(size: 14)
-            btnPermanentResident.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+            lblUSCitizen.textColor = Theme.getAppGreyColor()
+            btnPermanentResident.setImage(UIImage(named: "radioUnslected"), for: .normal)
             lblPermanentResident.font = Theme.getRubikRegularFont(size: 14)
+            lblPermanentResident.textColor = Theme.getAppGreyColor()
+            nonPermanentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            permanentResidentStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            usCitizenStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            nonPermanentStackView.dropShadowToCollectionViewCell()
+            permanentResidentStackView.removeShadow()
+            usCitizenStackView.removeShadow()
             nonPermanentResidentMainView.isHidden = false
-            citizenshipViewHeightConstraint.constant = 242
+            citizenshipViewHeightConstraint.constant = 296
+            nonPermanentStackViewHeightConstraint.constant = 134
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
@@ -655,7 +776,8 @@ class BorrowerInformationViewController: BaseViewController {
     @objc func activeDutyTapped(){
         isActiveDutyPersonal = !isActiveDutyPersonal
         btnActiveDuty.setImage(UIImage(named: isActiveDutyPersonal ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblActiveDuty.font = isActiveDutyPersonal ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblActiveDuty.textColor = isActiveDutyPersonal ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         changeMilitaryStatus()
         if (isActiveDutyPersonal){
             let vc = Utility.getActiveDutyPersonnelFollowUpQuestionVC()
@@ -665,6 +787,10 @@ class BorrowerInformationViewController: BaseViewController {
             }
             vc.delegate = self
             self.presentVC(vc: vc)
+            activeDutyStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            activeDutyStackView.removeShadow()
         }
     }
     
@@ -681,7 +807,8 @@ class BorrowerInformationViewController: BaseViewController {
     @objc func reserveNationalGuardTapped(){
         isReserveOrNationalCard = !isReserveOrNationalCard
         btnReserveNationalGuard.setImage(UIImage(named: isReserveOrNationalCard ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblReserveNationalGuard.font = isReserveOrNationalCard ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblReserveNationalGuard.font = isReserveOrNationalCard ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblReserveNationalGuard.textColor = isReserveOrNationalCard ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         changeMilitaryStatus()
         if (isReserveOrNationalCard){
             let vc = Utility.getReserveFollowUpQuestionsVC()
@@ -691,6 +818,10 @@ class BorrowerInformationViewController: BaseViewController {
                 vc.selectedMilitary = reserveNationalGuard
             }
             self.presentVC(vc: vc)
+            reserveNationalGuardStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            reserveNationalGuardStackView.removeShadow()
         }
     }
     
@@ -707,14 +838,28 @@ class BorrowerInformationViewController: BaseViewController {
     @objc func veteranTapped(){
         isVeteran = !isVeteran
         btnVeteran.setImage(UIImage(named: isVeteran ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblVeteran.font = isVeteran ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblVeteran.font = isVeteran ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblVeteran.textColor = isVeteran ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        if (isVeteran){
+            veteranStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            veteranStackView.removeShadow()
+        }
         changeMilitaryStatus()
     }
     
     @objc func survivingSpouseTapped(){
         isSurvivingSpouse = !isSurvivingSpouse
         btnSurvivingSpouse.setImage(UIImage(named: isSurvivingSpouse ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblSurvingSpouse.font = isSurvivingSpouse ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblSurvingSpouse.font = isSurvivingSpouse ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblSurvingSpouse.textColor = isSurvivingSpouse ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        if (isSurvivingSpouse){
+            survivingSpouseStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            survivingSpouseStackView.removeShadow()
+        }
         changeMilitaryStatus()
     }
     
@@ -722,31 +867,66 @@ class BorrowerInformationViewController: BaseViewController {
         if (isActiveDutyPersonal && isReserveOrNationalCard){ //Both are selected
             lastDateOfServiceMainView.isHidden = false
             reserveOrNationalGuardMainView.isHidden = false
-            reserveNationalGuardStackViewTopConstraint.constant = 116
-            veteranStackViewTopConstraint.constant = 136
-            militaryViewHeightConstraint.constant = 470
+            militaryViewHeightConstraint.constant = 500
+            activeDutyStackViewHeightConstraint.constant = 136
+            reserveNationalGuardStackViewHeightConstraint.constant = 150
         }
         else if (isActiveDutyPersonal && !isReserveOrNationalCard){ // Active duty is selected but reserve national is not selected
             lastDateOfServiceMainView.isHidden = false
             reserveOrNationalGuardMainView.isHidden = true
-            reserveNationalGuardStackViewTopConstraint.constant = 116
-            veteranStackViewTopConstraint.constant = 0
-            militaryViewHeightConstraint.constant = 340
+            militaryViewHeightConstraint.constant = 370
+            activeDutyStackViewHeightConstraint.constant = 136
+            reserveNationalGuardStackViewHeightConstraint.constant = 48
         }
         else if (isReserveOrNationalCard && !isActiveDutyPersonal){ // Reserve is selected but active duty is not selected
             lastDateOfServiceMainView.isHidden = true
             reserveOrNationalGuardMainView.isHidden = false
-            reserveNationalGuardStackViewTopConstraint.constant = 0
-            veteranStackViewTopConstraint.constant = 136
-            militaryViewHeightConstraint.constant = 370
+            militaryViewHeightConstraint.constant = 400
+            activeDutyStackViewHeightConstraint.constant = 48
+            reserveNationalGuardStackViewHeightConstraint.constant = 150
         }
         else{ // No Active duty and no reserver personal
             lastDateOfServiceMainView.isHidden = true
             reserveOrNationalGuardMainView.isHidden = true
-            reserveNationalGuardStackViewTopConstraint.constant = 0
-            veteranStackViewTopConstraint.constant = 0
-            militaryViewHeightConstraint.constant = 250
+            activeDutyStackViewHeightConstraint.constant = 48
+            reserveNationalGuardStackViewHeightConstraint.constant = 48
+            militaryViewHeightConstraint.constant = 260
         }
+        
+        
+        if (isActiveDutyPersonal){
+            activeDutyStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            activeDutyStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            activeDutyStackView.removeShadow()
+            activeDutyStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        }
+        if (isReserveOrNationalCard){
+            reserveNationalGuardStackView.dropShadowToCollectionViewCell()
+            reserveNationalGuardStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        }
+        else{
+            reserveNationalGuardStackView.removeShadow()
+            reserveNationalGuardStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        }
+        if (isVeteran){
+            veteranStackView.dropShadowToCollectionViewCell()
+            veteranStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        }
+        else{
+            veteranStackView.removeShadow()
+            veteranStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        }
+        if (isSurvivingSpouse){
+            survivingSpouseStackView.dropShadowToCollectionViewCell()
+            survivingSpouseStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        }
+        else{
+            survivingSpouseStackView.removeShadow()
+            survivingSpouseStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
@@ -1478,7 +1658,8 @@ extension BorrowerInformationViewController: UnmarriedFollowUpQuestionsViewContr
         maritalStatus = 1
         borrowerInformationModel.maritalStatus = status
         unmarriedMainView.isHidden = false
-        maritalStatusViewHeightConstraint.constant = 290
+        unMarriedStackViewHeightConstraint.constant = 180
+        maritalStatusViewHeightConstraint.constant = 342
         lblUnmarriedAns.text = status.isInRelationship == true ? "Yes" : "No"
         setBorrowerInformation()
     }

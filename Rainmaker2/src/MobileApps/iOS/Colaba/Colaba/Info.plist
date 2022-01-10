@@ -29,6 +29,7 @@
 		<string>Rubik-Regular.ttf</string>
 		<string>Rubik-LightItalic.ttf</string>
 		<string>rubik_bold.ttf</string>
+		<string>rubik_semibold.ttf</string>
 	</array>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>

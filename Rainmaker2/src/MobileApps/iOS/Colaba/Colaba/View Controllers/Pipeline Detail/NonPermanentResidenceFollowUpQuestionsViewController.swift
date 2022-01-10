@@ -48,6 +48,7 @@ class NonPermanentResidenceFollowUpQuestionsViewController: BaseViewController {
         statusDetailTextViewContainer.isHidden = selectedCitizenShip.residencyStatusExplanation == ""
         txtViewStatusDetail.isHidden = selectedCitizenShip.residencyStatusExplanation == ""
         txtViewStatusDetail.textView.text = selectedCitizenShip.residencyStatusExplanation
+        txtViewStatusDetail.sizeToFit()
     }
     
     //MARK:- Methods and Actions
