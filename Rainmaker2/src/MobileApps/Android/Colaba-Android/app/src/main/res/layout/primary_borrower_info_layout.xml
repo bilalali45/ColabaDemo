@@ -312,7 +312,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/ed_home_number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:background="@android:color/transparent"
                     android:digits="1234567890-()"
                     android:ems="10"
@@ -764,7 +764,7 @@
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="200dp"
                     android:background="@color/half_white"
-                    android:visibility="visible" />
+                    />
 
             </LinearLayout>
 

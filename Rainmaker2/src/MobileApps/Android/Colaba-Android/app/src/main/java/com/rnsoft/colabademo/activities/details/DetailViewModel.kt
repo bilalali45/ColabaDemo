@@ -1,6 +1,7 @@
 package com.rnsoft.colabademo
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -52,8 +53,9 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         viewModelScope.launch() {
             val responseResult = detailRepo.getInvitationStatus(loanApplicationId = loanApplicationId,borrowerId = borrowerId)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
+                if (responseResult is Result.Success) {
                     _invitationStatus.value = (responseResult.data)
+                }
 
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))

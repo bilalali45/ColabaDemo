@@ -283,7 +283,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     }
 
                     detail.borrowerData?.maritalStatus?.let { maritalData->
-                        maritalStatus =maritalData
+                        maritalStatus = maritalData
                         if(ownTypeId == SECONDARY_BORROWER_ID){
                             maritalData.relationWithPrimaryId?.let { relationPrimaryId->
                                if(relationPrimaryId == 1 && maritalData.spouseMaritalStatusId != null && maritalData.spouseMaritalStatusId >0){
@@ -922,9 +922,9 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
 
                 if(isInRelation){
-                    msBinding.tvIsInRelationship.text = "Yes"
+                    msBinding.tvIsInRelationship.text = getString(R.string.yes)
                 } else{
-                    msBinding.tvIsInRelationship.text = "No"
+                    msBinding.tvIsInRelationship.text = getString(R.string.no)
                 }
             }
         }
@@ -973,7 +973,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.rb_pr -> if (citizenshipBinding.rbPr.isChecked) setCitizenship(false, true, false)
             R.id.rb_non_pr_other -> if (citizenshipBinding.rbNonPrOther.isChecked) setCitizenship(false, false, true)
             R.id.chb_duty_personel -> militaryActivePersonel()
-            //R.id.chb_res_national_guard -> militaryNationalGuard()
             R.id.chb_veteran -> militaryVeteran()
             R.id.chb_surviving_spouse -> militarySurvivingSpouse()
         }
@@ -1090,8 +1089,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
         //us citizen
         citizenshipBinding.rbUsCitizen.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
+                citizenshipBinding.rbPr.isChecked = false
+                citizenshipBinding.rbNonPrOther.isChecked = false
+            }
             else
                 citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
         }
@@ -1099,22 +1101,30 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         // non permanent residence
         citizenshipBinding.rbNonPrOther.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+                citizenshipBinding.rbPr.isChecked = false
+                citizenshipBinding.rbUsCitizen.isChecked = false
+            }
             else
                 citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         //permanent residence
         citizenshipBinding.rbPr.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
+                citizenshipBinding.rbNonPrOther.isChecked = false
+                citizenshipBinding.rbUsCitizen.isChecked = false
+            }
             else
                 citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
         }
         // active duty personel
         bindingMilitary.chbDutyPersonel.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
+            }
+
             else
                 bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
         }
@@ -1372,39 +1382,50 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         val bundle = Bundle()
 
         if (isUnmarried) {
-            /*msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
-            msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
-            msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL) */
+            /*maritalStatus?.let {
+                if (it.maritalStatusId == 1)
+                    msBinding.rbMarried.isChecked = true
+                if (it.maritalStatusId == 2)
+                    msBinding.rbSeparated.isChecked = true
+                if (it.maritalStatusId == 9) {
+                    msBinding.rbUnmarried.isChecked = true
+                    setMaritalStatus(it)
+                }
+            } */
 
-               maritalStatus?.let {
-                   //maritalStatus = it
-                   if (it.maritalStatusId == 1)
-                       msBinding.rbMarried.isChecked = true
-                   if (it.maritalStatusId == 2)
-                       msBinding.rbSeparated.isChecked = true
-                   if (it.maritalStatusId == 9){
-                       msBinding.rbUnmarried.isChecked = true
-                       setMaritalStatus(it)
-                   }
-               }
+            // uncheck
+            msBinding.rbMarried.isChecked = false
+            msBinding.rbSeparated.isChecked = false
+            msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
+            //msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+            //msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
 
-               bundle.putParcelable(AppConstant.marital_status,maritalStatus)
-            findNavController().navigate(R.id.action_info_unmarried_addendum,bundle)
+
+            bundle.putParcelable(AppConstant.marital_status, maritalStatus)
+            findNavController().navigate(R.id.action_info_unmarried_addendum, bundle)
         }
         if (isMarried) {
             msBinding.unmarriedAddendum.visibility = View.GONE
-            msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
-            msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
+            //msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
+            //msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+            // uncheck
+            msBinding.rbUnmarried.isChecked = false
+            msBinding.rbSeparated.isChecked = false
+
             bundle.putString(AppConstant.marriage_type,AppConstant.married)
             bundle.putParcelable(AppConstant.marital_status,maritalStatus)
             findNavController().navigate(R.id.action_marriage_info,bundle)
         }
         if (isSeparated) {
             msBinding.unmarriedAddendum.visibility = View.GONE
-            msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
-            msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
             msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
+            //msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+            //msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+            // uncheck
+            msBinding.rbUnmarried.isChecked = false
+            msBinding.rbMarried.isChecked = false
+
             bundle.putString(AppConstant.marriage_type,AppConstant.separated)
             bundle.putParcelable(AppConstant.marital_status,maritalStatus)
             findNavController().navigate(R.id.action_marriage_info,bundle)
@@ -1412,24 +1433,23 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     }
 
     private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean){
-        if (usCitizen) {
+        if (usCitizen){
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
-        if (PR) {
+        if (PR){
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
-        if (nonPR) {
+        if (nonPR){
             //citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
             citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
             citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
-
             val bundle = Bundle()
             bundle.putParcelable(AppConstant.borrower_citizenship,citizenship)
             findNavController().navigate(R.id.action_info_non_pr,bundle)

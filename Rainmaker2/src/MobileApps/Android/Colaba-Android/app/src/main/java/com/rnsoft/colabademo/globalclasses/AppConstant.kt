@@ -19,10 +19,17 @@ object AppConstant {
 
         const val relaceDocFormat : String = "###RequestDocumentList###"
 
+
+        const val INVITATION_STATUS_INVITE: String = "Invite Borrower"
+        const val INVITATION_STATUS_PENDING: String = "Invitation Pending"
+        const val INVITATION_STATUS_RESENT: String = "Invitation Resent"
+        const val INVITATION_STATUS_ACCEPTED: String = "Invitation Accepted"
+        const val INVITATION_TYPE: String = "type"
+
+
         const val MARITAL_STATUS_MARRIED: Int = 1
         const val MARITAL_STATUS_SEPARATED: Int = 2
         const val MARITAL_STATUS_UNMARRIED: Int = 9
-
         const val PRIMARY_BORROWER_ID: Int = 1
         const val SECONDARY_BORROWER_ID: Int = 2
 

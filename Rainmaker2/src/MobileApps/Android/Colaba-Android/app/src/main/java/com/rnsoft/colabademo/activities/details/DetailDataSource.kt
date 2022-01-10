@@ -15,7 +15,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getInvitationStatus(loanApplicationId: Int, borrowerId: Int): Result<BorrowerInvitationStatus> {
         return try {
             val response = serverApi.getInvitationStatus(loanApplicationId,borrowerId)
-            Log.e("invitation-status-success", response.toString())
+            //Log.e("invitation-status-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -28,7 +28,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getInvitationEmail(loanApplicationId: Int, borrowerId: Int): Result<InvitatationEmailModel> {
         return try {
             val response = serverApi.getInvitationRenderEmail(loanApplicationId,borrowerId)
-            Log.e("invitation-Email-success", response.toString())
+            //Log.e("invitation-Email-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)

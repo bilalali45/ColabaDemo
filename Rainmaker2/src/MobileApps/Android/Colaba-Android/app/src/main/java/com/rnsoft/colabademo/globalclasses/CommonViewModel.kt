@@ -69,7 +69,7 @@ class CommonViewModel @Inject constructor(private val commonRepo: CommonRepo) : 
         }
     }
 
-    suspend fun getStates(token:String) {
+     fun getStates(token:String) {
         viewModelScope.launch(Dispatchers.IO) {
             val response = commonRepo.getStates(token = token )
             withContext(Dispatchers.Main) {

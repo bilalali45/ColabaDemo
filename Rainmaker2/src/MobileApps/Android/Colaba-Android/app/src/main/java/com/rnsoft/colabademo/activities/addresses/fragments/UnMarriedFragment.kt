@@ -22,7 +22,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.model.StatesModel
-import com.rnsoft.colabademo.databinding.SubjectPropertyPurchaseBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
 import kotlinx.android.synthetic.main.unmarried_layout.*
@@ -48,8 +47,7 @@ class UnMarriedFragment : BaseFragment() {
     private var maritalStatus : MaritalStatus? = null
     var firstName : String? = null
     var lastName : String? = null
-
-
+    var dataCounter: Int = 0
     //private val relationshipTypes = listOf("Civil Unions", "Domestic Partners", "Registered Reciprocal", "Other")
 
     override fun onCreateView(
@@ -112,10 +110,9 @@ class UnMarriedFragment : BaseFragment() {
     }
 
     private fun setData(counter:Int){
-        if(counter==2) {
+        if(counter >=2) {
             try {
                 maritalStatus = arguments?.getParcelable(AppConstant.marital_status)!!
-                Log.e("umarriedFra-SetData","$maritalStatus")
                 if (maritalStatus != null) {
                     maritalStatus?.isInRelationship?.let { isInRelation ->
                         if (isInRelation)
@@ -128,11 +125,7 @@ class UnMarriedFragment : BaseFragment() {
                         for (item in relationshipTypeList) {
                             if (item.id == relationshipId) {
                                 binding.tvRelationship.setText(item.name, false)
-                                CustomMaterialFields.setColor(
-                                    binding.relationTypeLayout,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                CustomMaterialFields.setColor(binding.relationTypeLayout, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
@@ -142,11 +135,7 @@ class UnMarriedFragment : BaseFragment() {
                         for (item in stateList) {
                             if (item.id == stateId) {
                                 binding.tvState.setText(item.name, false)
-                                CustomMaterialFields.setColor(
-                                    binding.layoutState,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                CustomMaterialFields.setColor(binding.layoutState, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
@@ -158,8 +147,7 @@ class UnMarriedFragment : BaseFragment() {
                     }
 
                 }
-            } catch (e: Exception){
-            }
+            } catch (e: Exception){ }
         }
 
     }
@@ -227,7 +215,7 @@ class UnMarriedFragment : BaseFragment() {
                              maritalStatusId = 9
                          )
 
-                         Log.e("UnMarriedFrag", "" + maritalStatus)
+                         //Log.e("UnMarriedFrag", "" + maritalStatus)
 
                          findNavController().previousBackStackEntry?.savedStateHandle?.set(
                              AppConstant.marital_status,
@@ -273,118 +261,105 @@ class UnMarriedFragment : BaseFragment() {
 
     private fun setRelationShipField(){
         lifecycleScope.launchWhenStarted {
-            var dataCounter: Int = 0
+
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 binding.loader.visibility = View.VISIBLE
                 coroutineScope {
 
+                    var call = async { commonViewModel.getStates(authToken)}
+                    call.await()
+                    var call1 = async{ viewModel.getRelationshipTypes(authToken) }
+                    call1.await()
 
-                    commonViewModel.getStates(authToken)
-
-                    viewModel.getRelationshipTypes(authToken)
-                }
-
-                lifecycleScope.launchWhenStarted {
                     commonViewModel.states.observe(viewLifecycleOwner, { states ->
-                            if (states != null && states.size > 0) {
-                                val itemList: ArrayList<String> = arrayListOf()
-                                for (item in states) {
-                                    itemList.add(item.name)
-                                    stateList.add(item)
-                                }
-                                dataCounter++
-
-                                val stateAdapter = ArrayAdapter(
-                                        requireContext(),
-                                        R.layout.autocomplete_text_view,
-                                        itemList
-                                    )
-                                binding.tvState.setAdapter(stateAdapter)
-
-                                /* binding.tvState.setOnFocusChangeListener { _, _ ->
-                                binding.tvState.showDropDown()
-                                HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
+                        if (states != null && states.size > 0) {
+                            val itemList: ArrayList<String> = arrayListOf()
+                            for (item in states) {
+                                itemList.add(item.name)
+                                stateList.add(item)
                             }
-                            binding.tvState.setOnClickListener {
-                                binding.tvState.showDropDown()
-                                HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                            } */
+                            dataCounter++
 
-                                binding.tvState.onItemClickListener =
-                                    object : AdapterView.OnItemClickListener {
-                                        override fun onItemClick(
-                                            p0: AdapterView<*>?,
-                                            p1: View?,
-                                            position: Int,
-                                            id: Long
-                                        ) {
-                                            binding.layoutState.defaultHintTextColor =
-                                                ColorStateList.valueOf(
-                                                    ContextCompat.getColor(
-                                                        requireContext(),
-                                                        R.color.grey_color_two
-                                                    )
+                            val stateAdapter = ArrayAdapter(
+                                requireContext(),
+                                R.layout.autocomplete_text_view,
+                                itemList
+                            )
+                            binding.tvState.setAdapter(stateAdapter)
+
+
+                            binding.tvState.onItemClickListener =
+                                object : AdapterView.OnItemClickListener {
+                                    override fun onItemClick(
+                                        p0: AdapterView<*>?,
+                                        p1: View?,
+                                        position: Int,
+                                        id: Long
+                                    ) {
+                                        binding.layoutState.defaultHintTextColor =
+                                            ColorStateList.valueOf(
+                                                ContextCompat.getColor(
+                                                    requireContext(),
+                                                    R.color.grey_color_two
                                                 )
-                                            HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
-                                        }
+                                            )
+                                        HideSoftkeyboard.hide(requireActivity(), binding.layoutState)
                                     }
-                            }
+                                }
 
-                        })
+                            setData(dataCounter)
+                        }
+
+                    })
 
                     viewModel.relationships.observe(viewLifecycleOwner, { list ->
-                            if (list != null && list.size > 0) {
-                                dataCounter++
-                                val itemList: ArrayList<String> = arrayListOf()
-                                for (item in list) {
-                                    itemList.add(item.name)
-                                    relationshipTypeList.add(item)
-                                }
-                                val relationshipAdapter = ArrayAdapter(
-                                    requireContext(),
-                                    android.R.layout.simple_list_item_1,
-                                    itemList
-                                )
-                                binding.tvRelationship.setAdapter(relationshipAdapter)
+                        if (list != null && list.size > 0) {
+                            dataCounter++
 
-                                binding.tvRelationship.setOnClickListener {
-                                    binding.tvRelationship.showDropDown()
-                                }
-                                binding.tvRelationship.onItemClickListener =
-                                    object : OnItemClickListener {
-                                        override fun onItemClick(
-                                            p0: AdapterView<*>?,
-                                            p1: View?,
-                                            position: Int,
-                                            id: Long
-                                        ) {
-                                            binding.relationTypeLayout.defaultHintTextColor =
-                                                ColorStateList.valueOf(
-                                                    ContextCompat.getColor(
-                                                        requireContext(),
-                                                        R.color.grey_color_two
-                                                    )
+                            val itemList: ArrayList<String> = arrayListOf()
+                            for (item in list) {
+                                itemList.add(item.name)
+                                relationshipTypeList.add(item)
+                            }
+                            val relationshipAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, itemList)
+                            binding.tvRelationship.setAdapter(relationshipAdapter)
+
+                            binding.tvRelationship.setOnClickListener {
+                                binding.tvRelationship.showDropDown()
+                            }
+                            binding.tvRelationship.onItemClickListener =
+                                object : OnItemClickListener {
+                                    override fun onItemClick(
+                                        p0: AdapterView<*>?,
+                                        p1: View?,
+                                        position: Int,
+                                        id: Long
+                                    ) {
+                                        binding.relationTypeLayout.defaultHintTextColor =
+                                            ColorStateList.valueOf(
+                                                ContextCompat.getColor(
+                                                    requireContext(),
+                                                    R.color.grey_color_two
                                                 )
+                                            )
 
-                                            val item = binding.tvRelationship.text.toString()
-                                            if (item.equals("Other", true)) {
-                                                binding.layouDesc.visibility = View.VISIBLE
-                                            } else {
-                                                binding.layouDesc.visibility = View.GONE
-                                            }
+                                        val item = binding.tvRelationship.text.toString()
+                                        if (item.equals("Other", true)) {
+                                            binding.layouDesc.visibility = View.VISIBLE
+                                        } else {
+                                            binding.layouDesc.visibility = View.GONE
                                         }
                                     }
-                            }
+                                }
 
-                        setData(dataCounter)
-                        })
+                        }
+                    })
 
                     binding.loader.visibility = View.INVISIBLE
-                }
 
+                }
             }
         }
-
 
     }
 
