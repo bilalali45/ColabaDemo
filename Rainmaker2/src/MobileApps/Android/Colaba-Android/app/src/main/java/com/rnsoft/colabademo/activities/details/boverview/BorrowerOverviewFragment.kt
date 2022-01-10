@@ -21,6 +21,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
     private val binding get() = _binding!!
     private val detailViewModel: DetailViewModel by activityViewModels()
     private var loanApplicationId: Int? = null
+    private var borrowerId: Int? = null
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -37,14 +38,25 @@ class BorrowerOverviewFragment : BaseFragment()  {
         }
 
         binding.box1.setOnClickListener{
-            //findNavController().navigate(R.id.invitation_primary_borrower_fragment_id, null)
-            findNavController().navigate(R.id.navigation_pre_approval_fragment, null)
+            if(borrowerId != null && loanApplicationId !=null) {
+                val bundle = Bundle()
+                bundle.putInt(AppConstant.borrowerId, borrowerId!!)
+                bundle.putInt(AppConstant.loanApplicationId, loanApplicationId!!)
+                bundle.putString(AppConstant.INVITATION_TYPE, AppConstant.INVITATION_STATUS_INVITE)
+                findNavController().navigate(R.id.invitation_primary_borrower_fragment, bundle)
+            }
+        }
+
+        binding.boxResendInvitation.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putInt(AppConstant.borrowerId, borrowerId!!)
+            bundle.putInt(AppConstant.loanApplicationId, loanApplicationId!!)
+            bundle.putString(AppConstant.INVITATION_TYPE, AppConstant.INVITATION_STATUS_RESENT)
+            findNavController().navigate(R.id.invitation_primary_borrower_fragment, bundle)
         }
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
-            Log.e("Observe", "overview")
             if(overviewModel!=null) {
-                Log.e("not null", "overview")
                 binding.userLayout3.setOnClickListener {
                     findNavController().navigate(R.id.borrower_app_status_fragment)
                 }
@@ -168,6 +180,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 overviewModel.coBorrowers?.let {
                     if(it.size >0){
                         for(item in  it.indices) {
+                           borrowerId =  it.get(item).id
                             if (it.get(item).ownTypeId == AppConstant.borrowerTypeId) {
                                 Log.e("OVerview frag", "overview-borrower is " + it.get(item).id)
                                 // call invitation status
@@ -185,8 +198,30 @@ class BorrowerOverviewFragment : BaseFragment()  {
             else
                 Log.e("should-stop"," here....")
         })
+
+
         detailViewModel.invitationStatus.observe(viewLifecycleOwner, { status ->
-            Log.e("invitation status","$status")
+            status?.let {
+                if(it.status.equals(AppConstant.INVITATION_STATUS_INVITE, true))
+                  binding.box1.visibility = View.VISIBLE
+
+                if(it.status.equals(AppConstant.INVITATION_STATUS_PENDING, true))
+                binding.box1.visibility = View.VISIBLE
+
+                if(it.status.equals(AppConstant.INVITATION_STATUS_RESENT, true))
+                binding.boxResendInvitation.visibility = View.VISIBLE
+
+                if(it.status.equals(AppConstant.INVITATION_STATUS_ACCEPTED, true))
+                binding.boxResendInvitation.visibility = View.VISIBLE
+
+                if(it.status!!.length == 0  || it.status.isEmpty()) {
+                    binding.box1.visibility = View.GONE
+                    binding.boxResendInvitation.visibility = View.GONE
+                }
+            } ?: run {
+                binding.box1.visibility = View.GONE
+                binding.boxResendInvitation.visibility = View.GONE
+            }
         })
 
         super.addListeners(binding.root)
