@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
@@ -62,8 +63,11 @@ class FirstMortgageFragment : BaseFragment() {
         binding.btnSave.setOnClickListener { saveData() }
 
         binding.cbPropertyTaxes.setOnClickListener {
-            binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-            binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+            if(binding.cbPropertyTaxes.isChecked)
+                binding.cbPropertyTaxes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            else
+                binding.cbPropertyTaxes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+
         }
 
         binding.cbFloodInsurance.setOnClickListener {
@@ -87,21 +91,17 @@ class FirstMortgageFragment : BaseFragment() {
         }
 
         binding.rbPaidClosingYes.setOnClickListener {
-            if (binding.rbPaidClosingYes.isChecked) {
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-            } else {
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-            }
+            if (binding.rbPaidClosingYes.isChecked)
+                binding.rbPaidClosingYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+             else
+                binding.rbPaidClosingYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
 
         binding.rbPaidClosingNo.setOnClickListener {
-            if (binding.rbPaidClosingNo.isChecked) {
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-            }else{
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-            }
+            if (binding.rbPaidClosingNo.isChecked)
+                binding.rbPaidClosingNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            else
+                binding.rbPaidClosingNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
     }
 

@@ -43,6 +43,7 @@
             android:layout_height="60dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
+
             android:layoutDirection="rtl"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/non_occupying"

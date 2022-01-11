@@ -41,29 +41,29 @@ class CoBorrowerAdapter(var context: Context, clickListner: CoBorrowerOccupancyC
             data.willLiveInSubjectProperty?.let { willLiveInSubjectProperty->
                 if(willLiveInSubjectProperty){
                     binding.radioOccupying.isChecked = true
+                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
                 }
-                else
+                else {
                     binding.radioNonOccupying.isChecked = true
+                    binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context, R.color.grey_color_two))
+                }
 
             }
 
             binding.radioOccupying.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
-                    clickEvent.onCoborrowerClick(position,true)
                     binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+                    binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+                    clickEvent.onCoborrowerClick(position,true)
                 }
-                else
-                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
-
             }
             // radio non occupying
             binding.radioNonOccupying.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
                     binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
                     clickEvent.onCoborrowerClick(position,false)
                 }
-                else
-                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
             }
         }
     }

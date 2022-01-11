@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
 import android.graphics.Typeface
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -171,8 +173,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
             binding.radioSubPropertyAddress.isChecked = false
-            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-           // binding.radioSubPropertyAddress.setTypeface(null,Typeface.NORMAL)
             binding.tvSubPropertyAddress.visibility = View.GONE
         }
 
@@ -180,8 +180,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.radioSubPropertyAddress.setOnClickListener {
             binding.radioSubPropertyTbd.isChecked = false
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            //binding.tvSubPropertyAddress.setTypeface(null,Typeface.BOLD)
-            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
             openAddress()
         }
 
@@ -206,18 +204,23 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // radio btn mixed use property Yes
         binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-              //  binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-               // binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-            }
+                binding.radioMixedPropertyNo.isChecked = false
+                binding.layoutMixedPropertyDetail.visibility = View.VISIBLE
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
 
         // radio btn mixed use property No
         binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-               // binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-               // binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                binding.radioMixedPropertyYes.isChecked = false
                 binding.layoutMixedPropertyDetail.visibility = View.GONE
+                binding.radioMixedPropertyNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+
             }
+            else
+                binding.radioMixedPropertyNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
 
         // first mortgage yes
@@ -233,15 +236,19 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.radioHasFirstMortgageYes.setOnClickListener {
             onFirstMortgageYes()
             if(firstMortgageModel != null){
-               // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
-                //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+                binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+                binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                binding.radioHasFirstMortgageNo.isChecked = false
+
                 binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
             } else{
+
                 binding.radioHasFirstMortgageYes.isChecked = false
                // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.radioHasFirstMortgageNo.isChecked = true
-               // binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
@@ -252,8 +259,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // first mortgage no
         binding.radioHasFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
-               // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+                binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
@@ -262,8 +269,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // sec mortgage no
         binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-               // binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-                //binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+                binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -279,14 +286,14 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.rbSecMortgageYes.setOnClickListener{
             onSecMortgageYesClick()
             if(secondMortgageModel != null){
-              //  //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+                binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+                binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.layoutSecMortgageDetail.visibility = View.VISIBLE
             } else{
                 binding.rbSecMortgageYes.isChecked = false
-               // binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.rbSecMortgageNo.isChecked = true
-                //binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+                binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -320,10 +327,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     details.subPropertyData?.addressRefinance?.let {
                         if (it.street == null && it.unit == null && it.city == null && it.stateName == null && it.countryName == null) {
                             binding.radioSubPropertyTbd.isChecked = true
-                            //binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                         } else {
                             binding.radioSubPropertyAddress.isChecked = true
-                            //binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
                             binding.tvSubPropertyAddress.visibility = View.VISIBLE
 
                             // list for send data to address fragment
@@ -332,7 +337,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         }
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
-                        //binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                     }
 
                     details.subPropertyData?.rentalIncome?.let {
@@ -601,8 +605,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             binding.radioSubPropertyAddress.isChecked = true
             binding.radioSubPropertyTbd.isChecked = false
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-           // binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.mixedPropertyDetails)?.observe(
@@ -625,9 +628,10 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         val formatter = DecimalFormat("#,###,###")
         firstMortgageModel = model
         binding.radioHasFirstMortgageYes.isChecked = true
-        binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+        binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
         binding.radioHasFirstMortgageNo.isChecked = false
-        binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+        //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+        binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
 
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
@@ -649,9 +653,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         val formatter = DecimalFormat("#,###,###")
         secondMortgageModel = model
         binding.rbSecMortgageYes.isChecked = true
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+        //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+        binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
         binding.rbSecMortgageNo.isChecked = false
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        //binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
 
         model.secondMortgagePayment?.let { payment->
@@ -726,8 +732,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun onSecMortgageYesClick(){
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+       // binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+        binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+        binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+
         val fragment = SecondMortgageFragment()
         val bundle = Bundle()
         bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
