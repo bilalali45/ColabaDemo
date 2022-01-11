@@ -84,10 +84,25 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     func setMaterialTextFieldsAndViews(){
         
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+
         
         yesStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackView2Tapped)))
+        yesStackView2.layer.cornerRadius = 8
+        yesStackView2.layer.borderWidth = 1
+        yesStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackView2Tapped)))
+        noStackView2.layer.cornerRadius = 8
+        noStackView2.layer.borderWidth = 1
+        noStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         setTextFields()
     }
@@ -131,10 +146,25 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     func changeMortgageCombineStatus(){
-        btnYes.setImage(UIImage(named: isMortgageCombine == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMortgageCombine == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isMortgageCombine == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = isMortgageCombine == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnYes.setImage(UIImage(named: isMortgageCombine == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes.font = isMortgageCombine == 1 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = isMortgageCombine == 1 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo.setImage(UIImage(named: isMortgageCombine == 0 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo.font = isMortgageCombine == 0 ?  Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo.textColor = isMortgageCombine == 0 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        
+        if (isMortgageCombine == 1){
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView.dropShadowToCollectionViewCell()
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView.removeShadow()
+        }
+        else if (isMortgageCombine == 0){
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView.dropShadowToCollectionViewCell()
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView.removeShadow()
+        }
     }
     
     @objc func yesStackView2Tapped(){
@@ -148,14 +178,30 @@ class SecondMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     func changeMortgageTakenWhenPropertyPurchaseStatus(){
-        btnYes2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes2.font = isMortgageTakenWhenPropertyPurchase == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo2.font = isMortgageTakenWhenPropertyPurchase == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnYes2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes2.font = isMortgageTakenWhenPropertyPurchase == 1 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes2.textColor = isMortgageTakenWhenPropertyPurchase == 1 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo2.setImage(UIImage(named: isMortgageTakenWhenPropertyPurchase == 0 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo2.font = isMortgageTakenWhenPropertyPurchase == 0 ?  Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo2.textColor = isMortgageTakenWhenPropertyPurchase == 0 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        
+        if (isMortgageTakenWhenPropertyPurchase == 1){
+            yesStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView2.dropShadowToCollectionViewCell()
+            noStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView2.removeShadow()
+        }
+        else if (isMortgageTakenWhenPropertyPurchase == 0){
+            noStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView2.dropShadowToCollectionViewCell()
+            yesStackView2.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView2.removeShadow()
+        }
+        
     }
     
     func changeHELOCStatus(){
-        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         txtfieldCreditLimit.isHidden = !switchHomeEquity.isOn
         mortgageCombinedViewTopConstraint.constant = switchHomeEquity.isOn ? 140 : 50
         UIView.animate(withDuration: 0.0) {

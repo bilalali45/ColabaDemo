@@ -23,7 +23,7 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     @IBOutlet weak var txtfieldMortgagePayment: ColabaTextField!
     @IBOutlet weak var txtfieldMortgageBalance: ColabaTextField!
     @IBOutlet weak var accountPaymentsView: UIView!
-    @IBOutlet weak var accountPaymentViewHeightConstraint: NSLayoutConstraint! // 337 or 248
+    @IBOutlet weak var accountPaymentViewHeightConstraint: NSLayoutConstraint! // 382 or 292
     @IBOutlet weak var lblAccountPaymentQuestion: UILabel!
     @IBOutlet weak var annualFloodInsuranceStackView: UIStackView!
     @IBOutlet weak var btnAnnualFloodInsurance: UIButton!
@@ -86,11 +86,29 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     func setMaterialTextFieldsAndViews(){
 
         annualFloodInsuranceStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualFloodInsuranceStackViewTapped)))
+        annualFloodInsuranceStackView.layer.cornerRadius = 8
+        annualFloodInsuranceStackView.layer.borderWidth = 1
+        annualFloodInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         annualPropertyTaxesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualPropertyTaxStackViewTapped)))
+        annualPropertyTaxesStackView.layer.cornerRadius = 8
+        annualPropertyTaxesStackView.layer.borderWidth = 1
+        annualPropertyTaxesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         annualHomeownerInsuranceStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(annualHomeownerInsuranceStackViewTapped)))
+        annualHomeownerInsuranceStackView.layer.cornerRadius = 8
+        annualHomeownerInsuranceStackView.layer.borderWidth = 1
+        annualHomeownerInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         setTextFields()
     }
@@ -142,11 +160,42 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     
     func changeAccountsIncluded(){
         btnAnnualFloodInsurance.setImage(UIImage(named: isAnnualFloodInsurance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblAnnualFloodInsurance.font = isAnnualFloodInsurance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualFloodInsurance.font = isAnnualFloodInsurance ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualFloodInsurance.textColor = isAnnualFloodInsurance ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         btnAnnualTaxes.setImage(UIImage(named: isAnnualPropertyTax ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblAnnualTaxes.font = isAnnualPropertyTax ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualTaxes.font = isAnnualPropertyTax ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualTaxes.textColor = isAnnualPropertyTax ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         btnAnnualHomeownerInsurance.setImage(UIImage(named: isAnnualHomeownerInsurance ? "CheckBoxSelected" : "CheckBoxUnSelected"), for: .normal)
-        lblAnnualHomeownerInsurance.font = isAnnualHomeownerInsurance ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualHomeownerInsurance.font = isAnnualHomeownerInsurance ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblAnnualHomeownerInsurance.textColor = isAnnualHomeownerInsurance ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        
+        if (isAnnualFloodInsurance){
+            annualFloodInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            annualFloodInsuranceStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            annualFloodInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            annualFloodInsuranceStackView.removeShadow()
+        }
+        
+        if (isAnnualPropertyTax){
+            annualPropertyTaxesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            annualPropertyTaxesStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            annualPropertyTaxesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            annualPropertyTaxesStackView.removeShadow()
+        }
+        
+        if (isAnnualHomeownerInsurance){
+            annualHomeownerInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            annualHomeownerInsuranceStackView.dropShadowToCollectionViewCell()
+        }
+        else{
+            annualHomeownerInsuranceStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            annualHomeownerInsuranceStackView.removeShadow()
+        }
+        
     }
     
     @objc func yesStackViewTapped(){
@@ -160,17 +209,32 @@ class FirstMortgageFollowupQuestionsViewController: BaseViewController {
     }
     
     func changeMortgagePaidOffStatus(){
-        btnYes.setImage(UIImage(named: isMortgagePaidOff == 1 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isMortgagePaidOff == 1 ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-        btnNo.setImage(UIImage(named: isMortgagePaidOff == 0 ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = isMortgagePaidOff == 0 ?  Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        btnYes.setImage(UIImage(named: isMortgagePaidOff == 1 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes.font = isMortgagePaidOff == 1 ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = isMortgagePaidOff == 1 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo.setImage(UIImage(named: isMortgagePaidOff == 0 ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo.font = isMortgagePaidOff == 0 ?  Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo.textColor = isMortgagePaidOff == 0 ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        
+        if (isMortgagePaidOff == 1){
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView.dropShadowToCollectionViewCell()
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView.removeShadow()
+        }
+        else if (isMortgagePaidOff == 0){
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView.dropShadowToCollectionViewCell()
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView.removeShadow()
+        }
     }
     
     func changeHELOCStatus(){
-        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblHomeEquity.font = switchHomeEquity.isOn ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
         
         txtfieldCreditLimit.isHidden = !switchHomeEquity.isOn
-        accountPaymentViewHeightConstraint.constant = switchHomeEquity.isOn ? 337 : 248
+        accountPaymentViewHeightConstraint.constant = switchHomeEquity.isOn ? 382 : 292
         UIView.animate(withDuration: 0.0) {
             self.view.layoutIfNeeded()
         }
