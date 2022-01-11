@@ -22,8 +22,17 @@ class OccupancyStatusTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
         occupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(occupyingStackViewTapped)))
+        occupyingStackView.layer.cornerRadius = 8
+        occupyingStackView.layer.borderWidth = 1
+        occupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         nonOccupyingStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(nonOccupyingStackViewTapped)))
+        nonOccupyingStackView.layer.cornerRadius = 8
+        nonOccupyingStackView.layer.borderWidth = 1
+        nonOccupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -53,17 +62,29 @@ class OccupancyStatusTableViewCell: UITableViewCell {
     
     @objc func occupyingStackViewTapped(){
         btnOccupying.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-        lblOccupying.font = Theme.getRubikMediumFont(size: 14)
-        btnNonOccupying.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblOccupying.font = Theme.getRubikSemiBoldFont(size: 14)
+        lblOccupying.textColor = Theme.getAppBlackColor()
+        btnNonOccupying.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblNonOccupying.font = Theme.getRubikRegularFont(size: 14)
+        lblNonOccupying.textColor = Theme.getAppGreyColor()
+        occupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        occupyingStackView.dropShadowToCollectionViewCell()
+        nonOccupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        nonOccupyingStackView.removeShadow()
         updateOccupancyStatus(willOccupy: true)
     }
     
     @objc func nonOccupyingStackViewTapped(){
         btnNonOccupying.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-        lblNonOccupying.font = Theme.getRubikMediumFont(size: 14)
-        btnOccupying.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        lblNonOccupying.font = Theme.getRubikSemiBoldFont(size: 14)
+        lblNonOccupying.textColor = Theme.getAppBlackColor()
+        btnOccupying.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblOccupying.font = Theme.getRubikRegularFont(size: 14)
+        lblOccupying.textColor = Theme.getAppGreyColor()
+        nonOccupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+        nonOccupyingStackView.dropShadowToCollectionViewCell()
+        occupyingStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        occupyingStackView.removeShadow()
         updateOccupancyStatus(willOccupy: false)
     }
 }

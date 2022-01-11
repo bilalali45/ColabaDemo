@@ -33,9 +33,10 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var txtfieldRentalIncomeTopConstraint: NSLayoutConstraint! //30 or 0
     @IBOutlet weak var txtfieldRentalIncomeHeightConstraint: NSLayoutConstraint! // 39 or 0
     @IBOutlet weak var propertyView: UIView!
-    @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! //203 or 347
+    @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! // 332 or 248
     @IBOutlet weak var lblUsePropertyQuestion: UILabel!
-    @IBOutlet weak var yesStackView: UIStackView!
+    @IBOutlet weak var yesStackView: UIView!
+    @IBOutlet weak var yesStackViewHeightConstraint: NSLayoutConstraint! //48 or 132
     @IBOutlet weak var btnYes: UIButton!
     @IBOutlet weak var lblYes: UILabel!
     @IBOutlet weak var noStackView: UIStackView!
@@ -53,8 +54,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var tableViewOccupancyStatusHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var firstMortgageMainView: UIView!
     @IBOutlet weak var firstMortgageMainViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var firstMortgageMainViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var firstMortgageYesStackView: UIStackView!
+    @IBOutlet weak var firstMortgageMainViewHeightConstraint: NSLayoutConstraint! //190 or 357
+    @IBOutlet weak var firstMortgageYesStackView: UIView!
+    @IBOutlet weak var firstMortgageYesStackViewHeightConstraint: NSLayoutConstraint! //48 or 215
     @IBOutlet weak var btnFirstMortgageYes: UIButton!
     @IBOutlet weak var lblFirstMortgageYes: UILabel!
     @IBOutlet weak var firstMortgageNoStackView: UIStackView!
@@ -64,8 +66,9 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var lblFirstMortgagePayment: UILabel!
     @IBOutlet weak var lblFirstMortgageBalance: UILabel!
     @IBOutlet weak var secondMortgageMainView: UIView!
-    @IBOutlet weak var secondMortgageMainViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var secondMortgageYesStackView: UIStackView!
+    @IBOutlet weak var secondMortgageMainViewHeightConstraint: NSLayoutConstraint! //190 or 357
+    @IBOutlet weak var secondMortgageYesStackView: UIView!
+    @IBOutlet weak var secondMortgageYesStackViewHeightConstraint: NSLayoutConstraint! // 48 or 215
     @IBOutlet weak var btnSecondMortgageYes: UIButton!
     @IBOutlet weak var lblSecondMortgageYes: UILabel!
     @IBOutlet weak var secondMortgageNoStackView: UIStackView!
@@ -104,10 +107,11 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     //MARK:- Methods and Actions
     func setViews() {
         
-        btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        btnYes.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = Theme.getAppGreyColor()
         propertyDetailView.isHidden = true
-        propertyViewHeightConstraint.constant = 203
+        propertyViewHeightConstraint.constant = 248
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.setScreenHeight()
         }
@@ -115,37 +119,47 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         subjectPropertyTBDView.layer.cornerRadius = 8
         subjectPropertyTBDView.layer.borderWidth = 1
         subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        subjectPropertyTBDView.dropShadowToCollectionViewCell()
         subjectPropertyTBDView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tbdViewTapped)))
         
         subjectPropertyAddressView.layer.cornerRadius = 8
         subjectPropertyAddressView.layer.borderWidth = 1
-        subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        subjectPropertyAddressView.dropShadowToCollectionViewCell()
+        subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         subjectPropertyAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
         
-        propertyDetailView.layer.cornerRadius = 6
-        propertyDetailView.layer.borderWidth = 1
-        propertyDetailView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        propertyDetailView.dropShadowToCollectionViewCell()
         propertyDetailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyDetailViewTapped)))
+        
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         firstMortgageYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageYesStackViewTapped)))
+        firstMortgageYesStackView.layer.cornerRadius = 8
+        firstMortgageYesStackView.layer.borderWidth = 1
+        firstMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         firstMortgageNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageNoStackViewTapped)))
-        firstMortgageView.layer.cornerRadius = 6
-        firstMortgageView.layer.borderWidth = 1
-        firstMortgageView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        firstMortgageView.dropShadowToCollectionViewCell()
+        firstMortgageNoStackView.layer.cornerRadius = 8
+        firstMortgageNoStackView.layer.borderWidth = 1
+        firstMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         firstMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(firstMortgageViewTapped)))
         
         secondMortgageYesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageYesStackViewTapped)))
+        secondMortgageYesStackView.layer.cornerRadius = 8
+        secondMortgageYesStackView.layer.borderWidth = 1
+        secondMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         secondMortgageNoStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageNoStackViewTapped)))
-        secondMortgageView.layer.cornerRadius = 6
-        secondMortgageView.layer.borderWidth = 1
-        secondMortgageView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        secondMortgageView.dropShadowToCollectionViewCell()
+        secondMortgageNoStackView.layer.cornerRadius = 8
+        secondMortgageNoStackView.layer.borderWidth = 1
+        secondMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         secondMortgageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(secondMortgageViewTapped)))
         
         tableViewOccupancyStatus.register(UINib(nibName: "OccupancyStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "OccupancyStatusTableViewCell")
@@ -195,7 +209,7 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         
         isTBDProperty = self.subjectPropertyDetail.subjectPropertyTbd
         if let subjectPropertyAddress = self.subjectPropertyDetail.address{
-            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+            lblAddress.text = subjectPropertyAddress.street == "" ? "" : "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
         }
         
         if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.propertyTypeId}).first{
@@ -235,6 +249,46 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         showHideRentalIncome()
         changeMixedUseProperty()
         changedSubjectPropertyType()
+        
+        if (isTBDProperty){
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyTBDView.dropShadowToCollectionViewCell()
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyAddressView.removeShadow()
+        }
+        else{
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyAddressView.dropShadowToCollectionViewCell()
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyTBDView.removeShadow()
+        }
+        
+        if (isFirstMortgage){
+            firstMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            firstMortgageYesStackView.dropShadowToCollectionViewCell()
+            firstMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            firstMortgageNoStackView.removeShadow()
+        }
+        else{
+            firstMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            firstMortgageNoStackView.dropShadowToCollectionViewCell()
+            firstMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            firstMortgageYesStackView.removeShadow()
+        }
+        
+        if (isSecondMortgage){
+            secondMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            secondMortgageYesStackView.dropShadowToCollectionViewCell()
+            secondMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            secondMortgageNoStackView.removeShadow()
+        }
+        else{
+            secondMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            secondMortgageNoStackView.dropShadowToCollectionViewCell()
+            secondMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            secondMortgageYesStackView.removeShadow()
+        }
+        
     }
     
     func setScreenHeight(){
@@ -263,15 +317,27 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func changedSubjectPropertyType(){
-        btnSubjectPropertyTBD.setImage(UIImage(named: isTBDProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblSubjectPropertyTBD.font = isTBDProperty ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnSubjectPropertyAddress.setImage(UIImage(named: isTBDProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblSubjectPropertyAddress.font = isTBDProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
+        btnSubjectPropertyTBD.setImage(UIImage(named: isTBDProperty ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblSubjectPropertyTBD.font = isTBDProperty ? Theme.getRubikSemiBoldFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        btnSubjectPropertyAddress.setImage(UIImage(named: isTBDProperty ? "radioUnslected" : "RadioButtonSelected"), for: .normal)
+        lblSubjectPropertyAddress.font = isTBDProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikSemiBoldFont(size: 15)
         subjectPropertyAddressViewHeightConstraint.constant = isTBDProperty ? 50 : 110
         lblAddress.isHidden = isTBDProperty
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.setScreenHeight()
+        
+        if (isTBDProperty){
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyTBDView.dropShadowToCollectionViewCell()
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyAddressView.removeShadow()
         }
+        else{
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyAddressView.dropShadowToCollectionViewCell()
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyTBDView.removeShadow()
+        }
+        
+        setScreenHeight()
     }
     
     @objc func showHideRentalIncome(){
@@ -317,15 +383,30 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     
     @objc func changeMixedUseProperty(){
         if let mixUseProperty = isMixedUseProperty{
-            btnYes.setImage(UIImage(named: mixUseProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblYes.font = mixUseProperty ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            btnNo.setImage(UIImage(named: mixUseProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-            lblNo.font = mixUseProperty ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            btnYes.setImage(UIImage(named: mixUseProperty ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblYes.font = mixUseProperty ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblYes.textColor = mixUseProperty ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            btnNo.setImage(UIImage(named: mixUseProperty ? "radioUnslected" : "RadioButtonSelected"), for: .normal)
+            lblNo.font = mixUseProperty ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikSemiBoldFont(size: 14)
+            lblNo.textColor = mixUseProperty ? Theme.getAppGreyColor() : Theme.getAppBlackColor()
             propertyDetailView.isHidden = !mixUseProperty
-            propertyViewHeightConstraint.constant = mixUseProperty ? 347 : 203
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                self.setScreenHeight()
+            propertyViewHeightConstraint.constant = mixUseProperty ? 332 : 248
+            yesStackViewHeightConstraint.constant = mixUseProperty ? 132 : 48
+            
+            if (mixUseProperty){
+                yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                yesStackView.dropShadowToCollectionViewCell()
+                noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+                noStackView.removeShadow()
             }
+            else{
+                noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                noStackView.dropShadowToCollectionViewCell()
+                yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+                yesStackView.removeShadow()
+            }
+            
+            setScreenHeight()
         }
         
     }
@@ -381,11 +462,14 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
     func changeMortgageStatus(){
         if (!isFirstMortgage && !isSecondMortgage){
             
-            btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-            lblFirstMortgageYes.font = Theme.getRubikRegularFont(size: 15)
+            btnFirstMortgageYes.setImage(UIImage(named: "radioUnslected"), for: .normal)
+            lblFirstMortgageYes.font = Theme.getRubikRegularFont(size: 14)
+            lblFirstMortgageYes.textColor = Theme.getAppGreyColor()
             btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblFirstMortgageNo.font = Theme.getRubikMediumFont(size: 15)
-            firstMortgageMainViewHeightConstraint.constant = 145
+            lblFirstMortgageNo.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblFirstMortgageNo.textColor = Theme.getAppBlackColor()
+            firstMortgageMainViewHeightConstraint.constant = 190
+            firstMortgageYesStackViewHeightConstraint.constant = 48
             firstMortgageView.isHidden = true
             secondMortgageMainViewHeightConstraint.constant = 0
             secondMortgageMainView.isHidden = true
@@ -394,36 +478,74 @@ class RefinanceSubjectPropertyViewController: BaseViewController {
         else if (isFirstMortgage && !isSecondMortgage){
             
             btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblFirstMortgageYes.font = Theme.getRubikMediumFont(size: 15)
-            btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-            lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 15)
-            firstMortgageMainViewHeightConstraint.constant = 350
+            lblFirstMortgageYes.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblFirstMortgageYes.textColor = Theme.getAppBlackColor()
+            btnFirstMortgageNo.setImage(UIImage(named: "radioUnslected"), for: .normal)
+            lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 14)
+            lblFirstMortgageNo.textColor = Theme.getAppGreyColor()
+            firstMortgageMainViewHeightConstraint.constant = 357
+            firstMortgageYesStackViewHeightConstraint.constant = 215
             firstMortgageView.isHidden = false
             secondMortgageMainView.isHidden = false
             secondMortgageView.isHidden = true
-            btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-            btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblSecondMortgageNo.font = !isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-            secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 350 : 145
+            btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblSecondMortgageYes.textColor = isSecondMortgage ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblSecondMortgageNo.font = !isSecondMortgage ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblSecondMortgageNo.textColor = !isSecondMortgage ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 357 : 190
+            secondMortgageYesStackViewHeightConstraint.constant = isSecondMortgage ? 215 : 48
             secondMortgageView.isHidden = !isSecondMortgage
         }
         else if (isSecondMortgage){
             btnFirstMortgageYes.setImage(UIImage(named: "RadioButtonSelected"), for: .normal)
-            lblFirstMortgageYes.font = Theme.getRubikMediumFont(size: 15)
-            btnFirstMortgageNo.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
-            lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 15)
-            firstMortgageMainViewHeightConstraint.constant = 350
+            lblFirstMortgageYes.font = Theme.getRubikSemiBoldFont(size: 14)
+            lblFirstMortgageYes.textColor = Theme.getAppBlackColor()
+            btnFirstMortgageNo.setImage(UIImage(named: "radioUnslected"), for: .normal)
+            lblFirstMortgageNo.font = Theme.getRubikRegularFont(size: 14)
+            lblFirstMortgageNo.textColor = Theme.getAppGreyColor()
+            firstMortgageMainViewHeightConstraint.constant = 357
+            firstMortgageYesStackViewHeightConstraint.constant = 215
             firstMortgageView.isHidden = false
             secondMortgageMainView.isHidden = false
             
             secondMortgageView.isHidden = false
-            btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-            btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblSecondMortgageNo.font = !isSecondMortgage ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-            secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 350 : 145
+            btnSecondMortgageYes.setImage(UIImage(named: isSecondMortgage ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblSecondMortgageYes.font = isSecondMortgage ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblSecondMortgageYes.textColor = isSecondMortgage ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            btnSecondMortgageNo.setImage(UIImage(named: !isSecondMortgage ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblSecondMortgageNo.font = !isSecondMortgage ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblSecondMortgageNo.textColor = !isSecondMortgage ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            secondMortgageMainViewHeightConstraint.constant = isSecondMortgage ? 357 : 190
+            secondMortgageYesStackViewHeightConstraint.constant = isSecondMortgage ? 215 : 48
             secondMortgageView.isHidden = !isSecondMortgage
+        }
+        
+        if (isFirstMortgage){
+            firstMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            firstMortgageYesStackView.dropShadowToCollectionViewCell()
+            firstMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            firstMortgageNoStackView.removeShadow()
+        }
+        else{
+            firstMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            firstMortgageNoStackView.dropShadowToCollectionViewCell()
+            firstMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            firstMortgageYesStackView.removeShadow()
+        }
+        
+        if (isSecondMortgage){
+            secondMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            secondMortgageYesStackView.dropShadowToCollectionViewCell()
+            secondMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            secondMortgageNoStackView.removeShadow()
+        }
+        else{
+            secondMortgageNoStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            secondMortgageNoStackView.dropShadowToCollectionViewCell()
+            secondMortgageYesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            secondMortgageYesStackView.removeShadow()
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -875,10 +997,10 @@ extension RefinanceSubjectPropertyViewController: UITableViewDataSource, UITable
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if (indexPath.row == coBorrowerOccupancyArray.count - 1){
-            return 130
+            return 175
         }
         else{
-            return 160
+            return 205
         }
     }
 }

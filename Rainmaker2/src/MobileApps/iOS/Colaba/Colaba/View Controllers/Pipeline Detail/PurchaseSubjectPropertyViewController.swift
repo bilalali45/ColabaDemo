@@ -30,9 +30,10 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     @IBOutlet weak var txtfieldPropertyType: ColabaTextField!
     @IBOutlet weak var txtfieldOccupancyType: ColabaTextField!
     @IBOutlet weak var propertyView: UIView!
-    @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! //203 or 347
+    @IBOutlet weak var propertyViewHeightConstraint: NSLayoutConstraint! // 332 or 248
     @IBOutlet weak var lblUsePropertyQuestion: UILabel!
-    @IBOutlet weak var yesStackView: UIStackView!
+    @IBOutlet weak var yesStackView: UIView!
+    @IBOutlet weak var yesStackViewHeightConstraint: NSLayoutConstraint! //48 or 132
     @IBOutlet weak var btnYes: UIButton!
     @IBOutlet weak var lblYes: UILabel!
     @IBOutlet weak var noStackView: UIStackView!
@@ -100,27 +101,30 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         subjectPropertyTBDView.layer.cornerRadius = 8
         subjectPropertyTBDView.layer.borderWidth = 1
         subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        subjectPropertyTBDView.dropShadowToCollectionViewCell()
         subjectPropertyTBDView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tbdViewTapped)))
         
         subjectPropertyAddressView.layer.cornerRadius = 8
         subjectPropertyAddressView.layer.borderWidth = 1
-        subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        subjectPropertyAddressView.dropShadowToCollectionViewCell()
+        subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         subjectPropertyAddressView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addressViewTapped)))
-        
-        propertyDetailView.layer.cornerRadius = 6
-        propertyDetailView.layer.borderWidth = 1
-        propertyDetailView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
-        propertyDetailView.dropShadowToCollectionViewCell()
+
         propertyDetailView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(propertyDetailViewTapped)))
-        yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
-        noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
         
-        btnYes.setImage(UIImage(named: "RadioButtonUnselected"), for: .normal)
+        yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
+        btnYes.setImage(UIImage(named: "radioUnslected"), for: .normal)
         lblYes.font = Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = Theme.getAppGreyColor()
         propertyDetailView.isHidden = true
-        propertyViewHeightConstraint.constant = 203
+        propertyViewHeightConstraint.constant = 248
         setScreenHeight()
         
         tableViewOccupancyStatus.register(UINib(nibName: "OccupancyStatusTableViewCell", bundle: nil), forCellReuseIdentifier: "OccupancyStatusTableViewCell")
@@ -129,7 +133,7 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     func setSubjectPropertyData(){
         isTBDProperty = self.subjectPropertyDetail.subjectPropertyTbd
         if let subjectPropertyAddress = self.subjectPropertyDetail.address{
-            lblAddress.text = "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
+            lblAddress.text = subjectPropertyAddress.street == "" ? "" : "\(subjectPropertyAddress.street) \(subjectPropertyAddress.unit),\n\(subjectPropertyAddress.city), \(subjectPropertyAddress.stateName) \(subjectPropertyAddress.zipCode)"
         }
         
         if let propertyType = self.propertyTypeArray.filter({$0.optionId == self.subjectPropertyDetail.propertyTypeId}).first{
@@ -147,6 +151,19 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
         self.tableViewOccupancyStatus.reloadData()
         changeMixedUseProperty()
         changedSubjectPropertyType()
+        
+        if (isTBDProperty){
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyTBDView.dropShadowToCollectionViewCell()
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyAddressView.removeShadow()
+        }
+        else{
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyAddressView.dropShadowToCollectionViewCell()
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyTBDView.removeShadow()
+        }
     }
     
     func setScreenHeight(){
@@ -173,12 +190,26 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     }
     
     @objc func changedSubjectPropertyType(){
-        btnSubjectPropertyTBD.setImage(UIImage(named: isTBDProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblSubjectPropertyTBD.font = isTBDProperty ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnSubjectPropertyAddress.setImage(UIImage(named: isTBDProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-        lblSubjectPropertyAddress.font = isTBDProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikMediumFont(size: 15)
+        btnSubjectPropertyTBD.setImage(UIImage(named: isTBDProperty ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblSubjectPropertyTBD.font = isTBDProperty ? Theme.getRubikSemiBoldFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        btnSubjectPropertyAddress.setImage(UIImage(named: isTBDProperty ? "radioUnslected" : "RadioButtonSelected"), for: .normal)
+        lblSubjectPropertyAddress.font = isTBDProperty ?  Theme.getRubikRegularFont(size: 15) : Theme.getRubikSemiBoldFont(size: 15)
         subjectPropertyAddressViewHeightConstraint.constant = isTBDProperty ? 50 : 110
         lblAddress.isHidden = isTBDProperty
+        
+        if (isTBDProperty){
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyTBDView.dropShadowToCollectionViewCell()
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyAddressView.removeShadow()
+        }
+        else{
+            subjectPropertyAddressView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            subjectPropertyAddressView.dropShadowToCollectionViewCell()
+            subjectPropertyTBDView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            subjectPropertyTBDView.removeShadow()
+        }
+        
         setScreenHeight()
     }
     
@@ -198,12 +229,29 @@ class PurchaseSubjectPropertyViewController: BaseViewController {
     
     @objc func changeMixedUseProperty(){
         if let mixUseProperty = isMixedUseProperty{
-            btnYes.setImage(UIImage(named: mixUseProperty ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-            lblYes.font = mixUseProperty ? Theme.getRubikMediumFont(size: 14) : Theme.getRubikRegularFont(size: 14)
-            btnNo.setImage(UIImage(named: mixUseProperty ? "RadioButtonUnselected" : "RadioButtonSelected"), for: .normal)
-            lblNo.font = mixUseProperty ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikMediumFont(size: 14)
+            btnYes.setImage(UIImage(named: mixUseProperty ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+            lblYes.font = mixUseProperty ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+            lblYes.textColor = mixUseProperty ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+            btnNo.setImage(UIImage(named: mixUseProperty ? "radioUnslected" : "RadioButtonSelected"), for: .normal)
+            lblNo.font = mixUseProperty ?  Theme.getRubikRegularFont(size: 14) : Theme.getRubikSemiBoldFont(size: 14)
+            lblNo.textColor = mixUseProperty ? Theme.getAppGreyColor() : Theme.getAppBlackColor()
             propertyDetailView.isHidden = !mixUseProperty
-            propertyViewHeightConstraint.constant = mixUseProperty ? 347 : 203
+            propertyViewHeightConstraint.constant = mixUseProperty ? 332 : 248
+            yesStackViewHeightConstraint.constant = mixUseProperty ? 132 : 48
+            
+            if (mixUseProperty){
+                yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                yesStackView.dropShadowToCollectionViewCell()
+                noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+                noStackView.removeShadow()
+            }
+            else{
+                noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+                noStackView.dropShadowToCollectionViewCell()
+                yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+                yesStackView.removeShadow()
+            }
+            
             setScreenHeight()
         }
         
@@ -514,6 +562,6 @@ extension PurchaseSubjectPropertyViewController: UITableViewDataSource, UITableV
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 160
+        return 205
     }
 }
