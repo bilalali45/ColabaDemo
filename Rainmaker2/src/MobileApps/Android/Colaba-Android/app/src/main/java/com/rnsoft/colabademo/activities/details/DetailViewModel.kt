@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -32,15 +33,31 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _borrowerApplicationTabModel : MutableLiveData<BorrowerApplicationTabModel> =   MutableLiveData()
     val borrowerApplicationTabModel: MutableLiveData<BorrowerApplicationTabModel> get() = _borrowerApplicationTabModel
 
-
     private val _appMileStoneResponse : MutableLiveData<AppMileStoneResponse?> =   MutableLiveData()
     val appMileStoneResponse: LiveData<AppMileStoneResponse?> get() = _appMileStoneResponse
+
+    private val _invitationStatus : MutableLiveData<BorrowerInvitationStatus> =   MutableLiveData()
+    val invitationStatus: LiveData<BorrowerInvitationStatus> get() = _invitationStatus
 
 
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
     private var applicationServiceRunning:Boolean = false
 
+    suspend fun getBorrowerInvitationStatus(token: String, loanApplicationId:Int, borrowerId: Int) {
+        viewModelScope.launch() {
+            val responseResult = detailRepo.getInvitationStatus(token, loanApplicationId = loanApplicationId,borrowerId = borrowerId)
+            withContext(Dispatchers.Main) {
+                if (responseResult is Result.Success)
+                    _invitationStatus.value = (responseResult.data)
+
+                else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
+                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                else if (responseResult is Result.Error)
+                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+            }
+        }
+    }
 
     suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
         Timber.e("Token", token)
@@ -191,7 +208,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         }
         return true
     }
-
 
     fun getMilestoneForLoanCenter( loanApplicationId:Int) {
         viewModelScope.launch (Dispatchers.IO) {

@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
+import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -469,9 +470,11 @@ interface ServerApi{
     suspend fun getOtherIncomeTypes(
         @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
 
-
+    @Headers("isAuthorizable: false")
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
-    suspend fun login(@Body loginRequest: LoginRequest,  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""): Response<LoginResponse>
+    suspend fun login(@Body loginRequest: LoginRequest
+    //                  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""
+    ): Response<LoginResponse>
     //suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
 
     @GET("api/mcu/mobile/identity/mcuaccount/GetMcuTenantTwoFaValues")
@@ -712,6 +715,14 @@ interface ServerApi{
 
     @POST("api/mcu/mobile/DocumentManagement/Request/Save")
     suspend fun sendDocRequest(@Header("Authorization")  Authorization:String, @Body data: SendDocRequestModel): Response<Unit>
+
+    // borrower invitation
+    @GET("api/mcu/mobile/loanapplication/loan/GetBorrowerInvitationStatus")
+    suspend fun getInvitationStatus(
+        //@Header("Authorization") Authorization:String,
+        @Query("loanApplicationId") loanApplicationId: Int,
+        @Query("borrowerId") borrowerId: Int): BorrowerInvitationStatus
+
 
 
 

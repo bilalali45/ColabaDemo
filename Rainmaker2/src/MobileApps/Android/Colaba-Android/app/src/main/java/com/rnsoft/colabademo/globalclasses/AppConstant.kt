@@ -181,6 +181,7 @@ object AppConstant {
         const val bPhoneNumber:String = "bPhoneNumber"
 
         const val bEmail:String = "bEmail"
+        const val isNewApplicationCreated : String = "true"
 
         const val milestone:String = "milestone"
 

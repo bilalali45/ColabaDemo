@@ -36,6 +36,7 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
 
     fun setCreateNewParams(createNewApplicationParams:CreateNewApplicationParams){
         _createNewApplicationParams.value = createNewApplicationParams
+
     }
 
     suspend fun searchByBorrowerContact(token:String, searchKeyword:String){

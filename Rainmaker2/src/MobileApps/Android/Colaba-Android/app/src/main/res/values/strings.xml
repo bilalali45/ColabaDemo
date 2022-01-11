@@ -28,7 +28,7 @@
     <string name="login_with_another_account">Login with another account</string>
     <string name="sign_in_with_password">Sign in with Password</string>
 
-    <string name="send_invitation">SEND INVITATION</string>
+    <string name="send_invitation">Send Invitation</string>
 
     <string-array name="array_occupancy_type">
         <item>Primary Residence</item>
@@ -64,6 +64,7 @@
     <string name="add_current_address">Add Current Residence</string>
     <string name="add_previous_address">Add Previous Residence</string>
     <string name="mailing_address_added">Mailing address has been added</string>
+    <string name="new_application_created">New application has been created</string>
     <string name="doc_filter_all">All</string>
     <string name="doc_filter_in_draft">In Draft</string>
     <string name="doc_filter_borrower_to_do">Borrower To Do</string>
@@ -92,12 +93,17 @@
     <string name="save_continue">Save &amp; Continue</string>
 
     <string name="primary_borrower_info">Primary Borrower Info</string>
+    <string name="primary_borrower">Primary Borrower</string>
+    <string name="resend_invitation">Resend Invitation</string>
+    <string name="send_letter">Send Letter</string>
+    <string name="pre_approval_letter">Pre-Approval</string>
 
     <string name="borrower_a_to_z">Primary Borrower Last Name (A to Z)</string>
     <string name="borrower_z_to_a">Primary Borrower Last Name (Z to A)</string>
 
     <string name="application">Application</string>
     <string name="documents">Documents</string>
+    <string name="review_documents">Review Documents</string>
     <string name="documents_small">documents</string>
     <string name="conversation">Conversations</string>
     <string name="archive">Archive</string>

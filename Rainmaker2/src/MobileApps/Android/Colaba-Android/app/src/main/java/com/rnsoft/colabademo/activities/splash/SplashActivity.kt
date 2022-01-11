@@ -25,11 +25,6 @@ class SplashActivity : AppCompatActivity() {
            // startActivity(Intent(this@SplashActivity, DashBoardActivity::class.java))
           //  redirectToApplicationDetailScreen()
 
-            sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                Log.e("authToken-Splash", authToken)
-            }
-
-
             if(sharedPreferences.getBoolean(AppConstant.IS_LOGGED_IN, false)
                 && sharedPreferences.getBoolean(AppConstant.isbiometricEnabled, false)
             ) {

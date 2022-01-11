@@ -16,7 +16,7 @@ constructor(
 
     ): Result<LoginResponse> {
         spEditor.putBoolean(AppConstant.isbiometricEnabled, false).apply()
-        val genericResult = dataSource.login(userEmail, password , dontAskTwoFaIdentifier )
+        val genericResult = dataSource.login(userEmail, password)  //, dontAskTwoFaIdentifier)
         if (genericResult is Result.Success) {
             genericResult.data.data?.let { storeLoggedInUserInfo(it) }
 
