@@ -20,8 +20,8 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     @IBOutlet weak var txtfieldTransactionType: ColabaTextField!
     @IBOutlet weak var txtfieldExpectedProceeds: ColabaTextField!
     @IBOutlet weak var loanSecureView: UIView!
-    @IBOutlet weak var loanSecureViewTopConstraint: NSLayoutConstraint! // 40 or 0
-    @IBOutlet weak var loanSecureViewHeightConstraint: NSLayoutConstraint! // 140 or 0
+    @IBOutlet weak var loanSecureViewTopConstraint: NSLayoutConstraint! // 50 or 0
+    @IBOutlet weak var loanSecureViewHeightConstraint: NSLayoutConstraint! // 183 or 0
     @IBOutlet weak var yesStackView: UIStackView!
     @IBOutlet weak var btnYes: UIButton!
     @IBOutlet weak var lblYes: UILabel!
@@ -29,7 +29,7 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     @IBOutlet weak var btnNo: UIButton!
     @IBOutlet weak var lblNo: UILabel!
     @IBOutlet weak var txtfieldAssetsType: ColabaTextField!
-    @IBOutlet weak var txtfieldAssetsTypeTopConstraint: NSLayoutConstraint! // 20 or 0
+    @IBOutlet weak var txtfieldAssetsTypeTopConstraint: NSLayoutConstraint! // 40 or 0
     @IBOutlet weak var txtFieldAssetsTypeHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var assetsDescriptionTextViewContainer: UIView!
     @IBOutlet weak var btnSaveChanges: ColabaButton!
@@ -59,7 +59,14 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     func setMaterialTextFieldsAndViews(){
         
         yesStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(yesStackViewTapped)))
+        yesStackView.layer.cornerRadius = 8
+        yesStackView.layer.borderWidth = 1
+        yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+        
         noStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(noStackViewTapped)))
+        noStackView.layer.cornerRadius = 8
+        noStackView.layer.borderWidth = 1
+        noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
         
         let estimatedFrame = assetsDescriptionTextViewContainer.frame
         txtViewAssetsDescription = MDCFilledTextArea(frame: estimatedFrame)
@@ -132,8 +139,8 @@ class AddProceedsFromTransactionViewController: BaseViewController {
         txtfieldExpectedProceeds.isHidden = false
         if (option.localizedCaseInsensitiveContains("Proceeds From A Loan")){
             loanSecureView.isHidden = false
-            loanSecureViewTopConstraint.constant = 40
-            loanSecureViewHeightConstraint.constant = 140
+            loanSecureViewTopConstraint.constant = 50
+            loanSecureViewHeightConstraint.constant = 183
             txtfieldAssetsType.isHidden = true
             txtfieldAssetsTypeTopConstraint.constant = 0
             txtFieldAssetsTypeHeightConstraint.constant = 0
@@ -192,13 +199,28 @@ class AddProceedsFromTransactionViewController: BaseViewController {
     }
     
     func changeLoanSecureStatus(){
-        btnYes.setImage(UIImage(named: isLoanSecureByAnAsset ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblYes.font = isLoanSecureByAnAsset ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
-        btnNo.setImage(UIImage(named: !isLoanSecureByAnAsset ? "RadioButtonSelected" : "RadioButtonUnselected"), for: .normal)
-        lblNo.font = !isLoanSecureByAnAsset ? Theme.getRubikMediumFont(size: 15) : Theme.getRubikRegularFont(size: 15)
+        btnYes.setImage(UIImage(named: isLoanSecureByAnAsset ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblYes.font = isLoanSecureByAnAsset ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblYes.textColor = isLoanSecureByAnAsset ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
+        btnNo.setImage(UIImage(named: !isLoanSecureByAnAsset ? "RadioButtonSelected" : "radioUnslected"), for: .normal)
+        lblNo.font = !isLoanSecureByAnAsset ? Theme.getRubikSemiBoldFont(size: 14) : Theme.getRubikRegularFont(size: 14)
+        lblNo.textColor = !isLoanSecureByAnAsset ? Theme.getAppBlackColor() : Theme.getAppGreyColor()
         txtfieldAssetsType.isHidden = !isLoanSecureByAnAsset
-        txtfieldAssetsTypeTopConstraint.constant = isLoanSecureByAnAsset ? 20 : 0
+        txtfieldAssetsTypeTopConstraint.constant = isLoanSecureByAnAsset ? 40 : 0
         txtFieldAssetsTypeHeightConstraint.constant = isLoanSecureByAnAsset ? 39 : 0
+        
+        if (isLoanSecureByAnAsset){
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            yesStackView.dropShadowToCollectionViewCell()
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            noStackView.removeShadow()
+        }
+        else{
+            noStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.3).cgColor
+            noStackView.dropShadowToCollectionViewCell()
+            yesStackView.layer.borderColor = Theme.getButtonBlueColor().withAlphaComponent(0.1).cgColor
+            yesStackView.removeShadow()
+        }
     }
     
     @IBAction func btnBackTapped(_ sender: UIButton) {
