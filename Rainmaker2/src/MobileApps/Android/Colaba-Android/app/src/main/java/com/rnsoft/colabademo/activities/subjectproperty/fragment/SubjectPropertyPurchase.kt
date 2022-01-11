@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -63,7 +64,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     private fun addObserver(){
         viewModelSubProperty.updatedAddress.observe(viewLifecycleOwner, {
             purchaseAddress = it
-            //binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
             val builder = StringBuilder()
             it.street?.let { builder.append(it).append(" ") }
             it.unit?.let { builder.append(it) }
@@ -90,19 +90,15 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                     details.subPropertyData?.addressData?.let {
                         if (it.street == null && it.unit == null && it.city == null && it.stateName == null && it.countryName == null) {
                             binding.radioSubPropertyTbd.isChecked = true
-                            binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                         } else {
                             binding.radioSubPropertyAddress.isChecked = true
-                            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-                            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                            //binding.tvSubPropertyAddress.text = it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryNameopen
+                            binding.addressLayout.visibility = View.VISIBLE
                             displayAddress(it)
                             purchaseAddress = it // list for sending data to api
                         }
 
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
-                        binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                     }
 
                     // property id
@@ -110,11 +106,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         for (item in propertyTypeList) {
                             if (item.id == selectedId) {
                                 binding.tvPropertyType.setText(item.name, false)
-                                CustomMaterialFields.setColor(
-                                    binding.layoutPropertyType,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                CustomMaterialFields.setColor(binding.layoutPropertyType, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
@@ -124,11 +116,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                         for (item in occupancyTypeList) {
                             if (item.id == occupancyId) {
                                 binding.tvOccupancyType.setText(item.name, false)
-                                CustomMaterialFields.setColor(
-                                    binding.layoutOccupancyType,
-                                    R.color.grey_color_two,
-                                    requireActivity()
-                                )
+                                CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 break
                             }
                         }
@@ -136,39 +124,22 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
                     // appraised value
                     details.subPropertyData?.appraisedPropertyValue?.let { value ->
                         binding.edAppraisedPropertyValue.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(
-                            binding.layoutAppraisedProperty,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
-
+                        CustomMaterialFields.setColor(binding.layoutAppraisedProperty, R.color.grey_color_two, requireActivity())
                     }
                     // property tax
                     details.subPropertyData?.propertyTax?.let { value ->
                         binding.edPropertyTax.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(
-                            binding.layoutPropertyTaxes,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutPropertyTaxes, R.color.grey_color_two, requireActivity())
                     }
                     // home insurance
                     details.subPropertyData?.homeOwnerInsurance?.let { value ->
                         binding.edHomeownerInsurance.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(
-                            binding.layoutHomeownerInsurance,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutHomeownerInsurance, R.color.grey_color_two, requireActivity())
                     }
                     // flood insurance
                     details.subPropertyData?.floodInsurance?.let { value ->
                         binding.edFloodInsurance.setText(Math.round(value).toString())
-                        CustomMaterialFields.setColor(
-                            binding.layoutFloodInsurance,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutFloodInsurance, R.color.grey_color_two, requireActivity())
                     }
 
                     details.subPropertyData?.isMixedUseProperty?.let { value ->
@@ -252,17 +223,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
 
                         binding.tvOccupancyType.onItemClickListener =
                             object : AdapterView.OnItemClickListener {
-                                override fun onItemClick(
-                                    p0: AdapterView<*>?,
-                                    p1: View?,
-                                    position: Int,
-                                    id: Long
-                                ) {
-                                    CustomMaterialFields.setColor(
-                                        binding.layoutOccupancyType,
-                                        R.color.grey_color_two,
-                                        requireActivity()
-                                    )
+                                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                                    CustomMaterialFields.setColor(binding.layoutOccupancyType, R.color.grey_color_two, requireActivity())
                                 }
                             }
                         getPurchaseDetails(detailCounter)
@@ -365,21 +327,17 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
             binding.radioSubPropertyAddress.isChecked = false
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
-            binding.tvSubPropertyAddress.visibility = View.GONE
+            binding.addressLayout.visibility = View.GONE
         }
 
         // radio sub property address
         binding.radioSubPropertyAddress.setOnClickListener {
             binding.radioSubPropertyTbd.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            binding.addressLayout.visibility = View.VISIBLE
             openAddress()
         }
 
-        binding.layoutAddress.setOnClickListener {
+        binding.addressLayout.setOnClickListener {
             openAddress()
         }
 
@@ -396,18 +354,23 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         // radio btn mixed use property Yes
         binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-                binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-            }
+                binding.radioMixedPropertyNo.isChecked = false
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+
         }
+
         // radio btn mixed use property No
         binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+                binding.radioMixedPropertyYes.isChecked = false
                 binding.layoutMixedPropertyDetail.visibility = View.GONE
-            }
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
+
         // close
         binding.backButton.setOnClickListener {
             dismissActivity()
@@ -445,9 +408,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             displayAddress(result)
             binding.radioSubPropertyAddress.isChecked = true
             binding.radioSubPropertyTbd.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            binding.addressLayout.visibility = View.VISIBLE
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.mixedPropertyDetails)?.observe(
@@ -547,20 +508,6 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
     }
 
-   /* private fun updateApplicationTab() {
-        lifecycleScope.launchWhenStarted{
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-             val activity = (activity as? SubjectPropertyActivity)
-             activity?.loanApplicationId?.let {
-                 detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = it)
-             }
-         }
-      }
-        detailViewModel.borrowerApplicationTabModel.observe(viewLifecycleOwner, {
-            Log.e("nwe data observed", "true")
-            dismissActivity()
-        })
-    } */
 
     override fun onCoborrowerClick(position: Int, isOccupying: Boolean) {
         lifecycleScope.launchWhenStarted{

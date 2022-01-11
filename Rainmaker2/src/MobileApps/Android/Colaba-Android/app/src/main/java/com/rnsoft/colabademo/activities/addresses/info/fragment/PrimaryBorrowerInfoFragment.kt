@@ -142,15 +142,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         if(ownTypeId == SECONDARY_BORROWER_ID) bi.borrowerType.text= getString(R.string.heading_borrower_secondary) else bi.borrowerType.text= getString(R.string.heading_borrower_primary)
 
         try {
-//                if (firstName != null && lastName != null) {
-//                    var name = firstName!!.capitalize().plus(" ").plus(lastName!!.capitalize())
-//                    if (name.isNotEmpty() && name.isNotBlank() && name.length > 0) {
-//                        bi.name.setText(name)
-//                        bindingMilitary.tvQues.text =
-//                            "Was ".plus(name) + " ever activated during their tour of duty?"
-//                    }
-//                }
-
             val builder = StringBuilder()
             if(firstName!!.isNotEmpty() && firstName != "null"){
                 builder.append(firstName!!.capitalize())
@@ -416,13 +407,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         val lastName: String = bi.edLastName.text.toString()
         val email: String = bi.edEmail.text.toString().trim()
         val homeNum: String = bi.edHomeNumber.text.toString().trim()
-
         val middleName = if (bi.edMiddleName.text.toString().trim().length > 0) bi.edMiddleName.text.toString() else null // get middle name
         val suffix = if (bi.edSuffix.text.toString().trim().length > 0) bi.edSuffix.text.toString() else null  // suffix
         val workPhoneNumber = if (bi.edWorkNum.text.toString().trim().length > 0) bi.edWorkNum.text.toString() else null // work number
         val workExt = if (bi.edExtNum.text.toString().trim().length > 0) bi.edExtNum.text.toString() else null
         val cellPhone = if (bi.edCellNum.text.toString().trim().length > 0) bi.edCellNum.text.toString() else null
-
 
         if (email.isNotEmpty() && email.length > 0){
             if (!isValidEmailAddress(email.trim())) {
@@ -625,12 +614,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
           //Log.e("Frag Info onResume","observedAddress")
 
             result?.let {
-
-                //Log.e("result","found")
                 try {
                     val listPosition = it.position
-                    //Log.e("listAdd size", "" + listAddress.size)
-                   // Log.e("position", "" + listPosition)
 
                     if (listAddress.size > 0){
 
@@ -659,9 +644,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             prevAddressModel = model
                         }
 
-                       // Log.e("listAdd  modified item", "" + listAddress)
-
-
                         listAddress.add(
                             listPosition!!,
                             PreviousAddresses(
@@ -679,7 +661,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                     else {
 
-                       // Log.e("address is ","null-true")
                         var fromDate: String? = null
                         result.fromDate?.let {
                             if (it.length > 0)
@@ -718,7 +699,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         // previous address
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<PreviousAddresses>(AppConstant.previous_address)?.observe(
             viewLifecycleOwner) { result ->
-            //Log.e("Previous address receive","true")
             result?.let {
 
                 try {
@@ -752,8 +732,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                         result.addressModel?.let { model ->
                             prevAddressModel = model
                         }
-
-                        Log.e("listAdd  modified item", "" + listAddress)
 
 
                         listAddress.add(
@@ -792,7 +770,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                             prevAddressModel = model
                         }
 
-                        Log.e("listAdd  add new ", "" + listAddress)
+                        //Log.e("listAdd  add new ", "" + listAddress)
                         listAddress.add(listPosition!!,
                             PreviousAddresses(id = prevId, housingStatusId = housingStatus, monthlyRent = rent, fromDate = fromDate, toDate = toDate, addressModel = prevAddressModel))
                         setResidence()
@@ -1014,7 +992,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             bundle.putString(AppConstant.service_date,militaryServiceDate)
             findNavController().navigate(R.id.action_info_active_duty,bundle)
         }
-        //bindingMilitary.layoutNationalGuard.setOnClickListener { findNavController().navigate(R.id.action_info_reserve) }
         citizenshipBinding.layoutVisaStatusOther.setOnClickListener {
             val bundle = Bundle()
             bundle.putParcelable(AppConstant.borrower_citizenship,citizenship)
@@ -1073,10 +1050,20 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
         }
 
+        // unmarried
+        msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
+
+            else
+                msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+        }
+
         //married
         msBinding.rbMarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
                 msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
+
             else
                 msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
         }
@@ -1222,29 +1209,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         touchListener!!
             .setClickable(object : RecyclerTouchListener.OnRowClickListener {
                 override fun onRowClicked(position: Int){
-                    /*if(listAddress.get(position).isCurrentAddress){
-                        addressBtnText = getString(R.string.previous_address)
-                        val bundle = Bundle()
-                        bundle.putString(AppConstant.showData,AppConstant.showData)
-                        findNavController().navigate(R.id.action_info_current_address,bundle)
-                    }
-                    else {
-                        if(listAddress.get(0).isCurrentAddress){
-                            addressBtnText = getString(R.string.previous_address)
-                        } else {
-                            addressBtnText = getString(R.string.current_address)
-                        }
-                        val bundle = Bundle()
-                        bundle.putInt(AppConstant.address,position)
-                        findNavController().navigate(R.id.action_info_previous_address,bundle)
-                    } */
 
                     val bundle = Bundle()
                     bundle.putInt("position",position)
-                    //bundle.putString("type","idontknow")
                     selectedPosition = position
                     bundle.putParcelable(AppConstant.previous_address,listAddress.get(position))
-                    //Log.e("Prevaddress",""+listAddress.get(position))
                     findNavController().navigate(R.id.action_info_previous_address,bundle)
                 }
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
@@ -1254,9 +1223,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                 RecyclerTouchListener.OnSwipeOptionsClickListener {
 
                 override fun onSwipeOptionClicked(viewID: Int, position: Int) {
-                    //var text = getString(R.string.delete_prev_address)
                     selectedPosition = position
-                    var message : String = "Are you sure you want to delete Previous Residence?"
+                    var message = "Are you sure you want to delete Previous Residence?"
                     if(firstName != null) {
                         message = "Are you sure you want to delete ".plus(firstName).plus("'s Previous Residence?")
                     }
@@ -1346,7 +1314,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         bi.edDateOfBirth.showSoftInputOnFocus = false
         bi.edDateOfBirth.setOnClickListener { openCalendar() }
         bi.edDateOfBirth.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
-
         bi.edMiddleName.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edMiddleName, bi.layoutMiddleName, requireContext()))
         bi.edSuffix.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edSuffix, bi.layoutSuffix, requireContext()))
         bi.edWorkNum.setOnFocusChangeListener(CustomFocusListenerForEditText(bi.edWorkNum,bi.layoutWorkNum, requireContext()))
@@ -1397,18 +1364,12 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             msBinding.rbMarried.isChecked = false
             msBinding.rbSeparated.isChecked = false
             msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
-            //msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
-            //msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
-
-
             bundle.putParcelable(AppConstant.marital_status, maritalStatus)
             findNavController().navigate(R.id.action_info_unmarried_addendum, bundle)
         }
         if (isMarried) {
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
-            //msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
-            //msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
             // uncheck
             msBinding.rbUnmarried.isChecked = false
             msBinding.rbSeparated.isChecked = false
@@ -1420,8 +1381,7 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         if (isSeparated) {
             msBinding.unmarriedAddendum.visibility = View.GONE
             msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
-            //msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
-            //msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+
             // uncheck
             msBinding.rbUnmarried.isChecked = false
             msBinding.rbMarried.isChecked = false

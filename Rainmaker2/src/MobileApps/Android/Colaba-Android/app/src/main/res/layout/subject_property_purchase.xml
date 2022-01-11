@@ -38,7 +38,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"/>
+            app:layout_constraintVertical_bias="0.5" />
 
         <View
             android:id="@+id/tab_top_border"
@@ -46,9 +46,9 @@
             android:layout_height="1dp"
             android:layout_marginTop="12sp"
             android:background="#E5E5E5"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -59,8 +59,8 @@
         android:fillViewport="true"
         android:fitsSystemWindows="true"
         android:isScrollContainer="false"
-        android:scrollbars="none"
         android:orientation="vertical"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +73,9 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:paddingBottom="250dp"
             android:clickable="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="250dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -84,37 +84,43 @@
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_sub_property_tbd"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:background="@null"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
                     android:drawablePadding="15dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="15dp"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
                     android:text="@string/subject_property_tbd"
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/content_bg_with_drop_shadow"
                 android:clickable="true">
 
-                <RadioButton
+                <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_sub_property_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="50dp"
+                    android:background="@null"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
-                    android:paddingStart="15dp"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/subject_property_address"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:ignore="RtlSymmetry" />
 
-                <TextView
+                <!--<TextView
                     android:id="@+id/radio_txt_property_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,25 +131,41 @@
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="@+id/radio_sub_property_address"
                     app:layout_constraintStart_toEndOf="@+id/radio_sub_property_address"
-                    app:layout_constraintTop_toTopOf="@+id/radio_sub_property_address" />
+                    app:layout_constraintTop_toTopOf="@+id/radio_sub_property_address" />-->
 
-                <TextView
-                    android:visibility="gone"
-                    android:id="@+id/tv_sub_property_address"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/address_layout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="8dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:maxLines="2"
-                    android:paddingBottom="15dp"
-                    android:text=""
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/radio_txt_property_add"
-                    app:layout_constraintTop_toBottomOf="@+id/radio_txt_property_add" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radio_sub_property_address">
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/colaba_app_border_color" />
+
+                    <TextView
+                        android:id="@+id/tv_sub_property_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:maxLines="2"
+                        android:text=""
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -261,78 +283,121 @@
                 android:textColor="@color/grey_color_two"
                 android:textSize="13sp" />
 
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+            <!--  <androidx.appcompat.widget.AppCompatRadioButton
+                  android:id="@+id/radio_mixed_property_yes"
+                  android:layout_width="wrap_content"
+                  android:layout_height="22dp"
+                  android:button="@drawable/radiodraw"
+                  android:clickable="true"
+                  android:fontFamily="@font/rubik_regular"
+                  android:paddingStart="15dp"
+                  android:text="@string/yes"
+                  android:textColor="@color/grey_color_one"
+                  android:textSize="14sp" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radio_mixed_property_yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:button="@drawable/radiodraw"
-                    android:clickable="true"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="15dp"
-                    android:text="@string/yes"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="14sp" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/radio_mixed_property_no"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="18dp"
-                    android:button="@drawable/radiodraw"
-                    android:clickable="true"
-                    android:fontFamily="@font/rubik_regular"
-                    android:paddingStart="15dp"
-                    android:text="@string/no"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="14sp" />
-
-            </RadioGroup>
+              <androidx.appcompat.widget.AppCompatRadioButton
+                  android:id="@+id/radio_mixed_property_no"
+                  android:layout_width="wrap_content"
+                  android:layout_height="22dp"
+                  android:layout_marginTop="18dp"
+                  android:button="@drawable/radiodraw"
+                  android:clickable="true"
+                  android:fontFamily="@font/rubik_regular"
+                  android:paddingStart="15dp"
+                  android:text="@string/no"
+                  android:textColor="@color/grey_color_one"
+                  android:textSize="14sp" /> -->
 
             <LinearLayout
-                android:id="@+id/layout_mixed_property_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/search_view_holder_style"
-                android:clickable="true"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:text="@string/details_heading"
-                    android:textColor="@color/txt_color_app_headings"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/mixed_property_explanation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:ellipsize="end"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radio_mixed_property_yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:drawablePadding="15dp"
                     android:fontFamily="@font/rubik_regular"
-                    android:lineSpacingExtra="10dp"
-                    android:maxLines="2"
-                    android:text=""
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/yes"
+                    android:textAllCaps="true"
                     android:textColor="@color/grey_color_two"
-                    android:textSize="13sp" />
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvQues" />
 
+                <LinearLayout
+                    android:id="@+id/layout_mixed_property_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/colaba_app_border_color" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/rubik_medium"
+                        android:text="@string/details_heading"
+                        android:textColor="@color/txt_color_app_headings"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mixed_property_explanation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/rubik_regular"
+                        android:lineSpacingExtra="10dp"
+                        android:maxLines="2"
+                        android:text=""
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
             </LinearLayout>
 
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_mixed_property_no"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/content_background_full_white"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:fontFamily="@font/rubik_regular"
+                android:layoutDirection="rtl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/no"
+                android:textAllCaps="true"
+                android:textColor="@color/grey_color_two"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioButtonYes" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_appraised_property"
@@ -369,7 +434,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_property_taxes"
                 android:layout_width="match_parent"
@@ -404,7 +468,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_homeowner_insurance"
                 android:layout_width="match_parent"
@@ -438,7 +501,6 @@
                     android:textSize="@dimen/ed_txt_size_primary_info" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_flood_insurance"
@@ -493,6 +555,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:scrollbars="none"
+                tools:listitem="@layout/occupancy_list_item"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintTop_toBottomOf="@+id/layout_find_contact" />
 

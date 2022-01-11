@@ -385,13 +385,13 @@ class MarriageDetailFragment : BaseFragment() {
 
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
+                binding.noRadioBtn.isChecked = false
                 if(relationLayout){
                     binding.layoutCoborrower.visibility = View.GONE
                     binding.primaryRelationInfoLayout.visibility = View.VISIBLE
                 } else {
                     binding.layoutCoborrower.visibility = View.VISIBLE
                     binding.primaryRelationInfoLayout.visibility = View.GONE
-                    //binding.tvCoborrower.setText("")
                 }
             }
             else {
@@ -402,6 +402,7 @@ class MarriageDetailFragment : BaseFragment() {
 
         binding.noRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
+                binding.yesRadioBtn.isChecked = false
                 binding.spouseInfoLayout.visibility = View.VISIBLE
                 binding.primaryRelationInfoLayout.visibility = View.GONE
                 binding.noRadioBtn.setTypeface(null, Typeface.BOLD)

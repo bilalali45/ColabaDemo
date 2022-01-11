@@ -77,7 +77,7 @@ class UnMarriedFragment : BaseFragment() {
             binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
-        binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
+        /*binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.yesRadioBtn -> {
                     binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
@@ -92,7 +92,29 @@ class UnMarriedFragment : BaseFragment() {
                 else -> {
                 }
             }
-        })
+        }) */
+
+        binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked){
+                binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
+                binding.noRadioBtn.isChecked = false
+            }
+
+            else
+                binding.yesRadioBtn.setTypeface(null, Typeface.NORMAL)
+        }
+
+        binding.noRadioBtn.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
+                binding.yesRadioBtn.isChecked = false
+            }
+            else
+                binding.noRadioBtn.setTypeface(null, Typeface.NORMAL)
+        }
+
+
+
 
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()

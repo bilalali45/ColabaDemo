@@ -23,7 +23,6 @@ class ReserveFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-    //private val viewModel : PrimaryBorrowerViewModel by viewModels()
     private var _binding: ReserveLayoutBinding? = null
     private val binding get() = _binding!!
     var firstName : String? = null
@@ -61,15 +60,19 @@ class ReserveFragment : BaseFragment() {
         }
 
         binding.radioButtonYes.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 binding.radioButtonYes.setTypeface(null, Typeface.BOLD)
+                binding.radioButton2No.isChecked = false
+            }
             else
                 binding.radioButtonYes.setTypeface(null, Typeface.NORMAL)
         }
 
         binding.radioButton2No.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked)
+            if(isChecked) {
                 binding.radioButton2No.setTypeface(null, Typeface.BOLD)
+                binding.radioButtonYes.isChecked = false
+            }
             else
                 binding.radioButton2No.setTypeface(null, Typeface.NORMAL)
         }
@@ -77,10 +80,10 @@ class ReserveFragment : BaseFragment() {
         binding.btnSave.setOnClickListener {
             var activated :String? = null
             if(binding.radioButtonYes.isChecked)
-                activated = "Yes"
+                activated = getString(R.string.yes)
 
             if(binding.radioButton2No.isChecked)
-                activated = "No"
+                activated = getString(R.string.no)
 
 
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.RESERVE_ACTIVATED, activated)
