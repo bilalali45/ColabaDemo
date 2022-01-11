@@ -171,8 +171,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
             binding.radioSubPropertyAddress.isChecked = false
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.NORMAL)
+            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.BOLD)
+           // binding.radioSubPropertyAddress.setTypeface(null,Typeface.NORMAL)
             binding.tvSubPropertyAddress.visibility = View.GONE
         }
 
@@ -180,17 +180,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.radioSubPropertyAddress.setOnClickListener {
             binding.radioSubPropertyTbd.isChecked = false
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+            //binding.tvSubPropertyAddress.setTypeface(null,Typeface.BOLD)
+            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
             openAddress()
         }
 
-        binding.radioTxtPropertyAdd.setOnClickListener {
-            binding.radioSubPropertyTbd.isChecked = false
-            binding.radioSubPropertyAddress.isChecked = true
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+        binding.addressLayout.setOnClickListener {
             openAddress()
         }
 
@@ -211,16 +206,16 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // radio btn mixed use property Yes
         binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-                binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
+              //  binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
+               // binding.radioMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
             }
         }
 
         // radio btn mixed use property No
         binding.radioMixedPropertyNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
-                binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
+               // binding.radioMixedPropertyNo.setTypeface(null, Typeface.BOLD)
+               // binding.radioMixedPropertyYes.setTypeface(null, Typeface.NORMAL)
                 binding.layoutMixedPropertyDetail.visibility = View.GONE
             }
         }
@@ -238,15 +233,15 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.radioHasFirstMortgageYes.setOnClickListener {
             onFirstMortgageYes()
             if(firstMortgageModel != null){
-                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+               // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+                //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
                 binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
             } else{
                 binding.radioHasFirstMortgageYes.isChecked = false
-                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+               // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
                 binding.radioHasFirstMortgageNo.isChecked = true
-                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
+               // binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
@@ -257,8 +252,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // first mortgage no
         binding.radioHasFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.BOLD)
+               // binding.radioHasFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
@@ -267,8 +262,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // sec mortgage no
         binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+               // binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+                //binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -284,14 +279,14 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         binding.rbSecMortgageYes.setOnClickListener{
             onSecMortgageYesClick()
             if(secondMortgageModel != null){
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+              //  //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
                 binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
                 binding.layoutSecMortgageDetail.visibility = View.VISIBLE
             } else{
                 binding.rbSecMortgageYes.isChecked = false
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+               // binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
                 binding.rbSecMortgageNo.isChecked = true
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
+                //binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -325,13 +320,11 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                     details.subPropertyData?.addressRefinance?.let {
                         if (it.street == null && it.unit == null && it.city == null && it.stateName == null && it.countryName == null) {
                             binding.radioSubPropertyTbd.isChecked = true
-                            binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
+                            //binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                         } else {
                             binding.radioSubPropertyAddress.isChecked = true
-                            binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
+                            //binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
                             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-                            //binding.tvSubPropertyAddress.text =
-                            //    it.street + " " + it.unit + "\n" + it.city + " " + it.stateName + " " + it.zipCode + " " + it.countryName
 
                             // list for send data to address fragment
                             displayAddress(it)
@@ -339,17 +332,13 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                         }
                     } ?: run {
                         binding.radioSubPropertyTbd.isChecked = true
-                        binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
+                        //binding.radioSubPropertyTbd.setTypeface(null, Typeface.BOLD)
                     }
 
                     details.subPropertyData?.rentalIncome?.let {
                         binding.edRentalIncome.setText(Math.round(it).toString())
                         binding.layoutRentalIncome.visibility = View.VISIBLE
-                        CustomMaterialFields.setColor(
-                            binding.layoutRentalIncome,
-                            R.color.grey_color_two,
-                            requireActivity()
-                        )
+                        CustomMaterialFields.setColor(binding.layoutRentalIncome, R.color.grey_color_two, requireActivity())
                     }
                     // property id
                     details.subPropertyData?.propertyTypeId?.let { selectedId ->
@@ -612,8 +601,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             binding.radioSubPropertyAddress.isChecked = true
             binding.radioSubPropertyTbd.isChecked = false
             binding.tvSubPropertyAddress.visibility = View.VISIBLE
-            binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
-            binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
+           // binding.radioTxtPropertyAdd.setTypeface(null,Typeface.BOLD)
+            //binding.radioSubPropertyTbd.setTypeface(null,Typeface.NORMAL)
         }
 
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.mixedPropertyDetails)?.observe(

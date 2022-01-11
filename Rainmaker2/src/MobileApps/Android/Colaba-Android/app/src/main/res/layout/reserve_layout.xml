@@ -2,13 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/assets_top_container"
+        android:id="@+id/topbar"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:fontFamily="@font/rubik_medium"
-            android:text="Non Permanent Resident Alien"
+            android:text="@string/non_permanent_resident_alien"
             android:textColor="@color/grey_color_one"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -79,9 +78,52 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assets_top_container" />
+        app:layout_constraintTop_toBottomOf="@+id/topbar" />
 
-    <RadioGroup
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radioButtonYes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layoutDirection="rtl"
+        android:fontFamily="@font/rubik_regular"
+        android:text="@string/yes"
+        android:textColor="@color/radio_text_color"
+        android:textSize="15sp"
+        android:drawablePadding="15dp"
+        android:button="@null"
+        android:drawableStart="@drawable/radiodraw"
+        android:background="@drawable/content_background_full_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvQues"/>
+
+    <androidx.appcompat.widget.AppCompatRadioButton
+        android:id="@+id/radioButton2No"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layoutDirection="rtl"
+        android:fontFamily="@font/rubik_regular"
+        android:text="@string/no"
+        android:textColor="@color/radio_text_color"
+        android:textSize="15sp"
+        android:checked="true"
+        android:button="@null"
+        android:drawableStart="@drawable/radiodraw"
+        android:background="@drawable/content_background_full_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioButtonYes"/>
+
+
+ <!--   <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -113,7 +155,7 @@
             android:checked="true"
             android:paddingStart="15dp"
             android:button="@drawable/radiodraw"/>
-    </RadioGroup>
+         </RadioGroup> -->
 
 
     <ImageButton

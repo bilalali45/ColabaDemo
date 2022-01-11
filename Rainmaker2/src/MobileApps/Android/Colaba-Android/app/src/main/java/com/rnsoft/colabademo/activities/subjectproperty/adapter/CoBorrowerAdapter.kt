@@ -5,6 +5,8 @@ import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.databinding.OccupancyListItemBinding
 
@@ -33,39 +35,36 @@ class CoBorrowerAdapter(var context: Context, clickListner: CoBorrowerOccupancyC
 
     override fun getItemCount() = bList.size
 
-    inner class DataViewHolder(val binding : OccupancyListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class DataViewHolder(val binding : OccupancyListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: CoBorrowerOccupancyData, position: Int) {
             binding.coBorrowerName.text = data.borrowerFirstName.plus(" ").plus(data.borrowerLastName)
             data.willLiveInSubjectProperty?.let { willLiveInSubjectProperty->
                 if(willLiveInSubjectProperty){
                     binding.radioOccupying.isChecked = true
-                    binding.radioOccupying.setTypeface(null, Typeface.BOLD)
                 }
-                else {
+                else
                     binding.radioNonOccupying.isChecked = true
-                    binding.radioNonOccupying.setTypeface(null, Typeface.BOLD)
-                }
+
             }
 
             binding.radioOccupying.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
-                    binding.radioOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.radioNonOccupying.setTypeface(null, Typeface.NORMAL)
                     clickEvent.onCoborrowerClick(position,true)
+                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
                 }
+                else
+                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+
             }
             // radio non occupying
             binding.radioNonOccupying.setOnCheckedChangeListener { _, isChecked ->
                 if(isChecked){
-                    binding.radioNonOccupying.setTypeface(null, Typeface.BOLD)
-                    binding.radioOccupying.setTypeface(null, Typeface.NORMAL)
+                    binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
                     clickEvent.onCoborrowerClick(position,false)
                 }
+                else
+                    binding.radioOccupying.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
             }
-
-
-
         }
     }
 
