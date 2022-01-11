@@ -11,8 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
@@ -20,6 +18,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.greenrobot.eventbus.EventBus
 import timber.log.Timber
 import javax.inject.Inject
@@ -31,15 +30,11 @@ val tabArray = arrayOf(
     "Inactive Loans"
 )
 
-
 @AndroidEntryPoint
 class HomeFragment : BaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
-    //private val dashBoardViewModel: DashBoardViewModel by activityViewModels()
-    //private val loanViewModel: LoanViewModel by activityViewModels()
     private lateinit var homeViewModel: HomeViewModel
     private var _binding: FragmentHomeBinding? = null
     private lateinit var searchImageView: ImageView
@@ -49,9 +44,8 @@ class HomeFragment : BaseFragment() {
     private var selectedText: String = tabArray[0]
     private var selectedPosition: Int = 0
     private lateinit var pageAdapter: ViewPagerAdapter
-    //private  lateinit var selectedTab:TabLayout.Tab
-
     private lateinit var homeProfileLayout: ConstraintLayout
+    //var listener: (()->Unit)? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -76,12 +70,12 @@ class HomeFragment : BaseFragment() {
         filterImageView = root.findViewById(R.id.filter_imageview)
         searchImageView = root.findViewById(R.id.searchIconImageView)
         assignToMeSwitch = root.findViewById(R.id.assignToMeSwitch)
+
         searchImageView.setOnClickListener {
             findNavController().navigate(R.id.navigation_search, null)
-            // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
-            //Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
+           // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
+           // Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
         }
-
 
         if (sharedPreferences.contains(AppConstant.ASSIGN_TO_ME)) {
             assignToMeSwitch.isChecked =
@@ -102,7 +96,7 @@ class HomeFragment : BaseFragment() {
 
         //viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+        viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback(){
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -178,13 +172,21 @@ class HomeFragment : BaseFragment() {
 
         setGreetingMessageOnTop()
         super.addListeners(binding.root)
+
+        binding.imageView18.setOnClickListener {
+            //if (drawerListener == null) { return@setOnClickListener }
+            //drawerListener?.onDrawerOpenClick()
+            EventBus.getDefault().post(DrawerMenuClickEvent(true))
+        }
+
         return root
     }
 
-    private val assignToMeChangeListener =
+
+    val assignToMeChangeListener =
         CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
             //assignToMeSwitch.setOnClickListener(null)
-            Log.e("selectedText-", selectedText)
+            //Log.e("selectedText-", selectedText)
             loanBaseFragment?.setAssignToMe(isChecked)
             sharedPreferences.edit().putBoolean(AppConstant.ASSIGN_TO_ME, isChecked).apply()
         }
@@ -204,6 +206,8 @@ class HomeFragment : BaseFragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 
 }
 

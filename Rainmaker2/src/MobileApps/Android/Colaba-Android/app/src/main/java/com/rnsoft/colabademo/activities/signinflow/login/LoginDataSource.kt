@@ -14,7 +14,7 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
         val serverResponse: Response<LoginResponse>
         return try {
             serverResponse = serverApi.login(LoginRequest(userEmail, password), dontAskTwoFaIdentifier)
-            //Log.e("login-Response","$serverResponse")
+            Log.e("login-Response","$serverResponse")
 
             if(serverResponse.isSuccessful)
                 Result.Success(serverResponse.body()!!)
@@ -30,7 +30,7 @@ class LoginDataSource @Inject constructor(private val serverApi: ServerApi){
 
             }
 
-        } catch (e: Throwable) {
+        } catch (e: Throwable){
             if(e is NoConnectivityException)
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             else

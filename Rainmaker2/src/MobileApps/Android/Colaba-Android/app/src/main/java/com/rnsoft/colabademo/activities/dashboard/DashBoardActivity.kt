@@ -4,48 +4,54 @@ package com.rnsoft.colabademo
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.rnsoft.colabademo.databinding.DashboardLayoutBinding
+import com.rnsoft.colabademo.databinding.NavHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.async
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
+import javax.security.auth.callback.Callback
 
 
 @AndroidEntryPoint
 class DashBoardActivity : BaseActivity() {
 
     private val dashBoardViewModel: DashBoardViewModel by viewModels()
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     private lateinit var binding: DashboardLayoutBinding
-
-    private val pageSize = 20
-    private val lastId = -1
-    private val mediumId = 1
+    private lateinit var actionBarToggle: ActionBarDrawerToggle
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var headerBinding: NavHeaderBinding
+    //val homeFragment = HomeFragment()
 
     //private var notificationArrayList: ArrayList<NotificationItem> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DashboardLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         AppSetting.userHasLoggedIn = true
 
-        val navView: BottomNavigationView = binding.navView
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navBottomView: BottomNavigationView = binding.navBottomView
+        navController = findNavController(R.id.nav_host_fragment_activity_main)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -57,7 +63,7 @@ class DashBoardActivity : BaseActivity() {
             )
         )
         //setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navBottomView.setupWithNavController(navController)
 
         dashBoardViewModel.notificationCount.observe(this@DashBoardActivity, { count ->
             when {
@@ -68,14 +74,14 @@ class DashBoardActivity : BaseActivity() {
                 //count == -100 -> SandbarUtils.showRegular(this@DashBoardActivity, "Webservice not responding...")
                 count > 0 -> {
                     val badge =
-                        navView.getOrCreateBadge(R.id.navigation_notifications) // previously showBadge
+                        navBottomView.getOrCreateBadge(R.id.navigation_notifications) // previously showBadge
                     badge.number = count
                     badge.backgroundColor = getColor(R.color.colaba_red_color)
                     badge.badgeTextColor = getColor(R.color.white)
                 }
                 count == 0 -> {
                     val badge =
-                        navView.getOrCreateBadge(R.id.navigation_notifications) // previously showBadge
+                        navBottomView.getOrCreateBadge(R.id.navigation_notifications) // previously showBadge
                     badge.isVisible = false
                 }
                 else -> {
@@ -107,6 +113,69 @@ class DashBoardActivity : BaseActivity() {
             val startNewApplicationActivity = Intent(this@DashBoardActivity, StartNewApplicationActivity::class.java)
             startActivity(startNewApplicationActivity)
         }
+
+        initViews()
+
+    }
+
+    private fun initViews(){
+        //val navView: NavigationView = binding.navigationView
+
+        // Pass the ActionBarToggle action into the drawerListener
+        actionBarToggle = ActionBarDrawerToggle(this, binding.drawerLayout, 0, 0)
+        binding.drawerLayout.addDrawerListener(actionBarToggle)
+        binding.navigationView.setupWithNavController(navController)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_invite_agent, R.id.share_app_link,
+                R.id.nav_settings, R.id.nav_logout
+            ), binding.drawerLayout
+        )
+
+        val headerView = binding.navigationView.getHeaderView(0)
+        headerBinding = NavHeaderBinding.bind(headerView)
+
+        headerBinding.navHeaderBack.setOnClickListener {
+            binding.drawerLayout.closeDrawer(Gravity.LEFT)
+        }
+
+        //binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        // Display the hamburger icon to launch the drawer
+        //supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Call syncState() on the action bar so it'll automatically change to the back button when the drawer layout is open
+        actionBarToggle.syncState()
+
+        binding.navigationView.menu.findItem(R.id.nav_logout)
+            .setOnMenuItemClickListener { menuItem: MenuItem? ->
+                //loader.show()
+                binding.drawerLayout.closeDrawer(Gravity.LEFT)
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                   dashBoardViewModel.logout()
+                }
+                true
+            }
+    }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+//    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onDrawerClick(evt: DrawerMenuClickEvent){
+        if(evt.onMenuClick){
+            binding.drawerLayout.openDrawer(Gravity.LEFT)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
     }
 
 

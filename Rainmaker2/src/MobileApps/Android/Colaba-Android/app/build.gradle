@@ -61,6 +61,7 @@ android {
             minifyEnabled false
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"https://qamobilegateway.rainsoftfn.com/"'
+            //buildConfigField "String", "BASE_URL", '"https://devmobilegateway.rainsoftfn.com/"'
             buildConfigField "String", "TEST_USER" , '"rainmaker.rainsoft@gmail.com"'
             buildConfigField "String", "TEST_PASSWORD" , '"Rainsoft!"'
         }

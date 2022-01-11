@@ -46,4 +46,8 @@ class DashBoardRepo  @Inject constructor(
         return dashBoardDataSource.deleteNotifications(token = token , ids = ids)
     }
 
+    suspend fun logout():Result<Any>{
+        return dashBoardDataSource.logout()
+    }
+
 }

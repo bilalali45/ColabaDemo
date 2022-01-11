@@ -24,8 +24,6 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
     private var _binding: SelectedDocsLayoutBinding? = null
     private val binding get() = _binding!!
 
-
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -44,11 +42,9 @@ class SelectedDocsFragment:DocsTypesBaseFragment() {
         }
 
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            findNavController().navigateUp()
         }
     }
-
-
 
     override fun onStart() {
         super.onStart()

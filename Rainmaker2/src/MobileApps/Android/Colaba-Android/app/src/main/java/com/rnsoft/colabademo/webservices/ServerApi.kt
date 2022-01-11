@@ -603,6 +603,9 @@ interface ServerApi{
         //@Header("Authorization" )  Authorization:String,
          @Body putParams:PutParameters):Response<Any>
 
+    @PUT("api/mcu/mobile/identity/mcuaccount/Logout")
+    suspend fun logout():Response<Any>
+
 
     @GET("api/mcu/mobile/loanapplication/loan/getloaninfo")
     suspend fun getLoanInfo(

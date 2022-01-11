@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -80,43 +81,70 @@ internal constructor(
             //holder.loanAmount.text = "$ " + borrower.detail?.loanAmount
             try {
                 if (borrower.detail?.loanAmount!! > 0) {
-                    holder.loanAmount.setText("$ ".plus(formatter.format(Math.round((borrower.detail?.loanAmount)!!.toDouble()))))
+                    holder.loanAmount.setText("$".plus(formatter.format(Math.round((borrower.detail?.loanAmount)!!.toDouble()))))
+                }  else {
+                    Log.e("Loan amount", "0")
                 }
             } catch (e: Exception) { }
         } else
-            holder.loanAmount.text = ""
+            holder.loanAmount.text = "$0"
 
         if(borrower.detail?.propertyValue!=null) {
             //holder.propertyValue.text = "$ " + borrower.detail?.propertyValue
             try {
-                holder.propertyValue.setText("$ ".plus(formatter.format(Math.round((borrower.detail?.loanAmount)!!.toDouble()))))
+                holder.propertyValue.setText("$".plus(formatter.format(Math.round((borrower.detail?.propertyValue)!!.toDouble()))))
             } catch (e: Exception) { }
         }
         else
-            holder.propertyValue.text = ""
+            holder.propertyValue.text = "$0"
 
-        var addressFieldOne = ""
-        var addressFieldTwo = ""
+        //var addressFieldOne = ""
+        //var addressFieldTwo = ""
 
         borrower.detail?.let { details ->
-            details.address?.let { address ->
+            details.address?.let { it ->
 
-                if( address.street!=null ) addressFieldOne += address.street
+              /*  if( address.street!=null ) addressFieldOne += address.street
                 if( address.unit!=null ) addressFieldOne += address.unit
                 if( address.city!=null ) addressFieldOne += address.city
 
                 if( address.stateName!=null  && address.stateName!="None") addressFieldTwo += address.stateName+", "
                 if( address.countryName!=null ) addressFieldTwo += address.countryName+" "
-                if( address.zipCode!=null ) addressFieldTwo += address.zipCode
+                if( address.zipCode!=null ) addressFieldTwo += address.zipCode */
 
+                val builder = StringBuilder()
+                it.street?.let {
+                    if (it != "null" && it.isNotEmpty()) {
+                        builder.append(it).append(" ")
+                    }
+                }
+                it.unit?.let {
+                    if (it != "null")
+                        builder.append(it).append(",")
+                    else
+                        builder.append(",")
+                } ?: run { builder.append(",") }
+                it.city?.let {
+                    if (it != "null")
+                        builder.append("\n").append(it).append(",").append(" ")
+                } ?: run { builder.append("\n") }
+                it.stateName?.let {
+                    if (it != "null") builder.append(it).append(" ")
+                }
+                it.zipCode?.let {
+                    if (it != "null")
+                        builder.append(it)
+                }
+                holder.addressOne.text = builder
+
+                if(it.street == null && it.city == null && it.zipCode == null && it.stateName == null){
+                    holder.addressOne.text = "" // for avoiding extra commas
+                }
             }
         }
         
-        holder.addressOne.text = addressFieldOne
-        holder.addressTwo.text = addressFieldTwo
-
-
-
+       // holder.addressOne.text = addressFieldOne
+       // holder.addressTwo.text = addressFieldTwo
 
 
         holder.openLoanImageView.setOnClickListener {
@@ -126,7 +154,6 @@ internal constructor(
             holder.openLoanImageView.visibility = View.INVISIBLE
             borrower.recycleCardState = true
         }
-
         holder.closeLoanImageView.setOnClickListener {
             //mOnProductListener.onItemClick(holder.loanDetailLayout)
             holder.loanDetailLayout.visibility = View.GONE
@@ -134,7 +161,6 @@ internal constructor(
             holder.openLoanImageView.visibility = View.VISIBLE
             borrower.recycleCardState = false
         }
-
 
         if(borrower.recycleCardState == true)
             holder.openLoanImageView.performClick()

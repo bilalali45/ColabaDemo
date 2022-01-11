@@ -43,6 +43,7 @@ import android.graphics.RectF
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.widget.ImageView
@@ -84,7 +85,7 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
             activity?.loanApplicationId?.let {
                 loanApplicationId = it
             }
-            
+
             setupUI()
             getDropDownTemplate()
             setClickEvents()
@@ -97,7 +98,8 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         //val chip = Chip(context)
 
       // create image
-        /*val bitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+/*
+        val bitmap: Bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         val canvas: Canvas = Canvas(bitmap)
         var shapeDrawable: ShapeDrawable
         // draw oval shape to canvas
@@ -107,11 +109,13 @@ class SendDocRequestEmailFragment : DocsTypesBaseFragment() {
         shapeDrawable.draw(canvas)
         val imageV = LayoutInflater.from(context).inflate(R.layout.email_chip_imageview, chipGroup, false) as ImageView
 
-        imageV.background = BitmapDrawable(getResources(), bitmap) */
+        imageV.background = BitmapDrawable(getResources(), bitmap)
+
+ */
 
 
         chip.text = email
-       // chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
+        //chip.chipIcon = ContextCompat.getDrawable(requireContext(), R.mipmap.ic_launcher_round)
         chip.isCloseIconEnabled = true
         chip.isClickable = true
         chip.isCheckable = false

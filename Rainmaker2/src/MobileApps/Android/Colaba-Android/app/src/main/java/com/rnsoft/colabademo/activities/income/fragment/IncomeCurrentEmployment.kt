@@ -829,7 +829,6 @@ class IncomeCurrentEmployment : BaseFragment(), View.OnClickListener {
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
