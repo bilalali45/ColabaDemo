@@ -18,6 +18,8 @@
     <string name="password">Password</string>
     <string name="face_id">Face ID Login</string>
     <string name="biometric_login">Biometric Login</string>
+    <string name="document_submit">Document Submit</string>
+    <string name="document_submit_notifiaction">Document Submit Notification</string>
     <string name="login">LOGIN</string>
     <string name="logout">Logout</string>
     <string name="verify">VERIFY</string>
@@ -29,6 +31,15 @@
     <string name="sign_in_with_password">Sign in with Password</string>
 
     <string name="send_invitation">Send Invitation</string>
+
+
+    <string name="loanapplicationstarted">Loan Application Started </string>
+    <string name="loanapplicationsubmitted">Loan Application Submitted </string>
+    <string name="loanFund">Loan  Funded</string>
+    <string name="mobileappnotificationsettings">Mobile App Notification Settings</string>
+
+
+    <string name="minsdealy">30 mins delayed</string>
 
     <string-array name="array_occupancy_type">
         <item>Primary Residence</item>
@@ -490,6 +501,11 @@
     <string name="homeowner_assocaition_dues">Annual Homeowner"\'\s Association Dues</string>
     <string name="txt_delete_property">Are you sure you want to delete this property?</string>
     <string name="start_new_application">Start New Application</string>
+
+
+    <string name="setting">Settings</string>
+
+
     <string name="create_application">Create Application</string>
     <string name="create_new_contact">Create New Contact</string>
     <string name="find_contact">Find a Contact</string>
@@ -547,7 +563,7 @@
     <string name="email_to">To</string>
     <string name="email_cc">CC</string>
     <string name="subject_line">Subject Line</string>
-   <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
+    <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
         \nComplete these items as soon as possible so we can continue reviewing your application. \n \n \n \nThanks &amp; Regards, \n John Doe
     </string>
 

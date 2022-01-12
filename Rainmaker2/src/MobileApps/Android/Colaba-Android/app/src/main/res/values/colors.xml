@@ -26,6 +26,11 @@
     <color name="colaba_primary_color_five_alpha">#0D4484F4</color>
     <color name="grey_color_one">#FF4E4E4E</color>
     <color name="grey_color_two">#FF7E829E</color>
+    <color name="light_color_gray">#A7A7A7</color>
+    <color name="dark_color_gray">#4E4E4E</color>
+    <color name="document_view_color">#3F3F3F</color>
+
+
     <color name="grey_color_three">#FFA7A7A7</color>
     <color name="grey_color_four">#FFCCCCCC</color>
     <color name="grey_color_five">#E2E2E2</color>

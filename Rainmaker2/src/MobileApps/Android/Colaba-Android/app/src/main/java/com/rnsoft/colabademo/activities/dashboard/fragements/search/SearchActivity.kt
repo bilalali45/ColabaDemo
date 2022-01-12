@@ -104,6 +104,8 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
             false
         })
 
+
+
         binding.searchEditTextField.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -223,7 +225,6 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
     private fun showSoftKeyboard(view: View) {
         if (view.requestFocus()) {
             val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-
             // here is one more tricky issue
             // imm.showSoftInputMethod doesn't work well
             // and imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0) doesn't work well for all cases too

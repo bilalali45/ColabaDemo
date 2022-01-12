@@ -28,7 +28,7 @@ class SearchViewModel @Inject constructor(private val searchRepo: SearchRepo)  :
             val result = searchRepo.getSearchResult(token = token , pageNumber = pageNumber, pageSize = pageSize, searchTerm = searchTerm)
 
             if (result is Result.Success) {
-                localSearchList = (result.data)
+                 localSearchList = (result.data)
                 _searchArrayList.value = localSearchList
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)

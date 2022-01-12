@@ -9,13 +9,29 @@
         android:id="@+id/navigation_home"
         android:name="com.rnsoft.colabademo.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_settingActivity"
+            app:destination="@id/settingActivity" />
+        <action
+            android:id="@+id/action_navigation_home_to_documentActivity"
+            app:destination="@id/documentActivity" />
+    </fragment>
 
    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.rnsoft.colabademo.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <activity
+        android:id="@+id/settingActivity"
+        android:name="com.rnsoft.colabademo.activities.dashboard.fragements.setting.SettingActivity"
+        android:label="activity_setting"
+        tools:layout="@layout/activity_setting" />
+    <activity
+        android:id="@+id/documentActivity"
+        android:name="com.rnsoft.colabademo.activities.dashboard.fragements.document.DocumentActivity"
+        android:label="DocumentActivity" />
 
 
     <!--<fragment

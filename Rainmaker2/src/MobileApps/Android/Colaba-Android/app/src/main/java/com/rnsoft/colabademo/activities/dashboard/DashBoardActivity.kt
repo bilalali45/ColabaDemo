@@ -19,6 +19,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.rnsoft.colabademo.activities.dashboard.fragements.setting.SettingActivity
 import com.rnsoft.colabademo.databinding.DashboardLayoutBinding
 import com.rnsoft.colabademo.databinding.NavHeaderBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -160,7 +161,8 @@ class DashBoardActivity : BaseActivity() {
         actionBarToggle.syncState()
 
         binding.navigationView.menu.findItem(R.id.nav_logout)
-            .setOnMenuItemClickListener { menuItem: MenuItem? ->
+            .setOnMenuItemClickListener {
+                    menuItem: MenuItem? ->
                 //loader.show()
                 binding.drawerLayout.closeDrawer(Gravity.LEFT)
 
@@ -189,6 +191,26 @@ class DashBoardActivity : BaseActivity() {
                 })
                 true
             }
+
+
+
+        /// update code
+
+        binding.navigationView.menu.findItem(R.id.nav_settings)
+            .setOnMenuItemClickListener {
+                    menuItem: MenuItem? ->
+                    startActivity(Intent(this, SettingActivity::class.java))
+                true
+            }
+
+
+        binding.navigationView.menu.findItem(R.id.nav_settings)
+            .setOnMenuItemClickListener {
+                    menuItem: MenuItem? ->
+                    startActivity(Intent(this, SettingActivity::class.java))
+                    true
+            }
+
     }
 
 

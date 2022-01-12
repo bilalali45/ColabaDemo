@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colaba_primary_color_with_alpha_one">
+
+
+
+
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/padd_10"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padd_10"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_info_screen"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:padding="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/tab_top_border"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_grey_cross" />
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/rubik_medium"
+                android:text="@string/document_submit_notifiaction"
+                android:textColor="@color/grey_color_one"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <View
+                android:id="@+id/tab_top_border"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="12sp"
+                android:background="@color/colaba_app_border_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/backgroundcell"
+            android:padding="15dp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/off"
+                android:textColor="@color/document_view_color"
+                android:textSize="@dimen/_12ssp"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                app:layout_constraintStart_toEndOf="@id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                />
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/undisclosed_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:textColor="@color/txt_color_app_headings"
+                android:textSize="14sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_marginTop="@dimen/padd_10"
+            android:background="@drawable/backgroundcell"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="Immediate"
+                android:textColor="@color/dark_color_gray"
+                android:textSize="@dimen/_12ssp"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                app:layout_constraintStart_toEndOf="@id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:textColor="@color/txt_color_app_headings"
+                android:textSize="14sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_marginTop="@dimen/padd_10"
+            android:background="@drawable/backgroundcell"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="10 mins"
+                android:textColor="@color/dark_color_gray"
+                android:textSize="@dimen/_12ssp"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                app:layout_constraintStart_toEndOf="@id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:textColor="@color/txt_color_app_headings"
+                android:textSize="14sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_marginTop="@dimen/padd_10"
+            android:background="@drawable/backgroundcell"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="20 mins"
+                android:textColor="@color/dark_color_gray"
+                android:textSize="@dimen/_12ssp"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                app:layout_constraintStart_toEndOf="@id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:textColor="@color/txt_color_app_headings"
+                android:textSize="14sp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_marginTop="@dimen/padd_10"
+            android:background="@drawable/backgroundcell"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/rubik_regular"
+                android:text="30 mins"
+                android:textColor="@color/dark_color_gray"
+                android:textSize="14sp"
+                android:layout_weight="1"
+                android:layout_marginStart="1dp"
+                app:layout_constraintStart_toEndOf="@id/imageView4"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:clickable="true"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:textColor="@color/txt_color_app_headings"
+                android:textSize="@dimen/_12ssp" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
