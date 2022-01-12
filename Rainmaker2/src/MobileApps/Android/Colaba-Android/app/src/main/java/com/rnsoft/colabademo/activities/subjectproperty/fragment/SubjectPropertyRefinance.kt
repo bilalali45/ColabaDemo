@@ -20,6 +20,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.SubPropertyRefinanceBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.MonthYearPickerDialog
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -259,29 +261,28 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // first mortgage no
         binding.radioHasFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
-                binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                setRadioColor(binding.radioHasFirstMortgageNo, requireContext())
+                radioUnSelectColor(binding.radioHasFirstMortgageYes, requireContext())
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
+                binding.radioHasFirstMortgageYes.isChecked = false
+            } else{
+                binding.radioHasFirstMortgageYes.isChecked = true
+                setRadioColor(binding.radioHasFirstMortgageYes, requireContext())
+                radioUnSelectColor(binding.radioHasFirstMortgageNo, requireContext())
             }
         }
 
         // sec mortgage no
         binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
-                binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                setRadioColor(binding.rbSecMortgageNo, requireContext())
+                radioUnSelectColor(binding.rbSecMortgageYes, requireContext())
+                binding.rbSecMortgageYes.isChecked = false
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
 
-        /*binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-            }
-        } */
 
         binding.rbSecMortgageYes.setOnClickListener{
             onSecMortgageYesClick()
@@ -289,11 +290,12 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
                 binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
                 binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.layoutSecMortgageDetail.visibility = View.VISIBLE
+                binding.rbSecMortgageNo.isChecked = false
+
             } else{
                 binding.rbSecMortgageYes.isChecked = false
                 binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.rbSecMortgageNo.isChecked = true
-                binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -627,11 +629,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun setFirstMorgageDetails(model: FirstMortgageModel){
         val formatter = DecimalFormat("#,###,###")
         firstMortgageModel = model
-        binding.radioHasFirstMortgageYes.isChecked = true
-        binding.radioHasFirstMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+        //binding.radioHasFirstMortgageYes.isChecked = true
         binding.radioHasFirstMortgageNo.isChecked = false
-        //binding.radioHasFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
-        binding.radioHasFirstMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
 
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
@@ -653,10 +652,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         val formatter = DecimalFormat("#,###,###")
         secondMortgageModel = model
         binding.rbSecMortgageYes.isChecked = true
-        //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
         binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
         binding.rbSecMortgageNo.isChecked = false
-        //binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
         binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
 
@@ -720,8 +717,6 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     }
 
     private fun onFirstMortgageYes() {
-        //binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-       // binding.layoutSecondMortgage.visibility = View.VISIBLE
         val fragment = FirstMortgageFragment()
         val bundle = Bundle()
         bundle.putParcelable(AppConstant.firstMortgage,firstMortgageModel)
@@ -732,10 +727,8 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     private fun onSecMortgageYesClick(){
         binding.layoutSecondMortgage.visibility = View.VISIBLE
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-        //binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-       // binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-        binding.rbSecMortgageYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
-        binding.rbSecMortgageNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+        setRadioColor(binding.rbSecMortgageYes, requireContext())
+        radioUnSelectColor(binding.rbSecMortgageNo, requireContext())
 
         val fragment = SecondMortgageFragment()
         val bundle = Bundle()
@@ -833,111 +826,4 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         requireActivity().finish()
         requireActivity().overridePendingTransition(R.anim.hold, R.anim.slide_out_left)
     }
-
-    /*
-    private fun onSecMortgegeNoClick() {
-        binding.layoutSecondMortgage.visibility = View.VISIBLE
-        binding.layoutSecMortgageDetail.visibility = View.GONE
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
-    } */
-
-    /*private fun mixedPropertyDetailClick() {
-      findNavController().navigate(R.id.action_mixed_property)
-      //binding.layoutDetails.visibility = View.VISIBLE
-      binding.radioMixedPropertyYes.setTypeface(null, Typeface.BOLD)
-      //binding.rbMixedPropertyNo.setTypeface(null, Typeface.NORMAL)
-  }
-
-  private fun radioSubPropertyClick() {
-      //binding.rbSubProperty.isChecked = true
-      //binding.rbSubPropertyAddress.isChecked = false
-      binding.tvSubPropertyAddress.visibility = View.GONE
-      //bold text
-      //binding.rbSubProperty.setTypeface(null, Typeface.BOLD)
-      binding.radioTxtPropertyAdd.setTypeface(null, Typeface.NORMAL)
-  }
-
-  private fun radioAddressClick() {
-      //binding.rbSubProperty.isChecked = false
-      //binding.rbSubPropertyAddress.isChecked = true
-      binding.tvSubPropertyAddress.visibility = View.VISIBLE
-      //bold text
-      binding.radioTxtPropertyAdd.setTypeface(null, Typeface.BOLD)
-      //binding.rbSubProperty.setTypeface(null, Typeface.NORMAL)
-      findNavController().navigate(R.id.action_address)
-  } */
-
-
-    /*
-      private fun getDropDownData(){
-        //lifecycleScope.launchWhenStarted {
-        //  viewModel.getPropertyTypes(token)
-        viewModel.propertyType.observe(viewLifecycleOwner, {
-            //if(it != null && it.size > 0) {
-
-            val itemList:ArrayList<String> = arrayListOf()
-            for(item in it){
-                itemList.add(item.name)
-                if(propertyTypeId == item.id){
-                    binding.tvPropertyType.setText(item.name)
-                    CustomMaterialFields.setColor(binding.layoutPropertyType,R.color.grey_color_two,requireActivity())
-                }
-            }
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
-            binding.tvPropertyType.setAdapter(adapter)
-            //binding.tvPropertyType.setOnFocusChangeListener { _, _ ->
-            //   binding.tvPropertyType.showDropDown()
-            //}
-            binding.tvPropertyType.setOnClickListener {
-                binding.tvPropertyType.showDropDown()
-            }
-            binding.tvPropertyType.onItemClickListener = object :
-                AdapterView.OnItemClickListener {
-                override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                    showHideRental()
-                }
-            }
-            //}
-        })
-        // }
-
-        // occupancy Type spinner
-        //lifecycleScope.launchWhenStarted {
-        // viewModel.getOccupancyType(token)
-        viewModel.occupancyType.observe(viewLifecycleOwner, {occupancyList->
-
-            if(occupancyList != null && occupancyList.size > 0) {
-                val itemList: ArrayList<String> = arrayListOf()
-                for (item in occupancyList) {
-                    itemList.add(item.name)
-                    if(occupancyTypeId > 0 && occupancyTypeId == item.id){
-                        binding.tvOccupancyType.setText(item.name)
-                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                    }
-                }
-
-                val adapterOccupanycyType =
-                    ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,itemList)
-                binding.tvOccupancyType.setAdapter(adapterOccupanycyType)
-                binding.tvOccupancyType.setOnFocusChangeListener { _, _ ->
-                    binding.tvOccupancyType.showDropDown()
-                }
-                binding.tvOccupancyType.setOnClickListener {
-                    binding.tvOccupancyType.showDropDown()
-                }
-                binding.tvOccupancyType.onItemClickListener = object :
-                    AdapterView.OnItemClickListener {
-                    override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
-                        CustomMaterialFields.setColor(binding.layoutOccupancyType,R.color.grey_color_two,requireActivity())
-                        showHideRental()
-                    }
-                }
-            }
-
-        })
-        // }
-    }
-     */
-
 }

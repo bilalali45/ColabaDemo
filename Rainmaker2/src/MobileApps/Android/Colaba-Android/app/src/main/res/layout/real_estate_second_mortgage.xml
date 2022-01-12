@@ -180,7 +180,7 @@
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/credit_limit_switch"
-                    android:textColor="@color/grey_color_one"
+                    android:textColor="@color/grey_color_two"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -229,10 +229,11 @@
                 android:textSize="15sp" />
 
             <RadioGroup
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="27dp">
 
+                <!--
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_paid_closing_yes"
                     android:layout_width="wrap_content"
@@ -256,7 +257,42 @@
                     android:paddingStart="15dp"
                     android:text="@string/no"
                     android:textColor="@color/grey_color_one"
+                    android:textSize="14sp" /> -->
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_paid_closing_yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/content_bg_with_drop_shadow"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:drawablePadding="15dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/yes"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_color_two"
                     android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_paid_closing_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:layoutDirection="rtl"
+                    android:fontFamily="@font/rubik_regular"
+                    android:text="@string/no"
+                    android:textColor="@color/grey_color_two"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:drawablePadding="15dp"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:background="@drawable/content_bg_with_drop_shadow" />
+
 
             </RadioGroup>
 

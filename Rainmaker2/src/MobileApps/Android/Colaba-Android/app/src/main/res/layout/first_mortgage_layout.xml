@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white">
@@ -120,7 +119,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/layout_unpaid_balance"
                 android:layout_width="match_parent"
@@ -212,7 +210,6 @@
                 android:drawableStart="@drawable/cb_selector"
                 android:background="@drawable/content_bg_with_drop_shadow"/>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -238,12 +235,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:text="@string/credit_limit_switch"
-                    android:textColor="@color/grey_color_one"
+                    android:textColor="@color/grey_color_two"
                     android:fontFamily="@font/rubik_regular"
                     android:textSize="14sp"/>
 
             </LinearLayout>
-
 
             <com.google.android.material.textfield.TextInputLayout
                 android:visibility="gone"
@@ -307,7 +303,8 @@
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:text="@string/yes"
-                    android:textColor="@color/radio_text_color"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_color_two"
                     android:textSize="14sp" />
 
                 <androidx.appcompat.widget.AppCompatRadioButton
@@ -319,37 +316,13 @@
                     android:layoutDirection="rtl"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/no"
+                    android:textAllCaps="true"
                     android:textColor="@color/grey_color_two"
                     android:textSize="14sp"
                     android:drawablePadding="15dp"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
                     android:background="@drawable/content_bg_with_drop_shadow" />
-
-                <!-- <androidx.appcompat.widget.AppCompatRadioButton
-                     android:id="@+id/rb_paid_closing_yes"
-                     android:layout_width="wrap_content"
-                     android:layout_height="22dp"
-                     android:button="@drawable/radiodraw"
-                     android:clickable="true"
-                     android:fontFamily="@font/rubik_regular"
-                     android:paddingStart="15dp"
-                     android:text="@string/yes"
-                     android:textColor="@color/grey_color_one"
-                     android:textSize="14sp" />
-
-                 <androidx.appcompat.widget.AppCompatRadioButton
-                     android:id="@+id/rb_paid_closing_no"
-                     android:layout_width="wrap_content"
-                     android:layout_height="22dp"
-                     android:layout_marginTop="18dp"
-                     android:button="@drawable/radiodraw"
-                     android:clickable="true"
-                     android:fontFamily="@font/rubik_regular"
-                     android:paddingStart="15dp"
-                     android:text="@string/no"
-                     android:textColor="@color/grey_color_one"
-                     android:textSize="14sp" /> -->
 
             </RadioGroup>
         </LinearLayout>

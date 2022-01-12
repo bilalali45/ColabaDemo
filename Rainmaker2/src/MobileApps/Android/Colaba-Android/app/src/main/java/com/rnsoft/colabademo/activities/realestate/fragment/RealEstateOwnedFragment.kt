@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.RealEstateOwnedLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -109,13 +111,12 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
     private fun getRealEstateDetails(counter:Int){
         hideLoader()
-        if(counter == 3) {
+        if(counter >= 3) {
             viewModel.realEstateDetails.observe(viewLifecycleOwner, {
                 if (propertyTypeList.size > 0 && occupancyTypeList.size > 0 && propertyStatusList.size > 0) {
                     if (it != null) {
                         //Log.e("Details",""+it.data)
                         it.data?.address?.let {
-                            //binding.tvPropertyAddress.text = it.street+" "+it.unit+"\n"+it.city+" "+it.stateName+" "+it.zipCode+" "+it.countryName
                             addressHeading = it.street
                             realEstateAddress = it
                             displayAddress(it)
@@ -279,9 +280,8 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         firstMortgageModel = model
 
         binding.rbFirstMortgageYes.isChecked = true
-        binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
+        setRadioColor(binding.rbFirstMortgageYes, requireContext())
         binding.rbFirstMortgageNo.isChecked = false
-        binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
 
         binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
         binding.layoutSecondMortgage.visibility = View.VISIBLE
@@ -304,9 +304,10 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         val formatter = DecimalFormat("#,###,###")
         secondMortgageModel = model
         binding.rbSecMortgageYes.isChecked = true
-        binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
+        setRadioColor(binding.rbSecMortgageYes,requireContext())
         binding.rbSecMortgageNo.isChecked = false
-        binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+
+        //binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
         binding.layoutSecMortgageDetail.visibility = View.VISIBLE
 
         model.secondMortgagePayment?.let { payment->
@@ -558,6 +559,7 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         binding.layoutSecMortgageDetail.setOnClickListener(this)
         binding.layoutAddress.setOnClickListener(this)
 
+
         binding.addPropertyAddress.setOnClickListener {
             openAddressFragment()
         }
@@ -566,44 +568,66 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
 
         binding.rbFirstMortgageYes.setOnClickListener {
             onFirstMortgageYes()
-            if(firstMortgageModel != null){
-                binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL)
+            if (firstMortgageModel != null) {
+                setRadioColor(binding.rbFirstMortgageYes, requireContext())
+                binding.rbFirstMortgageNo.isChecked = false
                 binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
                 binding.layoutSecondMortgage.visibility = View.VISIBLE
-            } else{
+            } else {
                 binding.rbFirstMortgageYes.isChecked = false
-                binding.rbFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(binding.rbFirstMortgageYes, requireContext())
                 binding.rbFirstMortgageNo.isChecked = true
-                binding.rbFirstMortgageNo.setTypeface(null, Typeface.BOLD)
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
         }
 
+       /* binding.rbFirstMortgageYes.setOnCheckedChangeListener { _, isChecked ->
+            Log.e("OnClick", "yes")
+            if(isChecked) {
+                onFirstMortgageYes()
+                if (firstMortgageModel != null) {
+                    setRadioColor(binding.rbFirstMortgageYes, requireContext())
+                    binding.rbFirstMortgageNo.isChecked = false
+                    binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
+                    binding.layoutSecondMortgage.visibility = View.VISIBLE
+                } else {
+                    binding.rbFirstMortgageYes.isChecked = false
+                    radioUnSelectColor(binding.rbFirstMortgageYes, requireContext())
+                    binding.rbFirstMortgageNo.isChecked = true
+                    binding.layoutFirstMortgageDetail.visibility = View.GONE
+                    binding.layoutSecondMortgage.visibility = View.GONE
+                }
+            }
+        } */
+
         binding.layoutFirstMortgageDetail.setOnClickListener { onFirstMortgageYes() }
+
 
         // first mortgage no
         binding.rbFirstMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.rbFirstMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.rbFirstMortgageYes.setTypeface(null, Typeface.NORMAL)
+                setRadioColor(binding.rbFirstMortgageNo, requireContext())
+                binding.rbFirstMortgageYes.isChecked = false
+                radioUnSelectColor(binding.rbFirstMortgageYes, requireContext())
+
                 binding.layoutFirstMortgageDetail.visibility = View.GONE
                 binding.layoutSecondMortgage.visibility = View.GONE
             }
+            else
+                radioUnSelectColor(binding.rbFirstMortgageNo, requireContext())
         }
 
         binding.rbSecMortgageYes.setOnClickListener{
-            onSecMortgageYesClick()
-            if(secondMortgageModel != null){
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
+           onSecMortgageYesClick()
+            if (secondMortgageModel != null){
+                setRadioColor(binding.rbSecMortgageYes, requireContext())
+                binding.rbSecMortgageNo.isChecked = false
                 binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-            } else{
+            } else {
                 binding.rbSecMortgageYes.isChecked = false
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(binding.rbSecMortgageYes, requireContext())
                 binding.rbSecMortgageNo.isChecked = true
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
         }
@@ -613,39 +637,15 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         // sec mortgage no
         binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
+                setRadioColor(binding.rbSecMortgageNo, requireContext())
+                binding.rbSecMortgageYes.isChecked = false
+                radioUnSelectColor(binding.rbSecMortgageYes, requireContext())
                 binding.layoutSecMortgageDetail.visibility = View.GONE
             }
+            else
+                radioUnSelectColor(binding.rbSecMortgageNo, requireContext())
+
         }
-
-        /*binding.rbSecMortgageYes.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.layoutSecondMortgage.visibility = View.VISIBLE
-                binding.layoutSecMortgageDetail.visibility = View.VISIBLE
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.NORMAL)
-
-            }
-        }
-
-        binding.rbSecMortgageYes.setOnClickListener {
-            val fragment = RealEstateSecondMortgage()
-            val bundle = Bundle()
-            bundle.putString(AppConstant.address, addressHeading)
-            bundle.putParcelable(AppConstant.secMortgage,secondMortgageModel)
-            fragment.arguments = bundle
-            findNavController().navigate(R.id.action_realestate_second_mortgage,bundle)
-        } */
-
-        /*binding.rbSecMortgageNo.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                binding.layoutSecondMortgage.visibility = View.VISIBLE
-                binding.layoutSecMortgageDetail.visibility = View.GONE
-                binding.rbSecMortgageNo.setTypeface(null, Typeface.BOLD)
-                binding.rbSecMortgageYes.setTypeface(null, Typeface.NORMAL)
-            }
-        } */
 
         binding.layoutSecMortgageDetail.setOnClickListener {
             val fragment = RealEstateSecondMortgage()
@@ -674,9 +674,6 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.btn_close -> requireActivity().finish()
             R.id.btn_save -> checkValidations()
-            //R.id.rb_first_mortgage_yes -> onFirstMortgageYes()
-            //R.id.rb_first_mortgage_no -> onFirstMortgegeNoClick()
-            //R.id.layout_first_mortgage_detail -> onFirstMortgageYes()
             R.id.layout_address-> openAddressFragment()
         }
     }
@@ -937,19 +934,13 @@ class RealEstateOwnedFragment : BaseFragment(), View.OnClickListener {
         findNavController().navigate(R.id.action_realestate_address, addressFragment.arguments)
     }
 
-    private fun onFirstMortgageYes(){
-        /*if(binding.rbFirstMortgageYes.isChecked) {
-            binding.layoutFirstMortgageDetail.visibility = View.VISIBLE
-            binding.layoutSecondMortgage.visibility = View.VISIBLE
-            binding.rbFirstMortgageYes.setTypeface(null, Typeface.BOLD)
-            binding.rbFirstMortgageNo.setTypeface(null, Typeface.NORMAL) */
-
-            val fragment = RealEstateFirstMortgage()
-            val bundle = Bundle()
-            bundle.putString(AppConstant.address,addressHeading)
-            bundle.putParcelable(AppConstant.firstMortgage,firstMortgageModel)
-            fragment.arguments = bundle
-            findNavController().navigate(R.id.action_realestate_first_mortgage,bundle)
+    private fun onFirstMortgageYes() {
+        val fragment = RealEstateFirstMortgage()
+        val bundle = Bundle()
+        bundle.putString(AppConstant.address, addressHeading)
+        bundle.putParcelable(AppConstant.firstMortgage, firstMortgageModel)
+        fragment.arguments = bundle
+        findNavController().navigate(R.id.action_realestate_first_mortgage, bundle)
     }
 
     private fun showHideAddress(isShowAddress: Boolean, isAddAddress: Boolean){

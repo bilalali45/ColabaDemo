@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.SpouseDetailLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 import java.lang.Exception
 import kotlin.concurrent.fixedRateTimer
 
@@ -386,9 +388,11 @@ class MarriageDetailFragment : BaseFragment() {
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.noRadioBtn.isChecked = false
+                setRadioColor(binding.yesRadioBtn, requireContext())
                 if(relationLayout){
                     binding.layoutCoborrower.visibility = View.GONE
                     binding.primaryRelationInfoLayout.visibility = View.VISIBLE
+
                 } else {
                     binding.layoutCoborrower.visibility = View.VISIBLE
                     binding.primaryRelationInfoLayout.visibility = View.GONE
@@ -396,7 +400,7 @@ class MarriageDetailFragment : BaseFragment() {
             }
             else {
                 binding.layoutCoborrower.visibility = View.GONE
-                binding.yesRadioBtn.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(binding.yesRadioBtn, requireContext())
             }
         }
 
@@ -405,11 +409,11 @@ class MarriageDetailFragment : BaseFragment() {
                 binding.yesRadioBtn.isChecked = false
                 binding.spouseInfoLayout.visibility = View.VISIBLE
                 binding.primaryRelationInfoLayout.visibility = View.GONE
-                binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
+                setRadioColor(binding.noRadioBtn, requireContext())
             }
             else {
                 binding.spouseInfoLayout.visibility = View.GONE
-                binding.noRadioBtn.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(binding.noRadioBtn, requireContext())
             }
         }
     }

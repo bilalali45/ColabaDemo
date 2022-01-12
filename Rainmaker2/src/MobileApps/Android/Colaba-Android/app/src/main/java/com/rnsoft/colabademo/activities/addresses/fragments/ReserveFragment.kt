@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.*
+import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.dialog_add_emplyment.view.*
 import javax.inject.Inject
@@ -61,20 +62,21 @@ class ReserveFragment : BaseFragment() {
 
         binding.radioButtonYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                binding.radioButtonYes.setTypeface(null, Typeface.BOLD)
                 binding.radioButton2No.isChecked = false
+                CustomMaterialFields.setRadioColor(binding.radioButtonYes, requireContext())
             }
             else
-                binding.radioButtonYes.setTypeface(null, Typeface.NORMAL)
+                CustomMaterialFields.radioUnSelectColor(binding.radioButtonYes, requireContext())
         }
 
         binding.radioButton2No.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                binding.radioButton2No.setTypeface(null, Typeface.BOLD)
                 binding.radioButtonYes.isChecked = false
+                CustomMaterialFields.setRadioColor(binding.radioButton2No, requireContext())
             }
             else
-                binding.radioButton2No.setTypeface(null, Typeface.NORMAL)
+                CustomMaterialFields.radioUnSelectColor(binding.radioButton2No, requireContext())
+
         }
 
         binding.btnSave.setOnClickListener {

@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.SubPropertySecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +40,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.secMortgageParentLayout.setOnClickListener(this)
-        binding.rbYesCombinedFirstMortgage.setOnClickListener(this)
-        binding.rbNoCombinedFirstMortgage.setOnClickListener(this)
-        binding.radioWasMortgageTakenYes.setOnClickListener(this)
-        binding.radioWasMortgageTakenNo.setOnClickListener(this)
-        binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
         setData()
@@ -79,7 +77,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
                 it.isHeloc?.let { isHeloc ->
                     if (isHeloc == true) {
                         binding.switchCreditLimit.isChecked = true
-                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                         binding.layoutCreditLimit.visibility = View.VISIBLE
 
                         it.helocCreditLimit?.let {
@@ -93,26 +90,21 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
 
                     } else {
                         binding.switchCreditLimit.isChecked = false
-                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                     }
                 }
 
                 it.wasSmTaken?.let { taken ->
                     if (taken) {
                         binding.radioWasMortgageTakenYes.isChecked = true
-                        binding.radioWasMortgageTakenYes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.radioWasMortgageTakenNo.isChecked = true
-                        binding.radioWasMortgageTakenNo.setTypeface(null, Typeface.BOLD)
                     }
                 }
                 it.combineWithNewFirstMortgage?.let { isCombined ->
                     if (isCombined) {
                         binding.rbYesCombinedFirstMortgage.isChecked = true
-                        binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.rbNoCombinedFirstMortgage.isChecked = true
-                        binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
                     }
                 }
             }
@@ -130,47 +122,6 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(), binding.secMortgageParentLayout)
                 super.removeFocusFromAllFields(binding.secMortgageParentLayout)
             }
-            R.id.rb_yes_combinedFirstMortgage ->
-                if (binding.rbYesCombinedFirstMortgage.isChecked) {
-                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
-                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.rb_no_combinedFirstMortgage ->
-                if (binding.rbNoCombinedFirstMortgage.isChecked) {
-                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.BOLD)
-                    binding.rbYesCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
-
-                } else {
-                    binding.rbNoCombinedFirstMortgage.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.radio_wasMortgageTakenYes ->
-                if (binding.radioWasMortgageTakenYes.isChecked) {
-                    binding.radioWasMortgageTakenYes.setTypeface(null, Typeface.BOLD)
-                    binding.radioWasMortgageTakenNo.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.radioWasMortgageTakenYes.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.radio_wasMortgageTakenNo ->
-                if (binding.radioWasMortgageTakenNo.isChecked) {
-                    binding.radioWasMortgageTakenNo.setTypeface(null, Typeface.BOLD)
-                    binding.radioWasMortgageTakenYes.setTypeface(null, Typeface.NORMAL)
-                } else {
-                    binding.radioWasMortgageTakenNo.setTypeface(null, Typeface.NORMAL)
-                }
-
-            R.id.switch_credit_limit ->
-                if (binding.switchCreditLimit.isChecked) {
-                    binding.layoutCreditLimit.visibility = View.VISIBLE
-                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                } else {
-                    binding.layoutCreditLimit.visibility = View.GONE
-                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                }
         }
     }
 
@@ -228,7 +179,46 @@ class SecondMortgageFragment : BaseFragment(), View.OnClickListener {
         binding.edUnpaidBalance.addTextChangedListener(NumberTextFormat(binding.edUnpaidBalance))
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
 
+
+        binding.rbYesCombinedFirstMortgage.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setRadioColor(binding.rbYesCombinedFirstMortgage, requireContext())
+            else
+                radioUnSelectColor(binding.rbYesCombinedFirstMortgage, requireContext())
+        }
+
+        binding.rbNoCombinedFirstMortgage.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.rbNoCombinedFirstMortgage, requireContext())
+            else
+                radioUnSelectColor(binding.rbNoCombinedFirstMortgage, requireContext())
+        }
+
+        binding.radioWasMortgageTakenYes.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.radioWasMortgageTakenYes, requireContext())
+            else
+                radioUnSelectColor(binding.radioWasMortgageTakenYes, requireContext())
+        }
+
+        binding.radioWasMortgageTakenNo.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.radioWasMortgageTakenNo, requireContext())
+            else
+                radioUnSelectColor(binding.radioWasMortgageTakenNo, requireContext())
+        }
+
+        binding.switchCreditLimit.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else {
+                binding.layoutCreditLimit.visibility = View.GONE
+                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+            }
+        }
+
     }
-
-
 }

@@ -28,7 +28,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_realestate">
 
-
         <LinearLayout
             android:id="@+id/realestate_mainlayout"
             android:layout_width="match_parent"
@@ -387,6 +386,7 @@
                     android:paddingStart="0dp"
                     android:textColor="@color/grey_color_one"
                     android:textSize="@dimen/ed_txt_size_primary_info"
+                    android:text=""
                     android:singleLine="true"
                     android:digits="1234567890"
                     android:inputType="number"/>
@@ -507,7 +507,7 @@
                 android:textColor="@color/grey_color_two"
                 android:textSize="15sp" />
 
-            <RadioGroup
+           <!-- <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp">
@@ -537,83 +537,135 @@
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp"
                     tools:ignore="RtlSymmetry" />
-            </RadioGroup>
+            </RadioGroup> -->
 
-            <!-- first mortgage details -->
-            <LinearLayout
-                android:id="@+id/layout_first_mortgage_detail"
+            <!-- first mortgage-->
+             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/content_bg_with_drop_shadow"
-                android:clickable="true"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:background="@drawable/content_background_full_white"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/rubik_medium"
-                    android:text="@string/first_mortgage"
-                    android:textColor="@color/grey_color_one"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_first_mortgage_yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:background="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:drawablePadding="15dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/yes"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_color_two"
                     android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:clickable="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvQues" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="14dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="@string/mortgage_payment"
-                    android:textColor="@color/grey_color_two"
-                    android:textSize="13sp" />
+                 <LinearLayout
+                     android:id="@+id/layout_first_mortgage_detail"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="5dp"
+                     android:clickable="true"
+                     android:orientation="vertical"
+                     android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/first_mortgage_payment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="$0"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="13sp" />
+                     <View
+                         android:layout_width="match_parent"
+                         android:layout_height="1dp"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginEnd="20dp"
+                         android:background="@color/colaba_app_border_color" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="30dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="@string/mortgage_balance"
-                    android:textColor="@color/grey_color_two"
-                    android:textSize="13sp" />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="15dp"
+                         android:layout_marginEnd="20dp"
+                         android:fontFamily="@font/rubik_medium"
+                         android:text="@string/first_mortgage"
+                         android:textColor="@color/grey_color_one"
+                         android:textSize="15sp"
+                         android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/first_mortgage_balance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="$0"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="13sp" />
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="14dp"
+                         android:fontFamily="@font/rubik_regular"
+                         android:text="@string/mortgage_payment"
+                         android:textColor="@color/grey_color_two"
+                         android:textSize="13sp" />
 
-            </LinearLayout>
+                     <TextView
+                         android:id="@+id/first_mortgage_payment"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="5dp"
+                         android:fontFamily="@font/rubik_regular"
+                         android:text="$0"
+                         android:textColor="@color/grey_color_one"
+                         android:textSize="13sp" />
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="30dp"
+                         android:fontFamily="@font/rubik_regular"
+                         android:text="@string/mortgage_balance"
+                         android:textColor="@color/grey_color_two"
+                         android:textSize="13sp" />
+
+                     <TextView
+                         android:id="@+id/first_mortgage_balance"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginStart="20dp"
+                         android:layout_marginTop="5dp"
+                         android:layout_marginBottom="20dp"
+                         android:fontFamily="@font/rubik_regular"
+                         android:text="$0"
+                         android:textColor="@color/grey_color_one"
+                         android:textSize="13sp" />
+
+                 </LinearLayout>
+
+             </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_first_mortgage_no"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/content_background_full_white"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:fontFamily="@font/rubik_regular"
+                android:layoutDirection="rtl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/no"
+                android:textAllCaps="true"
+                android:textColor="@color/grey_color_two"
+                android:textSize="15sp"/>
 
             <LinearLayout
                 android:id="@+id/layout_second_mortgage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
                 android:orientation="vertical"
-                android:layout_marginTop="40dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -623,105 +675,127 @@
                     android:textColor="@color/grey_color_two"
                     android:textSize="15sp" />
 
-                <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortgage_yes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/yes"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortgage_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/no"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp"
-                        tools:ignore="RtlSymmetry" />
-                </RadioGroup>
-
                 <LinearLayout
-                    android:id="@+id/layout_sec_mortgage_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/content_bg_with_drop_shadow"
-                    android:clickable="true"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:background="@drawable/content_background_full_white"
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/rubik_medium"
-                        android:text="@string/sec_mortgage"
-                        android:textColor="@color/txt_color_app_headings"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="5dp"
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/rb_sec_mortgage_yes"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@null"
+                        android:button="@null"
+                        android:drawableStart="@drawable/radiodraw"
+                        android:drawablePadding="15dp"
                         android:fontFamily="@font/rubik_regular"
-                        android:text="@string/mortgage_payment"
+                        android:layoutDirection="rtl"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp"
+                        android:text="@string/yes"
+                        android:textAllCaps="true"
                         android:textColor="@color/grey_color_two"
-                        android:textSize="13sp" />
+                        android:textSize="15sp" />
 
-                    <TextView
-                        android:id="@+id/sec_mortgage_payment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="$0"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="13sp" />
+                    <!-- sec mortgage detail layout -->
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_sec_mortgage_detail"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="30dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="@string/mortgage_balance"
-                        android:textColor="@color/grey_color_two"
-                        android:textSize="13sp" />
-
-                    <TextView
-                        android:id="@+id/sec_mortgage_balance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:layout_marginTop="5dp"
-                        android:layout_marginBottom="20dp"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="$0"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="13sp" />
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@color/colaba_app_border_color" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:fontFamily="@font/rubik_medium"
+                            android:text="@string/sec_mortgage"
+                            android:textColor="@color/txt_color_app_headings"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="@string/mortgage_payment"
+                            android:textColor="@color/grey_color_two"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/sec_mortgage_payment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="$0"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="30dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="@string/mortgage_balance"
+                            android:textColor="@color/grey_color_two"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/sec_mortgage_balance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:text="$0"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_sec_mortgage_no"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/content_background_full_white"
+                    android:button="@null"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:fontFamily="@font/rubik_regular"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/no"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_color_two"
+                    android:textSize="15sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/radioButtonYes" />
+
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

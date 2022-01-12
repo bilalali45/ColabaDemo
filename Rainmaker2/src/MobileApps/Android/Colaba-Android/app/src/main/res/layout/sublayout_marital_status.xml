@@ -39,7 +39,7 @@
             android:fontFamily="@font/rubik_regular"
             android:background="@null"
             android:text="@string/martial_status_unmarried"
-            android:textColor="@color/grey_color_one"
+            android:textColor="@color/grey_color_two"
             android:textSize="14sp"
             android:clickable="true"/>
 
@@ -112,7 +112,7 @@
         android:drawablePadding="15dp"
         android:fontFamily="@font/rubik_regular"
         android:text="@string/martial_status_married"
-        android:textColor="@color/grey_color_one"
+        android:textColor="@color/grey_color_two"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
@@ -131,7 +131,7 @@
         android:drawablePadding="15dp"
         android:fontFamily="@font/rubik_regular"
         android:text="@string/martial_status_separated"
-        android:textColor="@color/grey_color_one"
+        android:textColor="@color/grey_color_two"
         android:textSize="14sp" />
 
 </LinearLayout>

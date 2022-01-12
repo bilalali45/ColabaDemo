@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.addCallback
 import androidx.annotation.ColorRes
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.compose.ui.text.capitalize
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
@@ -34,6 +35,10 @@ import com.rnsoft.colabademo.activities.addresses.info.fragment.SwipeToDeleteEve
 import com.rnsoft.colabademo.activities.addresses.info.model.Dependent
 import com.rnsoft.colabademo.databinding.*
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.clearCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.notification_view_holder.*
@@ -306,7 +311,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
                         if (maritalData.maritalStatusId == MARITAL_STATUS_UNMARRIED) {
                             msBinding.rbUnmarried.isChecked = true
-                            msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
                             setMaritalStatus(maritalData)
                         }
                     }
@@ -802,7 +806,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
                     militaryServiceDate = result
                     bindingMilitary.serviceDate.text = result
                     bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
-                    bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
 
                 }
             } catch (e:Exception){}
@@ -897,7 +900,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             it.isInRelationship?.let { isInRelation->
                 msBinding.unmarriedAddendum.visibility = View.VISIBLE
                 msBinding.rbUnmarried.isChecked = true
-                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
 
                 if(isInRelation){
                     msBinding.tvIsInRelationship.text = getString(R.string.yes)
@@ -951,8 +953,8 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             R.id.rb_pr -> if (citizenshipBinding.rbPr.isChecked) setCitizenship(false, true, false)
             R.id.rb_non_pr_other -> if (citizenshipBinding.rbNonPrOther.isChecked) setCitizenship(false, false, true)
             R.id.chb_duty_personel -> militaryActivePersonel()
-            R.id.chb_veteran -> militaryVeteran()
-            R.id.chb_surviving_spouse -> militarySurvivingSpouse()
+            //R.id.chb_veteran -> militaryVeteran()
+            //R.id.chb_surviving_spouse -> militarySurvivingSpouse()
         }
     }
 
@@ -998,17 +1000,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             findNavController().navigate(R.id.action_info_non_pr,bundle)
         }
 
-        // clicks
-        /*msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
-            if(isChecked){
-                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
-                //msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
-                //msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
-            } else {
-                msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
-                msBinding.unmarriedAddendum.visibility = View.GONE
-            }
-        } */
     }
 
     private fun setupUI(){
@@ -1053,95 +1044,95 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         // unmarried
         msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
-                msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
-
+                setRadioColor(msBinding.rbUnmarried, requireContext())
             else
-                msBinding.rbUnmarried.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(msBinding.rbUnmarried, requireContext())
         }
 
         //married
         msBinding.rbMarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
-                msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
-
+                setRadioColor(msBinding.rbMarried, requireContext())
             else
-                msBinding.rbMarried.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(msBinding.rbMarried, requireContext())
         }
         //separated
         msBinding.rbSeparated.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
-                msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
+                setRadioColor(msBinding.rbSeparated, requireContext())
             else
-                msBinding.rbSeparated.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(msBinding.rbSeparated, requireContext())
+
         }
         //us citizen
         citizenshipBinding.rbUsCitizen.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
+                setRadioColor(citizenshipBinding.rbUsCitizen, requireContext())
                 citizenshipBinding.rbPr.isChecked = false
                 citizenshipBinding.rbNonPrOther.isChecked = false
             }
             else
-                citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(citizenshipBinding.rbUsCitizen, requireContext())
+
         }
 
 
         // non permanent residence
         citizenshipBinding.rbNonPrOther.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
+                setRadioColor(citizenshipBinding.rbNonPrOther, requireContext())
                 citizenshipBinding.rbPr.isChecked = false
                 citizenshipBinding.rbUsCitizen.isChecked = false
             }
             else
-                citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(citizenshipBinding.rbNonPrOther, requireContext())
         }
         //permanent residence
         citizenshipBinding.rbPr.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
+                setRadioColor(citizenshipBinding.rbPr, requireContext())
                 citizenshipBinding.rbNonPrOther.isChecked = false
                 citizenshipBinding.rbUsCitizen.isChecked = false
             }
             else
-                citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
+                radioUnSelectColor(citizenshipBinding.rbPr, requireContext())
         }
         // active duty personel
         bindingMilitary.chbDutyPersonel.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
+                setCheckBoxTextColor(bindingMilitary.chbDutyPersonel, requireContext())
             }
-
             else
-                bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
+                clearCheckBoxTextColor(bindingMilitary.chbDutyPersonel, requireContext())
+
         }
 
 
         //reserve or national guard
         bindingMilitary.chbResNationalGuard.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.BOLD)
                 bindingMilitary.layoutNationalGuard.visibility = View.VISIBLE
+                setCheckBoxTextColor(bindingMilitary.chbResNationalGuard, requireContext())
             }
             else {
-                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
                 bindingMilitary.layoutNationalGuard.visibility = View.GONE
+                clearCheckBoxTextColor(bindingMilitary.chbResNationalGuard, requireContext())
             }
         }
         // veteran
         bindingMilitary.chbVeteran.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
-                bindingMilitary.chbVeteran.setTypeface(null, Typeface.BOLD)
+                setCheckBoxTextColor(bindingMilitary.chbVeteran, requireContext())
             else
-                bindingMilitary.chbVeteran.setTypeface(null, Typeface.NORMAL)
+                clearCheckBoxTextColor(bindingMilitary.chbVeteran, requireContext())
         }
 
         //surviving spouse
         bindingMilitary.chbSurvivingSpouse.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked)
-                bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.BOLD)
+                setCheckBoxTextColor(bindingMilitary.chbSurvivingSpouse, requireContext())
             else
-                bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.NORMAL)
+                clearCheckBoxTextColor(bindingMilitary.chbSurvivingSpouse, requireContext())
         }
 
         bindingMilitary.chbResNationalGuard.setOnClickListener {
@@ -1153,7 +1144,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
             else {
                 bindingMilitary.layoutNationalGuard.visibility = View.GONE
-                bindingMilitary.chbResNationalGuard.setTypeface(null, Typeface.NORMAL)
             }
 
             bindingMilitary.layoutNationalGuard.setOnClickListener {
@@ -1163,6 +1153,10 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             }
         }
     }
+
+
+
+
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
@@ -1363,13 +1357,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
             // uncheck
             msBinding.rbMarried.isChecked = false
             msBinding.rbSeparated.isChecked = false
-            msBinding.rbUnmarried.setTypeface(null, Typeface.BOLD)
             bundle.putParcelable(AppConstant.marital_status, maritalStatus)
             findNavController().navigate(R.id.action_info_unmarried_addendum, bundle)
         }
         if (isMarried) {
             msBinding.unmarriedAddendum.visibility = View.GONE
-            msBinding.rbMarried.setTypeface(null, Typeface.BOLD)
             // uncheck
             msBinding.rbUnmarried.isChecked = false
             msBinding.rbSeparated.isChecked = false
@@ -1380,7 +1372,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         }
         if (isSeparated) {
             msBinding.unmarriedAddendum.visibility = View.GONE
-            msBinding.rbSeparated.setTypeface(null, Typeface.BOLD)
 
             // uncheck
             msBinding.rbUnmarried.isChecked = false
@@ -1395,21 +1386,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
     private fun setCitizenship(usCitizen: Boolean, PR: Boolean, nonPR: Boolean){
         if (usCitizen){
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
-            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.BOLD)
-            citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
-            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (PR){
             citizenshipBinding.layoutVisaStatusOther.visibility = View.GONE
-            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
-            citizenshipBinding.rbPr.setTypeface(null, Typeface.BOLD)
-            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.NORMAL)
         }
         if (nonPR){
-            //citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
-            citizenshipBinding.rbUsCitizen.setTypeface(null, Typeface.NORMAL)
-            citizenshipBinding.rbPr.setTypeface(null, Typeface.NORMAL)
-            citizenshipBinding.rbNonPrOther.setTypeface(null, Typeface.BOLD)
             val bundle = Bundle()
             bundle.putParcelable(AppConstant.borrower_citizenship,citizenship)
             findNavController().navigate(R.id.action_info_non_pr,bundle)
@@ -1420,33 +1401,14 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
 
         if(bindingMilitary.chbDutyPersonel.isChecked) {
             bindingMilitary.layoutActivePersonnel.visibility = View.VISIBLE
-            bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.BOLD)
             val bundle = Bundle()
             bundle.putString(AppConstant.service_date,militaryServiceDate)
             findNavController().navigate(R.id.action_info_active_duty,bundle)
         } else {
             bindingMilitary.layoutActivePersonnel.visibility = View.GONE
-            bindingMilitary.chbDutyPersonel.setTypeface(null, Typeface.NORMAL)
         }
     }
 
-    private fun militaryVeteran() {
-        if (bindingMilitary.chbVeteran.isChecked) {
-            bindingMilitary.chbVeteran.setTypeface(null, Typeface.BOLD)
-
-        } else {
-            bindingMilitary.chbVeteran.setTypeface(null, Typeface.NORMAL)
-        }
-    }
-
-    private fun militarySurvivingSpouse() {
-        if (bindingMilitary.chbSurvivingSpouse.isChecked) {
-            bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.BOLD)
-
-        } else {
-            bindingMilitary.chbSurvivingSpouse.setTypeface(null, Typeface.NORMAL)
-        }
-    }
 
     private fun setNumberFormts(){
         bi.edHomeNumber.addTextChangedListener(PhoneTextFormatter(bi.edHomeNumber, "(###) ###-####"))
