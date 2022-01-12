@@ -32,7 +32,7 @@
         android:drawablePadding="15dp"
         android:fontFamily="@font/rubik_regular"
         android:text="@string/us_citizen"
-        android:textColor="@color/grey_color_one"
+        android:textColor="@color/grey_color_two"
         android:textSize="14sp" />
 
     <androidx.appcompat.widget.AppCompatRadioButton
@@ -51,7 +51,7 @@
         android:drawablePadding="15dp"
         android:fontFamily="@font/rubik_regular"
         android:text="@string/pr_green_card"
-        android:textColor="@color/grey_color_one"
+        android:textColor="@color/grey_color_two"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:fontFamily="@font/rubik_regular"
             android:background="@null"
             android:text="@string/non_pr"
-            android:textColor="@color/grey_color_one"
+            android:textColor="@color/grey_color_two"
             android:textSize="14sp"
             android:clickable="true"/>
 

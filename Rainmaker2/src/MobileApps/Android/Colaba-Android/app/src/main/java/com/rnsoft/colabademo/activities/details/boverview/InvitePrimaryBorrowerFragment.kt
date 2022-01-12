@@ -42,11 +42,14 @@ class InvitePrimaryBorrowerFragment : BaseFragment() {
         }
 
         binding.btnSendInvitation.setOnClickListener {
-            detailViewModel.sendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
+            //detailViewModel.sendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
+            findNavController().popBackStack()
+
         }
 
         binding.btnResendInvitation.setOnClickListener {
-            detailViewModel.resendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
+            //detailViewModel.resendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
+            findNavController().popBackStack()
         }
 
         getData()

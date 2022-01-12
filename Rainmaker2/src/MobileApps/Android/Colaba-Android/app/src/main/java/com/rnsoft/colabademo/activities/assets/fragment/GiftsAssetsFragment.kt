@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.GiftsAssetLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -247,14 +249,13 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         binding.annualBaseEditText.addTextChangedListener(NumberTextFormat(binding.annualBaseEditText))
 
 
-
         binding.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.cash_gift -> {
                     HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
-                    binding.cashGift.setTypeface(null, Typeface.BOLD)
-                    binding.giftOfEquity.setTypeface(null, Typeface.NORMAL)
+                    setRadioColor(binding.cashGift, requireContext())
+                    radioUnSelectColor(binding.giftOfEquity, requireContext())
                     binding.layoutTransferDate.visibility = View.GONE
                     binding.giftDepositGroup.setOnCheckedChangeListener(null)
                     binding.giftDepositGroup.clearCheck()
@@ -263,8 +264,8 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                     binding.annualBaseLayout.hint = "Cash Value"
                 }
                 R.id.gift_of_equity -> {
-                    binding.giftOfEquity.setTypeface(null, Typeface.BOLD)
-                    binding.cashGift.setTypeface(null, Typeface.NORMAL)
+                    setRadioColor(binding.giftOfEquity, requireContext())
+                    radioUnSelectColor(binding.cashGift, requireContext())
                     HideSoftkeyboard.hide(requireContext(), binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.GONE
@@ -278,7 +279,6 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                 }
             }
         }
-
         binding.dateOfTransferEditText.showSoftInputOnFocus = false
         binding.dateOfTransferEditText.setOnClickListener { openCalendar() }
         binding.dateOfTransferEditText.setOnFocusChangeListener{ _ , _ ->  openCalendar() }
@@ -293,7 +293,6 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         }
 
         addFocusOutListenerToFields()
-
 
     }
 
@@ -352,10 +351,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
             }
             observeAddUpdateResponse()
         }
-
-
     }
-
 
     private fun returnUpdatedParams(assetDeleteBoolean:Boolean = false): AssetReturnParams {
         var assetAction = AppConstant.assetAdded
@@ -397,12 +393,16 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.VISIBLE
                     binding.layoutTransferDate.hint = resources.getString(R.string.date_of_transfer)
+                    setRadioColor(binding.yesDeposited,requireContext())
+                    radioUnSelectColor(binding.noDeposited,requireContext())
                 }
                 R.id.no_deposited -> {
                     HideSoftkeyboard.hide(requireContext(),binding.radioGroup)
                     clearFocusFromFields()
                     binding.layoutTransferDate.visibility = View.VISIBLE
                     binding.layoutTransferDate.hint = resources.getString(R.string.expected_date_of_transfer)
+                    setRadioColor(binding.noDeposited,requireContext())
+                    radioUnSelectColor(binding.yesDeposited,requireContext())
                 }
                 else -> {
                 }

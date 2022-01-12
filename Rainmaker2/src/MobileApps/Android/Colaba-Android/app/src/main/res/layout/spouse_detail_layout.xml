@@ -114,7 +114,7 @@
                     android:layoutDirection="rtl"
                     android:fontFamily="@font/rubik_regular"
                     android:text="@string/yes"
-                    android:textColor="@color/grey_color_one"
+                    android:textColor="@color/grey_color_two"
                     android:textSize="15sp"
                     android:drawablePadding="15dp"
                     android:button="@null"

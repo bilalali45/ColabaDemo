@@ -9,6 +9,8 @@ import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.textfield.TextInputEditText
@@ -81,6 +83,20 @@ class CustomMaterialFields() {
             }
         }
 
+        fun setRadioColor(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+        }
 
+        fun radioUnSelectColor(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+        }
+
+        fun setCheckBoxTextColor(checkbox : AppCompatCheckBox, context: Context){
+            checkbox.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+        }
+
+        fun clearCheckBoxTextColor(checkbox : AppCompatCheckBox, context: Context){
+            checkbox.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+        }
     }
 }

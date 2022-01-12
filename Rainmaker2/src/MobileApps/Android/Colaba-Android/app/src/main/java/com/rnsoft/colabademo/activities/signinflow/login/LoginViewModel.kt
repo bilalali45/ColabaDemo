@@ -53,9 +53,12 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
 
                 val genericResult =
                     loginRepo.validateLoginCredentials(userEmail, password,  dontAskTwoFaIdentifier)
-                Log.e("login-result - ", genericResult.toString())
+                //Log.e("login-result - ", genericResult.toString())
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
+                   genericResult.data.data?.token?.let {
+                       Log.e("Token", ""+genericResult.data.data.token)
+                   }
 
                     if (loginResponse.data?.tokenTypeName == AppConstant.AccessToken) {
                         EventBus.getDefault().post(LoginEvent(LoginResponseResult(success = loginResponse, screenNumber = 1)))

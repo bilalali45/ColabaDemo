@@ -8,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.clearCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,12 +27,9 @@ import java.lang.NullPointerException
  * Created by Anita Kiran on 9/9/2021.
  */
 
-@AndroidEntryPoint
 class FirstMortgageFragment : BaseFragment() {
 
     private lateinit var binding : FirstMortgageLayoutBinding
-    private val viewModel : SubjectPropertyViewModel by activityViewModels()
-    //private var list : ArrayList<FirstMortgageModel> = ArrayList()
     var firstMortgageModel :  FirstMortgageModel? = null
 
     override fun onCreateView(
@@ -61,47 +62,52 @@ class FirstMortgageFragment : BaseFragment() {
 
         binding.btnSave.setOnClickListener { saveData() }
 
-        binding.cbPropertyTaxes.setOnClickListener {
-            binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
-            binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+        binding.cbPropertyTaxes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbPropertyTaxes, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbPropertyTaxes, requireContext())
+
         }
 
-        binding.cbFloodInsurance.setOnClickListener {
-            binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-            binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+        binding.cbFloodInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbFloodInsurance, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbFloodInsurance, requireContext())
         }
 
-        binding.cbHomeownwerInsurance.setOnClickListener {
-            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
-            binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+        binding.cbHomeownwerInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbHomeownwerInsurance, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbHomeownwerInsurance, requireContext())
         }
 
-        binding.switchCreditLimit.setOnClickListener {
-            if(binding.switchCreditLimit.isChecked) {
+        binding.switchCreditLimit.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
                 binding.layoutCreditLimit.visibility = View.VISIBLE
                 binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
             } else {
                 binding.layoutCreditLimit.visibility = View.GONE
                 binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
             }
         }
 
-        binding.rbPaidClosingYes.setOnClickListener {
-            if (binding.rbPaidClosingYes.isChecked) {
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-            } else {
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-            }
+        binding.rbPaidClosingYes.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                binding.rbPaidClosingYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+             else
+                binding.rbPaidClosingYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
 
-        binding.rbPaidClosingNo.setOnClickListener {
-            if (binding.rbPaidClosingNo.isChecked) {
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-            }else{
-                binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-            }
+        binding.rbPaidClosingNo.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                binding.rbPaidClosingNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            else
+                binding.rbPaidClosingNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
     }
 
@@ -112,45 +118,32 @@ class FirstMortgageFragment : BaseFragment() {
             firstMortgageModel?.let {
                 it.firstMortgagePayment?.let {
                     binding.edFirstMortgagePayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutFirstPayment,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutFirstPayment, R.color.grey_color_two, requireActivity())
                 }
                 it.unpaidFirstMortgagePayment?.let {
                     binding.edUnpaidBalance.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutUnpaidBalance,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutUnpaidBalance, R.color.grey_color_two, requireActivity())
                 }
                 it.floodInsuranceIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbFloodInsurance.isChecked = true
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
-                    } else {
-                        binding.cbFloodInsurance.isChecked = false
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
                     }
+                    else {
+                        binding.cbFloodInsurance.isChecked = false }
                 }
                 it.propertyTaxesIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbPropertyTaxes.isChecked = true
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.cbPropertyTaxes.isChecked = false
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
                     }
                 }
                 it.homeOwnerInsuranceIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbHomeownwerInsurance.isChecked = true
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+
                     } else {
                         binding.cbHomeownwerInsurance.isChecked = false
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
                     }
                 }
 
@@ -162,11 +155,7 @@ class FirstMortgageFragment : BaseFragment() {
 
                         it.helocCreditLimit?.let {
                             binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
+                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
                         }
 
                     } else {
@@ -178,10 +167,8 @@ class FirstMortgageFragment : BaseFragment() {
                 it.paidAtClosing?.let {
                     if (it == true) {
                         binding.rbPaidClosingYes.isChecked = true
-                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.rbPaidClosingNo.isChecked = true
-                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
                     }
                 }
             }

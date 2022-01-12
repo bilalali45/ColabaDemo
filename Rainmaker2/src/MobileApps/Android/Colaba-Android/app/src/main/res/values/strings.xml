@@ -233,6 +233,11 @@
 
 
     <string name="assets">Assets</string>
+    <string name="cash_gift">Cash Gift</string>
+    <string name="equity_gift">Gift Of Equity</string>
+    <string name="cash_value">Cash Value</string>
+    <string name="has_gift_deposited_already">Has this gift been deposited already?</string>
+
 
     <string name="street_address">Street Address</string>
     <string name="unit_or_apt">Unit Or Apt. Number (Optional)</string>

@@ -1,18 +1,17 @@
 package com.rnsoft.colabademo
 
-import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.databinding.RealEstateSecondMortgageBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import org.greenrobot.eventbus.EventBus
@@ -23,7 +22,6 @@ import java.lang.NullPointerException
 class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
     private lateinit var binding : RealEstateSecondMortgageBinding
-    lateinit var sharedPreferences : SharedPreferences
     var secondMortgageModel = SecondMortgageModel()
 
     override fun onCreateView(
@@ -44,9 +42,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.layoutRealestateSecMortgage.setOnClickListener(this)
-        binding.rbPaidClosingYes.setOnClickListener(this)
-        binding.rbPaidClosingNo.setOnClickListener(this)
-        binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
         getSecondMortgageDetails()
@@ -61,20 +56,12 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
             secondMortgageModel.let {
                 it.secondMortgagePayment?.let {
                     binding.edSecMortgagePayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutSecPayment,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutSecPayment, R.color.grey_color_two, requireActivity())
                 }
 
                 it.unpaidSecondMortgagePayment?.let {
                     binding.edUnpaidBalance.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutUnpaidBalance,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutUnpaidBalance, R.color.grey_color_two, requireActivity())
                 }
                 it.isHeloc?.let { isHeloc ->
                     if (isHeloc == true) {
@@ -84,11 +71,7 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
                         it.helocCreditLimit?.let {
                             binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
+                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
                         }
 
                     } else {
@@ -100,10 +83,8 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                 it.paidAtClosing?.let {
                     if (it == true) {
                         binding.rbPaidClosingYes.isChecked = true
-                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.rbPaidClosingNo.isChecked = true
-                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
                     }
                 }
 
@@ -151,31 +132,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(), binding.layoutRealestateSecMortgage)
                 super.removeFocusFromAllFields(binding.layoutRealestateSecMortgage)
             }
-
-            R.id.rb_paid_closing_yes ->
-                if (binding.rbPaidClosingYes.isChecked) {
-                    binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
-                    binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-                } else
-                    binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-
-
-            R.id.rb_paid_closing_no ->
-                if (binding.rbPaidClosingNo.isChecked) {
-                    binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
-                    binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
-                } else
-                    binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-
-
-            R.id.switch_credit_limit ->
-                if(binding.switchCreditLimit.isChecked) {
-                    binding.layoutCreditLimit.visibility = View.VISIBLE
-                    binding.tvHeloc.setTypeface(null, Typeface.BOLD)
-                } else {
-                    binding.layoutCreditLimit.visibility = View.GONE
-                    binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
-                }
         }
     }
 
@@ -194,6 +150,33 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         binding.edSecMortgagePayment.addTextChangedListener(NumberTextFormat(binding.edSecMortgagePayment))
         binding.edUnpaidBalance.addTextChangedListener(NumberTextFormat(binding.edUnpaidBalance))
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
+
+
+        binding.rbPaidClosingYes.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.rbPaidClosingYes, requireContext())
+            else
+               radioUnSelectColor(binding.rbPaidClosingYes, requireContext())
+        }
+
+        binding.rbPaidClosingNo.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.rbPaidClosingNo, requireContext())
+            else
+                radioUnSelectColor(binding.rbPaidClosingNo, requireContext())
+        }
+
+        binding.switchCreditLimit.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else {
+                binding.layoutCreditLimit.visibility = View.GONE
+                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+            }
+        }
 
     }
 
@@ -214,11 +197,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         else
             if(event.errorResult!=null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG )
-    }
-
-    private fun hideLoader(){
-        val  activity = (activity as? RealEstateActivity)
-        activity?.binding?.loaderRealEstate?.visibility = View.GONE
     }
 
 }

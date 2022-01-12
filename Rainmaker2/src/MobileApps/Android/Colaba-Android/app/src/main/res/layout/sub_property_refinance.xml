@@ -720,7 +720,7 @@
                     android:id="@+id/layout_first_mortgage_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="5dp"
                     android:clickable="true"
                     android:orientation="vertical"
                     android:visibility="gone">
@@ -809,39 +809,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radioButtonYes" />
 
-
-            <!--  <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/radio_has_first_mortgage_yes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/yes"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/radio_has_first_mortgage_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/no"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp"
-                        tools:ignore="RtlSymmetry" />
-                </RadioGroup> -->
-
             <!-- second mortgage -->
             <LinearLayout
                 android:id="@+id/layout_second_mortgage"
@@ -859,38 +826,6 @@
                     android:textColor="@color/grey_color_two"
                     android:textSize="15sp" />
 
-                <!--<RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortgage_yes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/yes"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp" />
-
-                    <androidx.appcompat.widget.AppCompatRadioButton
-                        android:id="@+id/rb_sec_mortgage_no"
-                        android:layout_width="wrap_content"
-                        android:layout_height="22dp"
-                        android:layout_marginTop="18dp"
-                        android:button="@drawable/radiodraw"
-                        android:clickable="true"
-                        android:fontFamily="@font/rubik_regular"
-                        android:paddingStart="15dp"
-                        android:text="@string/no"
-                        android:textColor="@color/grey_color_one"
-                        android:textSize="14sp"
-                        tools:ignore="RtlSymmetry" />
-                </RadioGroup> -->
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -903,6 +838,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:button="@null"
+                        android:background="@null"
                         android:drawableStart="@drawable/radiodraw"
                         android:drawablePadding="15dp"
                         android:fontFamily="@font/rubik_regular"
@@ -919,7 +855,7 @@
                         android:id="@+id/layout_sec_mortgage_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:clickable="true"
                         android:orientation="vertical"
                         android:visibility="gone">
@@ -930,7 +866,6 @@
                             android:layout_marginStart="20dp"
                             android:layout_marginEnd="20dp"
                             android:background="@color/colaba_app_border_color" />
-
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -991,9 +926,6 @@
 
                 </LinearLayout>
 
-
-
-
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_sec_mortgage_no"
                     android:layout_width="match_parent"
@@ -1012,6 +944,7 @@
                     android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/radioButtonYes" />
+
             </LinearLayout>
 
         </LinearLayout>

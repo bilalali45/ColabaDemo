@@ -7,18 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 
 import com.rnsoft.colabademo.databinding.FirstMortgageLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.clearCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setCheckBoxTextColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import timber.log.Timber
-import java.lang.Exception
 import java.lang.NullPointerException
 
 
@@ -46,12 +49,6 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.firstMorgtageParentLayout.setOnClickListener(this)
-        binding.cbFloodInsurance.setOnClickListener(this)
-        binding.cbHomeownwerInsurance.setOnClickListener(this)
-        binding.cbPropertyTaxes.setOnClickListener(this)
-        binding.switchCreditLimit.setOnClickListener(this)
-        binding.rbPaidClosingYes.setOnClickListener(this)
-        binding.rbPaidClosingNo.setOnClickListener(this)
 
         setInputFields()
         getFirstMortgageDetails()
@@ -116,11 +113,7 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
                         it.helocCreditLimit?.let {
                             binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
+                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
                         }
 
                     } else {
@@ -180,7 +173,7 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                 HideSoftkeyboard.hide(requireActivity(), binding.firstMorgtageParentLayout)
                 super.removeFocusFromAllFields(binding.firstMorgtageParentLayout)
             }
-            R.id.cb_flood_insurance ->
+           /* R.id.cb_flood_insurance ->
                 if (binding.cbFloodInsurance.isChecked) {
                     binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
                 }else{
@@ -224,7 +217,7 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                     binding.rbPaidClosingYes.setTypeface(null, Typeface.NORMAL)
                 }else{
                     binding.rbPaidClosingNo.setTypeface(null, Typeface.NORMAL)
-                }
+                } */
         }
     }
 
@@ -243,6 +236,55 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
         binding.edFirstMortgagePayment.addTextChangedListener(NumberTextFormat(binding.edFirstMortgagePayment))
         binding.edUnpaidBalance.addTextChangedListener(NumberTextFormat(binding.edUnpaidBalance))
         binding.edCreditLimit.addTextChangedListener(NumberTextFormat(binding.edCreditLimit))
+
+
+        binding.cbPropertyTaxes.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbPropertyTaxes, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbPropertyTaxes, requireContext())
+        }
+
+        binding.cbFloodInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbFloodInsurance, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbFloodInsurance, requireContext())
+        }
+
+        binding.cbHomeownwerInsurance.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked)
+                setCheckBoxTextColor(binding.cbHomeownwerInsurance, requireContext())
+            else
+                clearCheckBoxTextColor(binding.cbHomeownwerInsurance, requireContext())
+        }
+
+        binding.switchCreditLimit.setOnCheckedChangeListener { _, isChecked ->
+            if(isChecked) {
+                binding.layoutCreditLimit.visibility = View.VISIBLE
+                binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+            } else {
+                binding.layoutCreditLimit.visibility = View.GONE
+                binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                binding.tvHeloc.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+            }
+        }
+
+        binding.rbPaidClosingYes.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.rbPaidClosingYes,requireContext())
+            else
+                radioUnSelectColor(binding.rbPaidClosingYes,requireContext())
+        }
+
+        binding.rbPaidClosingNo.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked)
+                setRadioColor(binding.rbPaidClosingNo,requireContext())
+            else
+                radioUnSelectColor(binding.rbPaidClosingNo,requireContext())
+        }
+
     }
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
@@ -253,12 +295,7 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
     fun clearError(textInputlayout: TextInputLayout) {
         textInputlayout.helperText = ""
-        textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(
-                requireContext(),
-                R.color.primary_info_line_color
-            )
-        )
+        textInputlayout.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_line_color))
     }
 
     override fun onStart() {
