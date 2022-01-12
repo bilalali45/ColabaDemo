@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -59,9 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colaba_app_border_color"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/top_del_imageview"
@@ -86,6 +85,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
 
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="22dp"
         android:background="@android:color/transparent"
         android:hint="Gift Source"
         android:textColorHint="@color/primary_info_label_color"
@@ -95,17 +97,14 @@
         app:boxStrokeWidthFocused="1dp"
         app:endIconDrawable="@drawable/ic_down_arrow"
         app:endIconMode="custom"
+
         app:endIconTint="@color/grey_color_three"
         app:helperTextEnabled="true"
-        app:helperTextTextAppearance="@style/inputError"
 
+        app:helperTextTextAppearance="@style/inputError"
         app:helperTextTextColor="@color/colaba_red_color"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
         app:hintTextColor="@color/grey_color_two"
-        android:layout_marginTop="26dp"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assets_top_container">
@@ -117,17 +116,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
+            android:layout_gravity="bottom"
             android:backgroundTint="@android:color/transparent"
-            android:completionThreshold="1"
 
+            android:completionThreshold="1"
             android:cursorVisible="false"
             android:focusable="false"
-            android:inputType="none"
             android:focusableInTouchMode="true"
-            android:gravity="bottom"
-            android:layout_gravity="bottom"
-
             android:fontFamily="@font/rubik_regular"
+            android:gravity="bottom"
+
+            android:inputType="none"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
             android:spinnerMode="dropdown"
@@ -140,96 +139,120 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gift_type_constraintlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible"
-        android:id="@+id/gift_type_constraintlayout"
         android:layout_marginTop="50dp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gift_source_input_layout"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/gift_source_input_layout">
 
-    <TextView
-        android:id="@+id/radio_label_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp"
-        android:fontFamily="@font/rubik_regular"
-        android:text="Gift Type"
-        android:textColor="@color/grey_color_two"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/radio_label_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="Gift Type"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:padding="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radio_label_text_view">
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/cash_gift"
+        <RadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
-            android:layout_height="22dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Cash Gift"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:paddingStart="15dp"
-            android:button="@drawable/radiodraw"/>
-
-        <androidx.appcompat.widget.AppCompatRadioButton
-            android:id="@+id/gift_of_equity"
-            android:layout_width="200dp"
-            android:layout_height="22dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/rubik_regular"
-            android:text="Gift Of Equity"
-            android:textColor="@color/grey_color_one"
-            android:textSize="15sp"
-            android:paddingStart="15dp"
-            android:button="@drawable/radiodraw"/>
-    </RadioGroup>
+            android:padding="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_label_text_view">
 
+           <!-- <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/cash_gift"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:text="Cash Gift"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/gift_of_equity"
+                android:layout_width="200dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="16dp"
+                android:button="@drawable/radiodraw"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:text="Gift Of Equity"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp" /> -->
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/cash_gift"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/rubik_regular"
+                android:layoutDirection="rtl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/cash_gift"
+                android:textColor="@color/grey_color_two"
+                android:textSize="14sp" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/gift_of_equity"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layoutDirection="rtl"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/equity_gift"
+                android:textColor="@color/grey_color_two"
+                android:textSize="14sp"
+                android:drawablePadding="15dp"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:background="@drawable/content_bg_with_drop_shadow" />
+
+        </RadioGroup>
 
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/annual_base_layout"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:layout_marginStart="22dp"
             android:layout_marginTop="26dp"
             android:layout_marginEnd="22dp"
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_light"
-            android:hint="Cash Value"
+            android:hint="@string/cash_value"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"
             app:boxStrokeWidth="0.5dp"
-
-
             app:boxStrokeWidthFocused="1dp"
             app:helperTextEnabled="true"
             app:helperTextTextAppearance="@style/inputError"
-
             app:helperTextTextColor="@color/colaba_red_color"
             app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
             app:hintTextColor="@color/grey_color_two"
             app:layout_constraintEnd_toEndOf="parent"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
@@ -239,112 +262,130 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:cursorVisible="true"
-
                 android:ems="10"
                 android:fontFamily="@font/rubik_regular"
-
                 android:gravity="top|start"
                 android:imeOptions="actionNone"
                 android:inputType="numberDecimal"
-
                 android:lines="10"
-
                 android:maxLines="10"
                 android:minLines="1"
                 android:paddingStart="0dp"
                 android:scrollHorizontally="false"
                 android:singleLine="false"
-
-
                 android:textColor="@color/grey_color_one"
-
                 android:textSize="@dimen/ed_txt_size_primary_info" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/gift_transfer_constraintlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:id="@+id/gift_transfer_constraintlayout"
         android:layout_marginTop="50dp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gift_type_constraintlayout"
-    >
+        app:layout_constraintTop_toBottomOf="@+id/gift_type_constraintlayout">
 
+        <TextView
+            android:id="@+id/gift_deposit_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="22dp"
+            android:layout_marginEnd="22dp"
+            android:fontFamily="@font/rubik_regular"
+            android:text="@string/has_gift_deposited_already"
+            android:textColor="@color/grey_color_two"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/gift_deposit_text_view"
-                android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/gift_deposit_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gift_deposit_text_view">
 
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginEnd="22dp"
+         <!--   <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/yes_deposited"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
+                android:button="@drawable/radiodraw"
                 android:fontFamily="@font/rubik_regular"
-                android:text="Has this gift been deposited already?"
-                android:textColor="@color/grey_color_two"
-                android:textSize="13sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:paddingStart="15dp"
+                android:text="@string/yes"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp" />
 
-
-            <RadioGroup
-                android:id="@+id/gift_deposit_group"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/no_deposited"
+                android:layout_width="match_parent"
+                android:layout_height="22dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/gift_deposit_text_view">
+                android:button="@drawable/radiodraw"
+                android:fontFamily="@font/rubik_regular"
+                android:paddingStart="15dp"
+                android:text="@string/no"
+                android:textColor="@color/grey_color_one"
+                android:textSize="15sp" /> -->
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/yes_deposited"
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="@string/yes"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:button="@drawable/radiodraw"/>
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/yes_deposited"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/rubik_regular"
+                android:layoutDirection="rtl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/yes"
+                android:textAllCaps="true"
+                android:textColor="@color/grey_color_two"
+                android:textSize="14sp" />
 
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/no_deposited"
-                    android:layout_width="match_parent"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/rubik_regular"
-                    android:text="@string/no"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="15sp"
-                    android:paddingStart="15dp"
-                    android:button="@drawable/radiodraw" />
-            </RadioGroup>
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/no_deposited"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layoutDirection="rtl"
+                android:fontFamily="@font/rubik_regular"
+                android:text="@string/no"
+                android:textColor="@color/grey_color_two"
+                android:textAllCaps="true"
+                android:textSize="14sp"
+                android:drawablePadding="15dp"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:background="@drawable/content_bg_with_drop_shadow" />
 
-
+        </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_transfer_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:layout_marginStart="22dp"
         android:layout_marginTop="55dp"
         android:layout_marginEnd="22dp"
         android:fontFamily="@font/rubik_light"
         android:hint="Expected Date of Transfer (MM/DD/YYYY)"
-
         android:textColorHint="@color/primary_info_label_color"
+        android:visibility="invisible"
         app:boxCollapsedPaddingTop="1dp"
         app:boxStrokeColor="@color/primary_info_line_color"
         app:boxStrokeWidth="0.5dp"
@@ -373,11 +414,9 @@
             android:paddingStart="0dp"
             android:singleLine="true"
             android:textColor="@color/grey_color_one"
-            android:textSize="@dimen/ed_txt_size_primary_info"
-            />
+            android:textSize="@dimen/ed_txt_size_primary_info" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <ImageView
@@ -385,12 +424,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_save"
-        app:elevation="3dp"
         android:translationX="18dp"
         android:translationY="20dp"
+        app:elevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

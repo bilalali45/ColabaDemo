@@ -42,9 +42,6 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
         binding.backButton.setOnClickListener(this)
         binding.btnSave.setOnClickListener(this)
         binding.layoutRealestateSecMortgage.setOnClickListener(this)
-        binding.rbPaidClosingYes.setOnClickListener(this)
-        binding.rbPaidClosingNo.setOnClickListener(this)
-        binding.switchCreditLimit.setOnClickListener(this)
 
         setInputFields()
         getSecondMortgageDetails()
@@ -59,20 +56,12 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
             secondMortgageModel.let {
                 it.secondMortgagePayment?.let {
                     binding.edSecMortgagePayment.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutSecPayment,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutSecPayment, R.color.grey_color_two, requireActivity())
                 }
 
                 it.unpaidSecondMortgagePayment?.let {
                     binding.edUnpaidBalance.setText(Math.round(it).toString())
-                    CustomMaterialFields.setColor(
-                        binding.layoutUnpaidBalance,
-                        R.color.grey_color_two,
-                        requireActivity()
-                    )
+                    CustomMaterialFields.setColor(binding.layoutUnpaidBalance, R.color.grey_color_two, requireActivity())
                 }
                 it.isHeloc?.let { isHeloc ->
                     if (isHeloc == true) {
@@ -82,11 +71,7 @@ class RealEstateSecondMortgage : BaseFragment(), View.OnClickListener {
 
                         it.helocCreditLimit?.let {
                             binding.edCreditLimit.setText(Math.round(it).toString())
-                            CustomMaterialFields.setColor(
-                                binding.layoutCreditLimit,
-                                R.color.grey_color_two,
-                                requireActivity()
-                            )
+                            CustomMaterialFields.setColor(binding.layoutCreditLimit, R.color.grey_color_two, requireActivity())
                         }
 
                     } else {
