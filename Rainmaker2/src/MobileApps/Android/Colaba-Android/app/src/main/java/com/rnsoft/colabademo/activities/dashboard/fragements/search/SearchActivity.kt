@@ -64,6 +64,9 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
 
         searchRecyclerView?.apply {
             this.layoutManager = linearLayoutManager
+
+
+            
             //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
             this.adapter = searchAdapter
