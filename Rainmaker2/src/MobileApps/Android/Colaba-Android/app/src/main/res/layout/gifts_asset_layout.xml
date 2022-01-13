@@ -198,36 +198,17 @@
                 android:textSize="15sp" /> -->
 
             <androidx.appcompat.widget.AppCompatRadioButton
+                style="@style/radiobutton"
                 android:id="@+id/cash_gift"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/content_bg_with_drop_shadow"
                 android:button="@null"
                 android:drawableStart="@drawable/radiodraw"
-                android:drawablePadding="15dp"
                 android:fontFamily="@font/rubik_regular"
-                android:layoutDirection="rtl"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:text="@string/cash_gift"
-                android:textColor="@color/grey_color_two"
-                android:textSize="14sp" />
+                android:text="@string/cash_gift" />
 
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/gift_of_equity"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:layoutDirection="rtl"
-                android:fontFamily="@font/rubik_regular"
                 android:text="@string/equity_gift"
-                android:textColor="@color/grey_color_two"
-                android:textSize="14sp"
-                android:drawablePadding="15dp"
-                android:button="@null"
-                android:drawableStart="@drawable/radiodraw"
-                android:background="@drawable/content_bg_with_drop_shadow" />
+                style="@style/radiobutton" />
 
         </RadioGroup>
 

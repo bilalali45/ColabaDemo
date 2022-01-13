@@ -66,7 +66,7 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
             this.layoutManager = linearLayoutManager
 
 
-            
+
             //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
             this.setHasFixedSize(true)
             this.adapter = searchAdapter
