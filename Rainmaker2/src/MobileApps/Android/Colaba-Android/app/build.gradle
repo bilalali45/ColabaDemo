@@ -15,7 +15,7 @@ android {
 
     signingConfigs {
         releaseBuild {
-        storeFile file('E:\\colabakeystore.jks')
+       /// storeFile file('E:\\colabakeystore.jks')
             storePassword 'loan64'
             keyAlias '1'
             keyPassword 'loan64'
@@ -83,6 +83,7 @@ android {
     }
 
     buildFeatures {
+        dataBinding = true
         viewBinding true
     }
 
