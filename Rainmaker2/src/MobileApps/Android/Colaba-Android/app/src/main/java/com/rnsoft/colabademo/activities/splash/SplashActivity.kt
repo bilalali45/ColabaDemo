@@ -57,3 +57,12 @@ class SplashActivity : AppCompatActivity() {
         startActivity(borrowerDetailIntent)
     }
 }
+
+//note
+//GovtQuestionsTabFragment
+//GovtQuestionPagerAdapter
+//
+//
+//
+//header question     10
+//parentquestionid =  null

@@ -30,6 +30,9 @@
     <color name="dark_color_gray">#4E4E4E</color>
     <color name="document_view_color">#3F3F3F</color>
 
+    <color name="questionheader_view_color">#7E829E</color>
+
+
 
     <color name="grey_color_three">#FFA7A7A7</color>
     <color name="grey_color_four">#FFCCCCCC</color>

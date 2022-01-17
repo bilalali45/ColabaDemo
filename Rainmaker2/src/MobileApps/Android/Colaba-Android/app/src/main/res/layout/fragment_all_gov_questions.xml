@@ -14,7 +14,7 @@
         android:id="@+id/rvquestions"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/_20sdp"
+        android:padding="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
        />
 </androidx.constraintlayout.widget.ConstraintLayout>

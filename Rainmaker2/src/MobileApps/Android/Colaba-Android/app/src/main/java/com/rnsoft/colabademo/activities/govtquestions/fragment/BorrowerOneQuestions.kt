@@ -117,8 +117,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 updateDemoGraphicApiCall()
             else
                 updateGovernmentQuestionApiCall()
-            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
-            requireActivity().finish()
+                 EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+                 requireActivity().finish()
         }
 
         setUpDynamicTabs()

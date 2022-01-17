@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 
 
 class GovtQuestionPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle , private val tabIds:ArrayList<Int>) :
@@ -16,14 +17,18 @@ class GovtQuestionPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
     }
 
     override fun createFragment(position: Int): Fragment {
-        val borrowerOneQuestions = BorrowerOneQuestions()
+
+        val borrowerOneQuestions = AllGovQuestionsFragment()
         val args = Bundle()
         args.putInt(AppConstant.tabBorrowerId, tabIds[position])
         borrowerOneQuestions.arguments = args
         return borrowerOneQuestions
+
+
     }
 
-
+ //   AllGovQuestionsFragment
+   /// BorrowerOneQuestions
 
     /*
 

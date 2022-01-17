@@ -10,10 +10,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class TokenAuthenticator ( private val sharedPreferences: SharedPreferences) : Authenticator {
-
-        //override fun authenticate(route: Route?, response: Response): Request? { return null }
-
-        //override fun authenticate(route: Route?, authResponse: Response?): Request? {
+        // override fun authenticate(route: Route?, response: Response): Request? { return null }
+        // override fun authenticate(route: Route?, authResponse: Response?): Request? {
         override fun authenticate(route: Route?, response: Response): Request? {
             Log.e("authenticate - ", "Generating Token---")
             val newTokenResponse : LoginResponse = getNewToken() ?: return null

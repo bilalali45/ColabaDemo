@@ -1,9 +1,20 @@
 package com.rnsoft.colabademo.adapter
 
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.rnsoft.colabademo.QuestionData
 import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.databinding.CategoryBinding
 
-internal class QueationAdapter(private val context: Context?, private val arrayList: ArrayList<Feedmodel>?) : RecyclerView.Adapter<Feedadapter.CustomView?>() {
+internal class QueationAdapter(
+    private val context: Context?,
+    private val arrayList: ArrayList<QuestionData>?,
+    var subquestionarray: ArrayList<QuestionData>
+) : RecyclerView.Adapter<QueationAdapter.CustomView?>() {
     private var layoutInflater: LayoutInflater? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomView {
@@ -11,40 +22,25 @@ internal class QueationAdapter(private val context: Context?, private val arrayL
             layoutInflater = LayoutInflater.from(parent.context)
         }
         val categoryBinding = DataBindingUtil.inflate<CategoryBinding?>(layoutInflater!!, R.layout.innerlayout, parent, false)
-        categoryBinding!!.presenter = object : FeedPresenter {
-            override fun onprofileNavigator() {
-
-
+        categoryBinding!!.presenter = object : QuestionPresenter {
+            override fun onNav() {
+                categoryBinding!!.subquesview.visibility = View.VISIBLE
+                categoryBinding!!.radioButtonyes.isChecked = true
+                categoryBinding!!.radioButtonNo.isChecked = false
+            }
+            override fun onitem() {
+                categoryBinding!!.subquesview.visibility = View.GONE
+                categoryBinding!!.radioButtonyes.isChecked = false
+                categoryBinding!!.radioButtonNo.isChecked = true
             }
 
-            override fun onlikelistNavigator() {
+          }
 
-            }
 
-            override fun items() {
-
-            }
-
-            override fun chat() {
-
-            }
-
-            override fun address() {
-
-            }
-
-            override fun onComentNavigator() {
-
-            }
-
-            override fun onlikeNavigator() {
-
-            }
-        }
         return CustomView(categoryBinding)
     }
 
-    fun updateData(viewModels: ArrayList<Feedmodel>?) {
+    fun updateData(viewModels: ArrayList<QuestionData>?) {
 
         notifyDataSetChanged()
     }
@@ -54,7 +50,7 @@ internal class QueationAdapter(private val context: Context?, private val arrayL
     override fun onBindViewHolder(holder: CustomView, position: Int) {
         val categoryViewModel = arrayList!!.get(position)
         holder.bind(categoryViewModel)
-        val post = categoryViewModel!!.getPostFile()
+       // val post = categoryViewModel!!.getPostFile()
 
 
         //  binding.spinnerGender.performClick();
@@ -72,9 +68,15 @@ internal class QueationAdapter(private val context: Context?, private val arrayL
 
 
 
-        fun bind(categoryViewModel: Feedmodel?) {
+        fun bind(categoryViewModel: QuestionData?) {
             categoryBinding!!.setCategorymodel(categoryViewModel)
             categoryBinding.executePendingBindings()
+
+            for (qData in subquestionarray!!) {
+                if(categoryViewModel!!.id == qData.parentQuestionId){
+                    categoryBinding.subquestionheader.text = qData.question
+                }
+            }
 
         }
 
