@@ -18,7 +18,7 @@ class GovtQuestionPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     override fun createFragment(position: Int): Fragment {
 
-        val borrowerOneQuestions = AllGovQuestionsFragment()
+        val borrowerOneQuestions = BorrowerOneQuestions()
         val args = Bundle()
         args.putInt(AppConstant.tabBorrowerId, tabIds[position])
         borrowerOneQuestions.arguments = args
@@ -27,7 +27,7 @@ class GovtQuestionPagerAdapter(fragmentManager: FragmentManager, lifecycle: Life
 
     }
 
- //   AllGovQuestionsFragment
+   // AllGovQuestionsFragment
    /// BorrowerOneQuestions
 
     /*

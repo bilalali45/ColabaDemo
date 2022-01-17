@@ -26,6 +26,9 @@ class AllGovQuestionsFragment : Fragment() {
     private var qustionheaderarray: ArrayList<QuestionData>? = null
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
+    private var governmentParams = GovernmentParams()
+    private lateinit var lastQData: QuestionData
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -91,16 +94,14 @@ class AllGovQuestionsFragment : Fragment() {
 
         when(stringForSpecificFragment) {
             "Undisclosed Borrowered Funds" ->{
-
                 findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
             }
             "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
-            "Ownership Interest in Property" ->{
-
-                bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
-                findNavController().navigate(R.id.action_ownership_interest , bundle)
-            }
-            "Own Property Type" ->{}
+//            "Ownership Interest in Property" ->{
+//                bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
+//                findNavController().navigate(R.id.action_ownership_interest , bundle)
+//            }
+            "Own Property Type" ->{ }
             "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
             "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
             "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
@@ -108,15 +109,16 @@ class AllGovQuestionsFragment : Fragment() {
 
                 findNavController().navigate(R.id.action_party_to , bundle)
             }
-            "Bankruptcy " ->{
-                val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
-                bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
-                findNavController().navigate(R.id.navigation_bankruptcy , bundle)
-            }
-            "Child Support, Alimony, etc." ->{
-                bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
-                findNavController().navigate(R.id.action_child_support, bundle)
-            }
+//            "Bankruptcy " ->{
+//                val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
+//                bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
+//                findNavController().navigate(R.id.navigation_bankruptcy , bundle)
+//            }
+
+//            "Child Support, Alimony, etc." ->{
+//                bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
+//                findNavController().navigate(R.id.action_child_support, bundle)
+//            }
             "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
             "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure , bundle) }
             "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance, bundle) }

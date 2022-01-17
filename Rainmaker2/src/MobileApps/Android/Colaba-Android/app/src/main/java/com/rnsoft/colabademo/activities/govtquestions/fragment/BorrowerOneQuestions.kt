@@ -62,16 +62,12 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
-
     private var ethnicityChildNames = ""
     private var otherEthnicity = ""
-
     private var nativeHawaiiChildNames = ""
     private var nativeHawaiiOtherRace = ""
-
     private var asianChildNames = ""
     private var otherAsianRace = ""
-
     private var demoGraphicScreenDisplaying: Boolean = false
     private var ethnicityChildList: ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
     private var asianChildList: ArrayList<DemoGraphicRaceDetail> = arrayListOf()
@@ -80,17 +76,14 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var variableRaceList: ArrayList<DemoGraphicRace>
     private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
     private var variableGender: Int? = null
-
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////s
     private var tabBorrowerId: Int? = null
     private var childSupportAnswerDataList: ArrayList<ChildAnswerData> = arrayListOf()
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var ownerShipInnerScreenParams: ArrayList<String> = arrayListOf()
-
     private var governmentParams = GovernmentParams()
     private var saveGovtQuestionForDetailAnswer: ArrayList<QuestionData>? = null
     private lateinit var lastQData: QuestionData
-
 
     private var ownerShipConstraintLayout: ConstraintLayout?=null
     private lateinit var childConstraintLayout: ConstraintLayout
