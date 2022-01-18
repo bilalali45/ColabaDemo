@@ -912,12 +912,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
 
         when(stringForSpecificFragment) {
                "Undisclosed Borrowered Funds" ->{
-
-                   findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
+                   findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle)
                }
                "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
                "Ownership Interest in Property" ->{
-
                    bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
                    findNavController().navigate(R.id.action_ownership_interest , bundle)
                }

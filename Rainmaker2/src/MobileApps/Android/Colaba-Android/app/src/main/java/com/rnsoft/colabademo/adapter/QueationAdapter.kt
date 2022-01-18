@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.rnsoft.colabademo.QuestionData
 import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.CategoryBinding
 
 internal class QueationAdapter(
@@ -24,14 +25,19 @@ internal class QueationAdapter(
         val categoryBinding = DataBindingUtil.inflate<CategoryBinding?>(layoutInflater!!, R.layout.innerlayout, parent, false)
         categoryBinding!!.presenter = object : QuestionPresenter {
             override fun onNav() {
-                categoryBinding!!.subquesview.visibility = View.VISIBLE
-                categoryBinding!!.radioButtonyes.isChecked = true
-                categoryBinding!!.radioButtonNo.isChecked = false
+//                categoryBinding!!.subquesview.visibility = View.VISIBLE
+//                categoryBinding!!.radioButtonyes.isChecked = true
+//                categoryBinding!!.radioButtonNo.isChecked = false
+
+
+                if(AllGovQuestionsFragment.instan != null){
+                    AllGovQuestionsFragment.instan!!.nav(categoryBinding.categorymodel!!.id,categoryBinding.categorymodel!!.headerText,categoryBinding.categorymodel!!.firstName,categoryBinding.categorymodel!!.lastName)
+                }
             }
             override fun onitem() {
-                categoryBinding!!.subquesview.visibility = View.GONE
-                categoryBinding!!.radioButtonyes.isChecked = false
-                categoryBinding!!.radioButtonNo.isChecked = true
+//                categoryBinding!!.subquesview.visibility = View.GONE
+//                categoryBinding!!.radioButtonyes.isChecked = false
+//                categoryBinding!!.radioButtonNo.isChecked = true
             }
 
           }
@@ -72,11 +78,11 @@ internal class QueationAdapter(
             categoryBinding!!.setCategorymodel(categoryViewModel)
             categoryBinding.executePendingBindings()
 
-            for (qData in subquestionarray!!) {
-                if(categoryViewModel!!.id == qData.parentQuestionId){
-                    categoryBinding.subquestionheader.text = qData.question
-                }
-            }
+//            for (qData in subquestionarray!!) {
+//                if(categoryViewModel!!.id == qData.parentQuestionId){
+//                    categoryBinding.subquestionheader.text = qData.question
+//                }
+//            }
 
         }
 

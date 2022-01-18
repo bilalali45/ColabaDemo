@@ -1,11 +1,16 @@
 package com.rnsoft.colabademo.activities.govtquestions.fragment
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.TextView
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
@@ -14,7 +19,13 @@ import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rnsoft.colabademo.adapter.QueationAdapter
+import com.rnsoft.colabademo.utils.Common
+import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
+import kotlinx.android.synthetic.main.fragment_all_gov_questions.view.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
 
 
@@ -44,9 +55,54 @@ class AllGovQuestionsFragment : Fragment() {
                 container,
                 false
             )
+        arguments?.let {
+            tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
+        }
         setUpDynamicTabs()
+
+//        binding.saveBtn.setOnClickListener {
+//            if (demoGraphicScreenDisplaying)
+//                updateDemoGraphicApiCall()
+//            else
+//                updateGovernmentQuestionApiCall()
+//            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+//            requireActivity().finish()
+//        }
+
+
+
+        instan = this
         return binding!!.root
     }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
+        if(updateEvent.whichBorrowerId == currentBorrowerId) {
+
+            clickedContentCell.govt_detail_box.detail_title.text =
+                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
+            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+            clickedContentCell.govt_detail_box.detail_text.text =
+                "$".plus(Common.addNumberFormat(updateEvent.detailDescription.toDouble()))
+            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+
+            
+            governmentParams.Questions.let { questions ->
+                for (question in questions) {
+                    question.parentQuestionId?.let { parentQuestionId ->
+                        if (parentQuestionId == undisclosedLayout.id) {
+                            question.answer = updateEvent.detailDescription
+                            question.answerDetail = updateEvent.detailTitle
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     private fun setUpDynamicTabs() {
         qustionheaderarray = ArrayList()
@@ -57,40 +113,103 @@ class AllGovQuestionsFragment : Fragment() {
                     var zeroIndexAppCompat: AppCompatTextView? = null
                     var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
                     if (governmentQuestionsModelClassList.size > 0) {
-                        Log.i("TAG", "setUpDynamicTabs: "+governmentQuestionsModelClassList)
+                        Log.i("TAG", "setUpDynamicTabs: " + governmentQuestionsModelClassList)
 
-                        var questionmodel =  governmentQuestionsModelClassList.get(0).questionData
-                        for (qData in questionmodel!!) {
-                            if (qData.parentQuestionId == null && qData.id != null){
-                                 qustionheaderarray!!.add(qData)
-                            }else{
-                                 subquestionarray!!.add(qData)
+                        var zeroIndexAppCompat: AppCompatTextView? = null
+                        if (governmentQuestionsModelClassList.size > 0) {
+                            var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
+                                null
+                            for (item in governmentQuestionsModelClassList) {
+                                if (item.passedBorrowerId == tabBorrowerId) {
+                                    selectedGovernmentQuestionModel = item
+                                    currentBorrowerId = tabBorrowerId!!
+                                    governmentQuestionActivity?.let { governmentQuestionActivity ->
+                                        governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
+                                            item.questionData?.let { questionDataList ->
+                                                item.passedBorrowerId?.let { passedBorrowerId ->
+                                                    governmentParams =
+                                                        GovernmentParams(
+                                                            passedBorrowerId,
+                                                            nonNullLoanApplicationId,
+                                                            questionDataList
+                                                        )
+                                                    Timber.e(
+                                                        "TingoPingo = ",
+                                                        governmentParams.BorrowerId,
+                                                        governmentParams.toString()
+                                                    )
+                                                    var questionmodel =  governmentQuestionsModelClassList.get(0).questionData
+                                                    for (qData in questionmodel!!) {
+                                                        if (qData.parentQuestionId == null && qData.id != null){
+                                                             qustionheaderarray!!.add(qData)
+                                                        }else{
+                                                             subquestionarray!!.add(qData)
+                                                        }
+                                                      }
+
+
+
+                                                    createcell(binding!!.root,
+                                                        qustionheaderarray!!, subquestionarray!!
+                                                    )
+//                                                    adapter = QueationAdapter(requireActivity(), qustionheaderarray, subquestionarray!!)
+//                                                    rvquestions.setLayoutManager(
+//                                                        LinearLayoutManager(
+//                                                            activity
+//                                                        )
+//                                                    )
+//                                                    rvquestions.setAdapter(adapter)
+
+                                                    //udateGovernmentQuestionsList.add(test)
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    break
+                                }
                             }
-                          }
-                        adapter = QueationAdapter(requireActivity(), qustionheaderarray, subquestionarray!!)
-                        rvquestions.setLayoutManager(
-                            LinearLayoutManager(
-                                activity
-                            )
-                        )
-                        rvquestions.setAdapter(adapter)
+                        }
+
                     }
                 });
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AllGovQuestionsFragment().apply {
-            }
+
+
+
+        var instan : AllGovQuestionsFragment? = null
+        fun newInstance() = AllGovQuestionsFragment()
+
+    }
+    private fun createcell(
+        root: View,
+        qustionheaderarray: ArrayList<QuestionData>,
+        subquestionarray: ArrayList<QuestionData>) {
+        for (qData in qustionheaderarray!!) {
+                val li = LayoutInflater.from(activity)
+                val row: View = li.inflate(R.layout.listquestion, null)
+                row.findViewById<TextView>(R.id.questionheader).text = qData.question
+                row.findViewById<AppCompatRadioButton>(R.id.radioButtonyes).setOnClickListener {
+                    navigateToInnerScreen(qData.headerText!!, qData.id!!,qData.firstName,qData.lastName)
+                }
+               root.findViewById<LinearLayout>(R.id.list_Category).addView(row)
+
+        }
     }
 
-    private fun navigateToInnerScreen(stringForSpecificFragment:String, questionId: Int){
+    private fun navigateToInnerScreen(
+        stringForSpecificFragment: String,
+        questionId: Int,
+        firstName: String?,
+        lastName: String?
+    ){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putInt(AppConstant.whichBorrowerId, currentBorrowerId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
-        bundle.putString(AppConstant.govtUserName , (lastQData.firstName+" "+lastQData.lastName))
+        bundle.putString(AppConstant.govtUserName , (firstName+" "+lastName))
 
         when(stringForSpecificFragment) {
             "Undisclosed Borrowered Funds" ->{
@@ -126,5 +245,9 @@ class AllGovQuestionsFragment : Fragment() {
                 Timber.e(" not matching with header title...")
             }
         }
+    }
+
+    fun nav(id: Int?, headerText: String?, firstName: String?, lastName: String?) {
+        navigateToInnerScreen(headerText!!.toString(),id!!,firstName,lastName)
     }
 }
