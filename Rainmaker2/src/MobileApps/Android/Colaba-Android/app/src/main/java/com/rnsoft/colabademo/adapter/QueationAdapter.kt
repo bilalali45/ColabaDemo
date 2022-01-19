@@ -30,9 +30,12 @@ internal class QueationAdapter(
 //                categoryBinding!!.radioButtonNo.isChecked = false
 
 
-                if(AllGovQuestionsFragment.instan != null){
-                    AllGovQuestionsFragment.instan!!.nav(categoryBinding.categorymodel!!.id,categoryBinding.categorymodel!!.headerText,categoryBinding.categorymodel!!.firstName,categoryBinding.categorymodel!!.lastName)
-                }
+//                if(AllGovQuestionsFragment.instan != null){
+//                    AllGovQuestionsFragment.instan!!.nav(categoryBinding.categorymodel!!.id,categoryBinding.categorymodel!!.headerText,categoryBinding.categorymodel!!.firstName,categoryBinding.categorymodel!!.lastName)
+//                }
+
+
+
             }
             override fun onitem() {
 //                categoryBinding!!.subquesview.visibility = View.GONE

@@ -66,3 +66,21 @@ class SplashActivity : AppCompatActivity() {
 //
 //header question     10
 //parentquestionid =  null
+//            val li = LayoutInflater.from(activity)
+//            row = li.inflate(R.layout.listquestion, null)
+//            row!!.findViewById<TextView>(R.id.questionheader).text = qData.question
+//
+//            if(whichBorrowerId== currentBorrowerId) {
+//                for (qDatasub in subquestionarray!!) {
+//                    if (qData!!.id == qDatasub.parentQuestionId) {
+//                        //binding!!.listCategory.visibility =View.VISIBLE
+//                        row!!.findViewById<LinearLayout>(R.id.subquesview).visibility = View.VISIBLE
+//                        break
+//                    }
+//                }
+//            }
+
+//            row!!.findViewById<AppCompatRadioButton>(R.id.radioButtonyes).setOnClickListener {
+//                navigateToInnerScreen(qData.headerText!!, qData.id!!,qData.firstName,qData.lastName)
+//            }
+//  binding!!.root.findViewById<LinearLayout>(R.id.list_Category).addView(row)

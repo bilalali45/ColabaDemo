@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo.activities.govtquestions.fragment
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
@@ -17,13 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.rnsoft.colabademo.adapter.QueationAdapter
-import com.rnsoft.colabademo.utils.Common
-import kotlinx.android.synthetic.main.common_govt_content_layout.view.*
-import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
-import kotlinx.android.synthetic.main.fragment_all_gov_questions.view.*
-import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
@@ -39,6 +31,8 @@ class AllGovQuestionsFragment : Fragment() {
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     private var governmentParams = GovernmentParams()
     private lateinit var lastQData: QuestionData
+    var row: View? = null
+    var position : Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,9 +64,17 @@ class AllGovQuestionsFragment : Fragment() {
 //        }
 
 
+        listnser()
 
         instan = this
         return binding!!.root
+    }
+
+    private fun listnser() {
+        binding!!.radioButtonyes.setOnClickListener {discuss(binding!!.one.text.toString(),"1")}
+        binding!!.tworadioButtonyes.setOnClickListener { discuss(binding!!.two.text.toString(),"2") }
+        binding!!.threeradioButtonyes.setOnClickListener { discuss(binding!!.three.text.toString(),"3") }
+        binding!!.fourradioButtonyes.setOnClickListener { discuss(binding!!.four.text.toString(),"4") }
     }
 
 
@@ -80,25 +82,37 @@ class AllGovQuestionsFragment : Fragment() {
     fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
         if(updateEvent.whichBorrowerId == currentBorrowerId) {
 
-            clickedContentCell.govt_detail_box.detail_title.text =
-                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
-            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-            clickedContentCell.govt_detail_box.detail_text.text =
-                "$".plus(Common.addNumberFormat(updateEvent.detailDescription.toDouble()))
-            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+//            createcell(binding!!.root,
+//                qustionheaderarray!!, subquestionarray!!
+//            )
 
-            
-            governmentParams.Questions.let { questions ->
-                for (question in questions) {
-                    question.parentQuestionId?.let { parentQuestionId ->
-                        if (parentQuestionId == undisclosedLayout.id) {
-                            question.answer = updateEvent.detailDescription
-                            question.answerDetail = updateEvent.detailTitle
-                        }
-                    }
-                }
-            }
+
+
+
+
+//            clickedContentCell.govt_detail_box.detail_title.text =
+//                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
+//            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
+//            clickedContentCell.govt_detail_box.detail_text.text =
+//                "$".plus(Common.addNumberFormat(updateEvent.detailDescription.toDouble()))
+//            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
+//            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
+//
+//
+//            governmentParams.Questions.let { questions ->
+//                for (question in questions) {
+//                    question.parentQuestionId?.let { parentQuestionId ->
+//                        if (parentQuestionId == undisclosedLayout.id) {
+//                            question.answer = updateEvent.detailDescription
+//                            question.answerDetail = updateEvent.detailTitle
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
         }
     }
 
@@ -142,6 +156,7 @@ class AllGovQuestionsFragment : Fragment() {
                                                     for (qData in questionmodel!!) {
                                                         if (qData.parentQuestionId == null && qData.id != null){
                                                              qustionheaderarray!!.add(qData)
+
                                                         }else{
                                                              subquestionarray!!.add(qData)
                                                         }
@@ -149,9 +164,10 @@ class AllGovQuestionsFragment : Fragment() {
 
 
 
-                                                    createcell(binding!!.root,
-                                                        qustionheaderarray!!, subquestionarray!!
-                                                    )
+//                                                    createcell(binding!!.root,
+//                                                        qustionheaderarray!!, subquestionarray!!
+//                                                    )
+
 //                                                    adapter = QueationAdapter(requireActivity(), qustionheaderarray, subquestionarray!!)
 //                                                    rvquestions.setLayoutManager(
 //                                                        LinearLayoutManager(
@@ -187,33 +203,47 @@ class AllGovQuestionsFragment : Fragment() {
         root: View,
         qustionheaderarray: ArrayList<QuestionData>,
         subquestionarray: ArrayList<QuestionData>) {
-        for (qData in qustionheaderarray!!) {
-                val li = LayoutInflater.from(activity)
-                val row: View = li.inflate(R.layout.listquestion, null)
-                row.findViewById<TextView>(R.id.questionheader).text = qData.question
-                row.findViewById<AppCompatRadioButton>(R.id.radioButtonyes).setOnClickListener {
-                    navigateToInnerScreen(qData.headerText!!, qData.id!!,qData.firstName,qData.lastName)
-                }
-               root.findViewById<LinearLayout>(R.id.list_Category).addView(row)
 
-        }
+//        for (qData in qustionheaderarray!!) {
+//
+//                     val li = LayoutInflater.from(activity)
+//                     row = li.inflate(R.layout.listquestion, null)
+//                     row!!.findViewById<TextView>(R.id.questionheader).text = qData.question
+//                     row!!.findViewById<AppCompatRadioButton>(R.id.radioButtonyes).setOnClickListener {
+//                        navigateToInnerScreen(
+//                            qData.headerText!!,
+//                            qData.id!!,
+//                            qData.firstName,
+//                            qData.lastName,
+//                            no
+//                        )
+//                    }
+//                    root.findViewById<LinearLayout>(R.id.list_Category).addView(row)
+//        }
+
+
     }
+
+
+
 
     private fun navigateToInnerScreen(
         stringForSpecificFragment: String,
         questionId: Int,
         firstName: String?,
-        lastName: String?
+        lastName: String?,
+        no: String
     ){
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putInt(AppConstant.whichBorrowerId, currentBorrowerId)
         bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
         bundle.putString(AppConstant.govtUserName , (firstName+" "+lastName))
+        bundle.putString(AppConstant.questionno ,no)
 
         when(stringForSpecificFragment) {
             "Undisclosed Borrowered Funds" ->{
-                findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle )
+                findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle)
             }
             "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
 //            "Ownership Interest in Property" ->{
@@ -248,6 +278,39 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     fun nav(id: Int?, headerText: String?, firstName: String?, lastName: String?) {
-        navigateToInnerScreen(headerText!!.toString(),id!!,firstName,lastName)
+       // navigateToInnerScreen(headerText!!.toString(), id!!, firstName, lastName, no)
+    }
+
+    fun setdata(detailTitle: String, no: String, whichBorrowerId: Int, questionnumber: String?) {
+        when (questionnumber) {
+            "1" -> {
+                binding!!.subquesview.visibility =View.VISIBLE
+                binding!!.amount.text = "$" +no
+                binding!!.subquestionheader.text = detailTitle
+            }
+            "2" -> {}
+            "3" -> {}
+            "4" -> {}
+            "5" -> {}
+            "6" -> {}
+            "7" -> {}
+            else -> { // Note the block
+                print("x is neither 1 nor 2")
+            }
+        }
+    }
+    fun discuss(detailTitle: String, no: String) {
+        for (qData in qustionheaderarray!!) {
+            if(qData.headerText == detailTitle) {
+                navigateToInnerScreen(
+                    qData.headerText!!,
+                    qData.id!!,
+                    qData.firstName,
+                    qData.lastName,
+                    no
+                )
+                break
+            }
+        }
     }
 }

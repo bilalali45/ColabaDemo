@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.UndisclosedBorrowerFundLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -32,6 +33,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
     private var userName:String? = null
     private var whichBorrowerId:Int = 0
 
+    private var questionnumber:String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +46,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = it.getString(AppConstant.govtUserName)
+            questionnumber = it.getString(AppConstant.questionno)!!
         }
         binding.borrowerPurpose.text = userName
 
@@ -108,6 +111,11 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             var detailTitle =  binding.edDetails.text.toString()
             if(detailTitle.isEmpty() || detailTitle.isBlank())
                 detailTitle = ""
+
+             if(AllGovQuestionsFragment.instan != null){
+                AllGovQuestionsFragment.instan!!.setdata(detailTitle, getDetailString, whichBorrowerId,questionnumber)
+            }
+
             EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString, whichBorrowerId))
             findNavController().popBackStack()
         }

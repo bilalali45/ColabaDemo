@@ -6,138 +6,683 @@
     <data class="FragmentBinding" />
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-
     android:layout_height="match_parent">
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
 
 
 <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/rvquestions"-->
 <!--        android:layout_width="match_parent"-->
-<!--        android:visibility="gone"-->
+<!--        android:visibility="visible"-->
 <!--        android:layout_height="match_parent"-->
 <!--        android:padding="@dimen/_10sdp"-->
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--       />-->
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:id="@+id/list_Category"
-        android:visibility="visible"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        card_view:ignore="MissingConstraints">
+        android:layout_height="match_parent">
 
-
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:fontFamily="@font/rubik_regular"-->
-<!--            android:textColor="@color/questionheader_view_color"-->
-<!--            android:layout_height="wrap_content">-->
-<!--        </androidx.appcompat.widget.AppCompatTextView>-->
-
-<!--        <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--            android:id="@+id/no_address_layout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="16dp"-->
-<!--            android:layout_marginTop="20dp"-->
-<!--            android:layout_marginEnd="16dp"-->
-<!--            android:orientation="vertical"-->
-<!--            android:background="@drawable/white_blue_border"-->
-<!--            android:padding="10dp"-->
-<!--            android:visibility="visible"-->
-<!--            app:layout_constraintCircleRadius="8dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.0"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@+id/userLayout4">-->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
 
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/quesationone"
+                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                card_view:ignore="MissingConstraints">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/one"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone"
+                    android:text="Undisclosed Borrowered Funds"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/questionheader_view_color"
+                    android:layout_height="wrap_content">
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/questionheader"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="@string/questionone"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/questionheader_view_color"
+                    android:layout_height="wrap_content">
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/no_address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_blue_border"
+                    android:padding="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintCircleRadius="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userLayout4">
 
 
 
-<!--            <androidx.appcompat.widget.AppCompatRadioButton-->
-<!--                android:id="@+id/radioButtonyes"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="@dimen/_30sdp"-->
-<!--                android:text="@string/yes"-->
-<!--                android:checked="false"-->
-<!--                android:button="@null"-->
-<!--                android:background="@null"-->
-<!--                android:layout_weight="1"-->
-<!--                android:layout_marginLeft="@dimen/_2sdp"-->
-<!--                android:drawableEnd="@drawable/radiodraw"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                card_view:ignore="MissingConstraints" />-->
-
-<!--            <androidx.appcompat.widget.LinearLayoutCompat-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:orientation="vertical"-->
-<!--                android:id="@+id/subquesview"-->
-<!--                android:visibility="gone"-->
-<!--                android:layout_marginTop="@dimen/_5sdp"-->
-<!--                android:layout_height="wrap_content">-->
 
 
-<!--                <View-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:background="@color/grey"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp"-->
-<!--                    android:layout_height="1dp">-->
 
-<!--                </View>-->
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/radioButtonyes"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/yes"
+                        android:checked="false"
+                        android:button="@null"
+                        android:background="@null"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
 
-<!--                <androidx.appcompat.widget.AppCompatTextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:id="@+id/subquestionheader"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp"-->
-<!--                    android:fontFamily="@font/rubik_regular"-->
-<!--                    android:textColor="@color/questionheader_view_color"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    card_view:ignore="MissingConstraints">-->
-
-<!--                </androidx.appcompat.widget.AppCompatTextView>-->
-
-
-<!--                <androidx.appcompat.widget.AppCompatTextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_marginTop="@dimen/_10sdp"-->
-<!--                    android:text="$ 12,000"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    card_view:ignore="MissingConstraints">-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/subquesview"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_height="wrap_content">
 
 
-<!--                </androidx.appcompat.widget.AppCompatTextView>-->
-<!--            </androidx.appcompat.widget.LinearLayoutCompat>-->
+                        <View
+                            android:layout_width="match_parent"
+                            android:background="@color/grey"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_height="1dp">
 
-<!--        </androidx.appcompat.widget.LinearLayoutCompat>-->
+                        </View>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/subquestionheader"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:textColor="@color/questionheader_view_color"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            card_view:ignore="MissingConstraints">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
 
 
-<!--        <androidx.appcompat.widget.AppCompatRadioButton-->
-<!--            android:id="@+id/radioButtonNo"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_marginTop="@dimen/_10sdp"-->
-<!--            android:layout_marginLeft="@dimen/_15sdp"-->
-<!--            android:layout_marginRight="@dimen/_15sdp"-->
-<!--            style="@style/radiobutton"-->
-<!--            android:layout_height="@dimen/_55sdp"-->
-<!--            android:text="@string/no"-->
-<!--            android:checked="false"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            card_view:ignore="MissingConstraints" />-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="$ 12,000"
+                            android:id="@+id/amount"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:textSize="@dimen/_14ssp"
+                            android:layout_height="wrap_content"
+                            card_view:ignore="MissingConstraints">
 
-    </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/radioButtonNo"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    style="@style/radiobutton"
+                    android:layout_height="@dimen/_55sdp"
+                    android:text="@string/no"
+                    android:checked="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    card_view:ignore="MissingConstraints" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/quesationtwo"
+                android:orientation="vertical"
+
+                android:layout_height="wrap_content"
+                card_view:ignore="MissingConstraints">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/two"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="16dp"
+                    android:visibility="gone"
+                    android:text="Ownership Interest in Property"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/questionheader_view_color"
+                    android:layout_height="wrap_content">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:id="@+id/questionheadertwo"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/questiontwo"
+
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:textColor="@color/questionheader_view_color"
+                    android:layout_height="wrap_content">
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/no_address_layouttwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_blue_border"
+                    android:padding="10dp"
+                    android:visibility="visible"
+                    app:layout_constraintCircleRadius="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/userLayout4">
+
+
+
+
+
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/tworadioButtonyes"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_30sdp"
+                        android:text="@string/yes"
+                        android:checked="false"
+                        android:button="@null"
+                        android:background="@null"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:id="@+id/twosubquesview"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_height="wrap_content">
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:background="@color/grey"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_height="1dp">
+
+                        </View>
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:id="@+id/twosubquestionheader"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/rubik_regular"
+                            android:textColor="@color/questionheader_view_color"
+                            android:layout_height="wrap_content"
+                            card_view:ignore="MissingConstraints">
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:text="$ 12,000"
+                            android:layout_height="wrap_content"
+                            card_view:ignore="MissingConstraints">
+
+
+                        </androidx.appcompat.widget.AppCompatTextView>
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/tworadioButtonNo"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    style="@style/radiobutton"
+                    android:layout_height="@dimen/_55sdp"
+                    android:text="@string/no"
+                    android:checked="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    card_view:ignore="MissingConstraints" />
+
+            </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/quesationthree"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    card_view:ignore="MissingConstraints">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/three"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="16dp"
+                        android:visibility="gone"
+                        android:text="Federal Debt Deliquency"
+                        android:fontFamily="@font/rubik_regular"
+                        android:textColor="@color/questionheader_view_color"
+                        android:layout_height="wrap_content">
+
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/questionheaderthree"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/questionthree"
+
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:textColor="@color/questionheader_view_color"
+                        android:layout_height="wrap_content">
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/no_address_layoutthree"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/white_blue_border"
+                        android:padding="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintCircleRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userLayout4">
+
+
+
+
+
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/threeradioButtonyes"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/yes"
+                            android:checked="false"
+                            android:button="@null"
+                            android:background="@null"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:drawableEnd="@drawable/radiodraw"
+                            app:layout_constraintStart_toStartOf="parent"
+                            card_view:ignore="MissingConstraints" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/threesubquesview"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                            </View>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/four"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="Party to Lawsuit"
+                                android:fontFamily="@font/rubik_regular"
+                                android:visibility="gone"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/threesubquestionheader"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="@string/questionthree"
+                                android:fontFamily="@font/rubik_regular"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="$ 12,000"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/threeradioButtonNo"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        style="@style/radiobutton"
+                        android:layout_height="@dimen/_55sdp"
+                        android:text="@string/no"
+                        android:checked="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/quesationfour"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    card_view:ignore="MissingConstraints">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/questionheaderfour"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/questionfour"
+
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:textColor="@color/questionheader_view_color"
+                        android:layout_height="wrap_content">
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/no_address_layoutfour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/white_blue_border"
+                        android:padding="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintCircleRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userLayout4">
+
+
+
+
+
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/fourradioButtonyes"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/yes"
+                            android:checked="false"
+                            android:button="@null"
+                            android:background="@null"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:drawableEnd="@drawable/radiodraw"
+                            app:layout_constraintStart_toStartOf="parent"
+                            card_view:ignore="MissingConstraints" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/foursubquesview"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                            </View>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/foursubquestionheader"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="$ 12,000"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/fourradioButtonNo"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        style="@style/radiobutton"
+                        android:layout_height="@dimen/_55sdp"
+                        android:text="@string/no"
+                        android:checked="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/quesationfive"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    card_view:ignore="MissingConstraints">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:id="@+id/questionheaderfive"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/questionfive"
+
+                        android:layout_marginEnd="16dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:textColor="@color/questionheader_view_color"
+                        android:layout_height="wrap_content">
+                    </androidx.appcompat.widget.AppCompatTextView>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/no_address_layoutfive"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/white_blue_border"
+                        android:padding="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintCircleRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userLayout4">
+
+
+
+
+
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:id="@+id/fiveradioButtonyes"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/yes"
+                            android:checked="false"
+                            android:button="@null"
+                            android:background="@null"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:drawableEnd="@drawable/radiodraw"
+                            app:layout_constraintStart_toStartOf="parent"
+                            card_view:ignore="MissingConstraints" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/fivesubquesview"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                            </View>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/fivesubquestionheader"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="$ 12,000"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/fiveradioButtonNo"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        style="@style/radiobutton"
+                        android:layout_height="@dimen/_55sdp"
+                        android:text="@string/no"
+                        android:checked="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

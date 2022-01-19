@@ -107,9 +107,9 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
         binding.saveBtn.setOnClickListener {
             if (demoGraphicScreenDisplaying)
-                updateDemoGraphicApiCall()
+                 updateDemoGraphicApiCall()
             else
-                updateGovernmentQuestionApiCall()
+                 updateGovernmentQuestionApiCall()
                  EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
                  requireActivity().finish()
         }
@@ -120,6 +120,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     }
 
     private fun updateDemoGraphicApiCall() {
+
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                 variableDemoGraphicData.genderId = variableGender
@@ -128,9 +129,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 borrowerAppViewModel.addOrUpdateDemoGraphic(authToken, variableDemoGraphicData)
             }
         }
+
     }
 
     private fun showHideChildGovtBoxes(makeVisible: Int) {
+
         for (item in childGovtBoxes) {
             item.visibility = View.INVISIBLE
         }
@@ -138,6 +141,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
             val item = childGovtBoxes[i]
             item.visibility = makeVisible
         }
+
     }
 
     private fun updateGovernmentQuestionApiCall() {
@@ -158,7 +162,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 }
 
                 if (question.parentQuestionId == 130) {
-                    if(bankruptcyMap.size==0)
+                    if(bankruptcyMap.size == 0)
                         question.answerData = null
                     else {
                         val test = hashMapOf<String, String>()

@@ -68,7 +68,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 card_view:ignore="MissingConstraints" />
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/subquesview"
@@ -106,7 +106,7 @@
 
 
                 </androidx.appcompat.widget.AppCompatTextView>
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
