@@ -415,6 +415,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:text="$ 12,000"
+                                android:visibility="gone"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -576,7 +577,6 @@
                         android:id="@+id/questionheaderfive"
                         android:layout_marginTop="10dp"
                         android:text="@string/questionfive"
-
                         android:layout_marginEnd="16dp"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"

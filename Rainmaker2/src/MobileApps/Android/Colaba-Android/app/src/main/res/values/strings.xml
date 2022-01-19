@@ -580,7 +580,7 @@
 
     <string name="questionone"> Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application? </string>
     <string name="questiontwo"> Have you had an ownership interest in another property in the last three years?  </string>
-    <string name="questionthree"> Will this property be subject to a lien that could take priority over the first mortgage lien, such as a clean energy lien paid through your property taxes (e.g., the Property Assessed Clean Energy Program)? </string>
+    <string name="questionthree"> Are you currently delinquent in default on a Federal debt? </string>
     <string name="questionfour"> Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application? </string>
     <string name="questionfive"> Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application? </string>
     <string name="questionsix">  Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application? </string>

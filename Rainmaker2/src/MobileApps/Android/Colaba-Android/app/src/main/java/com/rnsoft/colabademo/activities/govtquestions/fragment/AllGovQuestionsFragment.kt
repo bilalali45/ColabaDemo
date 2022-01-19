@@ -289,9 +289,19 @@ class AllGovQuestionsFragment : Fragment() {
                 binding!!.subquestionheader.text = detailTitle
             }
             "2" -> {}
-            "3" -> {}
-            "4" -> {}
-            "5" -> {}
+            "3" -> {
+                 binding!!.threesubquesview.visibility =View.VISIBLE
+                 binding!!.threesubquestionheader.text = detailTitle
+            }
+            "4" -> {
+                 binding!!.foursubquesview.visibility =View.VISIBLE
+                 binding!!.foursubquestionheader.text = detailTitle
+                // threesubquestionheader
+
+            }
+            "5" -> {
+
+            }
             "6" -> {}
             "7" -> {}
             else -> { // Note the block

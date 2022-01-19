@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.PartyToLayoutBinding
 
 class PartyToFragment:GovtDetailBaseFragment() {
@@ -37,6 +38,11 @@ class PartyToFragment:GovtDetailBaseFragment() {
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
+
+            if(AllGovQuestionsFragment.instan != null){
+                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"4")
+            }
+
             updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }
     }
