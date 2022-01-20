@@ -367,6 +367,27 @@ class AllGovQuestionsFragment : Fragment() {
         whichBorrowerId: Int,
         s1: String
     ) {
+        for (i in 0 until childAnswerList.size) {
+
+          if(i == 0){
+              binding!!.qv10.visibility = View.VISIBLE
+              binding!!.one.visibility = View.VISIBLE
+              binding!!.qvs101.text = childAnswerList.get(i).name
+              binding!!.qva101.text = childAnswerList.get(i).liabilityName
+
+          }else if(i == 1){
+              binding!!.two.visibility = View.VISIBLE
+              binding!!.qvs102.text = childAnswerList.get(i).name
+              binding!!.qva102.text = childAnswerList.get(i).liabilityName
+
+
+          }else if(i == 2){
+              binding!!.three.visibility = View.VISIBLE
+              binding!!.qvs103.text = childAnswerList.get(i).name
+              binding!!.qva103.text = childAnswerList.get(i).liabilityName
+          }
+
+        }
 
 
     }

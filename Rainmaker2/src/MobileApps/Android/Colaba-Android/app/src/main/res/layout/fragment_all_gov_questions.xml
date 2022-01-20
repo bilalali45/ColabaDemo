@@ -1319,9 +1319,22 @@
 
                             </View>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:orientation="vertical"
+                                android:layout_height="wrap_content">
+
+                             <LinearLayout
+                                 android:layout_width="wrap_content"
+                                 android:orientation="vertical"
+                                 android:id="@+id/one"
+                                 android:visibility="gone"
+                                 android:layout_height="wrap_content">
+
+
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="wrap_content"
-                                android:id="@+id/qvs10"
+                                android:id="@+id/qvs10_1"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:fontFamily="@font/rubik_regular"
                                 android:textColor="@color/questionheader_view_color"
@@ -1336,7 +1349,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:text="$ 12,000"
-                                android:id="@+id/qva10"
+                                android:id="@+id/qva10_1"
                                 android:textStyle="bold"
                                 android:visibility="gone"
                                 android:layout_marginLeft="@dimen/_5sdp"
@@ -1346,6 +1359,87 @@
 
 
                             </androidx.appcompat.widget.AppCompatTextView>
+                             </LinearLayout>
+
+//
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:id="@+id/two"
+                                    android:layout_height="wrap_content">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:id="@+id/qvs10_2"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:id="@+id/qva10_2"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:layout_height="wrap_content"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+ ///
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:orientation="vertical"
+                                    android:id="@+id/three"
+                                    android:layout_height="wrap_content">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:id="@+id/qvs10_3"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:id="@+id/qva10_3"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:layout_height="wrap_content"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+
+
+
+
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
