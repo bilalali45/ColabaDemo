@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
+import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
@@ -26,6 +27,10 @@ class AllGovQuestionsFragment : Fragment() {
     private var tabBorrowerId: Int? = null
     private var currentBorrowerId:Int = 0
     private var adapter: QueationAdapter? = null
+    private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
+    private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
+    private var ownerShipInnerScreenParams: java.util.ArrayList<String> = arrayListOf()
+
     private var qustionheaderarray: ArrayList<QuestionData>? = null
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
@@ -54,14 +59,14 @@ class AllGovQuestionsFragment : Fragment() {
         }
         setUpDynamicTabs()
 
-//        binding.saveBtn.setOnClickListener {
+        binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
 //                updateDemoGraphicApiCall()
 //            else
 //                updateGovernmentQuestionApiCall()
-//            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
-//            requireActivity().finish()
-//        }
+            EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
+            requireActivity().finish()
+        }
 
 
         listnser()
@@ -71,24 +76,21 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     private fun listnser() {
-        binding!!.radioButtonyes.setOnClickListener {discuss(binding!!.one.text.toString(),"1")}
-        binding!!.tworadioButtonyes.setOnClickListener { discuss(binding!!.two.text.toString(),"2") }
-        binding!!.threeradioButtonyes.setOnClickListener { discuss(binding!!.three.text.toString(),"3") }
-        binding!!.fourradioButtonyes.setOnClickListener { discuss(binding!!.four.text.toString(),"4") }
+        binding!!.q1radioButton.setOnClickListener {discuss(binding!!.qh1.text.toString(),"1")}
+        binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(),"2") }
+        binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(),"3") }
+        binding!!.q4radioButton.setOnClickListener { discuss(binding!!.qh4.text.toString(),"4") }
+        binding!!.q5radioButton.setOnClickListener { discuss(binding!!.qh5.text.toString(),"5") }
+        binding!!.q6radioButton.setOnClickListener { discuss(binding!!.qh6.text.toString(),"6") }
+        binding!!.q7radioButton.setOnClickListener { discuss(binding!!.qh7.text.toString(),"7") }
+        binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(),"8") }
+        binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ","9") }
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
         if(updateEvent.whichBorrowerId == currentBorrowerId) {
-
-//            createcell(binding!!.root,
-//                qustionheaderarray!!, subquestionarray!!
-//            )
-
-
-
-
 
 //            clickedContentCell.govt_detail_box.detail_title.text =
 //                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
@@ -110,11 +112,8 @@ class AllGovQuestionsFragment : Fragment() {
 //                }
 //            }
 
-
-
-
-        }
-    }
+     }
+ }
 
 
 
@@ -160,6 +159,11 @@ class AllGovQuestionsFragment : Fragment() {
                                                         }else{
                                                              subquestionarray!!.add(qData)
                                                         }
+
+                                                        if(qData.answer != null){
+                                                           // setdata("", qData.answer.toString(), 1,"1")
+                                                        }
+
                                                       }
 
 
@@ -245,29 +249,25 @@ class AllGovQuestionsFragment : Fragment() {
             "Undisclosed Borrowered Funds" ->{
                 findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle)
             }
-            "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle ) }
-//            "Ownership Interest in Property" ->{
-//                bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
-//                findNavController().navigate(R.id.action_ownership_interest , bundle)
-//            }
+            "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle) }
+            "Ownership Interest in Property" ->{
+                bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
+                findNavController().navigate(R.id.action_ownership_interest , bundle)
+            }
             "Own Property Type" ->{ }
             "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
             "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
             "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
-            "Party to Lawsuit" ->{
-
-                findNavController().navigate(R.id.action_party_to , bundle)
+            "Party to Lawsuit" ->{ findNavController().navigate(R.id.action_party_to , bundle) }
+            "Bankruptcy " ->{
+                val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
+                bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
+                findNavController().navigate(R.id.navigation_bankruptcy , bundle)
             }
-//            "Bankruptcy " ->{
-//                val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
-//                bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
-//                findNavController().navigate(R.id.navigation_bankruptcy , bundle)
-//            }
-
-//            "Child Support, Alimony, etc." ->{
-//                bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
-//                findNavController().navigate(R.id.action_child_support, bundle)
-//            }
+            "Child Support, Alimony, etc." ->{
+                bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
+                findNavController().navigate(R.id.action_child_support, bundle)
+            }
             "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
             "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure , bundle) }
             "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance, bundle) }
@@ -281,29 +281,66 @@ class AllGovQuestionsFragment : Fragment() {
        // navigateToInnerScreen(headerText!!.toString(), id!!, firstName, lastName, no)
     }
 
-    fun setdata(detailTitle: String, no: String, whichBorrowerId: Int, questionnumber: String?) {
+    fun setdata(detailTitle: String, title: String, whichBorrowerId: Int, questionnumber: String?) {
         when (questionnumber) {
             "1" -> {
-                binding!!.subquesview.visibility =View.VISIBLE
-                binding!!.amount.text = "$" +no
-                binding!!.subquestionheader.text = detailTitle
+                binding!!.qv1.visibility = View.VISIBLE
+                binding!!.qva1.text = "$" +title
+
             }
-            "2" -> {}
+            "2" -> {
+                binding!!.qv2.visibility = View.VISIBLE
+                binding!!.qva2.text = "$" +title
+                binding!!.qvs2.text = detailTitle
+            }
             "3" -> {
-                 binding!!.threesubquesview.visibility =View.VISIBLE
-                 binding!!.threesubquestionheader.text = detailTitle
+                binding!!.qv3.visibility = View.VISIBLE
+                binding!!.qvs3.text = "Detail"
+                binding!!.qva3.text = title
+
             }
             "4" -> {
-                 binding!!.foursubquesview.visibility =View.VISIBLE
-                 binding!!.foursubquestionheader.text = detailTitle
-                // threesubquestionheader
+                binding!!.qv4.visibility = View.VISIBLE
+             //   binding!!.qvs4.text = title
+
+                binding!!.qvs4.text = "Detail"
+                binding!!.qva4.text = title
 
             }
             "5" -> {
+                binding!!.qv5.visibility = View.VISIBLE
+               // binding!!.qvs5.text = title
+
+                binding!!.qvs5.text = "Detail"
+                binding!!.qva5.text = title
 
             }
-            "6" -> {}
-            "7" -> {}
+            "6" -> {
+                binding!!.qv6.visibility = View.VISIBLE
+               // binding!!.qvs6.text = title
+                binding!!.qvs6.text = "Detail"
+                binding!!.qva6.text = title
+
+            }
+            "7" -> {
+                binding!!.qv7.visibility = View.VISIBLE
+                binding!!.qvs7.text = title
+            }
+            "8" -> {
+                binding!!.qv8.visibility = View.VISIBLE
+               // binding!!.qvs8.text = title
+
+                binding!!.qvs8.text = "Detail"
+                binding!!.qva8.text = title
+            }
+            "9" -> {
+                binding!!.qv9.visibility = View.VISIBLE
+              //  binding!!.qvs9.text = title
+
+
+                binding!!.qvs9.text = "Which Type?"
+                binding!!.qva9.text = title
+            }
             else -> { // Note the block
                 print("x is neither 1 nor 2")
             }
@@ -322,5 +359,15 @@ class AllGovQuestionsFragment : Fragment() {
                 break
             }
         }
+    }
+
+    fun setarray(
+        s: String,
+        childAnswerList: java.util.ArrayList<ChildAnswerData>,
+        whichBorrowerId: Int,
+        s1: String
+    ) {
+
+
     }
 }

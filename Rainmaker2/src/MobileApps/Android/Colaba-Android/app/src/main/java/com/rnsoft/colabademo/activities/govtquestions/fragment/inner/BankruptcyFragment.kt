@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.BankruptcyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -78,6 +79,10 @@ class BankruptcyFragment:BaseFragment() {
             val selectedValues = returnSelectedValues()
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
+                if(AllGovQuestionsFragment.instan != null){
+                    AllGovQuestionsFragment.instan!!.setdata("", selectedValues, whichBorrowerId,"9")
+                }
+
                 EventBus.getDefault().post(BankruptcyUpdateEvent(detailDescription = selectedValues, bankruptcyAnswerData = answerData , whichBorrowerId = whichBorrowerId ))
                 findNavController().popBackStack()
             }

@@ -40,7 +40,7 @@ class PartyToFragment:GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
 
             if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"4")
+                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"5")
             }
 
             updateGovernmentAndSaveData(binding.edDetails.text.toString())

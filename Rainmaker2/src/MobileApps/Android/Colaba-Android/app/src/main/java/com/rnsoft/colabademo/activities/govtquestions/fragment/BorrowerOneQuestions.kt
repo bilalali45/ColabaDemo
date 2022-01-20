@@ -250,6 +250,10 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                     if (item.passedBorrowerId == tabBorrowerId) {
                         selectedGovernmentQuestionModel = item
                         currentBorrowerId = tabBorrowerId!!
+
+
+
+
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
@@ -830,7 +834,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 contentCell.ans_no.isChecked = true
                 contentCell.govt_detail_box.visibility = View.INVISIBLE
                 contentCell.govt_detail_box2?.visibility = View.INVISIBLE
-
                 contentCell.govt_detail_box3?.visibility = View.INVISIBLE
             }
 

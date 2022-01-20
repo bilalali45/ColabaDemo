@@ -46,7 +46,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             whichBorrowerId = it.getInt(AppConstant.whichBorrowerId)
             updateGovernmentQuestionByBorrowerId = it.getParcelable(AppConstant.addUpdateQuestionsParams)
             userName = it.getString(AppConstant.govtUserName)
-            questionnumber = it.getString(AppConstant.questionno)!!
+           // questionnumber = it.getString(AppConstant.questionno)!!
         }
         binding.borrowerPurpose.text = userName
 
@@ -113,7 +113,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 detailTitle = ""
 
              if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata(detailTitle, getDetailString, whichBorrowerId,questionnumber)
+                AllGovQuestionsFragment.instan!!.setdata(detailTitle, getDetailString, whichBorrowerId,"1")
             }
 
             EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString, whichBorrowerId))

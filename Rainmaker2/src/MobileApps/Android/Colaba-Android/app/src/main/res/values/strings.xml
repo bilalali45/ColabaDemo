@@ -580,10 +580,24 @@
 
     <string name="questionone"> Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application? </string>
     <string name="questiontwo"> Have you had an ownership interest in another property in the last three years?  </string>
-    <string name="questionthree"> Are you currently delinquent in default on a Federal debt? </string>
-    <string name="questionfour"> Have you or will you be applying for a mortgage loan on another property (not the property securing this loan) on or before closing this transaction that is not disclosed on this loan application? </string>
-    <string name="questionfive"> Have you or will you be applying for any new credit (e.g., instalment loan, credit card, etc.) on or before closing this loan that is not disclosed on this application? </string>
-    <string name="questionsix">  Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application? </string>
-    <string name="questionseven"> Are there any outstanding judgments against you? </string>
+    <string name="questionthree"> Are there any outstanding judgments against? </string>
+    <string name="questionfour"> Are you currently delinquent in default on a Federal debt? </string>-->
+
+    <string name="questionfive"> Is a party to a lawsuit in which you potentially have any personal financial liability? </string>-->
+    <string name="questionsix"> Has conveyed title to any property in lieu of foreclosure in the past 7 years? </string>-->
+    <string name="questionseven">  within the past 7 years has complete a pre-foreclosure sale or short sale, whereby the property was sold to thired party and the lender agreed to accept less than the outstanding mortage balance due? </string>
+    <string name="questioneight">  Has had property foreclosed upon in the last 7 years? </string>
+    <string name="questionnine">  Has declared bankruptcy within the past 7 years? </string>
+    <string name="questionten">  Is Currently obligated to pay child support, alimony or separate maintenance?</string>
+
+
+
+
+    <string name="questiononeanswer">  What is the amount of money you have borrowed or intend to borrow?</string>
+    <!-- //   <string name="questionthree"> Are you currently delinquent in default on a Federal debt? </string>-->
+<!--    <string name="questionfour">  Is a party to a lawsuit in which you potentially have any personal financial liability? </string>-->
+<!--    <string name="questionfive"> Has conveyed title to any property in lieu of foreclosure in the past 7 years? </string>-->
+<!--    <string name="questionsix">  within the past 7 years has complete a pre-foreclosure sale or short sale, whereby the property was sold to thired party and the lender agreed to accept less than the outstanding mortage balance due? </string>-->
+<!--    <string name="questionseven"> Has had property foreclosed upon in the last? </string>-->
 
 </resources>

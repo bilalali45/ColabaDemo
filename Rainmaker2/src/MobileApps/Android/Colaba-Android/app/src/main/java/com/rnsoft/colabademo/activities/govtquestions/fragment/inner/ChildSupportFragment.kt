@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 
 import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
 import com.rnsoft.colabademo.utils.Common
@@ -203,6 +204,9 @@ class ChildSupportFragment:BaseFragment() {
                     ))
                 }
 
+                if(AllGovQuestionsFragment.instan != null){
+                    AllGovQuestionsFragment.instan!!.setarray("", childAnswerList, whichBorrowerId,"10")
+                }
                 EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList , whichBorrowerId))
                 findNavController().popBackStack()
             }
