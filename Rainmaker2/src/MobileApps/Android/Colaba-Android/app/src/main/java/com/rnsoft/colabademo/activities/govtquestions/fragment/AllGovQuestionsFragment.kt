@@ -76,6 +76,7 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     private fun listnser() {
+
         binding!!.q1radioButton.setOnClickListener {discuss(binding!!.qh1.text.toString(),"1")}
         binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(),"2") }
         binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(),"3") }
@@ -85,6 +86,7 @@ class AllGovQuestionsFragment : Fragment() {
         binding!!.q7radioButton.setOnClickListener { discuss(binding!!.qh7.text.toString(),"7") }
         binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(),"8") }
         binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ","9") }
+        binding!!.q10radioButton.setOnClickListener { discuss("Child Support, Alimony, etc.","10") }
     }
 
 
@@ -118,6 +120,7 @@ class AllGovQuestionsFragment : Fragment() {
 
 
     private fun setUpDynamicTabs() {
+
         qustionheaderarray = ArrayList()
         subquestionarray = ArrayList()
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
@@ -132,8 +135,8 @@ class AllGovQuestionsFragment : Fragment() {
                         if (governmentQuestionsModelClassList.size > 0) {
                             var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
                                 null
-                            for (item in governmentQuestionsModelClassList) {
-                                if (item.passedBorrowerId == tabBorrowerId) {
+                             for (item in governmentQuestionsModelClassList) {
+                                 if (item.passedBorrowerId == tabBorrowerId) {
                                     selectedGovernmentQuestionModel = item
                                     currentBorrowerId = tabBorrowerId!!
                                     governmentQuestionActivity?.let { governmentQuestionActivity ->
@@ -181,6 +184,11 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                    rvquestions.setAdapter(adapter)
 
                                                     //udateGovernmentQuestionsList.add(test)
+
+
+
+
+
                                                 }
                                             }
                                         }
@@ -290,8 +298,10 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "2" -> {
                 binding!!.qv2.visibility = View.VISIBLE
-                binding!!.qva2.text = "$" +title
-                binding!!.qvs2.text = detailTitle
+                binding!!.qv22.visibility = View.VISIBLE
+                binding!!.qva2.text = detailTitle
+                binding!!.qva22.text = title
+
             }
             "3" -> {
                 binding!!.qv3.visibility = View.VISIBLE
@@ -361,6 +371,10 @@ class AllGovQuestionsFragment : Fragment() {
         }
     }
 
+
+
+
+
     fun setarray(
         s: String,
         childAnswerList: java.util.ArrayList<ChildAnswerData>,
@@ -368,23 +382,29 @@ class AllGovQuestionsFragment : Fragment() {
         s1: String
     ) {
         for (i in 0 until childAnswerList.size) {
+            binding!!.qv10.visibility = View.VISIBLE
 
           if(i == 0){
-              binding!!.qv10.visibility = View.VISIBLE
               binding!!.one.visibility = View.VISIBLE
-              binding!!.qvs101.text = childAnswerList.get(i).name
-              binding!!.qva101.text = childAnswerList.get(i).liabilityName
+              binding!!.qva101.visibility = View.VISIBLE
+
+
+              binding!!.qvs101.text = childAnswerList.get(i).liabilityName
+              binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
 
           }else if(i == 1){
               binding!!.two.visibility = View.VISIBLE
-              binding!!.qvs102.text = childAnswerList.get(i).name
-              binding!!.qva102.text = childAnswerList.get(i).liabilityName
+              binding!!.qva102.visibility = View.VISIBLE
+
+              binding!!.qvs102.text = childAnswerList.get(i).liabilityName
+              binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
 
 
           }else if(i == 2){
               binding!!.three.visibility = View.VISIBLE
-              binding!!.qvs103.text = childAnswerList.get(i).name
-              binding!!.qva103.text = childAnswerList.get(i).liabilityName
+              binding!!.qva103.visibility = View.VISIBLE
+              binding!!.qvs103.text = childAnswerList.get(i).liabilityName
+              binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
           }
 
         }

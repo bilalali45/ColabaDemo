@@ -248,12 +248,11 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                 var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
                 for (item in governmentQuestionsModelClassList) {
                     if (item.passedBorrowerId == tabBorrowerId) {
+
+
+                        
                         selectedGovernmentQuestionModel = item
                         currentBorrowerId = tabBorrowerId!!
-
-
-
-
                         governmentQuestionActivity?.let { governmentQuestionActivity ->
                             governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                 item.questionData?.let { questionDataList ->
@@ -273,7 +272,6 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                                 }
                             }
                         }
-
                         break
                     }
                 }
@@ -929,7 +927,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                "Own Property Type" ->{}
                "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
                "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
-               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
+               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.               , bundle)}
                "Party to Lawsuit" ->{
 
                    findNavController().navigate(R.id.action_party_to , bundle)

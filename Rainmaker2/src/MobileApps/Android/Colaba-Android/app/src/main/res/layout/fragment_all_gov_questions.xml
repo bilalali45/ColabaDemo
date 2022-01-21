@@ -238,6 +238,11 @@
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
 
+
+
+
+
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
@@ -260,6 +265,7 @@
                                 android:id="@+id/qvs2"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:fontFamily="@font/rubik_regular"
+                                android:text="What type of property did you own?"
                                 android:textColor="@color/questionheader_view_color"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_5sdp"
@@ -282,6 +288,52 @@
 
                             </androidx.appcompat.widget.AppCompatTextView>
                         </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:id="@+id/qv22"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                            </View>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/qvs22"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                android:text="Detail"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:text="$ 12,000"
+                                android:id="@+id/qva22"
+                                android:textStyle="bold"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:textSize="@dimen/_14ssp"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -1460,6 +1512,128 @@
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
 
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:id="@+id/q11"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    card_view:ignore="MissingConstraints">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/race"
+                        android:fontFamily="@font/rubik_medium"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey_color_one"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_race"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp">
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_race_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:background="@drawable/content_bg_with_drop_shadow">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="Thai"
+                            android:fontFamily="@font/rubik_regular"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:textColor="@color/grey_color_two"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/ethnicity"
+                        android:fontFamily="@font/rubik_medium"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey_color_one"/>
+
+                    <RadioGroup
+                        android:id="@+id/layout_ethnicity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp">
+
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:id="@+id/layout_ethncity_other"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp"
+                        android:layout_marginEnd="25dp"
+                        android:background="@drawable/content_bg_with_drop_shadow">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="Argentinean"
+                            android:fontFamily="@font/rubik_regular"
+                            android:textSize="13sp"
+                            android:layout_gravity="center"
+                            android:textColor="@color/grey_color_two"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/sex"
+                        android:fontFamily="@font/rubik_medium"
+                        android:textSize="15sp"
+                        android:textColor="@color/grey_color_one"/>
+
+                    <RadioGroup
+                        android:id="@+id/layout_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp">
+
+                    </RadioGroup>
+
+
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

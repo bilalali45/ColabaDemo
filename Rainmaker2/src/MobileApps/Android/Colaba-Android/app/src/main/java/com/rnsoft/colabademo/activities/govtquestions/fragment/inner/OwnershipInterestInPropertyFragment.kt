@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 
 import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.OwnershipInterestInPropertyLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -172,6 +173,9 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
                     val answer1 = binding.transactionAutoCompleteTextView.text.toString()
                     val answer2 = binding.whichAssetsCompleteView.text.toString()
 
+                    if(AllGovQuestionsFragment.instan != null){
+                        AllGovQuestionsFragment.instan!!.setdata(answer1, answer2, whichBorrowerId,"2")
+                    }
                     EventBus.getDefault().post(
                         OwnershipInterestUpdateEvent(ownershipQuestionOne, answer1 , array1.getValue(answer1),
                             ownershipQuestionTwo, answer2,  array2.getValue(answer2), whichBorrowerId )

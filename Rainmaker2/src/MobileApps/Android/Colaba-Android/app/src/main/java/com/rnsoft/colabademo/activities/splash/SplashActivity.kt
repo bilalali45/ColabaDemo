@@ -56,7 +56,13 @@ class SplashActivity : AppCompatActivity() {
         borrowerDetailIntent.putExtra(AppConstant.bEmail, "qpaidala@gmail.com")
         startActivity(borrowerDetailIntent)
     }
+
+
+
+
 }
+
+
 
 //note
 //GovtQuestionsTabFragment
