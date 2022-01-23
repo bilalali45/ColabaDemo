@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo.activities.govtquestions.fragment
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,7 +11,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
@@ -18,6 +22,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import javax.inject.Inject
 
 
 class AllGovQuestionsFragment : Fragment() {
@@ -33,12 +38,15 @@ class AllGovQuestionsFragment : Fragment() {
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     private var nativeHawaiianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
-
+    var ownershipInterestAnswerData1: BorrowerOneQuestions.OwnershipInterestAnswerData?= null
+    var ownershipInterestAnswerData2: BorrowerOneQuestions.OwnershipInterestAnswerData?= null
     private var governmentParams = GovernmentParams()
     private lateinit var lastQData: QuestionData
     var row: View? = null
     var position : Int? = 0
-
+    private var bankruptcyMap = hashMapOf<String, String>()
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -63,7 +71,7 @@ class AllGovQuestionsFragment : Fragment() {
 //            if (demoGraphicScreenDisplaying)
 //                updateDemoGraphicApiCall()
 //            else
-//                updateGovernmentQuestionApiCall()
+            updateGovernmentQuestionApiCall()
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
             requireActivity().finish()
         }
@@ -76,7 +84,81 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
 
+    private fun updateGovernmentQuestionApiCall() {
 
+        if(governmentParams.Questions.size>0)
+        {
+            //testGovernmentParams.BorrowerId = governmentParams.BorrowerId
+            //testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
+            for (question in governmentParams.Questions) {
+                if(question.id == 21){
+                    Timber.e("what is  "+question.answerData)
+                    if(ownershipInterestAnswerData1==null)
+                        question.answerData = null
+                    if(ownershipInterestAnswerData1?.selectionOptionId == null)
+                        question.answerData = null
+
+                    continue
+                }
+
+                if (question.parentQuestionId == 130) {
+                    if(bankruptcyMap.size == 0)
+                        question.answerData = null
+                    else {
+                        val test = hashMapOf<String, String>()
+                        val newTestList = arrayListOf(HashMap<String, String>())
+                        for(item in bankruptcyMap){
+                            Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                            test.put(item.key, item.value)
+                            val json = Gson().toJson(test)
+                            val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                            newTestList.add(mapCopy)
+                            test.clear()
+                        }
+                        newTestList.removeAt(0)
+                        question.answerData = newTestList
+                    }
+                    continue
+                }
+
+                if(question.id == 22){
+                    Timber.e("what is  "+question.answerData)
+                    if(ownershipInterestAnswerData2==null)
+                        question.answerData = null
+                    if(ownershipInterestAnswerData2?.selectionOptionId == null)
+                        question.answerData = null
+                    continue
+                }
+                question.answerData = null
+
+                if (question.id == 140) {
+                    //newChild.answerData = childSupportAnswerDataList
+                    question.answerData = childSupportAnswerDataList
+                }
+                else
+                    if(question.id == 45){   //family
+                        //question.answerData = FamilyAnswerData()
+                    }
+
+                // ownership interest, it is handled when sent back....
+                //if(question.parentQuestionId == 20){}
+
+                // Bankruptcy
+
+
+            }
+            //governmentParams.Questions.add(childQuestionData)
+
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
+                }
+            }
+            findNavController().popBackStack()
+        }
+
+
+    }
     private fun listnser() {
 
         binding!!.q1radioButton.setOnClickListener {
