@@ -40,6 +40,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:id="@+id/q1"
+                android:visibility="visible"
+
                 android:orientation="vertical"
                 android:layout_height="wrap_content"
                 card_view:ignore="MissingConstraints">
@@ -173,6 +175,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q2"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -357,6 +360,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q3"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -491,6 +496,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q4"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -624,6 +631,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q5"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -756,6 +764,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q6"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -888,6 +898,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q7"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -1023,6 +1035,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q8"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -1156,6 +1170,8 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q9"
+                    android:visibility="visible"
+
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -1289,6 +1305,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q10"
+                    android:visibility="visible"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -1373,121 +1390,120 @@
 
                             <LinearLayout
                                 android:layout_width="match_parent"
-                                android:orientation="vertical"
-                                android:layout_height="wrap_content">
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
 
-                             <LinearLayout
-                                 android:layout_width="wrap_content"
-                                 android:orientation="vertical"
-                                 android:id="@+id/one"
-                                 android:visibility="gone"
-                                 android:layout_height="wrap_content">
-
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:id="@+id/qvs10_1"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:fontFamily="@font/rubik_regular"
-                                android:textColor="@color/questionheader_view_color"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                card_view:ignore="MissingConstraints">
-
-                            </androidx.appcompat.widget.AppCompatTextView>
-
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="wrap_content"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:text="$ 12,000"
-                                android:id="@+id/qva10_1"
-                                android:textStyle="bold"
-                                android:visibility="gone"
-                                android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
-                                android:layout_height="wrap_content"
-                                card_view:ignore="MissingConstraints">
-
-
-                            </androidx.appcompat.widget.AppCompatTextView>
-                             </LinearLayout>
-
-//
                                 <LinearLayout
+                                    android:id="@+id/one"
                                     android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
                                     android:orientation="vertical"
+                                    android:visibility="gone">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qvs10_1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qva10_1"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+                                //
+
+                                <LinearLayout
                                     android:id="@+id/two"
-                                    android:layout_height="wrap_content">
-
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:id="@+id/qvs10_2"
-                                        android:layout_marginTop="@dimen/_10sdp"
-                                        android:fontFamily="@font/rubik_regular"
-                                        android:textColor="@color/questionheader_view_color"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        card_view:ignore="MissingConstraints">
-
-                                    </androidx.appcompat.widget.AppCompatTextView>
-
-
-                                    <androidx.appcompat.widget.AppCompatTextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_marginTop="@dimen/_10sdp"
-                                        android:text="$ 12,000"
-                                        android:id="@+id/qva10_2"
-                                        android:textStyle="bold"
-                                        android:visibility="gone"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:textSize="@dimen/_14ssp"
-                                        android:layout_height="wrap_content"
-                                        card_view:ignore="MissingConstraints">
-
-
-                                    </androidx.appcompat.widget.AppCompatTextView>
-                                </LinearLayout>
- ///
-                                <LinearLayout
                                     android:layout_width="wrap_content"
-                                    android:orientation="vertical"
-                                    android:id="@+id/three"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
 
                                     <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qvs10_2"
                                         android:layout_width="wrap_content"
-                                        android:id="@+id/qvs10_3"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="@dimen/_5sdp"
                                         card_view:ignore="MissingConstraints">
 
                                     </androidx.appcompat.widget.AppCompatTextView>
 
 
                                     <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qva10_2"
                                         android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="$ 12,000"
-                                        android:id="@+id/qva10_3"
+                                        android:textSize="@dimen/_14ssp"
                                         android:textStyle="bold"
                                         android:visibility="gone"
-                                        android:layout_marginLeft="@dimen/_5sdp"
-                                        android:textSize="@dimen/_14ssp"
-                                        android:layout_height="wrap_content"
                                         card_view:ignore="MissingConstraints">
 
 
                                     </androidx.appcompat.widget.AppCompatTextView>
                                 </LinearLayout>
+                                ///
+
+                                <LinearLayout
+                                    android:id="@+id/three"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
 
 
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qvs10_3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
 
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:id="@+id/qva10_3"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
 
 
                             </LinearLayout>
@@ -1522,6 +1538,17 @@
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/DemographicInformation"
+                        android:fontFamily="@font/rubik_medium"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:textColor="@color/grey_color_one"/>
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1535,38 +1562,419 @@
 
                     <LinearLayout
                         android:id="@+id/layout_race"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp">
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/layout_race_other"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible"
                         android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/content_bg_with_drop_shadow">
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        android:layout_marginStart="25dp">
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/checkbox"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:text="Thai"
                             android:fontFamily="@font/rubik_regular"
-                            android:textSize="13sp"
-                            android:layout_gravity="center"
-                            android:textColor="@color/grey_color_two"/>
+                            android:padding="@dimen/_15sdp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/AmericanIndianorAlaskaNative"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:button="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:drawableRight="@drawable/cb_selector"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+
+                            android:id="@+id/layout_race_asian"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rubik_regular"
+                                android:padding="@dimen/_15sdp"
+                                android:layout_marginEnd="8dp"
+                                android:text="@string/asian"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="14sp"
+                                android:lines="1"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:drawableRight="@drawable/cb_selector"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/asian_layout_q1"
+                                android:visibility="gone"
+                                android:orientation="vertical">
+                                <View
+                                    android:layout_width="match_parent"
+                                    android:background="@color/grey"
+                                    android:layout_marginRight="@dimen/_15sdp"
+                                    android:layout_marginLeft="@dimen/_15sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_height="1dp">
+
+                                </View>
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:visibility="visible">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="Abcd"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="sbcd"
+                                        android:textSize="@dimen/_12ssp"
+                                        android:textStyle="bold"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+                                //
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+                                ///
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+
 
                     </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_regular"
+                            android:padding="@dimen/_15sdp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/BlackorAfricanAmerican"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:button="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:drawableRight="@drawable/cb_selector"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="visible"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+                            android:id="@+id/layout_race_checkbox2"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/rubik_regular"
+                                android:padding="@dimen/_15sdp"
+                                android:layout_marginEnd="8dp"
+                                android:text="@string/NativeHawaiianorOtherPacificIslander"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="14sp"
+                                android:lines="1"
+                                android:button="@null"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:drawableRight="@drawable/cb_selector"
+                                android:maxLines="1"
+                                android:singleLine="true"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:id="@+id/nativehawaian"
+                                android:visibility="gone"
+                                android:orientation="vertical">
+
+                                 <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                                 </View>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:visibility="visible">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="Abcd"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_10sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="sbcd"
+                                        android:textSize="@dimen/_12ssp"
+                                        android:textStyle="bold"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+                                //
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+                                ///
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:fontFamily="@font/rubik_regular"
+                                        android:textColor="@color/questionheader_view_color"
+                                        card_view:ignore="MissingConstraints">
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="@dimen/_5sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:text="$ 12,000"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:textStyle="bold"
+                                        android:visibility="gone"
+                                        card_view:ignore="MissingConstraints">
+
+
+                                    </androidx.appcompat.widget.AppCompatTextView>
+                                </LinearLayout>
+
+
+
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_regular"
+                            android:padding="@dimen/_15sdp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/White"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:button="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:drawableRight="@drawable/cb_selector"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/rubik_regular"
+                            android:padding="@dimen/_15sdp"
+                            android:layout_marginEnd="8dp"
+                            android:text="@string/Idonotwishtoprovidethisinformation"
+                            android:textColor="@color/grey_color_one"
+                            android:textSize="14sp"
+                            android:lines="1"
+                            android:button="@null"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:drawableRight="@drawable/cb_selector"
+                            android:background="@drawable/content_bg_with_drop_shadow"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/info_imageview"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </LinearLayout>
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -1578,39 +1986,117 @@
                         android:textSize="15sp"
                         android:textColor="@color/grey_color_one"/>
 
-                    <RadioGroup
-                        android:id="@+id/layout_ethnicity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp">
-
-                    </RadioGroup>
-
-                    <LinearLayout
-                        android:id="@+id/layout_ethncity_other"
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp"
-                        android:layout_marginEnd="25dp"
-                        android:background="@drawable/content_bg_with_drop_shadow">
+                        android:layout_marginEnd="16dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/white_blue_border"
+                        android:padding="10dp"
+                        android:visibility="visible"
+                        app:layout_constraintCircleRadius="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/userLayout4">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:layout_marginBottom="20dp"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginEnd="20dp"
-                            android:text="Argentinean"
-                            android:fontFamily="@font/rubik_regular"
-                            android:textSize="13sp"
-                            android:layout_gravity="center"
-                            android:textColor="@color/grey_color_two"/>
-                    </LinearLayout>
 
+
+
+                        <androidx.appcompat.widget.AppCompatRadioButton
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_30sdp"
+                            android:text="@string/HispanicorLatino"
+                            android:checked="false"
+                            android:button="@null"
+                            android:background="@null"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="@dimen/_2sdp"
+                            android:drawableEnd="@drawable/radiodraw"
+                            app:layout_constraintStart_toStartOf="parent"
+                            card_view:ignore="MissingConstraints" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            android:id="@+id/ethnicity_layout"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_height="wrap_content">
+
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:background="@color/grey"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:layout_height="1dp">
+
+                            </View>
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/rubik_regular"
+                                android:textColor="@color/questionheader_view_color"
+                                android:layout_height="wrap_content"
+                                android:text="Other Hispanic or Latino: Argentinean"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                card_view:ignore="MissingConstraints">
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:textStyle="bold"
+                                android:visibility="gone"
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:textSize="@dimen/_14ssp"
+                                android:layout_height="wrap_content"
+                                card_view:ignore="MissingConstraints">
+
+
+                            </androidx.appcompat.widget.AppCompatTextView>
+                        </LinearLayout>
+
+
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/HispanicorLatino"
+                        android:checked="false"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_blue_border"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Idonotwishtoprovidethisinformation"
+                        android:checked="false"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_blue_border"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -1621,15 +2107,55 @@
                         android:textSize="15sp"
                         android:textColor="@color/grey_color_one"/>
 
-                    <RadioGroup
-                        android:id="@+id/layout_gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp">
 
-                    </RadioGroup>
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/male"
+                        android:checked="false"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_blue_border"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/female"
+                        android:checked="false"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_blue_border"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Idonotwishtoprovidethisinformation"
+                        android:checked="false"
+                        android:button="@null"
+                        android:layout_weight="1"
+                        android:background="@drawable/white_blue_border"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_10sdp"
+                        android:drawableEnd="@drawable/radiodraw"
+                        app:layout_constraintStart_toStartOf="parent"
+                        card_view:ignore="MissingConstraints" />
+
 
 
 

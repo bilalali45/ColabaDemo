@@ -34,7 +34,13 @@ class FederalDebt:GovtDetailBaseFragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
             if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"4")
+                AllGovQuestionsFragment.instan!!.setdata(
+                    "",
+                    binding.edDetails.text.toString(),
+                    whichBorrowerId,
+                    "4",
+                    questionId
+                )
             }
 
             updateGovernmentAndSaveData(binding.edDetails.text.toString())

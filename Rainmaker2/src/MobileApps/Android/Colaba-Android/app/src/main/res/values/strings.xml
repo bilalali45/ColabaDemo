@@ -594,6 +594,16 @@
 
 
     <string name="questiononeanswer">  What is the amount of money you have borrowed or intend to borrow?</string>
+    <string name="AmericanIndianorAlaskaNative">American Indian or Alaska Native</string>
+    <string name="asian">Asian</string>
+    <string name="BlackorAfricanAmerican">Black or African American</string>
+    <string name="NativeHawaiianorOtherPacificIslander">Native Hawaiian or Other Pacific Islander</string>
+    <string name="White">White</string>
+    <string name="Idonotwishtoprovidethisinformation">I do not wish to provide this information</string>
+    <string name="HispanicorLatino">Hispanic or Latino</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="DemographicInformation">Demographic Information</string>
     <!-- //   <string name="questionthree"> Are you currently delinquent in default on a Federal debt? </string>-->
 <!--    <string name="questionfour">  Is a party to a lawsuit in which you potentially have any personal financial liability? </string>-->
 <!--    <string name="questionfive"> Has conveyed title to any property in lieu of foreclosure in the past 7 years? </string>-->

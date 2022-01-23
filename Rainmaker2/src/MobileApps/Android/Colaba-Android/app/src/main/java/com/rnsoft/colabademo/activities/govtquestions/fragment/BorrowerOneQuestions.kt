@@ -927,7 +927,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
                "Own Property Type" ->{}
                "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
                "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
-               "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.               , bundle)}
+              /// "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.               , bundle)}
                "Party to Lawsuit" ->{
 
                    findNavController().navigate(R.id.action_party_to , bundle)
@@ -1643,6 +1643,8 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
         }
     }
 
+//    asian_layout_q1
+//    nativehawaian
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateChildSupport(updateEvent: ChildSupportUpdateEvent) {

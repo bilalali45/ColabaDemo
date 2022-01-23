@@ -38,7 +38,13 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
             if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"8")
+                AllGovQuestionsFragment.instan!!.setdata(
+                    "",
+                    binding.edDetails.text.toString(),
+                    whichBorrowerId,
+                    "8",
+                    questionId
+                )
             }
 
             updateGovernmentAndSaveData(binding.edDetails.text.toString())

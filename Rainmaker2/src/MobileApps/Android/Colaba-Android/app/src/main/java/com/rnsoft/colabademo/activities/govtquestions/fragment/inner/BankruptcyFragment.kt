@@ -80,7 +80,13 @@ class BankruptcyFragment:BaseFragment() {
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
                 if(AllGovQuestionsFragment.instan != null){
-                    AllGovQuestionsFragment.instan!!.setdata("", selectedValues, whichBorrowerId,"9")
+                    AllGovQuestionsFragment.instan!!.setdata(
+                        "",
+                        selectedValues,
+                        whichBorrowerId,
+                        "9",
+                        questionId
+                    )
                 }
 
                 EventBus.getDefault().post(BankruptcyUpdateEvent(detailDescription = selectedValues, bankruptcyAnswerData = answerData , whichBorrowerId = whichBorrowerId ))

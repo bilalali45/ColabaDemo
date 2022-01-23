@@ -40,7 +40,13 @@ class OutstandingFragment:GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
 
             if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"3")
+                AllGovQuestionsFragment.instan!!.setdata(
+                    "",
+                    binding.edDetails.text.toString(),
+                    whichBorrowerId,
+                    "3",
+                    questionId
+                )
             }
             updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }

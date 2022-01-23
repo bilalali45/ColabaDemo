@@ -113,7 +113,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 detailTitle = ""
 
              if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata(detailTitle, getDetailString, whichBorrowerId,"1")
+                AllGovQuestionsFragment.instan!!.setdata(detailTitle, getDetailString, whichBorrowerId,"1",questionId)
             }
 
             EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString, whichBorrowerId))

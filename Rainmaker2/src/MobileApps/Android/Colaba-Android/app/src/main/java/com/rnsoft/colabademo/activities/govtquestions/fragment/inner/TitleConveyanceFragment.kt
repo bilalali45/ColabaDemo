@@ -36,7 +36,13 @@ class TitleConveyanceFragment:GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
 
             if(AllGovQuestionsFragment.instan != null){
-                AllGovQuestionsFragment.instan!!.setdata("", binding.edDetails.text.toString(), whichBorrowerId,"6")
+                AllGovQuestionsFragment.instan!!.setdata(
+                    "",
+                    binding.edDetails.text.toString(),
+                    whichBorrowerId,
+                    "6",
+                    questionId
+                )
             }
             updateGovernmentAndSaveData(binding.edDetails.text.toString())
         }

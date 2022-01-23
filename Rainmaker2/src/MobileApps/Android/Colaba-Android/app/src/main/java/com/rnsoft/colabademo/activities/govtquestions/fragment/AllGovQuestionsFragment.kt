@@ -6,10 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -30,10 +28,12 @@ class AllGovQuestionsFragment : Fragment() {
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
     private var ownerShipInnerScreenParams: java.util.ArrayList<String> = arrayListOf()
-
+    private var asianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
     private var qustionheaderarray: ArrayList<QuestionData>? = null
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
+    private var nativeHawaiianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
+
     private var governmentParams = GovernmentParams()
     private lateinit var lastQData: QuestionData
     var row: View? = null
@@ -75,9 +75,14 @@ class AllGovQuestionsFragment : Fragment() {
         return binding!!.root
     }
 
+
+
     private fun listnser() {
 
-        binding!!.q1radioButton.setOnClickListener {discuss(binding!!.qh1.text.toString(),"1")}
+        binding!!.q1radioButton.setOnClickListener {
+            binding!!.q1radioButtonNo.isChecked = false
+            discuss(binding!!.qh1.text.toString(),"1")
+        }
         binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(),"2") }
         binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(),"3") }
         binding!!.q4radioButton.setOnClickListener { discuss(binding!!.qh4.text.toString(),"4") }
@@ -87,8 +92,38 @@ class AllGovQuestionsFragment : Fragment() {
         binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(),"8") }
         binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ","9") }
         binding!!.q10radioButton.setOnClickListener { discuss("Child Support, Alimony, etc.","10") }
+
+        binding!!.layoutRaceAsian.setOnClickListener {
+            val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
+            val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
+            findNavController().navigate(R.id.action_asian , bundle)
+        }
+        binding!!.nativehawaian.setOnClickListener {
+            val copyNativeHawaiianChildList =
+                java.util.ArrayList(nativeHawaiianChildList.map { it.copy() })
+            val bundle = bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
+            findNavController().navigate(R.id.action_native_hawai, bundle)
+        }
+        binding!!.q1radioButtonNo.setOnClickListener {
+            binding!!.q1radioButton.isChecked = false
+            binding!!.qv1.visibility = View.GONE
+        }
+
+
+
+
     }
 
+
+
+
+    private fun updateGovernmentData(testData:QuestionData){
+        for (item in governmentParams.Questions) {
+            if(item.id == testData.id){
+                item.answer = testData.answer
+            }
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
@@ -289,12 +324,18 @@ class AllGovQuestionsFragment : Fragment() {
        // navigateToInnerScreen(headerText!!.toString(), id!!, firstName, lastName, no)
     }
 
-    fun setdata(detailTitle: String, title: String, whichBorrowerId: Int, questionnumber: String?) {
+    fun setdata(
+        detailTitle: String,
+        title: String,
+        whichBorrowerId: Int,
+        questionnumber: String?,
+        questionId: Int
+    ) {
         when (questionnumber) {
             "1" -> {
-                binding!!.qv1.visibility = View.VISIBLE
-                binding!!.qva1.text = "$" +title
-
+                  binding!!.qv1.visibility = View.VISIBLE
+                  binding!!.qva1.text = "$" +title
+                  updatedata(questionId,title,detailTitle)
             }
             "2" -> {
                 binding!!.qv2.visibility = View.VISIBLE
@@ -356,6 +397,20 @@ class AllGovQuestionsFragment : Fragment() {
             }
         }
     }
+
+    private fun updatedata(questionId: Int, title: String, detailTitle: String) {
+        governmentParams.Questions.let { questions ->
+            for (question in questions) {
+                question.parentQuestionId?.let { parentQuestionId ->
+                    if (parentQuestionId == questionId) {
+                        question.answer = title
+                        question.answerDetail = detailTitle
+                    }
+                }
+            }
+        }
+    }
+
     fun discuss(detailTitle: String, no: String) {
         for (qData in qustionheaderarray!!) {
             if(qData.headerText == detailTitle) {
