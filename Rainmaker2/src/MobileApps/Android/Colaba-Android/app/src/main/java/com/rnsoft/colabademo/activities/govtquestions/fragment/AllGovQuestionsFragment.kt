@@ -16,11 +16,14 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.AppConstant.jARRAY
+import com.rnsoft.colabademo.AppConstant.jsonObj
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,6 +48,7 @@ class AllGovQuestionsFragment : Fragment() {
     var row: View? = null
     var position : Int? = 0
     private var bankruptcyMap = hashMapOf<String, String>()
+    var questionmodel = null
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,9 +154,9 @@ class AllGovQuestionsFragment : Fragment() {
 
             lifecycleScope.launchWhenStarted {
 
-             //   borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
-
-                borrowerAppViewModel.addgovernmetnjson(LoginFragment.webtoken!!, governmentParams)
+              // borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
+                var data = getDataList(jsonObj.toString())
+                borrowerAppViewModel.addgovernmetnjson("Bearer " +LoginFragment.webtoken!!, data!!)
 
 
 //                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -163,6 +167,13 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
 
+    }
+
+    fun getDataList(tag: String?): GovernmentParams? {
+        var datalist: GovernmentParams = GovernmentParams()
+        val gson = Gson()
+        datalist = gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
+        return datalist
     }
     private fun listnser() {
 
@@ -276,8 +287,9 @@ class AllGovQuestionsFragment : Fragment() {
                                                         governmentParams.BorrowerId,
                                                         governmentParams.toString()
                                                     )
-                                                    var questionmodel =  governmentQuestionsModelClassList.get(0).questionData
-                                                    for (qData in questionmodel!!) {
+                                                     questionmodel =
+                                                         governmentQuestionsModelClassList.get(0).questionData
+                                                    for (qData in questionmodel) {
                                                         if (qData.parentQuestionId == null && qData.id != null){
                                                              qustionheaderarray!!.add(qData)
                                                             if(qData.answer != null){
@@ -441,6 +453,10 @@ class AllGovQuestionsFragment : Fragment() {
                   binding!!.qv1.visibility = View.VISIBLE
                   binding!!.qva1.text = "$" +title
                   updatedata(questionId,title,detailTitle)
+                  setdataarray(questionId)
+
+
+
             }
             "2" -> {
                 binding!!.qv2.visibility = View.VISIBLE
@@ -509,6 +525,29 @@ class AllGovQuestionsFragment : Fragment() {
         }
     }
 
+    private fun setdataarray(questionId: Int) {
+        for (qData in questionmodel!!) {
+        if(qData.id!! == 10 || qData.parentQuestionId!! == 10) {
+            var jone = JSONObject()
+            jone.put("id", qData.id)
+            jone.put("parentQuestionId", qData.parentQuestionId)
+            jone.put("headerText", qData.headerText)
+            jone.put("questionSectionId", qData.questionSectionId)
+            jone.put("ownTypeId", qData.ownTypeId)
+            jone.put("firstName", qData.firstName)
+            jone.put("lastName", qData.lastName)
+            jone.put("question", qData.question)
+            jone.put("answer", qData.answer)
+            jone.put("answerDetail", qData.answerDetail)
+            jone.put("selectionOptionId", qData.selectionOptionId)
+            jone.put("answerData", qData.answerData)
+            jARRAY.put(jone)
+
+           }
+
+        }
+    }
+
     private fun updatedata(questionId: Int, title: String, detailTitle: String) {
         governmentParams.Questions.let { questions ->
             for (question in questions) {
@@ -546,6 +585,8 @@ class AllGovQuestionsFragment : Fragment() {
                     qData.lastName,
                     no
                 )
+
+
                 break
             }
         }
@@ -567,7 +608,6 @@ class AllGovQuestionsFragment : Fragment() {
           if(i == 0){
               binding!!.one.visibility = View.VISIBLE
               binding!!.qva101.visibility = View.VISIBLE
-
 
               binding!!.qvs101.text = childAnswerList.get(i).liabilityName
               binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()

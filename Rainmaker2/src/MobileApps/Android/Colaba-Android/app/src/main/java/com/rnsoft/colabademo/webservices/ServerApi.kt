@@ -2,13 +2,23 @@ package com.rnsoft.colabademo
 
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
+import com.rnsoft.colabademo.activities.details.WebResponse
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
 import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
+import com.google.gson.JsonObject
+
+import retrofit2.http.Body
+
+import retrofit2.http.POST
+
+
+
 
 interface ServerApi{
 
@@ -735,4 +745,22 @@ interface ServerApi{
     suspend fun resendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
 
 
+//    @FormUrlEncoded
+//    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
+//    open fun getjson(
+//        @Field("task_json_object") task_json_object: JSONObject?
+//    ): Call<WebResponse<Any?>?>?
+
+
+    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
+    fun getjson(
+        @Header("Authorization" )  Authorization:String,
+        @Body jsonBody: GovernmentParams?): Call<WebResponse<Any?>?>?
+
+
+    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
+    suspend fun addOrUpdateGovernmentQuestionsupda(
+        @Header("Authorization" )  Authorization:String,
+        @Body questionParams: GovernmentParams
+    ):Call<WebResponse<Any?>?>?
 }

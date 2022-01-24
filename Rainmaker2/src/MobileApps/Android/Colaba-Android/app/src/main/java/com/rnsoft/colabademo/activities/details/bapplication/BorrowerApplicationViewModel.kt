@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.colabademo.AppConstant.jsonObj
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -14,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
-import com.rnsoft.colabademo.AppModule_RetrofitFactory.retrofit
+import com.rnsoft.colabademo.activities.details.WebResponse
 import retrofit2.converter.gson.GsonConverterFactory
 
 import retrofit2.Retrofit
@@ -544,24 +545,27 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-    fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
-        val BASE_URL = "http://api.myservice.com/"
+     suspend fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
+        val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val apiService: ServerApi = retrofit.create(ServerApi::class.java)
-//        val call: Call<User> = apiService.getUser(username)
-//        call.enqueue(object : Callback<User?>() {
-//            override fun onResponse(call: Call<User?>?, response: Response<User?>) {
-//                val statusCode: Int = response.code()
-//                val user: User = response.body()
-//            }
-//
-//            override fun onFailure(call: Call<User?>?, t: Throwable?) {
-//                // Log error here since request failed
-//            }
-//        })
+        val call: Call<WebResponse<Any?>?> = apiService.getjson(webtoken,governmentParams)!!
+        call.enqueue(object : Callback<WebResponse<Any?>?> {
+            override fun onResponse(call: Call<WebResponse<Any?>?>, response: Response<WebResponse<Any?>?>) {
+                val statusCode: Int = response.code()
+                Log.i("TAG", "onFailure: "+response.body())
+
+                // val user: User = response.body()
+            }
+
+            override fun onFailure(call: Call<WebResponse<Any?>?>, t: Throwable?) {
+                Log.i("TAG", "onFailure: "+t)
+                // Log error here since request failed
+            }
+        })
     }
 }
 
