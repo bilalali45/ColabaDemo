@@ -85,7 +85,7 @@ class BankruptcyFragment:BaseFragment() {
                         selectedValues,
                         whichBorrowerId,
                         "9",
-                        questionId
+                        0
                     )
                 }
 

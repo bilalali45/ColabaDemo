@@ -165,7 +165,6 @@ class LoginFragment : BaseFragment() {
             if (emailError == null && passworError == null) {
                 clearError(emailLayout)
                 clearError(passwordLayout)
-
                 loading.visibility = View.VISIBLE
                 toggleButtonState(false)
                 loginViewModel.login(
@@ -371,6 +370,11 @@ class LoginFragment : BaseFragment() {
         val imm =
             view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    companion object{
+        var webtoken : String? = null
+
     }
 
 }

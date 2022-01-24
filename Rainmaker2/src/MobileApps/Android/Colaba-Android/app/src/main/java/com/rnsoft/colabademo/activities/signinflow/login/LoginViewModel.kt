@@ -6,6 +6,7 @@ import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rnsoft.colabademo.LoginFragment.Companion.webtoken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -56,6 +57,7 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                 //Log.e("login-result - ", genericResult.toString())
                 if (genericResult is Result.Success) {
                     val loginResponse = genericResult.data
+                    webtoken = loginResponse.data!!.token
                    genericResult.data.data?.token?.let {
                        Log.e("Token", ""+genericResult.data.data.token)
                    }
@@ -65,6 +67,8 @@ class LoginViewModel @Inject constructor(private val loginRepo: LoginRepo) :
                         return@launch
                     } else if (loginResponse.data?.tokenTypeName == AppConstant.IntermediateToken) {
                         runOtpSettingService(loginResponse.data.token)
+
+
                         //loginRepo.getOtpSettingFromService(loginResponse.data.token)
 
                         val resultConfiguration =

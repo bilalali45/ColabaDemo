@@ -33,7 +33,8 @@
     <color name="questionheader_view_color">#7E829E</color>
 
 
-
+    <color name="headercolor">#7E829E</color>
+    #7E829E
     <color name="grey_color_three">#FFA7A7A7</color>
     <color name="grey_color_four">#FFCCCCCC</color>
     <color name="grey_color_five">#E2E2E2</color>

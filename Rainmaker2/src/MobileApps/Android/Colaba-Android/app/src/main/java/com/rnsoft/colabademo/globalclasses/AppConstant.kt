@@ -1,5 +1,10 @@
 package com.rnsoft.colabademo
 
+import org.json.JSONObject
+
+
+
+
 object AppConstant {
 
          var userTwoFaSetting:Boolean?= null
@@ -264,6 +269,267 @@ object AppConstant {
 
         const val ethnicityChildList = "EthnicityChildList"
         const val selectedEthnicityChildList = "selectedEthnicityChildList"
+
+
+        var jsonObj = JSONObject("{\n" +
+                "  \"LoanApplicationId\": \"5\",\n" +
+                "  \"BorrowerId\": 5,\n" +
+                "  \"Questions\": [\n" +
+                "        {\n" +
+                "            \"id\": 10,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Undisclosed Borrowered Funds\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are you borrowing any money for this real estate transaction (e.g., money for your closing costs or down payment) obtaining any money from another party, such as the seller or realtor, that you have not disclosed on this loan application?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"test\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 11,\n" +
+                "            \"parentQuestionId\": 10,\n" +
+                "            \"headerText\": \"Amount to Borrow?\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"What is the amount of money you’ve borrowed or intend to borrow?\",\n" +
+                "            \"answer\": \"5435\",\n" +
+                "            \"answerDetail\": \"fsdf\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 20,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Ownership Interest in Property\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Have you had an ownership interest in another property in the last three years?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": null,\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 21,\n" +
+                "            \"parentQuestionId\": 20,\n" +
+                "            \"headerText\": \"Own Property Type\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"What type of property did you own?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": null,\n" +
+                "            \"selectionOptionId\": 3,\n" +
+                "            \"answerData\": {\n" +
+                "                \"selectionOptionId\": 1,\n" +
+                "                \"selectionOptionText\": \"Second Home\"\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 22,\n" +
+                "            \"parentQuestionId\": 20,\n" +
+                "            \"headerText\": \"Property Title\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"How did you hold title to the property?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": null,\n" +
+                "            \"selectionOptionId\": 2,\n" +
+                "            \"answerData\": {\n" +
+                "                \"selectionOptionId\": 1,\n" +
+                "                \"selectionOptionText\": \"Jointly with your spouse\"\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 45,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Family or Business affiliation\",\n" +
+                "            \"questionSectionId\": 1,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Do you have a family or business affliation with the seller of the property?\",\n" +
+                "            \"answer\": \"No\",\n" +
+                "            \"answerDetail\": \"\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": {\n" +
+                "                \"IsAffiliatedWithSeller\": false,\n" +
+                "                \"AffiliationDescription\": null\n" +
+                "            }\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 60,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Debt Co-Signer or Guarantor\",\n" +
+                "            \"questionSectionId\": 2,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are you a co-signer or guarantor on any debt or loan that is not disclosed on this application?\",\n" +
+                "            \"answer\": \"No\",\n" +
+                "            \"answerDetail\": \"\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 70,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Outstanding Judgements\",\n" +
+                "            \"questionSectionId\": 2,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are there any outstanding judgments against you?\",\n" +
+                "            \"answer\": \"No\",\n" +
+                "            \"answerDetail\": \"\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 80,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Federal Debt Deliquency\",\n" +
+                "            \"questionSectionId\": 2,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are you currently delinquent or in default on a Federal debt?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"asd\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 90,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Party to Lawsuit\",\n" +
+                "            \"questionSectionId\": 2,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are you a party to a lawsuit in which you potentially have any personal financial liability?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"asd\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 100,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Title Conveyance\",\n" +
+                "            \"questionSectionId\": 2,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Have you conveyed title to any property in lieu of foreclosure in the past 7 years?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"asd\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 110,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Pre-Foreclosureor Short Sale\",\n" +
+                "            \"questionSectionId\": 3,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Within the past 7 years, have you completed a pre-foreclosure sale or short sale, whereby the property was sold to a third party and the Lender agreed to accept less than the outstanding mortgage balance due?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 120,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Foreclosured Property\",\n" +
+                "            \"questionSectionId\": 3,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Have you had property foreclosed upon in the last 7 years?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"asd 1\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 130,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Bankruptcy \",\n" +
+                "            \"questionSectionId\": 3,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Have you declared bankruptcy within the past 7 years?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"dfg\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": null\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 131,\n" +
+                "            \"parentQuestionId\": 130,\n" +
+                "            \"headerText\": \"Type\",\n" +
+                "            \"questionSectionId\": 3,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Which Type?\",\n" +
+                "            \"answer\": null,\n" +
+                "            \"answerDetail\": null,\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": [\n" +
+                "                {\n" +
+                "                    \"2\": \"Chapter 11\"\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        },\n" +
+                "        {\n" +
+                "            \"id\": 140,\n" +
+                "            \"parentQuestionId\": null,\n" +
+                "            \"headerText\": \"Child Support, Alimony, etc.\",\n" +
+                "            \"questionSectionId\": 3,\n" +
+                "            \"ownTypeId\": 1,\n" +
+                "            \"firstName\": \"Quentin\",\n" +
+                "            \"lastName\": \"Finley\",\n" +
+                "            \"question\": \"Are you currently obligated to pay child support, alimony or separate maintenance?\",\n" +
+                "            \"answer\": \"Yes\",\n" +
+                "            \"answerDetail\": \"\",\n" +
+                "            \"selectionOptionId\": null,\n" +
+                "            \"answerData\": [\n" +
+                "                {\n" +
+                "                    \"liabilityTypeId\": 1,\n" +
+                "                    \"liabilityName\": \"Child Support\",\n" +
+                "                    \"remainingMonth\": 2,\n" +
+                "                    \"monthlyPayment\": 3535,\n" +
+                "                    \"name\": \"gdfgd\"\n" +
+                "                },\n" +
+                "                {\n" +
+                "                    \"liabilityTypeId\": 2,\n" +
+                "                    \"liabilityName\": \"Separate Maintenance\",\n" +
+                "                    \"remainingMonth\": 3,\n" +
+                "                    \"monthlyPayment\": 1111,\n" +
+                "                    \"name\": \"111\"\n" +
+                "                }\n" +
+                "            ]\n" +
+                "        }\n" +
+                "    ]\n" +
+                "}")
+
 
         //const val fakeUserToken:String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1Njg4MjAzLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.YDTSZPAATl1URzpMugemrvuMH4bXKQDRnJyEhzjRaaY"
         //const val fakeMubashirToken:String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI0MTA4NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtdWJhc2hpci5tY3VAbWFpbGluYXRvci5jb20iLCJGaXJzdE5hbWUiOiJBbGl5YSIsIkxhc3ROYW1lIjoiUHJhc2xhIiwiVGVuYW50Q29kZSI6ImxlbmRvdmEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOlsiTUNVIiwiTG9hbiBPZmZpY2VyIl0sImV4cCI6MTYyNTg5MDkyMCwiaXNzIjoicmFpbnNvZnRmbiIsImF1ZCI6InJlYWRlcnMifQ.3lthGSEXeLRUiJ_mZt2m1Vv10TNfHcSr6l9RDjOnJsM"

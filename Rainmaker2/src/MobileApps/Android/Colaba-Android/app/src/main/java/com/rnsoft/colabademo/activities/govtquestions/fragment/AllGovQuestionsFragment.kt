@@ -66,7 +66,6 @@ class AllGovQuestionsFragment : Fragment() {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
         setUpDynamicTabs()
-
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
 //                updateDemoGraphicApiCall()
@@ -150,9 +149,15 @@ class AllGovQuestionsFragment : Fragment() {
             //governmentParams.Questions.add(childQuestionData)
 
             lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
-                }
+
+             //   borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
+
+                borrowerAppViewModel.addgovernmetnjson(LoginFragment.webtoken!!, governmentParams)
+
+
+//                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+//                    borrowerAppViewModel.addOrUpdateGovernmentQuestions(authToken, governmentParams)
+//                }
             }
             findNavController().popBackStack()
         }
@@ -165,14 +170,14 @@ class AllGovQuestionsFragment : Fragment() {
             binding!!.q1radioButtonNo.isChecked = false
             discuss(binding!!.qh1.text.toString(),"1")
         }
-        binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(),"2") }
-        binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(),"3") }
-        binding!!.q4radioButton.setOnClickListener { discuss(binding!!.qh4.text.toString(),"4") }
-        binding!!.q5radioButton.setOnClickListener { discuss(binding!!.qh5.text.toString(),"5") }
-        binding!!.q6radioButton.setOnClickListener { discuss(binding!!.qh6.text.toString(),"6") }
-        binding!!.q7radioButton.setOnClickListener { discuss(binding!!.qh7.text.toString(),"7") }
-        binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(),"8") }
-        binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ","9") }
+        binding!!.q2radioButton.setOnClickListener {  discuss(binding!!.qh2.text.toString(),"2") }
+        binding!!.q3radioButton.setOnClickListener {  discuss(binding!!.qh3.text.toString(),"3") }
+        binding!!.q4radioButton.setOnClickListener {  discuss(binding!!.qh4.text.toString(),"4") }
+        binding!!.q5radioButton.setOnClickListener {  discuss(binding!!.qh5.text.toString(),"5") }
+        binding!!.q6radioButton.setOnClickListener {  discuss(binding!!.qh6.text.toString(),"6") }
+        binding!!.q7radioButton.setOnClickListener {  discuss(binding!!.qh7.text.toString(),"7") }
+        binding!!.q8radioButton.setOnClickListener {  discuss(binding!!.qh8.text.toString(),"8") }
+        binding!!.q9radioButton.setOnClickListener {  discuss("Bankruptcy ","9") }
         binding!!.q10radioButton.setOnClickListener { discuss("Child Support, Alimony, etc.","10") }
 
         binding!!.layoutRaceAsian.setOnClickListener {
@@ -275,9 +280,27 @@ class AllGovQuestionsFragment : Fragment() {
                                                     for (qData in questionmodel!!) {
                                                         if (qData.parentQuestionId == null && qData.id != null){
                                                              qustionheaderarray!!.add(qData)
+                                                            if(qData.answer != null){
+                                                                if(qData.id == 70){
+                                                                    setdata("",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "3",
+                                                                        70)
+                                                                }
+                                                            }
 
                                                         }else{
                                                              subquestionarray!!.add(qData)
+                                                            if(qData.answer != null){
+                                                                if(qData.parentQuestionId == 10){
+                                                                    setdata("",
+                                                                        qData.answer!!,
+                                                                        0,
+                                                                        "1",
+                                                                        10)
+                                                                }
+                                                            }
                                                         }
 
                                                         if(qData.answer != null){
@@ -424,12 +447,14 @@ class AllGovQuestionsFragment : Fragment() {
                 binding!!.qv22.visibility = View.VISIBLE
                 binding!!.qva2.text = detailTitle
                 binding!!.qva22.text = title
+                updatedata(questionId,title,detailTitle)
 
             }
             "3" -> {
                 binding!!.qv3.visibility = View.VISIBLE
                 binding!!.qvs3.text = "Detail"
                 binding!!.qva3.text = title
+                updatedata(questionId,title,detailTitle)
 
             }
             "4" -> {
@@ -438,6 +463,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs4.text = "Detail"
                 binding!!.qva4.text = title
+                updatedata(questionId,title,detailTitle)
 
             }
             "5" -> {
@@ -446,6 +472,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs5.text = "Detail"
                 binding!!.qva5.text = title
+                updatedata(questionId,title,detailTitle)
 
             }
             "6" -> {
@@ -453,11 +480,13 @@ class AllGovQuestionsFragment : Fragment() {
                // binding!!.qvs6.text = title
                 binding!!.qvs6.text = "Detail"
                 binding!!.qva6.text = title
+                updatedata(questionId,title,detailTitle)
 
             }
             "7" -> {
                 binding!!.qv7.visibility = View.VISIBLE
                 binding!!.qvs7.text = title
+                updatedata(questionId,title,detailTitle)
             }
             "8" -> {
                 binding!!.qv8.visibility = View.VISIBLE
@@ -483,12 +512,26 @@ class AllGovQuestionsFragment : Fragment() {
     private fun updatedata(questionId: Int, title: String, detailTitle: String) {
         governmentParams.Questions.let { questions ->
             for (question in questions) {
-                question.parentQuestionId?.let { parentQuestionId ->
-                    if (parentQuestionId == questionId) {
+                  if (questionId == 10) {
                         question.answer = title
                         question.answerDetail = detailTitle
-                    }
-                }
+                        break
+                    }else if(questionId == 70){
+                        question.answer = title
+                         question.answerDetail = detailTitle
+                        break
+                    }else if(questionId == 80){
+                      question.answer = title
+                      question.answerDetail = detailTitle
+                      break
+                  }else if(questionId == 90){
+                      question.answer = title
+                      question.answerDetail = detailTitle
+                      break
+                  }
+
+
+
             }
         }
     }

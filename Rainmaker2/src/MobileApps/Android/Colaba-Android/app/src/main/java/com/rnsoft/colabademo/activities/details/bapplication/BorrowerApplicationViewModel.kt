@@ -9,8 +9,21 @@ import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
+import com.rnsoft.colabademo.AppModule_RetrofitFactory.retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+import retrofit2.Retrofit
+
+
+
+
+
+
 
 @HiltViewModel
 class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: BorrowerApplicationRepo) : ViewModel() {
@@ -529,6 +542,26 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
                     EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
             }
         }
+    }
+
+    fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
+        val BASE_URL = "http://api.myservice.com/"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService: ServerApi = retrofit.create(ServerApi::class.java)
+//        val call: Call<User> = apiService.getUser(username)
+//        call.enqueue(object : Callback<User?>() {
+//            override fun onResponse(call: Call<User?>?, response: Response<User?>) {
+//                val statusCode: Int = response.code()
+//                val user: User = response.body()
+//            }
+//
+//            override fun onFailure(call: Call<User?>?, t: Throwable?) {
+//                // Log error here since request failed
+//            }
+//        })
     }
 }
 

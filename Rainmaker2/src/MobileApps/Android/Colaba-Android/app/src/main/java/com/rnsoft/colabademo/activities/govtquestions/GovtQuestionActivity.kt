@@ -36,6 +36,7 @@ class GovtQuestionActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = GovtQuestionsActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.govtDataLoader.visibility = View.GONE
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
         val extras = intent.extras
         extras?.let {
