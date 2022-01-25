@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
 import com.rnsoft.colabademo.AppConstant.answerData
@@ -99,11 +100,39 @@ class AllGovQuestionsFragment : Fragment() {
             if (qData.raceId == 2) {
                 asiancheckbox.isChecked = true
             } else if (qData.raceId == 3) {
-                asiancheckbox.isChecked = true
+                checkboxblack.isChecked = true
+            }else if (qData.raceId == 4) {
+                americannativecheckbox.isChecked = true
+            } else if (qData.raceId == 5) {
+                whitecheckbox.isChecked = true
+            }else if (qData.raceId == 6) {
+                idonotwishcheckbox.isChecked = true
+            }else if (qData.raceId == 1) {
+                checkbox.isChecked = true
             }
-
         }
-    }
+
+        if(data!!.genderId == 1){
+            male.isChecked = true
+
+        }else if(data!!.genderId == 2){
+            female.isChecked = true
+
+        }else if(data!!.genderId == 3) {
+            sexidontsharerb.isChecked = true
+        }
+
+        for (qData in data!!.ethnicity!!) {
+            if (qData.ethnicityId == 1) {
+                HispanicorLatino.isChecked = true
+            } else if (qData.ethnicityId == 2) {
+                notHispanicorLatino.isChecked = true
+            }else if (qData.ethnicityId == 3) {
+                ethnicidonotwishrbbox.isChecked = true
+            }
+        }
+
+   }
 
     private fun updateDemoGraphicApiCall() {
         borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, 5, 5)
@@ -220,11 +249,12 @@ class AllGovQuestionsFragment : Fragment() {
                 "10"
             )
         }
-
-        binding!!.layoutRaceAsian.setOnClickListener {
-            val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
-            val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
-            findNavController().navigate(R.id.action_asian, bundle)
+        binding!!.asiancheckbox.setOnClickListener {
+            if(asiancheckbox.isChecked) {
+                val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
+                findNavController().navigate(R.id.action_asian, bundle)
+            }
         }
         binding!!.nativehawaian.setOnClickListener {
             val copyNativeHawaiianChildList =
@@ -385,8 +415,8 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                                 } else if (qData.id == 140) {
                                                                     setarray(
-                                                                        "",
-                                                                        qData.answerData as java.util.ArrayList<ChildAnswerData>,
+                                                                        "0",
+                                                                        qData.answerData as ArrayList<ChildAnswerData>,
                                                                         0,
                                                                         "10"
                                                                     )
@@ -687,9 +717,10 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
 
+
     fun setarray(
         s: String,
-        childAnswerList: java.util.ArrayList<ChildAnswerData>,
+        childAnswerList: ArrayList<ChildAnswerData>,
         whichBorrowerId: Int,
         s1: String
     ) {
@@ -715,45 +746,124 @@ class AllGovQuestionsFragment : Fragment() {
 
                         if (i == 0) {
                             var jone = JSONObject()
-                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
-                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
-                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
-                            jone.put("name", childAnswerList.get(i).name)
+                           // val intDemo = strDemo!!.floatToInt()
+
+                            if(s == "0") {
+                                val getrow: Any = childAnswerList[i]
+                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                val liabilityName = t["liabilityName"].toString()
+                                val monthlyPayment =
+                                    t["monthlyPayment"].toString().toDouble().toInt()
+                                val liabilityTypeId =
+                                    t["liabilityTypeId"].toString().toDouble().toInt()
+                                val name = t["name"].toString()
+                                val remainingMonth =
+                                    t["remainingMonth"].toString().toDouble().toInt()
+
+
+                                jone.put("liabilityTypeId", liabilityTypeId)
+                                jone.put("liabilityName", liabilityName)
+                                jone.put("remainingMonth", remainingMonth)
+                                jone.put("monthlyPayment", monthlyPayment)
+                                jone.put("name", name)
+                                binding!!.qvs101.text = liabilityName
+                                binding!!.qva101.text = monthlyPayment.toString()
+                            }else{
+
+                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jone.put("name", childAnswerList.get(i).name)
+
+                                binding!!.qvs101.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
+                            }
                             answerData.put(jone)
                             binding!!.one.visibility = View.VISIBLE
                             binding!!.qva101.visibility = View.VISIBLE
-                            binding!!.qvs101.text = childAnswerList.get(i).liabilityName
-                            binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
+
 
                         } else if (i == 1) {
 
-                            var jone = JSONObject()
-                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
-                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
-                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
-                            jone.put("name", childAnswerList.get(i).name)
+
+                            if(s == "0") {
+                                val getrow: Any = childAnswerList[i]
+                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                val liabilityName = t["liabilityName"].toString()
+                                val monthlyPayment =
+                                    t["monthlyPayment"].toString().toDouble().toInt()
+                                val liabilityTypeId =
+                                    t["liabilityTypeId"].toString().toDouble().toInt()
+                                val name = t["name"].toString()
+                                val remainingMonth =
+                                    t["remainingMonth"].toString().toDouble().toInt()
+
+
+
+                                jone.put("liabilityTypeId", liabilityTypeId)
+                                jone.put("liabilityName", liabilityName)
+                                jone.put("remainingMonth", remainingMonth)
+                                jone.put("monthlyPayment", monthlyPayment)
+                                jone.put("name", name)
+                                binding!!.qvs102.text = liabilityName
+                                binding!!.qva102.text = monthlyPayment.toString()
+                            }else {
+
+                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jone.put("name", childAnswerList.get(i).name)
+
+                                binding!!.qvs102.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
+
+                            }
+
                             answerData.put(jone)
                             binding!!.two.visibility = View.VISIBLE
                             binding!!.qva102.visibility = View.VISIBLE
-                            binding!!.qvs102.text = childAnswerList.get(i).liabilityName
-                            binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
-
 
                         } else if (i == 2) {
+                            if(s == "0") {
+                                val getrow: Any = childAnswerList[i]
+                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                val liabilityName = t["liabilityName"].toString()
+                                val monthlyPayment =
+                                    t["monthlyPayment"].toString().toDouble().toInt()
+                                val liabilityTypeId =
+                                    t["liabilityTypeId"].toString().toDouble().toInt()
+                                val name = t["name"].toString()
+                                val remainingMonth =
+                                    t["remainingMonth"].toString().toDouble().toInt()
 
-                            var jone = JSONObject()
-                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
-                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
-                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
-                            jone.put("name", childAnswerList.get(i).name)
+
+
+                                jone.put("liabilityTypeId", liabilityTypeId)
+                                jone.put("liabilityName", liabilityName)
+                                jone.put("remainingMonth", remainingMonth)
+                                jone.put("monthlyPayment", monthlyPayment)
+                                jone.put("name", name)
+
+                                binding!!.qvs103.text = liabilityName
+                                binding!!.qva103.text = monthlyPayment.toString()
+
+                            }else{
+                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jone.put("name", childAnswerList.get(i).name)
+
+                                binding!!.qvs103.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
+
+                            }
                             answerData.put(jone)
                             binding!!.three.visibility = View.VISIBLE
                             binding!!.qva103.visibility = View.VISIBLE
-                            binding!!.qvs103.text = childAnswerList.get(i).liabilityName
-                            binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
+
                         }
                         jone.put("answerData", answerData)
                         jARRAY.put(jone)
@@ -766,4 +876,6 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
     }
+
+
 }

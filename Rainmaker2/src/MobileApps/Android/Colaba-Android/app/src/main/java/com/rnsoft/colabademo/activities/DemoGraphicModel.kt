@@ -10,16 +10,16 @@ class DemoGraphicModel {
 
     @SerializedName("loanApplicationId")
     @Expose
-    private val loanApplicationId: Int? = null
+     val loanApplicationId: Int? = 0
 
     @SerializedName("borrowerId")
     @Expose
-    private val borrowerId: Int? = null
+     val borrowerId: Int? = 0
 
 
     @SerializedName("genderId")
     @Expose
-    private val genderId: Int? = null
+    val genderId: Int? = 0
 
 
     @SerializedName("race")

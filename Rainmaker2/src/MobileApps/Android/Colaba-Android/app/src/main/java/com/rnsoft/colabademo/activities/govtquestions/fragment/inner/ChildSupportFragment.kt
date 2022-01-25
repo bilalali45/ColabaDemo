@@ -205,7 +205,7 @@ class ChildSupportFragment:BaseFragment() {
                 }
 
                 if(AllGovQuestionsFragment.instan != null){
-                    AllGovQuestionsFragment.instan!!.setarray("", childAnswerList, whichBorrowerId,"10")
+                    AllGovQuestionsFragment.instan!!.setarray("1", childAnswerList, whichBorrowerId,"10")
                 }
                 EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList , whichBorrowerId))
                 findNavController().popBackStack()

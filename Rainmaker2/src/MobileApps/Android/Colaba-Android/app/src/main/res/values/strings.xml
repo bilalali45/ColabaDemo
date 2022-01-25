@@ -604,6 +604,9 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="DemographicInformation">Demographic Information</string>
+
+    <string name="notHispanicorLatino">Not Hispanic or Latino</string>
+
     <!-- //   <string name="questionthree"> Are you currently delinquent in default on a Federal debt? </string>-->
 <!--    <string name="questionfour">  Is a party to a lawsuit in which you potentially have any personal financial liability? </string>-->
 <!--    <string name="questionfive"> Has conveyed title to any property in lieu of foreclosure in the past 7 years? </string>-->
