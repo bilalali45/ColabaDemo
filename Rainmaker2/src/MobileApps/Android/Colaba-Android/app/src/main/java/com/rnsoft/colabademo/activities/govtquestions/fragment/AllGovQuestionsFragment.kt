@@ -34,9 +34,9 @@ import javax.inject.Inject
 
 
 class AllGovQuestionsFragment : Fragment() {
-    var binding : FragmentBinding? = null
+    var binding: FragmentBinding? = null
     private var tabBorrowerId: Int? = null
-    private var currentBorrowerId:Int = 0
+    private var currentBorrowerId: Int = 0
     private var adapter: QueationAdapter? = null
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
@@ -46,14 +46,15 @@ class AllGovQuestionsFragment : Fragment() {
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     private var nativeHawaiianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
-    var ownershipInterestAnswerData1: BorrowerOneQuestions.OwnershipInterestAnswerData?= null
-    var ownershipInterestAnswerData2: BorrowerOneQuestions.OwnershipInterestAnswerData?= null
+    var ownershipInterestAnswerData1: BorrowerOneQuestions.OwnershipInterestAnswerData? = null
+    var ownershipInterestAnswerData2: BorrowerOneQuestions.OwnershipInterestAnswerData? = null
     private var governmentParams = GovernmentParams()
     private lateinit var lastQData: QuestionData
     var row: View? = null
-    var position : Int? = 0
+    var position: Int? = 0
     private var bankruptcyMap = hashMapOf<String, String>()
-   // var questionmodel = null
+
+    // var questionmodel = null
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,7 +79,7 @@ class AllGovQuestionsFragment : Fragment() {
         updateDemoGraphicApiCall()
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
-                //updateDemoGraphicApiCall()
+            //updateDemoGraphicApiCall()
 //            else
             updateGovernmentQuestionApiCall()
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
@@ -93,50 +94,52 @@ class AllGovQuestionsFragment : Fragment() {
         return binding!!.root
     }
 
-     fun demographic() {
+    fun demographic() {
         for (qData in data!!.race!!) {
-            if(qData.raceId == 2){
+            if (qData.raceId == 2) {
                 asiancheckbox.isChecked = true
-            }else if(qData.raceId == 3){
+            } else if (qData.raceId == 3) {
                 asiancheckbox.isChecked = true
             }
 
-         }
+        }
     }
 
     private fun updateDemoGraphicApiCall() {
-        borrowerAppViewModel.GetDemographicInformation("Bearer " +LoginFragment.webtoken!!, 5,5)
+        borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, 5, 5)
     }
 
 
     private fun updateGovernmentQuestionApiCall() {
 
-        if(governmentParams.Questions.size>0)
-        {
+        if (governmentParams.Questions.size > 0) {
             //testGovernmentParams.BorrowerId = governmentParams.BorrowerId
-           // testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
+            // testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
             for (question in governmentParams.Questions) {
-                if(question.id == 21){
-                    Timber.e("what is  "+question.answerData)
-                    if(ownershipInterestAnswerData1==null)
+                if (question.id == 21) {
+                    Timber.e("what is  " + question.answerData)
+                    if (ownershipInterestAnswerData1 == null)
                         question.answerData = null
-                    if(ownershipInterestAnswerData1?.selectionOptionId == null)
+                    if (ownershipInterestAnswerData1?.selectionOptionId == null)
                         question.answerData = null
 
                     continue
                 }
 
                 if (question.parentQuestionId == 130) {
-                    if(bankruptcyMap.size == 0)
+                    if (bankruptcyMap.size == 0)
                         question.answerData = null
                     else {
                         val test = hashMapOf<String, String>()
                         val newTestList = arrayListOf(HashMap<String, String>())
-                        for(item in bankruptcyMap){
-                            Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                        for (item in bankruptcyMap) {
+                            Timber.e("item kia ha ?" + item.value + "  and " + item.key)
                             test.put(item.key, item.value)
                             val json = Gson().toJson(test)
-                            val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                            val mapCopy: HashMap<String, String> = Gson().fromJson(
+                                json,
+                                object : TypeToken<HashMap<String?, String>>() {}.type
+                            )
                             newTestList.add(mapCopy)
                             test.clear()
                         }
@@ -146,11 +149,11 @@ class AllGovQuestionsFragment : Fragment() {
                     continue
                 }
 
-                if(question.id == 22){
-                    Timber.e("what is  "+question.answerData)
-                    if(ownershipInterestAnswerData2==null)
+                if (question.id == 22) {
+                    Timber.e("what is  " + question.answerData)
+                    if (ownershipInterestAnswerData2 == null)
                         question.answerData = null
-                    if(ownershipInterestAnswerData2?.selectionOptionId == null)
+                    if (ownershipInterestAnswerData2?.selectionOptionId == null)
                         question.answerData = null
                     continue
                 }
@@ -159,15 +162,14 @@ class AllGovQuestionsFragment : Fragment() {
                 if (question.id == 140) {
                     //newChild.answerData = childSupportAnswerDataList
                     question.answerData = childSupportAnswerDataList
-                }
-                else
-                    if(question.id == 45){   //family
+                } else
+                    if (question.id == 45) {   //family
                         //question.answerData = FamilyAnswerData()
                     }
 
-                     // ownership interest, it is handled when sent back....
-                    //  if(question.parentQuestionId == 20){}
-                   // Bankruptcy
+                // ownership interest, it is handled when sent back....
+                //  if(question.parentQuestionId == 20){}
+                // Bankruptcy
 
 
             }
@@ -175,9 +177,9 @@ class AllGovQuestionsFragment : Fragment() {
 
             lifecycleScope.launchWhenStarted {
 
-              // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
+                // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
                 var data = getDataList(jsonaddquestion.toString())
-                borrowerAppViewModel.addgovernmetnjson("Bearer " +LoginFragment.webtoken!!, data!!)
+                borrowerAppViewModel.addgovernmetnjson("Bearer " + LoginFragment.webtoken!!, data!!)
 
 
 //                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -193,29 +195,36 @@ class AllGovQuestionsFragment : Fragment() {
     fun getDataList(tag: String?): GovernmentParams? {
         var datalist: GovernmentParams = GovernmentParams()
         val gson = Gson()
-        datalist = gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
+        datalist =
+            gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
         return datalist
     }
+
     private fun listnser() {
 
         binding!!.q1radioButton.setOnClickListener {
             binding!!.q1radioButtonNo.isChecked = false
-            discuss(binding!!.qh1.text.toString(),"1")
+            discuss(binding!!.qh1.text.toString(), "1")
         }
-        binding!!.q2radioButton.setOnClickListener {  discuss(binding!!.qh2.text.toString(),"2") }
-        binding!!.q3radioButton.setOnClickListener {  discuss(binding!!.qh3.text.toString(),"3") }
-        binding!!.q4radioButton.setOnClickListener {  discuss(binding!!.qh4.text.toString(),"4") }
-        binding!!.q5radioButton.setOnClickListener {  discuss(binding!!.qh5.text.toString(),"5") }
-        binding!!.q6radioButton.setOnClickListener {  discuss(binding!!.qh6.text.toString(),"6") }
-        binding!!.q7radioButton.setOnClickListener {  discuss(binding!!.qh7.text.toString(),"7") }
-        binding!!.q8radioButton.setOnClickListener {  discuss(binding!!.qh8.text.toString(),"8") }
-        binding!!.q9radioButton.setOnClickListener {  discuss("Bankruptcy ","9") }
-        binding!!.q10radioButton.setOnClickListener { discuss("Child Support, Alimony, etc.","10") }
+        binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(), "2") }
+        binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(), "3") }
+        binding!!.q4radioButton.setOnClickListener { discuss(binding!!.qh4.text.toString(), "4") }
+        binding!!.q5radioButton.setOnClickListener { discuss(binding!!.qh5.text.toString(), "5") }
+        binding!!.q6radioButton.setOnClickListener { discuss(binding!!.qh6.text.toString(), "6") }
+        binding!!.q7radioButton.setOnClickListener { discuss(binding!!.qh7.text.toString(), "7") }
+        binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(), "8") }
+        binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ", "9") }
+        binding!!.q10radioButton.setOnClickListener {
+            discuss(
+                "Child Support, Alimony, etc.",
+                "10"
+            )
+        }
 
         binding!!.layoutRaceAsian.setOnClickListener {
             val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
             val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
-            findNavController().navigate(R.id.action_asian , bundle)
+            findNavController().navigate(R.id.action_asian, bundle)
         }
         binding!!.nativehawaian.setOnClickListener {
             val copyNativeHawaiianChildList =
@@ -229,16 +238,12 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
 
-
-
     }
 
 
-
-
-    private fun updateGovernmentData(testData:QuestionData){
+    private fun updateGovernmentData(testData: QuestionData) {
         for (item in governmentParams.Questions) {
-            if(item.id == testData.id){
+            if (item.id == testData.id) {
                 item.answer = testData.answer
             }
         }
@@ -246,7 +251,8 @@ class AllGovQuestionsFragment : Fragment() {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
-        if(updateEvent.whichBorrowerId == currentBorrowerId) {
+        if (updateEvent.whichBorrowerId == currentBorrowerId) {
+
 
 //            clickedContentCell.govt_detail_box.detail_title.text =
 //                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
@@ -268,9 +274,9 @@ class AllGovQuestionsFragment : Fragment() {
 //                }
 //            }
 
-     }
- }
 
+        }
+    }
 
 
     private fun setUpDynamicTabs() {
@@ -279,207 +285,150 @@ class AllGovQuestionsFragment : Fragment() {
         subquestionarray = ArrayList()
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
         borrowerAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,
-                { governmentQuestionsModelClassList ->
+            { governmentQuestionsModelClassList ->
+                var zeroIndexAppCompat: AppCompatTextView? = null
+                var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
+                if (governmentQuestionsModelClassList.size > 0) {
+                    Log.i("TAG", "setUpDynamicTabs: " + governmentQuestionsModelClassList)
+
                     var zeroIndexAppCompat: AppCompatTextView? = null
-                    var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
                     if (governmentQuestionsModelClassList.size > 0) {
-                        Log.i("TAG", "setUpDynamicTabs: " + governmentQuestionsModelClassList)
+                        var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
+                            null
 
-                        var zeroIndexAppCompat: AppCompatTextView? = null
-                        if (governmentQuestionsModelClassList.size > 0) {
-                            var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
-                                null
-
-                             for (item in governmentQuestionsModelClassList) {
-                                 if (item.passedBorrowerId == tabBorrowerId) {
-                                    selectedGovernmentQuestionModel = item
-                                    currentBorrowerId = tabBorrowerId!!
-                                    governmentQuestionActivity?.let { governmentQuestionActivity ->
-                                        governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
-                                            item.questionData?.let { questionDataList ->
-                                                item.passedBorrowerId?.let { passedBorrowerId ->
-                                                    governmentParams =
-                                                        GovernmentParams(
-                                                            passedBorrowerId,
-                                                            nonNullLoanApplicationId,
-                                                            questionDataList
-                                                        )
-                                                    Timber.e(
-                                                        "TingoPingo = ",
-                                                        governmentParams.BorrowerId,
-                                                        governmentParams.toString()
+                        for (item in governmentQuestionsModelClassList) {
+                            if (item.passedBorrowerId == tabBorrowerId) {
+                                selectedGovernmentQuestionModel = item
+                                currentBorrowerId = tabBorrowerId!!
+                                governmentQuestionActivity?.let { governmentQuestionActivity ->
+                                    governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
+                                        item.questionData?.let { questionDataList ->
+                                            item.passedBorrowerId?.let { passedBorrowerId ->
+                                                governmentParams =
+                                                    GovernmentParams(
+                                                        passedBorrowerId,
+                                                        nonNullLoanApplicationId,
+                                                        questionDataList
                                                     )
-                                                    var  questionmodel =
-                                                         governmentQuestionsModelClassList.get(0).questionData
-                                                    for (qData in questionmodel!!) {
+                                                Timber.e(
+                                                    "TingoPingo = ",
+                                                    governmentParams.BorrowerId,
+                                                    governmentParams.toString()
+                                                )
+                                                var questionmodel =
+                                                    governmentQuestionsModelClassList.get(0).questionData
+                                                for (qData in questionmodel!!) {
+                                                    if (qData.id != null) {
+                                                        qustionheaderarray!!.add(qData)
+                                                        if (qData.answer != null) {
+                                                            if (qData.answer == "Yes") {
 
-//                                                                var jone = JSONObject()
-//                                                                jone.put("id", qData.id)
-//                                                                jone.put("parentQuestionId", qData.parentQuestionId)
-//                                                                jone.put("headerText", qData.headerText)
-//                                                                jone.put("questionSectionId", qData.questionSectionId)
-//                                                                jone.put("ownTypeId", qData.ownTypeId)
-//                                                                jone.put("firstName", qData.firstName)
-//                                                                jone.put("lastName", qData.lastName)
-//                                                                jone.put("question", qData.question)
-//                                                                jone.put("answer", qData.answer)
-//                                                                jone.put("answerDetail", qData.answerDetail)
-//                                                                jone.put("selectionOptionId", qData.selectionOptionId)
-//                                                                jone.put("answerData", qData.answerData)
-//                                                                jARRAY.put(jone)
-
-
-
-
-
-
-                                                        if (qData.id != null){
-                                                             qustionheaderarray!!.add(qData)
-                                                            if(qData.answer != null){
-                                                                if(qData.answer == "Yes"){
-
-                                                                    if(qData.id == 10){
-                                                                    setdata("",
+                                                                if (qData.id == 10) {
+                                                                    setdata(
+                                                                        "",
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "1",
-                                                                        qData.id)
-                                                                    }else if(qData.id == 70){
-                                                                        setdata("",
-                                                                            qData.answerDetail!!,
-                                                                            0,
-                                                                            "3",
-                                                                            qData.id)
+                                                                        qData.id
+                                                                    )
+                                                                } else if (qData.id == 70) {
+                                                                    setdata(
+                                                                        "",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "3",
+                                                                        qData.id
+                                                                    )
 
-                                                                    }else if(qData.id == 80){
-                                                                        setdata("",
-                                                                            qData.answerDetail!!,
-                                                                            0,
-                                                                            "4",
-                                                                            qData.id)
+                                                                } else if (qData.id == 80) {
+                                                                    setdata(
+                                                                        "",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "4",
+                                                                        qData.id
+                                                                    )
 
-                                                                    }else if(qData.id == 90){
-                                                                        setdata("",
-                                                                            qData.answerDetail!!,
-                                                                            0,
-                                                                            "5",
-                                                                            qData.id)
+                                                                } else if (qData.id == 90) {
+                                                                    setdata(
+                                                                        "",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "5",
+                                                                        qData.id
+                                                                    )
 
-                                                                    }else if(qData.id == 100){
-                                                                        setdata("",
-                                                                            qData.answerDetail!!,
-                                                                            0,
-                                                                            "6",
-                                                                            qData.id)
+                                                                } else if (qData.id == 100) {
+                                                                    setdata(
+                                                                        "",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "6",
+                                                                        qData.id
+                                                                    )
 
-                                                                    }else if(qData.id == 120){
-                                                                        setdata("",
-                                                                            qData.answerDetail!!,
-                                                                            0,
-                                                                            "8",
-                                                                            qData.id)
+                                                                } else if (qData.id == 120) {
+                                                                    setdata(
+                                                                        "",
+                                                                        qData.answerDetail!!,
+                                                                        0,
+                                                                        "8",
+                                                                        qData.id
+                                                                    )
 
-                                                                    }else if(qData.id == 130){
+                                                                } else if (qData.id == 130) {
 //                                                                        setdata("",
 //                                                                            qData.answerDetail!!,
 //                                                                            0,
 //                                                                            "9",
 //                                                                            qData.id)
 
-                                                                    }else if(qData.id == 140){
-                                                                        setarray("",
-                                                                            qData.answerData as java.util.ArrayList<ChildAnswerData>, 0,"10")
+                                                                } else if (qData.id == 140) {
+                                                                    setarray(
+                                                                        "",
+                                                                        qData.answerData as java.util.ArrayList<ChildAnswerData>,
+                                                                        0,
+                                                                        "10"
+                                                                    )
 
-                                                                    }
                                                                 }
                                                             }
-
-                                                        }else{
-                                                             subquestionarray!!.add(qData)
-                                                            if(qData.answer != null){
-//                                                                if(qData.parentQuestionId == 10){
-//                                                                    setdata("",
-//                                                                        qData.answer!!,
-//                                                                        0,
-//                                                                        "1",
-//                                                                        10)
-//                                                                }
-                                                            }
                                                         }
 
-                                                        if(qData.answer != null){
-                                                           // setdata("", qData.answer.toString(), 1,"1")
+                                                    } else {
+                                                        subquestionarray!!.add(qData)
+                                                        if (qData.answer != null) {
+
                                                         }
+                                                    }
 
-                                                      }
-
-
-
-//                                                    createcell(binding!!.root,
-//                                                        qustionheaderarray!!, subquestionarray!!
-//                                                    )
-
-//                                                    adapter = QueationAdapter(requireActivity(), qustionheaderarray, subquestionarray!!)
-//                                                    rvquestions.setLayoutManager(
-//                                                        LinearLayoutManager(
-//                                                            activity
-//                                                        )
-//                                                    )
-//                                                    rvquestions.setAdapter(adapter)
-
-                                                    //udateGovernmentQuestionsList.add(test)
-
-
-
-
+                                                    if (qData.answer != null) {
+                                                        // setdata("", qData.answer.toString(), 1,"1")
+                                                    }
 
                                                 }
+
+
                                             }
                                         }
                                     }
-
-                                    break
                                 }
+
+                                break
                             }
                         }
-
                     }
-                });
+
+                }
+            });
     }
 
     companion object {
-        var data : DemoGraphicModel? = null
-        var instan : AllGovQuestionsFragment? = null
+        var data: DemoGraphicModel? = null
+        var instan: AllGovQuestionsFragment? = null
         fun newInstance() = AllGovQuestionsFragment()
 
     }
-    private fun createcell(
-        root: View,
-        qustionheaderarray: ArrayList<QuestionData>,
-        subquestionarray: ArrayList<QuestionData>) {
-
-//        for (qData in qustionheaderarray!!) {
-//
-//                     val li = LayoutInflater.from(activity)
-//                     row = li.inflate(R.layout.listquestion, null)
-//                     row!!.findViewById<TextView>(R.id.questionheader).text = qData.question
-//                     row!!.findViewById<AppCompatRadioButton>(R.id.radioButtonyes).setOnClickListener {
-//                        navigateToInnerScreen(
-//                            qData.headerText!!,
-//                            qData.id!!,
-//                            qData.firstName,
-//                            qData.lastName,
-//                            no
-//                        )
-//                    }
-//                    root.findViewById<LinearLayout>(R.id.list_Category).addView(row)
-//        }
-
-
-    }
-
-
-
 
     private fun navigateToInnerScreen(
         stringForSpecificFragment: String,
@@ -487,49 +436,69 @@ class AllGovQuestionsFragment : Fragment() {
         firstName: String?,
         lastName: String?,
         no: String
-    ){
+    ) {
         val bundle = Bundle()
         bundle.putInt(AppConstant.questionId, questionId)
         bundle.putInt(AppConstant.whichBorrowerId, currentBorrowerId)
-        bundle.putParcelable(AppConstant.addUpdateQuestionsParams , governmentParams)
-        bundle.putString(AppConstant.govtUserName , (firstName+" "+lastName))
-        bundle.putString(AppConstant.questionno ,no)
+        bundle.putParcelable(AppConstant.addUpdateQuestionsParams, governmentParams)
+        bundle.putString(AppConstant.govtUserName, (firstName + " " + lastName))
+        bundle.putString(AppConstant.questionno, no)
 
-        when(stringForSpecificFragment) {
-            "Undisclosed Borrowered Funds" ->{
+        when (stringForSpecificFragment) {
+            "Undisclosed Borrowered Funds" -> {
                 findNavController().navigate(R.id.action_undisclosed_borrowerfund, bundle)
             }
-            "Family or Business affiliation" ->{  findNavController().navigate(R.id.action_family_affiliation , bundle) }
-            "Ownership Interest in Property" ->{
-                bundle.putStringArrayList(AppConstant.ownerShipGlobalData, ownerShipInnerScreenParams)
-                findNavController().navigate(R.id.action_ownership_interest , bundle)
+            "Family or Business affiliation" -> {
+                findNavController().navigate(R.id.action_family_affiliation, bundle)
             }
-            "Own Property Type" ->{ }
-            "Debt Co-Signer or Guarantor" ->{  findNavController().navigate(R.id.action_debt_co , bundle )}
-            "Outstanding Judgements" ->{  findNavController().navigate(R.id.action_outstanding , bundle)}
-            "Federal Debt Deliquency" ->{ findNavController().navigate(R.id.action_federal_debt , bundle)}
-            "Party to Lawsuit" ->{ findNavController().navigate(R.id.action_party_to , bundle) }
-            "Bankruptcy " ->{
-                val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
+            "Ownership Interest in Property" -> {
+                bundle.putStringArrayList(
+                    AppConstant.ownerShipGlobalData,
+                    ownerShipInnerScreenParams
+                )
+                findNavController().navigate(R.id.action_ownership_interest, bundle)
+            }
+            "Own Property Type" -> {
+            }
+            "Debt Co-Signer or Guarantor" -> {
+                findNavController().navigate(R.id.action_debt_co, bundle)
+            }
+            "Outstanding Judgements" -> {
+                findNavController().navigate(R.id.action_outstanding, bundle)
+            }
+            "Federal Debt Deliquency" -> {
+                findNavController().navigate(R.id.action_federal_debt, bundle)
+            }
+            "Party to Lawsuit" -> {
+                findNavController().navigate(R.id.action_party_to, bundle)
+            }
+            "Bankruptcy " -> {
+                val bankruptcyAnswerDataCopy =
+                    bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
                 bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
                 bundle.putInt(AppConstant.questionId, questionId)
-                findNavController().navigate(R.id.navigation_bankruptcy , bundle)
+                findNavController().navigate(R.id.navigation_bankruptcy, bundle)
             }
-            "Child Support, Alimony, etc." ->{
-                bundle.putParcelableArrayList(AppConstant.childGlobalList, childSupportAnswerDataList)
+            "Child Support, Alimony, etc." -> {
+                bundle.putParcelableArrayList(
+                    AppConstant.childGlobalList,
+                    childSupportAnswerDataList
+                )
                 findNavController().navigate(R.id.action_child_support, bundle)
             }
-            "Foreclosured Property" ->{ findNavController().navigate(R.id.action_fore_closure_property , bundle) }
-            "Pre-Foreclosureor Short Sale" ->{ findNavController().navigate(R.id.action_pre_for_closure , bundle) }
-            "Title Conveyance" ->{ findNavController().navigate(R.id.action_title_conveyance, bundle) }
-            else->{
+            "Foreclosured Property" -> {
+                findNavController().navigate(R.id.action_fore_closure_property, bundle)
+            }
+            "Pre-Foreclosureor Short Sale" -> {
+                findNavController().navigate(R.id.action_pre_for_closure, bundle)
+            }
+            "Title Conveyance" -> {
+                findNavController().navigate(R.id.action_title_conveyance, bundle)
+            }
+            else -> {
                 Timber.e(" not matching with header title...")
             }
         }
-    }
-
-    fun nav(id: Int?, headerText: String?, firstName: String?, lastName: String?) {
-       // navigateToInnerScreen(headerText!!.toString(), id!!, firstName, lastName, no)
     }
 
     fun setdata(
@@ -541,11 +510,10 @@ class AllGovQuestionsFragment : Fragment() {
     ) {
         when (questionnumber) {
             "1" -> {
-                  binding!!.qv1.visibility = View.VISIBLE
-                  binding!!.qva1.text = "$" +title
-                  updatedata(questionId,title,detailTitle,questionId)
-                 // setdataarray(questionId,10)
-
+                binding!!.qv1.visibility = View.VISIBLE
+                binding!!.qva1.text = "$" + title
+                updatedata(questionId, title, detailTitle, questionId)
+                // setdataarray(questionId,10)
 
 
             }
@@ -566,7 +534,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "4" -> {
                 binding!!.qv4.visibility = View.VISIBLE
-             //   binding!!.qvs4.text = title
+                //   binding!!.qvs4.text = title
 
                 binding!!.qvs4.text = "Detail"
                 binding!!.qva4.text = title
@@ -575,7 +543,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "5" -> {
                 binding!!.qv5.visibility = View.VISIBLE
-               // binding!!.qvs5.text = title
+                // binding!!.qvs5.text = title
 
                 binding!!.qvs5.text = "Detail"
                 binding!!.qva5.text = title
@@ -584,7 +552,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "6" -> {
                 binding!!.qv6.visibility = View.VISIBLE
-               // binding!!.qvs6.text = title
+                // binding!!.qvs6.text = title
                 binding!!.qvs6.text = "Detail"
                 binding!!.qva6.text = title
                 updatedata(questionId, title, detailTitle, questionId)
@@ -597,7 +565,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "8" -> {
                 binding!!.qv8.visibility = View.VISIBLE
-               // binding!!.qvs8.text = title
+                // binding!!.qvs8.text = title
 
                 binding!!.qvs8.text = "Detail"
                 binding!!.qva8.text = title
@@ -605,7 +573,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "9" -> {
                 binding!!.qv9.visibility = View.VISIBLE
-              //  binding!!.qvs9.text = title
+                //  binding!!.qvs9.text = title
 
                 binding!!.qvs9.text = "Which Type?"
                 binding!!.qva9.text = title
@@ -617,35 +585,14 @@ class AllGovQuestionsFragment : Fragment() {
         }
     }
 
-    private fun setdataarray(questionId: Int, i: Int) {
-
-    }
 
     private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int) {
         governmentParams.Questions.let { questions ->
             jARRAY = JSONArray()
             jsonaddquestion = JSONObject()
             for (qData in questions) {
-//                  if (questionId == 10) {
-//                        question.answer = title
-//                        question.answerDetail = detailTitle
-//                        break
-//                    }else if(questionId == 70){
-//                        question.answer = title
-//                         question.answerDetail = detailTitle
-//                        break
-//                    }else if(questionId == 80){
-//                      question.answer = title
-//                      question.answerDetail = detailTitle
-//                      break
-//                  }else if(questionId == 90){
-//                      question.answer = title
-//                      question.answerDetail = detailTitle
-//                      break
-//                  }
-
-              if (questionId == qData.id) {
-                    if(questionId == 130) {
+                if (questionId == qData.id) {
+                    if (questionId == 130) {
                         var jone = JSONObject()
                         jone.put("id", qData.id)
                         jone.put("parentQuestionId", qData.parentQuestionId)
@@ -679,8 +626,8 @@ class AllGovQuestionsFragment : Fragment() {
                         jone1.put("answerData", jtwo)
                         jARRAY.put(jone1)
 
-                    }else{
-                        if(questionId != 131) {
+                    } else {
+                        if (questionId != 131) {
                             var jone = JSONObject()
                             jone.put("id", qData.id)
                             jone.put("parentQuestionId", qData.parentQuestionId)
@@ -698,7 +645,7 @@ class AllGovQuestionsFragment : Fragment() {
                         }
                     }
 
-                }else{
+                } else {
                     var jone = JSONObject()
                     jone.put("id", qData.id)
                     jone.put("parentQuestionId", qData.parentQuestionId)
@@ -716,20 +663,17 @@ class AllGovQuestionsFragment : Fragment() {
                 }
 
 
-
-
             }
-            jsonaddquestion.put("Questions",jARRAY)
+            jsonaddquestion.put("Questions", jARRAY)
             jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
             jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
-
-            Log.i("TAG", "updatedata: "+jsonaddquestion)
+            Log.i("TAG", "updatedata: " + jsonaddquestion)
         }
     }
 
     fun discuss(detailTitle: String, no: String) {
         for (qData in qustionheaderarray!!) {
-            if(qData.headerText == detailTitle) {
+            if (qData.headerText == detailTitle) {
                 navigateToInnerScreen(
                     qData.headerText!!,
                     qData.id!!,
@@ -737,15 +681,10 @@ class AllGovQuestionsFragment : Fragment() {
                     qData.lastName,
                     no
                 )
-
-
                 break
             }
         }
     }
-
-
-
 
 
     fun setarray(
@@ -757,7 +696,7 @@ class AllGovQuestionsFragment : Fragment() {
         answerData = JSONArray()
         governmentParams.Questions.let { questions ->
             for (qData in questions) {
-                if(qData.id == 140) {
+                if (qData.id == 140) {
                     var jone = JSONObject()
                     jone.put("id", qData.id)
                     jone.put("parentQuestionId", qData.parentQuestionId)
@@ -816,11 +755,11 @@ class AllGovQuestionsFragment : Fragment() {
                             binding!!.qvs103.text = childAnswerList.get(i).liabilityName
                             binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
                         }
-                            jone.put("answerData", answerData)
-                            jARRAY.put(jone)
-                            jsonaddquestion.put("Questions", jARRAY)
-                            jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
-                            jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
+                        jone.put("answerData", answerData)
+                        jARRAY.put(jone)
+                        jsonaddquestion.put("Questions", jARRAY)
+                        jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
+                        jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
                     }
                 }
             }
