@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class BankruptcyFragment:BaseFragment() {
+    protected var questionId:Int = 0
 
     private var _binding: BankruptcyLayoutBinding? = null
     private val binding get() = _binding!!
@@ -30,6 +32,7 @@ class BankruptcyFragment:BaseFragment() {
         setUpUI()
         super.addListeners(binding.root)
         arguments?.let { arguments->
+            questionId = arguments.getInt(AppConstant.questionId)
             answerData = arguments.getParcelable(AppConstant.bankruptcyAnswerData)!!
             userName = arguments.getString(AppConstant.govtUserName)
             whichBorrowerId = arguments.getInt(AppConstant.whichBorrowerId)
@@ -79,13 +82,14 @@ class BankruptcyFragment:BaseFragment() {
             val selectedValues = returnSelectedValues()
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
+
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setdata(
                         "",
                         selectedValues,
                         whichBorrowerId,
                         "9",
-                        0
+                        questionId
                     )
                 }
 

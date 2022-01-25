@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.coroutineScope
@@ -122,13 +123,18 @@ class DetailTabFragment : BaseFragment() {
         if(viewPager.visibility == View.INVISIBLE)
             viewPager.postDelayed({
                 viewPager.visibility = View.VISIBLE
-                TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
+                TabLayoutMediator(tabLayout, viewPager) {
+
+                        tab, position -> tab.text = detailTabArray[position]
+
+                }.attach()
             }, 600)
         else
             TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
         observeFileReadChanges()
         super.addListeners(binding.root)
+
         return root
     }
 
@@ -206,7 +212,11 @@ class DetailTabFragment : BaseFragment() {
         super.onDestroyView()
         _binding = null
     }
-
+    fun settab(i: Int) {
+        if(viewPager != null){
+            viewPager.setCurrentItem(i)
+        }
+    }
 
 
     private fun addBadgeForUnreadFile(){

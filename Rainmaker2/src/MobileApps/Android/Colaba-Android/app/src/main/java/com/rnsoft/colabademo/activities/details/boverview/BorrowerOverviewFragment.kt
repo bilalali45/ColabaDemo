@@ -47,6 +47,8 @@ class BorrowerOverviewFragment : BaseFragment()  {
             }
         }
 
+
+
         binding.boxResendInvitation.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt(AppConstant.borrowerId, borrowerId!!)

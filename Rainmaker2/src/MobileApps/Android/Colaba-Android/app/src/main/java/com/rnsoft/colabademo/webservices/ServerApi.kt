@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import com.google.gson.JsonObject
+import com.rnsoft.colabademo.activities.WebResponseDemo
 
 import retrofit2.http.Body
 
@@ -756,6 +757,14 @@ interface ServerApi{
     fun getjson(
         @Header("Authorization" )  Authorization:String,
         @Body jsonBody: GovernmentParams?): Call<WebResponse<Any?>?>?
+
+
+    @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
+    fun getdemographic(
+        @Header("Authorization" )  Authorization:String,
+        @Query("loanApplicationId") loanApplicationId: Int,
+        @Query("borrowerId") borrowerId: Int
+    ): Call<WebResponseDemo<Any?>?>?
 
 
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")

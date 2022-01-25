@@ -16,13 +16,18 @@ import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.AppConstant.answerData
 import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.AppConstant.jsonObj
+import com.rnsoft.colabademo.AppConstant.jsonaddquestion
+import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
+import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
@@ -48,7 +53,7 @@ class AllGovQuestionsFragment : Fragment() {
     var row: View? = null
     var position : Int? = 0
     private var bankruptcyMap = hashMapOf<String, String>()
-    var questionmodel = null
+   // var questionmodel = null
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +75,10 @@ class AllGovQuestionsFragment : Fragment() {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
         setUpDynamicTabs()
+        updateDemoGraphicApiCall()
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
-//                updateDemoGraphicApiCall()
+                //updateDemoGraphicApiCall()
 //            else
             updateGovernmentQuestionApiCall()
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
@@ -82,8 +88,24 @@ class AllGovQuestionsFragment : Fragment() {
 
         listnser()
 
+
         instan = this
         return binding!!.root
+    }
+
+     fun demographic() {
+        for (qData in data!!.race!!) {
+            if(qData.raceId == 2){
+                asiancheckbox.isChecked = true
+            }else if(qData.raceId == 3){
+                asiancheckbox.isChecked = true
+            }
+
+         }
+    }
+
+    private fun updateDemoGraphicApiCall() {
+        borrowerAppViewModel.GetDemographicInformation("Bearer " +LoginFragment.webtoken!!, 5,5)
     }
 
 
@@ -92,7 +114,7 @@ class AllGovQuestionsFragment : Fragment() {
         if(governmentParams.Questions.size>0)
         {
             //testGovernmentParams.BorrowerId = governmentParams.BorrowerId
-            //testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
+           // testGovernmentParams.LoanApplicationId = governmentParams.LoanApplicationId
             for (question in governmentParams.Questions) {
                 if(question.id == 21){
                     Timber.e("what is  "+question.answerData)
@@ -143,10 +165,9 @@ class AllGovQuestionsFragment : Fragment() {
                         //question.answerData = FamilyAnswerData()
                     }
 
-                // ownership interest, it is handled when sent back....
-                //if(question.parentQuestionId == 20){}
-
-                // Bankruptcy
+                     // ownership interest, it is handled when sent back....
+                    //  if(question.parentQuestionId == 20){}
+                   // Bankruptcy
 
 
             }
@@ -154,8 +175,8 @@ class AllGovQuestionsFragment : Fragment() {
 
             lifecycleScope.launchWhenStarted {
 
-              // borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
-                var data = getDataList(jsonObj.toString())
+              // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
+                var data = getDataList(jsonaddquestion.toString())
                 borrowerAppViewModel.addgovernmetnjson("Bearer " +LoginFragment.webtoken!!, data!!)
 
 
@@ -268,6 +289,7 @@ class AllGovQuestionsFragment : Fragment() {
                         if (governmentQuestionsModelClassList.size > 0) {
                             var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
                                 null
+
                              for (item in governmentQuestionsModelClassList) {
                                  if (item.passedBorrowerId == tabBorrowerId) {
                                     selectedGovernmentQuestionModel = item
@@ -287,31 +309,101 @@ class AllGovQuestionsFragment : Fragment() {
                                                         governmentParams.BorrowerId,
                                                         governmentParams.toString()
                                                     )
-                                                     questionmodel =
+                                                    var  questionmodel =
                                                          governmentQuestionsModelClassList.get(0).questionData
-                                                    for (qData in questionmodel) {
-                                                        if (qData.parentQuestionId == null && qData.id != null){
+                                                    for (qData in questionmodel!!) {
+
+//                                                                var jone = JSONObject()
+//                                                                jone.put("id", qData.id)
+//                                                                jone.put("parentQuestionId", qData.parentQuestionId)
+//                                                                jone.put("headerText", qData.headerText)
+//                                                                jone.put("questionSectionId", qData.questionSectionId)
+//                                                                jone.put("ownTypeId", qData.ownTypeId)
+//                                                                jone.put("firstName", qData.firstName)
+//                                                                jone.put("lastName", qData.lastName)
+//                                                                jone.put("question", qData.question)
+//                                                                jone.put("answer", qData.answer)
+//                                                                jone.put("answerDetail", qData.answerDetail)
+//                                                                jone.put("selectionOptionId", qData.selectionOptionId)
+//                                                                jone.put("answerData", qData.answerData)
+//                                                                jARRAY.put(jone)
+
+
+
+
+
+
+                                                        if (qData.id != null){
                                                              qustionheaderarray!!.add(qData)
                                                             if(qData.answer != null){
-                                                                if(qData.id == 70){
+                                                                if(qData.answer == "Yes"){
+
+                                                                    if(qData.id == 10){
                                                                     setdata("",
                                                                         qData.answerDetail!!,
                                                                         0,
-                                                                        "3",
-                                                                        70)
+                                                                        "1",
+                                                                        qData.id)
+                                                                    }else if(qData.id == 70){
+                                                                        setdata("",
+                                                                            qData.answerDetail!!,
+                                                                            0,
+                                                                            "3",
+                                                                            qData.id)
+
+                                                                    }else if(qData.id == 80){
+                                                                        setdata("",
+                                                                            qData.answerDetail!!,
+                                                                            0,
+                                                                            "4",
+                                                                            qData.id)
+
+                                                                    }else if(qData.id == 90){
+                                                                        setdata("",
+                                                                            qData.answerDetail!!,
+                                                                            0,
+                                                                            "5",
+                                                                            qData.id)
+
+                                                                    }else if(qData.id == 100){
+                                                                        setdata("",
+                                                                            qData.answerDetail!!,
+                                                                            0,
+                                                                            "6",
+                                                                            qData.id)
+
+                                                                    }else if(qData.id == 120){
+                                                                        setdata("",
+                                                                            qData.answerDetail!!,
+                                                                            0,
+                                                                            "8",
+                                                                            qData.id)
+
+                                                                    }else if(qData.id == 130){
+//                                                                        setdata("",
+//                                                                            qData.answerDetail!!,
+//                                                                            0,
+//                                                                            "9",
+//                                                                            qData.id)
+
+                                                                    }else if(qData.id == 140){
+                                                                        setarray("",
+                                                                            qData.answerData as java.util.ArrayList<ChildAnswerData>, 0,"10")
+
+                                                                    }
                                                                 }
                                                             }
 
                                                         }else{
                                                              subquestionarray!!.add(qData)
                                                             if(qData.answer != null){
-                                                                if(qData.parentQuestionId == 10){
-                                                                    setdata("",
-                                                                        qData.answer!!,
-                                                                        0,
-                                                                        "1",
-                                                                        10)
-                                                                }
+//                                                                if(qData.parentQuestionId == 10){
+//                                                                    setdata("",
+//                                                                        qData.answer!!,
+//                                                                        0,
+//                                                                        "1",
+//                                                                        10)
+//                                                                }
                                                             }
                                                         }
 
@@ -356,9 +448,7 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     companion object {
-
-
-
+        var data : DemoGraphicModel? = null
         var instan : AllGovQuestionsFragment? = null
         fun newInstance() = AllGovQuestionsFragment()
 
@@ -422,6 +512,7 @@ class AllGovQuestionsFragment : Fragment() {
             "Bankruptcy " ->{
                 val bankruptcyAnswerDataCopy = bankruptcyAnswerData.copy() //ArrayList(bankruptcyAnswerData.map { it.copy() })
                 bundle.putParcelable(AppConstant.bankruptcyAnswerData, bankruptcyAnswerDataCopy)
+                bundle.putInt(AppConstant.questionId, questionId)
                 findNavController().navigate(R.id.navigation_bankruptcy , bundle)
             }
             "Child Support, Alimony, etc." ->{
@@ -452,8 +543,8 @@ class AllGovQuestionsFragment : Fragment() {
             "1" -> {
                   binding!!.qv1.visibility = View.VISIBLE
                   binding!!.qva1.text = "$" +title
-                  updatedata(questionId,title,detailTitle)
-                  setdataarray(questionId)
+                  updatedata(questionId,title,detailTitle,questionId)
+                 // setdataarray(questionId,10)
 
 
 
@@ -463,14 +554,14 @@ class AllGovQuestionsFragment : Fragment() {
                 binding!!.qv22.visibility = View.VISIBLE
                 binding!!.qva2.text = detailTitle
                 binding!!.qva22.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
 
             }
             "3" -> {
                 binding!!.qv3.visibility = View.VISIBLE
                 binding!!.qvs3.text = "Detail"
                 binding!!.qva3.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
 
             }
             "4" -> {
@@ -479,7 +570,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs4.text = "Detail"
                 binding!!.qva4.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
 
             }
             "5" -> {
@@ -488,7 +579,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs5.text = "Detail"
                 binding!!.qva5.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
 
             }
             "6" -> {
@@ -496,13 +587,13 @@ class AllGovQuestionsFragment : Fragment() {
                // binding!!.qvs6.text = title
                 binding!!.qvs6.text = "Detail"
                 binding!!.qva6.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
 
             }
             "7" -> {
                 binding!!.qv7.visibility = View.VISIBLE
                 binding!!.qvs7.text = title
-                updatedata(questionId,title,detailTitle)
+                updatedata(questionId, title, detailTitle, questionId)
             }
             "8" -> {
                 binding!!.qv8.visibility = View.VISIBLE
@@ -510,14 +601,15 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs8.text = "Detail"
                 binding!!.qva8.text = title
+                updatedata(questionId, title, detailTitle, questionId)
             }
             "9" -> {
                 binding!!.qv9.visibility = View.VISIBLE
               //  binding!!.qvs9.text = title
 
-
                 binding!!.qvs9.text = "Which Type?"
                 binding!!.qva9.text = title
+                updatedata(questionId, title, detailTitle, questionId)
             }
             else -> { // Note the block
                 print("x is neither 1 nor 2")
@@ -525,53 +617,113 @@ class AllGovQuestionsFragment : Fragment() {
         }
     }
 
-    private fun setdataarray(questionId: Int) {
-        for (qData in questionmodel!!) {
-        if(qData.id!! == 10 || qData.parentQuestionId!! == 10) {
-            var jone = JSONObject()
-            jone.put("id", qData.id)
-            jone.put("parentQuestionId", qData.parentQuestionId)
-            jone.put("headerText", qData.headerText)
-            jone.put("questionSectionId", qData.questionSectionId)
-            jone.put("ownTypeId", qData.ownTypeId)
-            jone.put("firstName", qData.firstName)
-            jone.put("lastName", qData.lastName)
-            jone.put("question", qData.question)
-            jone.put("answer", qData.answer)
-            jone.put("answerDetail", qData.answerDetail)
-            jone.put("selectionOptionId", qData.selectionOptionId)
-            jone.put("answerData", qData.answerData)
-            jARRAY.put(jone)
+    private fun setdataarray(questionId: Int, i: Int) {
 
-           }
-
-        }
     }
 
-    private fun updatedata(questionId: Int, title: String, detailTitle: String) {
+    private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int) {
         governmentParams.Questions.let { questions ->
-            for (question in questions) {
-                  if (questionId == 10) {
-                        question.answer = title
-                        question.answerDetail = detailTitle
-                        break
-                    }else if(questionId == 70){
-                        question.answer = title
-                         question.answerDetail = detailTitle
-                        break
-                    }else if(questionId == 80){
-                      question.answer = title
-                      question.answerDetail = detailTitle
-                      break
-                  }else if(questionId == 90){
-                      question.answer = title
-                      question.answerDetail = detailTitle
-                      break
-                  }
+            jARRAY = JSONArray()
+            jsonaddquestion = JSONObject()
+            for (qData in questions) {
+//                  if (questionId == 10) {
+//                        question.answer = title
+//                        question.answerDetail = detailTitle
+//                        break
+//                    }else if(questionId == 70){
+//                        question.answer = title
+//                         question.answerDetail = detailTitle
+//                        break
+//                    }else if(questionId == 80){
+//                      question.answer = title
+//                      question.answerDetail = detailTitle
+//                      break
+//                  }else if(questionId == 90){
+//                      question.answer = title
+//                      question.answerDetail = detailTitle
+//                      break
+//                  }
+
+              if (questionId == qData.id) {
+                    if(questionId == 130) {
+                        var jone = JSONObject()
+                        jone.put("id", qData.id)
+                        jone.put("parentQuestionId", qData.parentQuestionId)
+                        jone.put("headerText", qData.headerText)
+                        jone.put("questionSectionId", qData.questionSectionId)
+                        jone.put("ownTypeId", qData.ownTypeId)
+                        jone.put("firstName", qData.firstName)
+                        jone.put("lastName", qData.lastName)
+                        jone.put("question", qData.question)
+                        jone.put("answer", "Yes")
+                        jone.put("answerDetail", null)
+                        jone.put("selectionOptionId", qData.selectionOptionId)
+                        jone.put("answerData", qData.answerData)
+                        jARRAY.put(jone)
+                        var jtwo = JSONArray()
+                        var jone1 = JSONObject()
+                        jone1.put("id", "131")
+                        jone1.put("parentQuestionId", "130")
+                        jone1.put("headerText", "Type")
+                        jone1.put("questionSectionId", "3")
+                        jone1.put("ownTypeId", "1")
+                        jone1.put("firstName", qData.firstName)
+                        jone1.put("lastName", qData.lastName)
+                        jone1.put("question", "Which Type?")
+                        jone1.put("answer", null)
+                        jone1.put("answerDetail", null)
+                        jone1.put("selectionOptionId", null)
+                        var jone3 = JSONObject()
+                        jone3.put("2", title)
+                        jtwo.put(jone3)
+                        jone1.put("answerData", jtwo)
+                        jARRAY.put(jone1)
+
+                    }else{
+                        if(questionId != 131) {
+                            var jone = JSONObject()
+                            jone.put("id", qData.id)
+                            jone.put("parentQuestionId", qData.parentQuestionId)
+                            jone.put("headerText", qData.headerText)
+                            jone.put("questionSectionId", qData.questionSectionId)
+                            jone.put("ownTypeId", qData.ownTypeId)
+                            jone.put("firstName", qData.firstName)
+                            jone.put("lastName", qData.lastName)
+                            jone.put("question", qData.question)
+                            jone.put("answer", "Yes")
+                            jone.put("answerDetail", title)
+                            jone.put("selectionOptionId", qData.selectionOptionId)
+                            jone.put("answerData", answerData)
+                            jARRAY.put(jone)
+                        }
+                    }
+
+                }else{
+                    var jone = JSONObject()
+                    jone.put("id", qData.id)
+                    jone.put("parentQuestionId", qData.parentQuestionId)
+                    jone.put("headerText", qData.headerText)
+                    jone.put("questionSectionId", qData.questionSectionId)
+                    jone.put("ownTypeId", qData.ownTypeId)
+                    jone.put("firstName", qData.firstName)
+                    jone.put("lastName", qData.lastName)
+                    jone.put("question", qData.question)
+                    jone.put("answer", qData.answer)
+                    jone.put("answerDetail", qData.answerDetail)
+                    jone.put("selectionOptionId", qData.selectionOptionId)
+                    jone.put("answerData", qData.answerData)
+                    jARRAY.put(jone)
+                }
+
 
 
 
             }
+            jsonaddquestion.put("Questions",jARRAY)
+            jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
+            jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
+
+            Log.i("TAG", "updatedata: "+jsonaddquestion)
         }
     }
 
@@ -602,33 +754,77 @@ class AllGovQuestionsFragment : Fragment() {
         whichBorrowerId: Int,
         s1: String
     ) {
-        for (i in 0 until childAnswerList.size) {
-            binding!!.qv10.visibility = View.VISIBLE
+        answerData = JSONArray()
+        governmentParams.Questions.let { questions ->
+            for (qData in questions) {
+                if(qData.id == 140) {
+                    var jone = JSONObject()
+                    jone.put("id", qData.id)
+                    jone.put("parentQuestionId", qData.parentQuestionId)
+                    jone.put("headerText", qData.headerText)
+                    jone.put("questionSectionId", qData.questionSectionId)
+                    jone.put("ownTypeId", qData.ownTypeId)
+                    jone.put("firstName", qData.firstName)
+                    jone.put("lastName", qData.lastName)
+                    jone.put("question", qData.question)
+                    jone.put("answer", "Yes")
+                    jone.put("answerDetail", null)
+                    jone.put("selectionOptionId", qData.selectionOptionId)
 
-          if(i == 0){
-              binding!!.one.visibility = View.VISIBLE
-              binding!!.qva101.visibility = View.VISIBLE
+                    for (i in 0 until childAnswerList.size) {
+                        binding!!.qv10.visibility = View.VISIBLE
 
-              binding!!.qvs101.text = childAnswerList.get(i).liabilityName
-              binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
+                        if (i == 0) {
+                            var jone = JSONObject()
+                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
+                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
+                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
+                            jone.put("name", childAnswerList.get(i).name)
+                            answerData.put(jone)
+                            binding!!.one.visibility = View.VISIBLE
+                            binding!!.qva101.visibility = View.VISIBLE
+                            binding!!.qvs101.text = childAnswerList.get(i).liabilityName
+                            binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
 
-          }else if(i == 1){
-              binding!!.two.visibility = View.VISIBLE
-              binding!!.qva102.visibility = View.VISIBLE
+                        } else if (i == 1) {
 
-              binding!!.qvs102.text = childAnswerList.get(i).liabilityName
-              binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
+                            var jone = JSONObject()
+                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
+                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
+                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
+                            jone.put("name", childAnswerList.get(i).name)
+                            answerData.put(jone)
+                            binding!!.two.visibility = View.VISIBLE
+                            binding!!.qva102.visibility = View.VISIBLE
+                            binding!!.qvs102.text = childAnswerList.get(i).liabilityName
+                            binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
 
 
-          }else if(i == 2){
-              binding!!.three.visibility = View.VISIBLE
-              binding!!.qva103.visibility = View.VISIBLE
-              binding!!.qvs103.text = childAnswerList.get(i).liabilityName
-              binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
-          }
+                        } else if (i == 2) {
 
+                            var jone = JSONObject()
+                            jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId)
+                            jone.put("liabilityName", childAnswerList.get(i).liabilityName)
+                            jone.put("remainingMonth", childAnswerList.get(i).remainingMonth)
+                            jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment)
+                            jone.put("name", childAnswerList.get(i).name)
+                            answerData.put(jone)
+                            binding!!.three.visibility = View.VISIBLE
+                            binding!!.qva103.visibility = View.VISIBLE
+                            binding!!.qvs103.text = childAnswerList.get(i).liabilityName
+                            binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
+                        }
+                            jone.put("answerData", answerData)
+                            jARRAY.put(jone)
+                            jsonaddquestion.put("Questions", jARRAY)
+                            jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
+                            jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
+                    }
+                }
+            }
         }
-
 
     }
 }

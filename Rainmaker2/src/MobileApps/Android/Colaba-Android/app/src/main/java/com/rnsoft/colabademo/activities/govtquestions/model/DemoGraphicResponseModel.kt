@@ -12,6 +12,7 @@ data class DemoGraphicResponseModel(
     var passedBorrowerId:Int?
 )
 
+
 data class DemoGraphicData(
     var borrowerId: Int?,
     var ethnicity: ArrayList<EthnicityDemoGraphic>? = arrayListOf(),

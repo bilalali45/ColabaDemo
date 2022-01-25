@@ -1,9 +1,9 @@
-package com.rnsoft.colabademo.activities.details
+package com.rnsoft.colabademo.activities
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class WebResponse<T> : Serializable {
+class WebResponseDemo<T> : Serializable {
 
     @SerializedName("message")
     internal var message: String? = null
@@ -14,7 +14,7 @@ class WebResponse<T> : Serializable {
 
 
     @SerializedName("data")
-    internal var data: Boolean? = null
+    var result: T? = null
 
 
     @SerializedName("code")
