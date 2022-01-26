@@ -331,19 +331,55 @@ class AllGovQuestionsFragment : Fragment() {
         binding!!.q3radioButtonNo.setOnClickListener {
             binding!!.q3radioButton.isChecked = false
             binding!!.qv3.visibility = View.GONE
+            setdata(
+                "No",
+                "",
+                0,
+                "3",
+                70,
+                "0"
+            )
+
         }
         binding!!.q4radioButtonNo.setOnClickListener {
             binding!!.q4radioButton.isChecked = false
             binding!!.qv4.visibility = View.GONE
+
+            setdata(
+                "No",
+                "",
+                0,
+                "4",
+                80,
+                "0"
+            )
         }
 
         binding!!.q5radioButtonNo.setOnClickListener {
             binding!!.q5radioButton.isChecked = false
             binding!!.qv5.visibility = View.GONE
+
+            setdata(
+                "No",
+                "",
+                0,
+                "5",
+                90,
+                "0"
+            )
         }
         binding!!.q6radioButtonNo.setOnClickListener {
             binding!!.q6radioButton.isChecked = false
             binding!!.qv6.visibility = View.GONE
+
+            setdata(
+                "No",
+                "",
+                0,
+                "6",
+                100,
+                "0"
+            )
         }
         binding!!.q7radioButtonNo.setOnClickListener {
             binding!!.q7radioButton.isChecked = false
@@ -352,6 +388,15 @@ class AllGovQuestionsFragment : Fragment() {
         binding!!.q8radioButtonNo.setOnClickListener {
             binding!!.q8radioButton.isChecked = false
             binding!!.qv8.visibility = View.GONE
+
+            setdata(
+                "No",
+                "",
+                0,
+                "8",
+                120,
+                "0"
+            )
         }
         binding!!.q9radioButtonNo.setOnClickListener {
             binding!!.q9radioButton.isChecked = false
@@ -550,7 +595,7 @@ class AllGovQuestionsFragment : Fragment() {
                                                                 if (qData.id == 11) {
                                                                     if (qData.answer != null && qData.answer!!.isNotEmpty()) {
                                                                         setdata(
-                                                                            "",
+                                                                            qData.answer!!,
                                                                             qData.answer!!,
                                                                             0,
                                                                             "1",
@@ -559,7 +604,7 @@ class AllGovQuestionsFragment : Fragment() {
                                                                     }
                                                                 } else if (qData.id == 70) {
                                                                     setdata(
-                                                                        "",
+                                                                        qData.answer!!,
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "3",
@@ -569,7 +614,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                                 } else if (qData.id == 80) {
                                                                     setdata(
-                                                                        "",
+                                                                        qData.answer!!,
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "4",
@@ -579,7 +624,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                                 } else if (qData.id == 90) {
                                                                     setdata(
-                                                                        "",
+                                                                        qData.answer!!,
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "5",
@@ -589,7 +634,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                                 } else if (qData.id == 100) {
                                                                     setdata(
-                                                                        "",
+                                                                        qData.answer!!,
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "6",
@@ -599,7 +644,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                                 } else if (qData.id == 120) {
                                                                     setdata(
-                                                                        "",
+                                                                        qData.answer!!,
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "8",
@@ -742,74 +787,172 @@ class AllGovQuestionsFragment : Fragment() {
     ) {
         when (questionnumber) {
             "1" -> {
-                binding!!.qv1.visibility = View.VISIBLE
-                binding!!.qva1.text = "$" + title
-                updatedata(questionId, title, detailTitle, questionId,s)
+                if(detailTitle == "No"){
+                    binding!!.qv1.visibility = View.GONE
+                    binding!!.qva1.text = "$" + title
+                    updatedata(questionId, title, detailTitle, questionId,s)
+                }else{
+
+                    binding!!.qv1.visibility = View.VISIBLE
+                    binding!!.qva1.text = "$" + title
+                    updatedata(questionId, title, detailTitle, questionId,s)
+
+
+                }
+
+
                 // setdataarray(questionId,10)
 
 
             }
             "2" -> {
-                binding!!.qv2.visibility = View.VISIBLE
-                binding!!.qv22.visibility = View.VISIBLE
-                binding!!.qva2.text = detailTitle
-                binding!!.qva22.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                if(detailTitle == "No"){
+
+                    binding!!.qv2.visibility = View.GONE
+                    binding!!.qv22.visibility = View.GONE
+                    binding!!.qva2.text = detailTitle
+                    binding!!.qva22.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }else{
+
+                    binding!!.qv2.visibility = View.VISIBLE
+                    binding!!.qv22.visibility = View.VISIBLE
+                    binding!!.qva2.text = detailTitle
+                    binding!!.qva22.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+
+
+                }
+
 
             }
             "3" -> {
-                binding!!.qv3.visibility = View.VISIBLE
-                binding!!.qvs3.text = "Detail"
-                binding!!.qva3.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                if(detailTitle == "No"){
+
+                    binding!!.qv3.visibility = View.GONE
+                    binding!!.qvs3.text = "Detail"
+                    binding!!.qva3.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }else{
+                    binding!!.qv3.visibility = View.VISIBLE
+                    binding!!.qvs3.text = "Detail"
+                    binding!!.qva3.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
+
 
             }
             "4" -> {
-                binding!!.qv4.visibility = View.VISIBLE
-                //   binding!!.qvs4.text = title
+                if(detailTitle == "No"){
 
-                binding!!.qvs4.text = "Detail"
-                binding!!.qva4.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                    binding!!.qv4.visibility = View.GONE
+                    //   binding!!.qvs4.text = title
+
+                    binding!!.qvs4.text = "Detail"
+                    binding!!.qva4.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }else{
+                    binding!!.qv4.visibility = View.VISIBLE
+                    //   binding!!.qvs4.text = title
+
+                    binding!!.qvs4.text = "Detail"
+                    binding!!.qva4.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
 
             }
             "5" -> {
-                binding!!.qv5.visibility = View.VISIBLE
-                // binding!!.qvs5.text = title
+                if(detailTitle == "No") {
+                    binding!!.qv5.visibility = View.GONE
+                    // binding!!.qvs5.text = title
 
-                binding!!.qvs5.text = "Detail"
-                binding!!.qva5.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                    binding!!.qvs5.text = "Detail"
+                    binding!!.qva5.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+
+                }else{
+                    binding!!.qv5.visibility = View.VISIBLE
+                    // binding!!.qvs5.text = title
+
+                    binding!!.qvs5.text = "Detail"
+                    binding!!.qva5.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
 
             }
             "6" -> {
-                binding!!.qv6.visibility = View.VISIBLE
-                // binding!!.qvs6.text = title
-                binding!!.qvs6.text = "Detail"
-                binding!!.qva6.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                if(detailTitle == "No") {
+                    binding!!.qv6.visibility = View.GONE
+                    // binding!!.qvs6.text = title
+                    binding!!.qvs6.text = "Detail"
+                    binding!!.qva6.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }else{
+                    binding!!.qv6.visibility = View.VISIBLE
+                    // binding!!.qvs6.text = title
+                    binding!!.qvs6.text = "Detail"
+                    binding!!.qva6.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
+
 
             }
             "7" -> {
-                binding!!.qv7.visibility = View.VISIBLE
-                binding!!.qvs7.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                if(detailTitle == "No") {
+                    binding!!.qv7.visibility = View.GONE
+                    binding!!.qvs7.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+
+                }else{
+                    binding!!.qv7.visibility = View.VISIBLE
+                    binding!!.qvs7.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
+
             }
             "8" -> {
-                binding!!.qv8.visibility = View.VISIBLE
-                // binding!!.qvs8.text = title
+                if(detailTitle == "No") {
+                    binding!!.qv8.visibility = View.GONE
+                    // binding!!.qvs8.text = title
 
-                binding!!.qvs8.text = "Detail"
-                binding!!.qva8.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                    binding!!.qvs8.text = "Detail"
+                    binding!!.qva8.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }else{
+                    binding!!.qv8.visibility = View.VISIBLE
+                    // binding!!.qvs8.text = title
+
+                    binding!!.qvs8.text = "Detail"
+                    binding!!.qva8.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
             }
             "9" -> {
-                binding!!.qv9.visibility = View.VISIBLE
-                //  binding!!.qvs9.text = title
 
-                binding!!.qvs9.text = "Which Type?"
-                binding!!.qva9.text = title
-                updatedata(questionId, title, detailTitle, questionId, s)
+                if(detailTitle == "No") {
+                    binding!!.qv9.visibility = View.GONE
+                    //  binding!!.qvs9.text = title
+
+                    binding!!.qvs9.text = "Which Type?"
+                    binding!!.qva9.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+
+                }else{
+                    binding!!.qv9.visibility = View.VISIBLE
+                    //  binding!!.qvs9.text = title
+
+                    binding!!.qvs9.text = "Which Type?"
+                    binding!!.qva9.text = title
+                    updatedata(questionId, title, detailTitle, questionId, s)
+                }
+
+
             }
             else -> { // Note the block
                 print("x is neither 1 nor 2")
@@ -913,7 +1056,7 @@ class AllGovQuestionsFragment : Fragment() {
                             jone.put("firstName", qData.firstName)
                             jone.put("lastName", qData.lastName)
                             jone.put("question", qData.question)
-                            jone.put("answer", "Yes")
+                            jone.put("answer", detailTitle)
                             jone.put("answerDetail", title)
                             jone.put("selectionOptionId", qData.selectionOptionId)
                             jARRAY.put(jone)
@@ -928,7 +1071,7 @@ class AllGovQuestionsFragment : Fragment() {
                             jone.put("firstName", qData.firstName)
                             jone.put("lastName", qData.lastName)
                             jone.put("question", qData.question)
-                            jone.put("answer", "Yes")
+                            jone.put("answer", detailTitle)
                             jone.put("answerDetail", title)
                             jone.put("selectionOptionId", qData.selectionOptionId)
 
