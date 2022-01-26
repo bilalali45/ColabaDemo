@@ -93,9 +93,10 @@
         <entry key="app/src/main/res/layout/common_govt_content_layout.xml" value="0.10677083333333333" />
         <entry key="app/src/main/res/layout/dialog_standard_checklist.xml" value="0.6203988759585385" />
         <entry key="app/src/main/res/layout/docs_type_middle_cell.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.10963687150837989" />
+        <entry key="app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.19050218340611352" />
         <entry key="app/src/main/res/layout/independent_checkbox.xml" value="0.1" />
         <entry key="app/src/main/res/layout/innerlayout.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/outstanding_layout.xml" value="0.1234375" />
       </map>
     </option>
   </component>

@@ -45,7 +45,8 @@ class PartyToFragment:GovtDetailBaseFragment() {
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "5",
-                    questionId
+                    questionId,
+                    "1"
                 )
             }
 

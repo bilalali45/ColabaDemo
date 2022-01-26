@@ -65,4 +65,6 @@ class GetGovermentmodel {
     @Expose
    /// var answerData: ArrayList<EthnicityModel>? = null
      var answerData: answerData? = null
+
+    //var answerData: ArrayList<answerData>? = null
 }

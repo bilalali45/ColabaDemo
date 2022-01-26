@@ -45,7 +45,8 @@ class OutstandingFragment:GovtDetailBaseFragment() {
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "3",
-                    questionId
+                    questionId,
+                    "1"
                 )
             }
             updateGovernmentAndSaveData(binding.edDetails.text.toString())

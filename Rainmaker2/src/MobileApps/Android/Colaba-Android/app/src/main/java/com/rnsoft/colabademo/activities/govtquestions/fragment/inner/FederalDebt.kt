@@ -39,7 +39,8 @@ class FederalDebt:GovtDetailBaseFragment() {
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "4",
-                    questionId
+                    questionId,
+                    "1"
                 )
             }
 

@@ -9,4 +9,6 @@ class answerData {
 
     @SerializedName("selectionOptionText")
     var selectionOptionText : String? = null
+
+
 }

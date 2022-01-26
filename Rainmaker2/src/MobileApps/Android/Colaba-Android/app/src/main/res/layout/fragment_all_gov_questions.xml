@@ -174,7 +174,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q2"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
                     card_view:ignore="MissingConstraints">
@@ -186,7 +186,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
                         android:visibility="gone"
-                        android:text="Ownership Interest in Property"
+                        android:text="Outstanding Judgements"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"
                         android:layout_height="wrap_content">
@@ -891,7 +891,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/q7"
-                    android:visibility="visible"
+                    android:visibility="gone"
 
                     android:orientation="vertical"
                     android:layout_height="wrap_content"
@@ -1282,7 +1282,6 @@
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
-                        android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
 

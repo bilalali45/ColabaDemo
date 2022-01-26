@@ -23,6 +23,7 @@ import com.rnsoft.colabademo.AppConstant.ethnicityarry
 import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.AppConstant.jsonaddquestion
 import com.rnsoft.colabademo.AppConstant.racearr
+import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
 import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.activities.GetGovermentmodel
 import com.rnsoft.colabademo.activities.RaceModel
@@ -59,6 +60,8 @@ class AllGovQuestionsFragment : Fragment() {
     var row: View? = null
     var position: Int? = 0
     var demomodel: DemoGraphicModel = DemoGraphicModel()
+    var questionmodel: DemoGetGovermentmodel = DemoGetGovermentmodel()
+
     private var ethnicityChildList: java.util.ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
     private var bankruptcyMap = hashMapOf<String, String>()
@@ -238,7 +241,11 @@ class AllGovQuestionsFragment : Fragment() {
             lifecycleScope.launchWhenStarted {
 
                 // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
+                val gson = Gson()
                 var data = getDataList(jsonaddquestion.toString())
+                val strJson = gson.toJson(questionmodel)
+                Log.i("TAG", "updateGovernmentQuestionApiCall: "+strJson)
+
                 borrowerAppViewModel.addgovernmetnjson("Bearer " + LoginFragment.webtoken!!, data!!)
 
 
@@ -252,10 +259,10 @@ class AllGovQuestionsFragment : Fragment() {
 
     }
 
-    fun getDataList(tag: String?): GovernmentParams? {
-        var datalist: GovernmentParams = GovernmentParams()
+    fun getDataList(tag: String?): DemoGetGovermentmodel? {
+        var datalist: DemoGetGovermentmodel = DemoGetGovermentmodel()
         val gson = Gson()
-        datalist = gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
+        datalist = gson.fromJson<DemoGetGovermentmodel>(tag, object : TypeToken<DemoGetGovermentmodel?>() {}.type)
         return datalist
     }
 
@@ -265,20 +272,93 @@ class AllGovQuestionsFragment : Fragment() {
             binding!!.q1radioButtonNo.isChecked = false
             discuss(binding!!.qh1.text.toString(), "1")
         }
-        binding!!.q2radioButton.setOnClickListener { discuss(binding!!.qh2.text.toString(), "2") }
-        binding!!.q3radioButton.setOnClickListener { discuss(binding!!.qh3.text.toString(), "3") }
-        binding!!.q4radioButton.setOnClickListener { discuss(binding!!.qh4.text.toString(), "4") }
-        binding!!.q5radioButton.setOnClickListener { discuss(binding!!.qh5.text.toString(), "5") }
-        binding!!.q6radioButton.setOnClickListener { discuss(binding!!.qh6.text.toString(), "6") }
-        binding!!.q7radioButton.setOnClickListener { discuss(binding!!.qh7.text.toString(), "7") }
-        binding!!.q8radioButton.setOnClickListener { discuss(binding!!.qh8.text.toString(), "8") }
-        binding!!.q9radioButton.setOnClickListener { discuss("Bankruptcy ", "9") }
+        binding!!.q2radioButton.setOnClickListener {
+            binding!!.q2radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh2.text.toString(), "2")
+        }
+        binding!!.q3radioButton.setOnClickListener {
+            binding!!.q3radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh3.text.toString(), "3")
+        }
+        binding!!.q4radioButton.setOnClickListener {
+            binding!!.q4radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh4.text.toString(), "4")
+        }
+        binding!!.q5radioButton.setOnClickListener {
+            binding!!.q5radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh5.text.toString(), "5")
+        }
+        binding!!.q6radioButton.setOnClickListener {
+            binding!!.q6radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh6.text.toString(), "6")
+        }
+        binding!!.q7radioButton.setOnClickListener {
+            binding!!.q7radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh7.text.toString(), "7")
+        }
+        binding!!.q8radioButton.setOnClickListener {
+            binding!!.q8radioButtonNo.isChecked = false
+
+            discuss(binding!!.qh8.text.toString(), "8")
+        }
+        binding!!.q9radioButton.setOnClickListener {
+            binding!!.q9radioButtonNo.isChecked = false
+
+            discuss("Bankruptcy ", "9")
+        }
         binding!!.q10radioButton.setOnClickListener {
+            binding!!.q10radioButtonNo.isChecked = false
+
             discuss(
                 "Child Support, Alimony, etc.",
                 "10"
             )
         }
+        binding!!.q1radioButtonNo.setOnClickListener {
+            binding!!.q1radioButton.isChecked = false
+            binding!!.qv1.visibility = View.GONE
+        }
+        binding!!.q2radioButtonNo.setOnClickListener {
+            binding!!.q2radioButton.isChecked = false
+            binding!!.qv2.visibility = View.GONE
+        }
+        binding!!.q3radioButtonNo.setOnClickListener {
+            binding!!.q3radioButton.isChecked = false
+            binding!!.qv3.visibility = View.GONE
+        }
+        binding!!.q4radioButtonNo.setOnClickListener {
+            binding!!.q4radioButton.isChecked = false
+            binding!!.qv4.visibility = View.GONE
+        }
+
+        binding!!.q5radioButtonNo.setOnClickListener {
+            binding!!.q5radioButton.isChecked = false
+            binding!!.qv5.visibility = View.GONE
+        }
+        binding!!.q6radioButtonNo.setOnClickListener {
+            binding!!.q6radioButton.isChecked = false
+            binding!!.qv6.visibility = View.GONE
+        }
+        binding!!.q7radioButtonNo.setOnClickListener {
+            binding!!.q7radioButton.isChecked = false
+            binding!!.qv7.visibility = View.GONE
+        }
+        binding!!.q8radioButtonNo.setOnClickListener {
+            binding!!.q8radioButton.isChecked = false
+            binding!!.qv8.visibility = View.GONE
+        }
+        binding!!.q9radioButtonNo.setOnClickListener {
+            binding!!.q9radioButton.isChecked = false
+            binding!!.qv9.visibility = View.GONE
+        }
+
+
         binding!!.asiancheckbox.setOnClickListener {
             if(asiancheckbox.isChecked) {
                 val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
@@ -292,10 +372,7 @@ class AllGovQuestionsFragment : Fragment() {
             val bundle = bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
             findNavController().navigate(R.id.action_native_hawai, bundle)
         }
-        binding!!.q1radioButtonNo.setOnClickListener {
-            binding!!.q1radioButton.isChecked = false
-            binding!!.qv1.visibility = View.GONE
-        }
+
 //               var jsonv = JSONObject()
 //               jsonv.put("raceId",1)
 //               race.put(jsonv)
@@ -330,6 +407,18 @@ class AllGovQuestionsFragment : Fragment() {
                 racearr!!.add(race)
             }
         }
+
+        binding!!.ethnicidonotwishrbbox.setOnClickListener {
+            if(ethnicidonotwishrbbox.isChecked){
+                var eth :  EthnicityModel = EthnicityModel()
+                eth.ethnicityId = 3
+                //ethnicityarry!!.add(eth)
+                binding!!.HispanicorLatino.isChecked = false
+                binding!!.notsHispanicorLatino.isChecked = false
+                ethnicityarry!!.add(0,eth)
+            }
+        }
+
 
 
         binding!!.HispanicorLatino.setOnClickListener {
@@ -456,23 +545,26 @@ class AllGovQuestionsFragment : Fragment() {
                                                     if (qData.id != null) {
                                                         qustionheaderarray!!.add(qData)
                                                         if (qData.answer != null) {
-                                                            if (qData.answer == "Yes") {
+                                                         //   if (qData.answer == "Yes") {
 
-                                                                if (qData.id == 10) {
-                                                                    setdata(
-                                                                        "",
-                                                                        qData.answerDetail!!,
-                                                                        0,
-                                                                        "1",
-                                                                        qData.id
-                                                                    )
+                                                                if (qData.id == 11) {
+                                                                    if (qData.answer != null && qData.answer!!.isNotEmpty()) {
+                                                                        setdata(
+                                                                            "",
+                                                                            qData.answer!!,
+                                                                            0,
+                                                                            "1",
+                                                                            qData.id,"0"
+                                                                        )
+                                                                    }
                                                                 } else if (qData.id == 70) {
                                                                     setdata(
                                                                         "",
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "3",
-                                                                        qData.id
+                                                                        qData.id,
+                                                                        "0"
                                                                     )
 
                                                                 } else if (qData.id == 80) {
@@ -481,7 +573,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "4",
-                                                                        qData.id
+                                                                        qData.id,
+                                                                        "0"
                                                                     )
 
                                                                 } else if (qData.id == 90) {
@@ -490,7 +583,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "5",
-                                                                        qData.id
+                                                                        qData.id,
+                                                                        "0"
                                                                     )
 
                                                                 } else if (qData.id == 100) {
@@ -499,7 +593,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "6",
-                                                                        qData.id
+                                                                        qData.id,
+                                                                        "0"
                                                                     )
 
                                                                 } else if (qData.id == 120) {
@@ -508,7 +603,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         qData.answerDetail!!,
                                                                         0,
                                                                         "8",
-                                                                        qData.id
+                                                                        qData.id,
+                                                                        "0"
                                                                     )
 
                                                                 } else if (qData.id == 130) {
@@ -527,7 +623,7 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                    )
 
                                                                 }
-                                                            }
+                                                           // }
                                                         }
 
                                                     } else {
@@ -641,13 +737,14 @@ class AllGovQuestionsFragment : Fragment() {
         title: String,
         whichBorrowerId: Int,
         questionnumber: String?,
-        questionId: Int
+        questionId: Int,
+        s: String
     ) {
         when (questionnumber) {
             "1" -> {
                 binding!!.qv1.visibility = View.VISIBLE
                 binding!!.qva1.text = "$" + title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId,s)
                 // setdataarray(questionId,10)
 
 
@@ -657,14 +754,14 @@ class AllGovQuestionsFragment : Fragment() {
                 binding!!.qv22.visibility = View.VISIBLE
                 binding!!.qva2.text = detailTitle
                 binding!!.qva22.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
 
             }
             "3" -> {
                 binding!!.qv3.visibility = View.VISIBLE
                 binding!!.qvs3.text = "Detail"
                 binding!!.qva3.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
 
             }
             "4" -> {
@@ -673,7 +770,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs4.text = "Detail"
                 binding!!.qva4.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
 
             }
             "5" -> {
@@ -682,7 +779,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs5.text = "Detail"
                 binding!!.qva5.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
 
             }
             "6" -> {
@@ -690,13 +787,13 @@ class AllGovQuestionsFragment : Fragment() {
                 // binding!!.qvs6.text = title
                 binding!!.qvs6.text = "Detail"
                 binding!!.qva6.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
 
             }
             "7" -> {
                 binding!!.qv7.visibility = View.VISIBLE
                 binding!!.qvs7.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
             }
             "8" -> {
                 binding!!.qv8.visibility = View.VISIBLE
@@ -704,7 +801,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs8.text = "Detail"
                 binding!!.qva8.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
             }
             "9" -> {
                 binding!!.qv9.visibility = View.VISIBLE
@@ -712,7 +809,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 binding!!.qvs9.text = "Which Type?"
                 binding!!.qva9.text = title
-                updatedata(questionId, title, detailTitle, questionId)
+                updatedata(questionId, title, detailTitle, questionId, s)
             }
             else -> { // Note the block
                 print("x is neither 1 nor 2")
@@ -721,10 +818,11 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
 
-    private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int) {
+    private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int, s: String) {
         governmentParams.Questions.let { questions ->
             jARRAY = JSONArray()
             jsonaddquestion = JSONObject()
+             Questions = ArrayList()
             for (qData in questions) {
                 if (questionId == qData.id) {
                     if (questionId == 130) {
@@ -737,8 +835,7 @@ class AllGovQuestionsFragment : Fragment() {
                         jone.put("firstName", qData.firstName)
                         jone.put("lastName", qData.lastName)
                         jone.put("question", qData.question)
-                        jone.put("answer", "Yes")
-                        jone.put("answerDetail", null)
+
                         jone.put("selectionOptionId", qData.selectionOptionId)
                         jone.put("answerData", qData.answerData)
                         jARRAY.put(jone)
@@ -762,28 +859,66 @@ class AllGovQuestionsFragment : Fragment() {
                         jARRAY.put(jone1)
 
 
-                        var govern :  GetGovermentmodel = GetGovermentmodel()
-                        govern.id = qData.id
-                        govern.parentQuestionId = qData.parentQuestionId
-                        govern.headerText = qData.headerText
-                        govern.questionSectionId = qData.questionSectionId!!
-                        govern.ownTypeId = qData.ownTypeId!!
-                        govern.firstName= qData.firstName
-                        govern.lastName = qData.lastName
-                        govern.question = qData.question
-                        govern.answer = "Yes"
-                        govern.answerDetail = null
-                        var ans :  answerData = answerData()
-                        ans.selectionOptionId = 1
-                        ans.selectionOptionText =title
-                        govern.answerData = ans
-                        Questions!!.add(govern)
-
-
+//                        var govern :  GetGovermentmodel = GetGovermentmodel()
+//                        govern.id = qData.id
+//                        govern.parentQuestionId = qData.parentQuestionId
+//                        govern.headerText = qData.headerText
+//                        govern.questionSectionId = qData.questionSectionId!!
+//                        govern.ownTypeId = qData.ownTypeId!!
+//                        govern.firstName= qData.firstName
+//                        govern.lastName = qData.lastName
+//                        govern.question = qData.question
+//                        if(s == "1"){
+//                            govern.answer = "Yes"
+//                            govern.answerDetail = title
+//
+//                        }else{
+//                            govern.answer = qData.question
+//                            govern.answerDetail = qData.answerDetail
+//
+//                        }
+//
+//                        var ans :  answerData = answerData()
+//                        ans.selectionOptionId = 1
+//                        ans.selectionOptionText =title
+//                        //govern.answerData = ans
+//                        Questions!!.add(govern)
+//
+//                        var govern1 :  GetGovermentmodel = GetGovermentmodel()
+//                        govern1.id = 131
+//                        govern1.parentQuestionId = 130
+//                        govern1.headerText = "Type"
+//                        govern1.questionSectionId = 3
+//                        govern1.ownTypeId = 1
+//                        govern1.firstName= qData.firstName
+//                        govern1.lastName = qData.lastName
+//                        govern1.question = "Which Type?"
+//                        govern1.answer = ""
+//                        govern1.answerDetail = ""
+//                        var ans1 :  answerData = answerData()
+//                        ans1.selectionOptionId = 1
+//                        ans1.selectionOptionText =title
+//                       // govern1.answerData = ans1
+//                        Questions!!.add(govern1)
 
 
                     } else {
-                        if (questionId != 131 && questionId != 140) {
+                        if(questionId == 10) {
+                            var jone = JSONObject()
+                            jone.put("id", 11)
+                            jone.put("parentQuestionId", qData.id)
+                            jone.put("headerText", qData.headerText)
+                            jone.put("questionSectionId", qData.questionSectionId)
+                            jone.put("ownTypeId", qData.ownTypeId)
+                            jone.put("firstName", qData.firstName)
+                            jone.put("lastName", qData.lastName)
+                            jone.put("question", qData.question)
+                            jone.put("answer", "Yes")
+                            jone.put("answerDetail", title)
+                            jone.put("selectionOptionId", qData.selectionOptionId)
+                            jARRAY.put(jone)
+
+                        }else if (questionId != 131 && questionId != 140 && questionId != 11) {
                             var jone = JSONObject()
                             jone.put("id", qData.id)
                             jone.put("parentQuestionId", qData.parentQuestionId)
@@ -796,6 +931,29 @@ class AllGovQuestionsFragment : Fragment() {
                             jone.put("answer", "Yes")
                             jone.put("answerDetail", title)
                             jone.put("selectionOptionId", qData.selectionOptionId)
+
+//                            var govern :  GetGovermentmodel = GetGovermentmodel()
+//                            govern.id = qData.id
+//                            govern.parentQuestionId = qData.parentQuestionId
+//                            govern.headerText = qData.headerText
+//                            govern.questionSectionId = qData.questionSectionId!!
+//                            govern.ownTypeId = qData.ownTypeId!!
+//                            govern.firstName= qData.firstName
+//                            govern.lastName = qData.lastName
+//                            govern.question = qData.question
+//
+//                            if(s == "1"){
+//                                govern.answer = "Yes"
+//                                govern.answerDetail = title
+//
+//                            }else{
+//                                govern.answer = qData.question
+//                                govern.answerDetail = qData.answerDetail
+//
+//                            }
+
+
+
                             var jonet = JSONObject()
                             if(qData.answerData != null){
                                 val getrow: Any = qData.answerData!!
@@ -804,14 +962,23 @@ class AllGovQuestionsFragment : Fragment() {
                                 val text = t["selectionOptionText"].toString()
                                 jonet.put("selectionOptionId",id)
                                 jonet.put("selectionOptionText",text)
+//                                var ans :  answerData = answerData()
+//                                ans.selectionOptionId = id
+//                                ans.selectionOptionText =text
+                               // govern.answerData = ans
+
+
                             }
                             jone.put("answerData", jonet)
                             jARRAY.put(jone)
+
+                           // Questions!!.add(govern)
+
                         }
                     }
 
                 } else {
-                    if (qData.id != 140 && qData.id != 131) {
+                    if (qData.id != 140 && qData.id != 131 && qData.id != 11) {
                         var jone = JSONObject()
                         jone.put("id", qData.id)
                         jone.put("parentQuestionId", qData.parentQuestionId)
@@ -824,6 +991,24 @@ class AllGovQuestionsFragment : Fragment() {
                         jone.put("answer", qData.answer)
                         jone.put("answerDetail", qData.answerDetail)
                         jone.put("selectionOptionId", qData.selectionOptionId)
+
+//                        var govern :  GetGovermentmodel = GetGovermentmodel()
+//                        govern.id = qData.id
+//                        govern.parentQuestionId = qData.parentQuestionId
+//                        govern.headerText = qData.headerText
+//                        govern.questionSectionId = qData.questionSectionId!!
+//                        govern.ownTypeId = qData.ownTypeId!!
+//                        govern.firstName= qData.firstName
+//                        govern.lastName = qData.lastName
+//                        govern.question = qData.question
+//                        govern.answer = qData.question
+//                        govern.answerDetail = qData.answerDetail
+
+
+
+
+
+
                         var jonet = JSONObject()
                         if(qData.answerData != null){
                             val getrow: Any = qData.answerData!!
@@ -834,19 +1019,34 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonet.put("selectionOptionId", id)
                                 jonet.put("selectionOptionText", text)
                                 jone.put("answerData", jonet)
+//                                var ans :  answerData = answerData()
+//                                ans.selectionOptionId = id
+//                                ans.selectionOptionText =title
+                                //govern.answerData = ans
                             }
                         }
 
+
+                       // Questions!!.add(govern)
                         jARRAY.put(jone)
                     }
                 }
 
 
             }
+
+//            questionmodel = DemoGetGovermentmodel()
+//            questionmodel.BorrowerId = governmentParams.BorrowerId
+//            questionmodel.LoanApplicationId = governmentParams.LoanApplicationId
+//            questionmodel.Questions = Questions
+
+
             jsonaddquestion.put("Questions", jARRAY)
             jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
             jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
             Log.i("TAG", "updatedata: " + jsonaddquestion)
+            Log.i("TAG", "updatedata: " + questionmodel)
+
         }
     }
 
@@ -1017,7 +1217,7 @@ class AllGovQuestionsFragment : Fragment() {
                             binding!!.qva103.visibility = View.VISIBLE
 
                         }
-                        jone.put("answerData", answerData)
+                        //jone.put("answerData", answerData)
                         jARRAY.put(jone)
                         jsonaddquestion.put("Questions", jARRAY)
                         jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)

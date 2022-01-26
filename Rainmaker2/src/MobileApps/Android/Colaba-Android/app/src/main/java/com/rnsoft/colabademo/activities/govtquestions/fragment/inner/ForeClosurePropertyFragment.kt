@@ -43,7 +43,8 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "8",
-                    questionId
+                    questionId,
+                    "1"
                 )
             }
 

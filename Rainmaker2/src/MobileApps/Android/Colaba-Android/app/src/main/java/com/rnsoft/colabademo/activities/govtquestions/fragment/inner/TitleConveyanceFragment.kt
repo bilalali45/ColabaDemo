@@ -41,7 +41,8 @@ class TitleConveyanceFragment:GovtDetailBaseFragment() {
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "6",
-                    questionId
+                    questionId,
+                    "1"
                 )
             }
             updateGovernmentAndSaveData(binding.edDetails.text.toString())

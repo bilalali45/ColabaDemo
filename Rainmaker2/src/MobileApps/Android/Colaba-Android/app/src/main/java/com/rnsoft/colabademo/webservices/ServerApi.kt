@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import com.google.gson.JsonObject
+import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
 import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.activities.WebResponseDemo
 
@@ -757,7 +758,7 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
     fun getjson(
         @Header("Authorization" )  Authorization:String,
-        @Body jsonBody: GovernmentParams?): Call<WebResponse<Any?>?>?
+        @Body jsonBody: DemoGetGovermentmodel?): Call<WebResponse<Any?>?>?
 
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")

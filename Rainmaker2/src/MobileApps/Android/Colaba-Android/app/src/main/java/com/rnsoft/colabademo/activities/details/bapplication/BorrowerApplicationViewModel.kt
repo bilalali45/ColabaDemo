@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
 import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.activities.WebResponseDemo
 import com.rnsoft.colabademo.activities.model.StatesModel
@@ -550,7 +551,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-     suspend fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
+     suspend fun addgovernmetnjson(webtoken: String, governmentParams: DemoGetGovermentmodel) {
         val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
