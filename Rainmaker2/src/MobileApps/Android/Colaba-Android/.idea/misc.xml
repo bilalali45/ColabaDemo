@@ -46,7 +46,7 @@
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_borrower_layout_two.xml" value="0.2504528985507246" />
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/detail_tab_layout.xml" value="0.3255208333333333" />
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/federal_dept_layout.xml" value="0.23229166666666667" />
-        <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.5" />
+        <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.25" />
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/govt_questions_activity_layout.xml" value="0.26992753623188404" />
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/innerlayout.xml" value="0.33" />
         <entry key="..\:/Users/user/Documents/GitHub/ColabaDemo/Rainmaker2/src/MobileApps/Android/Colaba-Android/app/src/main/res/layout/layout_loan_status_item.xml" value="0.2504528985507246" />
@@ -93,7 +93,7 @@
         <entry key="app/src/main/res/layout/common_govt_content_layout.xml" value="0.10677083333333333" />
         <entry key="app/src/main/res/layout/dialog_standard_checklist.xml" value="0.6203988759585385" />
         <entry key="app/src/main/res/layout/docs_type_middle_cell.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.2584711428688948" />
+        <entry key="app/src/main/res/layout/fragment_all_gov_questions.xml" value="0.10963687150837989" />
         <entry key="app/src/main/res/layout/independent_checkbox.xml" value="0.1" />
         <entry key="app/src/main/res/layout/innerlayout.xml" value="0.1" />
       </map>

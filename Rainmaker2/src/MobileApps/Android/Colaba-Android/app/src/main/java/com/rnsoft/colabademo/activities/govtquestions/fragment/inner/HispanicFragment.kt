@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.HispanicLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
@@ -113,6 +114,13 @@ class HispanicFragment:BaseFragment() {
                 if(item.detailId == 4){
                     item.otherEthnicity = binding.edDetails.text.toString()
                 }
+
+
+            }
+
+
+            if(AllGovQuestionsFragment.instan != null){
+                AllGovQuestionsFragment.instan!!.nativehispanic(ethnicityChildList!!)
             }
         }
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.selectedEthnicityChildList, ethnicityChildList)

@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName
 class Detailmodel {
     @SerializedName("detailId")
     @Expose
-    val detailID: Int = 0
+    var detailID: Int = 0
 
 
     @SerializedName("name")
     @Expose
-    val name: String = ""
+    var name: String = ""
 
 
 //    @SerializedName("otherRace")
@@ -20,6 +20,6 @@ class Detailmodel {
 
     @SerializedName("isOther")
     @Expose
-    val isOther: Boolean = false
+    var isOther: Boolean = false
 
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.NativeHawaiianLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
@@ -117,6 +118,10 @@ class NativeHawaiFragment:BaseFragment() {
                     item.otherRace = binding.edDetails.text.toString()
                 }
             }
+        }
+
+        if(AllGovQuestionsFragment.instan != null){
+            AllGovQuestionsFragment.instan!!.nativeHawaiianChildList(nativeHawaiianChildList!!)
         }
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.selectedNativeHawaianChildList, nativeHawaiianChildList)
         findNavController().popBackStack()

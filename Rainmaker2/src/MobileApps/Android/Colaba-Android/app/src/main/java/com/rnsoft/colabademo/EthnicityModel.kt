@@ -7,10 +7,10 @@ class EthnicityModel {
 
     @SerializedName("ethnicityId")
     @Expose
-    val ethnicityId: Int = 0
+    var ethnicityId: Int = 0
 
 
     @SerializedName("ethnicityDetails")
     @Expose
-    val ethnicityDetails: ArrayList<Detailmodel>? = null
+    val ethnicityDetails: ArrayList<Detailmodel>? = ArrayList()
 }

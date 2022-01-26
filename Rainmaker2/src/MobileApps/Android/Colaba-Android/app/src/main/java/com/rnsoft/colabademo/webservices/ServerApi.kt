@@ -12,6 +12,7 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 import com.google.gson.JsonObject
+import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.activities.WebResponseDemo
 
 import retrofit2.http.Body
@@ -772,4 +773,10 @@ interface ServerApi{
         @Header("Authorization" )  Authorization:String,
         @Body questionParams: GovernmentParams
     ):Call<WebResponse<Any?>?>?
+
+
+    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateDemogrhphicInfo")
+    fun adddemo(
+        @Header("Authorization" )  Authorization:String,
+        @Body jsonBody: DemoGraphicModel?): Call<WebResponse<Any?>?>?
 }

@@ -3,6 +3,7 @@ package com.rnsoft.colabademo
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 
 import com.rnsoft.colabademo.databinding.ChildSupportLayoutBinding
@@ -203,7 +205,7 @@ class ChildSupportFragment:BaseFragment() {
                         liabilityTypeId = 8.toInt()
                     ))
                 }
-
+                 Log.i("TAG", "setUpUI: "+jARRAY)
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setarray("1", childAnswerList, whichBorrowerId,"10")
                 }

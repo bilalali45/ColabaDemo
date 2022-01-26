@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.RaceModel
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.AsianLayoutBinding
-import com.rnsoft.colabademo.databinding.FederalDeptLayoutBinding
-import com.rnsoft.colabademo.databinding.PriorityLiensLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -54,6 +53,10 @@ class AsianFragment:BaseFragment() {
                     item.otherRace = binding.edDetails.text.toString()
                 }
             }
+            if(AllGovQuestionsFragment.instan != null){
+                AllGovQuestionsFragment.instan!!.apidemographic(asianChildList)
+            }
+
         }
         findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.selectedAsianChildList, asianChildList)
         findNavController().popBackStack()

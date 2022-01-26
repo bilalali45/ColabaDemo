@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rnsoft.colabademo.AppConstant.jsonObj
 import com.rnsoft.colabademo.activities.DemoGraphicModel
 import com.rnsoft.colabademo.activities.WebResponseDemo
 import com.rnsoft.colabademo.activities.model.StatesModel
@@ -561,6 +560,30 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val call: Call<WebResponse<Any?>?> = apiService.getjson(webtoken,governmentParams)!!
         call.enqueue(object : Callback<WebResponse<Any?>?> {
             override fun onResponse(call: Call<WebResponse<Any?>?>, response: Response<WebResponse<Any?>?>) {
+                   val statusCode: Int = response.code()
+                   Log.i("TAG", "onFailure: "+response.body())
+
+                // val user: User = response.body()
+            }
+
+            override fun onFailure(call: Call<WebResponse<Any?>?>, t: Throwable?) {
+                  Log.i("TAG", "onFailure: "+t)
+                // Log error here since request failed
+            }
+        })
+    }
+
+
+     fun adddemographic(webtoken: String, governmentParams: DemoGraphicModel) {
+        val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService: ServerApi = retrofit.create(ServerApi::class.java)
+        val call: Call<WebResponse<Any?>?> = apiService.adddemo(webtoken,governmentParams)!!
+        call.enqueue(object : Callback<WebResponse<Any?>?> {
+            override fun onResponse(call: Call<WebResponse<Any?>?>, response: Response<WebResponse<Any?>?>) {
                 val statusCode: Int = response.code()
                 Log.i("TAG", "onFailure: "+response.body())
 
@@ -574,6 +597,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         })
     }
 
+
     fun GetDemographicInformation(webtoken: String, loanapplication: Int, borrowerId: Int) {
         val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
@@ -584,16 +608,18 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val call: Call<WebResponseDemo<Any?>?> = apiService.getdemographic(webtoken,loanapplication,borrowerId)!!
         call.enqueue(object : Callback<WebResponseDemo<Any?>?> {
             override fun onResponse(call: Call<WebResponseDemo<Any?>?>, response: Response<WebResponseDemo<Any?>?>) {
-                val statusCode: Int = response.code()
-                Log.i("TAG", "onFailure: "+response.body())
-                    val gson = Gson()
-                    val strJson = gson.toJson(response.body()!!.result)
-                      data = getDataList(strJson)!!
-                if(AllGovQuestionsFragment.instan != null){
-                    AllGovQuestionsFragment.instan!!.demographic()
-                }
-                    Log.i("TAG", "onResponse: "+data)
-                 //   val user: User = response.body()
+                     val statusCode: Int = response.code()
+                     Log.i("TAG", "onFailure: "+response.body())
+                     val gson = Gson()
+                   if(statusCode == 200 ) {
+                       val strJson = gson.toJson(response.body()!!.result)
+                       data = getDataList(strJson)!!
+                       if (AllGovQuestionsFragment.instan != null) {
+                           AllGovQuestionsFragment.instan!!.demographic()
+                       }
+                   }
+                      Log.i("TAG", "onResponse: "+data)
+                  //   val user: User = response.body()
             }
 
             override fun onFailure(call: Call<WebResponseDemo<Any?>?>, t: Throwable?) {

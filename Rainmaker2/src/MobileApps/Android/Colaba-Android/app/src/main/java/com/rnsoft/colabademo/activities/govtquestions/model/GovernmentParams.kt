@@ -27,7 +27,6 @@ data class ChildQuestionData(
     var answerDetail: String?= "",
     val headerText:String? = "title1",
     var answerData: ArrayList<ChildAnswerData>? = null,
-
     val firstName: String?=null,
     val lastName: String?=null,
     val ownTypeId: Int?=null,

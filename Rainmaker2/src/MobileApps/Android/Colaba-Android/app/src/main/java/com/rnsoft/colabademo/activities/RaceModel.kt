@@ -8,10 +8,10 @@ class RaceModel {
 
     @SerializedName("raceId")
     @Expose
-    val raceId: Int = 0
+    var raceId: Int = 0
 
 
     @SerializedName("raceDetails")
     @Expose
-    val raceDetails: ArrayList<Detailmodel>? = null
+    var raceDetails: ArrayList<Detailmodel>? = ArrayList()
 }

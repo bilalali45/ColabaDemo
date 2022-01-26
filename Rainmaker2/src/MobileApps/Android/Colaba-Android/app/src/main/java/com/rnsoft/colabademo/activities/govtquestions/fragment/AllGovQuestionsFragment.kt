@@ -17,11 +17,16 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.AppConstant.Questions
 import com.rnsoft.colabademo.AppConstant.answerData
+import com.rnsoft.colabademo.AppConstant.ethnicityarry
 import com.rnsoft.colabademo.AppConstant.jARRAY
-import com.rnsoft.colabademo.AppConstant.jsonObj
 import com.rnsoft.colabademo.AppConstant.jsonaddquestion
+import com.rnsoft.colabademo.AppConstant.racearr
 import com.rnsoft.colabademo.activities.DemoGraphicModel
+import com.rnsoft.colabademo.activities.GetGovermentmodel
+import com.rnsoft.colabademo.activities.RaceModel
+import com.rnsoft.colabademo.activities.govtquestions.model.answerData
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
@@ -53,6 +58,9 @@ class AllGovQuestionsFragment : Fragment() {
     private lateinit var lastQData: QuestionData
     var row: View? = null
     var position: Int? = 0
+    var demomodel: DemoGraphicModel = DemoGraphicModel()
+    private var ethnicityChildList: java.util.ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
+
     private var bankruptcyMap = hashMapOf<String, String>()
 
     // var questionmodel = null
@@ -76,12 +84,16 @@ class AllGovQuestionsFragment : Fragment() {
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
+        demomodel = DemoGraphicModel()
+        racearr = ArrayList()
         setUpDynamicTabs()
-        updateDemoGraphicApiCall()
+
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
             //updateDemoGraphicApiCall()
 //            else
+            apidemograpic()
+
             updateGovernmentQuestionApiCall()
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
             requireActivity().finish()
@@ -93,6 +105,25 @@ class AllGovQuestionsFragment : Fragment() {
 
         instan = this
         return binding!!.root
+    }
+
+    private  fun apidemograpic() {
+//        jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
+//        jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
+        if(demomodel != null){
+            demomodel.loanApplicationId = governmentParams.LoanApplicationId
+            demomodel.borrowerId = governmentParams.BorrowerId
+            demomodel.race = racearr
+            demomodel.ethnicity = ethnicityarry
+
+
+            val gson = Gson()
+            val strJson = gson.toJson(demomodel)
+            Log.i("TAG", "onFailure: "+strJson)
+            borrowerAppViewModel.adddemographic("Bearer " + LoginFragment.webtoken!!, demomodel)
+        }
+
+
     }
 
     fun demographic() {
@@ -126,7 +157,7 @@ class AllGovQuestionsFragment : Fragment() {
             if (qData.ethnicityId == 1) {
                 HispanicorLatino.isChecked = true
             } else if (qData.ethnicityId == 2) {
-                notHispanicorLatino.isChecked = true
+                notsHispanicorLatino.isChecked = true
             }else if (qData.ethnicityId == 3) {
                 ethnicidonotwishrbbox.isChecked = true
             }
@@ -135,7 +166,7 @@ class AllGovQuestionsFragment : Fragment() {
    }
 
     private fun updateDemoGraphicApiCall() {
-        borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, 5, 5)
+        borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, governmentParams.LoanApplicationId, governmentParams.BorrowerId)
     }
 
 
@@ -224,8 +255,7 @@ class AllGovQuestionsFragment : Fragment() {
     fun getDataList(tag: String?): GovernmentParams? {
         var datalist: GovernmentParams = GovernmentParams()
         val gson = Gson()
-        datalist =
-            gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
+        datalist = gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
         return datalist
     }
 
@@ -266,7 +296,104 @@ class AllGovQuestionsFragment : Fragment() {
             binding!!.q1radioButton.isChecked = false
             binding!!.qv1.visibility = View.GONE
         }
+//               var jsonv = JSONObject()
+//               jsonv.put("raceId",1)
+//               race.put(jsonv)
+        binding!!.checkbox.setOnClickListener {
+           if(checkbox.isChecked){
+               var race :  RaceModel = RaceModel()
+               race.raceId = 1
+               racearr!!.add(race)
+           }
+        }
+        binding!!.checkboxblack.setOnClickListener {
+            if(checkboxblack.isChecked){
+                var race :  RaceModel = RaceModel()
+                race.raceId = 3
+                racearr!!.add(race)
+            }
+        }
 
+
+        binding!!.whitecheckbox.setOnClickListener {
+            if(whitecheckbox.isChecked){
+                var race :  RaceModel = RaceModel()
+                race.raceId = 5
+                racearr!!.add(race)
+            }
+        }
+
+        binding!!.idonotwishcheckbox.setOnClickListener {
+            if(idonotwishcheckbox.isChecked){
+                var race :  RaceModel = RaceModel()
+                race.raceId = 6
+                racearr!!.add(race)
+            }
+        }
+
+
+        binding!!.HispanicorLatino.setOnClickListener {
+            if(HispanicorLatino.isChecked){
+                binding!!.notsHispanicorLatino.isChecked = false
+                binding!!.ethnicidonotwishrbbox.isChecked = false
+                val copyEthnicityChildList =
+                    java.util.ArrayList(ethnicityChildList.map { it.copy() })
+                val bundle = bundleOf(AppConstant.ethnicityChildList to copyEthnicityChildList)
+                 findNavController().navigate(R.id.action_hispanic, bundle)
+            }
+        }
+
+        binding!!.notsHispanicorLatino.setOnClickListener {
+            if(notsHispanicorLatino.isChecked){
+                var eth :  EthnicityModel = EthnicityModel()
+                eth.ethnicityId = 2
+                //ethnicityarry!!.add(eth)
+                binding!!.HispanicorLatino.isChecked = false
+                binding!!.sexidontsharerb.isChecked = false
+                ethnicityarry!!.add(0,eth)
+            }
+        }
+
+        binding!!.sexidontsharerb.setOnClickListener {
+            if(sexidontsharerb.isChecked){
+                var eth :  EthnicityModel = EthnicityModel()
+                eth.ethnicityId = 3
+                binding!!.HispanicorLatino.isChecked = false
+                binding!!.notsHispanicorLatino.isChecked = false
+                ethnicityarry!!.add(0,eth)
+            }
+        }
+
+        binding!!.male.setOnClickListener {
+            if(male.isChecked){
+                if(demomodel != null){
+                    demomodel.genderId = 1
+                    binding!!.female.isChecked = false
+                    binding!!.sexidontsharerb.isChecked = false
+                }
+            }
+        }
+
+        binding!!.female.setOnClickListener {
+            if(female.isChecked){
+                if(demomodel != null){
+                    demomodel.genderId = 2
+                    binding!!.male.isChecked = false
+                    binding!!.sexidontsharerb.isChecked = false
+                }
+            }
+        }
+
+        binding!!.sexidontsharerb.setOnClickListener {
+            if(sexidontsharerb.isChecked){
+
+                if(demomodel != null){
+                    demomodel.genderId = 3
+                    binding!!.male.isChecked = false
+                    binding!!.female.isChecked = false
+                }
+            }
+        }
 
     }
 
@@ -282,28 +409,6 @@ class AllGovQuestionsFragment : Fragment() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun updateUndisclosedBorrowerFunds(updateEvent: UndisclosedBorrowerFundUpdateEvent) {
         if (updateEvent.whichBorrowerId == currentBorrowerId) {
-
-
-//            clickedContentCell.govt_detail_box.detail_title.text =
-//                UndisclosedBorrowerFundFragment.UndisclosedBorrowerQuestionConstant
-//            clickedContentCell.govt_detail_box.detail_title.setTypeface(null, Typeface.NORMAL)
-//            clickedContentCell.govt_detail_box.detail_text.text =
-//                "$".plus(Common.addNumberFormat(updateEvent.detailDescription.toDouble()))
-//            clickedContentCell.govt_detail_box.detail_text.setTypeface(null, Typeface.BOLD)
-//            clickedContentCell.govt_detail_box.visibility = View.VISIBLE
-//
-//
-//            governmentParams.Questions.let { questions ->
-//                for (question in questions) {
-//                    question.parentQuestionId?.let { parentQuestionId ->
-//                        if (parentQuestionId == undisclosedLayout.id) {
-//                            question.answer = updateEvent.detailDescription
-//                            question.answerDetail = updateEvent.detailTitle
-//                        }
-//                    }
-//                }
-//            }
-
 
         }
     }
@@ -414,12 +519,12 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                            qData.id)
 
                                                                 } else if (qData.id == 140) {
-                                                                    setarray(
-                                                                        "0",
-                                                                        qData.answerData as ArrayList<ChildAnswerData>,
-                                                                        0,
-                                                                        "10"
-                                                                    )
+//                                                                    setarray(
+//                                                                        "0",
+//                                                                        qData.answerData as ArrayList<ChildAnswerData>,
+//                                                                        0,
+//                                                                        "10"
+//                                                                    )
 
                                                                 }
                                                             }
@@ -443,7 +548,7 @@ class AllGovQuestionsFragment : Fragment() {
                                         }
                                     }
                                 }
-
+                                updateDemoGraphicApiCall()
                                 break
                             }
                         }
@@ -656,8 +761,29 @@ class AllGovQuestionsFragment : Fragment() {
                         jone1.put("answerData", jtwo)
                         jARRAY.put(jone1)
 
+
+                        var govern :  GetGovermentmodel = GetGovermentmodel()
+                        govern.id = qData.id
+                        govern.parentQuestionId = qData.parentQuestionId
+                        govern.headerText = qData.headerText
+                        govern.questionSectionId = qData.questionSectionId!!
+                        govern.ownTypeId = qData.ownTypeId!!
+                        govern.firstName= qData.firstName
+                        govern.lastName = qData.lastName
+                        govern.question = qData.question
+                        govern.answer = "Yes"
+                        govern.answerDetail = null
+                        var ans :  answerData = answerData()
+                        ans.selectionOptionId = 1
+                        ans.selectionOptionText =title
+                        govern.answerData = ans
+                        Questions!!.add(govern)
+
+
+
+
                     } else {
-                        if (questionId != 131) {
+                        if (questionId != 131 && questionId != 140) {
                             var jone = JSONObject()
                             jone.put("id", qData.id)
                             jone.put("parentQuestionId", qData.parentQuestionId)
@@ -670,26 +796,49 @@ class AllGovQuestionsFragment : Fragment() {
                             jone.put("answer", "Yes")
                             jone.put("answerDetail", title)
                             jone.put("selectionOptionId", qData.selectionOptionId)
-                            jone.put("answerData", answerData)
+                            var jonet = JSONObject()
+                            if(qData.answerData != null){
+                                val getrow: Any = qData.answerData!!
+                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                val text = t["selectionOptionText"].toString()
+                                jonet.put("selectionOptionId",id)
+                                jonet.put("selectionOptionText",text)
+                            }
+                            jone.put("answerData", jonet)
                             jARRAY.put(jone)
                         }
                     }
 
                 } else {
-                    var jone = JSONObject()
-                    jone.put("id", qData.id)
-                    jone.put("parentQuestionId", qData.parentQuestionId)
-                    jone.put("headerText", qData.headerText)
-                    jone.put("questionSectionId", qData.questionSectionId)
-                    jone.put("ownTypeId", qData.ownTypeId)
-                    jone.put("firstName", qData.firstName)
-                    jone.put("lastName", qData.lastName)
-                    jone.put("question", qData.question)
-                    jone.put("answer", qData.answer)
-                    jone.put("answerDetail", qData.answerDetail)
-                    jone.put("selectionOptionId", qData.selectionOptionId)
-                    jone.put("answerData", qData.answerData)
-                    jARRAY.put(jone)
+                    if (qData.id != 140 && qData.id != 131) {
+                        var jone = JSONObject()
+                        jone.put("id", qData.id)
+                        jone.put("parentQuestionId", qData.parentQuestionId)
+                        jone.put("headerText", qData.headerText)
+                        jone.put("questionSectionId", qData.questionSectionId)
+                        jone.put("ownTypeId", qData.ownTypeId)
+                        jone.put("firstName", qData.firstName)
+                        jone.put("lastName", qData.lastName)
+                        jone.put("question", qData.question)
+                        jone.put("answer", qData.answer)
+                        jone.put("answerDetail", qData.answerDetail)
+                        jone.put("selectionOptionId", qData.selectionOptionId)
+                        var jonet = JSONObject()
+                        if(qData.answerData != null){
+                            val getrow: Any = qData.answerData!!
+                            val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                            if(t["selectionOptionId"] != null) {
+                                val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                val text = t["selectionOptionText"].toString()
+                                jonet.put("selectionOptionId", id)
+                                jonet.put("selectionOptionText", text)
+                                jone.put("answerData", jonet)
+                            }
+                        }
+
+                        jARRAY.put(jone)
+                    }
                 }
 
 
@@ -724,9 +873,10 @@ class AllGovQuestionsFragment : Fragment() {
         whichBorrowerId: Int,
         s1: String
     ) {
-        answerData = JSONArray()
+
         governmentParams.Questions.let { questions ->
             for (qData in questions) {
+                answerData = JSONArray()
                 if (qData.id == 140) {
                     var jone = JSONObject()
                     jone.put("id", qData.id)
@@ -745,7 +895,7 @@ class AllGovQuestionsFragment : Fragment() {
                         binding!!.qv10.visibility = View.VISIBLE
 
                         if (i == 0) {
-                            var jone = JSONObject()
+                            var jonedata = JSONObject()
                            // val intDemo = strDemo!!.floatToInt()
 
                             if(s == "0") {
@@ -761,32 +911,33 @@ class AllGovQuestionsFragment : Fragment() {
                                     t["remainingMonth"].toString().toDouble().toInt()
 
 
-                                jone.put("liabilityTypeId", liabilityTypeId)
-                                jone.put("liabilityName", liabilityName)
-                                jone.put("remainingMonth", remainingMonth)
-                                jone.put("monthlyPayment", monthlyPayment)
-                                jone.put("name", name)
+                                jonedata.put("liabilityTypeId", liabilityTypeId)
+                                jonedata.put("liabilityName", liabilityName)
+                                jonedata.put("remainingMonth", remainingMonth)
+                                jonedata.put("monthlyPayment", monthlyPayment)
+                                jonedata.put("name", name)
                                 binding!!.qvs101.text = liabilityName
                                 binding!!.qva101.text = monthlyPayment.toString()
+
                             }else{
 
-                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
-                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
-                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
-                                jone.put("name", childAnswerList.get(i).name)
+                                jonedata.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jonedata.put("name", childAnswerList.get(i).name)
 
                                 binding!!.qvs101.text =  childAnswerList.get(i).liabilityName
                                 binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
                             }
-                            answerData.put(jone)
+                            answerData.put(jonedata)
                             binding!!.one.visibility = View.VISIBLE
                             binding!!.qva101.visibility = View.VISIBLE
 
 
                         } else if (i == 1) {
 
-
+                            var jonedata = JSONObject()
                             if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
                                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
@@ -801,31 +952,32 @@ class AllGovQuestionsFragment : Fragment() {
 
 
 
-                                jone.put("liabilityTypeId", liabilityTypeId)
-                                jone.put("liabilityName", liabilityName)
-                                jone.put("remainingMonth", remainingMonth)
-                                jone.put("monthlyPayment", monthlyPayment)
-                                jone.put("name", name)
+                                jonedata.put("liabilityTypeId", liabilityTypeId)
+                                jonedata.put("liabilityName", liabilityName)
+                                jonedata.put("remainingMonth", remainingMonth)
+                                jonedata.put("monthlyPayment", monthlyPayment)
+                                jonedata.put("name", name)
                                 binding!!.qvs102.text = liabilityName
                                 binding!!.qva102.text = monthlyPayment.toString()
                             }else {
 
-                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
-                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
-                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
-                                jone.put("name", childAnswerList.get(i).name)
+                                jonedata.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jonedata.put("name", childAnswerList.get(i).name)
 
                                 binding!!.qvs102.text =  childAnswerList.get(i).liabilityName
                                 binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
 
                             }
 
-                            answerData.put(jone)
+                            answerData.put(jonedata)
                             binding!!.two.visibility = View.VISIBLE
                             binding!!.qva102.visibility = View.VISIBLE
 
                         } else if (i == 2) {
+                            var jonedata = JSONObject()
                             if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
                                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
@@ -840,27 +992,27 @@ class AllGovQuestionsFragment : Fragment() {
 
 
 
-                                jone.put("liabilityTypeId", liabilityTypeId)
-                                jone.put("liabilityName", liabilityName)
-                                jone.put("remainingMonth", remainingMonth)
-                                jone.put("monthlyPayment", monthlyPayment)
-                                jone.put("name", name)
+                                jonedata.put("liabilityTypeId", liabilityTypeId)
+                                jonedata.put("liabilityName", liabilityName)
+                                jonedata.put("remainingMonth", remainingMonth)
+                                jonedata.put("monthlyPayment", monthlyPayment)
+                                jonedata.put("name", name)
 
                                 binding!!.qvs103.text = liabilityName
                                 binding!!.qva103.text = monthlyPayment.toString()
 
                             }else{
-                                jone.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
-                                jone.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                jone.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
-                                jone.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
-                                jone.put("name", childAnswerList.get(i).name)
+                                jonedata.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                jonedata.put("name", childAnswerList.get(i).name)
 
                                 binding!!.qvs103.text =  childAnswerList.get(i).liabilityName
                                 binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
 
                             }
-                            answerData.put(jone)
+                            answerData.put(jonedata)
                             binding!!.three.visibility = View.VISIBLE
                             binding!!.qva103.visibility = View.VISIBLE
 
@@ -877,5 +1029,67 @@ class AllGovQuestionsFragment : Fragment() {
 
     }
 
+    fun apidemographic(asianChildList: ArrayList<DemoGraphicRaceDetail>) {
+        val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
+
+        var race :  RaceModel = RaceModel()
+        race.raceId = 2
+        for (i in 0 until asianChildList.size) {
+               var deatil :  Detailmodel = Detailmodel()
+               deatil.detailID = asianChildList.get(i).detailId!!
+               deatil.isOther = asianChildList.get(i).isOther!!
+               race.raceDetails!!.add(deatil)
+
+
+//            if(item.detailId == 7){
+//                item.otherRace = binding.edDetails.text.toString()
+//            }
+        }
+        racearr!!.add(race)
+
+
+    }
+    fun nativeHawaiianChildList(asianChildList: ArrayList<DemoGraphicRaceDetail>) {
+        val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
+
+
+        var race :  RaceModel = RaceModel()
+        race.raceId = 4
+        for (i in 0 until asianChildList.size) {
+            var deatil :  Detailmodel = Detailmodel()
+            deatil.detailID = asianChildList.get(i).detailId!!
+            deatil.isOther = asianChildList.get(i).isOther!!
+            race.raceDetails!!.add(deatil)
+
+
+//            if(item.detailId == 7){
+//                item.otherRace = binding.edDetails.text.toString()
+//            }
+        }
+        racearr!!.add(race)
+
+    }
+
+
+    fun nativehispanic(asianChildList: ArrayList<EthnicityDetailDemoGraphic>) {
+        val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
+
+            var race :  EthnicityModel = EthnicityModel()
+        race.ethnicityId = 1
+        for (i in 0 until asianChildList.size) {
+            var deatil :  Detailmodel = Detailmodel()
+            deatil.detailID = asianChildList.get(i).detailId!!
+            deatil.isOther = asianChildList.get(i).isOther!!
+            race.ethnicityDetails!!.add(deatil)
+
+
+//            if(item.detailId == 7){
+//                item.otherRace = binding.edDetails.text.toString()
+//            }
+        }
+
+        ethnicityarry!!.add(0,race)
+
+    }
 
 }

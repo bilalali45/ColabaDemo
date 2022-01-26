@@ -11,10 +11,10 @@ data class ChildAnswerParent(
 @Parcelize
 data class ChildAnswerData(
     val liabilityName: String,
-    val liabilityTypeId: Int,
-    val monthlyPayment: Int,
+    val liabilityTypeId: Int = 0,
+    val monthlyPayment: Int = 0,
     val name: String,
-    val remainingMonth: Int
+    val remainingMonth: Int = 0
 ):Parcelable
 
 

@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.rnsoft.colabademo.AppConstant.loanid
 import com.rnsoft.colabademo.databinding.GovtQuestionsActivityLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.coroutineScope
@@ -40,6 +41,7 @@ class GovtQuestionActivity : BaseActivity() {
         overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
         val extras = intent.extras
         extras?.let {
+
             loanApplicationId = it.getInt(AppConstant.loanApplicationId)
             loanPurpose = it.getString(AppConstant.loanPurpose)
             borrowerTabList = it.getIntegerArrayList(AppConstant.borrowerList) as ArrayList<Int>
