@@ -90,6 +90,7 @@ class AllGovQuestionsFragment : Fragment() {
         Questionids = ArrayList()
         demomodel = DemoGraphicModel()
         racearr = ArrayList()
+
         setUpDynamicTabs()
 
         binding!!.saveBtn.setOnClickListener {
@@ -131,12 +132,30 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     fun demographic() {
+        demomodel = data!!
+        racearr = data!!.race!!
+        ethnicityarry =  data!!.ethnicity!!
         for (qData in data!!.race!!) {
             if (qData.raceId == 2) {
+                var sb = StringBuilder()
+                for (i in 0 until qData.raceDetails!!.size) {
+                    sb.append(qData.raceDetails!!.get(i).name + ",")
+                    textasian.text = sb
+                    asian_layout_q1.visibility = View.VISIBLE
+                }
+
+
                 asiancheckbox.isChecked = true
             } else if (qData.raceId == 3) {
                 checkboxblack.isChecked = true
             }else if (qData.raceId == 4) {
+                var sb = StringBuilder()
+                for (i in 0 until qData.raceDetails!!.size) {
+                    sb.append(qData.raceDetails!!.get(i).name + ",")
+                    nativehawaiantxt.text = sb
+                    nativehawaian.visibility = View.VISIBLE
+
+                }
                 americannativecheckbox.isChecked = true
             } else if (qData.raceId == 5) {
                 whitecheckbox.isChecked = true
@@ -161,8 +180,8 @@ class AllGovQuestionsFragment : Fragment() {
             val sb = StringBuilder()
             if (qData.ethnicityId == 1) {
                 HispanicorLatino.isChecked = true
-                for (i in 0 until asianChildList.size) {
-                    sb.append(asianChildList.get(i).name + ",")
+                for (i in 0 until  qData!!.ethnicityDetails!!.size) {
+                    sb.append(qData!!.ethnicityDetails!!.get(i).name + ",")
                     ethtxt.text = sb
                     ethnicity_layout.visibility = View.VISIBLE
                 }
