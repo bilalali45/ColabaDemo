@@ -1,9 +1,8 @@
-package com.rnsoft.colabademo.activities
+package com.rnsoft.colabademo.activities.govtquestions
 
 import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
-import com.rnsoft.colabademo.EthnicityModel
 
 
 class DemoGraphicModel {

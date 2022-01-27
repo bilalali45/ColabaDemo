@@ -7,14 +7,12 @@ import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitati
 import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import com.rnsoft.colabademo.activities.model.*
 import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import com.google.gson.JsonObject
-import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
-import com.rnsoft.colabademo.activities.DemoGraphicModel
-import com.rnsoft.colabademo.activities.WebResponseDemo
+import com.rnsoft.colabademo.activities.govtquestions.DemoGetGovermentmodel
+import com.rnsoft.colabademo.activities.govtquestions.DemoGraphicModel
+import com.rnsoft.colabademo.activities.govtquestions.WebResponseDemo
 
 import retrofit2.http.Body
 

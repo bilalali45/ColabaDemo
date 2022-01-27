@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
-import com.rnsoft.colabademo.activities.RaceModel
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.AsianLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields

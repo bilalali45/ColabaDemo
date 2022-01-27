@@ -1,8 +1,7 @@
-package com.rnsoft.colabademo.activities
+package com.rnsoft.colabademo.activities.govtquestions
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.rnsoft.colabademo.Detailmodel
 
 class DemoGetGovermentmodel {
 
@@ -19,4 +18,5 @@ class DemoGetGovermentmodel {
     @SerializedName("Questions")
     @Expose
     var Questions: ArrayList<GetGovermentmodel>? = ArrayList()
+
 }

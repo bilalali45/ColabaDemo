@@ -84,7 +84,7 @@ class BankruptcyFragment:BaseFragment() {
 
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setdata(
-                        "",
+                        "Yes",
                         selectedValues,
                         whichBorrowerId,
                         "9",

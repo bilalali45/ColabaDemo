@@ -17,17 +17,14 @@ import com.google.gson.Gson
 import com.google.gson.internal.LinkedTreeMap
 import com.google.gson.reflect.TypeToken
 import com.rnsoft.colabademo.*
+import com.rnsoft.colabademo.AppConstant.Questionids
 import com.rnsoft.colabademo.AppConstant.Questions
 import com.rnsoft.colabademo.AppConstant.answerData
 import com.rnsoft.colabademo.AppConstant.ethnicityarry
 import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.AppConstant.jsonaddquestion
 import com.rnsoft.colabademo.AppConstant.racearr
-import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
-import com.rnsoft.colabademo.activities.DemoGraphicModel
-import com.rnsoft.colabademo.activities.GetGovermentmodel
-import com.rnsoft.colabademo.activities.RaceModel
-import com.rnsoft.colabademo.activities.govtquestions.model.answerData
+import com.rnsoft.colabademo.activities.govtquestions.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
@@ -37,6 +34,7 @@ import org.greenrobot.eventbus.ThreadMode
 import org.json.JSONArray
 import org.json.JSONObject
 import timber.log.Timber
+import java.lang.StringBuilder
 import javax.inject.Inject
 
 
@@ -56,6 +54,8 @@ class AllGovQuestionsFragment : Fragment() {
     var ownershipInterestAnswerData1: BorrowerOneQuestions.OwnershipInterestAnswerData? = null
     var ownershipInterestAnswerData2: BorrowerOneQuestions.OwnershipInterestAnswerData? = null
     private var governmentParams = GovernmentParams()
+    var questiondatalist: ArrayList<QuestionData>? = ArrayList()
+
     private lateinit var lastQData: QuestionData
     var row: View? = null
     var position: Int? = 0
@@ -87,6 +87,7 @@ class AllGovQuestionsFragment : Fragment() {
         arguments?.let {
             tabBorrowerId = it.getInt(AppConstant.tabBorrowerId)
         }
+        Questionids = ArrayList()
         demomodel = DemoGraphicModel()
         racearr = ArrayList()
         setUpDynamicTabs()
@@ -157,10 +158,17 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
         for (qData in data!!.ethnicity!!) {
+            val sb = StringBuilder()
             if (qData.ethnicityId == 1) {
                 HispanicorLatino.isChecked = true
+                for (i in 0 until asianChildList.size) {
+                    sb.append(asianChildList.get(i).name + ",")
+                    ethtxt.text = sb
+                    ethnicity_layout.visibility = View.VISIBLE
+                }
             } else if (qData.ethnicityId == 2) {
                 notsHispanicorLatino.isChecked = true
+
             }else if (qData.ethnicityId == 3) {
                 ethnicidonotwishrbbox.isChecked = true
             }
@@ -265,6 +273,16 @@ class AllGovQuestionsFragment : Fragment() {
         datalist = gson.fromJson<DemoGetGovermentmodel>(tag, object : TypeToken<DemoGetGovermentmodel?>() {}.type)
         return datalist
     }
+
+
+    fun getquestiondata(tag: String?): List<QuestionData?>? {
+        var datalist: List<QuestionData> = ArrayList<QuestionData>()
+        // var datalist: QuestionData = QuestionData()
+        val gson = Gson()
+        datalist = gson.fromJson<List<QuestionData>>(tag, object : TypeToken<List<QuestionData?>?>() {}.type)
+        return datalist
+    }
+
 
     private fun listnser() {
 
@@ -409,13 +427,23 @@ class AllGovQuestionsFragment : Fragment() {
                 val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
                 findNavController().navigate(R.id.action_asian, bundle)
+            }else{
+                asian_layout_q1.visibility = View.GONE
             }
         }
-        binding!!.nativehawaian.setOnClickListener {
-            val copyNativeHawaiianChildList =
-                java.util.ArrayList(nativeHawaiianChildList.map { it.copy() })
-            val bundle = bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
-            findNavController().navigate(R.id.action_native_hawai, bundle)
+
+
+        binding!!.americannativecheckbox.setOnClickListener {
+            if(americannativecheckbox.isChecked) {
+                nativehawaian.visibility =View.GONE
+                val copyNativeHawaiianChildList =
+                    java.util.ArrayList(nativeHawaiianChildList.map { it.copy() })
+                val bundle =
+                    bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
+                findNavController().navigate(R.id.action_native_hawai, bundle)
+            }else{
+                nativehawaian.visibility =View.GONE
+            }
         }
 
 //               var jsonv = JSONObject()
@@ -423,14 +451,14 @@ class AllGovQuestionsFragment : Fragment() {
 //               race.put(jsonv)
         binding!!.checkbox.setOnClickListener {
            if(checkbox.isChecked){
-               var race :  RaceModel = RaceModel()
+               var race : RaceModel = RaceModel()
                race.raceId = 1
                racearr!!.add(race)
            }
         }
         binding!!.checkboxblack.setOnClickListener {
             if(checkboxblack.isChecked){
-                var race :  RaceModel = RaceModel()
+                var race : RaceModel = RaceModel()
                 race.raceId = 3
                 racearr!!.add(race)
             }
@@ -439,7 +467,7 @@ class AllGovQuestionsFragment : Fragment() {
 
         binding!!.whitecheckbox.setOnClickListener {
             if(whitecheckbox.isChecked){
-                var race :  RaceModel = RaceModel()
+                var race : RaceModel = RaceModel()
                 race.raceId = 5
                 racearr!!.add(race)
             }
@@ -447,7 +475,7 @@ class AllGovQuestionsFragment : Fragment() {
 
         binding!!.idonotwishcheckbox.setOnClickListener {
             if(idonotwishcheckbox.isChecked){
-                var race :  RaceModel = RaceModel()
+                var race : RaceModel = RaceModel()
                 race.raceId = 6
                 racearr!!.add(race)
             }
@@ -455,12 +483,13 @@ class AllGovQuestionsFragment : Fragment() {
 
         binding!!.ethnicidonotwishrbbox.setOnClickListener {
             if(ethnicidonotwishrbbox.isChecked){
-                var eth :  EthnicityModel = EthnicityModel()
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 3
                 //ethnicityarry!!.add(eth)
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.notsHispanicorLatino.isChecked = false
                 ethnicityarry!!.add(0,eth)
+                ethnicity_layout.visibility = View.GONE
             }
         }
 
@@ -470,6 +499,7 @@ class AllGovQuestionsFragment : Fragment() {
             if(HispanicorLatino.isChecked){
                 binding!!.notsHispanicorLatino.isChecked = false
                 binding!!.ethnicidonotwishrbbox.isChecked = false
+                ethnicity_layout.visibility = View.GONE
                 val copyEthnicityChildList =
                     java.util.ArrayList(ethnicityChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.ethnicityChildList to copyEthnicityChildList)
@@ -479,22 +509,24 @@ class AllGovQuestionsFragment : Fragment() {
 
         binding!!.notsHispanicorLatino.setOnClickListener {
             if(notsHispanicorLatino.isChecked){
-                var eth :  EthnicityModel = EthnicityModel()
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 2
                 //ethnicityarry!!.add(eth)
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.sexidontsharerb.isChecked = false
                 ethnicityarry!!.add(0,eth)
+                ethnicity_layout.visibility = View.GONE
             }
         }
 
         binding!!.sexidontsharerb.setOnClickListener {
             if(sexidontsharerb.isChecked){
-                var eth :  EthnicityModel = EthnicityModel()
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 3
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.notsHispanicorLatino.isChecked = false
                 ethnicityarry!!.add(0,eth)
+                ethnicity_layout.visibility = View.GONE
             }
         }
 
@@ -787,7 +819,7 @@ class AllGovQuestionsFragment : Fragment() {
     ) {
         when (questionnumber) {
             "1" -> {
-                if(detailTitle == "No"){
+                if(detailTitle == "No"  || detailTitle.isEmpty()){
                     binding!!.qv1.visibility = View.GONE
                     binding!!.qva1.text = "$" + title
                     updatedata(questionId, title, detailTitle, questionId,s)
@@ -806,7 +838,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "2" -> {
-                if(detailTitle == "No"){
+                if(detailTitle == "No"  || detailTitle.isEmpty()){
 
                     binding!!.qv2.visibility = View.GONE
                     binding!!.qv22.visibility = View.GONE
@@ -827,7 +859,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "3" -> {
-                if(detailTitle == "No"){
+                if(detailTitle == "No" || detailTitle.isEmpty()){
 
                     binding!!.qv3.visibility = View.GONE
                     binding!!.qvs3.text = "Detail"
@@ -844,7 +876,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "4" -> {
-                if(detailTitle == "No"){
+                if(detailTitle == "No" || detailTitle.isEmpty()){
 
                     binding!!.qv4.visibility = View.GONE
                     //   binding!!.qvs4.text = title
@@ -864,7 +896,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "5" -> {
-                if(detailTitle == "No") {
+                if(detailTitle == "No" || detailTitle.isEmpty()) {
                     binding!!.qv5.visibility = View.GONE
                     // binding!!.qvs5.text = title
 
@@ -884,7 +916,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "6" -> {
-                if(detailTitle == "No") {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv6.visibility = View.GONE
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
@@ -902,7 +934,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "7" -> {
-                if(detailTitle == "No") {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv7.visibility = View.GONE
                     binding!!.qvs7.text = title
                     updatedata(questionId, title, detailTitle, questionId, s)
@@ -916,7 +948,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "8" -> {
-                if(detailTitle == "No") {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv8.visibility = View.GONE
                     // binding!!.qvs8.text = title
 
@@ -935,7 +967,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "9" -> {
 
-                if(detailTitle == "No") {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv9.visibility = View.GONE
                     //  binding!!.qvs9.text = title
 
@@ -963,43 +995,45 @@ class AllGovQuestionsFragment : Fragment() {
 
     private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int, s: String) {
         governmentParams.Questions.let { questions ->
-            jARRAY = JSONArray()
-            jsonaddquestion = JSONObject()
-             Questions = ArrayList()
-            for (qData in questions) {
-                if (questionId == qData.id) {
-                    if (questionId == 130) {
-                        var jone = JSONObject()
-                        jone.put("id", qData.id)
-                        jone.put("parentQuestionId", qData.parentQuestionId)
-                        jone.put("headerText", qData.headerText)
-                        jone.put("questionSectionId", qData.questionSectionId)
-                        jone.put("ownTypeId", qData.ownTypeId)
-                        jone.put("firstName", qData.firstName)
-                        jone.put("lastName", qData.lastName)
-                        jone.put("question", qData.question)
+          if(s == "0"){
+              jARRAY = JSONArray()
+              jsonaddquestion = JSONObject()
+              Questions = ArrayList()
+              for (qData in questions) {
+                  if (questionId == qData.id) {
+                      if (questionId == 130) {
+                          var jone = JSONObject()
+                          jone.put("id", qData.id)
+                          jone.put("parentQuestionId", qData.parentQuestionId)
+                          jone.put("headerText", qData.headerText)
+                          jone.put("questionSectionId", qData.questionSectionId)
+                          jone.put("ownTypeId", qData.ownTypeId)
+                          jone.put("firstName", qData.firstName)
+                          jone.put("lastName", qData.lastName)
+                          jone.put("question", qData.question)
 
-                        jone.put("selectionOptionId", qData.selectionOptionId)
-                        jone.put("answerData", qData.answerData)
-                        jARRAY.put(jone)
-                        var jtwo = JSONArray()
-                        var jone1 = JSONObject()
-                        jone1.put("id", "131")
-                        jone1.put("parentQuestionId", "130")
-                        jone1.put("headerText", "Type")
-                        jone1.put("questionSectionId", "3")
-                        jone1.put("ownTypeId", "1")
-                        jone1.put("firstName", qData.firstName)
-                        jone1.put("lastName", qData.lastName)
-                        jone1.put("question", "Which Type?")
-                        jone1.put("answer", null)
-                        jone1.put("answerDetail", null)
-                        jone1.put("selectionOptionId", null)
-                        var jone3 = JSONObject()
-                        jone3.put("2", title)
-                        jtwo.put(jone3)
-                        jone1.put("answerData", jtwo)
-                        jARRAY.put(jone1)
+                          jone.put("selectionOptionId", qData.selectionOptionId)
+                          jone.put("answerData", qData.answerData)
+                          jARRAY.put(jone)
+                          var jtwo = JSONArray()
+                          var jone1 = JSONObject()
+                          jone1.put("id", "131")
+                          jone1.put("parentQuestionId", "130")
+                          jone1.put("headerText", "Type")
+                          jone1.put("questionSectionId", "3")
+                          jone1.put("ownTypeId", "1")
+                          jone1.put("firstName", qData.firstName)
+                          jone1.put("lastName", qData.lastName)
+                          jone1.put("question", "Which Type?")
+                          jone1.put("answer", null)
+                          jone1.put("answerDetail", null)
+                          jone1.put("selectionOptionId", null)
+                          var jone3 = JSONObject()
+                          jone3.put("2", title)
+                          jtwo.put(jone3)
+                          jone1.put("answerData", jtwo)
+                          jARRAY.put(jone1)
+
 
 
 //                        var govern :  GetGovermentmodel = GetGovermentmodel()
@@ -1045,35 +1079,37 @@ class AllGovQuestionsFragment : Fragment() {
 //                        Questions!!.add(govern1)
 
 
-                    } else {
-                        if(questionId == 10) {
-                            var jone = JSONObject()
-                            jone.put("id", 11)
-                            jone.put("parentQuestionId", qData.id)
-                            jone.put("headerText", qData.headerText)
-                            jone.put("questionSectionId", qData.questionSectionId)
-                            jone.put("ownTypeId", qData.ownTypeId)
-                            jone.put("firstName", qData.firstName)
-                            jone.put("lastName", qData.lastName)
-                            jone.put("question", qData.question)
-                            jone.put("answer", detailTitle)
-                            jone.put("answerDetail", title)
-                            jone.put("selectionOptionId", qData.selectionOptionId)
-                            jARRAY.put(jone)
+                      } else {
+                          if (questionId == 10) {
+                              var jone = JSONObject()
+                              jone.put("id", 11)
+                              jone.put("parentQuestionId", qData.id)
+                              jone.put("headerText", qData.headerText)
+                              jone.put("questionSectionId", qData.questionSectionId)
+                              jone.put("ownTypeId", qData.ownTypeId)
+                              jone.put("firstName", qData.firstName)
+                              jone.put("lastName", qData.lastName)
+                              jone.put("question", qData.question)
+                              jone.put("answer", detailTitle)
+                              jone.put("answerDetail", title)
+                              jone.put("selectionOptionId", qData.selectionOptionId)
+                              jARRAY.put(jone)
 
-                        }else if (questionId != 131 && questionId != 140 && questionId != 11) {
-                            var jone = JSONObject()
-                            jone.put("id", qData.id)
-                            jone.put("parentQuestionId", qData.parentQuestionId)
-                            jone.put("headerText", qData.headerText)
-                            jone.put("questionSectionId", qData.questionSectionId)
-                            jone.put("ownTypeId", qData.ownTypeId)
-                            jone.put("firstName", qData.firstName)
-                            jone.put("lastName", qData.lastName)
-                            jone.put("question", qData.question)
-                            jone.put("answer", detailTitle)
-                            jone.put("answerDetail", title)
-                            jone.put("selectionOptionId", qData.selectionOptionId)
+
+                          } else if (questionId != 131 && questionId != 140) {
+                              var jone = JSONObject()
+                              jone.put("id", qData.id)
+                              jone.put("parentQuestionId", qData.parentQuestionId)
+                              jone.put("headerText", qData.headerText)
+                              jone.put("questionSectionId", qData.questionSectionId)
+                              jone.put("ownTypeId", qData.ownTypeId)
+                              jone.put("firstName", qData.firstName)
+                              jone.put("lastName", qData.lastName)
+                              jone.put("question", qData.question)
+                              jone.put("answer", detailTitle)
+                              jone.put("answerDetail", title)
+                              jone.put("selectionOptionId", qData.selectionOptionId)
+
 
 //                            var govern :  GetGovermentmodel = GetGovermentmodel()
 //                            govern.id = qData.id
@@ -1096,87 +1132,183 @@ class AllGovQuestionsFragment : Fragment() {
 //                            }
 
 
-
-                            var jonet = JSONObject()
-                            if(qData.answerData != null){
-                                val getrow: Any = qData.answerData!!
-                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                                val id = t["selectionOptionId"].toString().toDouble().toInt()
-                                val text = t["selectionOptionText"].toString()
-                                jonet.put("selectionOptionId",id)
-                                jonet.put("selectionOptionText",text)
+                              var jonet = JSONObject()
+                              if (qData.answerData != null) {
+                                  val getrow: Any = qData.answerData!!
+                                  val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                  val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                  if (t["selectionOptionId"] != null) {
+                                      val text = t["selectionOptionText"].toString()
+                                      jonet.put("selectionOptionId", id)
+                                      jonet.put("selectionOptionText", text)
+                                  }
 //                                var ans :  answerData = answerData()
 //                                ans.selectionOptionId = id
 //                                ans.selectionOptionText =text
-                               // govern.answerData = ans
+                                  // govern.answerData = ans
 
 
-                            }
-                            jone.put("answerData", jonet)
-                            jARRAY.put(jone)
-
-                           // Questions!!.add(govern)
-
-                        }
-                    }
-
-                } else {
-                    if (qData.id != 140 && qData.id != 131 && qData.id != 11) {
-                        var jone = JSONObject()
-                        jone.put("id", qData.id)
-                        jone.put("parentQuestionId", qData.parentQuestionId)
-                        jone.put("headerText", qData.headerText)
-                        jone.put("questionSectionId", qData.questionSectionId)
-                        jone.put("ownTypeId", qData.ownTypeId)
-                        jone.put("firstName", qData.firstName)
-                        jone.put("lastName", qData.lastName)
-                        jone.put("question", qData.question)
-                        jone.put("answer", qData.answer)
-                        jone.put("answerDetail", qData.answerDetail)
-                        jone.put("selectionOptionId", qData.selectionOptionId)
-
-//                        var govern :  GetGovermentmodel = GetGovermentmodel()
-//                        govern.id = qData.id
-//                        govern.parentQuestionId = qData.parentQuestionId
-//                        govern.headerText = qData.headerText
-//                        govern.questionSectionId = qData.questionSectionId!!
-//                        govern.ownTypeId = qData.ownTypeId!!
-//                        govern.firstName= qData.firstName
-//                        govern.lastName = qData.lastName
-//                        govern.question = qData.question
-//                        govern.answer = qData.question
-//                        govern.answerDetail = qData.answerDetail
+                              }
+                              jone.put("answerData", jonet)
+                              jARRAY.put(jone)
 
 
+                              // Questions!!.add(govern)
+
+                          }
+                      }
+
+                  } else {
+
+
+                      if (qData.id != 140 && qData.id != 131) {
+                          var jone = JSONObject()
+                          jone.put("id", qData.id)
+                          jone.put("parentQuestionId", qData.parentQuestionId)
+                          jone.put("headerText", qData.headerText)
+                          jone.put("questionSectionId", qData.questionSectionId)
+                          jone.put("ownTypeId", qData.ownTypeId)
+                          jone.put("firstName", qData.firstName)
+                          jone.put("lastName", qData.lastName)
+                          jone.put("question", qData.question)
+                          jone.put("answer", qData.answer)
+                          jone.put("answerDetail", qData.answerDetail)
+                          jone.put("selectionOptionId", qData.selectionOptionId)
+
+                          var jonet = JSONObject()
+                          if (qData.answerData != null) {
+                              val getrow: Any = qData.answerData!!
+                              val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                              if (t["selectionOptionId"] != null) {
+                                  val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                  val text = t["selectionOptionText"].toString()
+                                  jonet.put("selectionOptionId", id)
+                                  jonet.put("selectionOptionText", text)
+                                  jone.put("answerData", jonet)
+
+                              }
+                          }
+
+
+                          // Questions!!.add(govern)
+                          jARRAY.put(jone)
+                      }
+                  }
 
 
 
 
-                        var jonet = JSONObject()
-                        if(qData.answerData != null){
-                            val getrow: Any = qData.answerData!!
-                            val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                            if(t["selectionOptionId"] != null) {
-                                val id = t["selectionOptionId"].toString().toDouble().toInt()
-                                val text = t["selectionOptionText"].toString()
-                                jonet.put("selectionOptionId", id)
-                                jonet.put("selectionOptionText", text)
-                                jone.put("answerData", jonet)
-//                                var ans :  answerData = answerData()
-//                                ans.selectionOptionId = id
-//                                ans.selectionOptionText =title
-                                //govern.answerData = ans
-                            }
-                        }
 
 
-                       // Questions!!.add(govern)
-                        jARRAY.put(jone)
-                    }
-                }
 
 
-            }
+              }
+          }else{
+              var quesationdataview = getquestiondata(jARRAY.toString())
+
+             //  //for (qData in quesationdataview!!) {
+                  for (i in 0 until quesationdataview!!.size) {
+                  if (questionId == quesationdataview.get(i)!!.id) {
+
+                      if (questionId == 130) {
+                          var jone = JSONObject()
+                          jone.put("id", quesationdataview.get(i)!!.id)
+                          jone.put("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
+                          jone.put("headerText", quesationdataview.get(i)!!.headerText)
+                          jone.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                          jone.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                          jone.put("firstName", quesationdataview.get(i)!!.firstName)
+                          jone.put("lastName", quesationdataview.get(i)!!.lastName)
+                          jone.put("question", quesationdataview.get(i)!!.question)
+
+                          jone.put("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                          jone.put("answerData", quesationdataview.get(i)!!.answerData)
+                          jARRAY.put(i,jone)
+                          var jtwo = JSONArray()
+                          var jone1 = JSONObject()
+                          jone1.put("id", "131")
+                          jone1.put("parentQuestionId", "130")
+                          jone1.put("headerText", "Type")
+                          jone1.put("questionSectionId", "3")
+                          jone1.put("ownTypeId", "1")
+                          jone1.put("firstName", quesationdataview.get(i)!!.firstName)
+                          jone1.put("lastName", quesationdataview.get(i)!!.lastName)
+                          jone1.put("question", "Which Type?")
+                          jone1.put("answer", null)
+                          jone1.put("answerDetail", null)
+                          jone1.put("selectionOptionId", null)
+                          var jone3 = JSONObject()
+                          jone3.put("2", title)
+                          jtwo.put(jone3)
+                          jone1.put("answerData", jtwo)
+                          jARRAY.put(i+1,jone1)
+
+                          break
+
+                      } else {
+                          if (questionId == 11) {
+                              var jone = JSONObject()
+                              jone.put("id", 11)
+                              jone.put("parentQuestionId", quesationdataview.get(i)!!.id)
+                              jone.put("headerText", quesationdataview.get(i)!!.headerText)
+                              jone.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                              jone.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                              jone.put("firstName", quesationdataview.get(i)!!.firstName)
+                              jone.put("lastName", quesationdataview.get(i)!!.lastName)
+                              jone.put("question", quesationdataview.get(i)!!.question)
+                              jone.put("answer", title)
+                              jone.put("answerDetail", detailTitle)
+                              jone.put("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                              jARRAY.put(i,jone)
+                              break
+
+                          } else if (questionId != 131 && questionId != 140 ) {
+                              var jone = JSONObject()
+                              jone.put("id", quesationdataview.get(i)!!.id)
+                              jone.put("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
+                              jone.put("headerText", quesationdataview.get(i)!!.headerText)
+                              jone.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                              jone.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                              jone.put("firstName", quesationdataview.get(i)!!.firstName)
+                              jone.put("lastName", quesationdataview.get(i)!!.lastName)
+                              jone.put("question", quesationdataview.get(i)!!.question)
+                              jone.put("answer", detailTitle)
+                              jone.put("answerDetail", title)
+                              jone.put("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+
+
+                              var jonet = JSONObject()
+                              if (quesationdataview.get(i)!!.answerData != null) {
+                                  val getrow: Any = quesationdataview.get(i)!!.answerData!!
+                                  val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                  if (t["selectionOptionId"] != null) {
+                                      val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                      val text = t["selectionOptionText"].toString()
+                                      jonet.put("selectionOptionId", id)
+                                      jonet.put("selectionOptionText", text)
+                                  }
+                              }
+                              jone.put("answerData", jonet)
+                              jARRAY.put(i,jone)
+                              break
+
+
+                              // Questions!!.add(govern)
+
+                          }
+                      }
+                  }
+
+
+
+
+
+
+              }
+
+          }
+
+
 
 //            questionmodel = DemoGetGovermentmodel()
 //            questionmodel.BorrowerId = governmentParams.BorrowerId
@@ -1375,13 +1507,17 @@ class AllGovQuestionsFragment : Fragment() {
     fun apidemographic(asianChildList: ArrayList<DemoGraphicRaceDetail>) {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
 
-        var race :  RaceModel = RaceModel()
+        val sb = StringBuilder()
+        var race : RaceModel = RaceModel()
         race.raceId = 2
         for (i in 0 until asianChildList.size) {
-               var deatil :  Detailmodel = Detailmodel()
+               var deatil : Detailmodel = Detailmodel()
                deatil.detailID = asianChildList.get(i).detailId!!
                deatil.isOther = asianChildList.get(i).isOther!!
                race.raceDetails!!.add(deatil)
+               sb.append(asianChildList.get(i).name + ",")
+               textasian.text = sb
+               asian_layout_q1.visibility = View.VISIBLE
 
 
 //            if(item.detailId == 7){
@@ -1394,15 +1530,18 @@ class AllGovQuestionsFragment : Fragment() {
     }
     fun nativeHawaiianChildList(asianChildList: ArrayList<DemoGraphicRaceDetail>) {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
-
-
-        var race :  RaceModel = RaceModel()
+        var race : RaceModel = RaceModel()
+        val sb = StringBuilder()
         race.raceId = 4
         for (i in 0 until asianChildList.size) {
-            var deatil :  Detailmodel = Detailmodel()
+            var deatil : Detailmodel = Detailmodel()
             deatil.detailID = asianChildList.get(i).detailId!!
             deatil.isOther = asianChildList.get(i).isOther!!
             race.raceDetails!!.add(deatil)
+
+            sb.append(asianChildList.get(i).name + ",")
+            nativehawaiantxt.text = sb
+            nativehawaian.visibility = View.VISIBLE
 
 
 //            if(item.detailId == 7){
@@ -1416,14 +1555,19 @@ class AllGovQuestionsFragment : Fragment() {
 
     fun nativehispanic(asianChildList: ArrayList<EthnicityDetailDemoGraphic>) {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
+        val sb = StringBuilder()
 
-            var race :  EthnicityModel = EthnicityModel()
+            var race : EthnicityModel = EthnicityModel()
         race.ethnicityId = 1
         for (i in 0 until asianChildList.size) {
-            var deatil :  Detailmodel = Detailmodel()
+            var deatil : Detailmodel = Detailmodel()
             deatil.detailID = asianChildList.get(i).detailId!!
             deatil.isOther = asianChildList.get(i).isOther!!
             race.ethnicityDetails!!.add(deatil)
+
+            sb.append(asianChildList.get(i).name + ",")
+            ethtxt.text = sb
+            ethnicity_layout.visibility = View.VISIBLE
 
 
 //            if(item.detailId == 7){

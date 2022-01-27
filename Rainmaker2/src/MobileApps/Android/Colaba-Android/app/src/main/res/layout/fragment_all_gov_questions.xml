@@ -6,6 +6,7 @@
     <data class="FragmentBinding" />
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
+    android:background="@color/half_white"
     android:layout_height="match_parent">
 
 
@@ -26,6 +27,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/_60sdp"
             android:fillViewport="true">
 
 
@@ -76,7 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                  android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="vertical"
                 android:background="@drawable/white_blue_border"
@@ -103,6 +105,7 @@
                     android:background="@null"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/_2sdp"
+                    android:textColor="@color/questionheader_view_color"
                     android:drawableEnd="@drawable/radiodraw"
                     app:layout_constraintStart_toStartOf="parent"
                     card_view:ignore="MissingConstraints" />
@@ -159,12 +162,13 @@
                     android:id="@+id/q1radioButtonNo"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     style="@style/radiobutton"
                     android:text="@string/no"
                     android:checked="false"
-                    app:layout_constraintStart_toStartOf="parent"
+
+                 app:layout_constraintStart_toStartOf="parent"
                     card_view:ignore="MissingConstraints" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -393,7 +397,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -420,6 +424,8 @@
                             android:background="@null"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
@@ -475,7 +481,7 @@
                         android:id="@+id/q3radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -529,7 +535,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -556,6 +562,8 @@
                             android:background="@null"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
@@ -611,7 +619,7 @@
                         android:id="@+id/q4radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -661,7 +669,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -688,6 +696,8 @@
                             android:background="@null"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
@@ -742,7 +752,7 @@
                         android:id="@+id/q5radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -794,7 +804,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -821,6 +831,8 @@
                             android:background="@null"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
@@ -875,7 +887,7 @@
                         android:id="@+id/q6radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -1063,7 +1075,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -1090,6 +1102,8 @@
                             android:background="@null"
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
                             card_view:ignore="MissingConstraints" />
@@ -1144,7 +1158,7 @@
                         android:id="@+id/q8radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -1197,7 +1211,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
@@ -1223,6 +1237,8 @@
                             android:button="@null"
                             android:background="@null"
                             android:layout_weight="1"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:layout_marginLeft="@dimen/_2sdp"
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
@@ -1278,7 +1294,7 @@
                         android:id="@+id/q9radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
@@ -1302,7 +1318,6 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
-                        android:layout_marginStart="16dp"
                         android:id="@+id/qh10"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
@@ -1330,8 +1345,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
                         android:padding="10dp"
@@ -1356,6 +1371,8 @@
                             android:button="@null"
                             android:background="@null"
                             android:layout_weight="1"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:layout_marginLeft="@dimen/_2sdp"
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
@@ -1506,8 +1523,8 @@
                         android:id="@+id/q10radioButtonNo"
                         android:layout_width="match_parent"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginLeft="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
                         style="@style/radiobutton"
                         android:text="@string/no"
                         android:checked="false"
@@ -1531,8 +1548,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:layout_marginStart="25dp"
+                        android:layout_marginStart="20dp"
                         android:textAllCaps="true"
+                        android:textStyle="bold"
                         android:text="@string/DemographicInformation"
                         android:fontFamily="@font/rubik_bold"
                         android:textSize="15sp"
@@ -1543,7 +1561,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginStart="25dp"
                         android:text="@string/race"
                         android:fontFamily="@font/rubik_medium"
@@ -1557,19 +1575,22 @@
                         android:orientation="vertical"
                         android:visibility="visible"
                         android:layout_marginTop="20dp"
-                        android:layout_marginStart="@dimen/_15sdp">
+                        android:layout_marginStart="@dimen/_10sdp">
 
                         <androidx.appcompat.widget.AppCompatCheckBox
                             android:id="@+id/checkbox"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_60sdp"
                             android:fontFamily="@font/rubik_regular"
-                            android:padding="@dimen/_15sdp"
+
+                            android:paddingEnd="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_10sdp"
                             android:layout_marginEnd="8dp"
                             android:text="@string/AmericanIndianorAlaskaNative"
-                            android:textColor="@color/grey_color_one"
                             android:textSize="14sp"
                             android:lines="1"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:button="@null"
                             android:drawablePadding="@dimen/_10sdp"
                             android:drawableRight="@drawable/cb_selector"
@@ -1586,21 +1607,19 @@
                             android:orientation="vertical"
                             android:visibility="visible"
                             android:background="@drawable/content_bg_with_drop_shadow"
-                            android:layout_height="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
                             android:id="@+id/layout_race_asian"
                             android:layout_marginRight="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp">
                             <androidx.appcompat.widget.AppCompatCheckBox
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/_50sdp"
                                 android:fontFamily="@font/rubik_regular"
                                 android:padding="@dimen/_15sdp"
                                 android:id="@+id/asiancheckbox"
-                                android:layout_marginEnd="8dp"
                                 android:text="@string/asian"
-                                android:textColor="@color/grey_color_one"
+                                android:textColor="@color/questionheader_view_color"
                                 android:textSize="14sp"
-
                                 android:lines="1"
                                 android:button="@null"
                                 android:drawablePadding="@dimen/_10sdp"
@@ -1643,6 +1662,7 @@
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="Abcd"
+                                        android:visibility="gone"
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
                                         card_view:ignore="MissingConstraints">
@@ -1655,6 +1675,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
+                                        android:id="@+id/textasian"
+                                        android:visibility="visible"
                                         android:text="sbcd"
                                         android:textSize="@dimen/_12ssp"
                                         android:textStyle="bold"
@@ -1749,9 +1771,10 @@
                             android:layout_marginEnd="8dp"
                             android:id="@+id/checkboxblack"
                             android:text="@string/BlackorAfricanAmerican"
-                            android:textColor="@color/grey_color_one"
                             android:textSize="14sp"
                             android:lines="1"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:button="@null"
                             android:drawablePadding="@dimen/_10sdp"
                             android:drawableRight="@drawable/cb_selector"
@@ -1770,18 +1793,18 @@
                             android:background="@drawable/content_bg_with_drop_shadow"
                             android:id="@+id/layout_race_checkbox2"
                             android:layout_marginRight="@dimen/_5sdp"
-                            android:layout_height="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp">
                             <androidx.appcompat.widget.AppCompatCheckBox
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/rubik_regular"
                                 android:padding="@dimen/_15sdp"
-                                android:layout_marginEnd="8dp"
                                 android:text="@string/NativeHawaiianorOtherPacificIslander"
-                                android:textColor="@color/grey_color_one"
                                 android:textSize="14sp"
                                 android:lines="1"
+                                android:textColor="@color/questionheader_view_color"
+
                                 android:id="@+id/americannativecheckbox"
                                 android:button="@null"
                                 android:drawablePadding="@dimen/_10sdp"
@@ -1827,6 +1850,7 @@
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="Abcd"
+                                        android:visibility="gone"
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
                                         card_view:ignore="MissingConstraints">
@@ -1840,6 +1864,7 @@
                                         android:layout_marginLeft="@dimen/_10sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="sbcd"
+                                        android:id="@+id/nativehawaiantxt"
                                         android:textSize="@dimen/_12ssp"
                                         android:textStyle="bold"
                                         card_view:ignore="MissingConstraints">
@@ -1932,7 +1957,7 @@
                             android:layout_marginEnd="8dp"
                             android:text="@string/White"
                             android:layout_height="@dimen/_60sdp"
-                            android:textColor="@color/grey_color_one"
+                            android:textColor="@color/questionheader_view_color"
                             android:textSize="14sp"
                             android:lines="1"
                             android:id="@+id/whitecheckbox"
@@ -1954,11 +1979,12 @@
                             android:padding="@dimen/_15sdp"
                             android:layout_marginEnd="8dp"
                             android:text="@string/Idonotwishtoprovidethisinformation"
-                            android:textColor="@color/grey_color_one"
                             android:textSize="14sp"
                             android:lines="1"
                             android:button="@null"
                             android:id="@+id/idonotwishcheckbox"
+                            android:textColor="@color/questionheader_view_color"
+
                             android:drawablePadding="@dimen/_10sdp"
                             android:drawableRight="@drawable/cb_selector"
                             android:background="@drawable/content_bg_with_drop_shadow"
@@ -1978,20 +2004,20 @@
                         android:layout_marginTop="30dp"
                         android:layout_marginStart="25dp"
                         android:text="@string/ethnicity"
+                        android:textStyle="bold"
                         android:fontFamily="@font/rubik_medium"
                         android:textSize="15sp"
-                        android:textColor="@color/grey_color_one"/>
+                        android:textColor="@color/dark_color_gray"/>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
-
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="vertical"
                         android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:padding="@dimen/_5sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -2004,7 +2030,7 @@
 
                         <androidx.appcompat.widget.AppCompatRadioButton
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_60sdp"
+                            android:layout_height="wrap_content"
                             android:text="@string/HispanicorLatino"
                             android:checked="false"
                             android:button="@null"
@@ -2012,6 +2038,7 @@
                             android:layout_weight="1"
                             android:layout_marginLeft="@dimen/_2sdp"
                             android:id="@+id/HispanicorLatino"
+                            android:textColor="@color/questionheader_view_color"
 
                             android:drawableEnd="@drawable/radiodraw"
                             app:layout_constraintStart_toStartOf="parent"
@@ -2042,6 +2069,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Other Hispanic or Latino: Argentinean"
                                 android:layout_marginLeft="@dimen/_5sdp"
+                                android:textSize="@dimen/_12ssp"
                                 card_view:ignore="MissingConstraints">
 
                             </androidx.appcompat.widget.AppCompatTextView>
@@ -2051,9 +2079,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:textStyle="bold"
-                                android:visibility="gone"
+                                android:id="@+id/ethtxt"
+                                android:visibility="visible"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_10ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -2067,7 +2096,7 @@
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
+                        android:layout_height="@dimen/_50sdp"
                         android:text="@string/notHispanicorLatino"
                         android:id="@+id/notsHispanicorLatino"
                         android:checked="false"
@@ -2076,25 +2105,29 @@
                         android:background="@drawable/white_blue_border"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
+                        android:textColor="@color/questionheader_view_color"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:padding="@dimen/_10sdp"
                         android:drawableEnd="@drawable/radiodraw"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_60sdp"
+                        android:layout_height="@dimen/_50sdp"
                         android:text="@string/Idonotwishtoprovidethisinformation"
                         android:checked="false"
                         android:button="@null"
                         android:layout_weight="1"
                         android:id="@+id/ethnicidonotwishrbbox"
+                        android:textColor="@color/questionheader_view_color"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
                         android:background="@drawable/white_blue_border"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:padding="@dimen/_10sdp"
                         android:drawableEnd="@drawable/radiodraw"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -2104,36 +2137,42 @@
                         android:layout_marginTop="30dp"
                         android:layout_marginStart="25dp"
                         android:text="@string/sex"
+                        android:textStyle="bold"
                         android:fontFamily="@font/rubik_medium"
                         android:textSize="15sp"
-                        android:textColor="@color/grey_color_one"/>
+                        android:textColor="@color/dark_color_gray"/>
 
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_50sdp"
                         android:text="@string/male"
                         android:checked="false"
                         android:button="@null"
                         android:layout_weight="1"
                         android:id="@+id/male"
+                        android:textColor="@color/questionheader_view_color"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
                         android:background="@drawable/white_blue_border"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:padding="@dimen/_10sdp"
                         android:drawableEnd="@drawable/radiodraw"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_50sdp"
                         android:text="@string/female"
                         android:checked="false"
                         android:button="@null"
                         android:id="@+id/female"
                         android:layout_weight="1"
+                        android:textColor="@color/questionheader_view_color"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
                         android:background="@drawable/white_blue_border"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
@@ -2145,17 +2184,19 @@
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_50sdp"
                         android:text="@string/Idonotwishtoprovidethisinformation"
                         android:checked="false"
                         android:button="@null"
                         android:id="@+id/sexidontsharerb"
                         android:layout_weight="1"
+                        android:textColor="@color/questionheader_view_color"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingStart="@dimen/_10sdp"
                         android:background="@drawable/white_blue_border"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:padding="@dimen/_10sdp"
                         android:drawableEnd="@drawable/radiodraw"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />

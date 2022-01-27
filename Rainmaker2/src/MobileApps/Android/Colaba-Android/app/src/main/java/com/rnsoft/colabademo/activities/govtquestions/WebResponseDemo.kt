@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities
+package com.rnsoft.colabademo.activities.govtquestions
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

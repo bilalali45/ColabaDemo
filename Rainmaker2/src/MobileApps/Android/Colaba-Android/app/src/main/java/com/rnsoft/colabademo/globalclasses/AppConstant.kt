@@ -1,8 +1,10 @@
 package com.rnsoft.colabademo
 
-import com.google.gson.JsonObject
-import com.rnsoft.colabademo.activities.GetGovermentmodel
-import com.rnsoft.colabademo.activities.RaceModel
+import android.app.Activity
+import android.content.Context
+import com.rnsoft.colabademo.activities.govtquestions.EthnicityModel
+import com.rnsoft.colabademo.activities.govtquestions.GetGovermentmodel
+import com.rnsoft.colabademo.activities.govtquestions.RaceModel
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -283,10 +285,11 @@ object AppConstant {
         var loanid :Int? = 0
         var race = JSONArray()
         var racearr: ArrayList<RaceModel>? = ArrayList()
-
         var ethnicityarry: ArrayList<EthnicityModel>? = ArrayList()
-
         var Questions: ArrayList<GetGovermentmodel>? = ArrayList()
+        var Questionids: ArrayList<Int>? = ArrayList()
+        var activity: Activity = Activity()
+
 
         // var race = JSONArray()
         //const val fakeUserToken:String = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIzODA2NCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJtb2JpbGV1c2VyMUBtYWlsaW5hdG9yLmNvbSIsIkZpcnN0TmFtZSI6Ik1vYmlsZSIsIkxhc3ROYW1lIjoiVXNlcjEiLCJUZW5hbnRDb2RlIjoibGVuZG92YSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6WyJNQ1UiLCJMb2FuIE9mZmljZXIiXSwiZXhwIjoxNjI1Njg4MjAzLCJpc3MiOiJyYWluc29mdGZuIiwiYXVkIjoicmVhZGVycyJ9.YDTSZPAATl1URzpMugemrvuMH4bXKQDRnJyEhzjRaaY"

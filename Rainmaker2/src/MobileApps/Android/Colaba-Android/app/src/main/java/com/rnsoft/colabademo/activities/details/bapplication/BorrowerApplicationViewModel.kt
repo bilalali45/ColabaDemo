@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rnsoft.colabademo.activities.DemoGetGovermentmodel
-import com.rnsoft.colabademo.activities.DemoGraphicModel
-import com.rnsoft.colabademo.activities.WebResponseDemo
+import com.rnsoft.colabademo.activities.govtquestions.DemoGetGovermentmodel
+import com.rnsoft.colabademo.activities.govtquestions.DemoGraphicModel
+import com.rnsoft.colabademo.activities.govtquestions.WebResponseDemo
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
