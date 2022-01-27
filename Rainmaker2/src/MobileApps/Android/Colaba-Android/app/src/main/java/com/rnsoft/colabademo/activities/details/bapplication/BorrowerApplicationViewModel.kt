@@ -551,7 +551,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-     suspend fun addgovernmetnjson(webtoken: String, governmentParams: DemoGetGovermentmodel) {
+     suspend fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
         val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
