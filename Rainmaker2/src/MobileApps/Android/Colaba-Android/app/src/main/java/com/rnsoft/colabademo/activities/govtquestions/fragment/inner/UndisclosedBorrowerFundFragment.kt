@@ -119,7 +119,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                     whichBorrowerId,
                     "1",
                     11,
-                    "1"
+                    "1","Yes"
                 )
             }
 

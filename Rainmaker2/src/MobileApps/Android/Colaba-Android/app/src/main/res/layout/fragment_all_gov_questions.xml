@@ -148,7 +148,7 @@
                         android:id="@+id/qva1"
                         android:textStyle="bold"
                         android:layout_marginLeft="@dimen/_5sdp"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:layout_height="wrap_content"
                         card_view:ignore="MissingConstraints">
 
@@ -332,7 +332,7 @@
                                 android:id="@+id/qva22"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -467,7 +467,7 @@
                                 android:id="@+id/qva3"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -605,7 +605,7 @@
                                 android:id="@+id/qva4"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -738,7 +738,7 @@
                                 android:id="@+id/qva5"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -873,7 +873,7 @@
                                 android:id="@+id/qva6"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -1144,7 +1144,7 @@
                                 android:id="@+id/qva8"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -1280,7 +1280,7 @@
                                 android:id="@+id/qva9"
                                 android:textStyle="bold"
                                 android:layout_marginLeft="@dimen/_5sdp"
-                                android:textSize="@dimen/_14ssp"
+                                android:textSize="@dimen/_12ssp"
                                 android:layout_height="wrap_content"
                                 card_view:ignore="MissingConstraints">
 
@@ -1414,6 +1414,8 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
+                                        android:textSize="@dimen/_12ssp"
+
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
                                         card_view:ignore="MissingConstraints">
@@ -1428,7 +1430,7 @@
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="$ 12,000"
-                                        android:textSize="@dimen/_14ssp"
+                                        android:textSize="@dimen/_12ssp"
                                         android:textStyle="bold"
                                         android:visibility="gone"
                                         card_view:ignore="MissingConstraints">
@@ -1452,6 +1454,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
+                                        android:textSize="@dimen/_12ssp"
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
                                         card_view:ignore="MissingConstraints">
@@ -1466,7 +1469,7 @@
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="$ 12,000"
-                                        android:textSize="@dimen/_14ssp"
+                                        android:textSize="@dimen/_12ssp"
                                         android:textStyle="bold"
                                         android:visibility="gone"
                                         card_view:ignore="MissingConstraints">
@@ -1489,6 +1492,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
+                                        android:textSize="@dimen/_12ssp"
                                         android:fontFamily="@font/rubik_regular"
                                         android:textColor="@color/questionheader_view_color"
                                         card_view:ignore="MissingConstraints">
@@ -1503,7 +1507,7 @@
                                         android:layout_marginLeft="@dimen/_5sdp"
                                         android:layout_marginTop="@dimen/_10sdp"
                                         android:text="$ 12,000"
-                                        android:textSize="@dimen/_14ssp"
+                                        android:textSize="@dimen/_12ssp"
                                         android:textStyle="bold"
                                         android:visibility="gone"
                                         card_view:ignore="MissingConstraints">

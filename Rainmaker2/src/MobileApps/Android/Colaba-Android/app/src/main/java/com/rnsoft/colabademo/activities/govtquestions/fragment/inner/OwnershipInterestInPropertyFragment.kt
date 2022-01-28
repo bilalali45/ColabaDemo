@@ -176,7 +176,8 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
                             whichBorrowerId,
                             "2",
                             questionId,
-                            "1"
+                            "1",
+                            "Yes"
                         )
                     }
                     EventBus.getDefault().post(

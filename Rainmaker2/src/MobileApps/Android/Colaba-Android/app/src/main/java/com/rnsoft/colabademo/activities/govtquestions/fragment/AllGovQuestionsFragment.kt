@@ -28,7 +28,6 @@ import com.rnsoft.colabademo.activities.govtquestions.*
 import com.rnsoft.colabademo.activities.govtquestions.model.ChildlistModel
 import com.rnsoft.colabademo.databinding.FragmentBinding
 import com.rnsoft.colabademo.adapter.QueationAdapter
-import kotlinx.android.parcel.RawValue
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -67,6 +66,7 @@ class AllGovQuestionsFragment : Fragment() {
     private var ethnicityChildList: java.util.ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
 
+    var Questionone : Boolean = false
     // var questionmodel = null
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -361,6 +361,16 @@ class AllGovQuestionsFragment : Fragment() {
         binding!!.q1radioButtonNo.setOnClickListener {
             binding!!.q1radioButton.isChecked = false
             binding!!.qv1.visibility = View.GONE
+            setdata(
+                "No",
+                "",
+                0,
+                "1",
+                10,
+                "0",
+                "No"
+            )
+
         }
         binding!!.q2radioButtonNo.setOnClickListener {
             binding!!.q2radioButton.isChecked = false
@@ -375,7 +385,8 @@ class AllGovQuestionsFragment : Fragment() {
                 0,
                 "3",
                 70,
-                "0"
+                "0",
+                ""
             )
 
         }
@@ -389,7 +400,8 @@ class AllGovQuestionsFragment : Fragment() {
                 0,
                 "4",
                 80,
-                "0"
+                "0",
+                ""
             )
         }
 
@@ -403,7 +415,8 @@ class AllGovQuestionsFragment : Fragment() {
                 0,
                 "5",
                 90,
-                "0"
+                "0",
+                ""
             )
         }
         binding!!.q6radioButtonNo.setOnClickListener {
@@ -416,7 +429,8 @@ class AllGovQuestionsFragment : Fragment() {
                 0,
                 "6",
                 100,
-                "0"
+                "0",
+                ""
             )
         }
         binding!!.q7radioButtonNo.setOnClickListener {
@@ -433,7 +447,8 @@ class AllGovQuestionsFragment : Fragment() {
                 0,
                 "8",
                 120,
-                "0"
+                "0",
+                ""
             )
         }
         binding!!.q9radioButtonNo.setOnClickListener {
@@ -639,20 +654,32 @@ class AllGovQuestionsFragment : Fragment() {
                                                 var questionmodel =
                                                     governmentQuestionsModelClassList.get(0).questionData
                                                 for (qData in questionmodel!!) {
+                                                    Questionone = false
                                                     if (qData.id != null) {
                                                         qustionheaderarray!!.add(qData)
                                                         if (qData.answer != null) {
                                                          //   if (qData.answer == "Yes") {
+                                                            if(qData.id == 10) {
+                                                                if (qData.answer != null){
+                                                                    if (qData.answer == "No" || qData.answer!!.isEmpty()) {
+                                                                        Questionone = true
+                                                                        binding!!.qv1.visibility = View.GONE
+                                                                       // binding!!.qva1.text = "$ " + title
+                                                                    }
+                                                                }
 
-                                                                if (qData.id == 11) {
+
+                                                            } else if (qData.id == 11) {
                                                                     if (qData.answer != null && qData.answer!!.isNotEmpty()) {
-                                                                        setdata(
-                                                                            qData.answer!!,
-                                                                            qData.answer!!,
-                                                                            0,
-                                                                            "1",
-                                                                            qData.id,"0"
-                                                                        )
+                                                                        if(!Questionone) {
+                                                                            setdata(
+                                                                                qData.answer!!,
+                                                                                qData.answer!!,
+                                                                                0,
+                                                                                "1",
+                                                                                qData.id, "0", "Yes"
+                                                                            )
+                                                                        }
                                                                     }
                                                                 } else if (qData.id == 70) {
                                                                     setdata(
@@ -661,7 +688,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         0,
                                                                         "3",
                                                                         qData.id,
-                                                                        "0"
+                                                                        "0",
+                                                                        "Yes"
                                                                     )
 
                                                                 } else if (qData.id == 80) {
@@ -671,7 +699,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         0,
                                                                         "4",
                                                                         qData.id,
-                                                                        "0"
+                                                                        "0",
+                                                                        "Yes"
                                                                     )
 
                                                                 } else if (qData.id == 90) {
@@ -681,7 +710,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         0,
                                                                         "5",
                                                                         qData.id,
-                                                                        "0"
+                                                                        "0",
+                                                                        "Yes"
                                                                     )
 
                                                                 } else if (qData.id == 100) {
@@ -691,7 +721,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         0,
                                                                         "6",
                                                                         qData.id,
-                                                                        "0"
+                                                                        "0",
+                                                                        "Yes"
                                                                     )
 
                                                                 } else if (qData.id == 120) {
@@ -701,7 +732,8 @@ class AllGovQuestionsFragment : Fragment() {
                                                                         0,
                                                                         "8",
                                                                         qData.id,
-                                                                        "0"
+                                                                        "0",
+                                                                        "Yes"
                                                                     )
 
                                                                 } else if (qData.id == 131) {
@@ -721,12 +753,12 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                            qData.id,"0")
 
                                                                 } else if (qData.id == 140) {
-                                                                    setarray(
-                                                                        "0",
-                                                                        qData.answerData as ArrayList<ChildAnswerData>,
-                                                                        0,
-                                                                        "10"
-                                                                    )
+//                                                                    setarray(
+//                                                                        "0",
+//                                                                        qData.answerData as ArrayList<ChildAnswerData>,
+//                                                                        0,
+//                                                                        "10"
+//                                                                    )
 
                                                                 }
                                                            // }
@@ -872,19 +904,20 @@ class AllGovQuestionsFragment : Fragment() {
         whichBorrowerId: Int,
         questionnumber: String?,
         questionId: Int,
-        s: String
+        s: String,
+        s1: String
     ) {
         when (questionnumber) {
             "1" -> {
                 if(detailTitle == "No"  || detailTitle.isEmpty()){
                     binding!!.qv1.visibility = View.GONE
-                    binding!!.qva1.text = "$" + title
-                    updatedata(questionId, title, detailTitle, questionId,s)
+                    binding!!.qva1.text = "$ " + title
+                    updatedata(questionId, title, detailTitle, questionId,s,s1)
                 }else{
 
                     binding!!.qv1.visibility = View.VISIBLE
-                    binding!!.qva1.text = "$" + title
-                    updatedata(questionId, title, detailTitle, questionId,s)
+                    binding!!.qva1.text = "$ " + title
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
 
 
                 }
@@ -901,14 +934,14 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv22.visibility = View.GONE
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }else{
 
                     binding!!.qv2.visibility = View.VISIBLE
                     binding!!.qv22.visibility = View.VISIBLE
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
 
 
                 }
@@ -921,12 +954,12 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv3.visibility = View.GONE
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }else{
                     binding!!.qv3.visibility = View.VISIBLE
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -940,14 +973,14 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }else{
                     binding!!.qv4.visibility = View.VISIBLE
                     //   binding!!.qvs4.text = title
 
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -959,7 +992,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs5.text = "Detail"
                     binding!!.qva5.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
 
                 }else{
                     binding!!.qv5.visibility = View.VISIBLE
@@ -967,7 +1000,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs5.text = "Detail"
                     binding!!.qva5.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -978,13 +1011,13 @@ class AllGovQuestionsFragment : Fragment() {
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }else{
                     binding!!.qv6.visibility = View.VISIBLE
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -994,12 +1027,12 @@ class AllGovQuestionsFragment : Fragment() {
                 if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv7.visibility = View.GONE
                     binding!!.qvs7.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
 
                 }else{
                     binding!!.qv7.visibility = View.VISIBLE
                     binding!!.qvs7.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -1011,14 +1044,14 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs8.text = "Detail"
                     binding!!.qva8.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }else{
                     binding!!.qv8.visibility = View.VISIBLE
                     // binding!!.qvs8.text = title
 
                     binding!!.qvs8.text = "Detail"
                     binding!!.qva8.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
             }
@@ -1030,7 +1063,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs9.text = "Which Type?"
                     binding!!.qva9.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
 
                 }else{
                     binding!!.qv9.visibility = View.VISIBLE
@@ -1038,7 +1071,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs9.text = "Which Type?"
                     binding!!.qva9.text = title
-                    updatedata(questionId, title, detailTitle, questionId, s)
+                    updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
@@ -1050,7 +1083,14 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
 
-    private fun updatedata(questionId: Int, title: String, detailTitle: String, i: Int, s: String) {
+    private fun updatedata(
+        questionId: Int,
+        title: String,
+        detailTitle: String,
+        i: Int,
+        s: String,
+        s1: String
+    ) {
         governmentParams.Questions.let { questions ->
           if(s == "0"){
               jARRAY = JSONArray()
@@ -1140,22 +1180,38 @@ class AllGovQuestionsFragment : Fragment() {
 
                       } else {
                           if (questionId == 10) {
-                              var jone = JSONObject()
-                              jone.put("id", 11)
-                              jone.put("parentQuestionId", qData.id)
-                              jone.put("headerText", qData.headerText)
-                              jone.put("questionSectionId", qData.questionSectionId)
-                              jone.put("ownTypeId", qData.ownTypeId)
-                              jone.put("firstName", qData.firstName)
-                              jone.put("lastName", qData.lastName)
-                              jone.put("question", qData.question)
-                              jone.put("answer", detailTitle)
-                              jone.put("answerDetail", title)
-                              jone.put("selectionOptionId", qData.selectionOptionId)
-                              jARRAY.put(jone)
+                              //if(s1 == "No"){
+                                  var jone = JSONObject()
+                                  jone.put("id", 10)
+                                  jone.put("parentQuestionId", qData.id)
+                                  jone.put("headerText", qData.headerText)
+                                  jone.put("questionSectionId", qData.questionSectionId)
+                                  jone.put("ownTypeId", qData.ownTypeId)
+                                  jone.put("firstName", qData.firstName)
+                                  jone.put("lastName", qData.lastName)
+                                  jone.put("question", qData.question)
+                                  jone.put("answer", s1)
+                                  jone.put("answerDetail", title)
+                                  jone.put("selectionOptionId", qData.selectionOptionId)
+                                  jARRAY.put(jone)
+                            //  }
+                                     var jone1 = JSONObject()
+                                      jone1.put("id", 11)
+                                      jone1.put("parentQuestionId",10)
+                                      jone1.put("headerText", qData.headerText)
+                                      jone1.put("questionSectionId", qData.questionSectionId)
+                                      jone1.put("ownTypeId", qData.ownTypeId)
+                                      jone1.put("firstName", qData.firstName)
+                                      jone1.put("lastName", qData.lastName)
+                                      jone1.put("question", qData.question)
+                                      jone1.put("answer", detailTitle)
+                                      jone1.put("answerDetail", title)
+                                      jone1.put("selectionOptionId", qData.selectionOptionId)
+                                      jARRAY.put(jone1)
+                                     Log.i("TAG", "updatedata: "+jARRAY)
 
 
-                          } else if (questionId != 131 && questionId != 140) {
+                          } else if (questionId != 131 && questionId != 140 && questionId != 11) {
                               var jone = JSONObject()
                               jone.put("id", qData.id)
                               jone.put("parentQuestionId", qData.parentQuestionId)
@@ -1235,7 +1291,7 @@ class AllGovQuestionsFragment : Fragment() {
                           jone.put("answerData", answerData)
 
                           jARRAY.put(jone)
-                      }else if (qData.id != 140 && qData.id != 131) {
+                      }else if (qData.id != 140 && qData.id != 131 ) {
                           var jone = JSONObject()
                           jone.put("id", qData.id)
                           jone.put("parentQuestionId", qData.parentQuestionId)
@@ -1334,19 +1390,34 @@ class AllGovQuestionsFragment : Fragment() {
 
                       } else {
                           if (questionId == 11) {
-                              var jone = JSONObject()
-                              jone.put("id", 11)
-                              jone.put("parentQuestionId", quesationdataview.get(i)!!.id)
-                              jone.put("headerText", quesationdataview.get(i)!!.headerText)
-                              jone.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
-                              jone.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
-                              jone.put("firstName", quesationdataview.get(i)!!.firstName)
-                              jone.put("lastName", quesationdataview.get(i)!!.lastName)
-                              jone.put("question", quesationdataview.get(i)!!.question)
-                              jone.put("answer", title)
-                              jone.put("answerDetail", detailTitle)
-                              jone.put("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
-                              jARRAY.put(i,jone)
+                             // if(s1 == "No"){
+                                  var jone2 = JSONObject()
+                                  jone2.put("id", 10)
+                                  jone2.put("parentQuestionId", quesationdataview.get(i)!!.id)
+                                  jone2.put("headerText", quesationdataview.get(i)!!.headerText)
+                                  jone2.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                                  jone2.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                                  jone2.put("firstName", quesationdataview.get(i)!!.firstName)
+                                  jone2.put("lastName", quesationdataview.get(i)!!.lastName)
+                                  jone2.put("question", quesationdataview.get(i)!!.question)
+                                  jone2.put("answer", s1)
+                                  jone2.put("answerDetail", title)
+                                  jone2.put("selectionOptionId",  quesationdataview.get(i)!!.selectionOptionId)
+                                  jARRAY.put(i-1,jone2)
+                          //    }
+                                  var jone = JSONObject()
+                                  jone.put("id", 11)
+                                  jone.put("parentQuestionId", quesationdataview.get(i)!!.id)
+                                  jone.put("headerText", quesationdataview.get(i)!!.headerText)
+                                  jone.put("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                                  jone.put("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                                  jone.put("firstName", quesationdataview.get(i)!!.firstName)
+                                  jone.put("lastName", quesationdataview.get(i)!!.lastName)
+                                  jone.put("question", quesationdataview.get(i)!!.question)
+                                  jone.put("answer", title)
+                                  jone.put("answerDetail", detailTitle)
+                                  jone.put("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                                  jARRAY.put(i,jone)
                               break
 
                           } else if (questionId != 131 && questionId != 140 ) {

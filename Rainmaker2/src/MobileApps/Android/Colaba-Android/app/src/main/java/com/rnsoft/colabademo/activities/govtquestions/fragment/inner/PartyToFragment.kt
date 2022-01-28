@@ -46,7 +46,8 @@ class PartyToFragment:GovtDetailBaseFragment() {
                     whichBorrowerId,
                     "5",
                     questionId,
-                    "1"
+                    "1",
+                    "Yes"
                 )
             }
 

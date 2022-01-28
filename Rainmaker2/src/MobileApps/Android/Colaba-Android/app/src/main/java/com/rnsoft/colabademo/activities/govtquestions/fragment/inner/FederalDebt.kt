@@ -40,7 +40,8 @@ class FederalDebt:GovtDetailBaseFragment() {
                     whichBorrowerId,
                     "4",
                     questionId,
-                    "1"
+                    "1",
+                    "Yes"
                 )
             }
 

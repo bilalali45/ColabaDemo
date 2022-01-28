@@ -44,7 +44,8 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
                     whichBorrowerId,
                     "8",
                     questionId,
-                    "1"
+                    "1",
+                    "Yes"
                 )
             }
 
