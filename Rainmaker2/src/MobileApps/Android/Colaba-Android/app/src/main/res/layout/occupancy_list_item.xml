@@ -24,7 +24,7 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radio_occupying"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
             android:layoutDirection="rtl"
@@ -40,10 +40,9 @@
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radio_non_occupying"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-
             android:layoutDirection="rtl"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/non_occupying"

@@ -83,7 +83,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_sub_property_tbd"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
                     android:drawablePadding="15dp"
@@ -98,7 +98,7 @@
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_address"
+                android:id="@+id/layout_radio_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/content_bg_with_drop_shadow"
@@ -107,7 +107,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_sub_property_address"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:background="@null"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -367,7 +367,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_mixed_property_yes"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:button="@null"
                     android:background="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -433,7 +433,7 @@
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radio_mixed_property_no"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="53dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/content_background_full_white"
                 android:button="@null"
@@ -700,7 +700,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_has_first_mortgage_yes"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:button="@null"
                     android:background="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -793,7 +793,7 @@
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/radio_has_first_mortgage_no"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="53dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/content_background_full_white"
                 android:button="@null"
@@ -836,7 +836,7 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rb_sec_mortgage_yes"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="53dp"
                         android:button="@null"
                         android:background="@null"
                         android:drawableStart="@drawable/radiodraw"
@@ -929,7 +929,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_sec_mortgage_no"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/content_background_full_white"
                     android:button="@null"

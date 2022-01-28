@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-
+// useless class -- delete this adapter later
 
 class SearchAdapter
 internal constructor(

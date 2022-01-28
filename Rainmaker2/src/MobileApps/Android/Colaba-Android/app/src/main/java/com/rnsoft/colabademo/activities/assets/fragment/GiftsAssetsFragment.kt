@@ -31,7 +31,6 @@ class GiftsAssetsFragment:AssetBaseFragment() {
     private val giftOfEquity = "Gift Of Equity"
     private val grant = "Grant"
     private val cashGift = "Cash Gift"
-
     private var dataArray: ArrayList<String> = arrayListOf("Relative", "Unmarried Partner", "Federal Agency", "State Agency", "Local Agency", "Community Non Profit", "Employer", "Religious Non Profit", "Lender")
     private lateinit var giftAdapter:ArrayAdapter<String>
     private var giftResources: ArrayList<GiftSourcesResponse> = arrayListOf()

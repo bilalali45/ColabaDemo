@@ -194,7 +194,6 @@ class ActiveLoansFragment : LoanBaseFragment() , AdapterClickListener  ,  LoanFi
             borrowerDetailIntent.putExtra(AppConstant.lastName, test.lastName)
             borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, test.cellNumber)
             borrowerDetailIntent.putExtra(AppConstant.bEmail, test.email)
-           // borrowerDetailIntent.putExtra(AppConstant.milestone, test.milestone)
             startActivity(borrowerDetailIntent)
         }
     }

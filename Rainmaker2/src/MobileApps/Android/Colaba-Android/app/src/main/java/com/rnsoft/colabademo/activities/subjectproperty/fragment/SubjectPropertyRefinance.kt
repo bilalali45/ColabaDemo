@@ -175,13 +175,13 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
         // radio subject property TBD
         binding.radioSubPropertyTbd.setOnClickListener {
             binding.radioSubPropertyAddress.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.GONE
+            binding.addressLayout.visibility = View.GONE
         }
 
         // radio sub property address
         binding.radioSubPropertyAddress.setOnClickListener {
             binding.radioSubPropertyTbd.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.addressLayout.visibility = View.VISIBLE
             openAddress()
         }
 
@@ -189,7 +189,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             openAddress()
         }
 
-        binding.layoutAddress.setOnClickListener {
+        binding.addressLayout.setOnClickListener {
             openAddress()
         }
 
@@ -606,7 +606,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             displayAddress(result)
             binding.radioSubPropertyAddress.isChecked = true
             binding.radioSubPropertyTbd.isChecked = false
-            binding.tvSubPropertyAddress.visibility = View.VISIBLE
+            binding.addressLayout.visibility = View.VISIBLE
 
         }
 
@@ -682,6 +682,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
             if(it != "null") builder.append(it) }
 
         binding.tvSubPropertyAddress.text = builder
+        binding.addressLayout.visibility = View.VISIBLE
     }
 
     private fun showHideRental(){

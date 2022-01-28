@@ -16,7 +16,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getEmploymentDetail(newToken,loanApplicationId,borrowerId,incomeInfoId)
-            Timber.e("Employment Response-- $response")
+            //Timber.e("Employment Response-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -31,7 +31,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.getSelfEmploymentContractor(newToken,borrowerId,incomeInfoId)
-            Timber.e("Self-Employment-Response-- $response")
+            //Timber.e("Self-Employment-Response-- $response")
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -152,7 +152,7 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
         return try {
             val newToken = "Bearer $token"
             val response = serverApi.addOrUpdateSelfBusiness(newToken,data)
-            Log.e("incomeDatasource","$response")
+            //Log.e("incomeDatasource","$response")
             Result.Success(response)
         } catch (e: Throwable){
             if(e is HttpException){
@@ -169,24 +169,24 @@ class IncomeDataSource @Inject constructor(private val serverApi: ServerApi) {
     suspend fun sendCurrentEmploymentData(token: String, data: AddCurrentEmploymentModel): Result<AddUpdateDataResponse> {
         return try {
             val newToken = "Bearer $token"
-            val response = serverApi.addCurrentEmployment(newToken,data)
+            val response = serverApi.addCurrentEmployment(data)
             //Log.e("add-CurrentEmployment-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){
+            //Log.e("add-CurrentEmployment-Error",e.localizedMessage)
             if(e is HttpException){
                 Result.Error(IOException(AppConstant.INTERNET_ERR_MSG))
             }
             else {
-               // Log.e("add-CurrentEmployment-Error",e.localizedMessage)
                 Result.Error(IOException("Error logging in", e))
             }
         }
     }
 
-    suspend fun sendPrevEmploymentData(token: String, data: PreviousEmploymentData): Result<AddUpdateDataResponse> {
+    suspend fun sendPrevEmploymentData(data: PreviousEmploymentData): Result<AddUpdateDataResponse> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.addPreviousEmployment(newToken,data)
+            //val newToken = "Bearer $token"
+            val response = serverApi.addPreviousEmployment(data)
            // Log.e("add-PrevEmployment-respone","$response")
             Result.Success(response)
         } catch (e: Throwable){

@@ -864,12 +864,7 @@ class PreviousResidenceFragment : BaseFragment(), DatePickerDialog.OnDateSetList
     private fun removeError() {
         binding.tvError.visibility = View.GONE
         binding.topSearchTextInputLine.layoutParams.height = 1
-        binding.topSearchTextInputLine.setBackgroundColor(
-            resources.getColor(
-                R.color.grey_color_four,
-                requireActivity().theme
-            )
-        )
+        binding.topSearchTextInputLine.setBackgroundColor(resources.getColor(R.color.grey_color_four, requireActivity().theme))
     }
 
     private fun setUpCompleteViewForPlaces(){

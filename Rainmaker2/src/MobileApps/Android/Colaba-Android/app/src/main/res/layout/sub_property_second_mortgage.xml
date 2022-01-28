@@ -234,7 +234,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_yes_combinedFirstMortgage"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="65dp"
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -251,7 +251,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_no_combinedFirstMortgage"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="65dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:layoutDirection="rtl"
@@ -264,7 +264,6 @@
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
                     android:background="@drawable/content_bg_with_drop_shadow" />
-
 
             </RadioGroup>
 
@@ -285,7 +284,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/radio_wasMortgageTakenYes"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="65dp"
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"

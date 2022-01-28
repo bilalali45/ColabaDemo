@@ -57,6 +57,7 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
         _binding = DetailApplicationTabBinding.inflate(inflater, container, false)
         val root: View = binding.root
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+
         horizontalRecyclerView = root.findViewById(R.id.horizontalRecycleView)
         realStateRecyclerView = root.findViewById(R.id.realStateHorizontalRecyclerView)
         questionsRecyclerView = root.findViewById(R.id.govtQuestionHorizontalRecyclerView)
@@ -335,6 +336,8 @@ class BorrowerApplicationFragment : BaseFragment(), AdapterClickListener, Govern
 
                 appTabModel.borrowerAppData?.subjectProperty?.subjectPropertyAddress?.let {
                     displaySubjectPropertyAddress(it)
+                } ?: run {
+                    binding.bAppAddress.text = ""
                 }
 
                 appTabModel.borrowerAppData?.subjectProperty?.propertyTypeName?.let {

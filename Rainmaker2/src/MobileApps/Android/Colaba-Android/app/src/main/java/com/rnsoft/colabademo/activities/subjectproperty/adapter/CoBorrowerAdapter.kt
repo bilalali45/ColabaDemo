@@ -45,7 +45,7 @@ class CoBorrowerAdapter(var context: Context, clickListner: CoBorrowerOccupancyC
                 }
                 else {
                     binding.radioNonOccupying.isChecked = true
-                    binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context, R.color.grey_color_two))
+                    binding.radioNonOccupying.setTextColor(ContextCompat.getColor(context, R.color.grey_color_one))
                 }
 
             }

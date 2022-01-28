@@ -75,7 +75,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
              }
 
              borrowerName?.let {
-               //  toolbarBinding.borrowerPurpose.setText(it)
+                 toolbarBinding.borrowerPurpose.setText(it)
              }
 
              if (loanApplicationId != null && borrowerId != null) {
@@ -90,9 +90,7 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
                  showHideAddress(false,true)
              }
 
-             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
-                 AppConstant.address
-             )?.observe(viewLifecycleOwner) { result ->
+             findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(AppConstant.address)?.observe(viewLifecycleOwner) { result ->
                  businessAddress = result
                  displayAddress(result)
              }
@@ -119,7 +117,8 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     private fun getData(){
         lifecycleScope.launchWhenStarted {
             sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                if (borrowerId != null && incomeInfoId != null && incomeInfoId !=null) {
+                //Log.e("get Elf Emplyment", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+                if (borrowerId != null && incomeInfoId != null) {
                     binding.loaderSelfEmployment.visibility = View.VISIBLE
                     viewModel.getSelfEmploymentDetail(authToken, borrowerId!!, incomeInfoId!!)
 
@@ -166,7 +165,6 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
         }
     }
 
-
     private fun openAddressFragment(){
         val addressFragment = AddressBusiness()
         val bundle = Bundle()
@@ -177,16 +175,20 @@ class SelfEmploymentContractor : BaseFragment(),View.OnClickListener {
     }
 
     private fun displayAddress(it: AddressData){
-        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null && it.countryName==null)
+        if(it.street == null && it.unit == null && it.city==null && it.zipCode==null)
             showHideAddress(false,true)
         else {
             val builder = StringBuilder()
-            it.street?.let { builder.append(it).append(" ") }
-            it.unit?.let { builder.append(it).append("\n") }
-            it.city?.let { builder.append(it).append(" ") }
-            it.stateName?.let { builder.append(it).append(" ") }
-            it.zipCode?.let { builder.append(it) }
-            it.countryName?.let { builder.append(" ").append(it) }
+            it.street?.let {
+                if(it != "null") builder.append(it).append(" ") }
+            it.unit?.let {
+                if(it != "null") builder.append(it).append(",") } ?: run { builder.append(",") }
+            it.city?.let {
+                if(it != "null") builder.append("\n").append(it).append(",").append(" ") } ?: run { builder.append("\n") }
+            it.stateName?.let {
+                if(it !="null") builder.append(it).append(" ") }
+            it.zipCode?.let {
+                if(it != "null") builder.append(it) }
             binding.textviewBusinessAddress.text = builder
             showHideAddress(true,false)
         }

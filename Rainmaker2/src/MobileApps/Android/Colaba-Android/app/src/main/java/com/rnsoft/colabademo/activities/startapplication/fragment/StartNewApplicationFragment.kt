@@ -68,9 +68,8 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
         //searchList.add(SearchResultResponseItem( 1,"richard.glenn@gmail.com","Richard Glenn Randall", mobileNumber =   "(121) 353 1343"))
         //searchList.add(SearchResultResponseItem(2,"arnold634@gmail.com", "Arnold Richard", mobileNumber = "(121) 353 1343"))
        // searchList.add(SearchResultResponseItem(3,"richard.glenn@gmail.com", "Richard Glenn Randall", mobileNumber = "(121) 353 1343"))
-
-        adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
         binding.recyclerviewContacts.setHasFixedSize(true)
+        adapter = ContactsAdapter(requireActivity(), this@StartNewApplicationFragment)
 
         binding.recyclerviewContacts.setOnTouchListener { _, _ -> //binding.scrollviewStartApplication.requestDisallowInterceptTouchEvent(true)
             //binding.scrollviewStartApplication.setOnTouchListener(disableScrollViewListener)

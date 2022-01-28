@@ -205,10 +205,12 @@ class ChildSupportFragment:BaseFragment() {
                         liabilityTypeId = 8.toInt()
                     ))
                 }
+
                  Log.i("TAG", "setUpUI: "+jARRAY)
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setarray("1", childAnswerList, whichBorrowerId,"10")
                 }
+
                 EventBus.getDefault().post(ChildSupportUpdateEvent(childAnswerList , whichBorrowerId))
                 findNavController().popBackStack()
             }

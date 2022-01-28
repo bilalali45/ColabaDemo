@@ -70,10 +70,6 @@ class DetailActivity : BaseActivity() {
                 //intent.putExtra(Intent.EXTRA_SUBJECT, "subject")
                 //intent.putExtra(Intent.EXTRA_TEXT, "mail body")
                 startActivity(Intent.createChooser(intent, ""))
-
-
-
-
                 //val intent = Intent(Intent.ACTION_MAIN)
                 //intent.addCategory(Intent.CATEGORY_APP_EMAIL)
                 //startActivity(intent)
@@ -125,14 +121,15 @@ class DetailActivity : BaseActivity() {
         binding.emailFab.visibility = View.INVISIBLE
         binding.messageFab.visibility = View.INVISIBLE
         binding.phoneFab.visibility = View.INVISIBLE
+        binding.requestDocFab.visibility = View.INVISIBLE
     }
 
-    /*fun showFabIcons(){
+    fun showFabIcons(){
         binding.emailFab.visibility = View.VISIBLE
         binding.messageFab.visibility = View.VISIBLE
         binding.phoneFab.visibility = View.VISIBLE
         binding.requestDocFab.visibility = View.VISIBLE
-    } */
+    }
 
     fun checkIfUnreadFileOpened(){
         lifecycleScope.launchWhenStarted {
@@ -164,6 +161,20 @@ class DetailActivity : BaseActivity() {
                             token = authToken,
                             loanApplicationId = it
                         )
+                    }
+                }
+            }
+        }
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    fun overviewUpdateEvent(overviewUpdateEvent: OverviewUpdateEvent){
+        Log.e("overview update ", "received")
+        if(overviewUpdateEvent.objectUpdated) {
+            lifecycleScope.launchWhenStarted {
+                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                    loanApplicationId?.let {
+
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.rnsoft.colabademo.activities.govtquestions.model
+package com.rnsoft.colabademo
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

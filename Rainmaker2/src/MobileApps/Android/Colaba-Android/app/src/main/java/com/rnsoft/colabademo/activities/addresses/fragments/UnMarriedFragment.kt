@@ -2,14 +2,12 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import com.rnsoft.colabademo.databinding.UnmarriedLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,7 +21,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.model.StatesModel
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import kotlinx.android.synthetic.main.non_permenant_resident_layout.*
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectBoxWithShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectBoxShadow
 import kotlinx.android.synthetic.main.unmarried_layout.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -77,43 +78,40 @@ class UnMarriedFragment : BaseFragment() {
             binding.borrowerName.setText(firstName.plus(" ").plus(lastName))
         }
 
-        /*binding.radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.yesRadioBtn -> {
-                    binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
-                    binding.noRadioBtn.setTypeface(null, Typeface.NORMAL)
-                    binding.relationshipContainer.visibility = View.VISIBLE
-                }
-                R.id.noRadioBtn -> {
-                    binding.yesRadioBtn.setTypeface(null, Typeface.NORMAL)
-                    binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
-                    binding.relationshipContainer.visibility = View.GONE
-                }
-                else -> {
-                }
-            }
-        }) */
+//        binding.radioGroup.setOnCheckedChangeListener( { _, checkedId ->
+//            when (checkedId) {
+//                R.id.yesRadioBtn -> {
+//                    binding.noRadioBtn.isChecked = false
+//                    setRadioColor(binding.yesRadioBtn, requireContext())
+//                    binding.relationshipContainer.visibility = View.VISIBLE
+//                }
+//                R.id.noRadioBtn -> {
+//                    binding.yesRadioBtn.setTypeface(null, Typeface.NORMAL)
+//                    binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
+//                    binding.relationshipContainer.visibility = View.GONE
+//                }
+//                else -> {
+//                }
+//            }
+//        })
 
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
-                binding.yesRadioBtn.setTypeface(null, Typeface.BOLD)
                 binding.noRadioBtn.isChecked = false
-            }
-
-            else
-                binding.yesRadioBtn.setTypeface(null, Typeface.NORMAL)
+                selectBoxWithShadow(binding.yesRadioBtn, requireContext())
+                binding.relationshipContainer.visibility = View.VISIBLE
+            } else
+                unselectBoxShadow(binding.yesRadioBtn, requireContext())
         }
 
         binding.noRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                binding.noRadioBtn.setTypeface(null, Typeface.BOLD)
+                selectBoxWithShadow(binding.noRadioBtn, requireContext())
                 binding.yesRadioBtn.isChecked = false
-            }
-            else
-                binding.noRadioBtn.setTypeface(null, Typeface.NORMAL)
+                binding.relationshipContainer.visibility = View.GONE
+            } else
+                unselectBoxShadow(binding.noRadioBtn, requireContext())
         }
-
-
 
 
         binding.backButton.setOnClickListener {

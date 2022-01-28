@@ -26,15 +26,6 @@
     <color name="colaba_primary_color_five_alpha">#0D4484F4</color>
     <color name="grey_color_one">#FF4E4E4E</color>
     <color name="grey_color_two">#FF7E829E</color>
-    <color name="light_color_gray">#A7A7A7</color>
-    <color name="dark_color_gray">#4E4E4E</color>
-    <color name="document_view_color">#3F3F3F</color>
-
-    <color name="questionheader_view_color">#7E829E</color>
-
-
-    <color name="headercolor">#7E829E</color>
-    #7E829E
     <color name="grey_color_three">#FFA7A7A7</color>
     <color name="grey_color_four">#FFCCCCCC</color>
     <color name="grey_color_five">#E2E2E2</color>
@@ -48,6 +39,8 @@
     <color name="plus_circle_inside_color">#FF4484F4</color>
     <color name="plus_circle_inside_color_with_thirty_alpha">#4D4484F4</color>
     <color name="plus_circle_inside_color_with_ten_alpha">#1A4484F4</color>
+    <color name="blue_light_one">#C6DAFC</color>
+
     <color name="asset_cell_separator">#1A4484F4</color>
     <color name="colaba_holder_background">#0D7E829E</color>
     <color name="bg_row_background">#fa315b</color>
@@ -63,9 +56,12 @@
     <color name="content_background_color">#80F8F8F8</color>
     <color name="colaba_app_border_color">#E5E5E5</color>
     <color name="border_grey_light">#CCCCCC</color>
-
-
     <color name="borrower_overview_background">#FBFBFB</color>
    <color name="asset_bottom_bar"> #FFF6F6F6</color>
+
+    <color name="questionheader_view_color">#7E829E</color>
+    <color name="dark_color_gray">#4E4E4E</color>
+    <color name="headercolor">#7E829E</color>
+
 
 </resources>

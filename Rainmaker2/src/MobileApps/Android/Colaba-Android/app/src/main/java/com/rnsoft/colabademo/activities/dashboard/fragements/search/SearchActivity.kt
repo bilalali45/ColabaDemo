@@ -10,18 +10,14 @@ import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.facebook.shimmer.ShimmerFrameLayout
-import com.rnsoft.colabademo.databinding.FragmentSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import android.widget.TextView.OnEditorActionListener
+import com.rnsoft.colabademo.databinding.ActivitySearchBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -32,45 +28,37 @@ import org.greenrobot.eventbus.ThreadMode
  */
 
 @AndroidEntryPoint
-class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
+class SearchActivity : AppCompatActivity(), SearchAdapter.SearchClickListener {
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences
     private val searchViewModel: SearchViewModel by viewModels()
+    private val viewModel: StartNewAppViewModel by viewModels()
     private var pageNumber: Int = 1
     private var pageSize: Int = 20
-    private var searchRecyclerView: RecyclerView? = null
-    private lateinit var searchAdapter: SearchAdapter
-    private lateinit var searchRowLoader: ProgressBar
     private var searchArrayList: ArrayList<SearchItem> = ArrayList()
     private var shimmerContainer: ShimmerFrameLayout? = null
-    private lateinit var binding: FragmentSearchBinding
+    private lateinit var binding: ActivitySearchBinding
     private var hasPerformedSearchOnce = false
+
+    companion object{
+        var searchTerm : String =""
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = FragmentSearchBinding.inflate(layoutInflater)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        shimmerContainer = findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+        //shimmerContainer?.stopShimmer()
+        //shimmerContainer?.isVisible = false
+
+        /*shimmerContainer = findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
         searchRowLoader = findViewById(R.id.search_row_loader)
         searchRecyclerView = findViewById(R.id.search_recycle_view)
 
         searchViewModel.resetSearchData()
-
-        searchAdapter = SearchAdapter(searchArrayList, this)
-        val linearLayoutManager = LinearLayoutManager(this)
-
-        searchRecyclerView?.apply {
-            this.layoutManager = linearLayoutManager
-
-
-
-            //(this.layoutManager as LinearLayoutManager).isMeasurementCacheEnabled = false
-            this.setHasFixedSize(true)
-            this.adapter = searchAdapter
-        }
 
 
         searchViewModel.searchArrayList.observe(this, {
@@ -91,7 +79,7 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
                 binding.searchResultCountTextView.visibility = View.VISIBLE
                 binding.searchResultTitleTextView.visibility = View.VISIBLE
             }
-        })
+        }) */
 
 
         binding.searchEditTextField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
@@ -99,15 +87,14 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
                 binding.searchEditTextField.clearFocus()
                 binding.searchEditTextField.hideKeyboard()
                 searchViewModel.resetSearchData()
-                shimmerContainer?.isVisible = true
-                shimmerContainer?.startShimmer()
+                binding.shimmerViewContainer.visibility = View.VISIBLE
+                binding.shimmerViewContainer.startShimmer()
+
                 performSearch()
                 return@OnEditorActionListener true
             }
             false
         })
-
-
 
         binding.searchEditTextField.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -128,12 +115,12 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
             binding.searchEditTextField.clearFocus()
             binding.searchEditTextField.hideKeyboard()
             binding.searchcrossImageView.visibility = View.INVISIBLE
-            binding.searchResultCountTextView.visibility = View.INVISIBLE
+            /*binding.searchResultCountTextView.visibility = View.INVISIBLE
             binding.searchResultTitleTextView.visibility = View.INVISIBLE
             searchViewModel.resetSearchData()
             searchAdapter.clearData()
             searchRowLoader.visibility = View.INVISIBLE
-            searchRowLoader.visibility = View.INVISIBLE
+            searchRowLoader.visibility = View.INVISIBLE */
             shimmerContainer?.stopShimmer()
             shimmerContainer?.isVisible = false
             //binding.searchResultCountTextView.visibility = View.VISIBLE
@@ -145,7 +132,7 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
             finish()
         }
 
-        val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
+       /* val scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
@@ -156,24 +143,19 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
             }
         }
 
-        searchRecyclerView?.addOnScrollListener(scrollListener)
-
+        searchRecyclerView?.addOnScrollListener(scrollListener) */
 
     }
 
     private fun performSearch() {
         hasPerformedSearchOnce = true
-        sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-            val searchTerm = binding.searchEditTextField.text.toString()
+        //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+             searchTerm = binding.searchEditTextField.text.toString()
             if(searchTerm.isNotEmpty()) {
-                searchViewModel.getSearchResult(
-                    token = authToken,
-                    pageNumber = pageNumber,
-                    pageSize = pageSize,
-                    searchTerm = searchTerm
-                )
+                searchViewModel.getSearchResult("", pageNumber = pageNumber, pageSize = pageSize, searchTerm = searchTerm)
+                viewModel.searchByBorrowerContact("",searchTerm)
             }
-        }
+        //}
     }
 
     private fun setFocusToSearchField(){
@@ -185,7 +167,11 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
     }
 
     override fun onSearchItemClick(view: View) {
+    }
 
+    fun stopShimmer(){
+        binding.shimmerViewContainer?.stopShimmer()
+        binding.shimmerViewContainer?.isVisible = false
     }
 
     override fun onStart() {
@@ -193,7 +179,7 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
         EventBus.getDefault().register(this)
     }
 
-    override fun onStop() {
+    override fun onStop(){
         super.onStop()
         searchViewModel.resetSearchData()
         EventBus.getDefault().unregister(this)
@@ -203,7 +189,7 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
     fun onErrorReceived(event: WebServiceErrorEvent) {
         shimmerContainer?.stopShimmer()
         shimmerContainer?.isVisible = false
-        searchRowLoader.visibility = View.INVISIBLE
+        //searchRowLoader.visibility = View.INVISIBLE
         if(event.isInternetError)
             SandbarUtils.showError(this, AppConstant.INTERNET_ERR_MSG )
         else
@@ -228,13 +214,9 @@ class SearchActivity : AppCompatActivity() , SearchAdapter.SearchClickListener {
     private fun showSoftKeyboard(view: View) {
         if (view.requestFocus()) {
             val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            // here is one more tricky issue
-            // imm.showSoftInputMethod doesn't work well
-            // and imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0) doesn't work well for all cases too
             imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
     }
-
 
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

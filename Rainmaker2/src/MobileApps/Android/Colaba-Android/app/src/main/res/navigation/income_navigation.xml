@@ -82,6 +82,12 @@
             android:id="@+id/action_current_employment_address"
             app:destination="@id/navigation_current_employment_address"
             app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_income_sources"
+            app:destination="@id/navigation_income_sources"
+            app:enterAnim="@anim/slide_up" />
+
     </fragment>
 
     <!-- prev employment frag -->
@@ -93,6 +99,11 @@
         <action
             android:id="@+id/action_prev_employment_address"
             app:destination="@id/navigation_previous_employment_address"
+            app:enterAnim="@anim/slide_up" />
+
+        <action
+            android:id="@+id/action_income_sources"
+            app:destination="@id/navigation_income_sources"
             app:enterAnim="@anim/slide_up" />
     </fragment>
 
@@ -147,6 +158,13 @@
             android:id="@+id/action_address"
             app:destination="@id/navigation_current_employment_address"
             app:enterAnim="@anim/slide_up" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_income_sources"
+        android:name="com.rnsoft.colabademo.IncomeFiguresFragment"
+        android:label="@string/income"
+        tools:layout="@layout/income_sources_layout">
     </fragment>
 
     <fragment

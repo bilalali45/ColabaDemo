@@ -178,12 +178,10 @@ class NonPermanentFragment : BaseFragment() {
 
             if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_temp_worker)){
                 statusId = 4
-                //desc = AppConstant.visa_status_temp_worker
             }
 
             if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_work_visa)){
                 statusId = 3
-               // desc = AppConstant.visa_status_work_visa
             }
 
             if(binding.visaStatusCompleteView.text.toString().equals(AppConstant.visa_status_other)){
@@ -192,7 +190,8 @@ class NonPermanentFragment : BaseFragment() {
 
             //desc = if(binding.relationshipEditText.text.toString().length > 0 ) desc else ""
 
-            citizenship = BorrowerCitizenship(residencyStatusId = statusId,residencyStatusExplanation =  desc)
+            citizenship = BorrowerCitizenship(residencyStatusId = statusId,residencyStatusExplanation = desc)
+            //Log.e("NonParmenantFrag", "$citizenship")
 
             findNavController().previousBackStackEntry?.savedStateHandle?.set(AppConstant.borrower_citizenship, citizenship)
             findNavController().popBackStack()

@@ -1,13 +1,26 @@
-package com.rnsoft.colabademo.activities.dashboard.fragements.setting
+package com.rnsoft.colabademo
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import com.rnsoft.colabademo.BaseActivity
-import com.rnsoft.colabademo.R
+import com.rnsoft.colabademo.databinding.SettingFragmentBinding
 
 class SettingActivity : BaseActivity()  {
+
+    private lateinit var binding : SettingFragmentBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.setting_fragment)
+        binding = SettingFragmentBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.hold)
+
+        binding.btnDocSubmit.setOnClickListener{
+            startActivity(Intent(this, DocumentSubmitActivity::class.java))
+        }
+
+        binding.backButton.setOnClickListener {
+            finish()
+        }
     }
+
 }

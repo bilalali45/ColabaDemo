@@ -550,7 +550,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_first_mortgage_yes"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:button="@null"
                     android:background="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -645,7 +645,7 @@
             <androidx.appcompat.widget.AppCompatRadioButton
                 android:id="@+id/rb_first_mortgage_no"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="53dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/content_background_full_white"
                 android:button="@null"
@@ -665,7 +665,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -685,7 +685,7 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/rb_sec_mortgage_yes"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
+                        android:layout_height="53dp"
                         android:background="@null"
                         android:button="@null"
                         android:drawableStart="@drawable/radiodraw"
@@ -778,7 +778,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_sec_mortgage_no"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="53dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/content_background_full_white"
                     android:button="@null"

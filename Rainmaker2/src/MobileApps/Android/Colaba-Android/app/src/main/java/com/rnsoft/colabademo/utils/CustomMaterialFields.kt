@@ -8,10 +8,13 @@ import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.widget.LinearLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatCheckBox
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -87,9 +90,61 @@ class CustomMaterialFields() {
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
         }
 
+
+        fun selectBoxWithShadow(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            radio.setBackgroundResource(R.drawable.radio_background_with_shadow)
+            //radio.setPadding(30,55,30,55)
+            radio.updatePadding(30,57,30,57)
+        }
+
+        fun unselectBoxShadow(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            radio.setBackgroundResource(R.drawable.radio_background_simple)
+            radio.updatePadding(30,50,30,50)
+        }
+
+        fun selectLayoutWithShadow(layout : LinearLayout, radio: AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            layout.setBackgroundResource(R.drawable.radio_background_with_shadow)
+        }
+
+        fun unselectLayoutShadow(layout : LinearLayout, radio: AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            layout.setBackgroundResource(R.drawable.radio_background_simple)
+            radio.updatePadding(30,2,30,2)
+        }
+
         fun radioUnSelectColor(radio : AppCompatRadioButton, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
         }
+
+
+        // check boxes
+        fun selectCheckBoxShadow(radio : AppCompatCheckBox, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            radio.setBackgroundResource(R.drawable.radio_background_with_shadow)
+            //radio.setPadding(30,55,30,55)
+            radio.updatePadding(30,57,30,57)
+        }
+
+        fun unselectCheckBoxShadow(radio : AppCompatCheckBox, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            radio.setBackgroundResource(R.drawable.radio_background_simple)
+            radio.updatePadding(30,50,30,50)
+        }
+
+        fun selectCheckBoxLayout(layout : LinearLayout, radio: AppCompatCheckBox, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            layout.setBackgroundResource(R.drawable.radio_background_with_shadow)
+        }
+
+        fun unselectCheckBoxLayout(layout : LinearLayout, radio: AppCompatCheckBox, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            layout.setBackgroundResource(R.drawable.radio_background_simple)
+            radio.updatePadding(28,2,30,2)
+        }
+
 
         fun setCheckBoxTextColor(checkbox : AppCompatCheckBox, context: Context){
             checkbox.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))

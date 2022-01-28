@@ -2,6 +2,7 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class PdfViewFragment : BaseFragment() {
 
         hideFabIcons()
 
-        super.addListeners(binding.root)
+        //super.addListeners(binding.root)
 
         return view
     }
@@ -50,5 +51,10 @@ class PdfViewFragment : BaseFragment() {
 
     private fun hideFabIcons(){
         (activity as DetailActivity).hideFabIcons()
+    }
+
+    override fun onPause(){
+        super.onPause()
+        (activity as DetailActivity).showFabIcons()
     }
 }

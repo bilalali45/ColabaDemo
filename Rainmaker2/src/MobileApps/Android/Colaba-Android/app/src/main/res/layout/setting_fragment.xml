@@ -6,12 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colaba_primary_color_with_alpha_one">
-
-
-
-
-
+    android:background="@color/colaba_loan_background">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -19,6 +14,7 @@
         android:layout_margin="@dimen/padd_10"
         android:layout_height="wrap_content"
         tools:ignore="MissingConstraints">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/header_info_screen"
             android:layout_width="match_parent"
@@ -65,48 +61,41 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padd_10"
             android:orientation="horizontal">
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/mobileappnotificationsettings"
-                android:textColor="@color/light_color_gray"
-                android:textSize="13sp"
+                android:textColor="@color/grey_color_two"
+                android:textSize="14sp"
                 android:layout_weight="1"
                 android:layout_marginStart="2dp"
                 android:layout_marginTop="@dimen/padd_10"
                 app:layout_constraintStart_toEndOf="@id/imageView4"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                />
-
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
-
-
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padd_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/loanapplicationstarted"
-            android:textColor="@color/dark_color_gray"
-            android:textSize="15sp"
+            android:textColor="@color/grey_color_one"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:layout_marginStart="1dp"
             app:layout_constraintStart_toEndOf="@id/imageView4"
@@ -132,6 +121,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padd_10"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -139,8 +129,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/loanapplicationsubmitted"
-            android:textColor="@color/dark_color_gray"
-            android:textSize="14sp"
+            android:textColor="@color/grey_color_one"
+            android:textSize="16sp"
             android:layout_weight="1"
             android:layout_marginStart="1dp"
             app:layout_constraintStart_toEndOf="@id/imageView4"
@@ -167,8 +157,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padd_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textView"
@@ -176,8 +166,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/loanFund"
-                android:textColor="@color/dark_color_gray"
-                android:textSize="14sp"
+                android:textColor="@color/grey_color_one"
+                android:textSize="16sp"
                 android:layout_weight="1"
                 android:layout_marginStart="1dp"
                 app:layout_constraintStart_toEndOf="@id/imageView4"
@@ -199,43 +189,42 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/padd_10"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
-
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/document_submit"
-                android:textColor="@color/dark_color_gray"
-                android:textSize="14sp"
+                android:textColor="@color/grey_color_one"
+                android:textSize="16sp"
                 android:layout_weight="1"
                 android:layout_marginStart="1dp"
                 app:layout_constraintStart_toEndOf="@id/imageView4"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                />
-
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_doc_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/rubik_regular"
                 android:text="@string/minsdealy"
-                android:textColor="@color/light_color_gray"
+                android:textColor="@color/grey_color_three"
                 android:gravity="end"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:layout_weight="1"
                 android:layout_marginStart="11dp"
+                android:drawableEnd="@drawable/ic_left_arrow_grey"
+                android:drawablePadding="10dp"
+                android:clickable="true"
                 app:layout_constraintStart_toEndOf="@id/imageView4"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
-                />
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4" />
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

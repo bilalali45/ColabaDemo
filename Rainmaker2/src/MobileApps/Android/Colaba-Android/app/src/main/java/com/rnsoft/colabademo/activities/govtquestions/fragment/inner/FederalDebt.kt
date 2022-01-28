@@ -35,13 +35,12 @@ class FederalDebt:GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
             if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(
-                    "Yes",
+                    "",
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "4",
                     questionId,
-                    "1",
-                    "Yes"
+                    "1","Yes"
                 )
             }
 

@@ -44,7 +44,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
     private val _invitationEmail : MutableLiveData<InvitatationEmailModel> = MutableLiveData()
     val invitationEmail: LiveData<InvitatationEmailModel> get() = _invitationEmail
 
-
     private var docsServiceRunning:Boolean = false
     private var overviewServiceRunning:Boolean = false
     private var applicationServiceRunning:Boolean = false
@@ -84,7 +83,7 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
             val responseResult = detailRepo.sendInvitationEmail(emailBody)
             withContext(Dispatchers.Main) {
                 if (responseResult is Result.Success)
-
+                    //EventBus.getDefault().post(SendDataEvent(responseResult.data))
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                     EventBus.getDefault().post(WebServiceErrorEvent(null, true))
                 else if (responseResult is Result.Error)
@@ -137,7 +136,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                     docsServiceRunning = false
                     if (responseResult is Result.Success) {
                         _borrowerDocsModelList.value = (responseResult.data)
-
                     }
                     else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
                         EventBus.getDefault().post(WebServiceErrorEvent(null, true))
@@ -275,5 +273,6 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         _appMileStoneResponse.value = null
         _appMileStoneResponse.postValue(null)
     }
+
 
 }

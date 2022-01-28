@@ -1,7 +1,6 @@
-package com.rnsoft.colabademo.activities.govtquestions
+package com.rnsoft.colabademo
 
 import com.google.gson.annotations.Expose
-
 import com.google.gson.annotations.SerializedName
 
 

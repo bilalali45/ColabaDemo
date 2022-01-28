@@ -170,7 +170,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
     override fun navigateTo(position: Int) {
         if (allLoansArrayList.size >= position) {
             val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
-            //CRASH
             val test = allLoansArrayList[position]
             Log.e("Before", test.loanApplicationId.toString())
             //borrowerDetailIntent.putExtra(AppConstant.borrowerParcelObject, allLoansArrayList[position])
@@ -181,7 +180,6 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
             borrowerDetailIntent.putExtra(AppConstant.lastName, test.lastName)
             borrowerDetailIntent.putExtra(AppConstant.bPhoneNumber, test.cellNumber)
             borrowerDetailIntent.putExtra(AppConstant.bEmail, test.email)
-            //borrowerDetailIntent.putExtra(AppConstant.milestone, test.milestone)
 
             startActivity(borrowerDetailIntent)
         }

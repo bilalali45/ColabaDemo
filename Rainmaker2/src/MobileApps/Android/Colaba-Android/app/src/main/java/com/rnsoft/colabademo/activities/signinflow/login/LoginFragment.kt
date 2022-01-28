@@ -52,6 +52,10 @@ class LoginFragment : BaseFragment() {
     lateinit var parentLayout: ConstraintLayout
     private lateinit var mTextWatcher : TextWatcher
 
+    companion object{
+        var webtoken : String? = null
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -165,6 +169,7 @@ class LoginFragment : BaseFragment() {
             if (emailError == null && passworError == null) {
                 clearError(emailLayout)
                 clearError(passwordLayout)
+
                 loading.visibility = View.VISIBLE
                 toggleButtonState(false)
                 loginViewModel.login(
@@ -297,22 +302,12 @@ class LoginFragment : BaseFragment() {
 
     fun setError(textInputlayout: TextInputLayout, errorMsg: String) {
         textInputlayout.helperText = errorMsg
-        textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(
-                requireContext(),
-                R.color.primary_info_stroke_error_color
-            )
-        )
+        textInputlayout.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_stroke_error_color))
     }
 
     fun clearError(textInputlayout: TextInputLayout) {
         textInputlayout.helperText = ""
-        textInputlayout.setBoxStrokeColorStateList(
-            AppCompatResources.getColorStateList(
-                requireContext(),
-                R.color.primary_info_line_color
-            )
-        )
+        textInputlayout.setBoxStrokeColorStateList(AppCompatResources.getColorStateList(requireContext(), R.color.primary_info_line_color))
     }
 
     private fun toggleButtonState(bool: Boolean) {
@@ -366,15 +361,10 @@ class LoginFragment : BaseFragment() {
 
 
 
-        private fun hideSoftKeyboard() {
+    private fun hideSoftKeyboard() {
         val imm =
             view?.let { ContextCompat.getSystemService(it.context, InputMethodManager::class.java) }
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
-
-    companion object{
-        var webtoken : String? = null
-
     }
 
 }

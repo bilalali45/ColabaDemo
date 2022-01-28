@@ -355,6 +355,7 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
         binding.radioMixedPropertyYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.radioMixedPropertyNo.isChecked = false
+                binding.radioMixedPropertyNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
                 binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
             } else
                 binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
@@ -366,7 +367,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
             if(isChecked){
                 binding.radioMixedPropertyYes.isChecked = false
                 binding.layoutMixedPropertyDetail.visibility = View.GONE
-                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
+                binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
+                binding.radioMixedPropertyNo.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_one))
             } else
                 binding.radioMixedPropertyYes.setTextColor(ContextCompat.getColor(requireContext(),R.color.grey_color_two))
         }
@@ -491,6 +493,8 @@ class SubjectPropertyPurchase : BaseFragment(), CoBorrowerOccupancyClickListener
     fun onSentData(event: SendDataEvent) {
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS) {
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+            EventBus.getDefault().postSticky(OverviewUpdateEvent(true))
+
             dismissActivity()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)

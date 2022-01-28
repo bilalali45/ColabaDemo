@@ -20,20 +20,20 @@
         android:textSize="13sp" />
 
     <LinearLayout
+        android:id="@+id/outer_layout_activeDuty"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:background="@drawable/content_bg_with_drop_shadow">
+        android:background="@drawable/radio_background_simple">
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chb_duty_personel"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:layout_height="wrap_content"
+            android:padding="18dp"
             android:layoutDirection="rtl"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/active_duty_personel"
@@ -86,19 +86,20 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/outer_layout_reserve"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:orientation="vertical"
-        android:background="@drawable/content_bg_with_drop_shadow">
+        android:background="@drawable/radio_background_simple">
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/chb_res_national_guard"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
+            android:layout_height="wrap_content"
+            android:padding="18dp"
             android:layoutDirection="rtl"
             android:fontFamily="@font/rubik_regular"
             android:text="@string/national_guard"
@@ -152,13 +153,12 @@
 
     </LinearLayout>
 
-
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_veteran"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:layout_height="wrap_content"
+        android:padding="18dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layoutDirection="rtl"
@@ -169,14 +169,14 @@
         android:checked="false"
         android:button="@null"
         android:drawableStart="@drawable/cb_selector"
-        android:background="@drawable/content_bg_with_drop_shadow" />
+        android:background="@drawable/radio_background_simple" />
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/chb_surviving_spouse"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
+        android:layout_height="wrap_content"
+        android:padding="18dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layoutDirection="rtl"
@@ -187,7 +187,7 @@
         android:checked="false"
         android:button="@null"
         android:drawableStart="@drawable/cb_selector"
-        android:background="@drawable/content_bg_with_drop_shadow"
+        android:background="@drawable/radio_background_simple"
         />
 
    <!--

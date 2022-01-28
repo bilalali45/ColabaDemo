@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,16 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.compose.ui.text.capitalize
 import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputLayout
 import com.rnsoft.colabademo.databinding.SpouseDetailLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
-import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectColor
-import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectBoxWithShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectBoxShadow
 import java.lang.Exception
-import kotlin.concurrent.fixedRateTimer
 
 
 class MarriageDetailFragment : BaseFragment() {
@@ -311,6 +308,10 @@ class MarriageDetailFragment : BaseFragment() {
             isDataEntered = true
         }
 
+        if(binding.noRadioBtn.isChecked){
+            isDataEntered = true
+        }
+
         if(isDataEntered){
             val activity = (activity as? BorrowerAddressActivity)
             activity?.loanApplicationId?.let { loanId ->
@@ -388,7 +389,7 @@ class MarriageDetailFragment : BaseFragment() {
         binding.yesRadioBtn.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked){
                 binding.noRadioBtn.isChecked = false
-                setRadioColor(binding.yesRadioBtn, requireContext())
+                selectBoxWithShadow(binding.yesRadioBtn, requireContext())
                 if(relationLayout){
                     binding.layoutCoborrower.visibility = View.GONE
                     binding.primaryRelationInfoLayout.visibility = View.VISIBLE
@@ -400,7 +401,7 @@ class MarriageDetailFragment : BaseFragment() {
             }
             else {
                 binding.layoutCoborrower.visibility = View.GONE
-                radioUnSelectColor(binding.yesRadioBtn, requireContext())
+                unselectBoxShadow(binding.yesRadioBtn, requireContext())
             }
         }
 
@@ -409,11 +410,11 @@ class MarriageDetailFragment : BaseFragment() {
                 binding.yesRadioBtn.isChecked = false
                 binding.spouseInfoLayout.visibility = View.VISIBLE
                 binding.primaryRelationInfoLayout.visibility = View.GONE
-                setRadioColor(binding.noRadioBtn, requireContext())
+                selectBoxWithShadow(binding.noRadioBtn, requireContext())
             }
             else {
                 binding.spouseInfoLayout.visibility = View.GONE
-                radioUnSelectColor(binding.noRadioBtn, requireContext())
+                unselectBoxShadow(binding.noRadioBtn, requireContext())
             }
         }
     }

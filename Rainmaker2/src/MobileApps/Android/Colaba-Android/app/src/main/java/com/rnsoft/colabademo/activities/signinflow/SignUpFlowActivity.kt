@@ -20,7 +20,6 @@ class SignUpFlowActivity : AppCompatActivity() {
 
 
     private val signUpFlowViewModel: SignUpFlowViewModel by viewModels()
-
     private lateinit var appBarConfiguration : AppBarConfiguration
 
     var  resumeState =  false
@@ -53,9 +52,6 @@ class SignUpFlowActivity : AppCompatActivity() {
 
             //Log.d("NavigationActivity", "Navigated to $dest")
         }
-
-
-
 
     }
 

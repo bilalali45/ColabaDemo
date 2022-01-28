@@ -13,7 +13,6 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.DetailTabLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.coroutineScope
@@ -37,13 +36,9 @@ class DetailTabFragment : BaseFragment() {
     private val binding get() = _binding!!
     private var selectedPosition:Int = 0
     private lateinit var pageAdapter:DetailPagerAdapter
-
     private val detailViewModel: DetailViewModel by activityViewModels()
-
     private lateinit var viewPager: ViewPager2
-
-    private lateinit var tabLayout:TabLayout
-
+    private var tabLayout: TabLayout?= null
     private var displayBadge = false
 
     override fun onCreateView(
@@ -99,7 +94,7 @@ class DetailTabFragment : BaseFragment() {
             }
         })
 
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     viewPager.adapter
@@ -123,18 +118,14 @@ class DetailTabFragment : BaseFragment() {
         if(viewPager.visibility == View.INVISIBLE)
             viewPager.postDelayed({
                 viewPager.visibility = View.VISIBLE
-                TabLayoutMediator(tabLayout, viewPager) {
-
-                        tab, position -> tab.text = detailTabArray[position]
-
-                }.attach()
+                TabLayoutMediator(tabLayout!!, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
             }, 600)
         else
-            TabLayoutMediator(tabLayout, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
+            TabLayoutMediator(tabLayout!!, viewPager) { tab, position -> tab.text = detailTabArray[position] }.attach()
 
         observeFileReadChanges()
         super.addListeners(binding.root)
-
+        datail = this
         return root
     }
 
@@ -201,26 +192,13 @@ class DetailTabFragment : BaseFragment() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
-
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-    fun settab(i: Int) {
-        if(viewPager != null){
-            viewPager.setCurrentItem(i)
-        }
-    }
-
 
     private fun addBadgeForUnreadFile(){
-        val testBadge = tabLayout.getTabAt(2)?.orCreateBadge
+        val testBadge = tabLayout?.getTabAt(2)?.orCreateBadge
         testBadge?.let {
             if (displayBadge) {
                 testBadge.isVisible = true
@@ -231,6 +209,18 @@ class DetailTabFragment : BaseFragment() {
             }
             else
                 testBadge.isVisible = false
+        }
+    }
+
+    companion object{
+        var datail : DetailTabFragment? = null
+        fun newInstance() = DetailTabFragment()
+    }
+
+
+    fun settab(i: Int) {
+        if(viewPager != null){
+            viewPager.setCurrentItem(i)
         }
     }
 

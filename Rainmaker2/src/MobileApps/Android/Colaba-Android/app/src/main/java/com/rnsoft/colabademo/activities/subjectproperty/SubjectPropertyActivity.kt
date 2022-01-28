@@ -2,18 +2,14 @@ package com.rnsoft.colabademo
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.rnsoft.colabademo.databinding.BorrowerSubjectPropertyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint

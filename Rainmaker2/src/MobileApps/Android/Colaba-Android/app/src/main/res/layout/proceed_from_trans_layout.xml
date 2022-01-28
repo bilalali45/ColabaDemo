@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="1dp"
             android:fontFamily="@font/rubik_light"
-            android:text="@string/richard"
+            android:text=""
             android:textAllCaps="true"
             android:textColor="@color/grey_color_three"
             android:textSize="11sp"
@@ -279,13 +279,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/annual_base_layout" />
 
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="21dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/radio_label_text_view">
@@ -294,14 +293,13 @@
             android:id="@+id/radioButton"
             style="@style/radiobutton"
             android:layout_marginRight="@dimen/_20sdp"
-            android:text="Yes" />
+            android:text="@string/yes" />
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/radioButton2"
             style="@style/radiobutton"
             android:layout_marginRight="@dimen/_20sdp"
-            android:text="No"
-          />
+            android:text="@string/no" />
     </RadioGroup>
 
     <TextView
@@ -332,7 +330,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:background="@android:color/transparent"
         android:hint="Transaction Type"
         android:textColorHint="@color/primary_info_label_color"
@@ -345,12 +342,9 @@
         app:endIconTint="@color/grey_color_three"
         app:helperTextEnabled="true"
         app:helperTextTextAppearance="@style/inputError"
-
         app:helperTextTextColor="@color/colaba_red_color"
         app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
-
         app:hintTextColor="@color/grey_color_two"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="20dp"

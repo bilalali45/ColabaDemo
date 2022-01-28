@@ -39,13 +39,12 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
             if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(
-                    "Yes",
+                    "",
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "8",
                     questionId,
-                    "1",
-                    "Yes"
+                    "1","Yes"
                 )
             }
 

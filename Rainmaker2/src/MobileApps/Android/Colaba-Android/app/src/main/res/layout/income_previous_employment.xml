@@ -348,7 +348,7 @@
                 android:textColor="@color/grey_color_two"
                 android:textSize="13sp" />
 
-            <RadioGroup
+            <!--<RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
@@ -378,44 +378,129 @@
                     android:textColor="@color/grey_color_one"
                     android:textSize="14sp" />
 
-            </RadioGroup>
+            </RadioGroup> -->
 
-            <!-- ownership percentage -->
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:visibility="gone"
-                android:id="@+id/layout_ownership_percentage"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:fontFamily="@font/rubik_light"
-                android:hint="@string/ownership_percentage"
-                android:textColorHint="@color/primary_info_label_color"
-                app:boxCollapsedPaddingTop="1dp"
-                app:boxStrokeColor="@color/primary_info_line_color"
-                app:boxStrokeWidth="0.5dp"
-                app:boxStrokeWidthFocused="1dp"
-                app:helperTextEnabled="true"
-                app:helperTextTextAppearance="@style/inputError"
-                app:helperTextTextColor="@color/colaba_red_color"
-                app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+                android:layout_marginTop="10dp"
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/ed_ownership_percent"
+                <androidx.appcompat.widget.AppCompatRadioButton
+                    android:id="@+id/rb_ownership_yes"
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:background="@null"
+                    android:button="@null"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/radiodraw"
+                    android:drawablePadding="15dp"
+                    android:fontFamily="@font/rubik_regular"
+                    android:layoutDirection="rtl"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:text="@string/yes"
+                    android:textAllCaps="true"
+                    android:textColor="@color/grey_color_two"
+                    android:textSize="15sp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_ownership_percentage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:digits="1234567890"
-                    android:inputType="number"
-                    android:ems="10"
-                    android:fontFamily="@font/rubik_regular"
-                    android:imeOptions="actionNext"
-                    android:paddingStart="0dp"
-                    android:singleLine="true"
-                    android:textColor="@color/grey_color_one"
-                    android:textSize="@dimen/ed_txt_size_primary_info" />
+                    android:layout_marginTop="5dp"
+                    android:clickable="true"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@color/colaba_app_border_color" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="@string/ownership_percentage"
+                        android:textColor="@color/grey_color_two"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ownership_percentage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text=""
+                        android:textColor="@color/grey_color_one"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/rb_ownership_no"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:button="@null"
+                android:drawableStart="@drawable/radiodraw"
+                android:drawablePadding="15dp"
+                android:fontFamily="@font/rubik_regular"
+                android:layoutDirection="rtl"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/no"
+                android:textAllCaps="true"
+                android:textColor="@color/grey_color_two"
+                android:textSize="14sp" />
+
+            <!-- ownership percentage -->
+            <!--
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:visibility="gone"
+                            android:id="@+id/layout_ownership_percentage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:fontFamily="@font/rubik_light"
+                            android:hint="@string/ownership_percentage"
+                            android:textColorHint="@color/primary_info_label_color"
+                            app:boxCollapsedPaddingTop="1dp"
+                            app:boxStrokeColor="@color/primary_info_line_color"
+                            app:boxStrokeWidth="0.5dp"
+                            app:boxStrokeWidthFocused="1dp"
+                            app:helperTextEnabled="true"
+                            app:helperTextTextAppearance="@style/inputError"
+                            app:helperTextTextColor="@color/colaba_red_color"
+                            app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/ed_ownership_percent"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@android:color/transparent"
+                                android:digits="1234567890"
+                                android:inputType="number"
+                                android:ems="10"
+                                android:fontFamily="@font/rubik_regular"
+                                android:imeOptions="actionNext"
+                                android:paddingStart="0dp"
+                                android:singleLine="true"
+                                android:textColor="@color/grey_color_one"
+                                android:textSize="@dimen/ed_txt_size_primary_info" />
+
+                        </com.google.android.material.textfield.TextInputLayout> -->
 
 
             <!-- annual base salary -->

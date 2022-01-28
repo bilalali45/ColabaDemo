@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/half_white">
@@ -105,9 +104,8 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/yesRadioBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
+                    android:layout_height="wrap_content"
+                    android:padding="18dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
@@ -119,16 +117,16 @@
                     android:drawablePadding="15dp"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
-                    android:background="@drawable/content_bg_with_drop_shadow"
+                    android:background="@drawable/radio_background_simple"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/noRadioBtn"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp"
+                    android:layout_height="wrap_content"
+                    android:padding="22dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layoutDirection="rtl"
@@ -139,7 +137,7 @@
                     android:checked="true"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
-                    android:background="@drawable/content_bg_with_drop_shadow"
+                    android:background="@drawable/radio_background_with_shadow"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/yesRadioBtn"/>
 

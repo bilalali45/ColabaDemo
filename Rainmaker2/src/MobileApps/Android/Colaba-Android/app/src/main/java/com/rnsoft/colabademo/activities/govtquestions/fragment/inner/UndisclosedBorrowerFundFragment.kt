@@ -118,7 +118,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                     getDetailString,
                     whichBorrowerId,
                     "1",
-                    11,
+                    questionId,
                     "1","Yes"
                 )
             }

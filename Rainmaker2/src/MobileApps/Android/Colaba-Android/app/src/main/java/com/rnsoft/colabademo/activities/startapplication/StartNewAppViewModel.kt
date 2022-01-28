@@ -30,16 +30,14 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
     private val _createNewApplicationParams : MutableLiveData<CreateNewApplicationParams> =   MutableLiveData()
     val createNewApplicationParams: LiveData<CreateNewApplicationParams> get() = _createNewApplicationParams
 
-
-     val _mcu : MutableLiveData<Mcu> =   MutableLiveData()
+    val _mcu : MutableLiveData<Mcu> =   MutableLiveData()
     val mcu: LiveData<Mcu> get() = _mcu
 
     fun setCreateNewParams(createNewApplicationParams:CreateNewApplicationParams){
         _createNewApplicationParams.value = createNewApplicationParams
-
     }
 
-    suspend fun searchByBorrowerContact(token:String, searchKeyword:String){
+     fun searchByBorrowerContact(token:String, searchKeyword:String){
         viewModelScope.launch(Dispatchers.IO) {
             val result = startNewAppRepo.searchByBorrowerContact(token = token, searchKeyword = searchKeyword)
             withContext(Dispatchers.Main) {
@@ -80,7 +78,6 @@ class StartNewAppViewModel @Inject constructor(private val startNewAppRepo: Star
             }
         }
     }
-
 
     suspend fun getMcusByRoleId(token:String, filterLoanOfficer:Boolean){
         viewModelScope.launch(Dispatchers.IO) {

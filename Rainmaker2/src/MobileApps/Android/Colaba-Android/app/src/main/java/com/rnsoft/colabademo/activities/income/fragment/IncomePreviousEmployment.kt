@@ -2,14 +2,12 @@ package com.rnsoft.colabademo
 
 import android.app.DatePickerDialog
 import android.content.SharedPreferences
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.format.DateFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -18,7 +16,6 @@ import com.rnsoft.colabademo.activities.addresses.info.fragment.DeleteCurrentRes
 
 import com.rnsoft.colabademo.databinding.AppHeaderWithCrossDeleteBinding
 import com.rnsoft.colabademo.databinding.IncomePreviousEmploymentBinding
-import com.rnsoft.colabademo.databinding.StockBondsLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
 import com.rnsoft.colabademo.utils.NumberTextFormat
@@ -50,6 +47,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     private var borrowerId :Int? = null
     private var borrowerName: String? = null
     private var employerAddress = AddressData()
+    private var ownershipPercentageValue : String = ""
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -71,7 +69,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             }
             //Log.e("Current Employment-oncreate","Loan Application Id " +loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId" + incomeInfoId)
             borrowerName?.let {
-               // toolbar.borrowerPurpose.setText(it)
+                // toolbar.borrowerPurpose.setText(it)
             }
 
             initViews()
@@ -92,6 +90,22 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                 showHideAddress(false,true)
             }
 
+            binding.rbOwnershipNo.setOnCheckedChangeListener { _, isChecked ->
+                if(isChecked){
+                    CustomMaterialFields.setRadioColor(binding.rbOwnershipNo, requireContext())
+                    binding.rbOwnershipYes.isChecked = false
+                    CustomMaterialFields.radioUnSelectColor(binding.rbOwnershipYes, requireContext())
+                    binding.layoutOwnershipPercentage.visibility = View.GONE
+                    binding.tvOwnershipPercentage.setText("")
+                    ownershipPercentageValue = ""
+                }
+                else {
+                    CustomMaterialFields.setRadioColor(binding.rbOwnershipYes, requireContext())
+                    CustomMaterialFields.radioUnSelectColor(binding.rbOwnershipNo, requireContext())
+                }
+            }
+
+
             savedViewInstance
         }
     }
@@ -102,7 +116,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
             lifecycleScope.launchWhenCreated {
                 sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
-                   // Log.e("getting details", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
+                    // Log.e("getting details", "" + loanApplicationId + " borrowerId:  " + borrowerId + " incomeInfoId: " + incomeInfoId)
                     binding.loaderEmployment.visibility = View.VISIBLE
                     viewModel.getPrevEmploymentDetail(authToken, loanApplicationId!!, borrowerId!!, incomeInfoId!!)
                 }
@@ -160,14 +174,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
                             binding.rbOwnershipYes.isChecked = true
                             binding.layoutOwnershipPercentage.visibility = View.VISIBLE
                             info.ownershipInterest?.let { percentage ->
-                                binding.edOwnershipPercent.setText(
-                                    Math.round(percentage).toString()
-                                )
-                                CustomMaterialFields.setColor(
-                                    binding.layoutOwnershipPercentage,
-                                    R.color.grey_color_two,
-                                    requireContext()
-                                )
+                                binding.tvOwnershipPercentage.setText(Math.round(percentage).toString().plus("%"))
+                                CustomMaterialFields.setRadioColor(binding.rbOwnershipYes, requireContext())
+                                ownershipPercentageValue = Math.round(percentage).toString()
                             }
                         } else {
                             binding.rbOwnershipNo.isChecked = true
@@ -187,11 +196,12 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         }
 
         binding.rbOwnershipYes.setOnClickListener(this)
-        binding.rbOwnershipNo.setOnClickListener(this)
+        //binding.rbOwnershipNo.setOnClickListener(this)
         binding.layoutAddress.setOnClickListener(this)
         toolbar.btnClose.setOnClickListener(this)
         binding.btnSaveChange.setOnClickListener(this)
         binding.mainLayoutPrevEmployment.setOnClickListener(this)
+        binding.layoutOwnershipPercentage.setOnClickListener(this)
 
         setInputFields()
     }
@@ -199,8 +209,13 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.getId()) {
             R.id.btn_save_change -> processSendData()
-            R.id.rb_ownership_yes -> ownershipInterest()
-            R.id.rb_ownership_no -> ownershipInterest()
+            R.id.rb_ownership_yes -> {
+                if (binding.rbOwnershipYes.isChecked) {
+                    binding.rbOwnershipYes.isChecked = false
+                    ownershipInterest()
+                }
+            }
+            R.id.layout_ownership_percentage -> ownershipInterest()
             R.id.layout_address -> openAddressFragment() //findNavController().navigate(R.id.action_address)
             R.id.btn_close -> findNavController().popBackStack()
             R.id.mainLayout_prev_employment ->  {
@@ -211,76 +226,56 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     private fun processSendData(){
-        var isDataEntered : Boolean = false
-        var ownershipPercentage: String?= null
         val empName: String = binding.editTextEmpName.text.toString()
         val startDate: String = binding.editTextStartDate.text.toString()
         val endDate: String = binding.editTextEndDate.text.toString()
         val netIncome: String = binding.editTextAnnualIncome.text.toString()
 
         if (empName.isEmpty() || empName.length == 0) {
-            isDataEntered = false
             CustomMaterialFields.setError(binding.layoutEmpName, getString(R.string.error_field_required),requireActivity())
         }
+
+        if (empName.isNotEmpty() || empName.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
+        }
         if (startDate.isEmpty() || startDate.length == 0) {
-            isDataEntered = false
             CustomMaterialFields.setError(binding.layoutStartDate, getString(R.string.error_field_required),requireActivity())
         }
+
+        if (startDate.isNotEmpty() || startDate.length > 0) {
+            CustomMaterialFields.clearError(binding.layoutStartDate,requireActivity())
+        }
         if (endDate.isEmpty() || endDate.length == 0) {
-            isDataEntered = false
             CustomMaterialFields.setError(binding.layoutEndDate, getString(R.string.error_field_required),requireActivity())
         }
 
-        if (netIncome.isEmpty() || netIncome.length == 0) {
-            isDataEntered = false
-            CustomMaterialFields.setError(binding.layoutNetIncome, getString(R.string.error_field_required),requireActivity())
-        }
-        if (empName.isNotEmpty() || empName.length > 0) {
-            isDataEntered = true
-            CustomMaterialFields.clearError(binding.layoutEmpName,requireActivity())
-        }
-        if (startDate.isNotEmpty() || startDate.length > 0) {
-            isDataEntered = true
-            CustomMaterialFields.clearError(binding.layoutStartDate,requireActivity())
-        }
         if (endDate.isNotEmpty() || endDate.length > 0) {
-            isDataEntered = true
             CustomMaterialFields.clearError(binding.layoutEndDate,requireActivity())
         }
+        if (netIncome.isEmpty() || netIncome.length == 0) {
+            CustomMaterialFields.setError(binding.layoutNetIncome, getString(R.string.error_field_required),requireActivity())
+        }
         if (netIncome.isNotEmpty() || netIncome.length > 0) {
-            isDataEntered = true
             CustomMaterialFields.clearError(binding.layoutNetIncome,requireActivity())
         }
-        if (binding.layoutOwnershipPercentage.isVisible) {
-            ownershipPercentage = binding.edOwnershipPercent.text.toString()
 
-            if (ownershipPercentage.length == 0) {
-                isDataEntered = false
-                CustomMaterialFields.setError(binding.layoutOwnershipPercentage, getString(R.string.error_field_required), requireActivity())
-            }
-            if (ownershipPercentage.length > 0) {
-                isDataEntered = true
-                CustomMaterialFields.clearError(binding.layoutOwnershipPercentage, requireActivity())
-            }
-        }
+        if(empName.length > 0 && startDate.length > 0 && endDate.length > 0 && netIncome.length > 0){
 
-        if(isDataEntered){
-
-            lifecycleScope.launchWhenStarted{
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+           // lifecycleScope.launchWhenStarted{
+               // sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     if(loanApplicationId != null && borrowerId !=null) {
-                        Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
+                        //Log.e("sending", "" +loanApplicationId + " borrowerId:  " + borrowerId+ " incomeInfoId: " + incomeInfoId)
 
                         val phoneNum = if(binding.editTextEmpPhnum.text.toString().length > 0) binding.editTextEmpPhnum.text.toString() else null
                         var isOwnershipInterest : Boolean ? = null
                         var ownershipPercentage : String? = null
                         if(binding.rbOwnershipYes.isChecked) {
                             isOwnershipInterest = true
-                            ownershipPercentage = if(binding.edOwnershipPercent.text.toString().length > 0) binding.edOwnershipPercent.text.toString() else null
+                            ownershipPercentage = if(ownershipPercentageValue.length > 0) ownershipPercentageValue else null
                         }
                         if(binding.rbOwnershipNo.isChecked) {
                             isOwnershipInterest = false
-                            binding.edOwnershipPercent.setText("")
+                            binding.tvOwnershipPercentage.setText("")
                         }
 
                         val profYears = if(binding.editTextProfYears.text.toString().length >0) binding.editTextProfYears.text.toString() else null
@@ -297,18 +292,16 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
                         val employmentData = PreviousEmploymentData(
                             loanApplicationId = loanApplicationId,borrowerId= borrowerId, employmentInfo=employerInfo, employerAddress= employerAddress,wayOfIncome = wayOfIncome)
-                        Log.e("employmentData-snding to API", "" + employmentData)
+                        //Log.e("employmentData-snding to API", "" + employmentData)
 
                         binding.loaderEmployment.visibility = View.VISIBLE
-                        viewModel.sendPrevEmploymentData(authToken, employmentData)
+                        viewModel.sendPrevEmploymentData(employmentData)
                     }
-                }
-            }
+              //  }
+         //   }
 
         }
     }
-
-
 
     private fun setInputFields() {
 
@@ -317,7 +310,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         binding.editTextEmpPhnum.setOnFocusChangeListener(FocusListenerForPhoneNumber(binding.editTextEmpPhnum, binding.layoutEmpPhnum,requireContext()))
         binding.editTextJobTitle.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextJobTitle, binding.layoutJobTitle, requireContext()))
         binding.editTextProfYears.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextProfYears, binding.layoutYearsProfession, requireContext()))
-        binding.edOwnershipPercent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
+        //binding.edOwnershipPercent.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.edOwnershipPercent, binding.layoutOwnershipPercentage, requireContext()))
         binding.editTextAnnualIncome.setOnFocusChangeListener(CustomFocusListenerForEditText(binding.editTextAnnualIncome, binding.layoutNetIncome, requireContext()))
 
         // set input format
@@ -326,9 +319,9 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
 
 
         // set Dollar prifix
-        CustomMaterialFields.setPercentagePrefix(binding.layoutOwnershipPercentage, requireContext())
+        //CustomMaterialFields.setPercentagePrefix(binding.layoutOwnershipPercentage, requireContext())
         CustomMaterialFields.setDollarPrefix(binding.layoutNetIncome, requireContext())
-        CustomMaterialFields.setPercentagePrefix(binding.layoutOwnershipPercentage, requireContext())
+        //CustomMaterialFields.setPercentagePrefix(binding.layoutOwnershipPercentage, requireContext())
 
         // start date
         binding.editTextStartDate.showSoftInputOnFocus = false
@@ -367,7 +360,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
     }
 
     private fun ownershipInterest(){
-        if(binding.rbOwnershipYes.isChecked) {
+        /*if(binding.rbOwnershipYes.isChecked) {
             binding.rbOwnershipYes.setTypeface(null, Typeface.BOLD)
             binding.rbOwnershipNo.setTypeface(null, Typeface.NORMAL)
             binding.layoutOwnershipPercentage.visibility = View.VISIBLE
@@ -377,8 +370,14 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
             binding.rbOwnershipNo.setTypeface(null, Typeface.BOLD)
             binding.rbOwnershipYes.setTypeface(null, Typeface.NORMAL)
             binding.layoutOwnershipPercentage.visibility = View.GONE
+        } */
 
-        }
+        val bundle = Bundle()
+        bundle.putString(AppConstant.TOOLBAR_TITLE, AppConstant.OWNERSHIP_INTEREST)
+        bundle.putString(AppConstant.borrowerName, borrowerName)
+        bundle.putString(AppConstant.OWNERSHIP_INTEREST_PERCENTAGE, ownershipPercentageValue)
+        findNavController().navigate(R.id.action_income_sources, bundle)
+
     }
 
     private fun openAddressFragment(){
@@ -394,8 +393,18 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         super.onResume()
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<AddressData>(
             AppConstant.address)?.observe(viewLifecycleOwner) { result -> employerAddress = result
-            //binding.textviewCurrentEmployerAddress.text = result.street + " " + result.unit + "\n" + result.city + " " + result.stateName + " " + result.zipCode + " " + result.countryName
             displayAddress(result)
+        }
+
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(AppConstant.OWNERSHIP_INTEREST)?.observe(
+            viewLifecycleOwner) { result ->
+            result?.let {
+                ownershipPercentageValue = result
+                binding.tvOwnershipPercentage.text = result.plus("%")
+                binding.layoutOwnershipPercentage.visibility = View.VISIBLE
+                binding.rbOwnershipYes.isChecked = true
+                binding.rbOwnershipNo.isChecked = false
+            }
         }
     }
 
@@ -510,7 +519,7 @@ class IncomePreviousEmployment : BaseFragment(),View.OnClickListener {
         val datePickerDialog = DatePickerDialog(
             requireActivity(), R.style.MySpinnerDatePickerStyle,
             {
-                view, selectedYear, monthOfYear, dayOfMonth ->
+                    view, selectedYear, monthOfYear, dayOfMonth ->
                 binding.editTextStartDate.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear)
                 val cal = Calendar.getInstance()
                 cal.set(selectedYear, (monthOfYear), dayOfMonth)

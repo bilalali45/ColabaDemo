@@ -5,7 +5,7 @@ import androidx.core.view.iterator
 import androidx.fragment.app.Fragment
 import timber.log.Timber
 
-open class BaseFragment:Fragment() {
+open class BaseFragment: Fragment() {
 
     protected fun addListeners(rootView: ViewGroup) {
         rootView.setOnClickListener{

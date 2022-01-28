@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
-import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment.Companion.banMap
 import com.rnsoft.colabademo.databinding.BankruptcyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -29,7 +28,6 @@ class BankruptcyFragment:BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = BankruptcyLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        banMap = hashMapOf<String, String>()
         setUpUI()
         super.addListeners(binding.root)
         arguments?.let { arguments->
@@ -84,15 +82,15 @@ class BankruptcyFragment:BaseFragment() {
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
 
+
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setdata(
-                        "Yes",
+                        "",
                         selectedValues,
                         whichBorrowerId,
                         "9",
                         questionId,
-                        "1",
-                        "Yes"
+                        "1","Yes"
                     )
                 }
 
@@ -118,29 +116,21 @@ class BankruptcyFragment:BaseFragment() {
             bool = true
             answerData.`1` = true
             displayedString = "Chapter 7,"
-            banMap.put("1", "Chapter 7")
-
         }
         if(binding.chapter11.isChecked) {
             bool = true
             answerData.`2` = true
             displayedString = "$displayedString Chapter 11,"
-            banMap.put("2", "Chapter 11")
-
         }
         if(binding.chapter12.isChecked) {
             bool = true
             answerData.`3` = true
             displayedString = "$displayedString Chapter 12,"
-            banMap.put("3", "Chapter 12")
-
         }
         if(binding.chapter13.isChecked) {
             bool = true
             answerData.`4` = true
             displayedString = "$displayedString Chapter 13"
-            banMap.put("4", "Chapter 13")
-
         }
         return displayedString
     }

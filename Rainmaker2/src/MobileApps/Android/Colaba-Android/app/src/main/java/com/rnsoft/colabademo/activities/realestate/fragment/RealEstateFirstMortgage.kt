@@ -80,35 +80,35 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
                 it.floodInsuranceIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbFloodInsurance.isChecked = true
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
+                       // binding.cbFloodInsurance.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.cbFloodInsurance.isChecked = false
-                        binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
+                       // binding.cbFloodInsurance.setTypeface(null, Typeface.NORMAL)
                     }
                 }
                 it.propertyTaxesIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbPropertyTaxes.isChecked = true
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
+                     //   binding.cbPropertyTaxes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.cbPropertyTaxes.isChecked = false
-                        binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
+                       // binding.cbPropertyTaxes.setTypeface(null, Typeface.NORMAL)
                     }
                 }
                 it.homeOwnerInsuranceIncludeinPayment?.let {
                     if (it == true) {
                         binding.cbHomeownwerInsurance.isChecked = true
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
+                     //   binding.cbHomeownwerInsurance.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.cbHomeownwerInsurance.isChecked = false
-                        binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
+                       // binding.cbHomeownwerInsurance.setTypeface(null, Typeface.NORMAL)
                     }
                 }
 
                 it.isHeloc?.let { bool ->
                     if (bool == true) {
                         binding.switchCreditLimit.isChecked = true
-                        binding.tvHeloc.setTypeface(null, Typeface.BOLD)
+                       // binding.tvHeloc.setTypeface(null, Typeface.BOLD)
                         binding.layoutCreditLimit.visibility = View.VISIBLE
 
                         it.helocCreditLimit?.let {
@@ -118,17 +118,17 @@ class RealEstateFirstMortgage : BaseFragment(),View.OnClickListener {
 
                     } else {
                         binding.switchCreditLimit.isChecked = false
-                        binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
+                       // binding.tvHeloc.setTypeface(null, Typeface.NORMAL)
                     }
                 }
 
                 it.paidAtClosing?.let {
                     if (it == true) {
                         binding.rbPaidClosingYes.isChecked = true
-                        binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
+                        //binding.rbPaidClosingYes.setTypeface(null, Typeface.BOLD)
                     } else {
                         binding.rbPaidClosingNo.isChecked = true
-                        binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
+                        //binding.rbPaidClosingNo.setTypeface(null, Typeface.BOLD)
                     }
                 }
             }

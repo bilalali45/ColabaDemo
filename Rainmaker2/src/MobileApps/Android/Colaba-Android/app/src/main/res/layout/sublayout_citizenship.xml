@@ -20,13 +20,12 @@
         android:id="@+id/rb_us_citizen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="18dp"
         android:layoutDirection="rtl"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
+        android:background="@drawable/radio_background_simple"
         android:button="@null"
         android:drawableStart="@drawable/radiodraw"
         android:drawablePadding="15dp"
@@ -39,13 +38,12 @@
         android:id="@+id/rb_pr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="18dp"
         android:layoutDirection="rtl"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
+        android:background="@drawable/radio_background_simple"
         android:button="@null"
         android:drawableStart="@drawable/radiodraw"
         android:drawablePadding="15dp"
@@ -55,20 +53,20 @@
         android:textSize="14sp" />
 
     <LinearLayout
+        android:id="@+id/layout_visa_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
+        android:background="@drawable/radio_background_simple"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_non_pr_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:padding="18dp"
             android:layoutDirection="rtl"
             android:button="@null"
             android:drawableStart="@drawable/radiodraw"
@@ -84,8 +82,8 @@
             android:id="@+id/layout_visa_status_other"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:orientation="vertical"
             android:visibility="gone">
@@ -117,7 +115,6 @@
                 android:textSize="15sp" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 

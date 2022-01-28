@@ -166,7 +166,7 @@
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cb_flood_insurance"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:layout_marginTop="30dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
@@ -184,7 +184,7 @@
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cb_property_taxes"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:layoutDirection="rtl"
@@ -198,7 +198,7 @@
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cb_homeownwer_insurance"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="65dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:layoutDirection="rtl"
@@ -293,7 +293,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_paid_closing_yes"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="65dp"
                     android:background="@drawable/content_bg_with_drop_shadow"
                     android:button="@null"
                     android:drawableStart="@drawable/radiodraw"
@@ -310,7 +310,7 @@
                 <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/rb_paid_closing_no"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
+                    android:layout_height="65dp"
                     android:paddingStart="20dp"
                     android:paddingEnd="20dp"
                     android:layoutDirection="rtl"

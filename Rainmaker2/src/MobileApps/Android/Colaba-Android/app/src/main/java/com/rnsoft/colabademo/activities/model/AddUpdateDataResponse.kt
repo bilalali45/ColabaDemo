@@ -1,8 +1,6 @@
 package com.rnsoft.colabademo
 
 import com.google.gson.annotations.SerializedName
-import com.rnsoft.colabademo.activities.details.WebResponse
-import retrofit2.Call
 
 data class AddUpdateDataResponse(
     @SerializedName("code") val code: String?,

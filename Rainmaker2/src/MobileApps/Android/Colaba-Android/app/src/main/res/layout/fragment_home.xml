@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/searchIconImageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/greetingMessage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -76,6 +76,9 @@
             app:tabIndicator="@drawable/tab_indicator"
             app:tabIndicatorColor="@color/colaba_apptheme_blue"
             app:tabIndicatorHeight="4dp"
+            app:tabIndicatorFullWidth="false"
+            app:tabPaddingEnd="10dp"
+            app:tabPaddingStart="10dp"
             app:tabSelectedTextColor="@color/colaba_apptheme_blue"
             app:tabTextAppearance="@style/MineCustomTabText"
             app:tabTextColor="@color/grey_color_two" />

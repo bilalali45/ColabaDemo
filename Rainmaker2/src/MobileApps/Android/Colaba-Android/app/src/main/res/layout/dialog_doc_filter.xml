@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingBottom="40dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/crossImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/borrowerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/borrowerName"
+        app:srcCompat="@drawable/search_cross"
+        app:tint="@color/grey_color_three" />
+
+    <TextView
+        android:id="@+id/borrowerName"
+        style="@style/TextAppearance.AppCompat.Body1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/rubik_medium"
+        android:text="Filter by"
+        android:textColor="@color/grey_color_one"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/sortBySepartor"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/loan_view_holder_separator"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/borrowerName" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/filterLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sortBySepartor">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/filter_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_all"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            android:drawableTint="@color/grey_color_three"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_indraft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_in_draft"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableTint="@color/filter_blue"
+            android:drawableStart="@drawable/circle_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/filter_all" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_manually_added"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_manually_added"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_indraft" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_borrower_todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_borrower_to_do"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            android:drawableTint="@color/colaba_red_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_manually_added" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_started"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_started"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            android:drawableTint="@color/filter_yellow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_borrower_todo" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_pending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_pending"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            android:drawableTint="@color/colaba_apptheme_blue"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_started" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/rubik_medium"
+            android:text="@string/doc_filter_completed"
+            android:textColor="@color/grey_color_two"
+            android:textSize="14sp"
+            android:gravity="start|center"
+            android:drawablePadding="15dp"
+            android:drawableStart="@drawable/circle_medium"
+            android:drawableTint="@color/filter_green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_pending" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,12 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColabaDemo">
-        <activity
-            android:name=".activities.dashboard.fragements.document.DocumentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.dashboard.fragements.setting.SettingActivity"
-            android:exported="false" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -39,8 +34,8 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:screenOrientation="sensorPortrait">
-            <intent-filter>
+            android:screenOrientation="sensorPortrait"     >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -61,6 +56,14 @@
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
+            android:name=".SettingActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
+            android:name=".DocumentSubmitActivity"
+            android:exported="false"
+            android:screenOrientation="sensorPortrait"/>
+        <activity
             android:name=".SearchActivity"
             android:exported="false"
             android:screenOrientation="sensorPortrait"
@@ -72,7 +75,7 @@
         <activity
             android:name=".BorrowerAddressActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".BorrowerLoanActivity"
             android:screenOrientation="sensorPortrait"
@@ -101,10 +104,14 @@
             android:name=".StartNewApplicationActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".RequestDocsActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustResize" />
-    </application>
 
+
+
+
+    </application>
 </manifest>

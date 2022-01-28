@@ -13,8 +13,7 @@ import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
 @HiltViewModel
-class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoardRepo) :
-    ViewModel() {
+class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoardRepo) : ViewModel() {
 
     private val _notificationItemList : MutableLiveData<ArrayList<NotificationItem>> =   MutableLiveData()
     val notificationItemList: LiveData<ArrayList<NotificationItem>> get() = _notificationItemList
@@ -38,7 +37,7 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
          }
      }
 
-    suspend fun getNotificationListing(token:String, pageSize:Int, lastId:Int, mediumId:Int) {
+    suspend fun getNotificationListing(token:String, pageSize:Int, lastId:Int, mediumId:Int){
             viewModelScope.launch {
                 val responseResult = dashBoardRepo.getNotificationListing(
                     token = token,
@@ -104,7 +103,7 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
         viewModelScope.launch {
             val result = dashBoardRepo.deleteNotifications(token, ids)
             if (result is Result.Success) {
-                Log.e("del-notify-", result.toString())
+                //Log.e("del-notify-", result.toString())
             }
             else if(result is Result.Error && result.exception.message == AppConstant.INTERNET_ERR_MSG)
                 EventBus.getDefault().post(WebServiceErrorEvent(null, true))
@@ -114,7 +113,6 @@ class DashBoardViewModel @Inject constructor(private val dashBoardRepo : DashBoa
     }
 
     fun logoutUser() {
-        Log.e("ViewModel", "inside-logout")
         viewModelScope.launch(Dispatchers.IO) {
             val responseResult = dashBoardRepo.logoutUser()
             withContext(Dispatchers.Main) {

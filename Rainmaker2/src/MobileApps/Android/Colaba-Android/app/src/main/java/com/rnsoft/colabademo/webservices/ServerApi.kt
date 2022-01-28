@@ -2,7 +2,6 @@ package com.rnsoft.colabademo
 
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
-import com.rnsoft.colabademo.activities.details.WebResponse
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
 import com.rnsoft.colabademo.activities.details.model.SendInvitationEmailModel
 import com.rnsoft.colabademo.activities.model.*
@@ -10,16 +9,6 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
-import com.rnsoft.colabademo.activities.govtquestions.DemoGetGovermentmodel
-import com.rnsoft.colabademo.activities.govtquestions.DemoGraphicModel
-import com.rnsoft.colabademo.activities.govtquestions.WebResponseDemo
-
-import retrofit2.http.Body
-
-import retrofit2.http.POST
-
-
-
 
 interface ServerApi{
 
@@ -404,10 +393,14 @@ interface ServerApi{
         @Query("incomeInfoId") incomeInfoId:Int):EmploymentDetailResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdateCurrentEmploymentDetail")
-    suspend fun addCurrentEmployment(@Header("Authorization")  Authorization:String, @Body currentEmploymentData: AddCurrentEmploymentModel) : AddUpdateDataResponse
+    suspend fun addCurrentEmployment(
+        //@Header("Authorization")  Authorization:String,
+        @Body currentEmploymentData: AddCurrentEmploymentModel) : AddUpdateDataResponse
 
     @POST("api/mcu/mobile/loanapplication/Assets/AddOrUpdatePreviousEmploymentDetail")
-    suspend fun addPreviousEmployment(@Header("Authorization")  Authorization:String, @Body prevEmploymentData: PreviousEmploymentData) : AddUpdateDataResponse
+    suspend fun addPreviousEmployment(
+        //@Header("Authorization")  Authorization:String,
+        @Body prevEmploymentData: PreviousEmploymentData) : AddUpdateDataResponse
 
     @GET("api/mcu/mobile/loanapplication/Assets/GetSelfBusinessIncome")
     suspend fun getSelfEmploymentContractor(
@@ -482,10 +475,10 @@ interface ServerApi{
     suspend fun getOtherIncomeTypes(
         @Header("Authorization") Authorization : String) : ArrayList<DropDownResponse>
 
-    @Headers("isAuthorizable: false")
+    //@Headers("isAuthorizable: false")
     @POST("api/mcu/mobile/identity/mcuaccount/signin")
     suspend fun login(@Body loginRequest: LoginRequest
-    //                  @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""
+                     // @Header("dontAskTwoFaIdentifier")  dontAskTwoFaIdentifier:String=""
     ): Response<LoginResponse>
     //suspend fun loginTwo(@Query("Email") Email:String, @Query("Password") Password:String): Response<LoginResponse>
 
@@ -745,14 +738,6 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/loan/ResendBorrowerInvitation")
     suspend fun resendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
 
-
-//    @FormUrlEncoded
-//    @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
-//    open fun getjson(
-//        @Field("task_json_object") task_json_object: JSONObject?
-//    ): Call<WebResponse<Any?>?>?
-
-
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
     fun getjson(
         @Header("Authorization" )  Authorization:String,
@@ -778,4 +763,8 @@ interface ServerApi{
     fun adddemo(
         @Header("Authorization" )  Authorization:String,
         @Body jsonBody: DemoGraphicModel?): Call<WebResponse<Any?>?>?
+
+
+
+
 }

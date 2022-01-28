@@ -8,10 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.text.capitalize
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -47,8 +51,6 @@ class BorrowerOverviewFragment : BaseFragment()  {
             }
         }
 
-
-
         binding.boxResendInvitation.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt(AppConstant.borrowerId, borrowerId!!)
@@ -57,8 +59,16 @@ class BorrowerOverviewFragment : BaseFragment()  {
             findNavController().navigate(R.id.invitation_primary_borrower_fragment, bundle)
         }
 
+
         binding.noAddressLayout.visibility = View.INVISIBLE
         binding.addressLayout.visibility = View.INVISIBLE
+
+        binding.boxReviewDoc.setOnClickListener {
+            if( DetailTabFragment.datail != null){
+                DetailTabFragment.datail!!.settab(2)
+            }
+        }
+
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
@@ -185,8 +195,10 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 overviewModel.coBorrowers?.let {
                     if(it.size >0){
                         for(item in  it.indices) {
-                           borrowerId =  it.get(item).id
+                           //borrowerId =  it.get(item).id
                             if (it.get(item).ownTypeId == AppConstant.borrowerTypeId) {
+                                borrowerId =  it.get(item).id
+
                                 Log.e("OVerview frag", "overview-borrower is " + it.get(item).id)
                                 // call invitation status
                                 if (loanApplicationId != null) {
@@ -204,20 +216,15 @@ class BorrowerOverviewFragment : BaseFragment()  {
                 Log.e("should-stop"," here....")
         })
 
-
         detailViewModel.invitationStatus.observe(viewLifecycleOwner, { status ->
             status?.let {
-                if(it.status.equals(AppConstant.INVITATION_STATUS_INVITE, true))
+                if(it.status.equals(AppConstant.INVITATION_STATUS_INVITE, true) ||
+                    it.status.equals(AppConstant.INVITATION_STATUS_PENDING, true))
                   binding.box1.visibility = View.VISIBLE
 
-                if(it.status.equals(AppConstant.INVITATION_STATUS_PENDING, true))
-                binding.box1.visibility = View.VISIBLE
-
-                if(it.status.equals(AppConstant.INVITATION_STATUS_RESENT, true))
-                binding.boxResendInvitation.visibility = View.VISIBLE
-
-                if(it.status.equals(AppConstant.INVITATION_STATUS_ACCEPTED, true))
-                binding.boxResendInvitation.visibility = View.VISIBLE
+                if(it.status.equals(AppConstant.INVITATION_STATUS_RESENT, true) ||
+                    it.status.equals(AppConstant.INVITATION_STATUS_ACCEPTED, true))
+                   binding.boxResendInvitation.visibility = View.VISIBLE
 
                 if(it.status!!.length == 0  || it.status.isEmpty()) {
                     binding.box1.visibility = View.GONE
@@ -236,6 +243,27 @@ class BorrowerOverviewFragment : BaseFragment()  {
     override fun onResume() {
         super.onResume()
         (activity as DetailActivity).binding.requestDocFab.visibility = View.GONE
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun invitationStatusUpdated(event: UpdateInvitationStatusEvent) {
+        //Log.e("Overview fragment", "invitation-status changed")
+        if(event.isInvitationStatusUpdated) {
+            if (borrowerId != null && loanApplicationId != null) {
+                detailViewModel.getBorrowerInvitationStatus(loanApplicationId!!, borrowerId!!)
+            }
+        }
+
     }
 
 }

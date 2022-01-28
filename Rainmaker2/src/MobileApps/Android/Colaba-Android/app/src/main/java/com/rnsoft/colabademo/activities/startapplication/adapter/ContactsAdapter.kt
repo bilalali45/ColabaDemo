@@ -3,6 +3,7 @@ package com.rnsoft.colabademo.activities.startapplication.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
+import android.telephony.PhoneNumberUtils
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
@@ -47,8 +48,7 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
 
     override fun getItemCount() = searchResultResponseItemList.size
 
-    inner class EpisodeViewHolder(val binding :ContactListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class EpisodeViewHolder(val binding :ContactListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(contact: SearchResultResponseItem, position: Int) {
 
@@ -57,8 +57,9 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
                 binding.contactEmail.text = (contact.emailAddress)
 
                 contact.mobileNumber?.let {
-                    if (contact.mobileNumber.isNotEmpty()) {
-                        binding.contactNum.text = contact.mobileNumber
+                    if (it.isNotEmpty()) {
+                        val phoneNumber =  PhoneNumberUtils.formatNumber(it, "US")
+                        binding.contactNum.text = it
                     } else {
                         //binding.contactEmail.ellipsize = null
                     }

@@ -27,9 +27,7 @@ import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.AppConstant.jsonaddquestion
 import com.rnsoft.colabademo.AppConstant.racearr
 import com.rnsoft.colabademo.activities.govtquestions.*
-import com.rnsoft.colabademo.activities.govtquestions.model.ChildlistModel
 import com.rnsoft.colabademo.databinding.FragmentBinding
-import com.rnsoft.colabademo.adapter.QueationAdapter
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -45,7 +43,6 @@ class AllGovQuestionsFragment : Fragment() {
     var binding: FragmentBinding? = null
     private var tabBorrowerId: Int? = null
     private var currentBorrowerId: Int = 0
-    private var adapter: QueationAdapter? = null
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
     private var ownerShipInnerScreenParams: java.util.ArrayList<String> = arrayListOf()

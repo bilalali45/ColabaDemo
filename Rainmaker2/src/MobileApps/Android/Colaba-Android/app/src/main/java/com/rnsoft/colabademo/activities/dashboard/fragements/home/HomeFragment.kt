@@ -72,7 +72,6 @@ class HomeFragment : BaseFragment() {
         assignToMeSwitch = root.findViewById(R.id.assignToMeSwitch)
 
         searchImageView.setOnClickListener {
-
             //findNavController().navigate(R.id.navigation_search)
            // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
            // Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)

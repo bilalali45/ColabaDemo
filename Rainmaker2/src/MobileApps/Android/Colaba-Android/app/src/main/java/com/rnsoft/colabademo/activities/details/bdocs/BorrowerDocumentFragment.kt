@@ -9,16 +9,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.google.gson.Gson
 import com.rnsoft.colabademo.databinding.BorrowerDocLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,32 +25,24 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-
 @AndroidEntryPoint
-class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadClickListener, View.OnClickListener {
+class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadClickListener {
 
-    private var _binding: BorrowerDocLayoutBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var docsRecycler: RecyclerView
+    private lateinit var binding : BorrowerDocLayoutBinding
+    private var savedViewInstance: View? = null
+    //private val binding get() = _binding!!
+    //private lateinit var docsRecycler: RecyclerView
     private var docsArrayList: ArrayList<BorrowerDocsModel> = ArrayList()
     private var filterDocsList :ArrayList<BorrowerDocsModel> = ArrayList()
     private lateinit var borrowerDocumentAdapter: BorrowerDocumentAdapter
-    private var shimmerContainer: ShimmerFrameLayout? = null
-    lateinit var btnAll: AppCompatTextView
-    lateinit var btnInDraft: AppCompatTextView
-    lateinit var btnToDo: AppCompatTextView
-    lateinit var btnFilterStarted: AppCompatTextView
-    lateinit var btnFilterPending: AppCompatTextView
-    lateinit var btnFilterCompleted: AppCompatTextView
-    lateinit var btnFilterManullayAdded: AppCompatTextView
+    //private var shimmerContainer: ShimmerFrameLayout? = null
     var isStart: Boolean = true
-    var filter : String = "All"
-    lateinit var layout_noDocFound : ConstraintLayout
-    lateinit var layout_docData : ConstraintLayout
+    //lateinit var layout_noDocFound : ConstraintLayout
+    //lateinit var layout_docData : ConstraintLayout
     var state: Parcelable? = null
-
+    var filterSeletion: String = AppConstant.filter_all
+    //private  var downloadLoader: ProgressBar? = null
     private val detailViewModel: DetailViewModel by activityViewModels()
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -63,199 +50,99 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): View? {
+        return if (savedViewInstance != null) {
+            savedViewInstance
+        } else {
+            binding = BorrowerDocLayoutBinding.inflate(inflater, container, false)
+            //val view: View = binding.root
+            savedViewInstance = binding.root
+            //shimmerContainer = binding.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
+            binding.shimmerViewContainer.startShimmer()
+            //docsRecycler = view.findViewById(R.id.docs_recycle_view)
+            //layout_noDocFound = view.findViewById(R.id.layout_no_documents)
+            //layout_docData = view.findViewById(R.id.layout_doc_data)
+            val linearLayoutManager = LinearLayoutManager(activity)
+            //downloadLoader = view.findViewById(R.id.doc_download_loader)
 
-        _binding = BorrowerDocLayoutBinding.inflate(inflater, container, false)
-        val view: View = binding.root
 
-        shimmerContainer = view.findViewById(R.id.shimmer_view_container) as ShimmerFrameLayout
-        shimmerContainer?.startShimmer()
-        docsRecycler = view.findViewById(R.id.docs_recycle_view)
-        layout_noDocFound = view.findViewById(R.id.layout_no_documents)
-        layout_docData = view.findViewById(R.id.layout_doc_data)
-        val linearLayoutManager = LinearLayoutManager(activity)
-        downloadLoader = view.findViewById(R.id.doc_download_loader)
+            borrowerDocumentAdapter = BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment, this@BorrowerDocumentFragment)
 
-        //(activity as DetailActivity).showFabIcons()
+                binding.docsRecycleView.apply {
+                this.layoutManager = linearLayoutManager
+                this.setHasFixedSize(true)
+                this.adapter = borrowerDocumentAdapter
+            }
 
-        borrowerDocumentAdapter =
-            BorrowerDocumentAdapter(docsArrayList, this@BorrowerDocumentFragment , this@BorrowerDocumentFragment)
+            detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
+                if (isStart) {
+                    if (it != null && it.size > 0) {
+                        docsArrayList = it
+                        isStart = false
+                        filterSeletion = AppConstant.filter_all
+                        showHideLayout(true)
+                        populateRecyclerview(docsArrayList)
 
-        docsRecycler.apply {
-            this.layoutManager = linearLayoutManager
-            this.setHasFixedSize(true)
-            this.adapter = borrowerDocumentAdapter
-            populateRecyclerview(docsArrayList)
-        }
-
-        //Log.e("Doc created on", "$docsArrayList")
-
-        detailViewModel.borrowerDocsModelList.observe(viewLifecycleOwner, {
-            //Timber.e("observing Data")
-            if (isStart) {
-                //Log.e("isStart",""+isStart)
-                if (it != null && it.size > 0) {
-                    docsArrayList = it
-                    isStart = false
-                    filter = AppConstant.filter_all
-                    showHideLayout(true)
-                    populateRecyclerview(docsArrayList)
-                } else{
-                    //Timber.e("list is null", "isStart" +isStart)
-                    showHideLayout((false))
+                    } else
+                        showHideLayout((false))
                 }
+            })
+
+            (activity as DetailActivity).binding.requestDocFab.setOnClickListener {
+                val intent = Intent(requireActivity(), RequestDocsActivity::class.java)
+                requireActivity().startActivity(intent)
             }
-        })
 
-        btnAll = view.findViewById(R.id.btn_all)
-        btnAll.setOnClickListener(this)
-        btnAll.isActivated = true
-
-        btnInDraft = view.findViewById(R.id.btn_filter_indraft)
-        btnInDraft.setOnClickListener(this)
-
-        btnToDo = view.findViewById(R.id.btn_filter_todo)
-        btnToDo.setOnClickListener(this)
-
-        btnFilterStarted = view.findViewById(R.id.btn_filter_started)
-        btnFilterStarted.setOnClickListener(this)
-
-        btnFilterPending = view.findViewById(R.id.btn_filter_pending)
-        btnFilterPending.setOnClickListener(this)
-
-        btnFilterCompleted = view.findViewById(R.id.btn_filter_completed)
-        btnFilterCompleted.setOnClickListener(this)
-
-        btnFilterManullayAdded = view.findViewById(R.id.btn_filter_manullayAdded)
-        btnFilterManullayAdded.setOnClickListener(this)
-
-        (activity as DetailActivity).binding.requestDocFab.setOnClickListener{
-            val intent = Intent(requireActivity(), RequestDocsActivity::class.java)
-            val activity = (activity as? DetailActivity)
-            val nameBuilder = StringBuilder()
-            activity?.borrowerFirstName?.let {
-                if(it != "null" && it.isNotEmpty())
-                    nameBuilder.append(it)
+            binding.btnDocFilter.setOnClickListener {
+                DocListFilterDialogFragment.newInstance(filterSeletion).show(
+                    childFragmentManager,
+                    DocListFilterDialogFragment::class.java.canonicalName
+                )
             }
-            activity?.borrowerLastName?.let {
-                if(it != "null" && it.isNotEmpty())
-                    nameBuilder.append(" ").append(it)
-            }
-            activity?.loanApplicationId?.let {
-                intent.putExtra(AppConstant.loanApplicationId, it)
-                intent.putExtra(AppConstant.fullName, nameBuilder.toString())
-                startActivity(intent)
-            }
+
+            setDocDropDown()
+            observeDownloadProgress()
+            //super.addListeners(binding.root)
+            savedViewInstance
         }
-
-        observeDownloadProgress()
-        super.addListeners(binding.root)
-        return view
 
     }
 
     private fun populateRecyclerview(arrayList: ArrayList<BorrowerDocsModel>){
         if(arrayList.size >0) {
-            //Timber.e("size:" + arrayList.size)
-            borrowerDocumentAdapter =
-                BorrowerDocumentAdapter(
-                    arrayList,
-                    this@BorrowerDocumentFragment,
-                    this@BorrowerDocumentFragment
-                )
-            docsRecycler.adapter = borrowerDocumentAdapter
-            borrowerDocumentAdapter.notifyDataSetChanged()
+            //Log.e("populate Recycler",""+arrayList.size)
+            borrowerDocumentAdapter = BorrowerDocumentAdapter(arrayList, this@BorrowerDocumentFragment, this@BorrowerDocumentFragment)
+            binding.docsRecycleView.adapter = borrowerDocumentAdapter
+            //borrowerDocumentAdapter.notifyDataSetChanged()
             showHideLayout(true)
         } else{
             showHideLayout(false)
         }
     }
 
-    override fun onClick(v: View){
-        when (v.id) {
-            R.id.btn_all -> {
-                filter = AppConstant.filter_all
+    private fun setDocDropDown(){
+        val docType = arrayListOf<String>(*resources.getStringArray(R.array.doc_list_types))
 
-                btnAll.isActivated = true
-                btnInDraft.isActivated = false
-                btnToDo.isActivated = false
-                btnFilterStarted.isActivated = false
-                btnFilterPending.isActivated = false
-                btnFilterCompleted.isActivated = false
-                btnFilterManullayAdded.isActivated = false
-
-                populateRecyclerview(docsArrayList)
-                layout_docData.visibility = View.VISIBLE
-                docsRecycler.visibility = View.VISIBLE
-
-            }
-            R.id.btn_filter_indraft -> {
-                filter = AppConstant.filter_inDraft
-
-                btnAll.isActivated = false
-                btnInDraft.isActivated = true
-                btnToDo.isActivated = false
-                btnFilterStarted.isActivated = false
-                btnFilterPending.isActivated = false
-                btnFilterCompleted.isActivated = false
-                btnFilterManullayAdded.isActivated = false
-
-                getDocItems(AppConstant.filter_inDraft)
-            }
-            R.id.btn_filter_todo -> {
-                filter = AppConstant.filter_borrower_todo
-                selectStatusFilter(
-                    false, false, true,
-                    false, false, false, false)
-                getDocItems(AppConstant.filter_borrower_todo)
-            }
-            R.id.btn_filter_started -> {
-                filter = AppConstant.filter_started
-
-                selectStatusFilter(
-                    false, false, false,
-                    true, false, false, false
-                )
-                getDocItems(AppConstant.filter_started)
-            }
-            R.id.btn_filter_pending -> {
-                filter = AppConstant.filter_pending_review
-                selectStatusFilter(
-                    false, false, false,
-
-                    false, true, false, false
-                )
-                getDocItems(AppConstant.filter_pending_review)
-            }
-            R.id.btn_filter_completed -> {
-                filter = AppConstant.filter_completed
-                selectStatusFilter(
-                    false, false, false,
-                    false, false, true, false
-                )
-                getDocItems(AppConstant.filter_completed)
-            }
-            R.id.btn_filter_manullayAdded -> {
-                filter = AppConstant.filter_manuallyAdded
-                selectStatusFilter(
-                    false, false, false,
-                    false, false, false, true
-                )
-                getDocItems(AppConstant.filter_manuallyAdded)
-            }
-            else -> {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,docType)
+        binding.tvDocType.setAdapter(adapter)
+        binding.tvDocType.setOnFocusChangeListener { _, _ ->
+            binding.tvDocType.showDropDown()
+        }
+        binding.tvDocType.setOnClickListener {
+            binding.tvDocType.showDropDown()
+        }
+        binding.tvDocType.onItemClickListener = object :
+            AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, position: Int, id: Long) {
+                binding.layoutDocTypes.isHintEnabled = false
             }
         }
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////\\
-    private  var downloadLoader: ProgressBar? = null
 
     private fun observeDownloadProgress(){
         detailViewModel.progressGlobal.observe(viewLifecycleOwner, {
             if (it != null && it.size > 0) {
                 var percentage = ((it[0]* 100) / it[1]).toInt()
-                //Log.e("Ui-percentage--", ""+percentage)
                 loader_percentage.text = "$percentage%"
             }
         })
@@ -266,7 +153,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
             val selected = docsArrayList[position]
 
             if (selected.docId != null && selected.requestId != null &&  selected.id != null) {
-                downloadLoader?.visibility = View.VISIBLE
+                binding.docDownloadLoader.visibility = View.VISIBLE
                 loader_percentage.text = "0%"
                 loader_percentage.visibility = View.VISIBLE
 
@@ -284,12 +171,46 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         }
     }
 
-    override fun onResume() {
+    override fun onResume(){
         super.onResume()
-        (activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+        (activity as DetailActivity).showFabIcons()
+    }
 
-        if(docsArrayList.size ==0){
-            showHideLayout(false)
+    private fun getFilteredDoc(docFilter: String){
+        if(filterSeletion.equals(AppConstant.filter_all, true))
+            populateRecyclerview(docsArrayList)
+        else {
+            filterDocsList = ArrayList()
+            for (i in docsArrayList.indices) {
+                if (docFilter.equals(docsArrayList.get(i).status, ignoreCase = true)) {
+
+                    val doc = BorrowerDocsModel(
+                        docsArrayList.get(i).createdOn,
+                        docsArrayList.get(i).docId,
+                        docsArrayList.get(i).docName,
+                        docsArrayList.get(i).subFiles,
+                        docsArrayList.get(i).id,
+                        docsArrayList.get(i).requestId,
+                        docsArrayList.get(i).status,
+                        docsArrayList.get(i).typeId,
+                        docsArrayList.get(i).userName,
+                        docsArrayList.get(i).message
+                    )
+                    filterDocsList.add(doc)
+                }
+            }
+            //Log.e("Filterlist size", ""+filterDocsList.size)
+            if (filterDocsList.size > 0) {
+                binding.layoutNoDocuments.visibility = View.GONE
+                //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+                //docsRecycler.visibility = View.VISIBLE
+                populateRecyclerview(filterDocsList)
+            } else {
+                showHideLayout(false)
+                //docsRecycler.visibility = View.GONE
+                //layout_noDocFound.visibility = View.VISIBLE
+                //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -304,8 +225,14 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onErrorReceived(event: WebServiceErrorEvent) {
-        downloadLoader?.visibility = View.GONE
+    fun onFilterDoc(filter: onDocFilterEvent){
+        filterSeletion = filter.selection
+        getFilteredDoc(filterSeletion)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onErrorReceived(event: WebServiceErrorEvent){
+        binding.docDownloadLoader.visibility = View.GONE
         loader_percentage.visibility = View.GONE
         //tvPercentage.visibility = View.GONE
 
@@ -321,7 +248,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         if (activity is DetailActivity) {
             (activity as DetailActivity).checkIfUnreadFileOpened()
         }
-        downloadLoader?.visibility = View.GONE
+        binding.docDownloadLoader.visibility = View.GONE
         loader_percentage.visibility = View.GONE
         //tvPercentage.visibility = View.GONE
         event.docFileName?.let {
@@ -351,7 +278,7 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
     }
 
     override fun navigateTo(position: Int) {
-        val selectedDocumentType = if(filter == AppConstant.filter_all) docsArrayList[position] else filterDocsList[position]
+        val selectedDocumentType = if(filterSeletion.equals(AppConstant.filter_all)) docsArrayList[position] else filterDocsList[position]
         val listFragment = DocumentListFragment()
         val bundle = Bundle()
         val fileNames = Gson().toJson(selectedDocumentType.subFiles)
@@ -363,139 +290,18 @@ class BorrowerDocumentFragment : BaseFragment(), AdapterClickListener, DownloadC
         bundle.putString(AppConstant.download_requestId, selectedDocumentType.requestId)
         bundle.putString(AppConstant.download_docId, selectedDocumentType.docId)
         listFragment.arguments = bundle
-        //Timber.e("  fileNames $fileNames")
-        //Timber.e(" docName = "+selectedDocumentType.docName)
-        //Timber.e(" message = "+selectedDocumentType.message+"  ")
-        //Timber.e(" subFiles = "+selectedDocumentType.subFiles)
-        //Timber.e(" id = "+selectedDocumentType.id)
-        //Timber.e("  requestId = "+selectedDocumentType.requestId)
-       // Timber.e("  docId = "+selectedDocumentType.docId)
-        findNavController().navigate(R.id.docs_list_inner_fragment, bundle)
-    }
-
-
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private fun selectStatusFilter(
-        statusAll: Boolean,
-        statusInDraft: Boolean,
-        statusToDo: Boolean,
-        statusStarted: Boolean,
-        statusPending: Boolean,
-        statusCompleted: Boolean,
-        statusManuallyAdded: Boolean
-    ) {
-        if (statusAll) {
-            btnAll.isActivated = true
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusInDraft) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = true
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusToDo) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = true
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusStarted) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = true
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusPending) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = true
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusCompleted) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = true
-            btnFilterManullayAdded.isActivated = false
-
-        } else if (statusManuallyAdded) {
-            btnAll.isActivated = false
-            btnInDraft.isActivated = false
-            btnToDo.isActivated = false
-            btnFilterStarted.isActivated = false
-            btnFilterPending.isActivated = false
-            btnFilterCompleted.isActivated = false
-            btnFilterManullayAdded.isActivated = true
-        }
+        findNavController().navigate(R.id.docs_list_inner_fragment, listFragment.arguments)
 
     }
 
     private fun showHideLayout(dataLayout: Boolean){
-        //Timber.e("datalayout "+ dataLayout)
         if(dataLayout){
-            layout_docData.visibility = View.VISIBLE
-            layout_noDocFound.visibility = View.GONE
-            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            binding.docsRecycleView.visibility = View.VISIBLE
+            binding.layoutNoDocuments .visibility = View.GONE
         }
         else {
-            layout_docData.visibility = View.GONE
-            layout_noDocFound.visibility = View.VISIBLE
-            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
-        }
-    }
-
-    private fun getDocItems(docFilter: String) {
-        filterDocsList = ArrayList()
-        for (i in docsArrayList.indices) {
-            if (docFilter.equals(docsArrayList.get(i).status, ignoreCase = true)) {
-
-                val doc = BorrowerDocsModel(
-                    docsArrayList.get(i).createdOn,
-                    docsArrayList.get(i).docId,
-                    docsArrayList.get(i).docName,
-                    docsArrayList.get(i).subFiles,
-                    docsArrayList.get(i).id,
-                    docsArrayList.get(i).requestId,
-                    docsArrayList.get(i).status,
-                    docsArrayList.get(i).typeId,
-                    docsArrayList.get(i).userName,
-                    docsArrayList.get(i).message
-                )
-                filterDocsList.add(doc)
-            }
-        }
-        //Log.e("Filterlist size", ""+filterDocsList.size)
-        if(filterDocsList.size > 0) {
-            layout_noDocFound.visibility = View.GONE
-            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
-            docsRecycler.visibility=View.VISIBLE
-            populateRecyclerview(filterDocsList)
-        } else{
-            docsRecycler.visibility=View.GONE
-            layout_noDocFound.visibility = View.VISIBLE
-            //(activity as DetailActivity).binding.requestDocFab.visibility = View.VISIBLE
+            binding.docsRecycleView.visibility = View.GONE
+            binding.layoutNoDocuments.visibility = View.VISIBLE
         }
     }
 

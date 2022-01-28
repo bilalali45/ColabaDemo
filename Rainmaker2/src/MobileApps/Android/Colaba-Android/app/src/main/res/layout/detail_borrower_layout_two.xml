@@ -209,7 +209,6 @@
             android:fontFamily="@font/rubik_regular"
             android:text="Posted "
             android:textColor="@color/green_circle"
-
             android:textSize="13sp"
             app:drawableLeftCompat="@drawable/green_right_icon"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -222,11 +221,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/userLayout4"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
-        android:layout_marginStart="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="16dp"
-        android:padding="4dp"
         app:layout_constraintCircleRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -250,10 +246,11 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/box1"
-                    android:layout_width="292dp"
-                    android:layout_height="86dp"
+                    android:layout_width="@dimen/_220sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:background="@drawable/light_blue_border"
                     android:padding="20dp"
+                    android:layout_marginStart="16dp"
                     android:visibility="gone">
 
                     <TextView
@@ -301,11 +298,13 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- box resend invitation-->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:visibility="gone"
                     android:id="@+id/box_resend_invitation"
-                    android:layout_width="292dp"
-                    android:layout_height="86dp"
+                    android:layout_width="@dimen/_220sdp"
+                    android:layout_height="@dimen/_68sdp"
+                    android:layout_marginStart="16dp"
                     android:background="@drawable/light_blue_border"
                     android:padding="20dp">
 
@@ -350,14 +349,17 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <!-- box review doc -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:visibility="visible"
-                    android:id="@+id/box2"
-                    android:layout_width="292dp"
-                    android:layout_height="86dp"
-                    android:layout_marginStart="10dp"
+                    android:id="@+id/box_review_doc"
+                    android:layout_width="@dimen/_220sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:background="@drawable/light_blue_border"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:clickable="true">
 
                     <TextView
                         android:id="@+id/borrower_type2"
@@ -458,6 +460,10 @@
 
 
             </LinearLayout>
+
+
+
+
         </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

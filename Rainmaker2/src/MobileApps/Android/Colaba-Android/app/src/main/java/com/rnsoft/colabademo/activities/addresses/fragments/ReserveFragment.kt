@@ -63,19 +63,19 @@ class ReserveFragment : BaseFragment() {
         binding.radioButtonYes.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 binding.radioButton2No.isChecked = false
-                CustomMaterialFields.setRadioColor(binding.radioButtonYes, requireContext())
+                CustomMaterialFields.selectBoxWithShadow(binding.radioButtonYes, requireContext())
             }
             else
-                CustomMaterialFields.radioUnSelectColor(binding.radioButtonYes, requireContext())
+                CustomMaterialFields.unselectBoxShadow(binding.radioButtonYes, requireContext())
         }
 
         binding.radioButton2No.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 binding.radioButtonYes.isChecked = false
-                CustomMaterialFields.setRadioColor(binding.radioButton2No, requireContext())
+                CustomMaterialFields.selectBoxWithShadow(binding.radioButton2No, requireContext())
             }
             else
-                CustomMaterialFields.radioUnSelectColor(binding.radioButton2No, requireContext())
+                CustomMaterialFields.unselectBoxShadow(binding.radioButton2No, requireContext())
 
         }
 

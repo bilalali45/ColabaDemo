@@ -65,8 +65,8 @@ class IncomeRepo @Inject constructor(private val dataSource: IncomeDataSource) {
         return dataSource.sendOtherIncomeData(token,otherData)
     }
 
-    suspend fun sendPrevEmploymentData(token: String, employmentData: PreviousEmploymentData): Result<AddUpdateDataResponse> {
-        return dataSource.sendPrevEmploymentData(token,employmentData)
+    suspend fun sendPrevEmploymentData(employmentData: PreviousEmploymentData): Result<AddUpdateDataResponse> {
+        return dataSource.sendPrevEmploymentData(employmentData)
     }
 
     suspend fun sendMilitaryData(token: String, data:MilitaryIncomeData): Result<AddUpdateDataResponse> {

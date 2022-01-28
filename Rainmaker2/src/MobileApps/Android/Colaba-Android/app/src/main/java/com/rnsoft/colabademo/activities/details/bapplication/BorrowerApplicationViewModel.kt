@@ -7,9 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.rnsoft.colabademo.activities.govtquestions.DemoGetGovermentmodel
-import com.rnsoft.colabademo.activities.govtquestions.DemoGraphicModel
-import com.rnsoft.colabademo.activities.govtquestions.WebResponseDemo
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment.Companion.data
 import com.rnsoft.colabademo.activities.model.StatesModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
@@ -17,19 +16,10 @@ import org.greenrobot.eventbus.EventBus
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
 import javax.inject.Inject
-import com.rnsoft.colabademo.activities.details.WebResponse
-import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
-import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment.Companion.data
-import retrofit2.converter.gson.GsonConverterFactory
-
-import retrofit2.Retrofit
-
-
-
-
-
 
 
 @HiltViewModel
@@ -551,31 +541,7 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         }
     }
 
-     suspend fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
-        val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
-        val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        val apiService: ServerApi = retrofit.create(ServerApi::class.java)
-        val call: Call<WebResponse<Any?>?> = apiService.getjson(webtoken,governmentParams)!!
-        call.enqueue(object : Callback<WebResponse<Any?>?> {
-            override fun onResponse(call: Call<WebResponse<Any?>?>, response: Response<WebResponse<Any?>?>) {
-                   val statusCode: Int = response.code()
-                   Log.i("TAG", "onFailure: "+response.body())
-
-                // val user: User = response.body()
-            }
-
-            override fun onFailure(call: Call<WebResponse<Any?>?>, t: Throwable?) {
-                  Log.i("TAG", "onFailure: "+t)
-                // Log error here since request failed
-            }
-        })
-    }
-
-
-     fun adddemographic(webtoken: String, governmentParams: DemoGraphicModel) {
+    fun adddemographic(webtoken: String, governmentParams: DemoGraphicModel) {
         val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -598,7 +564,6 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         })
     }
 
-
     fun GetDemographicInformation(webtoken: String, loanapplication: Int, borrowerId: Int) {
         val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
         val retrofit = Retrofit.Builder()
@@ -609,18 +574,18 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
         val call: Call<WebResponseDemo<Any?>?> = apiService.getdemographic(webtoken,loanapplication,borrowerId)!!
         call.enqueue(object : Callback<WebResponseDemo<Any?>?> {
             override fun onResponse(call: Call<WebResponseDemo<Any?>?>, response: Response<WebResponseDemo<Any?>?>) {
-                     val statusCode: Int = response.code()
-                     Log.i("TAG", "onFailure: "+response.body())
-                     val gson = Gson()
-                   if(statusCode == 200 ) {
-                       val strJson = gson.toJson(response.body()!!.result)
-                       data = getDataList(strJson)!!
-                       if (AllGovQuestionsFragment.instan != null) {
-                           AllGovQuestionsFragment.instan!!.demographic()
-                       }
-                   }
-                      Log.i("TAG", "onResponse: "+data)
-                  //   val user: User = response.body()
+                val statusCode: Int = response.code()
+                Log.i("TAG", "onFailure: "+response.body())
+                val gson = Gson()
+                if(statusCode == 200 ) {
+                    val strJson = gson.toJson(response.body()!!.result)
+                    data = getDataList(strJson)!!
+                    if (AllGovQuestionsFragment.instan != null) {
+                        AllGovQuestionsFragment.instan!!.demographic()
+                    }
+                }
+                //Log.i("TAG", "onResponse: "+data)
+                //   val user: User = response.body()
             }
 
             override fun onFailure(call: Call<WebResponseDemo<Any?>?>, t: Throwable?) {
@@ -629,14 +594,41 @@ class BorrowerApplicationViewModel @Inject constructor(private val bAppRepo: Bor
             }
         })
     }
+
+    suspend fun addgovernmetnjson(webtoken: String, governmentParams: GovernmentParams) {
+        val BASE_URL = "https://qamobilegateway.rainsoftfn.com/"
+        val retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService: ServerApi = retrofit.create(ServerApi::class.java)
+        val call: Call<WebResponse<Any?>?> = apiService.getjson(webtoken,governmentParams)!!
+        call.enqueue(object : Callback<WebResponse<Any?>?> {
+            override fun onResponse(call: Call<WebResponse<Any?>?>, response: Response<WebResponse<Any?>?>) {
+                val statusCode: Int = response.code()
+                Log.i("TAG", "onFailure: "+response.body())
+
+                // val user: User = response.body()
+            }
+
+            override fun onFailure(call: Call<WebResponse<Any?>?>, t: Throwable?) {
+                Log.i("TAG", "onFailure: "+t)
+                // Log error here since request failed
+            }
+        })
+    }
+
+    fun getDataList(tag: String?): DemoGraphicModel? {
+        var datalist: DemoGraphicModel = DemoGraphicModel()
+        val gson = Gson()
+        datalist = gson.fromJson<DemoGraphicModel>(tag, object : TypeToken<DemoGraphicModel?>() {}.type)
+        return datalist
+    }
+
+
 }
 
-fun getDataList(tag: String?): DemoGraphicModel? {
-    var datalist: DemoGraphicModel = DemoGraphicModel()
-    val gson = Gson()
-    datalist = gson.fromJson<DemoGraphicModel>(tag, object : TypeToken<DemoGraphicModel?>() {}.type)
-    return datalist
-}
+
         /*
 
             suspend fun getBorrowerAssetsDetail(token:String, loanApplicationId:Int, borrowerId: ArrayList<Int>?): Boolean {

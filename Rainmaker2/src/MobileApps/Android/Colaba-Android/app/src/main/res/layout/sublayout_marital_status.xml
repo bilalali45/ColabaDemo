@@ -18,33 +18,33 @@
         android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/addendum_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/radio_background_simple">
 
         <androidx.appcompat.widget.AppCompatRadioButton
             android:id="@+id/rb_unmarried"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:padding="18dp"
             android:layoutDirection="rtl"
             android:button="@null"
             android:drawableStart="@drawable/radiodraw"
             android:drawablePadding="15dp"
             android:fontFamily="@font/rubik_regular"
-            android:background="@null"
             android:text="@string/martial_status_unmarried"
             android:textColor="@color/grey_color_two"
             android:textSize="14sp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:background="@null" />
 
         <LinearLayout
-            android:id="@+id/unmarried_addendum"
+            android:id="@+id/addendum_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -100,13 +100,12 @@
         android:id="@+id/rb_married"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="18dp"
         android:layoutDirection="rtl"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
+        android:background="@drawable/radio_background_simple"
         android:button="@null"
         android:drawableStart="@drawable/radiodraw"
         android:drawablePadding="15dp"
@@ -119,13 +118,12 @@
         android:id="@+id/rb_separated"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="18dp"
         android:layoutDirection="rtl"
         android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/content_background_full_white"
+        android:background="@drawable/radio_background_simple"
         android:button="@null"
         android:drawableStart="@drawable/radiodraw"
         android:drawablePadding="15dp"
