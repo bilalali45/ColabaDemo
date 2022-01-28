@@ -451,7 +451,7 @@
     <string name="sec_mortgage_payment">Second Mortgage Payment</string>
     <string name="credit_limit_switch">Home Equity Line of Credit (HELOC)</string>
     <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="no"> No</string>
     <string name="details_heading">Details</string>
     <string name="total_income">Total Income</string>
     <string name="current_employment">Current Employment</string>

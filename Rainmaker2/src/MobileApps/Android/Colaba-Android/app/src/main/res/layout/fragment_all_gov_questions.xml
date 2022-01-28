@@ -27,7 +27,8 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/_60sdp"
+            android:paddingBottom="@dimen/_45sdp"
+
             android:fillViewport="true">
 
 
@@ -66,6 +67,7 @@
                 android:layout_marginStart="16dp"
                 android:id="@+id/qht1"
                 android:layout_marginTop="10dp"
+                android:textSize="15dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/questionone"
                 android:fontFamily="@font/rubik_regular"
@@ -81,8 +83,9 @@
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:orientation="vertical"
-                android:background="@drawable/white_blue_border"
-                android:padding="10dp"
+
+                android:background="@drawable/content_bg_with_drop_shadow"
+                android:padding="@dimen/_15sdp"
                 android:visibility="visible"
                 app:layout_constraintCircleRadius="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +124,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:background="@color/grey"
+                        android:background="@color/colaba_app_border_color"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_height="1dp">
 
@@ -161,14 +164,13 @@
              <androidx.appcompat.widget.AppCompatRadioButton
                     android:id="@+id/q1radioButtonNo"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     style="@style/radiobutton"
-                    android:text="@string/no"
+                    android:text=" No"
                     android:checked="false"
-
-                 app:layout_constraintStart_toStartOf="parent"
+                     app:layout_constraintStart_toStartOf="parent"
                     card_view:ignore="MissingConstraints" />
 
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -260,7 +262,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -305,7 +307,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -385,6 +387,8 @@
                         android:layout_marginStart="16dp"
                         android:id="@+id/qht3"
                         android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+
                         android:layout_marginEnd="16dp"
                         android:text="@string/questionthree"
                         android:fontFamily="@font/rubik_regular"
@@ -400,8 +404,9 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -441,7 +446,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -480,11 +485,11 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q3radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+                        android:text=" No"
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -522,6 +527,8 @@
                         android:layout_marginStart="16dp"
                         android:id="@+id/qht4"
                         android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+
                         android:layout_marginEnd="16dp"
                         android:text="@string/questionfour"
                         android:fontFamily="@font/rubik_regular"
@@ -533,13 +540,13 @@
                         android:id="@+id/no_address_layout4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -579,7 +586,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -622,7 +629,9 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+
+                        android:text=" No"
+
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
 
@@ -657,6 +666,8 @@
                         android:layout_marginStart="16dp"
                         android:id="@+id/qht5"
                         android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+
                         android:layout_marginEnd="16dp"
                         android:text="@string/questionnine"
                         android:fontFamily="@font/rubik_regular"
@@ -713,7 +724,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -755,7 +766,8 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+
+                        android:text=" No"
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -793,6 +805,8 @@
                         android:id="@+id/qht6"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
+                        android:textSize="15dp"
+
                         android:text="@string/questionsix"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"
@@ -807,8 +821,9 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
+
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -848,7 +863,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -886,11 +901,12 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q6radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+
+                        android:text=" No"
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -942,8 +958,8 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -981,7 +997,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -1021,11 +1037,11 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q7radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+                        android:text=" No"
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -1064,6 +1080,8 @@
                         android:id="@+id/qht8"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
+                        android:textSize="15dp"
+
                         android:text="@string/questioneight"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"
@@ -1078,8 +1096,8 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -1119,7 +1137,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -1157,11 +1175,12 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q8radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+                        android:text=" No"
+
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -1200,6 +1219,8 @@
                         android:id="@+id/qht9"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
+                        android:textSize="15dp"
+
                         android:text="@string/questioneight"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"
@@ -1214,8 +1235,8 @@
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -1255,7 +1276,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -1293,11 +1314,12 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q9radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_15sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+                        android:text=" No"
+
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
 
@@ -1334,6 +1356,8 @@
                         android:id="@+id/qht10"
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="16dp"
+                        android:textSize="15dp"
+
                         android:text="@string/questionnine"
                         android:fontFamily="@font/rubik_regular"
                         android:textColor="@color/questionheader_view_color"
@@ -1348,8 +1372,8 @@
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:orientation="vertical"
-                        android:background="@drawable/white_blue_border"
-                        android:padding="10dp"
+                        android:background="@drawable/content_bg_with_drop_shadow"
+                        android:padding="@dimen/_15sdp"
                         android:visibility="visible"
                         app:layout_constraintCircleRadius="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -1389,7 +1413,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -1526,11 +1550,12 @@
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/q10radioButtonNo"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginRight="@dimen/_10sdp"
                         style="@style/radiobutton"
-                        android:text="@string/no"
+                        android:text=" No"
+
                         android:checked="false"
                         app:layout_constraintStart_toStartOf="parent"
                         card_view:ignore="MissingConstraints" />
@@ -1557,7 +1582,7 @@
                         android:textStyle="bold"
                         android:text="@string/DemographicInformation"
                         android:fontFamily="@font/rubik_bold"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:textColor="@color/headercolor"/>
 
@@ -1568,9 +1593,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginStart="25dp"
                         android:text="@string/race"
+                        android:textStyle="bold"
                         android:fontFamily="@font/rubik_medium"
                         android:textSize="15sp"
-                        android:textColor="@color/grey_color_one"/>
+                        android:textColor="@color/black"/>
 
                     <LinearLayout
                         android:id="@+id/layout_race"
@@ -1646,7 +1672,7 @@
                                 android:orientation="vertical">
                                 <View
                                     android:layout_width="match_parent"
-                                    android:background="@color/grey"
+                                    android:background="@color/colaba_app_border_color"
                                     android:layout_marginRight="@dimen/_15sdp"
                                     android:layout_marginLeft="@dimen/_15sdp"
                                     android:layout_marginTop="@dimen/_10sdp"
@@ -1833,7 +1859,7 @@
 
                                  <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                     android:background="@color/colaba_app_border_color"
                                 android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_marginRight="@dimen/_10sdp"
                                 android:layout_marginTop="@dimen/_10sdp"
@@ -2011,7 +2037,7 @@
                         android:textStyle="bold"
                         android:fontFamily="@font/rubik_medium"
                         android:textSize="15sp"
-                        android:textColor="@color/dark_color_gray"/>
+                        android:textColor="@color/black"/>
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -2059,7 +2085,7 @@
 
                             <View
                                 android:layout_width="match_parent"
-                                android:background="@color/grey"
+                                android:background="@color/colaba_app_border_color"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_height="1dp">
 
@@ -2144,7 +2170,7 @@
                         android:textStyle="bold"
                         android:fontFamily="@font/rubik_medium"
                         android:textSize="15sp"
-                        android:textColor="@color/dark_color_gray"/>
+                        android:textColor="@color/black"/>
 
 
                     <androidx.appcompat.widget.AppCompatRadioButton
