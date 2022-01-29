@@ -1,5 +1,7 @@
 package com.rnsoft.colabademo
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -285,9 +287,9 @@ object AppConstant {
     const val ethnicityChildList = "EthnicityChildList"
     const val selectedEthnicityChildList = "selectedEthnicityChildList"
 
-    var jsonaddquestion = JSONObject()
-    var jARRAY = JSONArray()
-    var answerData = JSONArray()
+    var jsonaddquestion = JsonObject()
+    var jARRAY = JsonArray()
+    var answerData = JsonArray()
 
     var loanid: Int? = 0
     var race = JSONArray()
