@@ -1,10 +1,8 @@
 package com.rnsoft.colabademo.activities.govtquestions.fragment
 
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +10,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -35,10 +34,7 @@ import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import org.json.JSONArray
-import org.json.JSONObject
 import timber.log.Timber
-import java.lang.StringBuilder
 import javax.inject.Inject
 
 
@@ -58,7 +54,7 @@ class AllGovQuestionsFragment : Fragment() {
     var ownershipInterestAnswerData2: BorrowerOneQuestions.OwnershipInterestAnswerData? = null
     private var governmentParams = GovernmentParams()
     var questiondatalist: ArrayList<QuestionData>? = ArrayList()
-
+    private var bankruptcyMap = LinkedTreeMap<Any, Any>()
     private lateinit var lastQData: QuestionData
     var row: View? = null
     var position: Int? = 0
@@ -273,10 +269,12 @@ class AllGovQuestionsFragment : Fragment() {
 
                 // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
                 val gson = Gson()
-                var data = getDataList(jsonaddquestion.toString())
+              ///  var data = getDataList(jsonaddquestion.toString())
                 val strJson = gson.toJson(questionmodel)
                 Log.i("TAG", "updateGovernmentQuestionApiCall: "+data)
-                borrowerAppViewModel.addgovernmetnjson("Bearer " + LoginFragment.webtoken!!, data!!)
+                Log.i("TAG", "jsonarraygov: "+jsonaddquestion.toString())
+
+                borrowerAppViewModel.addgovernmetnjson("Bearer " + LoginFragment.webtoken!!, jsonaddquestion!!)
 
 
 //                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -768,20 +766,19 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                        val txt = t[t.keys].toString()
 //
 //                                                                    }
-
-//                                                                        setdatavalue(qData.answer!!,
-//                                                                            qData.answerData,
-//                                                                            0,
-//                                                                            "9",
-//                                                                            qData.id,"0")
+                                                                        setdatavalue(qData.answer!!,
+                                                                            qData.answerData!! as ArrayList<String>,
+                                                                            "0",
+                                                                            9,
+                                                                            qData.id,0)
 
                                                                 } else if (qData.id == 140) {
-//                                                                    setarray(
-//                                                                        "0",
-//                                                                        qData.answerData as ArrayList<ChildAnswerData>,
-//                                                                        0,
-//                                                                        "10"
-//                                                                    )
+                                                                    setarray(
+                                                                        "0",
+                                                                        qData.answerData as ArrayList<ChildAnswerData>,
+                                                                        0,
+                                                                        "10"
+                                                                    )
 
                                                                 }
                                                            // }
@@ -815,31 +812,51 @@ class AllGovQuestionsFragment : Fragment() {
             });
     }
 
-//    private fun setdatavalue(
-//        answer: String,
-//        ans: @RawValue Any?,
-//        s: String,
-//        id: Int,
-//        s1: String
-//    ) {
-//
-//        var sb = StringBuilder()
-//        Log.i("TAG", "setdatavalue: "+answerData)
-//        for (qData in answerData!!.size) {
-//            val getrow: Any = qData.answerData!!
-//            val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-//            val txt = t[t.keys].toString()
+    private fun setdatavalue(
+        answer: String,
+        ans: ArrayList<String>,
+        s: String,
+        id: Int,
+        s1: Int?,
+        i: Int
+    ) {
+
+      //   bankruptcyMap = ans  as LinkedTreeMap<Any, Any>
+
+        var sb = StringBuilder()
+      //  Log.i("TAG", "setdatavalue: "+answerData)
+        //for (qData in ans!!.size) {
+            for (i in 0 until ans.size) {
+                val getrow: Any = ans.get(i)!!
+                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                //val txt = t[t.keys].toString()
+
+                    var keys = t.keys.toString()
+                    val asubstring: String = keys.substring(1, 2)
+                    val txt = t[asubstring].toString()
+                     sb.append(txt+ ",")
+
+                    binding!!.qv9.visibility = View.VISIBLE
+                    //  binding!!.qvs9.text = title
+
+                    binding!!.qvs9.text = "Which Type?"
+                    binding!!.qva9.text = sb
+                    binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q9radioButton.isChecked = true
+
+
+        //     Log.i("TAG", "setdatavalue: "+text)
+
+        }
+
+
+//        for (i in 0 until answerData.size) {
+//            sb.append(qData.raceDetails!!.get(i).name + ",")
+//            nativehawaiantxt.text = sb
+//            nativehawaian.visibility = View.VISIBLE
 //
 //        }
-//
-//
-////        for (i in 0 until answerData.size) {
-////            sb.append(qData.raceDetails!!.get(i).name + ",")
-////            nativehawaiantxt.text = sb
-////            nativehawaian.visibility = View.VISIBLE
-////
-////        }
-//    }
+    }
 
     companion object {
         var banMap = hashMapOf<String, String>()
@@ -943,6 +960,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv1.visibility = View.VISIBLE
                     binding!!.qva1.text = "$ " + title
                     binding!!.qva1.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q1radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
 
@@ -968,6 +986,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
                     binding!!.qva22.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q2radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
 
@@ -987,6 +1006,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
                     binding!!.qva3.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q3radioButton.isChecked = true
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1010,6 +1030,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
                     binding!!.qva4.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q4radioButton.isChecked = true
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1032,6 +1053,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs5.text = "Detail"
                     binding!!.qva5.text = title
                     binding!!.qva5.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q5radioButton.isChecked = true
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1051,6 +1073,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
                     binding!!.qva6.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q6radioButton.isChecked = true
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1068,6 +1091,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv7.visibility = View.VISIBLE
                     binding!!.qvs7.text = title
                     binding!!.qvs7.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q7radioButton.isChecked = true
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1082,6 +1106,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs8.text = "Detail"
                     binding!!.qva8.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
+
                 }else{
                     binding!!.qv8.visibility = View.VISIBLE
                     // binding!!.qvs8.text = title
@@ -1091,6 +1116,8 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva8.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
+                    binding!!.q8radioButton.isChecked = true
+
                 }
 
             }
@@ -1113,6 +1140,8 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
+                    binding!!.q9radioButton.isChecked = true
+
                 }
 
 
@@ -1137,6 +1166,7 @@ class AllGovQuestionsFragment : Fragment() {
               jARRAY = JsonArray()
               jsonaddquestion = JsonObject()
               Questions = ArrayList()
+
               for (qData in questions) {
                   if (questionId == qData.id) {
                       if (questionId == 130) {
@@ -1414,18 +1444,24 @@ class AllGovQuestionsFragment : Fragment() {
 //                          jtwo.put(jone3)
 //                          jone1.put("answerData", jtwo)
 
+                        //  jone1.addProperty("id", "131")
+                          var answerDatalist = JsonArray()
                           val test = hashMapOf<String, String>()
                           val newTestList = arrayListOf(HashMap<String, String>())
                           for(item in banMap){
                              // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                              var jonebanmap = JsonObject()
+
                               test.put(item.key, item.value)
+                              jonebanmap.addProperty(item.key,item.value)
                               val json = Gson().toJson(test)
                               val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                               newTestList.add(mapCopy)
+                              answerDatalist.add(jonebanmap)
                               test.clear()
                             }
                           newTestList.removeAt(0)
-                          jone1.add("answerData", newTestList as JsonElement)
+                          jone1.add("answerData", answerDatalist)
                           jARRAY.add(jone1)
 
                           break
@@ -1553,7 +1589,7 @@ class AllGovQuestionsFragment : Fragment() {
            // for (qData in questions) {
               var quesationdataview = getquestiondata(jARRAY.toString())
                 for (k in 0 until quesationdataview!!.size) {
-               var answerDatalist = JSONArray()
+               var answerDatalist = JsonArray()
                 var newTestList = arrayListOf(HashMap<String, String>())
 
                     Log.i("TAG", "setarray: "+ jARRAY)
@@ -1604,7 +1640,7 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.remainingMonth = monthlyPayment
 //                                childAnswerData.name = name
 //                                childAnswerData.monthlyPayment = remainingMonth
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
 
 
@@ -1634,6 +1670,8 @@ class AllGovQuestionsFragment : Fragment() {
                                // childSupportAnswerDataList.add(childAnswerData)
                                 binding!!.qvs101.text = liabilityName
                                 binding!!.qva101.text = monthlyPayment.toString()
+                                binding!!.q10radioButton.isChecked = true
+
 
                             }else{
                               //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
@@ -1652,7 +1690,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
                                 jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
 
                                 val test = hashMapOf<String, Any>()
@@ -1675,6 +1713,8 @@ class AllGovQuestionsFragment : Fragment() {
 
                                 binding!!.qvs101.text =  childAnswerList.get(i).liabilityName
                                 binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
+                                binding!!.q10radioButton.isChecked = true
+
                             }
                           //  answerData.put(childAnswerData)
                             binding!!.one.visibility = View.VISIBLE
@@ -1712,7 +1752,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonedata.addProperty("remainingMonth", remainingMonth)
                                 jonedata.addProperty("monthlyPayment", monthlyPayment)
                                 jonedata.addProperty("name", name)
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
                                 val test = hashMapOf<String, Any>()
                                 // for(item in banMap){
@@ -1734,6 +1774,8 @@ class AllGovQuestionsFragment : Fragment() {
 
                                 binding!!.qvs102.text = liabilityName
                                 binding!!.qva102.text = monthlyPayment.toString()
+                                binding!!.q10radioButton.isChecked = true
+
                             }else {
                                //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 //                                childAnswerData = ChildlistModel()
@@ -1749,7 +1791,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
                                 jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
 
                                 val test = hashMapOf<String, Any>()
@@ -1770,6 +1812,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                 binding!!.qvs102.text =  childAnswerList.get(i).liabilityName
                                 binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
+                                binding!!.q10radioButton.isChecked = true
 
                             }
                           //  answerDatalist.put(newTestList)
@@ -1806,7 +1849,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonedata.addProperty("remainingMonth", remainingMonth)
                                 jonedata.addProperty("monthlyPayment", monthlyPayment)
                                 jonedata.addProperty("name", name)
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
                                 val test = hashMapOf<String, Any>()
                                 // for(item in banMap){
@@ -1844,7 +1887,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
                                 jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
-                                answerDatalist.put(jonedata)
+                                answerDatalist.add(jonedata)
 
                                 val test = hashMapOf<String, Any>()
                                 // for(item in banMap){
@@ -1875,7 +1918,7 @@ class AllGovQuestionsFragment : Fragment() {
                         }
                         //jone.put("answerData", answerData)
                        // var jone1 = JSONObject()
-                        jone.add("answerData", answerDatalist as JsonElement)
+                        jone.add("answerData", answerDatalist)
 
 
 

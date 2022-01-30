@@ -1,5 +1,7 @@
 package com.rnsoft.colabademo
 
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*
 import com.rnsoft.colabademo.activities.details.boverview.model.BorrowerInvitationStatus
@@ -741,7 +743,7 @@ interface ServerApi{
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
     fun getjson(
         @Header("Authorization" )  Authorization:String,
-        @Body jsonBody: GovernmentParams?): Call<WebResponse<Any?>?>?
+        @Body jsonBody: JsonObject?): Call<WebResponse<Any?>?>?
 
 
     @GET("api/mcu/mobile/loanapplication/GovtQuestions/GetDemographicInformation")
