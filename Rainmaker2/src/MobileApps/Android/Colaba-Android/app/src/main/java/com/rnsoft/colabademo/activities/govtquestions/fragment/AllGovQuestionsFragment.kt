@@ -35,6 +35,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import timber.log.Timber
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -193,7 +194,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
         }
 
-   }
+    }
 
     private fun updateDemoGraphicApiCall() {
         borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, governmentParams.LoanApplicationId, governmentParams.BorrowerId)
@@ -269,7 +270,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                 // //  borrowerAppViewModel.addOrUpdateGovernmentQuestions(LoginFragment.webtoken!!, governmentParams)
                 val gson = Gson()
-              ///  var data = getDataList(jsonaddquestion.toString())
+                ///  var data = getDataList(jsonaddquestion.toString())
                 val strJson = gson.toJson(questionmodel)
                 Log.i("TAG", "updateGovernmentQuestionApiCall: "+data)
                 Log.i("TAG", "jsonarraygov: "+jsonaddquestion.toString())
@@ -296,11 +297,18 @@ class AllGovQuestionsFragment : Fragment() {
 
 
     fun getquestiondata(tag: String?): List<QuestionData?>? {
-        var datalist: List<QuestionData> = ArrayList<QuestionData>()
-        // var datalist: QuestionData = QuestionData()
-        val gson = Gson()
-        datalist = gson.fromJson<List<QuestionData>>(tag, object : TypeToken<List<QuestionData?>?>() {}.type)
-        return datalist
+        try{
+
+
+            var datalist: List<QuestionData> = ArrayList<QuestionData>()
+            // var datalist: QuestionData = QuestionData()
+            val gson = Gson()
+            datalist = gson.fromJson<List<QuestionData>>(tag, object : TypeToken<List<QuestionData?>?>() {}.type)
+            return datalist
+        }catch (e :Exception){
+            e.stackTrace
+        }
+        return null
     }
 
 
@@ -506,11 +514,11 @@ class AllGovQuestionsFragment : Fragment() {
 //               jsonv.put("raceId",1)
 //               race.put(jsonv)
         binding!!.checkbox.setOnClickListener {
-           if(checkbox.isChecked){
-               var race : RaceModel = RaceModel()
-               race.raceId = 1
-               racearr!!.add(race)
-           }
+            if(checkbox.isChecked){
+                var race : RaceModel = RaceModel()
+                race.raceId = 1
+                racearr!!.add(race)
+            }
         }
         binding!!.checkboxblack.setOnClickListener {
             if(checkboxblack.isChecked){
@@ -559,7 +567,7 @@ class AllGovQuestionsFragment : Fragment() {
                 val copyEthnicityChildList =
                     java.util.ArrayList(ethnicityChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.ethnicityChildList to copyEthnicityChildList)
-                 findNavController().navigate(R.id.action_hispanic, bundle)
+                findNavController().navigate(R.id.action_hispanic, bundle)
             }
         }
 
@@ -657,6 +665,8 @@ class AllGovQuestionsFragment : Fragment() {
                             if (item.passedBorrowerId == tabBorrowerId) {
                                 selectedGovernmentQuestionModel = item
                                 currentBorrowerId = tabBorrowerId!!
+                                var answer:String? = ""
+                                var answerdetail:String? = ""
                                 governmentQuestionActivity?.let { governmentQuestionActivity ->
                                     governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                         item.questionData?.let { questionDataList ->
@@ -678,86 +688,100 @@ class AllGovQuestionsFragment : Fragment() {
                                                     Questionone = false
                                                     if (qData.id != null) {
                                                         qustionheaderarray!!.add(qData)
-                                                        if (qData.answer != null) {
-                                                         //   if (qData.answer == "Yes") {
-                                                            if(qData.id == 10) {
-                                                                if (qData.answer != null){
-                                                                    if (qData.answer == "No" || qData.answer!!.isEmpty()) {
-                                                                        Questionone = true
-                                                                        binding!!.qv1.visibility = View.GONE
-                                                                       // binding!!.qva1.text = "$ " + title
-                                                                    }
+                                                        if (qData.answer == null) {
+                                                            answer = ""
+                                                        }else{
+                                                            answer = qData.answer
+                                                        }
+                                                        if (qData.answerDetail == null) {
+                                                            answerdetail = ""
+                                                        }else{
+                                                            answerdetail = qData.answerDetail
+                                                        }
+
+
+                                                        // //  if (qData.answer != null) {
+
+                                                        //   if (qData.answer == "Yes") {
+                                                        if(qData.id == 10) {
+                                                            if (qData.answer != null){
+                                                                if (answer == "No" || answer!!.isEmpty()) {
+                                                                    Questionone = true
+                                                                    binding!!.qv1.visibility = View.GONE
+                                                                    // binding!!.qva1.text = "$ " + title
                                                                 }
+                                                            }
 
 
-                                                            } else if (qData.id == 11) {
-                                                                    if (qData.answer != null && qData.answer!!.isNotEmpty()) {
-                                                                        if(!Questionone) {
-                                                                            setdata(
-                                                                                qData.answer!!,
-                                                                                qData.answer!!,
-                                                                                0,
-                                                                                "1",
-                                                                                qData.id, "0", "Yes"
-                                                                            )
-                                                                        }
-                                                                    }
-                                                                } else if (qData.id == 70) {
+                                                        } else if (qData.id == 11) {
+                                                            if (answer != null && answer!!.isNotEmpty()) {
+                                                                if(!Questionone) {
                                                                     setdata(
-                                                                        qData.answer!!,
-                                                                        qData.answerDetail!!,
+                                                                        answer!!,
+                                                                        answer!!,
                                                                         0,
-                                                                        "3",
-                                                                        qData.id,
-                                                                        "0",
-                                                                        "Yes"
+                                                                        "1",
+                                                                        qData.id, "0", "Yes"
                                                                     )
+                                                                }
+                                                            }
+                                                        } else if (qData.id == 70) {
 
-                                                                } else if (qData.id == 80) {
-                                                                    setdata(
-                                                                        qData.answer!!,
-                                                                        qData.answerDetail!!,
-                                                                        0,
-                                                                        "4",
-                                                                        qData.id,
-                                                                        "0",
-                                                                        "Yes"
-                                                                    )
+                                                            setdata(
+                                                                answer!!,
+                                                                answerdetail!!,
+                                                                0,
+                                                                "3",
+                                                                qData.id,
+                                                                "0",
+                                                                "Yes"
+                                                            )
 
-                                                                } else if (qData.id == 90) {
-                                                                    setdata(
-                                                                        qData.answer!!,
-                                                                        qData.answerDetail!!,
-                                                                        0,
-                                                                        "5",
-                                                                        qData.id,
-                                                                        "0",
-                                                                        "Yes"
-                                                                    )
+                                                        } else if (qData.id == 80) {
+                                                            setdata(
+                                                                answer!!,
+                                                                answerdetail!!,
+                                                                0,
+                                                                "4",
+                                                                qData.id,
+                                                                "0",
+                                                                "Yes"
+                                                            )
 
-                                                                } else if (qData.id == 100) {
-                                                                    setdata(
-                                                                        qData.answer!!,
-                                                                        qData.answerDetail!!,
-                                                                        0,
-                                                                        "6",
-                                                                        qData.id,
-                                                                        "0",
-                                                                        "Yes"
-                                                                    )
+                                                        } else if (qData.id == 90) {
+                                                            setdata(
+                                                                answer!!,
+                                                                answerdetail!!,
+                                                                0,
+                                                                "5",
+                                                                qData.id,
+                                                                "0",
+                                                                "Yes"
+                                                            )
 
-                                                                } else if (qData.id == 120) {
-                                                                    setdata(
-                                                                        qData.answer!!,
-                                                                        qData.answerDetail!!,
-                                                                        0,
-                                                                        "8",
-                                                                        qData.id,
-                                                                        "0",
-                                                                        "Yes"
-                                                                    )
+                                                        } else if (qData.id == 100) {
+                                                            setdata(
+                                                                answer!!,
+                                                                answerdetail!!,
+                                                                0,
+                                                                "6",
+                                                                qData.id,
+                                                                "0",
+                                                                "Yes"
+                                                            )
 
-                                                                } else if (qData.id == 131) {
+                                                        } else if (qData.id == 120) {
+                                                            setdata(
+                                                                answer!!,
+                                                                answerdetail!!,
+                                                                0,
+                                                                "8",
+                                                                qData.id,
+                                                                "0",
+                                                                "Yes"
+                                                            )
+
+                                                        } else if (qData.id == 131) {
 
 
 //                                                                    for (a in qData.answerData) {
@@ -766,34 +790,30 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                        val txt = t[t.keys].toString()
 //
 //                                                                    }
-                                                                        setdatavalue(qData.answer!!,
-                                                                            qData.answerData!! as ArrayList<String>,
-                                                                            "0",
-                                                                            9,
-                                                                            qData.id,0)
+                                                            setdatavalue(answer!!,
+                                                                qData.answerData!! as ArrayList<String>,
+                                                                "0",
+                                                                9,
+                                                                qData.id,0)
 
-                                                                } else if (qData.id == 140) {
-                                                                    setarray(
-                                                                        "0",
-                                                                        qData.answerData as ArrayList<ChildAnswerData>,
-                                                                        0,
-                                                                        "10"
-                                                                    )
+                                                        } else if (qData.id == 140) {
+                                                            setarray(
+                                                                "0",
+                                                                qData.answerData as ArrayList<ChildAnswerData>,
+                                                                0,
+                                                                "10"
+                                                            )
 
-                                                                }
-                                                           // }
                                                         }
+                                                        // }
+                                                        //  }
 
                                                     } else {
                                                         subquestionarray!!.add(qData)
-                                                        if (qData.answer != null) {
 
-                                                        }
                                                     }
 
-                                                    if (qData.answer != null) {
-                                                        // setdata("", qData.answer.toString(), 1,"1")
-                                                    }
+
 
                                                 }
 
@@ -821,31 +841,31 @@ class AllGovQuestionsFragment : Fragment() {
         i: Int
     ) {
 
-      //   bankruptcyMap = ans  as LinkedTreeMap<Any, Any>
+        //   bankruptcyMap = ans  as LinkedTreeMap<Any, Any>
 
         var sb = StringBuilder()
-      //  Log.i("TAG", "setdatavalue: "+answerData)
+        //  Log.i("TAG", "setdatavalue: "+answerData)
         //for (qData in ans!!.size) {
-            for (i in 0 until ans.size) {
-                val getrow: Any = ans.get(i)!!
-                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                //val txt = t[t.keys].toString()
+        for (i in 0 until ans.size) {
+            val getrow: Any = ans.get(i)!!
+            val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+            //val txt = t[t.keys].toString()
 
-                    var keys = t.keys.toString()
-                    val asubstring: String = keys.substring(1, 2)
-                    val txt = t[asubstring].toString()
-                     sb.append(txt+ ",")
+            var keys = t.keys.toString()
+            val asubstring: String = keys.substring(1, 2)
+            val txt = t[asubstring].toString()
+            sb.append(txt+ ",")
 
-                    binding!!.qv9.visibility = View.VISIBLE
-                    //  binding!!.qvs9.text = title
+            binding!!.qv9.visibility = View.VISIBLE
+            //  binding!!.qvs9.text = title
 
-                    binding!!.qvs9.text = "Which Type?"
-                    binding!!.qva9.text = sb
-                    binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
-                    binding!!.q9radioButton.isChecked = true
+            binding!!.qvs9.text = "Which Type?"
+            binding!!.qva9.text = sb
+            binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+            binding!!.q9radioButton.isChecked = true
 
 
-        //     Log.i("TAG", "setdatavalue: "+text)
+            //     Log.i("TAG", "setdatavalue: "+text)
 
         }
 
@@ -952,14 +972,13 @@ class AllGovQuestionsFragment : Fragment() {
                 if(detailTitle == "No"  || detailTitle.isEmpty()){
                     binding!!.qv1.visibility = View.GONE
                     binding!!.qva1.text = "$ " + title
-
-
+                    binding!!.qva1.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     updatedata(questionId, title, detailTitle, questionId,s,s1)
                 }else{
 
                     binding!!.qv1.visibility = View.VISIBLE
                     binding!!.qva1.text = "$ " + title
-                    binding!!.qva1.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q1radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
                     binding!!.q1radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
@@ -985,7 +1004,7 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv22.visibility = View.VISIBLE
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
-                    binding!!.qva22.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q2radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
                     binding!!.q2radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
@@ -1005,8 +1024,8 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qv3.visibility = View.VISIBLE
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
-                    binding!!.qva3.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     binding!!.q3radioButton.isChecked = true
+                    binding!!.q3radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1029,8 +1048,8 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
-                    binding!!.qva4.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     binding!!.q4radioButton.isChecked = true
+                    binding!!.q4radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1052,8 +1071,8 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs5.text = "Detail"
                     binding!!.qva5.text = title
-                    binding!!.qva5.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     binding!!.q5radioButton.isChecked = true
+                    binding!!.q5radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1072,8 +1091,8 @@ class AllGovQuestionsFragment : Fragment() {
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
-                    binding!!.qva6.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     binding!!.q6radioButton.isChecked = true
+                    binding!!.q6radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1090,8 +1109,8 @@ class AllGovQuestionsFragment : Fragment() {
                 }else{
                     binding!!.qv7.visibility = View.VISIBLE
                     binding!!.qvs7.text = title
-                    binding!!.qvs7.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
                     binding!!.q7radioButton.isChecked = true
+                    binding!!.q7radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1113,7 +1132,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs8.text = "Detail"
                     binding!!.qva8.text = title
-                    binding!!.qva8.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q8radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                     binding!!.q8radioButton.isChecked = true
@@ -1137,7 +1156,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     binding!!.qvs9.text = "Which Type?"
                     binding!!.qva9.text = title
-                    binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    binding!!.q9radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                     binding!!.q9radioButton.isChecked = true
@@ -1162,46 +1181,46 @@ class AllGovQuestionsFragment : Fragment() {
         s1: String
     ) {
         governmentParams.Questions.let { questions ->
-          if(s == "0"){
-              jARRAY = JsonArray()
-              jsonaddquestion = JsonObject()
-              Questions = ArrayList()
+            if(s == "0"){
+                jARRAY = JsonArray()
+                jsonaddquestion = JsonObject()
+                Questions = ArrayList()
 
-              for (qData in questions) {
-                  if (questionId == qData.id) {
-                      if (questionId == 130) {
-                          var jone = JsonObject()
-                          jone.addProperty("id", qData.id)
-                          jone.addProperty("parentQuestionId", qData.parentQuestionId)
-                          jone.addProperty("headerText", qData.headerText)
-                          jone.addProperty("questionSectionId", qData.questionSectionId)
-                          jone.addProperty("ownTypeId", qData.ownTypeId)
-                          jone.addProperty("firstName", qData.firstName)
-                          jone.addProperty("lastName", qData.lastName)
-                          jone.addProperty("question", qData.question)
-                          jone.addProperty("selectionOptionId", qData.selectionOptionId)
-                          jone.add("answerData", qData.answerData as JsonElement?)
-                          jARRAY.add(jone)
-                          var jtwo = JsonArray()
-                          var jone1 = JsonObject()
-                          jone1.addProperty("id", "131")
-                          jone1.addProperty("parentQuestionId", "130")
-                          jone1.addProperty("headerText", "Type")
-                          jone1.addProperty("questionSectionId", "3")
-                          jone1.addProperty("ownTypeId", "1")
-                          jone1.addProperty("firstName", qData.firstName)
-                          jone1.addProperty("lastName", qData.lastName)
-                          jone1.addProperty("question", "Which Type?")
-                          jone1.addProperty("answer", qData.question)
-                          jone1.addProperty("answerDetail", qData.answerDetail)
-                          jone1.addProperty("selectionOptionId", "")
-                          jone1.add("answerData", qData.answerData as JsonElement?)
+                for (qData in questions) {
+                    if (questionId == qData.id) {
+                        if (questionId == 130) {
+                            var jone = JsonObject()
+                            jone.addProperty("id", qData.id)
+                            jone.addProperty("parentQuestionId", qData.parentQuestionId)
+                            jone.addProperty("headerText", qData.headerText)
+                            jone.addProperty("questionSectionId", qData.questionSectionId)
+                            jone.addProperty("ownTypeId", qData.ownTypeId)
+                            jone.addProperty("firstName", qData.firstName)
+                            jone.addProperty("lastName", qData.lastName)
+                            jone.addProperty("question", qData.question)
+                            jone.addProperty("selectionOptionId", qData.selectionOptionId)
+                            jone.add("answerData", qData.answerData as JsonElement?)
+                            jARRAY.add(jone)
+                            var jtwo = JsonArray()
+                            var jone1 = JsonObject()
+                            jone1.addProperty("id", "131")
+                            jone1.addProperty("parentQuestionId", "130")
+                            jone1.addProperty("headerText", "Type")
+                            jone1.addProperty("questionSectionId", "3")
+                            jone1.addProperty("ownTypeId", "1")
+                            jone1.addProperty("firstName", qData.firstName)
+                            jone1.addProperty("lastName", qData.lastName)
+                            jone1.addProperty("question", "Which Type?")
+                            jone1.addProperty("answer", qData.question)
+                            jone1.addProperty("answerDetail", qData.answerDetail)
+                            jone1.addProperty("selectionOptionId", "")
+                            jone1.add("answerData", qData.answerData as JsonElement?)
 
 //                          var jone3 = JSONObject()
 //                          jone3.put("2", title)
 //                          jtwo.put(jone3)
 //                          jone1.put("answerData", jtwo)
-                          jARRAY.add(jone1)
+                            jARRAY.add(jone1)
 
 
 
@@ -1248,52 +1267,52 @@ class AllGovQuestionsFragment : Fragment() {
 //                        Questions!!.add(govern1)
 
 
-                      } else {
-                          if (questionId == 10) {
-                              //if(s1 == "No"){
-                                  var jone = JsonObject()
-                                  jone.addProperty("id", 10)
-                                  jone.addProperty("parentQuestionId", qData.id)
-                                  jone.addProperty("headerText", qData.headerText)
-                                  jone.addProperty("questionSectionId", qData.questionSectionId)
-                                  jone.addProperty("ownTypeId", qData.ownTypeId)
-                                  jone.addProperty("firstName", qData.firstName)
-                                  jone.addProperty("lastName", qData.lastName)
-                                  jone.addProperty("question", qData.question)
-                                  jone.addProperty("answer", s1)
-                                  jone.addProperty("answerDetail", title)
-                                  jone.addProperty("selectionOptionId", qData.selectionOptionId)
-                                  jARRAY.add(jone)
-                            //  }
-                                     var jone1 = JsonObject()
-                                      jone1.addProperty("id", 11)
-                                      jone1.addProperty("parentQuestionId",10)
-                                      jone1.addProperty("headerText", qData.headerText)
-                                      jone1.addProperty("questionSectionId", qData.questionSectionId)
-                                      jone1.addProperty("ownTypeId", qData.ownTypeId)
-                                      jone1.addProperty("firstName", qData.firstName)
-                                      jone1.addProperty("lastName", qData.lastName)
-                                      jone1.addProperty("question", qData.question)
-                                      jone1.addProperty("answer", detailTitle)
-                                      jone1.addProperty("answerDetail", title)
-                                      jone1.addProperty("selectionOptionId", qData.selectionOptionId)
-                                      jARRAY.add(jone1)
-                                     Log.i("TAG", "updatedata: "+jARRAY)
+                        } else {
+                            if (questionId == 10) {
+                                //if(s1 == "No"){
+                                var jone = JsonObject()
+                                jone.addProperty("id", 10)
+                                jone.addProperty("parentQuestionId", qData.id)
+                                jone.addProperty("headerText", qData.headerText)
+                                jone.addProperty("questionSectionId", qData.questionSectionId)
+                                jone.addProperty("ownTypeId", qData.ownTypeId)
+                                jone.addProperty("firstName", qData.firstName)
+                                jone.addProperty("lastName", qData.lastName)
+                                jone.addProperty("question", qData.question)
+                                jone.addProperty("answer", s1)
+                                jone.addProperty("answerDetail", title)
+                                jone.addProperty("selectionOptionId", qData.selectionOptionId)
+                                jARRAY.add(jone)
+                                //  }
+                                var jone1 = JsonObject()
+                                jone1.addProperty("id", 11)
+                                jone1.addProperty("parentQuestionId",10)
+                                jone1.addProperty("headerText", qData.headerText)
+                                jone1.addProperty("questionSectionId", qData.questionSectionId)
+                                jone1.addProperty("ownTypeId", qData.ownTypeId)
+                                jone1.addProperty("firstName", qData.firstName)
+                                jone1.addProperty("lastName", qData.lastName)
+                                jone1.addProperty("question", qData.question)
+                                jone1.addProperty("answer", detailTitle)
+                                jone1.addProperty("answerDetail", title)
+                                jone1.addProperty("selectionOptionId", qData.selectionOptionId)
+                                jARRAY.add(jone1)
+                                Log.i("TAG", "updatedata: "+jARRAY)
 
 
-                          } else if (questionId != 131 && questionId != 140 && questionId != 11) {
-                              var jone = JsonObject()
-                              jone.addProperty("id", qData.id)
-                              jone.addProperty("parentQuestionId", qData.parentQuestionId)
-                              jone.addProperty("headerText", qData.headerText)
-                              jone.addProperty("questionSectionId", qData.questionSectionId)
-                              jone.addProperty("ownTypeId", qData.ownTypeId)
-                              jone.addProperty("firstName", qData.firstName)
-                              jone.addProperty("lastName", qData.lastName)
-                              jone.addProperty("question", qData.question)
-                              jone.addProperty("answer", detailTitle)
-                              jone.addProperty("answerDetail", title)
-                              jone.addProperty("selectionOptionId", qData.selectionOptionId)
+                            } else if (questionId != 131 && questionId != 140 && questionId != 11) {
+                                var jone = JsonObject()
+                                jone.addProperty("id", qData.id)
+                                jone.addProperty("parentQuestionId", qData.parentQuestionId)
+                                jone.addProperty("headerText", qData.headerText)
+                                jone.addProperty("questionSectionId", qData.questionSectionId)
+                                jone.addProperty("ownTypeId", qData.ownTypeId)
+                                jone.addProperty("firstName", qData.firstName)
+                                jone.addProperty("lastName", qData.lastName)
+                                jone.addProperty("question", qData.question)
+                                jone.addProperty("answer", detailTitle)
+                                jone.addProperty("answerDetail", title)
+                                jone.addProperty("selectionOptionId", qData.selectionOptionId)
 
 
 //                            var govern :  GetGovermentmodel = GetGovermentmodel()
@@ -1317,232 +1336,232 @@ class AllGovQuestionsFragment : Fragment() {
 //                            }
 
 
-                              var jonet = JsonObject()
-                              if (qData.answerData != null) {
-                                  val getrow: Any = qData.answerData!!
-                                  val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                                  val id = t["selectionOptionId"].toString().toDouble().toInt()
-                                  if (t["selectionOptionId"] != null) {
-                                      val text = t["selectionOptionText"].toString()
-                                      jonet.addProperty("selectionOptionId", id)
-                                      jonet.addProperty("selectionOptionText", text)
-                                  }
+                                var jonet = JsonObject()
+                                if (qData.answerData != null) {
+                                    val getrow: Any = qData.answerData!!
+                                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                    val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                    if (t["selectionOptionId"] != null) {
+                                        val text = t["selectionOptionText"].toString()
+                                        jonet.addProperty("selectionOptionId", id)
+                                        jonet.addProperty("selectionOptionText", text)
+                                    }
 //                                var ans :  answerData = answerData()
 //                                ans.selectionOptionId = id
 //                                ans.selectionOptionText =text
-                                  // govern.answerData = ans
+                                    // govern.answerData = ans
 
 
-                              }
-                              jone.add("answerData", jonet)
-                              jARRAY.add(jone)
+                                }
+                                jone.add("answerData", jonet)
+                                jARRAY.add(jone)
 
 
-                              // Questions!!.add(govern)
+                                // Questions!!.add(govern)
 
-                          }
-                      }
+                            }
+                        }
 
-                  } else {
+                    } else {
 
-                      if(qData.id == 140) {
-                          var jone = JsonObject()
-                          jone.addProperty("id", qData.id)
-                          jone.addProperty("parentQuestionId", qData.parentQuestionId)
-                          jone.addProperty("headerText", qData.headerText)
-                          jone.addProperty("questionSectionId", qData.questionSectionId)
-                          jone.addProperty("ownTypeId", qData.ownTypeId)
-                          jone.addProperty("firstName", qData.firstName)
-                          jone.addProperty("lastName", qData.lastName)
-                          jone.addProperty("question", qData.question)
-                          jone.addProperty("answer", qData.answer)
-                          jone.addProperty("answerDetail", qData.answerDetail)
-                          jone.addProperty("selectionOptionId", qData.selectionOptionId)
-                          jone.add("answerData", answerData)
+                        if(qData.id == 140) {
+                            var jone = JsonObject()
+                            jone.addProperty("id", qData.id)
+                            jone.addProperty("parentQuestionId", qData.parentQuestionId)
+                            jone.addProperty("headerText", qData.headerText)
+                            jone.addProperty("questionSectionId", qData.questionSectionId)
+                            jone.addProperty("ownTypeId", qData.ownTypeId)
+                            jone.addProperty("firstName", qData.firstName)
+                            jone.addProperty("lastName", qData.lastName)
+                            jone.addProperty("question", qData.question)
+                            jone.addProperty("answer", qData.answer)
+                            jone.addProperty("answerDetail", qData.answerDetail)
+                            jone.addProperty("selectionOptionId", qData.selectionOptionId)
+                            jone.add("answerData", answerData)
 
-                          jARRAY.add(jone)
-                      }else if (qData.id != 140 && qData.id != 131 ) {
-                          var jone = JsonObject()
-                          jone.addProperty("id", qData.id)
-                          jone.addProperty("parentQuestionId", qData.parentQuestionId)
-                          jone.addProperty("headerText", qData.headerText)
-                          jone.addProperty("questionSectionId", qData.questionSectionId)
-                          jone.addProperty("ownTypeId", qData.ownTypeId)
-                          jone.addProperty("firstName", qData.firstName)
-                          jone.addProperty("lastName", qData.lastName)
-                          jone.addProperty("question", qData.question)
-                          jone.addProperty("answer", qData.answer)
-                          jone.addProperty("answerDetail", qData.answerDetail)
-                          jone.addProperty("selectionOptionId", qData.selectionOptionId)
+                            jARRAY.add(jone)
+                        }else if (qData.id != 140 && qData.id != 131 ) {
+                            var jone = JsonObject()
+                            jone.addProperty("id", qData.id)
+                            jone.addProperty("parentQuestionId", qData.parentQuestionId)
+                            jone.addProperty("headerText", qData.headerText)
+                            jone.addProperty("questionSectionId", qData.questionSectionId)
+                            jone.addProperty("ownTypeId", qData.ownTypeId)
+                            jone.addProperty("firstName", qData.firstName)
+                            jone.addProperty("lastName", qData.lastName)
+                            jone.addProperty("question", qData.question)
+                            jone.addProperty("answer", qData.answer)
+                            jone.addProperty("answerDetail", qData.answerDetail)
+                            jone.addProperty("selectionOptionId", qData.selectionOptionId)
 
-                          var jonet = JsonObject()
-                          if (qData.answerData != null) {
-                              val getrow: Any = qData.answerData!!
-                              val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                              if (t["selectionOptionId"] != null) {
-                                  val id = t["selectionOptionId"].toString().toDouble().toInt()
-                                  val text = t["selectionOptionText"].toString()
-                                  jonet.addProperty("selectionOptionId", id)
-                                  jonet.addProperty("selectionOptionText", text)
-                                  jone.add("answerData", jonet)
+                            var jonet = JsonObject()
+                            if (qData.answerData != null) {
+                                val getrow: Any = qData.answerData!!
+                                val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                if (t["selectionOptionId"] != null) {
+                                    val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                    val text = t["selectionOptionText"].toString()
+                                    jonet.addProperty("selectionOptionId", id)
+                                    jonet.addProperty("selectionOptionText", text)
+                                    jone.add("answerData", jonet)
 
-                              }
-                          }
-
-
-                          // Questions!!.add(govern)
-                          jARRAY.add(jone)
-                      }
-                  }
+                                }
+                            }
 
 
-
+                            // Questions!!.add(govern)
+                            jARRAY.add(jone)
+                        }
+                    }
 
 
 
 
 
-              }
-          }else{
-              var quesationdataview = getquestiondata(jARRAY.toString())
 
-             //  //for (qData in quesationdataview!!) {
-                  for (i in 0 until quesationdataview!!.size) {
-                  if (questionId == quesationdataview.get(i)!!.id) {
 
-                      if (questionId == 130) {
-                          var jone = JsonObject()
-                          jone.addProperty("id", quesationdataview.get(i)!!.id)
-                          jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
-                          jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
-                          jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
-                          jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
-                          jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
-                          jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
-                          jone.addProperty("question", quesationdataview.get(i)!!.question)
-                          jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
-                          jone.add("answerData",
-                              quesationdataview.get(i)!!.answerData as JsonElement?
-                          )
-                          jARRAY.remove(i)
-                          jARRAY.add(jone)
-                          var jtwo = JsonArray()
-                          var jone1 = JsonObject()
-                          jone1.addProperty("id", "131")
-                          jone1.addProperty("parentQuestionId", "130")
-                          jone1.addProperty("headerText", "Type")
-                          jone1.addProperty("questionSectionId", "3")
-                          jone1.addProperty("ownTypeId", "1")
-                          jone1.addProperty("firstName", quesationdataview.get(i)!!.firstName)
-                          jone1.addProperty("lastName", quesationdataview.get(i)!!.lastName)
-                          jone1.addProperty("question", "Which Type?")
-                          jone1.addProperty("answer", "")
-                          jone1.addProperty("answerDetail", "")
-                          jone1.addProperty("selectionOptionId", "")
-                        //  var jone3 = JSONObject()
+
+                }
+            }else{
+                var quesationdataview = getquestiondata(jARRAY.toString())
+
+                //  //for (qData in quesationdataview!!) {
+                for (i in 0 until quesationdataview!!.size) {
+                    if (questionId == quesationdataview.get(i)!!.id) {
+
+                        if (questionId == 130) {
+                            var jone = JsonObject()
+                            jone.addProperty("id", quesationdataview.get(i)!!.id)
+                            jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
+                            jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                            jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                            jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                            jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
+                            jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
+                            jone.addProperty("question", quesationdataview.get(i)!!.question)
+                            jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                            jone.add("answerData",
+                                quesationdataview.get(i)!!.answerData as JsonElement?
+                            )
+                            jARRAY.remove(i)
+                            jARRAY.add(jone)
+                            var jtwo = JsonArray()
+                            var jone1 = JsonObject()
+                            jone1.addProperty("id", "131")
+                            jone1.addProperty("parentQuestionId", "130")
+                            jone1.addProperty("headerText", "Type")
+                            jone1.addProperty("questionSectionId", "3")
+                            jone1.addProperty("ownTypeId", "1")
+                            jone1.addProperty("firstName", quesationdataview.get(i)!!.firstName)
+                            jone1.addProperty("lastName", quesationdataview.get(i)!!.lastName)
+                            jone1.addProperty("question", "Which Type?")
+                            jone1.addProperty("answer", "")
+                            jone1.addProperty("answerDetail", "")
+                            jone1.addProperty("selectionOptionId", "")
+                            //  var jone3 = JSONObject()
 //                          jone3.put("2", title)
 //                          jtwo.put(jone3)
 //                          jone1.put("answerData", jtwo)
 
-                        //  jone1.addProperty("id", "131")
-                          var answerDatalist = JsonArray()
-                          val test = hashMapOf<String, String>()
-                          val newTestList = arrayListOf(HashMap<String, String>())
-                          for(item in banMap){
-                             // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
-                              var jonebanmap = JsonObject()
+                            //  jone1.addProperty("id", "131")
+                            var answerDatalist = JsonArray()
+                            val test = hashMapOf<String, String>()
+                            val newTestList = arrayListOf(HashMap<String, String>())
+                            for(item in banMap){
+                                // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                                var jonebanmap = JsonObject()
 
-                              test.put(item.key, item.value)
-                              jonebanmap.addProperty(item.key,item.value)
-                              val json = Gson().toJson(test)
-                              val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
-                              newTestList.add(mapCopy)
-                              answerDatalist.add(jonebanmap)
-                              test.clear()
+                                test.put(item.key, item.value)
+                                jonebanmap.addProperty(item.key,item.value)
+                                val json = Gson().toJson(test)
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                                newTestList.add(mapCopy)
+                                answerDatalist.add(jonebanmap)
+                                test.clear()
                             }
-                          newTestList.removeAt(0)
-                          jone1.add("answerData", answerDatalist)
-                          jARRAY.add(jone1)
+                            newTestList.removeAt(0)
+                            jone1.add("answerData", answerDatalist)
+                            jARRAY.add(jone1)
 
-                          break
+                            break
 
-                      } else {
-                          if (questionId == 11) {
-                             // if(s1 == "No"){
-                                  var jone2 = JsonObject()
-                                  jone2.addProperty("id", 10)
-                                  jone2.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
-                                  jone2.addProperty("headerText", quesationdataview.get(i)!!.headerText)
-                                  jone2.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
-                                  jone2.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
-                                  jone2.addProperty("firstName", quesationdataview.get(i)!!.firstName)
-                                  jone2.addProperty("lastName", quesationdataview.get(i)!!.lastName)
-                                  jone2.addProperty("question", quesationdataview.get(i)!!.question)
-                                  jone2.addProperty("answer", s1)
-                                  jone2.addProperty("answerDetail", title)
-                                  jone2.addProperty("selectionOptionId",  quesationdataview.get(i)!!.selectionOptionId)
-                                  jARRAY.add(jone2)
-                          //    }
-                                  var jone = JsonObject()
-                                  jone.addProperty("id", 11)
-                                  jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
-                                  jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
-                                  jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
-                                  jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
-                                  jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
-                                  jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
-                                  jone.addProperty("question", quesationdataview.get(i)!!.question)
-                                  jone.addProperty("answer", title)
-                                  jone.addProperty("answerDetail", detailTitle)
-                                  jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
-                                  jARRAY.add(jone)
-                              break
+                        } else {
+                            if (questionId == 11) {
+                                // if(s1 == "No"){
+                                var jone2 = JsonObject()
+                                jone2.addProperty("id", 10)
+                                jone2.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
+                                jone2.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone2.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                                jone2.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                                jone2.addProperty("firstName", quesationdataview.get(i)!!.firstName)
+                                jone2.addProperty("lastName", quesationdataview.get(i)!!.lastName)
+                                jone2.addProperty("question", quesationdataview.get(i)!!.question)
+                                jone2.addProperty("answer", s1)
+                                jone2.addProperty("answerDetail", title)
+                                jone2.addProperty("selectionOptionId",  quesationdataview.get(i)!!.selectionOptionId)
+                                jARRAY.add(jone2)
+                                //    }
+                                var jone = JsonObject()
+                                jone.addProperty("id", 11)
+                                jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
+                                jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                                jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                                jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
+                                jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
+                                jone.addProperty("question", quesationdataview.get(i)!!.question)
+                                jone.addProperty("answer", title)
+                                jone.addProperty("answerDetail", detailTitle)
+                                jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                                jARRAY.add(jone)
+                                break
 
-                          } else if (questionId != 131 && questionId != 140 && questionId != 10) {
-                              var jone = JsonObject()
-                              jone.addProperty("id", quesationdataview.get(i)!!.id)
-                              jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
-                              jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
-                              jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
-                              jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
-                              jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
-                              jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
-                              jone.addProperty("question", quesationdataview.get(i)!!.question)
-                              jone.addProperty("answer", detailTitle)
-                              jone.addProperty("answerDetail", title)
-                              jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
-
-
-                              var jonet = JsonObject()
-                              if (quesationdataview.get(i)!!.answerData != null) {
-                                  val getrow: Any = quesationdataview.get(i)!!.answerData!!
-                                  val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
-                                  if (t["selectionOptionId"] != null) {
-                                      val id = t["selectionOptionId"].toString().toDouble().toInt()
-                                      val text = t["selectionOptionText"].toString()
-                                      jonet.addProperty("selectionOptionId", id)
-                                      jonet.addProperty("selectionOptionText", text)
-                                  }
-                              }
-                              jone.add("answerData", jonet)
-                              jARRAY.add(jone)
-                              break
+                            } else if (questionId != 131 && questionId != 140 && questionId != 10) {
+                                var jone = JsonObject()
+                                jone.addProperty("id", quesationdataview.get(i)!!.id)
+                                jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
+                                jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
+                                jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
+                                jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
+                                jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
+                                jone.addProperty("question", quesationdataview.get(i)!!.question)
+                                jone.addProperty("answer", detailTitle)
+                                jone.addProperty("answerDetail", title)
+                                jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
 
 
-                              // Questions!!.add(govern)
+                                var jonet = JsonObject()
+                                if (quesationdataview.get(i)!!.answerData != null) {
+                                    val getrow: Any = quesationdataview.get(i)!!.answerData!!
+                                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
+                                    if (t["selectionOptionId"] != null) {
+                                        val id = t["selectionOptionId"].toString().toDouble().toInt()
+                                        val text = t["selectionOptionText"].toString()
+                                        jonet.addProperty("selectionOptionId", id)
+                                        jonet.addProperty("selectionOptionText", text)
+                                    }
+                                }
+                                jone.add("answerData", jonet)
+                                jARRAY.add(jone)
+                                break
 
-                          }
-                      }
-                  }
 
+                                // Questions!!.add(govern)
 
+                            }
+                        }
+                    }
 
 
 
 
-              }
 
-          }
+
+                }
+
+            }
 
 
 
@@ -1586,13 +1605,13 @@ class AllGovQuestionsFragment : Fragment() {
     ) {
 
         governmentParams.Questions.let { questions ->
-           // for (qData in questions) {
-              var quesationdataview = getquestiondata(jARRAY.toString())
-                for (k in 0 until quesationdataview!!.size) {
-               var answerDatalist = JsonArray()
+            // for (qData in questions) {
+            var quesationdataview = getquestiondata(jARRAY.toString())
+            for (k in 0 until quesationdataview!!.size) {
+                var answerDatalist = JsonArray()
                 var newTestList = arrayListOf(HashMap<String, String>())
 
-                    Log.i("TAG", "setarray: "+ jARRAY)
+                Log.i("TAG", "setarray: "+ jARRAY)
                 var childAnswerData : ChildlistModel? = null
                 if (quesationdataview.get(k)!!.id == 140) {
                     var jone = JsonObject()
@@ -1613,7 +1632,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                         if (i == 0) {
                             var jonedata = JsonObject()
-                           // val intDemo = strDemo!!.floatToInt()
+                            // val intDemo = strDemo!!.floatToInt()
 
                             if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
@@ -1656,7 +1675,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 val json = Gson().toJson(test)
                                 val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
-                               // answerDatalist.put(test)
+                                // answerDatalist.put(test)
                                 test.clear()
                                 //  }
                                 newTestList.removeAt(0)
@@ -1667,14 +1686,14 @@ class AllGovQuestionsFragment : Fragment() {
 //                                jonedata.put("remainingMonth", remainingMonth)
 //                                jonedata.put("monthlyPayment", monthlyPayment)
 //                                jonedata.put("name", name)
-                               // childSupportAnswerDataList.add(childAnswerData)
+                                // childSupportAnswerDataList.add(childAnswerData)
                                 binding!!.qvs101.text = liabilityName
                                 binding!!.qva101.text = monthlyPayment.toString()
                                 binding!!.q10radioButton.isChecked = true
 
 
                             }else{
-                              //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
+                                //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 
 
 //                                childAnswerData = ChildlistModel()
@@ -1685,7 +1704,7 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.monthlyPayment = childAnswerList.get(i).monthlyPayment
 //                                answerDatalist.put(childAnswerData)
 
-                                  jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
                                 jonedata.addProperty("liabilityName", childAnswerList.get(i).liabilityName)
                                 jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
                                 jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
@@ -1694,20 +1713,20 @@ class AllGovQuestionsFragment : Fragment() {
 
 
                                 val test = hashMapOf<String, Any>()
-                               // for(item in banMap){
-                                    // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
-                                    //test.put(item.key, item.value)
-                                    test.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
-                                    test.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                    test.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
-                                    test.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
-                                    test.put("name", childAnswerList.get(i).name)
-                                    val json = Gson().toJson(test)
-                                    val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
-                                    newTestList.add(mapCopy)
-                               //     answerDatalist.put(test)
-                                    test.clear()
-                              //  }
+                                // for(item in banMap){
+                                // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
+                                //test.put(item.key, item.value)
+                                test.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                test.put("liabilityName", childAnswerList.get(i).liabilityName)
+                                test.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                test.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
+                                test.put("name", childAnswerList.get(i).name)
+                                val json = Gson().toJson(test)
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
+                                newTestList.add(mapCopy)
+                                //     answerDatalist.put(test)
+                                test.clear()
+                                //  }
                                 newTestList.removeAt(0)
 
 
@@ -1716,11 +1735,11 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.q10radioButton.isChecked = true
 
                             }
-                          //  answerData.put(childAnswerData)
+                            //  answerData.put(childAnswerData)
                             binding!!.one.visibility = View.VISIBLE
                             binding!!.qva101.visibility = View.VISIBLE
 
-                           // answerDatalist.put(newTestList)
+                            // answerDatalist.put(newTestList)
                         } else if (i == 1) {
 
                             var jonedata = JsonObject()
@@ -1737,7 +1756,7 @@ class AllGovQuestionsFragment : Fragment() {
                                     t["remainingMonth"].toString().toDouble().toInt()
 
 
-                               //  childAnswerData  = ChildAnswerData(liabilityName,liabilityTypeId,monthlyPayment,name,remainingMonth)
+                                //  childAnswerData  = ChildAnswerData(liabilityName,liabilityTypeId,monthlyPayment,name,remainingMonth)
 
 //                                childAnswerData = ChildlistModel()
 //                                childAnswerData.liabilityName = liabilityName
@@ -1766,7 +1785,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 val json = Gson().toJson(test)
                                 val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
-                              //  answerDatalist.put(test)
+                                //  answerDatalist.put(test)
                                 test.clear()
                                 //  }
                                 newTestList.removeAt(0)
@@ -1777,7 +1796,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.q10radioButton.isChecked = true
 
                             }else {
-                               //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
+                                //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 //                                childAnswerData = ChildlistModel()
 //                                childAnswerData.liabilityName = childAnswerList.get(i).liabilityName
 //                                childAnswerData.liabilityTypeId =childAnswerList.get(i).liabilityTypeId
@@ -1815,8 +1834,8 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.q10radioButton.isChecked = true
 
                             }
-                          //  answerDatalist.put(newTestList)
-                           /// answerData.put(childAnswerData)
+                            //  answerDatalist.put(newTestList)
+                            /// answerData.put(childAnswerData)
                             binding!!.two.visibility = View.VISIBLE
                             binding!!.qva102.visibility = View.VISIBLE
 
@@ -1834,7 +1853,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 val remainingMonth =
                                     t["remainingMonth"].toString().toDouble().toInt()
 
-                              //  childAnswerData  = ChildAnswerData(liabilityName,liabilityTypeId,monthlyPayment,name,remainingMonth)
+                                //  childAnswerData  = ChildAnswerData(liabilityName,liabilityTypeId,monthlyPayment,name,remainingMonth)
 
 //                                childAnswerData = ChildlistModel()
 //                                childAnswerData.liabilityName = liabilityName
@@ -1863,7 +1882,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 val json = Gson().toJson(test)
                                 val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
-                               // answerDatalist.put(test)
+                                // answerDatalist.put(test)
                                 test.clear()
                                 //  }
                                 newTestList.removeAt(0)
@@ -1880,7 +1899,7 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.remainingMonth = childAnswerList.get(i).remainingMonth
 //                                childAnswerData.name = childAnswerList.get(i).name
 //                                childAnswerData.monthlyPayment = childAnswerList.get(i).monthlyPayment
-                            //    answerDatalist.put(childAnswerData)
+                                //    answerDatalist.put(childAnswerData)
 
                                 jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
                                 jonedata.addProperty("liabilityName", childAnswerList.get(i).liabilityName)
@@ -1917,7 +1936,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                         }
                         //jone.put("answerData", answerData)
-                       // var jone1 = JSONObject()
+                        // var jone1 = JSONObject()
                         jone.add("answerData", answerDatalist)
 
 
@@ -1942,13 +1961,13 @@ class AllGovQuestionsFragment : Fragment() {
         var race : RaceModel = RaceModel()
         race.raceId = 2
         for (i in 0 until asianChildList.size) {
-               var deatil : Detailmodel = Detailmodel()
-               deatil.detailID = asianChildList.get(i).detailId!!
-               deatil.isOther = asianChildList.get(i).isOther!!
-               race.raceDetails!!.add(deatil)
-               sb.append(asianChildList.get(i).name + ",")
-               textasian.text = sb
-               asian_layout_q1.visibility = View.VISIBLE
+            var deatil : Detailmodel = Detailmodel()
+            deatil.detailID = asianChildList.get(i).detailId!!
+            deatil.isOther = asianChildList.get(i).isOther!!
+            race.raceDetails!!.add(deatil)
+            sb.append(asianChildList.get(i).name + ",")
+            textasian.text = sb
+            asian_layout_q1.visibility = View.VISIBLE
 
 
 //            if(item.detailId == 7){
@@ -1988,7 +2007,7 @@ class AllGovQuestionsFragment : Fragment() {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
         val sb = StringBuilder()
 
-            var race : EthnicityModel = EthnicityModel()
+        var race : EthnicityModel = EthnicityModel()
         race.ethnicityId = 1
         for (i in 0 until asianChildList.size) {
             var deatil : Detailmodel = Detailmodel()

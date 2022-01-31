@@ -41,7 +41,7 @@ class PartyToFragment:GovtDetailBaseFragment() {
 
             if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(
-                    "",
+                    "Yes",
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "5",

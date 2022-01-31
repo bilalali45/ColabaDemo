@@ -37,7 +37,7 @@ class TitleConveyanceFragment:GovtDetailBaseFragment() {
 
             if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(
-                    "",
+                    "Yes",
                     binding.edDetails.text.toString(),
                     whichBorrowerId,
                     "6",
