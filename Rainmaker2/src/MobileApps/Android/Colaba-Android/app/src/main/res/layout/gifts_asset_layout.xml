@@ -144,7 +144,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gift_source_input_layout">
@@ -219,6 +219,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/rubik_light"
             android:hint="@string/cash_value"
+            android:visibility="gone"
             android:textColorHint="@color/primary_info_label_color"
             app:boxCollapsedPaddingTop="1dp"
             app:boxStrokeColor="@color/primary_info_line_color"

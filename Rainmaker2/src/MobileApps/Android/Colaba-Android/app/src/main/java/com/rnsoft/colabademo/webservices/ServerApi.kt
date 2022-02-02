@@ -1,6 +1,5 @@
 package com.rnsoft.colabademo
 
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rnsoft.AssetTypesByCategory
 import com.rnsoft.colabademo.activities.assets.fragment.model.*

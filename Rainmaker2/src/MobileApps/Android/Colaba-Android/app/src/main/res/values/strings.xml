@@ -576,7 +576,7 @@
     <string name="email_to">To</string>
     <string name="email_cc">CC</string>
     <string name="subject_line">Subject Line</string>
-   <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
+    <string name="email_body">Hi Richard,\n \nAs we discussed, I’m adding addition To continue your application, we need some more information. \n \nTax Returns with schedules (Personals - Two Years) \nCredit Report \nEarnest Money Deposit \nFinancial Statement \nForm 1099 \nGovernment-issued ID \nLetter of Explanation - General \nMortgage Statement \nPaystubs
         \nComplete these items as soon as possible so we can continue reviewing your application. \n \n \n \nThanks &amp; Regards, \n John Doe
     </string>
 
@@ -610,6 +610,7 @@
     <string name="questioneight">  Has had property foreclosed upon in the last 7 years? </string>
     <string name="questionnine">  Has declared bankruptcy within the past 7 years? </string>
     <string name="questionten">  Is Currently obligated to pay child support, alimony or separate maintenance?</string>
+    <string name="selectwhowillrecivetheconitionalapprovalletter"> Select who will receive the Conditional Approval Letter </string>
 
 
 </resources>

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rnsoft.colabademo.activities.details.SelectLetteRecipientsrFragment
 import com.rnsoft.colabademo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -65,6 +67,11 @@ class HomeFragment : BaseFragment() {
 
         ViewPagerAdapter.initialize()
 
+
+
+
+
+
         homeProfileLayout = root.findViewById(R.id.assets_top_container)
         greetingMessage = root.findViewById(R.id.greetingMessage)
         filterImageView = root.findViewById(R.id.filter_imageview)
@@ -75,8 +82,12 @@ class HomeFragment : BaseFragment() {
             //findNavController().navigate(R.id.navigation_search)
            // NavHostFragment.findNavController(context).navigate(R.id.navigation_search)
            // Navigation.findNavController(context,R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_search)
+
             val intent = Intent(requireActivity(), SearchActivity::class.java)
             startActivity(intent)
+
+//            val intent = Intent(requireActivity(), SelectLetteRecipientsrFragment::class.java)
+//            startActivity(intent)
         }
 
         assignToMeSwitch.setOnCheckedChangeListener(assignToMeChangeListener)

@@ -39,7 +39,6 @@ class OverviewAppStatusFragment : BaseFragment(), AdapterClickListener {
             findNavController().popBackStack()
         }
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, navigateToPreviousScreen)
-
         super.addListeners(binding.root)
         return rootTestView
     }

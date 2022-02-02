@@ -87,7 +87,7 @@ class DashBoardActivity : BaseActivity() {
                     badge.isVisible = false
                 }
                 else -> {
-                    SandbarUtils.showRegular(this@DashBoardActivity, "Webservice count not responding...")
+                   // SandbarUtils.showRegular(this@DashBoardActivity, "Webservice count not responding...")
                 }
             }
         })
@@ -152,7 +152,6 @@ class DashBoardActivity : BaseActivity() {
         //binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         // Display the hamburger icon to launch the drawer
         //supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         // Call syncState() on the action bar so it'll automatically change to the back button when the drawer layout is open
         actionBarToggle.syncState()
 

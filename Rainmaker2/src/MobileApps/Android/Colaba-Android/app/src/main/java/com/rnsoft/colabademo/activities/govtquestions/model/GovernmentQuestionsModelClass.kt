@@ -19,7 +19,7 @@ data class GovernmentQuestionsModelClass(
 data class QuestionData(
     val id: Int?=null,
     val parentQuestionId:Int? = null,
-    var answer: String?,
+    var answer: String? = "",
     var answerDetail: String?= "",
 
     var answerData :  @RawValue Any? = null,

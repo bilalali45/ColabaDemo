@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "927943677815",
+    "project_id": "colaba-mcu",
+    "storage_bucket": "colaba-mcu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927943677815:android:7d3c82320f890214ccb372",
+        "android_client_info": {
+          "package_name": "com.rnsoft.colabademo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927943677815-0qqqn1n17dcqoe9d0h8l6b6kmvsuqnhb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyrLkL_AzNVIv0NTsFUKvre57bj8Bkr7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927943677815-0qqqn1n17dcqoe9d0h8l6b6kmvsuqnhb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "927943677815-blv5hg7919anbs5ikpa6f67kntf2jvre.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rainsoftfn.colaba"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

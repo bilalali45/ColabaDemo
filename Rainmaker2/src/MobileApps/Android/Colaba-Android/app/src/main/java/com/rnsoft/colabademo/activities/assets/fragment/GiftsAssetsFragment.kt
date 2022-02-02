@@ -125,6 +125,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
     }
 
     private fun fetchAndObserveGiftDetails(){
+        binding.annualBaseLayout.visibility = View.VISIBLE
 
         assetUniqueId?.let { nonNullAssetUniqueId->
             if (loanApplicationId != null && borrowerId != null && nonNullAssetUniqueId > 0) {
@@ -161,10 +162,15 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                                             val parsedDate: String =
                                                 formatter.format(notNullInitDate)
                                             binding.dateOfTransferEditText.setText(parsedDate)
+
                                         }
 
                                     }
                                     binding.yesDeposited.isChecked = true
+                                    binding.annualBaseLayout.visibility = View.VISIBLE
+                                    binding.giftTypeConstraintlayout.visibility = View.VISIBLE
+
+
                                 } else {
                                     binding.giftOfEquity.isChecked = true
                                     binding.noDeposited.isChecked = false
@@ -236,11 +242,11 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                 clearFocusFromFields()
 
                 if(position <=1) {
-
-                    binding.giftOfEquity.text = grant
-                } else{
-
                     binding.giftOfEquity.text = giftOfEquity
+
+                } else{
+                    binding.giftOfEquity.text = grant
+
                 }
             }
         //set prefix and format
@@ -260,6 +266,8 @@ class GiftsAssetsFragment:AssetBaseFragment() {
                     binding.giftDepositGroup.clearCheck()
                     binding.giftDepositGroup.setOnCheckedChangeListener(onGiftDateCheckListener)
                     binding.giftTransferConstraintlayout.visibility = View.VISIBLE
+                    binding.annualBaseLayout.visibility = View.VISIBLE
+
                     binding.annualBaseLayout.hint = "Cash Value"
                 }
                 R.id.gift_of_equity -> {
@@ -373,7 +381,7 @@ class GiftsAssetsFragment:AssetBaseFragment() {
         return AssetReturnParams(
              assetName = binding.giftSourceAutoCompeleteView.text.toString(),
              assetTypeName = getAssetTypeName(),
-            assetBorrowerName = assetBorrowerName,
+             assetBorrowerName = assetBorrowerName,
              assetTypeID = assetTypeID,
              assetUniqueId = assetUniqueId,
              assetCategoryId = assetCategoryId,
@@ -466,16 +474,32 @@ class GiftsAssetsFragment:AssetBaseFragment() {
 
     }
 
+
     private fun openCalendar(){
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
-        val newMonth = month + 1
-        val dpd = DatePickerDialog(requireActivity(), { _, year, _, dayOfMonth ->
-            val dateOfTransferString = "$newMonth-$dayOfMonth-$year"
-            binding.dateOfTransferEditText.setText(dateOfTransferString)
-                                                      }, year, month, day)
-        dpd.show()
+
+        // New Style Calendar Added....
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.MySpinnerDatePickerStyle, {
+                    view, selectedYear, monthOfYear, dayOfMonth -> binding.dateOfTransferEditText.setText("" + (monthOfYear+1) + "/" + dayOfMonth + "/" + selectedYear) },
+            year, month, day
+        )
+        datePickerDialog.datePicker.maxDate= System.currentTimeMillis()
+        datePickerDialog.show()
     }
+//    private fun openCalendar(){
+//        val c = Calendar.getInstance()
+//        val year = c.get(Calendar.YEAR)
+//        val month = c.get(Calendar.MONTH)
+//        val day = c.get(Calendar.DAY_OF_MONTH)
+//        val newMonth = month + 1
+//        val dpd = DatePickerDialog(requireActivity(), { _, year, _, dayOfMonth ->
+//            val dateOfTransferString = "$newMonth-$dayOfMonth-$year"
+//            binding.dateOfTransferEditText.setText(dateOfTransferString)
+//                                                      }, year, month, day)
+//        dpd.show()
+//    }
 }
