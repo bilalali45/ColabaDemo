@@ -158,7 +158,7 @@ class DetailTabFragment : BaseFragment() {
                 testLoanId?.let { loanId->
                     sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                         coroutineScope {
-                            detailViewModel.getBorrowerOverview(token = authToken, loanApplicationId = loanId)
+                            detailViewModel.getBorrowerOverview(loanApplicationId = loanId)
                             detailViewModel.getBorrowerDocuments(token = authToken, loanApplicationId = loanId)
                             detailViewModel.getBorrowerApplicationTabData(token = authToken, loanApplicationId = loanId)
                         }

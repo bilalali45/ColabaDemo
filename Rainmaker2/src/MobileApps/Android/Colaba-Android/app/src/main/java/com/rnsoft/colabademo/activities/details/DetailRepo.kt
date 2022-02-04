@@ -9,19 +9,19 @@ import javax.inject.Inject
 
 class DetailRepo @Inject constructor(private val detailDataSource: DetailDataSource) {
 
-   suspend fun getLoanInfo(token:String ,loanApplicationId:Int):Result<BorrowerOverviewModel>{
-        return detailDataSource.getLoanInfo(token = token , loanApplicationId = loanApplicationId)
+   suspend fun getLoanInfo(loanApplicationId:Int): Result<BorrowerOverviewModel>{
+        return detailDataSource.getLoanInfo(loanApplicationId)
     }
 
     suspend fun getInvitationStatus(loanApplicationId:Int,borrowerId: Int):Result<BorrowerInvitationStatus>{
         return detailDataSource.getInvitationStatus(loanApplicationId = loanApplicationId,borrowerId)
     }
 
-    suspend fun sendInvitationEmail(emailBody:SendInvitationEmailModel):Result<Any>{
+    suspend fun sendInvitationEmail(emailBody:SendInvitationEmailModel): Result<Response<Unit>> {
         return detailDataSource.sendInvitationEmail(emailBody)
     }
 
-    suspend fun resendInvitationEmail(emailBody:SendInvitationEmailModel):Result<Any>{
+    suspend fun resendInvitationEmail(emailBody:SendInvitationEmailModel): Result<Response<Unit>> {
         return detailDataSource.resendInvitationEmail(emailBody)
     }
 

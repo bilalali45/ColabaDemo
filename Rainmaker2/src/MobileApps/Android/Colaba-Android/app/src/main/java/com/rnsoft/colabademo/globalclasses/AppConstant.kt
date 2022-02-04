@@ -295,6 +295,12 @@ object AppConstant {
     var race = JSONArray()
     var racearr: ArrayList<RaceModel>? = ArrayList()
 
+
+
+
+
+
+
     var ethnicityarry: ArrayList<EthnicityModel>? = ArrayList()
 
     var Questions: ArrayList<GetGovermentmodel>? = ArrayList()

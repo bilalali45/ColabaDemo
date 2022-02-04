@@ -73,10 +73,19 @@
     <string name="twenty_mins">20 mins</string>
     <string name="thirty_mins">30 mins</string>
 
+    <string name="send_pre_approval_letter">Send Pre-Approval Letter</string>
+    <string name="send_pre_qualification_letter">Send Conditional Pre-Qualification Letter</string>
+    <string name="send_pre_qual_letter">Send Conditional Pre-Qual Letter</string>
+    <string name="send_conditional_letter">Send Conditional Approval Letter</string>
+    <string name="pursuant_to_tac1">Pursuant To 7 Tac &amp;81.201(A)</string>
+    <string name="pursuant_to_tac2">Pursuant 7 TAC &amp;81.201(b)</string>
+
+
 
     <string name="race">Race</string>
     <string name="ethnicity">Ethnicity</string>
     <string name="sex">Sex</string>
+
     <string name="add_current_address">Add Current Residence</string>
     <string name="add_previous_address">Add Previous Residence</string>
     <string name="mailing_address_added">Mailing address has been added</string>
@@ -154,6 +163,21 @@
     <string name="send_the_borrower">Send the borrower a pre-approval letter, allowing them to place an offer on their dream home.</string>
     <string name="ipsum_dolor">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vulputate eros odio, elementum ultrices magna ornare eu.</string>
     <string name="in_what_state">In what state was this relationship formed?</string>
+    <string name="letter_loan_amount">Letter Loan Amount</string>
+    <string name="letter_down_payment">Letter Down Payment</string>
+    <string name="interest_rate">Interest Rate</string>
+    <string name="not_applicable">Not Applicable</string>
+    <string name="letter_expiry_date">Letter Expiration Date (MM/DD/YYYY)</string>
+    <string name="has_subject_property_identified">Has a Subject Property been identified?</string>
+    <string name="reviewed_applicant_report">Reviewed prospective applicant’s / applicant’s credit report and credit score</string>
+    <string name="have_you_reviewed_applicant_report">Have you reviewed the prospective applicant’s / applicant’s credit report and credit score?</string>
+    <string name="verified_applicant_income">Verified prospective applicant’s / applicant’s income</string>
+    <string name="verified_applicants_available_cash">Verified prospective applicant’s / applicant’s available cash to close</string>
+    <string name="verified_applicants_debts_and_assets">Verified prospective applicant’s / applicant’s debts and other assets</string>
+    <string name="what_info_provided">What type of information has been provided to you?</string>
+    <string name="available_cash_to_close">Available cash to close</string>
+    <string name="debts">Debts</string>
+
 
 
     <string name="non_permanent_resident_alien">Non Permanent Resident Alien</string>
@@ -482,7 +506,6 @@
     <string name="priority_liens">Priority liens</string>
     <string name="undisclosed_fund">undisclosed_fund</string>
     <string name="ownership_percentage">Ownership Percentage</string>
-    <string name="ownership_interest">Ownership Interest</string>
     <string name="pay_type">Pay Type</string>
     <string name="additional_income">Additional Income</string>
     <string name="salary">Salary</string>
@@ -516,7 +539,7 @@
     <string name="property_type">Property Type</string>
     <string name="occupancy_type">Occupancy Type</string>
     <string name="rental_income">Rental Income</string>
-    <string name="homeowner_assocaition_dues">Annual Homeowner"\'\s Association Dues</string>
+    <string name="homeowner_assocaition_dues">Homeowner"\'\s Association Dues</string>
     <string name="txt_delete_property">Are you sure you want to delete this property?</string>
     <string name="start_new_application">Start New Application</string>
     <string name="create_application">Create Application</string>
@@ -604,12 +627,12 @@
     <string name="questiontwo"> Have you had an ownership interest in another property in the last three years?  </string>
     <string name="questionthree"> Are there any outstanding judgments against? </string>
     <string name="questionfour"> Are you currently delinquent in default on a Federal debt? </string>
-    <string name="questionfive"> Is a party to a lawsuit in which you potentially have any personal financial liability? </string>
+    <string name="questionfive"> Are you a party to a lawsuit in which you potentially have any personal financial liability? </string>
     <string name="questionsix"> Has conveyed title to any property in lieu of foreclosure in the past 7 years? </string>
     <string name="questionseven">  within the past 7 years has complete a pre-foreclosure sale or short sale, whereby the property was sold to thired party and the lender agreed to accept less than the outstanding mortage balance due? </string>
     <string name="questioneight">  Has had property foreclosed upon in the last 7 years? </string>
     <string name="questionnine">  Has declared bankruptcy within the past 7 years? </string>
-    <string name="questionten">  Is Currently obligated to pay child support, alimony or separate maintenance?</string>
+    <string name="questionten">  Are you Currently obligated to pay child support, alimony or separate maintenance?</string>
     <string name="selectwhowillrecivetheconitionalapprovalletter"> Select who will receive the Conditional Approval Letter </string>
 
 

@@ -82,35 +82,39 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
         viewModelScope.launch() {
             val responseResult = detailRepo.sendInvitationEmail(emailBody)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
-                    //EventBus.getDefault().post(SendDataEvent(responseResult.data))
+                if (responseResult is Result.Success) {
+                    EventBus.getDefault().post(SendInvitationEvent(ResponseStatus(200,"OK","")))
+                }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(400,"OK","")))
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(500,"OK","")))
             }
         }
     }
+
+
 
     fun resendInvitationEmail(emailBody: SendInvitationEmailModel){
         viewModelScope.launch() {
             val responseResult = detailRepo.resendInvitationEmail(emailBody)
             withContext(Dispatchers.Main) {
-                if (responseResult is Result.Success)
-
+                if (responseResult is Result.Success) {
+                    EventBus.getDefault().post(SendInvitationEvent(ResponseStatus(200, "OK", "")))
+                }
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(400,"OK","")))
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(500,"OK","")))
             }
         }
     }
 
-    suspend fun getBorrowerOverview(token:String, loanApplicationId:Int) {
+    suspend fun getBorrowerOverview(loanApplicationId:Int) {
         if(!overviewServiceRunning) {
             overviewServiceRunning = true
             viewModelScope.launch (Dispatchers.IO) {
-                val responseResult = detailRepo.getLoanInfo(token = token, loanApplicationId = loanApplicationId)
+                val responseResult = detailRepo.getLoanInfo(loanApplicationId)
                 withContext(Dispatchers.Main) {
                     overviewServiceRunning = false
                     if (responseResult is Result.Success)
@@ -262,9 +266,9 @@ class DetailViewModel @Inject constructor(private val detailRepo: DetailRepo , @
                 if (responseResult is Result.Success)
                     _appMileStoneResponse.value = (responseResult.data)
                 else if (responseResult is Result.Error && responseResult.exception.message == AppConstant.INTERNET_ERR_MSG)
-                    EventBus.getDefault().post(WebServiceErrorEvent(null, true))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(400,"OK","")))
                 else if (responseResult is Result.Error)
-                    EventBus.getDefault().post(WebServiceErrorEvent(responseResult))
+                    EventBus.getDefault().post(SendDocRequestEvent(ResponseStatus(500,"OK","")))
             }
         }
     }

@@ -734,10 +734,10 @@ interface ServerApi{
         @Query("borrowerId") borrowerId: Int): InvitatationEmailModel
 
     @POST("api/mcu/mobile/loanapplication/loan/SendBorrowerInvitation")
-    suspend fun sendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
+    suspend fun sendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): Response<Unit>
 
     @POST("api/mcu/mobile/loanapplication/loan/ResendBorrowerInvitation")
-    suspend fun resendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): SendInvitationEmailModel
+    suspend fun resendBorrowerInvitation(@Body invitationEmailBody: SendInvitationEmailModel): Response<Unit>
 
     @POST("api/mcu/mobile/loanapplication/GovtQuestions/AddOrUpdateGovernmentQuestions")
     fun getjson(

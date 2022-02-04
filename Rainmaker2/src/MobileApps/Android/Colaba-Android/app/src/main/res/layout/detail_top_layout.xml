@@ -106,8 +106,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="12dp"
         android:clickable="true"
-        android:background="@color/colaba_primary_color"
-        app:srcCompat="@drawable/ic_plus"
+        android:tint="@color/white"
+        app:srcCompat="@android:drawable/ic_input_add"
         app:borderWidth="1dp"
         app:elevation="3dp"
         app:fabSize="normal"
@@ -116,7 +116,7 @@
         app:layout_constraintStart_toEndOf="@+id/phone_fab"
         app:layout_constraintTop_toTopOf="@+id/phone_fab"
         app:tint="@null"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </LinearLayout>
 

@@ -14,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment.Companion.callservices
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.rnsoft.colabademo.databinding.GovtQuestionTabLayoutBinding
@@ -45,6 +47,7 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
         _binding = GovtQuestionTabLayoutBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
         borrowerApplicationViewModel.governmentQuestionsModelClassList.observe(
             viewLifecycleOwner,
             Observer { observableSampleContent ->
@@ -75,6 +78,13 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
                         super.onPageSelected(position)
                         Log.e("Selected_Page", position.toString())
                         selectedPosition = position
+
+                        if(AllGovQuestionsFragment.instan != null){
+                            if(!callservices!!) {
+                                AllGovQuestionsFragment.instan!!.calldata()
+                            }
+                        }
+
                     }
                     override fun onPageScrollStateChanged(state: Int) {
                         super.onPageScrollStateChanged(state)

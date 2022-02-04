@@ -111,14 +111,15 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
             var detailTitle =  binding.edDetails.text.toString()
             if(detailTitle.isEmpty() || detailTitle.isBlank())
                 detailTitle = ""
+            AllGovQuestionsFragment.callservices = true
 
              if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(
-                    detailTitle,
+                    "Yes",
                     getDetailString,
                     whichBorrowerId,
                     "1",
-                    11,
+                    questionId,
                     "1","Yes"
                 )
             }

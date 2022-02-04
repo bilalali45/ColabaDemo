@@ -307,8 +307,8 @@
                     android:layout_marginStart="16dp"
                     android:background="@drawable/light_blue_border"
                     android:padding="20dp">
-
                     <TextView
+                        android:id="@+id/textView65"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/rubik_regular"
@@ -318,15 +318,14 @@
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-
                     <ImageView
                         android:id="@+id/image_timer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView65"
                         app:srcCompat="@drawable/ic_timer" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -337,11 +336,65 @@
                         android:textSize="17sp"
                         app:layout_constraintStart_toEndOf="@+id/image_timer"
                         app:layout_constraintTop_toTopOf="@+id/image_timer" />
-
                     <ImageView
                         android:id="@+id/arrow_resend_invitation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/blue_forward_arrow" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                <!-- pre approval letter -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:visibility="gone"
+                    android:id="@+id/box_pre_approval_letter"
+                    android:layout_width="@dimen/_220sdp"
+                    android:layout_height="@dimen/_68sdp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/light_blue_border"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:text="@string/pre_approval_letter"
+                        android:textAllCaps="true"
+                        android:textColor="@color/grey_color_three"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/img_send_letter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_send_letter"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_send_letter"
+                        app:srcCompat="@drawable/ic_conditional_letter" />
+
+                    <TextView
+                        android:id="@+id/tv_send_letter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/rubik_regular"
+                        android:layout_marginStart="7dp"
+                        android:text="@string/send_letter"
+                        android:textColor="@color/colaba_primary_color"
+                        android:textSize="17sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/img_send_letter" />
+
+                    <ImageView
+                        android:id="@+id/arrow_send_letter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -405,64 +458,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:visibility="gone"
-                    android:id="@+id/box_send_letter"
-                    android:layout_width="292dp"
-                    android:layout_height="86dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@drawable/light_blue_border"
-                    android:padding="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_regular"
-                        android:text="@string/pre_approval_letter"
-                        android:textAllCaps="true"
-                        android:textColor="@color/grey_color_three"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/img_send_letter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_send_letter"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_send_letter"
-                        app:srcCompat="@drawable/ic_send_letter" />
-
-                    <TextView
-                        android:id="@+id/tv_send_letter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/rubik_regular"
-                        android:layout_marginStart="7dp"
-                        android:text="@string/send_letter"
-                        android:textColor="@color/colaba_primary_color"
-                        android:textSize="17sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/img_send_letter" />
-
-                    <ImageView
-                        android:id="@+id/arrow_send_letter"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/blue_forward_arrow" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
             </LinearLayout>
-
-
-
 
         </HorizontalScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

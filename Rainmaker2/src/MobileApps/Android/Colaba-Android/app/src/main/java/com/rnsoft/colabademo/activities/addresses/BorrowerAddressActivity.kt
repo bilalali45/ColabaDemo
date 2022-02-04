@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import com.google.gson.JsonObject
 import com.rnsoft.colabademo.databinding.BorrowerAddressLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.income_military_pay.*
@@ -18,6 +19,7 @@ import kotlinx.coroutines.delay
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.json.JSONObject
 import javax.inject.Inject
 
 
@@ -51,9 +53,10 @@ class BorrowerAddressActivity : BaseActivity() {
                 lastName = it.getString(AppConstant.lastName)
                 middleName = it.getString(AppConstant.middleName)
 
-                //Log.e("coborrower list", "" + borrowerInfoList)
-                //Log.e("owntypeId","borrowerId: " + borrowerId + "OwnTypeId: " + ownTypeId)
-                //Log.e("firstName",firstName+ "lastname: " + lastName)
+
+                 //  Log.e("coborrower list", "" + borrowerInfoList)
+                //   Log.e("owntypeId","borrowerId: " + borrowerId + "OwnTypeId: " + ownTypeId)
+               //    Log.e("firstName",firstName+ "lastname: " + lastName)
             }
         } catch (e:Exception){
             Log.e("Exception","Primary Activity")

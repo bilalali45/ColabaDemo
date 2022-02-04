@@ -140,7 +140,7 @@ class LoginFragment : BaseFragment() {
             }
         }
 
-        userEmailField.setText("sadiq@rainsoftfn.com")
+        userEmailField.setText("aliya@lendova.com")
         passwordField.setText("rainsoft")
 
         imageView5.setOnClickListener {

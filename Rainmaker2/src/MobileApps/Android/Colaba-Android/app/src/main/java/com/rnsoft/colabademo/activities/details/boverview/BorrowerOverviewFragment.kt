@@ -6,11 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.text.capitalize
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
 import com.rnsoft.colabademo.databinding.DetailBorrowerLayoutTwoBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -40,7 +39,7 @@ class BorrowerOverviewFragment : BaseFragment()  {
         detailActivity?.loanApplicationId?.let {
             loanApplicationId = it
         }
-
+        AllGovQuestionsFragment.callservices = false
         binding.box1.setOnClickListener{
             if(borrowerId != null && loanApplicationId !=null) {
                 val bundle = Bundle()
@@ -59,16 +58,18 @@ class BorrowerOverviewFragment : BaseFragment()  {
             findNavController().navigate(R.id.invitation_primary_borrower_fragment, bundle)
         }
 
+        binding.boxPreApprovalLetter.setOnClickListener {
+            BotttomDialogSendLetter.newInstance().show(childFragmentManager, BotttomDialogSendLetter::class.java.canonicalName)
+        }
+
 
         binding.noAddressLayout.visibility = View.INVISIBLE
         binding.addressLayout.visibility = View.INVISIBLE
-
         binding.boxReviewDoc.setOnClickListener {
             if( DetailTabFragment.datail != null){
                 DetailTabFragment.datail!!.settab(2)
             }
         }
-
 
         detailViewModel.borrowerOverviewModel.observe(viewLifecycleOwner, {  overviewModel->
             if(overviewModel!=null) {
@@ -198,8 +199,6 @@ class BorrowerOverviewFragment : BaseFragment()  {
                            //borrowerId =  it.get(item).id
                             if (it.get(item).ownTypeId == AppConstant.borrowerTypeId) {
                                 borrowerId =  it.get(item).id
-
-                                Log.e("OVerview frag", "overview-borrower is " + it.get(item).id)
                                 // call invitation status
                                 if (loanApplicationId != null) {
                                     it.get(item).id?.let { id->
@@ -218,14 +217,25 @@ class BorrowerOverviewFragment : BaseFragment()  {
 
         detailViewModel.invitationStatus.observe(viewLifecycleOwner, { status ->
             status?.let {
-                if(it.status.equals(AppConstant.INVITATION_STATUS_INVITE, true) ||
-                    it.status.equals(AppConstant.INVITATION_STATUS_PENDING, true))
-                  binding.box1.visibility = View.VISIBLE
+                if(it.status.equals(AppConstant.INVITATION_STATUS_INVITE, true)) {
+                    binding.box1.visibility = View.VISIBLE
+                    binding.boxResendInvitation.visibility = View.GONE
+                }
 
-                if(it.status.equals(AppConstant.INVITATION_STATUS_RESENT, true) ||
-                    it.status.equals(AppConstant.INVITATION_STATUS_ACCEPTED, true))
-                   binding.boxResendInvitation.visibility = View.VISIBLE
+                if(it.status.equals(AppConstant.INVITATION_STATUS_PENDING, true)) {
+                    binding.boxResendInvitation.visibility = View.VISIBLE
+                    binding.box1.visibility = View.GONE
+                }
 
+                if(it.status.equals(AppConstant.INVITATION_STATUS_RESENT, true)) {
+                    binding.boxResendInvitation.visibility = View.VISIBLE
+                    binding.box1.visibility = View.GONE
+                }
+
+                if(it.status.equals(AppConstant.INVITATION_STATUS_ACCEPTED, true)){
+                    binding.box1.visibility = View.GONE
+                    binding.boxResendInvitation.visibility = View.GONE
+                }
                 if(it.status!!.length == 0  || it.status.isEmpty()) {
                     binding.box1.visibility = View.GONE
                     binding.boxResendInvitation.visibility = View.GONE
@@ -257,13 +267,19 @@ class BorrowerOverviewFragment : BaseFragment()  {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun invitationStatusUpdated(event: UpdateInvitationStatusEvent) {
-        //Log.e("Overview fragment", "invitation-status changed")
         if(event.isInvitationStatusUpdated) {
             if (borrowerId != null && loanApplicationId != null) {
                 detailViewModel.getBorrowerInvitationStatus(loanApplicationId!!, borrowerId!!)
             }
         }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun preApprovalLetterEvent(evt: SendApprovalLetterEvent){
+        if(evt.isConditionalApprovalLetter)
+            findNavController().navigate(R.id.navigation_conditional_approval_fragment)
+        else
+            findNavController().navigate(R.id.navigation_qualification_fragment)
     }
 
 }

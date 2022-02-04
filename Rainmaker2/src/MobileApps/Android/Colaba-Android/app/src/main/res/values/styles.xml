@@ -115,6 +115,22 @@
     <style name="noAnimTheme" parent="android:Theme">
         <item name="android:windowAnimationStyle">@null</item>
     </style>
+    <style name="radiobutton3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layoutDirection">rtl</item>
+        <item name="android:drawableStart">@drawable/radiodraw</item>
+        <item name="android:paddingLeft">@dimen/_10sdp</item>
+        <item name="android:paddingRight">@dimen/_10sdp</item>
+        <item name="android:paddingTop">@dimen/_15sdp</item>
+        <item name="android:paddingBottom">@dimen/_15sdp</item>
+        <item name="android:layout_marginTop">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/rubik_regular</item>
+        <item name="android:textColor">@color/grey_color_two</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/radio_background_simple</item>
+    </style>
 
     <!--
     <style name="checkBox" parent="Widget.AppCompat.CompoundButton.CheckBox">

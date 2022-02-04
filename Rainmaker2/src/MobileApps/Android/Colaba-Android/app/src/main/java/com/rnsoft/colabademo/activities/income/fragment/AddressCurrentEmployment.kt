@@ -86,7 +86,7 @@ class AddressCurrentEmployment : BaseFragment(), PlacePredictionAdapter.OnPlaceC
             super.removeFocusFromAllFields(binding.addressLayout)
         }
 
-        binding.addressLayout.setOnClickListener {
+        binding.addressLayout. setOnClickListener{
             HideSoftkeyboard.hide(requireActivity(),binding.addressLayout)
             super.removeFocusFromAllFields(binding.addressLayout)
         }

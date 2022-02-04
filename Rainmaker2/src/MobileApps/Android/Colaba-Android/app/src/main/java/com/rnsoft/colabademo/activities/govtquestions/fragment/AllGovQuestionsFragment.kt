@@ -47,7 +47,6 @@ class AllGovQuestionsFragment : Fragment() {
     private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
     private var ownerShipInnerScreenParams: java.util.ArrayList<String> = arrayListOf()
     private var asianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
-    private var qustionheaderarray: ArrayList<QuestionData>? = null
     private var subquestionarray: ArrayList<QuestionData>? = null
     private val borrowerAppViewModel: BorrowerApplicationViewModel by activityViewModels()
     private var nativeHawaiianChildList: java.util.ArrayList<DemoGraphicRaceDetail> = arrayListOf()
@@ -65,8 +64,7 @@ class AllGovQuestionsFragment : Fragment() {
     private var ethnicityChildList: java.util.ArrayList<EthnicityDetailDemoGraphic> = arrayListOf()
 
 
-    var Questionone: Boolean = false
-
+    var Questionone : Boolean = false
     // var questionmodel = null
     @Inject
     lateinit var sharedPreferences: SharedPreferences
@@ -93,13 +91,14 @@ class AllGovQuestionsFragment : Fragment() {
         demomodel = DemoGraphicModel()
         racearr = ArrayList()
 
-        setUpDynamicTabs()
+      //  setUpDynamicTabs()
 
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
             //updateDemoGraphicApiCall()
 //            else
             apidemograpic()
+
             updateGovernmentQuestionApiCall()
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(true))
             requireActivity().finish()
@@ -113,10 +112,10 @@ class AllGovQuestionsFragment : Fragment() {
         return binding!!.root
     }
 
-    private fun apidemograpic() {
+    private  fun apidemograpic() {
 //        jsonaddquestion.put("BorrowerId", governmentParams.BorrowerId)
 //        jsonaddquestion.put("LoanApplicationId", governmentParams.LoanApplicationId)
-        if (demomodel != null) {
+        if(demomodel != null){
             demomodel.loanApplicationId = governmentParams.LoanApplicationId
             demomodel.borrowerId = governmentParams.BorrowerId
             demomodel.race = racearr
@@ -125,7 +124,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             val gson = Gson()
             val strJson = gson.toJson(demomodel)
-            Log.i("TAG", "onFailure: " + strJson)
+            Log.i("TAG", "onFailure: "+strJson)
             borrowerAppViewModel.adddemographic("Bearer " + LoginFragment.webtoken!!, demomodel)
         }
 
@@ -135,7 +134,7 @@ class AllGovQuestionsFragment : Fragment() {
     fun demographic() {
         demomodel = data!!
         racearr = data!!.race!!
-        ethnicityarry = data!!.ethnicity!!
+        ethnicityarry =  data!!.ethnicity!!
         for (qData in data!!.race!!) {
             if (qData.raceId == 2) {
                 var sb = StringBuilder()
@@ -149,7 +148,7 @@ class AllGovQuestionsFragment : Fragment() {
                 asiancheckbox.isChecked = true
             } else if (qData.raceId == 3) {
                 checkboxblack.isChecked = true
-            } else if (qData.raceId == 4) {
+            }else if (qData.raceId == 4) {
                 var sb = StringBuilder()
                 for (i in 0 until qData.raceDetails!!.size) {
                     sb.append(qData.raceDetails!!.get(i).name + ",")
@@ -160,20 +159,23 @@ class AllGovQuestionsFragment : Fragment() {
                 americannativecheckbox.isChecked = true
             } else if (qData.raceId == 5) {
                 whitecheckbox.isChecked = true
-            } else if (qData.raceId == 6) {
+            }else if (qData.raceId == 6) {
                 idonotwishcheckbox.isChecked = true
-            } else if (qData.raceId == 1) {
+            }else if (qData.raceId == 1) {
                 checkbox.isChecked = true
             }
         }
 
-        if (data!!.genderId == 1) {
-            male.isChecked = true
-
-        } else if (data!!.genderId == 2) {
+        if(data!!.genderId == 1){
+            try{
+                male.isChecked = true
+            }catch (e :Exception){
+                e.stackTrace
+            }
+        }else if(data!!.genderId == 2){
             female.isChecked = true
 
-        } else if (data!!.genderId == 3) {
+        }else if(data!!.genderId == 3) {
             sexidontsharerb.isChecked = true
         }
 
@@ -181,7 +183,7 @@ class AllGovQuestionsFragment : Fragment() {
             val sb = StringBuilder()
             if (qData.ethnicityId == 1) {
                 HispanicorLatino.isChecked = true
-                for (i in 0 until qData!!.ethnicityDetails!!.size) {
+                for (i in 0 until  qData!!.ethnicityDetails!!.size) {
                     sb.append(qData!!.ethnicityDetails!!.get(i).name + ",")
                     ethtxt.text = sb
                     ethnicity_layout.visibility = View.VISIBLE
@@ -189,7 +191,7 @@ class AllGovQuestionsFragment : Fragment() {
             } else if (qData.ethnicityId == 2) {
                 notsHispanicorLatino.isChecked = true
 
-            } else if (qData.ethnicityId == 3) {
+            }else if (qData.ethnicityId == 3) {
                 ethnicidonotwishrbbox.isChecked = true
             }
         }
@@ -197,11 +199,7 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     private fun updateDemoGraphicApiCall() {
-        borrowerAppViewModel.GetDemographicInformation(
-            "Bearer " + LoginFragment.webtoken!!,
-            governmentParams.LoanApplicationId,
-            governmentParams.BorrowerId
-        )
+        borrowerAppViewModel.GetDemographicInformation("Bearer " + LoginFragment.webtoken!!, governmentParams.LoanApplicationId, governmentParams.BorrowerId)
     }
 
 
@@ -276,13 +274,10 @@ class AllGovQuestionsFragment : Fragment() {
                 val gson = Gson()
                 ///  var data = getDataList(jsonaddquestion.toString())
                 val strJson = gson.toJson(questionmodel)
-                Log.i("TAG", "updateGovernmentQuestionApiCall: " + data)
-                Log.i("TAG", "jsonarraygov: " + jsonaddquestion.toString())
+                Log.i("TAG", "updateGovernmentQuestionApiCall: "+data)
+                Log.i("TAG", "jsonarraygov: "+jsonaddquestion.toString())
 
-                borrowerAppViewModel.addgovernmetnjson(
-                    "Bearer " + LoginFragment.webtoken!!,
-                    jsonaddquestion!!
-                )
+                borrowerAppViewModel.addgovernmetnjson("Bearer " + LoginFragment.webtoken!!, jsonaddquestion!!)
 
 
 //                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
@@ -298,148 +293,99 @@ class AllGovQuestionsFragment : Fragment() {
     fun getDataList(tag: String?): GovernmentParams? {
         var datalist: GovernmentParams = GovernmentParams()
         val gson = Gson()
-        datalist =
-            gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
+        datalist = gson.fromJson<GovernmentParams>(tag, object : TypeToken<GovernmentParams?>() {}.type)
         return datalist
     }
 
 
     fun getquestiondata(tag: String?): List<QuestionData?>? {
-        try {
+        try{
 
 
             var datalist: List<QuestionData> = ArrayList<QuestionData>()
             // var datalist: QuestionData = QuestionData()
             val gson = Gson()
-            datalist = gson.fromJson<List<QuestionData>>(
-                tag,
-                object : TypeToken<List<QuestionData?>?>() {}.type
-            )
+            datalist = gson.fromJson<List<QuestionData>>(tag, object : TypeToken<List<QuestionData?>?>() {}.type)
             return datalist
-        } catch (e: Exception) {
+        }catch (e :Exception){
             e.stackTrace
         }
         return null
     }
 
 
+
+
     private fun listnser() {
+
+         //  //    binding!!.scroll.scrollTo(5,10)
+        //  //    ViewPropertyObjectAnimator.animate(mNestedScrollView).scrollY(mChildView.getTop()).start();
 
         binding!!.q1radioButton.setOnClickListener {
             binding!!.q1radioButtonNo.isChecked = false
             discuss(binding!!.qh1.text.toString(), "1")
-            binding!!.q1radioButtonNo.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q1radioButtonNo.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
         }
         binding!!.q2radioButton.setOnClickListener {
             binding!!.q2radioButtonNo.isChecked = false
-            binding!!.q2radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q2radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh2.text.toString(), "2")
         }
         binding!!.q3radioButton.setOnClickListener {
             binding!!.q3radioButtonNo.isChecked = false
-            binding!!.q3radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q3radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh3.text.toString(), "3")
         }
         binding!!.q4radioButton.setOnClickListener {
             binding!!.q4radioButtonNo.isChecked = false
-            binding!!.q4radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q4radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh4.text.toString(), "4")
         }
         binding!!.q5radioButton.setOnClickListener {
             binding!!.q5radioButtonNo.isChecked = false
-            binding!!.q5radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q5radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh5.text.toString(), "5")
         }
         binding!!.q6radioButton.setOnClickListener {
             binding!!.q6radioButtonNo.isChecked = false
-            binding!!.q6radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q6radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh6.text.toString(), "6")
         }
         binding!!.q7radioButton.setOnClickListener {
             binding!!.q7radioButtonNo.isChecked = false
-            binding!!.q7radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q7radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh7.text.toString(), "7")
         }
         binding!!.q8radioButton.setOnClickListener {
             binding!!.q8radioButtonNo.isChecked = false
-            binding!!.q8radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q8radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(binding!!.qh8.text.toString(), "8")
         }
         binding!!.q9radioButton.setOnClickListener {
             binding!!.q9radioButtonNo.isChecked = false
-            binding!!.q9radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q9radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss("Bankruptcy ", "9")
         }
         binding!!.q10radioButton.setOnClickListener {
             binding!!.q10radioButtonNo.isChecked = false
-            binding!!.q10radioButton.setTextColor(
-                ContextCompat.getColor(
-                    context!!,
-                    R.color.grey_color_one
-                )
-            )
+            binding!!.q10radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
 
 
             discuss(
@@ -548,26 +494,26 @@ class AllGovQuestionsFragment : Fragment() {
 
 
         binding!!.asiancheckbox.setOnClickListener {
-            if (asiancheckbox.isChecked) {
+            if(asiancheckbox.isChecked) {
                 val copyAsianChildList = java.util.ArrayList(asianChildList.map { it.copy() })
                 val bundle = bundleOf(AppConstant.asianChildList to copyAsianChildList)
                 findNavController().navigate(R.id.action_asian, bundle)
-            } else {
+            }else{
                 asian_layout_q1.visibility = View.GONE
             }
         }
 
 
         binding!!.americannativecheckbox.setOnClickListener {
-            if (americannativecheckbox.isChecked) {
-                nativehawaian.visibility = View.GONE
+            if(americannativecheckbox.isChecked) {
+                nativehawaian.visibility =View.GONE
                 val copyNativeHawaiianChildList =
                     java.util.ArrayList(nativeHawaiianChildList.map { it.copy() })
                 val bundle =
                     bundleOf(AppConstant.nativeHawaianChildList to copyNativeHawaiianChildList)
                 findNavController().navigate(R.id.action_native_hawai, bundle)
-            } else {
-                nativehawaian.visibility = View.GONE
+            }else{
+                nativehawaian.visibility =View.GONE
             }
         }
 
@@ -575,15 +521,15 @@ class AllGovQuestionsFragment : Fragment() {
 //               jsonv.put("raceId",1)
 //               race.put(jsonv)
         binding!!.checkbox.setOnClickListener {
-            if (checkbox.isChecked) {
-                var race: RaceModel = RaceModel()
+            if(checkbox.isChecked){
+                var race : RaceModel = RaceModel()
                 race.raceId = 1
                 racearr!!.add(race)
             }
         }
         binding!!.checkboxblack.setOnClickListener {
-            if (checkboxblack.isChecked) {
-                var race: RaceModel = RaceModel()
+            if(checkboxblack.isChecked){
+                var race : RaceModel = RaceModel()
                 race.raceId = 3
                 racearr!!.add(race)
             }
@@ -591,29 +537,29 @@ class AllGovQuestionsFragment : Fragment() {
 
 
         binding!!.whitecheckbox.setOnClickListener {
-            if (whitecheckbox.isChecked) {
-                var race: RaceModel = RaceModel()
+            if(whitecheckbox.isChecked){
+                var race : RaceModel = RaceModel()
                 race.raceId = 5
                 racearr!!.add(race)
             }
         }
 
         binding!!.idonotwishcheckbox.setOnClickListener {
-            if (idonotwishcheckbox.isChecked) {
-                var race: RaceModel = RaceModel()
+            if(idonotwishcheckbox.isChecked){
+                var race : RaceModel = RaceModel()
                 race.raceId = 6
                 racearr!!.add(race)
             }
         }
 
         binding!!.ethnicidonotwishrbbox.setOnClickListener {
-            if (ethnicidonotwishrbbox.isChecked) {
-                var eth: EthnicityModel = EthnicityModel()
+            if(ethnicidonotwishrbbox.isChecked){
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 3
                 //ethnicityarry!!.add(eth)
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.notsHispanicorLatino.isChecked = false
-                ethnicityarry!!.add(0, eth)
+                ethnicityarry!!.add(0,eth)
                 ethnicity_layout.visibility = View.GONE
             }
         }
@@ -621,7 +567,7 @@ class AllGovQuestionsFragment : Fragment() {
 
 
         binding!!.HispanicorLatino.setOnClickListener {
-            if (HispanicorLatino.isChecked) {
+            if(HispanicorLatino.isChecked){
                 binding!!.notsHispanicorLatino.isChecked = false
                 binding!!.ethnicidonotwishrbbox.isChecked = false
                 ethnicity_layout.visibility = View.GONE
@@ -633,31 +579,31 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
         binding!!.notsHispanicorLatino.setOnClickListener {
-            if (notsHispanicorLatino.isChecked) {
-                var eth: EthnicityModel = EthnicityModel()
+            if(notsHispanicorLatino.isChecked){
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 2
                 //ethnicityarry!!.add(eth)
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.sexidontsharerb.isChecked = false
-                ethnicityarry!!.add(0, eth)
+                ethnicityarry!!.add(0,eth)
                 ethnicity_layout.visibility = View.GONE
             }
         }
 
         binding!!.sexidontsharerb.setOnClickListener {
-            if (sexidontsharerb.isChecked) {
-                var eth: EthnicityModel = EthnicityModel()
+            if(sexidontsharerb.isChecked){
+                var eth : EthnicityModel = EthnicityModel()
                 eth.ethnicityId = 3
                 binding!!.HispanicorLatino.isChecked = false
                 binding!!.notsHispanicorLatino.isChecked = false
-                ethnicityarry!!.add(0, eth)
+                ethnicityarry!!.add(0,eth)
                 ethnicity_layout.visibility = View.GONE
             }
         }
 
         binding!!.male.setOnClickListener {
-            if (male.isChecked) {
-                if (demomodel != null) {
+            if(male.isChecked){
+                if(demomodel != null){
                     demomodel.genderId = 1
                     binding!!.female.isChecked = false
                     binding!!.sexidontsharerb.isChecked = false
@@ -666,8 +612,8 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
         binding!!.female.setOnClickListener {
-            if (female.isChecked) {
-                if (demomodel != null) {
+            if(female.isChecked){
+                if(demomodel != null){
                     demomodel.genderId = 2
                     binding!!.male.isChecked = false
                     binding!!.sexidontsharerb.isChecked = false
@@ -676,9 +622,9 @@ class AllGovQuestionsFragment : Fragment() {
         }
 
         binding!!.sexidontsharerb.setOnClickListener {
-            if (sexidontsharerb.isChecked) {
+            if(sexidontsharerb.isChecked){
 
-                if (demomodel != null) {
+                if(demomodel != null){
                     demomodel.genderId = 3
                     binding!!.male.isChecked = false
                     binding!!.female.isChecked = false
@@ -707,7 +653,7 @@ class AllGovQuestionsFragment : Fragment() {
 
     private fun setUpDynamicTabs() {
 
-        qustionheaderarray = ArrayList()
+
         subquestionarray = ArrayList()
         val governmentQuestionActivity = (activity as? GovtQuestionActivity)
         borrowerAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,
@@ -719,15 +665,16 @@ class AllGovQuestionsFragment : Fragment() {
 
                     var zeroIndexAppCompat: AppCompatTextView? = null
                     if (governmentQuestionsModelClassList.size > 0) {
-                        var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? =
-                            null
+                        var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
 
-                        for (item in governmentQuestionsModelClassList) {
-                            if (item.passedBorrowerId == tabBorrowerId) {
-                                selectedGovernmentQuestionModel = item
+                     //   for (item in governmentQuestionsModelClassList) {
+                            for (i in 0 until governmentQuestionsModelClassList!!.size) {
+                            Log.i("TAG", "setUpDynamicTabs: "+tabBorrowerId)
+                            if (governmentQuestionsModelClassList.get(i).passedBorrowerId == tabBorrowerId) {
+                               var item = governmentQuestionsModelClassList.get(i)
                                 currentBorrowerId = tabBorrowerId!!
-                                var answer: String? = ""
-                                var answerdetail: String? = ""
+                                var answer:String? = ""
+                                var answerdetail:String? = ""
                                 governmentQuestionActivity?.let { governmentQuestionActivity ->
                                     governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
                                         item.questionData?.let { questionDataList ->
@@ -744,19 +691,21 @@ class AllGovQuestionsFragment : Fragment() {
                                                     governmentParams.toString()
                                                 )
                                                 var questionmodel =
-                                                    governmentQuestionsModelClassList.get(0).questionData
+                                                    governmentQuestionsModelClassList.get(i).questionData
+                                                qustionheaderarray = ArrayList()
                                                 for (qData in questionmodel!!) {
                                                     Questionone = false
+                                                    qustionheaderarray!!.add(qData)
                                                     if (qData.id != null) {
-                                                        qustionheaderarray!!.add(qData)
+
                                                         if (qData.answer == null) {
                                                             answer = ""
-                                                        } else {
+                                                        }else{
                                                             answer = qData.answer
                                                         }
                                                         if (qData.answerDetail == null) {
                                                             answerdetail = ""
-                                                        } else {
+                                                        }else{
                                                             answerdetail = qData.answerDetail
                                                         }
 
@@ -764,12 +713,11 @@ class AllGovQuestionsFragment : Fragment() {
                                                         // //  if (qData.answer != null) {
 
                                                         //   if (qData.answer == "Yes") {
-                                                        if (qData.id == 10) {
-                                                            if (qData.answer != null) {
+                                                        if(qData.id == 10) {
+                                                            if (qData.answer != null){
                                                                 if (answer == "No" || answer!!.isEmpty()) {
                                                                     Questionone = true
-                                                                    binding!!.qv1.visibility =
-                                                                        View.GONE
+                                                                    binding!!.qv1.visibility = View.GONE
                                                                     // binding!!.qva1.text = "$ " + title
                                                                 }
                                                             }
@@ -777,7 +725,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                                                         } else if (qData.id == 11) {
                                                             if (answer != null && answer!!.isNotEmpty()) {
-                                                                if (!Questionone) {
+                                                                if(!Questionone) {
                                                                     setdata(
                                                                         answer!!,
                                                                         answer!!,
@@ -852,13 +800,11 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                        val txt = t[t.keys].toString()
 //
 //                                                                    }
-                                                            setdatavalue(
-                                                                answer!!,
+                                                            setdatavalue(answer!!,
                                                                 qData.answerData!! as ArrayList<String>,
                                                                 "0",
                                                                 9,
-                                                                qData.id, 0
-                                                            )
+                                                                qData.id,0)
 
                                                         } else if (qData.id == 140) {
                                                             setarray(
@@ -876,6 +822,7 @@ class AllGovQuestionsFragment : Fragment() {
                                                         subquestionarray!!.add(qData)
 
                                                     }
+
 
 
                                                 }
@@ -917,14 +864,14 @@ class AllGovQuestionsFragment : Fragment() {
             var keys = t.keys.toString()
             val asubstring: String = keys.substring(1, 2)
             val txt = t[asubstring].toString()
-            sb.append(txt + ",")
+            sb.append(txt+ ",")
 
             binding!!.qv9.visibility = View.VISIBLE
             //  binding!!.qvs9.text = title
 
             binding!!.qvs9.text = "Which Type?"
             binding!!.qva9.text = sb
-            binding!!.qva9.setTextColor(ContextCompat.getColor(context!!, R.color.grey_color_one))
+            binding!!.qva9.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
             binding!!.q9radioButton.isChecked = true
 
 
@@ -942,8 +889,9 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     companion object {
+        var qustionheaderarray: ArrayList<QuestionData>? = ArrayList()
         var banMap = hashMapOf<String, String>()
-
+        var callservices: Boolean? = false
         var data: DemoGraphicModel? = null
         var instan: AllGovQuestionsFragment? = null
         fun newInstance() = AllGovQuestionsFragment()
@@ -1032,26 +980,16 @@ class AllGovQuestionsFragment : Fragment() {
     ) {
         when (questionnumber) {
             "1" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()){
                     binding!!.qv1.visibility = View.GONE
                     binding!!.qva1.text = "$ " + title
-                    binding!!.qva1.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.grey_color_one
-                        )
-                    )
-                    updatedata(questionId, title, detailTitle, questionId, s, s1)
-                } else {
+                    binding!!.qva1.setTextColor(ContextCompat.getColor(context!!,R.color.grey_color_one))
+                    updatedata(questionId, title, detailTitle, questionId,s,s1)
+                }else{
 
                     binding!!.qv1.visibility = View.VISIBLE
                     binding!!.qva1.text = "$ " + title
-                    binding!!.q1radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q1radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
                     binding!!.q1radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
@@ -1064,25 +1002,23 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "2" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()){
 
                     binding!!.qv2.visibility = View.GONE
                     binding!!.qv22.visibility = View.GONE
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
-                } else {
+
+
+
+                }else{
 
                     binding!!.qv2.visibility = View.VISIBLE
                     binding!!.qv22.visibility = View.VISIBLE
                     binding!!.qva2.text = detailTitle
                     binding!!.qva22.text = title
-                    binding!!.q2radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q2radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
                     binding!!.q2radioButton.isChecked = true
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
@@ -1092,31 +1028,27 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "3" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No" || detailTitle.isEmpty()){
 
                     binding!!.qv3.visibility = View.GONE
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
-                } else {
+                }else{
                     binding!!.qv3.visibility = View.VISIBLE
                     binding!!.qvs3.text = "Detail"
                     binding!!.qva3.text = title
                     binding!!.q3radioButton.isChecked = true
-                    binding!!.q3radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q3radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
+
             }
             "4" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No" || detailTitle.isEmpty()){
 
                     binding!!.qv4.visibility = View.GONE
                     //   binding!!.qvs4.text = title
@@ -1124,19 +1056,14 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
-                } else {
+                }else{
                     binding!!.qv4.visibility = View.VISIBLE
                     //   binding!!.qvs4.text = title
 
                     binding!!.qvs4.text = "Detail"
                     binding!!.qva4.text = title
                     binding!!.q4radioButton.isChecked = true
-                    binding!!.q4radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q4radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1144,7 +1071,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "5" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No" || detailTitle.isEmpty()) {
                     binding!!.qv5.visibility = View.GONE
                     // binding!!.qvs5.text = title
 
@@ -1152,19 +1079,14 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva5.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
-                } else {
+                }else{
                     binding!!.qv5.visibility = View.VISIBLE
                     // binding!!.qvs5.text = title
 
                     binding!!.qvs5.text = "Detail"
                     binding!!.qva5.text = title
                     binding!!.q5radioButton.isChecked = true
-                    binding!!.q5radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q5radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1172,46 +1094,37 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "6" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv6.visibility = View.GONE
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
-                } else {
+                }else{
                     binding!!.qv6.visibility = View.VISIBLE
                     // binding!!.qvs6.text = title
                     binding!!.qvs6.text = "Detail"
                     binding!!.qva6.text = title
                     binding!!.q6radioButton.isChecked = true
-                    binding!!.q6radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q6radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
 
 
+
             }
             "7" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv7.visibility = View.GONE
                     binding!!.qvs7.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
-                } else {
+                }else{
                     binding!!.qv7.visibility = View.VISIBLE
                     binding!!.qvs7.text = title
                     binding!!.q7radioButton.isChecked = true
-                    binding!!.q7radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q7radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                 }
@@ -1219,7 +1132,7 @@ class AllGovQuestionsFragment : Fragment() {
 
             }
             "8" -> {
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv8.visibility = View.GONE
                     // binding!!.qvs8.text = title
 
@@ -1227,18 +1140,13 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva8.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
-                } else {
+                }else{
                     binding!!.qv8.visibility = View.VISIBLE
                     // binding!!.qvs8.text = title
 
                     binding!!.qvs8.text = "Detail"
                     binding!!.qva8.text = title
-                    binding!!.q8radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q8radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                     binding!!.q8radioButton.isChecked = true
@@ -1248,7 +1156,7 @@ class AllGovQuestionsFragment : Fragment() {
             }
             "9" -> {
 
-                if (detailTitle == "No" || detailTitle.isEmpty()) {
+                if(detailTitle == "No"  || detailTitle.isEmpty()) {
                     binding!!.qv9.visibility = View.GONE
                     //  binding!!.qvs9.text = title
 
@@ -1256,18 +1164,13 @@ class AllGovQuestionsFragment : Fragment() {
                     binding!!.qva9.text = title
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
 
-                } else {
+                }else{
                     binding!!.qv9.visibility = View.VISIBLE
                     //  binding!!.qvs9.text = title
 
                     binding!!.qvs9.text = "Which Type?"
                     binding!!.qva9.text = title
-                    binding!!.q9radioButton.setTextColor(
-                        ContextCompat.getColor(
-                            context!!,
-                            R.color.black
-                        )
-                    )
+                    binding!!.q9radioButton.setTextColor(ContextCompat.getColor(context!!,R.color.black))
 
                     updatedata(questionId, title, detailTitle, questionId, s, s1)
                     binding!!.q9radioButton.isChecked = true
@@ -1292,7 +1195,7 @@ class AllGovQuestionsFragment : Fragment() {
         s1: String
     ) {
         governmentParams.Questions.let { questions ->
-            if (s == "0") {
+            if(s == "0"){
                 jARRAY = JsonArray()
                 jsonaddquestion = JsonObject()
                 Questions = ArrayList()
@@ -1332,6 +1235,7 @@ class AllGovQuestionsFragment : Fragment() {
 //                          jtwo.put(jone3)
 //                          jone1.put("answerData", jtwo)
                             jARRAY.add(jone1)
+
 
 
 //                        var govern :  GetGovermentmodel = GetGovermentmodel()
@@ -1396,7 +1300,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 //  }
                                 var jone1 = JsonObject()
                                 jone1.addProperty("id", 11)
-                                jone1.addProperty("parentQuestionId", 10)
+                                jone1.addProperty("parentQuestionId",10)
                                 jone1.addProperty("headerText", qData.headerText)
                                 jone1.addProperty("questionSectionId", qData.questionSectionId)
                                 jone1.addProperty("ownTypeId", qData.ownTypeId)
@@ -1407,7 +1311,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 jone1.addProperty("answerDetail", title)
                                 jone1.addProperty("selectionOptionId", qData.selectionOptionId)
                                 jARRAY.add(jone1)
-                                Log.i("TAG", "updatedata: " + jARRAY)
+                                Log.i("TAG", "updatedata: "+jARRAY)
 
 
                             } else if (questionId != 131 && questionId != 140 && questionId != 11) {
@@ -1449,8 +1353,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 var jonet = JsonObject()
                                 if (qData.answerData != null) {
                                     val getrow: Any = qData.answerData!!
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
+                                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                                     val id = t["selectionOptionId"].toString().toDouble().toInt()
                                     if (t["selectionOptionId"] != null) {
                                         val text = t["selectionOptionText"].toString()
@@ -1475,7 +1378,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                     } else {
 
-                        if (qData.id == 140) {
+                        if(qData.id == 140) {
                             var jone = JsonObject()
                             jone.addProperty("id", qData.id)
                             jone.addProperty("parentQuestionId", qData.parentQuestionId)
@@ -1491,7 +1394,7 @@ class AllGovQuestionsFragment : Fragment() {
                             jone.add("answerData", answerData)
 
                             jARRAY.add(jone)
-                        } else if (qData.id != 140 && qData.id != 131) {
+                        }else if (qData.id != 140 && qData.id != 131 ) {
                             var jone = JsonObject()
                             jone.addProperty("id", qData.id)
                             jone.addProperty("parentQuestionId", qData.parentQuestionId)
@@ -1526,8 +1429,14 @@ class AllGovQuestionsFragment : Fragment() {
                     }
 
 
+
+
+
+
+
+
                 }
-            } else {
+            }else{
                 var quesationdataview = getquestiondata(jARRAY.toString())
 
                 //  //for (qData in quesationdataview!!) {
@@ -1537,25 +1446,15 @@ class AllGovQuestionsFragment : Fragment() {
                         if (questionId == 130) {
                             var jone = JsonObject()
                             jone.addProperty("id", quesationdataview.get(i)!!.id)
-                            jone.addProperty(
-                                "parentQuestionId",
-                                quesationdataview.get(i)!!.parentQuestionId
-                            )
+                            jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
                             jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
-                            jone.addProperty(
-                                "questionSectionId",
-                                quesationdataview.get(i)!!.questionSectionId
-                            )
+                            jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
                             jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
                             jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
                             jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
                             jone.addProperty("question", quesationdataview.get(i)!!.question)
-                            jone.addProperty(
-                                "selectionOptionId",
-                                quesationdataview.get(i)!!.selectionOptionId
-                            )
-                            jone.add(
-                                "answerData",
+                            jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
+                            jone.add("answerData",
                                 quesationdataview.get(i)!!.answerData as JsonElement?
                             )
                             jARRAY.remove(i)
@@ -1582,17 +1481,14 @@ class AllGovQuestionsFragment : Fragment() {
                             var answerDatalist = JsonArray()
                             val test = hashMapOf<String, String>()
                             val newTestList = arrayListOf(HashMap<String, String>())
-                            for (item in banMap) {
+                            for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                                 var jonebanmap = JsonObject()
 
                                 test.put(item.key, item.value)
-                                jonebanmap.addProperty(item.key, item.value)
+                                jonebanmap.addProperty(item.key,item.value)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
                                 answerDatalist.add(jonebanmap)
                                 test.clear()
@@ -1609,85 +1505,53 @@ class AllGovQuestionsFragment : Fragment() {
                                 var jone2 = JsonObject()
                                 jone2.addProperty("id", 10)
                                 jone2.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
-                                jone2.addProperty(
-                                    "headerText",
-                                    quesationdataview.get(i)!!.headerText
-                                )
-                                jone2.addProperty(
-                                    "questionSectionId",
-                                    quesationdataview.get(i)!!.questionSectionId
-                                )
+                                jone2.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone2.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
                                 jone2.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
                                 jone2.addProperty("firstName", quesationdataview.get(i)!!.firstName)
                                 jone2.addProperty("lastName", quesationdataview.get(i)!!.lastName)
                                 jone2.addProperty("question", quesationdataview.get(i)!!.question)
                                 jone2.addProperty("answer", s1)
                                 jone2.addProperty("answerDetail", title)
-                                jone2.addProperty(
-                                    "selectionOptionId",
-                                    quesationdataview.get(i)!!.selectionOptionId
-                                )
+                                jone2.addProperty("selectionOptionId",  quesationdataview.get(i)!!.selectionOptionId)
                                 jARRAY.add(jone2)
                                 //    }
                                 var jone = JsonObject()
                                 jone.addProperty("id", 11)
                                 jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.id)
-                                jone.addProperty(
-                                    "headerText",
-                                    quesationdataview.get(i)!!.headerText
-                                )
-                                jone.addProperty(
-                                    "questionSectionId",
-                                    quesationdataview.get(i)!!.questionSectionId
-                                )
+                                jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
                                 jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
                                 jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
                                 jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
                                 jone.addProperty("question", quesationdataview.get(i)!!.question)
                                 jone.addProperty("answer", title)
                                 jone.addProperty("answerDetail", detailTitle)
-                                jone.addProperty(
-                                    "selectionOptionId",
-                                    quesationdataview.get(i)!!.selectionOptionId
-                                )
+                                jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
                                 jARRAY.add(jone)
                                 break
 
                             } else if (questionId != 131 && questionId != 140 && questionId != 10) {
                                 var jone = JsonObject()
                                 jone.addProperty("id", quesationdataview.get(i)!!.id)
-                                jone.addProperty(
-                                    "parentQuestionId",
-                                    quesationdataview.get(i)!!.parentQuestionId
-                                )
-                                jone.addProperty(
-                                    "headerText",
-                                    quesationdataview.get(i)!!.headerText
-                                )
-                                jone.addProperty(
-                                    "questionSectionId",
-                                    quesationdataview.get(i)!!.questionSectionId
-                                )
+                                jone.addProperty("parentQuestionId", quesationdataview.get(i)!!.parentQuestionId)
+                                jone.addProperty("headerText", quesationdataview.get(i)!!.headerText)
+                                jone.addProperty("questionSectionId", quesationdataview.get(i)!!.questionSectionId)
                                 jone.addProperty("ownTypeId", quesationdataview.get(i)!!.ownTypeId)
                                 jone.addProperty("firstName", quesationdataview.get(i)!!.firstName)
                                 jone.addProperty("lastName", quesationdataview.get(i)!!.lastName)
                                 jone.addProperty("question", quesationdataview.get(i)!!.question)
                                 jone.addProperty("answer", detailTitle)
                                 jone.addProperty("answerDetail", title)
-                                jone.addProperty(
-                                    "selectionOptionId",
-                                    quesationdataview.get(i)!!.selectionOptionId
-                                )
+                                jone.addProperty("selectionOptionId", quesationdataview.get(i)!!.selectionOptionId)
 
 
                                 var jonet = JsonObject()
                                 if (quesationdataview.get(i)!!.answerData != null) {
                                     val getrow: Any = quesationdataview.get(i)!!.answerData!!
-                                    val t: LinkedTreeMap<Any, Any> =
-                                        getrow as LinkedTreeMap<Any, Any>
+                                    val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                                     if (t["selectionOptionId"] != null) {
-                                        val id =
-                                            t["selectionOptionId"].toString().toDouble().toInt()
+                                        val id = t["selectionOptionId"].toString().toDouble().toInt()
                                         val text = t["selectionOptionText"].toString()
                                         jonet.addProperty("selectionOptionId", id)
                                         jonet.addProperty("selectionOptionText", text)
@@ -1705,9 +1569,14 @@ class AllGovQuestionsFragment : Fragment() {
                     }
 
 
+
+
+
+
                 }
 
             }
+
 
 
 //            questionmodel = DemoGetGovermentmodel()
@@ -1741,6 +1610,7 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
 
+
     fun setarray(
         s: String,
         childAnswerList: ArrayList<ChildAnswerData>,
@@ -1755,30 +1625,21 @@ class AllGovQuestionsFragment : Fragment() {
                 var answerDatalist = JsonArray()
                 var newTestList = arrayListOf(HashMap<String, String>())
 
-                Log.i("TAG", "setarray: " + jARRAY)
-                var childAnswerData: ChildlistModel? = null
+                Log.i("TAG", "setarray: "+ jARRAY)
+                var childAnswerData : ChildlistModel? = null
                 if (quesationdataview.get(k)!!.id == 140) {
                     var jone = JsonObject()
                     jone.addProperty("id", quesationdataview.get(k)!!.id)
-                    jone.addProperty(
-                        "parentQuestionId",
-                        quesationdataview.get(k)!!.parentQuestionId
-                    )
+                    jone.addProperty("parentQuestionId", quesationdataview.get(k)!!.parentQuestionId)
                     jone.addProperty("headerText", quesationdataview.get(k)!!.headerText)
-                    jone.addProperty(
-                        "questionSectionId",
-                        quesationdataview.get(k)!!.questionSectionId
-                    )
+                    jone.addProperty("questionSectionId", quesationdataview.get(k)!!.questionSectionId)
                     jone.addProperty("ownTypeId", quesationdataview.get(k)!!.ownTypeId)
                     jone.addProperty("firstName", quesationdataview.get(k)!!.firstName)
                     jone.addProperty("lastName", quesationdataview.get(k)!!.lastName)
                     jone.addProperty("question", quesationdataview.get(k)!!.question)
                     jone.addProperty("answer", "Yes")
                     jone.addProperty("answerDetail", "")
-                    jone.addProperty(
-                        "selectionOptionId",
-                        quesationdataview.get(k)!!.selectionOptionId
-                    )
+                    jone.addProperty("selectionOptionId", quesationdataview.get(k)!!.selectionOptionId)
 
                     for (i in 0 until childAnswerList.size) {
                         binding!!.qv10.visibility = View.VISIBLE
@@ -1787,7 +1648,7 @@ class AllGovQuestionsFragment : Fragment() {
                             var jonedata = JsonObject()
                             // val intDemo = strDemo!!.floatToInt()
 
-                            if (s == "0") {
+                            if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
                                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                                 val liabilityName = t["liabilityName"].toString()
@@ -1815,6 +1676,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 answerDatalist.add(jonedata)
 
 
+
                                 val test = hashMapOf<String, Any>()
                                 // for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
@@ -1825,10 +1687,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 test.put("monthlyPayment", monthlyPayment)
                                 test.put("name", name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
                                 // answerDatalist.put(test)
                                 test.clear()
@@ -1847,7 +1706,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.q10radioButton.isChecked = true
 
 
-                            } else {
+                            }else{
                                 //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 
 
@@ -1859,25 +1718,10 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.monthlyPayment = childAnswerList.get(i).monthlyPayment
 //                                answerDatalist.put(childAnswerData)
 
-                                jonedata.addProperty(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "liabilityName",
-                                    childAnswerList.get(i).liabilityName
-                                )
-                                jonedata.addProperty(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.addProperty("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
                                 answerDatalist.add(jonedata)
 
@@ -1886,36 +1730,22 @@ class AllGovQuestionsFragment : Fragment() {
                                 // for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                                 //test.put(item.key, item.value)
-                                test.put(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
                                 test.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                test.put(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                test.put(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                test.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 test.put("name", childAnswerList.get(i).name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
+                                //     answerDatalist.put(test)
                                 test.clear()
+                                //  }
                                 newTestList.removeAt(0)
 
 
-                                binding!!.qvs101.text = childAnswerList.get(i).liabilityName
-                                binding!!.qva101.text =
-                                    childAnswerList.get(i).monthlyPayment.toString()
+                                binding!!.qvs101.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva101.text = childAnswerList.get(i).monthlyPayment.toString()
                                 binding!!.q10radioButton.isChecked = true
 
                             }
@@ -1927,7 +1757,7 @@ class AllGovQuestionsFragment : Fragment() {
                         } else if (i == 1) {
 
                             var jonedata = JsonObject()
-                            if (s == "0") {
+                            if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
                                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                                 val liabilityName = t["liabilityName"].toString()
@@ -1967,10 +1797,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 test.put("monthlyPayment", monthlyPayment)
                                 test.put("name", name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
                                 //  answerDatalist.put(test)
                                 test.clear()
@@ -1982,7 +1809,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.qva102.text = monthlyPayment.toString()
                                 binding!!.q10radioButton.isChecked = true
 
-                            } else {
+                            }else {
                                 //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 //                                childAnswerData = ChildlistModel()
 //                                childAnswerData.liabilityName = childAnswerList.get(i).liabilityName
@@ -1992,25 +1819,10 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.monthlyPayment = childAnswerList.get(i).monthlyPayment
 //                                answerDatalist.put(childAnswerData)
 
-                                jonedata.addProperty(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "liabilityName",
-                                    childAnswerList.get(i).liabilityName
-                                )
-                                jonedata.addProperty(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.addProperty("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
                                 answerDatalist.add(jonedata)
 
@@ -2019,36 +1831,20 @@ class AllGovQuestionsFragment : Fragment() {
                                 // for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                                 //test.put(item.key, item.value)
-                                test.put(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
                                 test.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                test.put(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                test.put(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                test.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 test.put("name", childAnswerList.get(i).name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
                                 test.clear()
                                 //  }
                                 newTestList.removeAt(0)
 
-                                binding!!.qvs102.text = childAnswerList.get(i).liabilityName
-                                binding!!.qva102.text =
-                                    childAnswerList.get(i).monthlyPayment.toString()
+                                binding!!.qvs102.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva102.text = childAnswerList.get(i).monthlyPayment.toString()
                                 binding!!.q10radioButton.isChecked = true
 
                             }
@@ -2059,7 +1855,7 @@ class AllGovQuestionsFragment : Fragment() {
 
                         } else if (i == 2) {
                             var jonedata = JsonObject()
-                            if (s == "0") {
+                            if(s == "0") {
                                 val getrow: Any = childAnswerList[i]
                                 val t: LinkedTreeMap<Any, Any> = getrow as LinkedTreeMap<Any, Any>
                                 val liabilityName = t["liabilityName"].toString()
@@ -2098,10 +1894,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 test.put("monthlyPayment", monthlyPayment)
                                 test.put("name", name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
                                 // answerDatalist.put(test)
                                 test.clear()
@@ -2110,7 +1903,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.qvs103.text = liabilityName
                                 binding!!.qva103.text = monthlyPayment.toString()
 
-                            } else {
+                            }else{
                                 //childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 
 
@@ -2122,25 +1915,10 @@ class AllGovQuestionsFragment : Fragment() {
 //                                childAnswerData.monthlyPayment = childAnswerList.get(i).monthlyPayment
                                 //    answerDatalist.put(childAnswerData)
 
-                                jonedata.addProperty(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "liabilityName",
-                                    childAnswerList.get(i).liabilityName
-                                )
-                                jonedata.addProperty(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                jonedata.addProperty(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                jonedata.addProperty("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
+                                jonedata.addProperty("liabilityName", childAnswerList.get(i).liabilityName)
+                                jonedata.addProperty("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                jonedata.addProperty("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 jonedata.addProperty("name", childAnswerList.get(i).name)
                                 answerDatalist.add(jonedata)
 
@@ -2148,28 +1926,13 @@ class AllGovQuestionsFragment : Fragment() {
                                 // for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                                 //test.put(item.key, item.value)
-                                test.put(
-                                    "liabilityTypeId",
-                                    childAnswerList.get(i).liabilityTypeId.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("liabilityTypeId", childAnswerList.get(i).liabilityTypeId.toString().toDouble().toInt())
                                 test.put("liabilityName", childAnswerList.get(i).liabilityName)
-                                test.put(
-                                    "remainingMonth",
-                                    childAnswerList.get(i).remainingMonth.toString().toDouble()
-                                        .toInt()
-                                )
-                                test.put(
-                                    "monthlyPayment",
-                                    childAnswerList.get(i).monthlyPayment.toString().toDouble()
-                                        .toInt()
-                                )
+                                test.put("remainingMonth", childAnswerList.get(i).remainingMonth.toString().toDouble().toInt())
+                                test.put("monthlyPayment", childAnswerList.get(i).monthlyPayment.toString().toDouble().toInt())
                                 test.put("name", childAnswerList.get(i).name)
                                 val json = Gson().toJson(test)
-                                val mapCopy: HashMap<String, String> = Gson().fromJson(
-                                    json,
-                                    object : TypeToken<HashMap<String?, String>>() {}.type
-                                )
+                                val mapCopy: HashMap<String, String> = Gson().fromJson(json, object : TypeToken<HashMap<String?, String>>() {}.type)
                                 newTestList.add(mapCopy)
 
                                 //answerData.add(test)
@@ -2177,9 +1940,8 @@ class AllGovQuestionsFragment : Fragment() {
                                 //  }
                                 newTestList.removeAt(0)
 
-                                binding!!.qvs103.text = childAnswerList.get(i).liabilityName
-                                binding!!.qva103.text =
-                                    childAnswerList.get(i).monthlyPayment.toString()
+                                binding!!.qvs103.text =  childAnswerList.get(i).liabilityName
+                                binding!!.qva103.text = childAnswerList.get(i).monthlyPayment.toString()
 
                             }
                             //answerDatalist.put(newTestList)
@@ -2192,15 +1954,13 @@ class AllGovQuestionsFragment : Fragment() {
                         jone.add("answerData", answerDatalist)
 
 
+
                     }
                     jARRAY.remove(k)
                     jARRAY!!.add(jone)
                     jsonaddquestion!!.add("Questions", jARRAY)
                     jsonaddquestion.addProperty("BorrowerId", governmentParams.BorrowerId)
-                    jsonaddquestion.addProperty(
-                        "LoanApplicationId",
-                        governmentParams.LoanApplicationId
-                    )
+                    jsonaddquestion.addProperty("LoanApplicationId", governmentParams.LoanApplicationId)
                     break
                 }
             }
@@ -2212,10 +1972,10 @@ class AllGovQuestionsFragment : Fragment() {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
 
         val sb = StringBuilder()
-        var race: RaceModel = RaceModel()
+        var race : RaceModel = RaceModel()
         race.raceId = 2
         for (i in 0 until asianChildList.size) {
-            var deatil: Detailmodel = Detailmodel()
+            var deatil : Detailmodel = Detailmodel()
             deatil.detailID = asianChildList.get(i).detailId!!
             deatil.isOther = asianChildList.get(i).isOther!!
             race.raceDetails!!.add(deatil)
@@ -2232,14 +1992,13 @@ class AllGovQuestionsFragment : Fragment() {
 
 
     }
-
     fun nativeHawaiianChildList(asianChildList: ArrayList<DemoGraphicRaceDetail>) {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
-        var race: RaceModel = RaceModel()
+        var race : RaceModel = RaceModel()
         val sb = StringBuilder()
         race.raceId = 4
         for (i in 0 until asianChildList.size) {
-            var deatil: Detailmodel = Detailmodel()
+            var deatil : Detailmodel = Detailmodel()
             deatil.detailID = asianChildList.get(i).detailId!!
             deatil.isOther = asianChildList.get(i).isOther!!
             race.raceDetails!!.add(deatil)
@@ -2249,6 +2008,9 @@ class AllGovQuestionsFragment : Fragment() {
             nativehawaian.visibility = View.VISIBLE
 
 
+//            if(item.detailId == 7){
+//                item.otherRace = binding.edDetails.text.toString()
+//            }
         }
         racearr!!.add(race)
 
@@ -2259,10 +2021,10 @@ class AllGovQuestionsFragment : Fragment() {
         val copyAsianChildList = java.util.ArrayList(this.asianChildList.map { it.copy() })
         val sb = StringBuilder()
 
-        var race: EthnicityModel = EthnicityModel()
+        var race : EthnicityModel = EthnicityModel()
         race.ethnicityId = 1
         for (i in 0 until asianChildList.size) {
-            var deatil: Detailmodel = Detailmodel()
+            var deatil : Detailmodel = Detailmodel()
             deatil.detailID = asianChildList.get(i).detailId!!
             deatil.isOther = asianChildList.get(i).isOther!!
             race.ethnicityDetails!!.add(deatil)
@@ -2277,8 +2039,12 @@ class AllGovQuestionsFragment : Fragment() {
 //            }
         }
 
-        ethnicityarry!!.add(0, race)
+        ethnicityarry!!.add(0,race)
 
+    }
+
+    fun calldata() {
+        setUpDynamicTabs()
     }
 
 }

@@ -168,6 +168,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
 
                     val answer1 = binding.transactionAutoCompleteTextView.text.toString()
                     val answer2 = binding.whichAssetsCompleteView.text.toString()
+                    AllGovQuestionsFragment.callservices = true
 
                     if(AllGovQuestionsFragment.instan != null){
                         AllGovQuestionsFragment.instan!!.setdata(

@@ -35,14 +35,13 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
     private lateinit var loansAdapter: LoansAdapter
     private var shimmerContainer: ShimmerFrameLayout? = null
     private var rowLoading: ProgressBar? = null
-    private var loanRecycleView: RecyclerView? = null
+    //private var loanRecycleView: RecyclerView? = null
     private val linearLayoutManager = LinearLayoutManager(activity)
     private var allLoansArrayList: ArrayList<LoanItem> = ArrayList()
     private var oldListDisplaying: Boolean = false
     private val pageSize: Int = 20
     private val loanFilter: Int = 0
     private var pageNumber: Int = 1
-
     @Inject
     lateinit var sharedPreferences: SharedPreferences
 
@@ -57,14 +56,13 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
         val view: View = binding.root
 
         rowLoading = view.findViewById(R.id.loan_row_loader)
-        loanRecycleView = view.findViewById(R.id.loan_recycler_view)
+        //loanRecycleView = view.findViewById(R.id.loan_recycler_view)
         loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
-        loanRecycleView?.apply {
+        binding.loanRecyclerView?.apply {
             this.layoutManager = linearLayoutManager
             this.setHasFixedSize(true)
-            loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
+            //loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
             this.adapter = loansAdapter
-
         }
 
         shimmerContainer =
@@ -94,7 +92,7 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
                 val lastSize = allLoansArrayList.size
                 allLoansArrayList.addAll(it)
 
-                loanRecycleView?.addOnScrollListener(scrollListener)
+                binding.loanRecyclerView.addOnScrollListener(scrollListener)
                 loansAdapter.notifyDataSetChanged()
                 //loansAdapter.notifyItemRangeInserted(lastSize,lastSize+allLoansArrayList.size-1 )
             } else {
@@ -104,16 +102,15 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
                 shimmerContainer?.isVisible = false
                 if (pageNumber == 1) {
                     allLoansArrayList.clear()
-                    loanRecycleView?.addOnScrollListener(scrollListener)
+                    binding.loanRecyclerView.addOnScrollListener(scrollListener)
                     loansAdapter.notifyDataSetChanged()
                 }
             }
-
         })
 
 
         // Adds the scroll listener to RecyclerView
-        loanRecycleView?.addOnScrollListener(scrollListener)
+        binding.loanRecyclerView.addOnScrollListener(scrollListener)
 
         return view
     }
@@ -168,6 +165,7 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
     }
 
     override fun navigateTo(position: Int) {
+        Log.e("LoansFragment", "navigateTo")
         if (allLoansArrayList.size >= position) {
             val borrowerDetailIntent = Intent(requireActivity(), DetailActivity::class.java)
             val test = allLoansArrayList[position]
@@ -292,7 +290,13 @@ class AllLoansFragment : LoanBaseFragment(), AdapterClickListener, LoanFilterInt
     override fun setAssignToMe(passedAssignToMe: Boolean) {
         //Log.e("setAssignToMe = ", passedAssignToMe.toString())
         allLoansArrayList.clear()
-        loansAdapter.notifyDataSetChanged()
+        if(loansAdapter != null) {
+            loansAdapter.notifyDataSetChanged()
+        } else {
+            Log.e("LoanAdapter in NULL", "true")
+            loansAdapter = LoansAdapter(allLoansArrayList, this@AllLoansFragment)
+            loansAdapter.notifyDataSetChanged()
+        }
         globalAssignToMe = passedAssignToMe
         pageNumber = 1
         loadLoanApplications()

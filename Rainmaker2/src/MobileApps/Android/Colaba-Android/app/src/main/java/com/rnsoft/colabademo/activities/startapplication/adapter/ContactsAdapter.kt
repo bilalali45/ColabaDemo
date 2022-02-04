@@ -7,7 +7,9 @@ import android.telephony.PhoneNumberUtils
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.sourceInformationMarkerEnd
 import androidx.recyclerview.widget.RecyclerView
@@ -59,12 +61,15 @@ class ContactsAdapter(var context: Context,clickListner: RecyclerviewClickListen
                 contact.mobileNumber?.let {
                     if (it.isNotEmpty()) {
                         val phoneNumber =  PhoneNumberUtils.formatNumber(it, "US")
-                        binding.contactNum.text = it
+                        binding.contactNum.text = phoneNumber
+                        binding.contactNum.visibility = View.VISIBLE
                     } else {
                         //binding.contactEmail.ellipsize = null
+                        binding.contactNum.visibility = View.GONE
                     }
                 } ?: run {
                     //binding.contactEmail.ellipsize = null
+                    binding.contactNum.visibility = View.GONE
                 }
             } catch (e:Exception){ }
 

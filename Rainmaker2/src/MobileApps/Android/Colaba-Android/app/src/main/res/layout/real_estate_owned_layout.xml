@@ -209,7 +209,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/rubik_light"
-                android:hint="@string/rental_income"
+                android:hint="@string/current_rental_income"
                 android:textColorHint="@color/primary_info_label_color"
                 android:visibility="gone"
                 app:boxCollapsedPaddingTop="1dp"

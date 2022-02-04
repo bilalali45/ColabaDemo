@@ -22,7 +22,7 @@ class PreApprovalFragment : BaseFragment(){
 
     private var _binding: PreApprovalLayoutBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DetailViewModel by activityViewModels()
+    //private val viewModel: DetailViewModel by activityViewModels()
 
     @Inject
     lateinit var sharedPreferences: SharedPreferences

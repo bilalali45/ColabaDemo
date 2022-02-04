@@ -45,13 +45,13 @@ class InvitePrimaryBorrowerFragment : BaseFragment() {
         }
 
         binding.btnSendInvitation.setOnClickListener {
+            binding.loaderEmailData.visibility = View.VISIBLE
             detailViewModel.sendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
-            findNavController().popBackStack()
         }
 
         binding.btnResendInvitation.setOnClickListener {
+            binding.loaderEmailData.visibility = View.VISIBLE
             detailViewModel.resendInvitationEmail(SendInvitationEmailModel(loanApplicationId!!, borrowerId!!,emailSubject!!,emailBody!!))
-            findNavController().popBackStack()
         }
 
         getData()
@@ -71,7 +71,7 @@ class InvitePrimaryBorrowerFragment : BaseFragment() {
                 binding.btnResendInvitation.visibility = View.VISIBLE
             }
 
-            if (borrowerId != null && loanApplicationId != null) {
+            if(borrowerId != null && loanApplicationId != null){
                 binding.loaderEmailData.visibility = View.VISIBLE
                 detailViewModel.getInvitationEmail(loanApplicationId!!, borrowerId!!)
             }
@@ -100,21 +100,25 @@ class InvitePrimaryBorrowerFragment : BaseFragment() {
     override fun onStop(){
         super.onStop()
         EventBus.getDefault().unregister(this)
+        (activity as DetailActivity).hideDocumentRequestIcon()
+
+    }
+
+    override fun onPause(){
+        super.onPause()
+        (activity as DetailActivity).hideDocumentRequestIcon()
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onSentData(event: SendDataEvent) {
-        //binding.loaderSelfEmployment.visibility = View.GONE
-        if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS){
+    fun onInvitationSent(event: SendInvitationEvent){
+        binding.loaderEmailData.visibility = View.GONE
+        if(event.response.responseCode == 200){
             EventBus.getDefault().post(UpdateInvitationStatusEvent(true))
+            findNavController().popBackStack()
         }
-        else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE) {
-            SandbarUtils.showError(requireActivity(), AppConstant.INTERNET_ERR_MSG)
-        } else {
-            if (event.addUpdateDataResponse.message != null)
-                SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+        else {
+            SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
+            findNavController().popBackStack()
         }
     }
-
-
 }

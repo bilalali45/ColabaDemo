@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.telephony.PhoneNumberUtils
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.util.Log
@@ -483,17 +484,20 @@ class StartNewApplicationFragment : BaseFragment(), RecyclerviewClickListener {
 
         try {
             searchList[position].mobileNumber?.let {
-                if (searchList.get(position).mobileNumber!!.isNotEmpty()) {
-                    binding.searchedContactPhone.text = searchList[position].mobileNumber
-                    //binding.searchedContactPhone.visibility = View.VISIBLE
+                if (it.isNotEmpty()) {
+                    val phoneNumber =  PhoneNumberUtils.formatNumber(it, "US")
+                    binding.searchedContactPhone.text = phoneNumber
+                    binding.searchedContactPhone.visibility = View.VISIBLE
                     //binding.searchedContactEmail.layoutParams.width = 210
                 } else {
                     binding.searchedContactPhone.text = ""
+                    binding.searchedContactPhone.visibility = View.INVISIBLE
                     //binding.searchedContactEmail.ellipsize = null
                     //binding.searchedContactPhone.visibility = View.INVISIBLE
                 }
             } ?: run {
                 binding.searchedContactPhone.text = ""
+                binding.searchedContactPhone.visibility = View.INVISIBLE
                //binding.searchedContactEmail.ellipsize = null
                 //binding.searchedContactEmail.layoutParams.width = WRAP_CONTENT
                 //binding.searchedContactPhone.visibility = View.INVISIBLE

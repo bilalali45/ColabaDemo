@@ -812,6 +812,7 @@ class SubjectPropertyRefinance : BaseFragment(), DatePickerDialog.OnDateSetListe
     fun onSentData(event: SendDataEvent) {
         if(event.addUpdateDataResponse.code == AppConstant.RESPONSE_CODE_SUCCESS) {
             EventBus.getDefault().postSticky(BorrowerApplicationUpdatedEvent(objectUpdated = true))
+            EventBus.getDefault().postSticky(OverviewUpdateEvent(true))
             dismissActivity()
         }
         else if(event.addUpdateDataResponse.code == AppConstant.INTERNET_ERR_CODE)

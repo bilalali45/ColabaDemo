@@ -1,5 +1,6 @@
 package com.rnsoft.colabademo
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -43,11 +44,8 @@ class LoanViewModel @Inject constructor(private val loanRepo: LoanRepo) :
         _activeLoansArrayList.value = ArrayList()
     }
 
-    fun getAllLoans(token:String, dateTime:String,
-                    pageNumber:Int, pageSize:Int,
-                    loanFilter:Int, orderBy:Int,
-                    assignedToMe:Boolean , optionalClear:Boolean = false)
-    {
+    fun getAllLoans(token:String, dateTime:String, pageNumber:Int, pageSize:Int, loanFilter:Int, orderBy:Int, assignedToMe:Boolean , optionalClear:Boolean = false) {
+         Log.e("***LoanViewModel","GET aLL lOANS***")
         if(!allLoanServiceRunning) {
             allLoanServiceRunning = true
             viewModelScope.launch(Dispatchers.IO) {

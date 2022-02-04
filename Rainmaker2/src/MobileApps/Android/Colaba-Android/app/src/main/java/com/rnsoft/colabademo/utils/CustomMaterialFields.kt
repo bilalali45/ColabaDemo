@@ -104,6 +104,24 @@ class CustomMaterialFields() {
             radio.updatePadding(30,50,30,50)
         }
 
+        fun selectRadioWithShadow(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            radio.setBackgroundResource(R.drawable.radio_background_with_shadow)
+            //radio.setPadding
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._18sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._18sdp))
+
+            // radio.updatePadding(R.dimen._30sdp,R.dimen._40sdp,R.dimen._30sdp,R.dimen._40sdp)
+        }
+
+        fun unselectRadioShadow(radio : AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            radio.setBackgroundResource(R.drawable.radio_background_simple)
+            //radio.updatePadding(40,50,40,50)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._15sdp), context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._15sdp))
+        }
+
+
         fun selectLayoutWithShadow(layout : LinearLayout, radio: AppCompatRadioButton, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
             layout.setBackgroundResource(R.drawable.radio_background_with_shadow)
@@ -115,34 +133,58 @@ class CustomMaterialFields() {
             radio.updatePadding(30,2,30,2)
         }
 
+        // new layout
+        fun selectLayoutShadow(layout : LinearLayout, radio: AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
+            layout.setBackgroundResource(R.drawable.radio_background_with_shadow)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._10sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._10sdp))
+        }
+
+        fun unselectLayout(layout : LinearLayout, radio: AppCompatRadioButton, context: Context){
+            radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
+            layout.setBackgroundResource(R.drawable.radio_background_simple)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._12sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._12sdp))
+        }
+
         fun radioUnSelectColor(radio : AppCompatRadioButton, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
         }
 
 
-        // check boxes
         fun selectCheckBoxShadow(radio : AppCompatCheckBox, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
             radio.setBackgroundResource(R.drawable.radio_background_with_shadow)
             //radio.setPadding(30,55,30,55)
-            radio.updatePadding(30,57,30,57)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._18sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._18sdp))
+
         }
 
         fun unselectCheckBoxShadow(radio : AppCompatCheckBox, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
             radio.setBackgroundResource(R.drawable.radio_background_simple)
-            radio.updatePadding(30,50,30,50)
+            //radio.updatePadding(30,50,30,50)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._15sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._15sdp))
         }
+
 
         fun selectCheckBoxLayout(layout : LinearLayout, radio: AppCompatCheckBox, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_one))
             layout.setBackgroundResource(R.drawable.radio_background_with_shadow)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._10sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._10sdp))
+
         }
 
         fun unselectCheckBoxLayout(layout : LinearLayout, radio: AppCompatCheckBox, context: Context){
             radio.setTextColor(ContextCompat.getColor(context,R.color.grey_color_two))
             layout.setBackgroundResource(R.drawable.radio_background_simple)
-            radio.updatePadding(28,2,30,2)
+            //radio.updatePadding(28,2,30,2)
+            radio.updatePadding(context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._12sdp),
+                context.resources.getDimensionPixelSize(R.dimen._10sdp),context.resources.getDimensionPixelSize(R.dimen._12sdp))
         }
 
 

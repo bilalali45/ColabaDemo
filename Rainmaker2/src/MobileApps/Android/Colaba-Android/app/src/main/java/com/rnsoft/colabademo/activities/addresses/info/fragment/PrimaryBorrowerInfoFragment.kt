@@ -40,13 +40,17 @@ import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.radioUnSelectC
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectBoxWithShadow
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectCheckBoxLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectCheckBoxShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectLayoutShadow
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectLayoutWithShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.selectRadioWithShadow
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setCheckBoxTextColor
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.setRadioColor
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectBoxShadow
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectCheckBoxLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectCheckBoxShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectLayout
 import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectLayoutShadow
+import com.rnsoft.colabademo.utils.CustomMaterialFields.Companion.unselectRadioShadow
 import com.rnsoft.colabademo.utils.RecyclerTouchListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.notification_view_holder.*
@@ -1064,11 +1068,11 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         msBinding.rbUnmarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
                 //msBinding.unmarriedAddendum.setBackgroundResource(R.drawable.radio_background_with_shadow)
-                selectLayoutWithShadow(msBinding.addendumLayout, msBinding.rbUnmarried, requireContext())
+                selectLayoutShadow(msBinding.addendumLayout, msBinding.rbUnmarried, requireContext())
                 msBinding.addendumDetail.visibility = View.VISIBLE
             }
             else {
-                unselectLayoutShadow(msBinding.addendumLayout, msBinding.rbUnmarried, requireContext())
+                unselectLayout(msBinding.addendumLayout, msBinding.rbUnmarried, requireContext())
                 msBinding.addendumDetail.visibility = View.GONE
             }
         }
@@ -1076,57 +1080,57 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         //married
         msBinding.rbMarried.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                Log.e("married", "checked")
-                selectBoxWithShadow(msBinding.rbMarried, requireContext())
+                selectRadioWithShadow(msBinding.rbMarried, requireContext())
                 msBinding.rbUnmarried.isChecked = false
             } else {
-                CustomMaterialFields.unselectBoxShadow(msBinding.rbMarried, requireContext())
+                unselectRadioShadow(msBinding.rbMarried, requireContext())
 
             }
         }
         //separated
         msBinding.rbSeparated.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                selectBoxWithShadow(msBinding.rbSeparated, requireContext())
+                selectRadioWithShadow(msBinding.rbSeparated, requireContext())
                 msBinding.rbUnmarried.isChecked = false
             }
             else {
-                unselectBoxShadow(msBinding.rbSeparated, requireContext())
+                unselectRadioShadow(msBinding.rbSeparated, requireContext())
             }
 
         }
         //us citizen
         citizenshipBinding.rbUsCitizen.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                selectBoxWithShadow(citizenshipBinding.rbUsCitizen, requireContext())
+                selectRadioWithShadow(citizenshipBinding.rbUsCitizen, requireContext())
                 citizenshipBinding.rbPr.isChecked = false
                 citizenshipBinding.rbNonPrOther.isChecked = false
             }
             else
-                unselectBoxShadow(citizenshipBinding.rbUsCitizen, requireContext())
+                unselectRadioShadow(citizenshipBinding.rbUsCitizen, requireContext())
         }
 
 
         // non permanent residence
         citizenshipBinding.rbNonPrOther.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                selectLayoutWithShadow(citizenshipBinding.layoutVisaOther,citizenshipBinding.rbNonPrOther, requireContext())
+                selectLayoutShadow(citizenshipBinding.layoutVisaOther,citizenshipBinding.rbNonPrOther, requireContext())
                 citizenshipBinding.rbPr.isChecked = false
                 citizenshipBinding.rbUsCitizen.isChecked = false
+                citizenshipBinding.layoutVisaStatusOther.visibility = View.VISIBLE
             }
             else
-                unselectLayoutShadow(citizenshipBinding.layoutVisaOther,citizenshipBinding.rbNonPrOther, requireContext())
+                unselectLayout(citizenshipBinding.layoutVisaOther,citizenshipBinding.rbNonPrOther, requireContext())
         }
 
         //permanent residence
         citizenshipBinding.rbPr.setOnCheckedChangeListener { _, isChecked ->
             if(isChecked) {
-                selectBoxWithShadow(citizenshipBinding.rbPr, requireContext())
+                selectRadioWithShadow(citizenshipBinding.rbPr, requireContext())
                 citizenshipBinding.rbNonPrOther.isChecked = false
                 citizenshipBinding.rbUsCitizen.isChecked = false
             }
             else
-                unselectBoxShadow(citizenshipBinding.rbPr, requireContext())
+                unselectRadioShadow(citizenshipBinding.rbPr, requireContext())
         }
         // active duty personel
         bindingMilitary.chbDutyPersonel.setOnCheckedChangeListener { _, isChecked ->
@@ -1580,7 +1584,6 @@ class PrimaryBorrowerInfoFragment : BaseFragment(), RecyclerviewClickListener, V
         else
             if (event.addUpdateDataResponse.message != null)
                 SandbarUtils.showError(requireActivity(), AppConstant.WEB_SERVICE_ERR_MSG)
-
 
         requireActivity().finish()
     }

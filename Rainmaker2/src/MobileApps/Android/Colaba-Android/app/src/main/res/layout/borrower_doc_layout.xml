@@ -43,7 +43,6 @@
 
                 <com.google.android.material.textfield.MaterialAutoCompleteTextView
                     android:id="@+id/tv_doc_type"
-                    style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                     android:layout_width="210dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@android:color/transparent"

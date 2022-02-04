@@ -131,6 +131,13 @@ class DetailActivity : BaseActivity() {
         binding.requestDocFab.visibility = View.VISIBLE
     }
 
+    fun hideDocumentRequestIcon(){
+        binding.emailFab.visibility = View.VISIBLE
+        binding.messageFab.visibility = View.VISIBLE
+        binding.phoneFab.visibility = View.VISIBLE
+        binding.requestDocFab.visibility = View.GONE
+    }
+
     fun checkIfUnreadFileOpened(){
         lifecycleScope.launchWhenStarted {
             loanApplicationId?.let { loanId->
@@ -169,14 +176,13 @@ class DetailActivity : BaseActivity() {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     fun overviewUpdateEvent(overviewUpdateEvent: OverviewUpdateEvent){
-        Log.e("overview update ", "received")
         if(overviewUpdateEvent.objectUpdated) {
             lifecycleScope.launchWhenStarted {
-                sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
+                //sharedPreferences.getString(AppConstant.token, "")?.let { authToken ->
                     loanApplicationId?.let {
-
+                        detailViewModel.getBorrowerOverview(loanApplicationId = it)
                     }
-                }
+               // }
             }
         }
     }

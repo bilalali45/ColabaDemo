@@ -19,9 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColabaDemo">
-        <activity
-            android:name=".activities.details.SelectLetteRecipientsrFragment"
-            android:exported="false" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -36,8 +34,8 @@
         <activity
             android:name=".SplashActivity"
             android:exported="true"
-            android:screenOrientation="sensorPortrait">
-            <intent-filter>
+            android:screenOrientation="sensorPortrait"     >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -60,11 +58,11 @@
         <activity
             android:name=".SettingActivity"
             android:exported="false"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="sensorPortrait"/>
         <activity
             android:name=".DocumentSubmitActivity"
             android:exported="false"
-            android:screenOrientation="sensorPortrait" />
+            android:screenOrientation="sensorPortrait"/>
         <activity
             android:name=".SearchActivity"
             android:exported="false"
@@ -77,7 +75,7 @@
         <activity
             android:name=".BorrowerAddressActivity"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".BorrowerLoanActivity"
             android:screenOrientation="sensorPortrait"
@@ -106,23 +104,14 @@
             android:name=".StartNewApplicationActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".RequestDocsActivity"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="adjustResize" />
 
 
-        <service
-            android:name="com.rnsoft.colabademo.Notification.MyFirebaseMessagingService"
-            android:exported="false"
-            android:permission="com.google.android.c2dm.permission.SEND"
-            android:stopWithTask="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
+
 
     </application>
-
 </manifest>

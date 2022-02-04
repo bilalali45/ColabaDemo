@@ -38,6 +38,7 @@ class OutstandingFragment:GovtDetailBaseFragment() {
     private fun setUpUI() {
         binding.backButton.setOnClickListener { findNavController().popBackStack() }
         binding.saveBtn.setOnClickListener {
+            AllGovQuestionsFragment.callservices = true
 
             if(AllGovQuestionsFragment.instan != null){
                 AllGovQuestionsFragment.instan!!.setdata(

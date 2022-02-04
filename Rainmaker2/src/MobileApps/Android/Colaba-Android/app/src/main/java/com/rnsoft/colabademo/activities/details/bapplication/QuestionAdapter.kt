@@ -70,7 +70,7 @@ class QuestionAdapter internal constructor(
                 item.questionResponses?.let { answers ->
 
                     if (answers.isEmpty()) {
-                        Timber.e(" question = " + item.questionDetail?.questionHeader)
+                        //Timber.e(" question = " + item.questionDetail?.questionHeader)
                         noAnswerImage.visibility = View.VISIBLE
                         for (i in 0 until totalBorrowers.size - 1) {
                             borrowerNameArray[i].visibility = View.INVISIBLE

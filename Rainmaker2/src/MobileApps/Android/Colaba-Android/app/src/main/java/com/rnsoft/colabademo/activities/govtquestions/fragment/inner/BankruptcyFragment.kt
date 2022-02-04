@@ -82,6 +82,7 @@ class BankruptcyFragment:BaseFragment() {
             if(selectedValues.isNotBlank() && selectedValues.isNotEmpty()) {
                 answerData.extraDetail = binding.edDetails.text.toString()
 
+                AllGovQuestionsFragment.callservices = true
 
                 if(AllGovQuestionsFragment.instan != null){
                     AllGovQuestionsFragment.instan!!.setdata(

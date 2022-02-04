@@ -15,7 +15,7 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     suspend fun getInvitationStatus(loanApplicationId: Int, borrowerId: Int): Result<BorrowerInvitationStatus> {
         return try {
             val response = serverApi.getInvitationStatus(loanApplicationId,borrowerId)
-            Log.e("invitation-status-success", response.toString())
+            //Log.e("invitation-status-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -38,10 +38,11 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun sendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Any> {
+    suspend fun sendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Response<Unit>> {
+        //Log.e("sendInvitationEmail", "DataSource " + " $emailBody")
         return try {
             val response = serverApi.sendBorrowerInvitation(emailBody)
-            Log.e("invitation-Email-success", response.toString())
+            //Log.e("invitation-Email-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -52,10 +53,10 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
     }
 
 
-    suspend fun resendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Any> {
+    suspend fun resendInvitationEmail(emailBody: SendInvitationEmailModel): Result<Response<Unit>> {
         return try {
             val response = serverApi.resendBorrowerInvitation(emailBody)
-            Log.e("resend-invitation-Email-success", response.toString())
+            //Log.e("resend-invitation-Email-success", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -65,11 +66,10 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         }
     }
 
-    suspend fun getLoanInfo(token: String, loanApplicationId: Int): Result<BorrowerOverviewModel> {
+    suspend fun getLoanInfo(loanApplicationId: Int): Result<BorrowerOverviewModel> {
         return try {
-            val newToken = "Bearer $token"
-            val response = serverApi.getLoanInfo( loanApplicationId)
-            Log.e("BorrowerOverview-", response.toString())
+            val response = serverApi.getLoanInfo(loanApplicationId)
+            //Log.e("BorrowerOverview-", response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -84,7 +84,6 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         loanApplicationId: Int
     ): Result<ArrayList<BorrowerDocsModel>> {
         return try {
-            val newToken = "Bearer $token"
             val response = serverApi.getBorrowerDocuments(loanApplicationId)
             //Log.e("BorrowerDocsModel-", response.toString())
             Result.Success(response)
@@ -101,9 +100,8 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
         loanApplicationId: Int
     ): Result<BorrowerApplicationTabModel> {
         return try {
-            val newToken = "Bearer $token"
             val response = serverApi.getBorrowerApplicationTabData(loanApplicationId)
-            Timber.e(response.toString())
+            //Timber.e(response.toString())
             Result.Success(response)
         } catch (e: Throwable) {
             if (e is NoConnectivityException)
@@ -115,7 +113,6 @@ class DetailDataSource  @Inject constructor(private val serverApi: ServerApi) {
 
     suspend fun downloadFile(token:String, id:String, requestId:String, docId:String, fileId:String):Response<ResponseBody>?{
         try {
-            val newToken = "Bearer $token"
             val result = serverApi.downloadFile(
                 id = id,
                 requestId = requestId,
