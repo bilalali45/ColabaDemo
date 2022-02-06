@@ -11,8 +11,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.fragmentcount
 
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragmentTwo
 import com.rnsoft.colabademo.databinding.OwnershipInterestInPropertyLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
@@ -170,7 +172,7 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
                     val answer2 = binding.whichAssetsCompleteView.text.toString()
                     AllGovQuestionsFragment.callservices = true
 
-                    if(AllGovQuestionsFragment.instan != null){
+                    if(fragmentcount == 0){
                         AllGovQuestionsFragment.instan!!.setdata(
                             answer1,
                             answer2,
@@ -179,7 +181,21 @@ class OwnershipInterestInPropertyFragment : BaseFragment() {
                             questionId,
                             "1","Yes"
                         )
+                    }else if(fragmentcount == 1){
+                            AllGovQuestionsFragmentTwo.instan!!.setdata(
+                            answer1,
+                            answer2,
+                            whichBorrowerId,
+                            "2",
+                            questionId,
+                            "1","Yes"
+                        )
                     }
+
+
+
+
+
                     EventBus.getDefault().post(
                         OwnershipInterestUpdateEvent(ownershipQuestionOne, answer1 , array1.getValue(answer1),
                             ownershipQuestionTwo, answer2,  array2.getValue(answer2), whichBorrowerId )

@@ -77,7 +77,7 @@ class BorrowerOneQuestions : GovtQuestionBaseFragment() {
     private lateinit var variableEthnicityList: ArrayList<EthnicityDemoGraphic>
     private var variableGender: Int? = null
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////s
-    private var tabBorrowerId: Int? = null
+    var tabBorrowerId: Int? = null
     private var childSupportAnswerDataList: ArrayList<ChildAnswerData> = arrayListOf()
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var ownerShipInnerScreenParams: ArrayList<String> = arrayListOf()

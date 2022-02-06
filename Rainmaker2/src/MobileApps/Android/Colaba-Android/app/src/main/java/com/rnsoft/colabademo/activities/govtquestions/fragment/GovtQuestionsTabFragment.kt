@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -79,11 +80,14 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
                         Log.e("Selected_Page", position.toString())
                         selectedPosition = position
 
-                        if(AllGovQuestionsFragment.instan != null){
-                            if(!callservices!!) {
-                                AllGovQuestionsFragment.instan!!.calldata()
-                            }
-                        }
+
+
+
+//                        if(AllGovQuestionsFragment.instan != null){
+//                            //if(!callservices!!) {
+//                                AllGovQuestionsFragment.instan!!.calldata()
+//                           // }
+//                        }
 
                     }
                     override fun onPageScrollStateChanged(state: Int) {
@@ -121,6 +125,15 @@ class GovtQuestionsTabFragment : GovtQuestionBaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    companion object{
+
+         var fragmentview: Fragment?= null
+         var tabBorrowerId: Int? = null
+        var fragmentcount: Int? = null
+
+
+
     }
 }
 

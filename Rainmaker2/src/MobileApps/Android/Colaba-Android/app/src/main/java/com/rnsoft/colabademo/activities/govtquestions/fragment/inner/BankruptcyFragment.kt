@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.fragmentcount
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragmentTwo
 import com.rnsoft.colabademo.databinding.BankruptcyLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -84,7 +86,7 @@ class BankruptcyFragment:BaseFragment() {
 
                 AllGovQuestionsFragment.callservices = true
 
-                if(AllGovQuestionsFragment.instan != null){
+                if(fragmentcount == 0){
                     AllGovQuestionsFragment.instan!!.setdata(
                         "Yes",
                         selectedValues,
@@ -92,6 +94,15 @@ class BankruptcyFragment:BaseFragment() {
                         "9",
                         questionId,
                         "1","Yes"
+                    )
+                }else if(fragmentcount == 1) {
+                    AllGovQuestionsFragmentTwo.instan!!.setdata(
+                        "Yes",
+                        selectedValues,
+                        whichBorrowerId,
+                        "9",
+                        questionId,
+                        "1", "Yes"
                     )
                 }
 

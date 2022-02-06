@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.fragmentcount
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragmentTwo
 import com.rnsoft.colabademo.databinding.ForeClosurePropertyLayoutBinding
 import com.rnsoft.colabademo.utils.CustomMaterialFields
 
@@ -39,7 +41,7 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
         binding.saveBtn.setOnClickListener {
             AllGovQuestionsFragment.callservices = true
 
-            if(AllGovQuestionsFragment.instan != null){
+            if(fragmentcount == 0){
                 AllGovQuestionsFragment.instan!!.setdata(
                     "",
                     binding.edDetails.text.toString(),
@@ -47,6 +49,15 @@ class ForeClosurePropertyFragment: GovtDetailBaseFragment() {
                     "8",
                     questionId,
                     "1","Yes"
+                )
+            }else if(fragmentcount == 1) {
+                AllGovQuestionsFragmentTwo.instan!!.setdata(
+                    "",
+                    binding.edDetails.text.toString(),
+                    whichBorrowerId,
+                    "8",
+                    questionId,
+                    "1", "Yes"
                 )
             }
 

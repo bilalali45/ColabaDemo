@@ -29,9 +29,11 @@ import com.rnsoft.colabademo.AppConstant.ethnicityarry
 import com.rnsoft.colabademo.AppConstant.jARRAY
 import com.rnsoft.colabademo.AppConstant.jsonaddquestion
 import com.rnsoft.colabademo.AppConstant.racearr
+import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.fragmentview
 import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.tabBorrowerId
 import com.rnsoft.colabademo.activities.govtquestions.*
 import com.rnsoft.colabademo.databinding.FragmentBinding
+import com.rnsoft.colabademo.databinding.FragmenttwoBinding
 import kotlinx.android.synthetic.main.fragment_all_gov_questions.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -41,8 +43,8 @@ import java.lang.Exception
 import javax.inject.Inject
 
 
-class AllGovQuestionsFragment : Fragment() {
-    var binding: FragmentBinding? = null
+class AllGovQuestionsFragmentTwo : Fragment() {
+    var binding: FragmenttwoBinding? = null
     private var currentBorrowerId: Int = 0
     private var bankruptcyAnswerData: BankruptcyAnswerData = BankruptcyAnswerData()
     private var childSupportAnswerDataList: java.util.ArrayList<ChildAnswerData> = arrayListOf()
@@ -81,7 +83,7 @@ class AllGovQuestionsFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_all_gov_questions,
+                R.layout.fragment_all_gov_questions_two,
                 container,
                 false
             )
@@ -92,7 +94,7 @@ class AllGovQuestionsFragment : Fragment() {
         demomodel = DemoGraphicModel()
         racearr = ArrayList()
 
-        setUpDynamicTabs()
+          setUpDynamicTabs()
 
         binding!!.saveBtn.setOnClickListener {
 //            if (demoGraphicScreenDisplaying)
@@ -109,8 +111,7 @@ class AllGovQuestionsFragment : Fragment() {
         listnser()
         focusOnView()
 
-        GovtQuestionsTabFragment.fragmentview = this
-
+        fragmentview = this
         instan = this
         return binding!!.root
     }
@@ -322,7 +323,7 @@ class AllGovQuestionsFragment : Fragment() {
 
     private fun listnser() {
 
-         //  //    binding!!.scroll.scrollTo(5,10)
+        //  //    binding!!.scroll.scrollTo(5,10)
         //  //    ViewPropertyObjectAnimator.animate(mNestedScrollView).scrollY(mChildView.getTop()).start();
 
         binding!!.q1radioButton.setOnClickListener {
@@ -663,135 +664,135 @@ class AllGovQuestionsFragment : Fragment() {
         borrowerAppViewModel.governmentQuestionsModelClassList.observe(viewLifecycleOwner,
             { governmentQuestionsModelClassList ->
                 var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
-                    var zeroIndexAppCompat: AppCompatTextView? = null
-                    if (governmentQuestionsModelClassList.size > 0) {
-                        var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
-                        //   for (item in governmentQuestionsModelClassList) {
-                        for (i in 0 until governmentQuestionsModelClassList!!.size) {
-                            Log.i("TAG", "setUpDynamicTabs: " + tabBorrowerId)
-                            if (governmentQuestionsModelClassList.get(i).passedBorrowerId == tabBorrowerId) {
-                                var item = governmentQuestionsModelClassList.get(i)
-                                currentBorrowerId = tabBorrowerId!!
-                                var answer: String? = ""
-                                var answerdetail: String? = ""
-                                governmentQuestionActivity?.let { governmentQuestionActivity ->
-                                    governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
-                                        item.questionData?.let { questionDataList ->
-                                            item.passedBorrowerId?.let { passedBorrowerId ->
-                                                governmentParams =
-                                                    GovernmentParams(
-                                                        passedBorrowerId,
-                                                        nonNullLoanApplicationId,
-                                                        questionDataList
-                                                    )
-                                                Timber.e(
-                                                    "TingoPingo = ",
-                                                    governmentParams.BorrowerId,
-                                                    governmentParams.toString()
+                var zeroIndexAppCompat: AppCompatTextView? = null
+                if (governmentQuestionsModelClassList.size > 0) {
+                    var selectedGovernmentQuestionModel: GovernmentQuestionsModelClass? = null
+                    //   for (item in governmentQuestionsModelClassList) {
+                    for (i in 0 until governmentQuestionsModelClassList!!.size) {
+                        Log.i("TAG", "setUpDynamicTabs: " + tabBorrowerId)
+                        if (governmentQuestionsModelClassList.get(i).passedBorrowerId == tabBorrowerId) {
+                            var item = governmentQuestionsModelClassList.get(i)
+                            currentBorrowerId = tabBorrowerId!!
+                            var answer: String? = ""
+                            var answerdetail: String? = ""
+                            governmentQuestionActivity?.let { governmentQuestionActivity ->
+                                governmentQuestionActivity.loanApplicationId?.let { nonNullLoanApplicationId ->
+                                    item.questionData?.let { questionDataList ->
+                                        item.passedBorrowerId?.let { passedBorrowerId ->
+                                            governmentParams =
+                                                GovernmentParams(
+                                                    passedBorrowerId,
+                                                    nonNullLoanApplicationId,
+                                                    questionDataList
                                                 )
-                                                var questionmodel =
-                                                    governmentQuestionsModelClassList.get(i).questionData
-                                                qustionheaderarray = ArrayList()
-                                                for (qData in questionmodel!!) {
-                                                    Questionone = false
-                                                    qustionheaderarray!!.add(qData)
-                                                    if (qData.id != null) {
+                                            Timber.e(
+                                                "TingoPingo = ",
+                                                governmentParams.BorrowerId,
+                                                governmentParams.toString()
+                                            )
+                                            var questionmodel =
+                                                governmentQuestionsModelClassList.get(i).questionData
+                                            qustionheaderarray1 = ArrayList()
+                                            for (qData in questionmodel!!) {
+                                                Questionone = false
+                                                qustionheaderarray1!!.add(qData)
+                                                if (qData.id != null) {
 
-                                                        if (qData.answer == null) {
-                                                            answer = ""
-                                                        } else {
-                                                            answer = qData.answer
-                                                        }
-                                                        if (qData.answerDetail == null) {
-                                                            answerdetail = ""
-                                                        } else {
-                                                            answerdetail = qData.answerDetail
-                                                        }
+                                                    if (qData.answer == null) {
+                                                        answer = ""
+                                                    } else {
+                                                        answer = qData.answer
+                                                    }
+                                                    if (qData.answerDetail == null) {
+                                                        answerdetail = ""
+                                                    } else {
+                                                        answerdetail = qData.answerDetail
+                                                    }
 
 
-                                                        // //  if (qData.answer != null) {
+                                                    // //  if (qData.answer != null) {
 
-                                                        //   if (qData.answer == "Yes") {
-                                                        if (qData.id == 10) {
-                                                            if (qData.answer != null) {
-                                                                if (answer == "No" || answer!!.isEmpty()) {
-                                                                    Questionone = true
-                                                                    binding!!.qv1.visibility =
-                                                                        View.GONE
-                                                                    // binding!!.qva1.text = "$ " + title
-                                                                }
+                                                    //   if (qData.answer == "Yes") {
+                                                    if (qData.id == 10) {
+                                                        if (qData.answer != null) {
+                                                            if (answer == "No" || answer!!.isEmpty()) {
+                                                                Questionone = true
+                                                                binding!!.qv1.visibility =
+                                                                    View.GONE
+                                                                // binding!!.qva1.text = "$ " + title
                                                             }
+                                                        }
 
 
-                                                        } else if (qData.id == 11) {
-                                                            if (answer != null && answer!!.isNotEmpty()) {
-                                                                if (!Questionone) {
-                                                                    setdata(
-                                                                        answer!!,
-                                                                        answer!!,
-                                                                        0,
-                                                                        "1",
-                                                                        qData.id, "0", "Yes"
-                                                                    )
-                                                                }
+                                                    } else if (qData.id == 11) {
+                                                        if (answer != null && answer!!.isNotEmpty()) {
+                                                            if (!Questionone) {
+                                                                setdata(
+                                                                    answer!!,
+                                                                    answer!!,
+                                                                    0,
+                                                                    "1",
+                                                                    qData.id, "0", "Yes"
+                                                                )
                                                             }
-                                                        } else if (qData.id == 70) {
+                                                        }
+                                                    } else if (qData.id == 70) {
 
-                                                            setdata(
-                                                                answer!!,
-                                                                answerdetail!!,
-                                                                0,
-                                                                "3",
-                                                                qData.id,
-                                                                "0",
-                                                                "Yes"
-                                                            )
+                                                        setdata(
+                                                            answer!!,
+                                                            answerdetail!!,
+                                                            0,
+                                                            "3",
+                                                            qData.id,
+                                                            "0",
+                                                            "Yes"
+                                                        )
 
-                                                        } else if (qData.id == 80) {
-                                                            setdata(
-                                                                answer!!,
-                                                                answerdetail!!,
-                                                                0,
-                                                                "4",
-                                                                qData.id,
-                                                                "0",
-                                                                "Yes"
-                                                            )
+                                                    } else if (qData.id == 80) {
+                                                        setdata(
+                                                            answer!!,
+                                                            answerdetail!!,
+                                                            0,
+                                                            "4",
+                                                            qData.id,
+                                                            "0",
+                                                            "Yes"
+                                                        )
 
-                                                        } else if (qData.id == 90) {
-                                                            setdata(
-                                                                answer!!,
-                                                                answerdetail!!,
-                                                                0,
-                                                                "5",
-                                                                qData.id,
-                                                                "0",
-                                                                "Yes"
-                                                            )
+                                                    } else if (qData.id == 90) {
+                                                        setdata(
+                                                            answer!!,
+                                                            answerdetail!!,
+                                                            0,
+                                                            "5",
+                                                            qData.id,
+                                                            "0",
+                                                            "Yes"
+                                                        )
 
-                                                        } else if (qData.id == 100) {
-                                                            setdata(
-                                                                answer!!,
-                                                                answerdetail!!,
-                                                                0,
-                                                                "6",
-                                                                qData.id,
-                                                                "0",
-                                                                "Yes"
-                                                            )
+                                                    } else if (qData.id == 100) {
+                                                        setdata(
+                                                            answer!!,
+                                                            answerdetail!!,
+                                                            0,
+                                                            "6",
+                                                            qData.id,
+                                                            "0",
+                                                            "Yes"
+                                                        )
 
-                                                        } else if (qData.id == 120) {
-                                                            setdata(
-                                                                answer!!,
-                                                                answerdetail!!,
-                                                                0,
-                                                                "8",
-                                                                qData.id,
-                                                                "0",
-                                                                "Yes"
-                                                            )
+                                                    } else if (qData.id == 120) {
+                                                        setdata(
+                                                            answer!!,
+                                                            answerdetail!!,
+                                                            0,
+                                                            "8",
+                                                            qData.id,
+                                                            "0",
+                                                            "Yes"
+                                                        )
 
-                                                        } else if (qData.id == 131) {
+                                                    } else if (qData.id == 131) {
 
 
 //                                                                    for (a in qData.answerData) {
@@ -800,49 +801,49 @@ class AllGovQuestionsFragment : Fragment() {
 //                                                                        val txt = t[t.keys].toString()
 //
 //                                                                    }
-                                                            setdatavalue(
-                                                                answer!!,
-                                                                qData.answerData!! as ArrayList<String>,
-                                                                "0",
-                                                                9,
-                                                                qData.id, 0
-                                                            )
+                                                        setdatavalue(
+                                                            answer!!,
+                                                            qData.answerData!! as ArrayList<String>,
+                                                            "0",
+                                                            9,
+                                                            qData.id, 0
+                                                        )
 
-                                                        } else if (qData.id == 140) {
-                                                            setarray(
-                                                                "0",
-                                                                qData.answerData as ArrayList<ChildAnswerData>,
-                                                                0,
-                                                                "10"
-                                                            )
-
-                                                        }
-                                                        // }
-                                                        //  }
-
-                                                    } else {
-                                                        subquestionarray!!.add(qData)
+                                                    } else if (qData.id == 140) {
+                                                        setarray(
+                                                            "0",
+                                                            qData.answerData as ArrayList<ChildAnswerData>,
+                                                            0,
+                                                            "10"
+                                                        )
 
                                                     }
+                                                    // }
+                                                    //  }
 
+                                                } else {
+                                                    subquestionarray!!.add(qData)
 
                                                 }
 
 
                                             }
+
+
                                         }
                                     }
                                 }
-                                updateDemoGraphicApiCall()
-                                break
                             }
+                            updateDemoGraphicApiCall()
+                            break
                         }
-
-
-
-
-
                     }
+
+
+
+
+
+                }
 
             });
     }
@@ -894,12 +895,12 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     companion object {
-        var qustionheaderarray: ArrayList<QuestionData>? = ArrayList()
+        var qustionheaderarray1: ArrayList<QuestionData>? = ArrayList()
         var banMap = hashMapOf<String, String>()
         var callservices: Boolean? = false
         var data: DemoGraphicModel? = null
-        var instan: AllGovQuestionsFragment? = null
-        fun newInstance() = AllGovQuestionsFragment()
+        var instan: AllGovQuestionsFragmentTwo? = null
+        fun newInstance() = AllGovQuestionsFragmentTwo()
 
     }
 
@@ -1600,7 +1601,7 @@ class AllGovQuestionsFragment : Fragment() {
     }
 
     fun discuss(detailTitle: String, no: String) {
-        for (qData in qustionheaderarray!!) {
+        for (qData in qustionheaderarray1!!) {
             if (qData.headerText == detailTitle) {
                 navigateToInnerScreen(
                     qData.headerText!!,
@@ -1815,7 +1816,7 @@ class AllGovQuestionsFragment : Fragment() {
                                 binding!!.q10radioButton.isChecked = true
 
                             }else {
-                            //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
+                                //  childAnswerData  = ChildAnswerData(childAnswerList.get(i).liabilityName,childAnswerList.get(i).liabilityTypeId,childAnswerList.get(i).monthlyPayment,childAnswerList.get(i).name,childAnswerList.get(i).monthlyPayment)
 //                                childAnswerData = ChildlistModel()
 //                                childAnswerData.liabilityName = childAnswerList.get(i).liabilityName
 //                                childAnswerData.liabilityTypeId =childAnswerList.get(i).liabilityTypeId
@@ -2051,5 +2052,5 @@ class AllGovQuestionsFragment : Fragment() {
 //    fun calldata() {
 //        setUpDynamicTabs()
 //    }
-//
+
 }

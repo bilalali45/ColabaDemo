@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.navigation.fragment.findNavController
+import com.rnsoft.colabademo.GovtQuestionsTabFragment.Companion.fragmentcount
 import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragment
+import com.rnsoft.colabademo.activities.govtquestions.fragment.AllGovQuestionsFragmentTwo
 import com.rnsoft.colabademo.databinding.UndisclosedBorrowerFundLayoutBinding
 import com.rnsoft.colabademo.utils.Common
 import com.rnsoft.colabademo.utils.CustomMaterialFields
@@ -113,7 +115,7 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                 detailTitle = ""
             AllGovQuestionsFragment.callservices = true
 
-             if(AllGovQuestionsFragment.instan != null){
+             if(fragmentcount == 0){
                 AllGovQuestionsFragment.instan!!.setdata(
                     "Yes",
                     getDetailString,
@@ -122,7 +124,16 @@ class UndisclosedBorrowerFundFragment:BaseFragment() {
                     questionId,
                     "1","Yes"
                 )
-            }
+            }else if(fragmentcount == 1){
+                      AllGovQuestionsFragmentTwo.instan!!.setdata(
+                     "Yes",
+                     getDetailString,
+                     whichBorrowerId,
+                     "1",
+                     questionId,
+                     "1","Yes"
+                 )
+             }
 
             EventBus.getDefault().post(UndisclosedBorrowerFundUpdateEvent(detailTitle, getDetailString, whichBorrowerId))
             findNavController().popBackStack()
