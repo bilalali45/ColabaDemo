@@ -1928,6 +1928,8 @@ class AllGovQuestionsFragment : Fragment() {
                                 answerDatalist.add(jonedata)
 
                                 val test = hashMapOf<String, Any>()
+
+
                                 // for(item in banMap){
                                 // Timber.e("item kia ha ?"+item.value+"  and "+item.key)
                                 //test.put(item.key, item.value)
